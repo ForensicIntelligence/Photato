@@ -44,6 +44,7 @@ enum GenerativeFillModelPreference {
   var variationCount = LocalGenerativeFill.maximumVariations
   var maximumVariations = LocalGenerativeFill.maximumVariations
   var targetLayerID: UUID?
+  var backgroundSubjectID: UUID?
   var expandRequest: CropRequest?
   var referenceVariationID: UUID?
   var referenceVariationNumber: Int?
@@ -52,22 +53,23 @@ enum GenerativeFillModelPreference {
   var error: String?
 
   var hasPrompt: Bool { !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-  var prompted: Bool { targetLayerID != nil || hasPrompt }
+  var prompted: Bool { targetLayerID != nil || backgroundSubjectID != nil || hasPrompt }
   var selectedModel: URL? { prompted ? promptModel : model }
 }
 
 extension EditorStore {
-  private var canStartLocalFill: Bool {
+  private func canStartLocalFill(allowingMask: Bool = false) -> Bool {
     LocalGenerativeFill.supported && generativeFillDraft == nil && cropDraft == nil && !geometryBusy && !aiBusy
-      && !hasToneDraft && !coalescingChanges && transformDraft == nil && !editingComponent && !editingMask
+      && !hasToneDraft && !coalescingChanges && transformDraft == nil && !editingComponent
+      && (!editingMask || (allowingMask && !smartFilterMaskEditing))
   }
 
   var canBeginGenerativeFill: Bool {
-    canStartLocalFill && LocalGenerativeFill.selection(in: document) != nil
+    canStartLocalFill() && LocalGenerativeFill.selection(in: document) != nil
   }
 
   func canBeginGenerativeFillBatch(_ id: UUID) -> Bool {
-    guard canStartLocalFill, let layer = activeLayer, layer.id == id else { return false }
+    guard canStartLocalFill(), let layer = activeLayer, layer.id == id else { return false }
     return GenerativeFillVariations.canAppend(layer, in: document)
   }
 
@@ -94,6 +96,18 @@ extension EditorStore {
     generativeFillDraft = GenerativeFillDraft()
   }
 
+  var canBeginLocalBackground: Bool {
+    canStartLocalFill(allowingMask: true) && GeneratedBackground.foreground(in: document) != nil
+  }
+
+  func beginLocalBackground() {
+    finishLayerName()
+    guard canBeginLocalBackground, let subject = document.activeLayerID else { return }
+    let draft = GenerativeFillDraft()
+    draft.backgroundSubjectID = subject
+    generativeFillDraft = draft
+  }
+
   var canBeginGenerativeExpand: Bool {
     guard LocalGenerativeFill.supported, generativeFillDraft == nil, canUseCropWorkspace,
       let cropDraft, let request = try? cropDraft.request(background: backgroundColor) else { return false }
@@ -115,8 +129,17 @@ extension EditorStore {
 
   func generateFill(_ draft: GenerativeFillDraft) {
     guard generativeFillDraft === draft, !geometryBusy, !draft.selectingModel, !draft.generating,
-      !editingComponent, !editingMask, draft.targetLayerID == nil || draft.hasPrompt,
+      !editingComponent, !smartFilterMaskEditing, !editingMask || draft.backgroundSubjectID != nil,
+      draft.targetLayerID == nil || draft.hasPrompt,
       let url = draft.selectedModel else { return }
+    let background = draft.backgroundSubjectID
+    if let background {
+      guard GeneratedBackground.foreground(in: document)?.id == background else {
+        draft.error = "Select the masked subject layer again to generate a background."
+        return
+      }
+      if editingMask { select(background) }
+    }
     let prompt = draft.prompt, seed = draft.seed
     let bookmark = draft.prompted ? draft.promptModelBookmark : nil
     let count = draft.prompted ? draft.variationCount : 1
@@ -131,6 +154,9 @@ extension EditorStore {
         let command: Command
         if let expand {
           command = try GenerativeExpand.prepare(expand, in: original, model: url, bookmark: bookmark,
+            prompt: prompt, seed: seed, count: count)
+        } else if background != nil {
+          command = try LocalGeneratedBackground.prepare(original, model: url, bookmark: bookmark,
             prompt: prompt, seed: seed, count: count)
         } else if let target {
           command = try GenerativeFillVariations.append(to: target, in: original, model: url, bookmark: bookmark,
@@ -181,16 +207,19 @@ struct GenerativeFillSheet: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      Text(draft.expandRequest != nil ? "Generative Expand" : draft.referenceVariationID != nil ? "Generate Similar" : draft.targetLayerID == nil ? "Generative Fill" : "Generate More Variations")
+      Text(draft.backgroundSubjectID != nil ? "Generate Background" : draft.expandRequest != nil ? "Generative Expand"
+        : draft.referenceVariationID != nil ? "Generate Similar" : draft.targetLayerID == nil ? "Generative Fill" : "Generate More Variations")
         .font(.headline)
       LabeledContent("Prompt") {
-        TextField("Prompt", text: $draft.prompt, prompt: Text("Describe what to add"))
+        TextField("Prompt", text: $draft.prompt, prompt: Text(draft.backgroundSubjectID == nil ? "Describe what to add" : "Describe the background"))
           .labelsHidden()
           .disabled(draft.selectingModel || draft.generating)
           .onChange(of: draft.prompt) { _, _ in draft.error = nil }
       }
       Group {
-        if draft.expandRequest != nil {
+        if draft.backgroundSubjectID != nil {
+          Text("The result goes on an editable layer below the subject. A blank prompt lets the subject guide the background.")
+        } else if draft.expandRequest != nil {
           Text("Leave the prompt blank to extend the image from its edges. Generated pixels appear on a masked layer outside the original canvas.")
         } else if let number = draft.referenceVariationNumber {
           Text("New results use variation \(number) as a reference and stay in this layer.")

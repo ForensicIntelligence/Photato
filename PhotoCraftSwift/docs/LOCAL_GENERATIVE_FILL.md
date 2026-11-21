@@ -44,8 +44,14 @@ Select the **Crop** tool, drag the handles outward and click **Generative Expand
 
 The canvas and new masked layer are committed together. Undo restores the previous canvas, layer stack and selection. Photato uses the original perimeter to blend into the addition at opaque edges. Prompted expansions can keep up to three results in an embedded Smart Object. The Properties controls can also generate more or similar variations while keeping the expandable area and its captured perimeter.
 
-Photato uses overlapping model windows once the border exceeds the single model patch budget of 4,194,304 pixels or 4,096 pixels per side. The generated outline remains one editable mask. Prompted results from overlapping windows are stored in an embedded PSB with the captured perimeter. **Generate More** and **Generate Similar** can work after reopening, including when a layer began with one result. Earlier tiled files retain their saved results. Regeneration uses the perimeter captured starting in build 708.
+Photato uses overlapping model windows once the border exceeds the single model patch budget of 4,194,304 pixels or 4,096 pixels per side. The generated outline remains one editable mask. Multiple prompted results use an embedded PSB and can be selected in Properties. **Generate More** and **Generate Similar** use saved original model context on prompted single-patch and tiled results. The generated pixels and mask remain editable.
 
 The time and scratch storage required grow with the border area and the number of requested alternatives. Large multi-edge documents and dense maximum-size output still need qualification. Rotating or cutting into the original image during generation and requesting multiple blank-prompt alternatives remain open. Use `generativeExpand.apply` to automate an outward crop. [Photato API](AUTOMATION_API.md#local-generative-expand) · [Adobe desktop workflow](https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/explore-beyond-the-canvas-with-generative-expand.html)
 
-Generate Background, Generate Image, Adobe Execute Actions request compatibility and Firefly output equivalence remain open. [Adobe Execute Actions model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)
+## Generate a background
+
+Start with **Remove Background**, then select the masked subject and click **Generate Background…** in the contextual bar or Properties. Enter a description or leave the prompt blank. Choose the local Runway model and the number of variations. The generated layer sits below the original cutout. Use its Properties to switch variations, Generate More, or Generate Similar after reopening. The layer stores the captured subject context.
+
+The local model fits the subject into a 512-pixel input. Photato scales the editable result to the original canvas. Properties also offers **Generate Background with Apple Intelligence…**. [Automation API](AUTOMATION_API.md#local-generate-background)
+
+On-device text-to-image generation, Adobe Execute Actions descriptors for this local workflow, and Firefly output equivalence remain open. [Adobe Execute Actions model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)

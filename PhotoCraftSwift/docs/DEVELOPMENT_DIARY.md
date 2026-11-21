@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 709 — Generate and iterate on a local background
+
+Generate Background now offers a local model after Remove Background. Photato places the result on an editable Smart Object below the masked subject. The document retains the original subject context for Generate More and Generate Similar after reopening. The Image Playground workflow is available through its Apple Intelligence action.
+
+The Vision and Runway test on project artwork preserved 422,792 fully opaque subject pixels and filled 578,461 transparent pixels. Both results retained their stacks and rendered samples after a Photato and PSB reopen. A signed App Sandbox harness passed the same owned-artwork checks. The native action and Photato HTTP API matched byte for byte in a separate same-seed test. A 6,200-pixel-wide test preserved editable placement and opacity at the far corner. A 300,000 × 8 PSB retained the same outer-edge pixels and editable source when reopened. At actual size, the RGB8, RGB16 and linear RGB32 fixtures preserved their rendered bytes through native, PSD and PSB reopening.
+
+The local model samples the document within a 512-pixel frame and scales the result to the canvas. Dense maximum-area export, lighting and texture quality, dedicated background colour and import choices, and Firefly output equivalence remain open.
+
+[Development record](DEVLOG.md#dev-step-709) · [Qualification](SOURCE_PUBLICATION_709.md).
+
 ## 2026-11-21 — Step 708 — Add more variations to a saved wide expansion
 
 Generate More and Generate Similar now work on prompted Generative Expand layers that used overlapping model windows. The embedded PSB stores the original perimeter pixels, including when the edit starts with one result. Changing the underlying layers after saving leaves the model context intact. The edit keeps the earlier results and the current outer mask.
@@ -1687,14 +1697,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:708 -->
+<!-- current-status-step:709 -->
 ## Current development status — 21 November 2026
 
-Generate More and Generate Similar now work on prompted Generative Expand layers that used overlapping model windows. The embedded PSB stores the original perimeter pixels, including when the edit starts with one result. Changing the underlying layers after saving leaves the model context intact. The edit keeps the earlier results and the current outer mask.
+Generate Background now offers a local model after Remove Background. Photato places the result on an editable Smart Object below the masked subject. The document retains the original subject context for Generate More and Generate Similar after reopening. The Image Playground workflow is available through its Apple Intelligence action.
 
-498 of 499 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 707. Xcode built the app in arm64 Debug. Both signed preview slices opened offscreen.
+503 of 504 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 708. All 19 existing Apple Intelligence background tests passed. Xcode built the app and both signed preview slices opened offscreen. The native setup sheet was checked in light and dark appearances.
 
-[Source checkpoint 708](SOURCE_PUBLICATION_708.md) · [Development record](DEVLOG.md#dev-step-708).
+[Source checkpoint 709](SOURCE_PUBLICATION_709.md) · [Development record](DEVLOG.md#dev-step-709).
 
 <!-- current-status:end -->
 
@@ -2609,6 +2619,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 706 | [Extend wide borders with overlapping model windows](DEVLOG.md#dev-step-706) |
 | 2026-11-21 | 707 | [Reuse the local prompt model across an editing job](DEVLOG.md#dev-step-707) |
 | 2026-11-21 | 708 | [Add more variations to a saved wide expansion](DEVLOG.md#dev-step-708) |
+| 2026-11-21 | 709 | [Generate and iterate on a local background](DEVLOG.md#dev-step-709) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

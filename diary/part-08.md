@@ -1,5 +1,15 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-21 — Step 709 — Generate and iterate on a local background
+
+Generate Background now offers a local model after Remove Background. Photato places the result on an editable Smart Object below the masked subject. The document retains the original subject context for Generate More and Generate Similar after reopening. The Image Playground workflow is available through its Apple Intelligence action.
+
+The Vision and Runway test on project artwork preserved 422,792 fully opaque subject pixels and filled 578,461 transparent pixels. Both results retained their stacks and rendered samples after a Photato and PSB reopen. A signed App Sandbox harness passed the same owned-artwork checks. The native action and Photato HTTP API matched byte for byte in a separate same-seed test. A 6,200-pixel-wide test preserved editable placement and opacity at the far corner. A 300,000 × 8 PSB retained the same outer-edge pixels and editable source when reopened. At actual size, the RGB8, RGB16 and linear RGB32 fixtures preserved their rendered bytes through native, PSD and PSB reopening.
+
+The local model samples the document within a 512-pixel frame and scales the result to the canvas. Dense maximum-area export, lighting and texture quality, dedicated background colour and import choices, and Firefly output equivalence remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-709) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_709.md).
+
 ## 2026-11-21 — Step 708 — Add more variations to a saved wide expansion
 
 Generate More and Generate Similar now work on prompted Generative Expand layers that used overlapping model windows. The embedded PSB stores the original perimeter pixels, including when the edit starts with one result. Changing the underlying layers after saving leaves the model context intact. The edit keeps the earlier results and the current outer mask.
@@ -1293,5 +1303,13 @@ Photato calculates independent brush output tiles in parallel and installs them 
 All 401 selected tests passed in Debug and both optimized builds. Physical display cadence and exact Photoshop brush output remain open.
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-551) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_551.md).
+
+## 2026-11-18 — Step 550 — Faster drawing on large canvases
+
+Photato composes eligible tone stacks and packs the changed display rows in parallel. The 5,000 px brush on a 24 MP workspace reached its first offscreen AppKit draw in 304 ms, down from 460 ms. All 192 checked buffers match build 549 on each architecture.
+
+All 400 selected tests passed in Debug and both optimized builds. Physical display cadence and exact Photoshop brush output remain open.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-550) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_550.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)

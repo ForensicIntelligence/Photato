@@ -2,7 +2,7 @@
 
 > ## 🎉 50% to Photoshop 2026 Parity!
 >
-> This is our current estimate for overall desktop workflow parity. See what works today and what’s still in progress in the [Developer Diary](DEVELOPER_DIARY.md).
+> This is our current estimate for overall desktop workflow parity. We update this banner when the tested workflows support the next 10-percentage-point milestone. See what works today and what’s still in progress in the [Developer Diary](DEVELOPER_DIARY.md).
 
 Photato is a native Swift image editor for macOS 14 and later. It is an independent port of [PhotoCraft](https://github.com/storytold/photocraft), with Photoshop 2026 workflow compatibility as a development goal.
 
@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 708.** Generate More and Generate Similar now work on prompted Generative Expand layers that used overlapping model windows. The embedded PSB stores the original perimeter pixels, including when the edit starts with one result. Changing the underlying layers after saving leaves the model context intact. The edit keeps the earlier results and the current outer mask. [Model setup](PhotoCraftSwift/docs/LOCAL_GENERATIVE_FILL.md#extend-the-canvas) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_708.md).
+**Development alpha — source build 709.** Generate Background now offers a local model after Remove Background. Photato places the result on an editable Smart Object below the masked subject. The document retains the original subject context for Generate More and Generate Similar after reopening. The Image Playground workflow is available through its Apple Intelligence action. [Model setup](PhotoCraftSwift/docs/LOCAL_GENERATIVE_FILL.md#generate-a-background) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_709.md).
 
 ## Project layout
 

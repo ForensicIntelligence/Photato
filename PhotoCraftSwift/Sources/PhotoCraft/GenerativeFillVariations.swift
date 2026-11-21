@@ -22,7 +22,8 @@ enum GenerativeFillVariations {
     let entries: [Entry]
     let lastDocumentStateID: UUID?
 
-    var hasSavedContext: Bool { version == 2 || version == 3 }
+    var isBackground: Bool { version == PSDCodec.fillBackgroundVariationVersion }
+    var hasSavedContext: Bool { version == 2 || version == 3 || isBackground }
 
     func selectedID(_ explicit: UUID?) -> UUID? {
       explicit ?? lastDocumentStateID ?? entries.first?.id
@@ -56,19 +57,21 @@ enum GenerativeFillVariations {
   }
 
   static func pack(_ layers: [Layer], in document: CraftDocument, prompt: String, seeds: [UInt32], context: Data? = nil,
-    savedSource: [Layer] = []) throws -> Layer {
+    savedSource: [Layer] = [], forBackground: Bool = false) throws -> Layer {
     guard ((context == nil ? 2 : 1)...LocalGenerativeFill.maximumVariations).contains(layers.count), seeds.count == layers.count,
       Set(seeds).count == seeds.count, let first = layers.first,
-      let mask = first.mask, case .raster(let image) = first.content else {
+      forBackground ? (context != nil && savedSource.isEmpty && first.mask == nil) : first.mask != nil,
+      case .raster(let image) = first.content else {
       throw CraftError.invalid("The local fill variation set is incomplete.")
     }
-    var source = try CraftDocument(width: image.width, height: image.height, depth: document.depth, name: "Fill Variations")
+    var source = try CraftDocument(width: image.width, height: image.height, depth: document.depth,
+      name: forBackground ? "Background Variations" : "Fill Variations")
     source.colorSpace = document.colorSpace
     source.workingICC = document.workingICC
     source.profileIsUntagged = document.profileIsUntagged
     source.resolution = document.resolution
     source.layers = try layers.enumerated().map { index, layer in
-      guard layer.mask == mask, layer.x == first.x, layer.y == first.y,
+      guard layer.mask == first.mask, layer.x == first.x, layer.y == first.y,
         case .raster(let patch) = layer.content, patch.width == image.width, patch.height == image.height else {
         throw CraftError.invalid("Local fill variations must share the same selection and placement.")
       }
@@ -77,7 +80,7 @@ enum GenerativeFillVariations {
     if let context { source.layers[0].sourceTags = [PSDCodec.fillContextTag: context] }
     source.layers += savedSource
     let entries = seeds.map { Entry(id: UUID(), seed: $0, prompt: nil, referenceVariationID: nil) }
-    let version = savedSource.isEmpty ? (context == nil ? 1 : 2) : 3
+    let version = forBackground ? PSDCodec.fillBackgroundVariationVersion : savedSource.isEmpty ? (context == nil ? 1 : 2) : 3
     return try packaged(source, in: document, previous: first, entries: entries,
       prompt: prompt, version: version, selected: 0)
   }
@@ -104,7 +107,7 @@ enum GenerativeFillVariations {
       fileName = "Fill Variations.psb"
     } else {
       bytes = .memory(try PSDCodec.writeRasterLayers(source, maximumBytes: SmartObject.maximumDocumentSourceBytes))
-      fileName = "Fill Variations.psd"
+      fileName = version == PSDCodec.fillBackgroundVariationVersion ? "Background Variations.psd" : "Fill Variations.psd"
     }
     let decoded = try SmartObjectIO.decode(bytes, fileName: fileName)
     var (object, initial) = try SmartObjectIO.embedded(
@@ -159,7 +162,7 @@ enum GenerativeFillVariations {
     try Task.checkCancellation()
     guard let position = parent.layers.firstIndex(where: { $0.id == id }),
       canAppend(parent.layers[position], in: parent), (1...LocalGenerativeFill.maximumVariations).contains(count) else {
-      throw CraftError.invalid("Select an unlocked Generative Fill layer with saved context and room for more variations.")
+      throw CraftError.invalid("Select an unlocked generative layer with saved context and room for more variations.")
     }
     let layer = parent.layers[position]
     guard let record = read(layer), let object = layer.smartObject,
@@ -185,7 +188,18 @@ enum GenerativeFillVariations {
       seeds = (0..<count).map { firstSeed &+ UInt32($0) }
     }
     let patches: [Surface]
-    if record.version == 3 {
+    if record.isBackground {
+      guard source.layers.count == record.entries.count else {
+        throw CraftError.invalid("The original Generative Background context is unavailable.")
+      }
+      let context = try LocalGeneratedBackground.Context.decode(stored, matching: source)
+      let conditioning = try referenceVariationID.map { id in
+        try SmartObjectLayerCompIO.pixels(source, compID: id, stackMode: nil, in: source)
+      }
+      patches = try context.patches(in: source, reference: conditioning) { image, mask in
+        try predict(prompt, seeds, image, mask)
+      }
+    } else if record.version == 3 {
       let reference = referenceVariationID.flatMap { id in record.entries.firstIndex { $0.id == id } }
       patches = try expandPatches(source: source, count: record.entries.count, stored: stored, reference: reference,
         prompt: prompt, seeds: seeds, predict: predict)

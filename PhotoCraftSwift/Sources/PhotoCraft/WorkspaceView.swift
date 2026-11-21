@@ -291,6 +291,25 @@ struct WorkspaceView: View {
     )
     .overlay(RoundedRectangle(cornerRadius: 6).stroke(StudioTheme.line)).shadow(radius: 8)
   }
+  var backgroundContextualActions: some View {
+    HStack(spacing: 10) {
+      if store.canBeginLocalBackground {
+        Button("Generate Background…") { store.beginLocalBackground() }
+          .help("Create an editable background with the local model")
+          .accessibilityIdentifier("generativeBackground.local.contextual")
+      } else if store.canStartBackgroundGeneration {
+        Button("Generate Background…") { store.prepareBackgroundGeneration() }
+          .help("Create an editable background with Apple Intelligence")
+      } else {
+        Button("Remove Background") { store.detectSubject(removeBackground: true) }
+          .help("Keep the subject with an editable mask")
+      }
+    }
+    .buttonStyle(.borderless).padding(10)
+    .background(StudioTheme.chrome, in: RoundedRectangle(cornerRadius: 6))
+    .overlay(RoundedRectangle(cornerRadius: 6).stroke(StudioTheme.line))
+    .shadow(radius: 8)
+  }
   func iconButton(
     _ symbol: String, _ help: String, enabled: Bool = true, selected: Bool? = nil, action: @escaping () -> Void
   ) -> some View {

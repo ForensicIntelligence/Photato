@@ -18,8 +18,14 @@ struct DocumentSurfaceView: View {
           )
           .id(store.identity)
           .workflowGuideAnchor(.canvas, when: isActive)
-          if isActive && store.document.selection != nil && store.transformDraft == nil && store.cropDraft == nil && store.regionRetouchDraft == nil {
-            WorkspaceView(store: store).contextualActions.padding(.bottom, 18)
+          if isActive && store.transformDraft == nil && store.cropDraft == nil && store.regionRetouchDraft == nil {
+            if store.document.selection != nil {
+              WorkspaceView(store: store).contextualActions.padding(.bottom, 18)
+            } else if !store.geometryBusy && !store.aiBusy && store.generativeFillDraft == nil && !store.showAI &&
+              (store.canBeginLocalBackground || store.canStartBackgroundGeneration ||
+                (store.activeLayer?.smartObject == nil && store.canDetectSubject(removeBackground: true))) {
+              WorkspaceView(store: store).backgroundContextualActions.padding(.bottom, 18)
+            }
           }
           if store.geometryBusy {
             HStack {

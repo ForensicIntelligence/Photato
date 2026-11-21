@@ -5,6 +5,7 @@ import PhotoCraftImaging
 enum GenerativeFillAPI {
   static let run = "generativeFill.apply"
   static let expand = "generativeExpand.apply"
+  static let background = "generativeBackground.apply"
   static let cancel = "generativeFill.cancel"
 
   static var parameters: [String: Any] {
@@ -22,6 +23,8 @@ enum GenerativeFillAPI {
       "supported": BrushAPI.flag, "modelConfigured": BrushAPI.flag, "canGenerate": BrushAPI.flag,
       "promptModelConfigured": BrushAPI.flag, "canGenerateFromPrompt": BrushAPI.flag,
       "operationID": VariablesAPI.nullableUUID,
+      "localBackground": BrushAPI.object(["foregroundLayerID": VariablesAPI.nullableUUID, "canGenerate": BrushAPI.flag],
+        required: ["foregroundLayerID", "canGenerate"]),
       "selectedVariations": ["anyOf": [["type": "null"], BrushAPI.object([
         "layerID": VariablesAPI.uuid, "selectedID": VariablesAPI.uuid,
         "prompt": ["type": "string"], "model": ["type": "string"],
@@ -31,11 +34,11 @@ enum GenerativeFillAPI {
           "prompt": ["type": "string"], "referenceVariationID": VariablesAPI.nullableUUID
         ], required: ["id", "seed", "prompt"])]
       ], required: ["layerID", "selectedID", "prompt", "model", "canGenerateMore", "canGenerateSimilar", "entries"])]]
-    ], required: ["supported", "modelConfigured", "canGenerate", "promptModelConfigured", "canGenerateFromPrompt", "operationID", "selectedVariations"])
+    ], required: ["supported", "modelConfigured", "canGenerate", "promptModelConfigured", "canGenerateFromPrompt", "operationID", "selectedVariations", "localBackground"])
   }
 
   static var capabilities: [String: Any] {
-    ["command": run, "expandCommand": expand, "cancelCommand": cancel, "stateSchema": schema,
+    ["command": run, "expandCommand": expand, "backgroundCommand": background, "cancelCommand": cancel, "stateSchema": schema,
      "minimumMacOS": "26.0", "requiresAppleSilicon": true, "requiresLocalModel": true,
      "maximumSelectionPixels": LocalGenerativeFill.maximumSelectionPixels,
      "maximumSelectionSide": LocalGenerativeFill.maximumSelectionSide,
@@ -60,13 +63,25 @@ enum GenerativeFillAPI {
     return BrushAPI.object(properties, required: frame)
   }
 
+  static var backgroundParameters: [String: Any] {
+    BrushAPI.object([
+      "foregroundLayerID": VariablesAPI.uuid,
+      "prompt": ["type": "string", "maxLength": LocalGenerativeFill.maximumPromptCharacters, "default": ""],
+      "seed": ["type": "integer", "minimum": 0, "maximum": UInt32.max],
+      "variationCount": ["type": "integer", "minimum": 1, "maximum": LocalGenerativeFill.maximumVariations, "default": 1]
+    ], required: [])
+  }
+
   @MainActor static func state(_ store: EditorStore) -> [String: Any] {
     let configured = LocalGenerativeFill.supported && GenerativeFillModelPreference.url() != nil
     let promptConfigured = LocalGenerativeFill.supported && GenerativeFillModelPreference.url(prompted: true) != nil
+    let subjectID = GeneratedBackground.foreground(in: store.document)?.id.uuidString
     var state: [String: Any] = ["supported": LocalGenerativeFill.supported, "modelConfigured": configured,
       "canGenerate": configured && store.canBeginGenerativeFill,
       "promptModelConfigured": promptConfigured, "canGenerateFromPrompt": promptConfigured && store.canBeginGenerativeFill,
-      "operationID": store.generativeFillOperationID?.uuidString as Any? ?? NSNull(), "selectedVariations": NSNull()]
+      "operationID": store.generativeFillOperationID?.uuidString as Any? ?? NSNull(), "selectedVariations": NSNull(),
+      "localBackground": ["foregroundLayerID": subjectID as Any? ?? NSNull(),
+        "canGenerate": promptConfigured && store.canBeginLocalBackground && !store.editingMask] as [String: Any]]
     if let layer = store.activeLayer, let record = GenerativeFillVariations.read(layer),
       let selected = record.selectedID(layer.smartObject?.layerComps?.selectedID) {
       let canAppend = promptConfigured && store.canBeginGenerativeFillBatch(layer.id)
@@ -104,7 +119,7 @@ extension AutomationCommand {
     if target != nil, parameters["prompt"] != nil, prompt.isEmpty {
       throw AutomationFailure(status: 400, message: "Enter a text prompt, or omit it to use the source variation’s prompt.")
     }
-    if target == nil, prompt.isEmpty && (count > 1 || parameters["seed"] != nil) {
+    if name != GenerativeFillAPI.background, target == nil, prompt.isEmpty && (count > 1 || parameters["seed"] != nil) {
       throw AutomationFailure(status: 400, message: "A seed or multiple variations require a text prompt.")
     }
     let seed = try parameters["seed"].map { _ in UInt32(try integer("seed", range: 0...Double(UInt32.max))) }

@@ -32,12 +32,12 @@ enum GeneratedBackground {
     width > 0 && height > 0 && width <= Surface.maxDimension && height <= Surface.maxDimension
       && width <= Surface.maxPixels / height
   }
-  static func referenceRequest(width: Int, height: Int) throws -> RasterPreviewRequest {
+  static func referenceRequest(width: Int, height: Int, maximumSide: Int = 2048) throws -> RasterPreviewRequest {
     guard supportsCanvas(width: width, height: height) else {
       throw CraftError.invalid("Invalid background-reference canvas.")
     }
     let longest = max(width, height)
-    let limit = min(2048, longest)
+    let limit = min(maximumSide, longest)
     // Fix the dominant side exactly instead of flooring a nearly integral
     // floating-point product (8001 * (2048 / 8001) can become2047).
     let w = width == longest ? limit : max(1, Int(Double(width) * Double(limit) / Double(longest)))

@@ -727,7 +727,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 706 | 2026-11-21 | [Extend wide borders with overlapping model windows](#dev-step-706) |
 | 707 | 2026-11-21 | [Reuse the local prompt model across an editing job](#dev-step-707) |
 | 708 | 2026-11-21 | [Add more variations to a saved wide expansion](#dev-step-708) |
+| 709 | 2026-11-21 | [Generate and iterate on a local background](#dev-step-709) |
 <!-- history-index:end -->
+
+<a id="dev-step-709"></a>
+
+## 2026-11-21 — Generate and iterate on a local background
+
+The background job uses an aspect-fitted render of the existing masked subject. It saves the original colour and mask inputs with the first embedded variation. New variants run through the usual prompt worker. The generated layer is inserted below the subject without changing its source pixels, position or mask. The contextual bar and Properties share the native sheet. The document API reports the active subject and supports the same local job.
+
+The first focus run found a translucent corner in the scaled background. Including a pixel beyond each crop edge fixed the coverage. The maximum-width proof then exposed a size check on the full placement before clipping. The renderer evaluates the bounded viewport, and the PSB writer clips the cached preview to the canvas when the full preview would exceed the raster limit. The descriptor preserves the full transform. The maximum-width test uses the normal paged file opener and keeps its original opacity and pixel assertions.
+
+An RGB32 round trip exposed a change in compositor selection when the PSD reader treated an actual-size background as a translated fill patch. The reader now retains the background’s affine sampling path at identity. An HDR fixture verifies the original opaque subject samples and the full reopened composite.
+
+Generate Background now offers a local model after Remove Background. Photato places the result on an editable Smart Object below the masked subject. The document retains the original subject context for Generate More and Generate Similar after reopening. The Image Playground workflow is available through its Apple Intelligence action.
+
+The Vision and Runway test on project artwork preserved 422,792 fully opaque subject pixels and filled 578,461 transparent pixels. Both results retained their stacks and rendered samples after a Photato and PSB reopen. A signed App Sandbox harness passed the same owned-artwork checks. The native action and Photato HTTP API matched byte for byte in a separate same-seed test. A 6,200-pixel-wide test preserved editable placement and opacity at the far corner. A 300,000 × 8 PSB retained the same outer-edge pixels and editable source when reopened. At actual size, the RGB8, RGB16 and linear RGB32 fixtures preserved their rendered bytes through native, PSD and PSB reopening.
+
+503 of 504 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 708. All 19 existing Apple Intelligence background tests passed. Xcode built the app and both signed preview slices opened offscreen. The native setup sheet was checked in light and dark appearances.
+
+The local model samples the document within a 512-pixel frame and scales the result to the canvas. Dense maximum-area export, lighting and texture quality, dedicated background colour and import choices, and Firefly output equivalence remain open.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_709.md).
 
 <a id="dev-step-708"></a>
 

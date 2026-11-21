@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-18 — Step 550 — Faster drawing on large canvases
-
-Photato composes eligible tone stacks and packs the changed display rows in parallel. The 5,000 px brush on a 24 MP workspace reached its first offscreen AppKit draw in 304 ms, down from 460 ms. All 192 checked buffers match build 549 on each architecture.
-
-All 400 selected tests passed in Debug and both optimized builds. Physical display cadence and exact Photoshop brush output remain open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-550) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_550.md).
-
 ## 2026-11-18 — Step 549 — Faster coverage for large brush strokes
 
 The brush calculates wide-dab coverage in parallel. The 5,000 px example on the 24 MP workspace reached its first AppKit draw in 457 ms, compared with 502 ms in the paired build 548 trials. All 146 tested buffers matched build 548.
@@ -395,14 +387,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:708 -->
+<!-- current-status-step:709 -->
 ## Current development status — 21 November 2026
 
-Generate More and Generate Similar now work on prompted Generative Expand layers that used overlapping model windows. The embedded PSB stores the original perimeter pixels, including when the edit starts with one result. Changing the underlying layers after saving leaves the model context intact. The edit keeps the earlier results and the current outer mask.
+Generate Background now offers a local model after Remove Background. Photato places the result on an editable Smart Object below the masked subject. The document retains the original subject context for Generate More and Generate Similar after reopening. The Image Playground workflow is available through its Apple Intelligence action.
 
-498 of 499 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 707. Xcode built the app in arm64 Debug. Both signed preview slices opened offscreen.
+503 of 504 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 708. All 19 existing Apple Intelligence background tests passed. Xcode built the app and both signed preview slices opened offscreen. The native setup sheet was checked in light and dark appearances.
 
-[Source checkpoint 708](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_708.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-708).
+[Source checkpoint 709](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_709.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-709).
 
 <!-- current-status:end -->
 
@@ -1317,5 +1309,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 706 | [Extend wide borders with overlapping model windows](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-706) |
 | 2026-11-21 | 707 | [Reuse the local prompt model across an editing job](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-707) |
 | 2026-11-21 | 708 | [Add more variations to a saved wide expansion](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-708) |
+| 2026-11-21 | 709 | [Generate and iterate on a local background](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-709) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

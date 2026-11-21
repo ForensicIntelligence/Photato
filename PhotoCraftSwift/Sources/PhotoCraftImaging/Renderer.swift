@@ -467,7 +467,7 @@ public enum Renderer {
         isFill
         ? IntRect(x: 0, y: 0, width: d.width, height: d.height)
         : try (layer.coordinateTransform * .translation(Double(sourceX), Double(sourceY)))
-            .bounds(width: surface.width, height: surface.height)
+            .viewportBounds(width: surface.width, height: surface.height, in: region)
       let x0 = max(region.x, bounds.x)
       let y0 = max(region.y, bounds.y)
       let x1 = min(region.x + region.width, bounds.x + bounds.width)

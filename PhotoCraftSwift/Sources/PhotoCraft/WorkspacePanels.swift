@@ -1,5 +1,6 @@
 import AppKit
 import PhotoCraftCore
+import PhotoCraftImaging
 import SwiftUI
 
 extension WorkspaceView {
@@ -270,7 +271,12 @@ extension WorkspaceView {
             .disabled(!store.canDetectSubject(removeBackground: true))
         }.controlSize(.small)
         if GeneratedBackground.foreground(in:store.document) != nil {
-          Button("Generate Background…") { store.prepareBackgroundGeneration() }
+          if LocalGenerativeFill.supported {
+            Button("Generate Background…") { store.beginLocalBackground() }
+              .accessibilityIdentifier("generativeBackground.local.properties")
+              .controlSize(.small).disabled(!store.canBeginLocalBackground)
+          }
+          Button("Generate Background with Apple Intelligence…") { store.prepareBackgroundGeneration() }
             .controlSize(.small).disabled(!store.canStartBackgroundGeneration)
         }
         Toggle("Sample All Layers", isOn: $store.subjectSampleAllLayers)

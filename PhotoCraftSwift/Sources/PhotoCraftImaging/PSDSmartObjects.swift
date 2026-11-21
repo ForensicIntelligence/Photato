@@ -213,8 +213,12 @@ enum PSDSmartObjects {
       try affine.validated()
       layer.x = Int(floor(affine.tx)); layer.y = Int(floor(affine.ty))
       let local = Transform2D.translation(-Double(layer.x), -Double(layer.y)) * affine
-      // A translated fill patch should stay on the exact RGB32 raster path after reopening.
-      layer.affine = local == .identity && layer.sourceTags?[PSDCodec.fillVariationTag] != nil ? nil : local
+      // Keep translated fill patches on the RGB32 raster path. Backgrounds
+      // retain their affine sampling path, including identity at actual size.
+      let fill = layer.sourceTags?[PSDCodec.fillVariationTag]
+      let version = fill.flatMap { try? JSONDecoder().decode(FillPlacement.self, from: $0).version }
+      let isTranslatedFill = local == .identity && fill != nil && version != PSDCodec.fillBackgroundVariationVersion
+      layer.affine = isTranslatedFill ? nil : local
       maskFrame = affine
     } else {
       layer.sourceProjection = try quads.projective(width: object.width, height: object.height, frame: frame)
@@ -282,6 +286,10 @@ enum PSDSmartObjects {
     return out.data
   }
 
+  private struct FillPlacement: Decodable {
+    let version: Int
+  }
+
   static func encodedQuads(_ layer: Layer, source: SmartObject) throws -> (PSDValue, PSDValue) {
     let preview = try layer.linkedSmartObjectPreview()
     let warp = layer.warp ?? preview?.warp
@@ -334,8 +342,23 @@ enum PSDSmartObjects {
       // the raster's local frame. RGBA resampling would ignore gray outside values.
       if linked {preview=try PSDMaskExport.prepared(preview)}
       preview.smartObject = nil
-      preview = try DocumentGeometry.transformLayer(preview, by: .identity, in: document,
-        method:linked ? .bilinear:.bicubic,clampRasterEdges:!linked)
+      if !linked, document.colorMode == .rgb, preview.mask == nil, preview.affine != nil,
+        case .raster(let pixels) = preview.content,
+        (try? preview.coordinateTransform.bounds(width: pixels.width, height: pixels.height)) == nil {
+        // Keep the exact editable placement in the descriptor while storing
+        // only the part of an over-size raster preview inside the canvas.
+        let transform = preview.coordinateTransform
+        let canvas = IntRect(x: 0, y: 0, width: document.width, height: document.height)
+        let bounds = try transform.viewportBounds(width: pixels.width, height: pixels.height, in: canvas)
+        preview.content = .raster(try RasterGeometry.render(pixels, transform: transform, bounds: bounds,
+          method: .bicubic, clampEdges: true))
+        preview.x = bounds.x
+        preview.y = bounds.y
+        preview.affine = nil
+      } else {
+        preview = try DocumentGeometry.transformLayer(preview, by: .identity, in: document,
+          method: linked ? .bilinear : .bicubic, clampRasterEdges: !linked)
+      }
     }
     preview.smartObject = layer.smartObject
     preview.sourceTags?.removeValue(forKey:"PhLC")

@@ -135,6 +135,9 @@ struct LayerEditingMenu: View {
         guard let id=contextLayer,store.canBeginBlendingOptions(for:id)else{return}
         store.select(id);guard store.document.activeLayerID==id else{return};store.beginBlendingOptions()
       }.disabled(!store.canBeginBlendingOptions(for:contextLayer))
+      if contextLayer == store.document.activeLayerID, store.canBeginLocalBackground {
+        Button("Generate Background…") { store.beginLocalBackground() }
+      }
       Divider()
     }
     layerPanelButton(.duplicate, context: contextLayer)

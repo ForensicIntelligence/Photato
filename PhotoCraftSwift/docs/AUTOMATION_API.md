@@ -4111,6 +4111,12 @@ Add `referenceVariationID` to a request with `targetLayerID` to generate similar
 
 Send `generativeFill.cancel` with `operationID` to cancel an active API operation. Both models run on Apple Silicon with macOS 26 or later. Adobe’s Generative Fill Execute Actions descriptor and job remain to be qualified. [Adobe model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)
 
+## Local Generate Background
+
+Select the layer content of a visible, masked RGB subject and configure the same on-device prompt model used by Generative Fill. Send `generativeBackground.apply` with the current document revision. `foregroundLayerID`, when supplied, must match the active subject. Use `prompt`, an optional unsigned `seed`, and `variationCount` from one to three. A blank prompt uses a general lighting and perspective prompt.
+
+The result appears as an editable layer below the unmodified subject. State is available in `generativeFill.localBackground`. Use `smartObject.layerComp` to choose a result, or `generativeFill.apply` with `targetLayerID` and optionally `referenceVariationID` to create another result after reopening. Progress and cancellation use `generativeFill.operationID` and `generativeFill.cancel`. [Local model setup](LOCAL_GENERATIVE_FILL.md#generate-a-background)
+
 ## Local Generative Expand
 
 Send `generativeExpand.apply` to the document command route with the current revision. Give the new frame in original document coordinates. For a 1,024 × 768 canvas, `{"x":-64,"y":0,"width":1152,"height":768}` adds 64 pixels to both sides. The frame must enclose the original canvas. Optional `prompt`, `seed` and `variationCount` follow the rules for an initial Generative Fill. Blank prompts use LaMa512 and return one layer.

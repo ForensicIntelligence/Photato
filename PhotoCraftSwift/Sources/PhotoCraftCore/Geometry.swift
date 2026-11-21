@@ -53,6 +53,22 @@ public struct Transform2D: Codable, Equatable, Sendable {
       tx: (c * ty - d * tx) / det, ty: (b * tx - a * ty) / det)
   }
   public func bounds(width: Int, height: Int) throws -> IntRect {
+    let frame = try enclosingFrame(width: width, height: height)
+    guard frame.width <= Surface.maxDimension, frame.height <= Surface.maxDimension,
+      frame.width * frame.height <= Surface.maxPixels else {
+      throw CraftError.invalid("Transformed image exceeds the supported dimensions.")
+    }
+    return frame
+  }
+  /// A viewport only needs the pixels inside its own raster bounds.
+  package func viewportBounds(width: Int, height: Int, in viewport: IntRect) throws -> IntRect {
+    let frame = try enclosingFrame(width: width, height: height)
+    let x = max(frame.x, viewport.x), y = max(frame.y, viewport.y)
+    let right = min(frame.x + frame.width, viewport.x + viewport.width)
+    let bottom = min(frame.y + frame.height, viewport.y + viewport.height)
+    return IntRect(x: x, y: y, width: max(0, right - x), height: max(0, bottom - y))
+  }
+  private func enclosingFrame(width: Int, height: Int) throws -> IntRect {
     try validated()
     let corners = [
       point(0, 0), point(Double(width), 0), point(0, Double(height)),
@@ -64,9 +80,7 @@ public struct Transform2D: Codable, Equatable, Sendable {
     let y0 = floor((ys.min() ?? 0) + 1e-9)
     let x1 = ceil((xs.max() ?? 0) - 1e-9)
     let y1 = ceil((ys.max() ?? 0) - 1e-9)
-    guard [x0, y0, x1, y1].allSatisfy({ $0.isFinite && abs($0) <= 1_000_000 }), x1 > x0, y1 > y0,
-      x1 - x0 <= Double(Surface.maxDimension), y1 - y0 <= Double(Surface.maxDimension),
-      (x1 - x0) * (y1 - y0) <= Double(Surface.maxPixels)
+    guard [x0, y0, x1, y1].allSatisfy({ $0.isFinite && abs($0) <= 1_000_000 }), x1 > x0, y1 > y0
     else { throw CraftError.invalid("Transformed image exceeds the supported dimensions.") }
     return IntRect(x: Int(x0), y: Int(y0), width: Int(x1 - x0), height: Int(y1 - y0))
   }
