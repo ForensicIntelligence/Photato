@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 712.** Edit → Generate Image and the canvas controls now generate artwork from a text prompt on eligible Macs. The optional local Core ML model creates one to three alternatives in a single editable Smart Object and preserves the original layers and selection. Properties switches variations and can generate more from the prompt or generate similar results from a saved variation. The Photato API shares the same prepared edit and history. The existing Apple Intelligence route remains available. [Generate Image](PhotoCraftSwift/docs/GENERATE_IMAGE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_712.md).
+**Development alpha — source build 713.** Edit → Prompt to Edit and the canvas action use the selected pixel layer and a text instruction to create alternatives on this Mac. The new editable Smart Object preserves the original layer and source alpha. The original is hidden and can be restored in one Undo. Generate More uses the saved reference. Edit This Variation starts from a chosen result. The Photato HTTP API shares the same edit and history. [Prompt to Edit](PhotoCraftSwift/docs/PROMPT_TO_EDIT.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_713.md).
 
 ## Project layout
 

@@ -24,7 +24,8 @@ enum GenerativeFillVariations {
 
     var isBackground: Bool { version == PSDCodec.fillBackgroundVariationVersion }
     var isGeneratedImage: Bool { version == PSDCodec.generatedImageVariationVersion }
-    var hasSavedContext: Bool { version == 2 || version == 3 || isBackground || isGeneratedImage }
+    var isPromptEdit: Bool { version == PSDCodec.promptEditVariationVersion }
+    var hasSavedContext: Bool { version == 2 || version == 3 || isBackground || isGeneratedImage || isPromptEdit }
 
     func selectedID(_ explicit: UUID?) -> UUID? {
       explicit ?? lastDocumentStateID ?? entries.first?.id
@@ -111,6 +112,7 @@ enum GenerativeFillVariations {
       switch version {
       case PSDCodec.fillBackgroundVariationVersion: fileName = "Background Variations.psd"
       case PSDCodec.generatedImageVariationVersion: fileName = "Image Variations.psd"
+      case PSDCodec.promptEditVariationVersion: fileName = "Prompt Edit Variations.psd"
       default: fileName = "Fill Variations.psd"
       }
     }
@@ -121,7 +123,9 @@ enum GenerativeFillVariations {
       throw CraftError.invalid("Could not preserve the variations in the embedded Photoshop document.")
     }
     object.layerComps?.selectedID = choices.entries[selected].id
-    let record = Metadata(version: version, prompt: prompt, model: LocalGenerativeFill.promptModelIdentifier,
+    let model = version == PSDCodec.promptEditVariationVersion ? LocalGenerativeFill.instructionModelIdentifier
+      : LocalGenerativeFill.promptModelIdentifier
+    let record = Metadata(version: version, prompt: prompt, model: model,
       sourceSHA256: object.dataFingerprint,
       entries: zip(choices.entries, entries).map { choice, entry in
         Entry(id: choice.id, seed: entry.seed, prompt: entry.prompt, referenceVariationID: entry.referenceVariationID)
@@ -139,13 +143,13 @@ enum GenerativeFillVariations {
     return layer
   }
 
-  static func packGeneratedImage(_ choices: [Layer], in document: CraftDocument, prompt: String,
-    seeds: [UInt32]) throws -> Layer {
+  static func packModelImages(_ choices: [Layer], in document: CraftDocument, prompt: String,
+    seeds: [UInt32], instructionContext: Data? = nil) throws -> Layer {
     guard let first = choices.first, case .raster(let pixels) = first.content else {
       throw CraftError.invalid("The generated image has no variations.")
     }
     var source = try CraftDocument(width: pixels.width, height: pixels.height, depth: document.depth,
-      name: "Image Variations")
+      name: instructionContext == nil ? "Image Variations" : "Prompt Edit Variations")
     source.colorSpace = document.colorSpace
     source.workingICC = document.workingICC
     source.profileIsUntagged = document.profileIsUntagged
@@ -153,9 +157,11 @@ enum GenerativeFillVariations {
     source.layers = choices.enumerated().map { index, choice in
       Layer(name: "Variation \(index + 1)", content: choice.content)
     }
+    if let instructionContext { source.layers[0].sourceTags = [PSDCodec.fillContextTag: instructionContext] }
     let entries = seeds.map { Entry(id: UUID(), seed: $0, prompt: nil, referenceVariationID: nil) }
     return try packaged(source, in: document, previous: first, entries: entries,
-      prompt: prompt, version: PSDCodec.generatedImageVariationVersion, selected: 0)
+      prompt: prompt, version: instructionContext == nil ? PSDCodec.generatedImageVariationVersion : PSDCodec.promptEditVariationVersion,
+      selected: 0)
   }
 
   static func canAppend(_ layer: Layer, in document: CraftDocument) -> Bool {
@@ -169,7 +175,8 @@ enum GenerativeFillVariations {
     to id: UUID, in document: CraftDocument, model: URL, bookmark: Data?, prompt: String?, seed: UInt32?, count: Int,
     referenceVariationID: UUID? = nil
   ) throws -> Command {
-    try GenerativeFillWorker.withSession(model: model, bookmark: bookmark) { worker in
+    let instructions = document.layers.first(where: { $0.id == id }).flatMap(read)?.isPromptEdit == true
+    return try GenerativeFillWorker.withSession(model: model, bookmark: bookmark, instructions: instructions) { worker in
       try append(to: id, in: document, prompt: prompt, seed: seed, count: count,
         referenceVariationID: referenceVariationID) { prompt, seeds, image, mask in
         try worker.predict(prompt: prompt, seeds: seeds, image: image, mask: mask,
@@ -221,6 +228,15 @@ enum GenerativeFillVariations {
         try SmartObjectLayerCompIO.pixels(source, compID: id, stackMode: nil, in: source)
       }
       patches = try LocalGeneratedImage.pixels(in: source, reference: reference, prompt: prompt, seeds: seeds, predict: predict)
+    } else if record.isPromptEdit, let stored {
+      guard source.layers.count == record.entries.count else {
+        throw CraftError.invalid("The prompt edit variations are unavailable.")
+      }
+      let context = try LocalPromptEdit.Context.decode(stored, matching: source)
+      let reference = try referenceVariationID.map { id in
+        try SmartObjectLayerCompIO.pixels(source, compID: id, stackMode: nil, in: source)
+      }
+      patches = try context.pixels(in: source, reference: reference, prompt: prompt, seeds: seeds, predict: predict)
     } else if record.isBackground, let stored {
       guard source.layers.count == record.entries.count else {
         throw CraftError.invalid("The original Generative Background context is unavailable.")
@@ -311,7 +327,8 @@ enum GenerativeFillVariations {
       let object = layer.smartObject, object.linkedSource == nil, object.stackMode == nil,
       ["image/vnd.adobe.photoshop", "application/x-photoshop"].contains(object.mediaType),
       let record = try? JSONDecoder().decode(Metadata.self, from: data),
-      (record.version == 1 || record.hasSavedContext), record.model == LocalGenerativeFill.promptModelIdentifier,
+      (record.version == 1 || record.hasSavedContext),
+      record.model == (record.isPromptEdit ? LocalGenerativeFill.instructionModelIdentifier : LocalGenerativeFill.promptModelIdentifier),
       record.sourceSHA256 == object.dataFingerprint,
       ((record.version == 1 ? 2 : 1)...(record.version == 1 ? LocalGenerativeFill.maximumVariations : maximumStoredVariations))
         .contains(record.entries.count),
@@ -355,7 +372,9 @@ struct GenerativeFillVariationControls: View {
             .accessibilityIdentifier("generativeFill.generateMore")
           if let selected = metadata.selectedID(layer.smartObject?.layerComps?.selectedID) {
             Menu {
-              Button("Generate Similar…") { store.beginGenerativeFillBatch(layer.id, referenceVariationID: selected) }
+              Button(metadata.isPromptEdit ? "Edit This Variation…" : "Generate Similar…") {
+                store.beginGenerativeFillBatch(layer.id, referenceVariationID: selected)
+              }
                 .accessibilityIdentifier("generativeFill.generateSimilar")
             } label: {
               Image(systemName: "ellipsis.circle")

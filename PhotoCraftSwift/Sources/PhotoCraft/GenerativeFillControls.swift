@@ -6,9 +6,10 @@ import PhotoCraftImaging
 enum GenerativeFillModelPreference {
   static let key = "localGenerativeFillModel"
   static let promptKey = "localPromptGenerativeFillModel"
+  static let instructionKey = "localPromptEditModel"
 
-  static func url(prompted: Bool = false, defaults: UserDefaults = .standard) -> URL? {
-    let key = prompted ? promptKey : Self.key
+  static func url(prompted: Bool = false, instructions: Bool = false, defaults: UserDefaults = .standard) -> URL? {
+    let key = instructions ? instructionKey : prompted ? promptKey : Self.key
     guard let data = defaults.data(forKey: key) else { return nil }
     return resolve(data)
   }
@@ -39,6 +40,8 @@ enum GenerativeFillModelPreference {
   var model = GenerativeFillModelPreference.url()
   var promptModel = GenerativeFillModelPreference.url(prompted: true)
   var promptModelBookmark = UserDefaults.standard.data(forKey: GenerativeFillModelPreference.promptKey)
+  var instructionModel = GenerativeFillModelPreference.url(instructions: true)
+  var instructionBookmark = UserDefaults.standard.data(forKey: GenerativeFillModelPreference.instructionKey)
   var prompt = ""
   var seed = UInt32.random(in: .min ... .max)
   var variationCount = LocalGenerativeFill.maximumVariations
@@ -49,13 +52,15 @@ enum GenerativeFillModelPreference {
   var referenceVariationID: UUID?
   var referenceVariationNumber: Int?
   var generateImage = false
+  var promptEdit = false
+  var instructionSourceID: UUID?
   var selectingModel = false
   var generating = false
   var error: String?
 
   var hasPrompt: Bool { !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-  var prompted: Bool { generateImage || targetLayerID != nil || backgroundSubjectID != nil || hasPrompt }
-  var selectedModel: URL? { prompted ? promptModel : model }
+  var prompted: Bool { generateImage || promptEdit || targetLayerID != nil || backgroundSubjectID != nil || hasPrompt }
+  var selectedModel: URL? { promptEdit ? instructionModel : prompted ? promptModel : model }
 }
 
 extension EditorStore {
@@ -82,6 +87,27 @@ extension EditorStore {
     generativeFillDraft = draft
   }
 
+  var contextualGenerateImage: Bool {
+    guard canBeginLocalImage else { return false }
+    guard let activeLayer else { return true }
+    if case .raster(let raster) = activeLayer.content { return raster.tileCount == 0 && raster.defaultPixel.a == 0 }
+    return false
+  }
+
+  var promptEditTarget: Layer? {
+    guard canBeginLocalImage else { return nil }
+    return LocalPromptEdit.target(in: document)
+  }
+
+  func beginPromptToEdit() {
+    finishLayerName()
+    guard let target = promptEditTarget else { return }
+    let draft = GenerativeFillDraft()
+    draft.promptEdit = true
+    draft.instructionSourceID = target.id
+    generativeFillDraft = draft
+  }
+
   func canBeginGenerativeFillBatch(_ id: UUID) -> Bool {
     guard canStartLocalFill(), let layer = activeLayer, layer.id == id else { return false }
     return GenerativeFillVariations.canAppend(layer, in: document)
@@ -94,6 +120,7 @@ extension EditorStore {
     let draft = GenerativeFillDraft()
     draft.targetLayerID = id
     draft.generateImage = record.isGeneratedImage
+    draft.promptEdit = record.isPromptEdit
     if let referenceVariationID {
       guard let index = record.entries.firstIndex(where: { $0.id == referenceVariationID }) else { return }
       draft.referenceVariationID = referenceVariationID
@@ -145,7 +172,7 @@ extension EditorStore {
   func generateFill(_ draft: GenerativeFillDraft) {
     guard generativeFillDraft === draft, !geometryBusy, !draft.selectingModel, !draft.generating,
       !editingComponent, !smartFilterMaskEditing, !editingMask || draft.backgroundSubjectID != nil,
-      (draft.targetLayerID == nil && !draft.generateImage) || draft.hasPrompt,
+      (draft.targetLayerID == nil && !draft.generateImage && !draft.promptEdit) || draft.hasPrompt,
       let url = draft.selectedModel else { return }
     let background = draft.backgroundSubjectID
     if let background {
@@ -156,10 +183,11 @@ extension EditorStore {
       if editingMask { select(background) }
     }
     let prompt = draft.prompt, seed = draft.seed
-    let bookmark = draft.prompted ? draft.promptModelBookmark : nil
+    let bookmark = draft.promptEdit ? draft.instructionBookmark : draft.prompted ? draft.promptModelBookmark : nil
     let count = draft.prompted ? draft.variationCount : 1
     let target = draft.targetLayerID, prompted = draft.prompted, reference = draft.referenceVariationID
     let generateImage = draft.generateImage
+    let instructionSource = draft.instructionSourceID
     let expand = draft.expandRequest, capturedCrop = cropDraft
     let original = document, generation = layerPanelGeneration, sessionID = sessionGeneration
     geometryBusy = true
@@ -177,6 +205,9 @@ extension EditorStore {
         } else if let target {
           command = try GenerativeFillVariations.append(to: target, in: original, model: url, bookmark: bookmark,
             prompt: prompt, seed: nil, count: count, referenceVariationID: reference)
+        } else if let instructionSource {
+          command = try LocalPromptEdit.prepare(original, targetID: instructionSource, model: url, bookmark: bookmark,
+            prompt: prompt, seed: seed, count: count)
         } else if generateImage {
           command = try LocalGeneratedImage.prepare(original, model: url, bookmark: bookmark, prompt: prompt, seed: seed, count: count)
         } else {
@@ -218,6 +249,7 @@ extension EditorStore {
 extension AppDelegate {
   @objc func generativeFill() { store?.beginGenerativeFill() }
   @objc func generateImage() { store?.beginGenerateImage() }
+  @objc func promptToEdit() { store?.beginPromptToEdit() }
 }
 
 struct GenerativeFillSheet: View {
@@ -225,14 +257,20 @@ struct GenerativeFillSheet: View {
   @Bindable var draft: GenerativeFillDraft
   @FocusState private var promptFocused: Bool
 
+  private var title: String {
+    if draft.backgroundSubjectID != nil { return "Generate Background" }
+    if draft.expandRequest != nil { return "Generative Expand" }
+    if draft.referenceVariationID != nil { return draft.promptEdit ? "Edit This Variation" : "Generate Similar" }
+    if draft.targetLayerID != nil { return "Generate More Variations" }
+    if draft.promptEdit { return "Prompt to Edit" }
+    return draft.generateImage ? "Generate Image" : "Generative Fill"
+  }
+
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      Text(draft.backgroundSubjectID != nil ? "Generate Background" : draft.expandRequest != nil ? "Generative Expand"
-        : draft.referenceVariationID != nil ? "Generate Similar"
-        : draft.targetLayerID != nil ? "Generate More Variations" : draft.generateImage ? "Generate Image" : "Generative Fill")
-        .font(.headline)
+      Text(title).font(.headline)
       LabeledContent("Prompt") {
-        TextField("Prompt", text: $draft.prompt, prompt: Text(draft.generateImage ? "Describe the image"
+        TextField("Prompt", text: $draft.prompt, prompt: Text(draft.promptEdit ? "Describe what to change" : draft.generateImage ? "Describe the image"
           : draft.backgroundSubjectID == nil ? "Describe what to add" : "Describe the background"))
           .labelsHidden()
           .focused($promptFocused)
@@ -246,6 +284,9 @@ struct GenerativeFillSheet: View {
           Text("Leave the prompt blank to extend the image from its edges. Generated pixels appear on a masked layer outside the original canvas.")
         } else if let number = draft.referenceVariationNumber {
           Text("New results use variation \(number) as a reference and stay in this layer.")
+        } else if draft.promptEdit {
+          Text(draft.targetLayerID == nil ? "Edit the selected image on this Mac. The original layer stays in the document and is hidden after generation."
+            : "New variations start from the saved original image and stay in this layer.")
         } else if draft.generateImage {
           Text(draft.targetLayerID == nil ? "Create an image from text on this Mac. Variations appear on one editable layer."
             : "Generate new results from the prompt and keep the earlier variations in this layer.")
@@ -257,10 +298,10 @@ struct GenerativeFillSheet: View {
       }
         .foregroundStyle(.secondary)
         .fixedSize(horizontal: false, vertical: true)
-      LabeledContent(draft.prompted ? "Local prompt model" : "Local context model") {
+      LabeledContent(draft.promptEdit ? "Local editing model" : draft.prompted ? "Local prompt model" : "Local context model") {
         HStack(spacing: 8) {
           if let model = draft.selectedModel {
-            Text(draft.prompted ? "Stable Diffusion 1.5" : "LaMa512")
+            Text(draft.promptEdit ? "InstructPix2Pix" : draft.prompted ? "Stable Diffusion 1.5" : "LaMa512")
               .lineLimit(1)
               .help(model.lastPathComponent)
           }
@@ -269,7 +310,8 @@ struct GenerativeFillSheet: View {
         }
       }
       if draft.selectedModel == nil {
-        Link("Model setup", destination: URL(string: "https://github.com/ForensicIntelligence/Photato/blob/main/PhotoCraftSwift/docs/LOCAL_GENERATIVE_FILL.md")!)
+        let guide = draft.promptEdit ? "PROMPT_TO_EDIT.md" : "LOCAL_GENERATIVE_FILL.md"
+        Link("Model setup", destination: URL(string: "https://github.com/ForensicIntelligence/Photato/blob/main/PhotoCraftSwift/docs/\(guide)")!)
       }
       if draft.prompted {
         Picker("Variations", selection: $draft.variationCount) {
@@ -289,23 +331,25 @@ struct GenerativeFillSheet: View {
         Button("Generate") { store.generateFill(draft) }
           .keyboardShortcut(.defaultAction)
           .disabled(draft.selectedModel == nil || draft.selectingModel || draft.generating
-            || ((draft.generateImage || draft.targetLayerID != nil) && !draft.hasPrompt))
+            || ((draft.generateImage || draft.promptEdit || draft.targetLayerID != nil) && !draft.hasPrompt))
       }
     }
     .padding(20)
     .frame(width: 410)
     .interactiveDismissDisabled(draft.generating)
-    .onAppear { if draft.generateImage { promptFocused = true } }
+    .onAppear { if draft.generateImage || draft.promptEdit { promptFocused = true } }
   }
 
   private func chooseModel() {
     let prompted = draft.prompted
+    let instructions = draft.promptEdit
     let panel = NSOpenPanel()
     panel.canChooseDirectories = true
     panel.canChooseFiles = !prompted
     panel.allowsMultipleSelection = false
     panel.prompt = "Choose Model"
-    panel.message = prompted ? "Select the extracted Runway_SD1.5_Inpaint folder." : "Select the compiled LaMa512.mlmodelc package."
+    panel.message = instructions ? "Select the extracted TimBrooks_InstructPix2Pix folder."
+      : prompted ? "Select the extracted Runway_SD1.5_Inpaint folder." : "Select the compiled LaMa512.mlmodelc package."
     panel.begin { response in
       guard response == .OK, let url = panel.url else { return }
       Task { @MainActor in
@@ -321,16 +365,22 @@ struct GenerativeFillSheet: View {
           try await Task.detached(priority: .userInitiated) {
             let access = url.startAccessingSecurityScopedResource()
             defer { if access { url.stopAccessingSecurityScopedResource() } }
-            if prompted {
+            if instructions {
+              try LocalGenerativeFill.validateInstructionModel(url)
+            } else if prompted {
               try LocalGenerativeFill.validatePromptModel(url)
             } else {
               try LocalGenerativeFill.validateModel(url)
             }
           }.value
           guard store.generativeFillDraft === draft else { return }
-          let key = prompted ? GenerativeFillModelPreference.promptKey : GenerativeFillModelPreference.key
+          let key = instructions ? GenerativeFillModelPreference.instructionKey
+            : prompted ? GenerativeFillModelPreference.promptKey : GenerativeFillModelPreference.key
           UserDefaults.standard.set(bookmark, forKey: key)
-          if prompted {
+          if instructions {
+            draft.instructionModel = GenerativeFillModelPreference.url(instructions: true)
+            draft.instructionBookmark = bookmark
+          } else if prompted {
             draft.promptModel = GenerativeFillModelPreference.url(prompted: true)
             draft.promptModelBookmark = bookmark
           } else {

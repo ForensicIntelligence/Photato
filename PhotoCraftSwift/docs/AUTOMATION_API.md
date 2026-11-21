@@ -4111,6 +4111,12 @@ Add `referenceVariationID` to a request with `targetLayerID` to generate similar
 
 Send `generativeFill.cancel` with `operationID` to cancel an active API operation. Both models run on Apple Silicon with macOS 26 or later. Adobe’s Generative Fill Execute Actions descriptor and job remain to be qualified. [Adobe model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)
 
+## Prompt to Edit
+
+Use `promptEdit.apply` to edit the active visible pixel layer with a whole-image instruction and the optional local InstructPix2Pix model. `sourceLayerID` can constrain a new edit to its expected active source. Set `variationCount` to one through three and optionally supply an unsigned 32-bit `seed`. The result preserves the original layer and its mask, hides the original, and adds an editable variation layer above it with one Undo step. The current selection remains in place.
+
+Use `targetLayerID` to append to a selected saved Prompt Edit layer. Omit `prompt` to reuse the stored instruction. Supply `referenceVariationID` to continue from an existing result. Discover availability through `generativeFill.promptEdit`, and use `smartObject.layerComp` to switch the options in `generativeFill.selectedVariations`. `generativeFill.operationID` and `generativeFill.cancel` apply to the running job. [Prompt to Edit guide](PROMPT_TO_EDIT.md)
+
 ## Generate Image
 
 Use `generativeImage.apply` on a still RGB document with the local prompt model configured. The request creates a new editable Smart Object above the original layers and leaves the selection in place. For a new image, supply `prompt`, with optional `seed` and `variationCount`. The local model uses the prompt independently of the canvas or selection. A request produces one to three choices with one Undo step.

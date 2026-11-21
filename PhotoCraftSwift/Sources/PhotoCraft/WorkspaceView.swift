@@ -293,7 +293,10 @@ struct WorkspaceView: View {
   }
   var backgroundContextualActions: some View {
     HStack(spacing: 10) {
-      if store.canBeginLocalImage {
+      if store.promptEditTarget != nil {
+        Button("Prompt to Edit…") { store.beginPromptToEdit() }
+          .accessibilityIdentifier("generativePromptEdit.contextual")
+      } else if store.contextualGenerateImage {
         Button("Generate Image…") { store.beginGenerateImage() }
           .accessibilityIdentifier("generativeImage.contextual")
       }
@@ -317,6 +320,10 @@ struct WorkspaceView: View {
       if store.harmonizeTarget != nil {
         Button("Harmonize") { store.applyHarmonize() }
           .accessibilityIdentifier("harmonize.contextual")
+      }
+      if store.document.selection != nil {
+        Divider().frame(height: 18)
+        Button("Deselect") { store.perform(.selection(nil)) }
       }
     }
     .buttonStyle(.borderless).padding(10)

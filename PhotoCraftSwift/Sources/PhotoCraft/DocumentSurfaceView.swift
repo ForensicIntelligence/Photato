@@ -19,10 +19,10 @@ struct DocumentSurfaceView: View {
           .id(store.identity)
           .workflowGuideAnchor(.canvas, when: isActive)
           if isActive && store.transformDraft == nil && store.cropDraft == nil && store.regionRetouchDraft == nil {
-            if store.document.selection != nil {
+            if store.document.selection != nil && store.promptEditTarget == nil {
               WorkspaceView(store: store).contextualActions.padding(.bottom, 18)
             } else if !store.geometryBusy && !store.aiBusy && store.generativeFillDraft == nil && !store.showAI &&
-              (store.canBeginLocalImage || store.harmonizeTarget != nil || store.backgroundReplacementSubject != nil || store.canBeginLocalBackground || store.canStartBackgroundGeneration ||
+              (store.contextualGenerateImage || store.promptEditTarget != nil || store.harmonizeTarget != nil || store.backgroundReplacementSubject != nil || store.canBeginLocalBackground || store.canStartBackgroundGeneration ||
                 (store.activeLayer?.smartObject == nil && store.canDetectSubject(removeBackground: true))) {
               WorkspaceView(store: store).backgroundContextualActions.padding(.bottom, 18)
             }

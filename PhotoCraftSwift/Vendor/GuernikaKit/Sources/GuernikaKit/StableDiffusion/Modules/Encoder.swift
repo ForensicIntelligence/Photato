@@ -124,7 +124,12 @@ public class Encoder {
         
         // Reference pipeline scales the latent after encoding
         let scaleFactor = self.scaleFactor ?? scaleFactor
-        guard scaleFactor != 1 else { return latent }
+        guard scaleFactor != 1 else {
+            // The Gaussian branch takes a batch slice above. Preserve the
+            // batch dimension even when the instruction model skips scaling.
+            if latent.shape == latentShape { return latent }
+            return MLShapedArray(scalars: latent.scalars, shape: latentShape)
+        }
         let latentScaled = MLShapedArray(unsafeUninitializedShape: latentShape) { scalars, _ in
             latent.withUnsafeShapedBufferPointer { latent, _, _ in
                 vDSP.multiply(scaleFactor, latent, result: &scalars)

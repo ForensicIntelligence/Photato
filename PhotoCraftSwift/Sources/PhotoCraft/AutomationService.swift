@@ -1610,12 +1610,16 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in .contentAwareFill(try options.edit(original)) }
         return .json(state(share,document:document))
       }
-      if [GenerativeFillAPI.run, GenerativeFillAPI.expand, GenerativeFillAPI.background, GenerativeFillAPI.image].contains(command.name) {
+      if [GenerativeFillAPI.run, GenerativeFillAPI.expand, GenerativeFillAPI.background, GenerativeFillAPI.image,
+        GenerativeFillAPI.promptEdit].contains(command.name) {
         let options = try command.generativeFillOptions()
         let expand = command.name == GenerativeFillAPI.expand ? try command.cropFrame() : nil
         let background = command.name == GenerativeFillAPI.background
         let image = command.name == GenerativeFillAPI.image
-        let prompted = background || image || options.target != nil || !options.prompt.isEmpty
+        let instructions = command.name == GenerativeFillAPI.promptEdit
+        let prompted = background || image || instructions || options.target != nil || !options.prompt.isEmpty
+        let activeVariations = store.activeLayer.flatMap(GenerativeFillVariations.read)
+        let editSource = instructions && options.target == nil ? store.promptEditTarget?.id : nil
         let eligible: Bool
         if let expand {
           _ = try GenerativeExpand.protectedCanvas(for: expand, in: store.document)
@@ -1625,23 +1629,35 @@ import UniformTypeIdentifiers
           eligible = store.canBeginLocalBackground && !store.editingMask && (subject == nil || subject == store.document.activeLayerID)
         } else if image {
           if let target = options.target {
-            eligible = store.canBeginGenerativeFillBatch(target)
-              && store.activeLayer.flatMap(GenerativeFillVariations.read)?.isGeneratedImage == true
+            eligible = store.canBeginGenerativeFillBatch(target) && activeVariations?.isGeneratedImage == true
           } else {
             eligible = store.canBeginLocalImage
           }
+        } else if instructions {
+          let requested = try command.parameters["sourceLayerID"].map { _ in try command.actionUUID("sourceLayerID") }
+          if let target = options.target {
+            guard requested == nil else {
+              throw AutomationFailure(status: 400, message: "Use sourceLayerID for a new edit or targetLayerID to append variations.")
+            }
+            eligible = store.canBeginGenerativeFillBatch(target) && activeVariations?.isPromptEdit == true
+          } else {
+            eligible = editSource != nil && (requested == nil || requested == editSource)
+          }
         } else {
-          eligible = options.target.map(store.canBeginGenerativeFillBatch) ?? store.canBeginGenerativeFill
+          eligible = options.target.map { store.canBeginGenerativeFillBatch($0) && activeVariations?.isPromptEdit != true }
+            ?? store.canBeginGenerativeFill
         }
-        guard eligible, let model = GenerativeFillModelPreference.url(prompted: prompted) else {
+        guard eligible, let model = GenerativeFillModelPreference.url(prompted: prompted, instructions: instructions) else {
           let message = background ? "Select the masked subject’s layer content and configure the local prompt model."
             : image ? "Finish any active edit and configure the local prompt model for Generate Image. Select a Generate Image layer to append variations."
+            : instructions ? "Choose the local editing model and select a whole image or an unlocked Prompt Edit layer."
             : expand != nil ? "Choose a local model in Generative Expand and finish any active edit."
             : options.target == nil ? "Select part of a still RGB image and choose a local model in Generative Fill."
             : "Select an unlocked Generative Fill layer with saved context and configure the local prompt model."
           throw AutomationFailure(status: 422, message: message)
         }
-        let bookmark = prompted ? UserDefaults.standard.data(forKey: GenerativeFillModelPreference.promptKey) : nil
+        let bookmarkKey = instructions ? GenerativeFillModelPreference.instructionKey : GenerativeFillModelPreference.promptKey
+        let bookmark = prompted ? UserDefaults.standard.data(forKey: bookmarkKey) : nil
         let operation = UUID()
         store.generativeFillOperationID = operation
         defer { if store.generativeFillOperationID == operation { store.generativeFillOperationID = nil } }
@@ -1664,10 +1680,14 @@ import UniformTypeIdentifiers
             return try LocalGeneratedImage.prepare(original, model: model, bookmark: bookmark, prompt: options.prompt,
               seed: options.seed ?? UInt32.random(in: .min ... .max), count: options.count)
           }
+          if let editSource {
+            return try LocalPromptEdit.prepare(original, targetID: editSource, model: model, bookmark: bookmark,
+              prompt: options.prompt, seed: options.seed ?? UInt32.random(in: .min ... .max), count: options.count)
+          }
           return try GenerativeFillVariations.prepare(original, model: model, bookmark: bookmark, prompt: options.prompt,
             seed: options.seed ?? UInt32.random(in: .min ... .max), count: options.count)
         }
-        if background || image { store.selectedLayerIDs = Set(store.document.activeLayerID.map { [$0] } ?? []) }
+        if background || image || instructions { store.selectedLayerIDs = Set(store.document.activeLayerID.map { [$0] } ?? []) }
         store.generativeFillOperationID = nil
         return .json(state(share, document: document))
       }

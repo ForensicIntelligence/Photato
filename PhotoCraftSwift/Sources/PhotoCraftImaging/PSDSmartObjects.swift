@@ -217,6 +217,7 @@ enum PSDSmartObjects {
       // retain their affine sampling path, including identity at actual size.
       let version = fillPlacementVersion(layer)
       let isFullImage = version == PSDCodec.fillBackgroundVariationVersion || version == PSDCodec.generatedImageVariationVersion
+        || version == PSDCodec.promptEditVariationVersion
       let isTranslatedFill = local == .identity && layer.sourceTags?[PSDCodec.fillVariationTag] != nil && !isFullImage
       layer.affine = isTranslatedFill ? nil : local
       maskFrame = affine
@@ -348,7 +349,8 @@ enum PSDSmartObjects {
       // the raster's local frame. RGBA resampling would ignore gray outside values.
       if linked {preview=try PSDMaskExport.prepared(preview)}
       preview.smartObject = nil
-      let cropGeneratedPreview = fillPlacementVersion(layer) == PSDCodec.generatedImageVariationVersion
+      let version = fillPlacementVersion(layer)
+      let cropGeneratedPreview = version == PSDCodec.generatedImageVariationVersion || version == PSDCodec.promptEditVariationVersion
       if !linked, document.colorMode == .rgb, preview.mask == nil, preview.affine != nil,
         case .raster(let pixels) = preview.content,
         cropGeneratedPreview || (try? preview.coordinateTransform.bounds(width: pixels.width, height: pixels.height)) == nil {

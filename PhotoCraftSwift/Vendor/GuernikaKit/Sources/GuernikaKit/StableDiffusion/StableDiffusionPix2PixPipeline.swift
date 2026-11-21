@@ -256,6 +256,9 @@ public class StableDiffusionPix2PixPipeline: StableDiffusionPipeline {
             throw StableDiffusionError.inputMissing
         }
         let latent = try encoder.encode(image, scaleFactor: 1, generator: generator)
+        guard latent.shape == [1, 4, unet.latentSampleShape[2], unet.latentSampleShape[3]] else {
+            throw StableDiffusionError.incompatibleSize
+        }
         let zeroLatent = MLShapedArray<Float32>(repeating: 0, shape: latent.shape)
         return MLShapedArray<Float32>(concatenating: [latent, latent, zeroLatent], alongAxis: 0)
     }

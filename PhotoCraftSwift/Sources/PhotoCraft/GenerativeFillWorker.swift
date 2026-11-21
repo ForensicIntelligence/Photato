@@ -17,6 +17,7 @@ enum GenerativeFillWorker {
 
   private struct Configuration: Codable {
     let bookmark: Data
+    let instructions: Bool
   }
 
   private struct Request: Codable {
@@ -34,16 +35,16 @@ enum GenerativeFillWorker {
 
   static func run(
     model: URL, bookmark: Data? = nil, prompt: String, seeds: [UInt32], image: [Float], mask: [Float],
-    mode: LocalGenerativeFill.PromptMode = .fill, executable override: URL? = nil
+    mode: LocalGenerativeFill.PromptMode = .fill, instructions: Bool = false, executable override: URL? = nil
   ) throws -> [Surface] {
-    try withSession(model: model, bookmark: bookmark, executable: override) { session in
+    try withSession(model: model, bookmark: bookmark, instructions: instructions, executable: override) { session in
       try session.predict(prompt: prompt, seeds: seeds, image: image, mask: mask, mode: mode)
     }
   }
 
   /// The worker and its model are scoped to one edit, including all its windows.
   static func withSession<Result>(
-    model: URL, bookmark: Data? = nil, executable override: URL? = nil, _ body: (Session) throws -> Result
+    model: URL, bookmark: Data? = nil, instructions: Bool = false, executable override: URL? = nil, _ body: (Session) throws -> Result
   ) throws -> Result {
     try Task.checkCancellation()
     guard let executable = override ?? executableURL() else {
@@ -54,7 +55,8 @@ enum GenerativeFillWorker {
     try files.createDirectory(at: directory, withIntermediateDirectories: false, attributes: [.posixPermissions: 0o700])
     defer { try? files.removeItem(at: directory) }
 
-    let configuration = Configuration(bookmark: try bookmark ?? GenerativeFillModelPreference.bookmark(for: model))
+    let configuration = Configuration(bookmark: try bookmark ?? GenerativeFillModelPreference.bookmark(for: model),
+      instructions: instructions)
     try write(configuration, to: directory.appending(path: "model.plist"))
     let process = Process()
     let pipe = Pipe()
@@ -155,7 +157,7 @@ enum GenerativeFillWorker {
       guard let model = GenerativeFillModelPreference.resolve(config.bookmark) else {
         throw CraftError.unavailable("Choose the local prompt model again to restore access.")
       }
-      try LocalGenerativeFill.withPromptPredictor(at: model) { predict in
+      let serve: (LocalGenerativeFill.PromptPredictor) throws -> Void = { predict in
         repeat {
           let request = try read(Request.self, at: requestURL, maximumBytes: maximumRequestBytes)
           let image = try floats(request.image, count: area * 3)
@@ -164,6 +166,11 @@ enum GenerativeFillWorker {
           let reply = Reply(pixels: try results.map { try $0.rgbaData(depth: .f32) })
           try writeReply(reply, to: replyURL)
         } while try waitForRequest(input)
+      }
+      if config.instructions {
+        try LocalGenerativeFill.withInstructionPredictor(at: model, serve)
+      } else {
+        try LocalGenerativeFill.withPromptPredictor(at: model, serve)
       }
       return 0
     } catch {

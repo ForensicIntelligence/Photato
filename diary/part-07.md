@@ -379,14 +379,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:712 -->
+<!-- current-status-step:713 -->
 ## Current development status — 21 November 2026
 
-Edit → Generate Image and the canvas controls now generate artwork from a text prompt on eligible Macs. The optional local Core ML model creates one to three alternatives in a single editable Smart Object and preserves the original layers and selection. Properties switches variations and can generate more from the prompt or generate similar results from a saved variation. The Photato API shares the same prepared edit and history. The existing Apple Intelligence route remains available.
+Edit → Prompt to Edit and the canvas action use the selected pixel layer and a text instruction to create alternatives on this Mac. The new editable Smart Object preserves the original layer and source alpha. The original is hidden and can be restored in one Undo. Generate More uses the saved reference. Edit This Variation starts from a chosen result. The Photato HTTP API shares the same edit and history.
 
-533 of 534 selected regression cases passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The known layer-effect reference test repeated 118 existing assertions in every configuration. Three new format and editing cases passed in all configurations. The additional on-device model test passed in Apple Silicon Debug. The Xcode target built and both signed local preview slices opened offscreen. A signed sandbox harness reproduced both model variants and the selected composite PNG byte for byte. The Generate Image menu binding and Properties controls were checked in an offscreen native workspace.
+536 of 537 selected regressions passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The same layer-effect reference method repeated its existing assertions in every configuration. All three new format and editing tests passed. The Debug result combines the original selection with a rerun of all nine menu cases on the unchanged app executable and the corrected test fixture. The separate real-model test passed on Apple Silicon Debug. The Xcode target built, both signed universal slices opened offscreen, and a signed sandbox harness reproduced the variation and composite PNGs byte for byte. The existing Generate Image model passed its real native/API regression. The offscreen workspace and Light and Dark prompt sheets showed the instruction, model, and variation controls.
 
-[Source checkpoint 712](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_712.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-712).
+[Source checkpoint 713](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_713.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-713).
 
 <!-- current-status:end -->
 
@@ -1305,5 +1305,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 710 | [Replace a masked background with colour or artwork](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-710) |
 | 2026-11-21 | 711 | [Match a subject to its background with editable Harmonize variations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-711) |
 | 2026-11-21 | 712 | [Generate editable images from a text prompt on-device](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-712) |
+| 2026-11-21 | 713 | [Edit a whole image with local instructions and saved variations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-713) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

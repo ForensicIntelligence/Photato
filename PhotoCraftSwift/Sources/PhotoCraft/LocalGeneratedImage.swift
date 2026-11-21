@@ -29,7 +29,7 @@ enum LocalGeneratedImage {
     let seeds = (0..<count).map { seed &+ UInt32($0) }
     let images = try pixels(in: document, reference: nil, prompt: prompt, seeds: seeds, predict: predict)
     let choices = images.map { Layer(name: "Generated Image", content: .raster($0)) }
-    var layer = try GenerativeFillVariations.packGeneratedImage(choices, in: document, prompt: prompt, seeds: seeds)
+    var layer = try GenerativeFillVariations.packModelImages(choices, in: document, prompt: prompt, seeds: seeds)
     let scale = Double(max(document.width, document.height)) / Double(side)
     layer.affine = .translation((Double(document.width) - Double(side) * scale) / 2,
       (Double(document.height) - Double(side) * scale) / 2) * .scale(scale, scale)

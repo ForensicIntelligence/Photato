@@ -103,19 +103,7 @@ extension LocalGenerativeFill {
     defer { if access { url.stopAccessingSecurityScopedResource() } }
     try Task.checkCancellation()
     // The tested Core ML conversion fixes the tokenizer and the shapes expected by GuernikaKit.
-    for (relativePath, expected) in promptModelMetadata {
-      let file = url.appending(path: relativePath)
-      guard let size = try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize, size <= 1_048_576,
-        let data = try? Data(contentsOf: file),
-        SHA256.hash(data: data).map({ String(format: "%02x", $0) }).joined() == expected else {
-        throw CraftError.invalid("Choose the extracted Runway_SD1.5_Inpaint model folder linked in the setup guide.")
-      }
-    }
-    for relativePath in ["TextEncoder.mlmodelc/vocab.json", "TextEncoder.mlmodelc/added_vocab.json"] {
-      guard !FileManager.default.fileExists(atPath: url.appending(path: relativePath).path) else {
-        throw CraftError.invalid("Choose the unmodified Runway_SD1.5_Inpaint folder.")
-      }
-    }
+    try verifyPromptModelMetadata(at: url, metadata: promptModelMetadata, name: "Runway_SD1.5_Inpaint")
     let unet = try Unet(modelAt: url.appending(path: "Unet.mlmodelc"))
     let encoder = try Encoder(modelAt: url.appending(path: "VAEEncoder.mlmodelc"), configuration: unet.configuration)
     let decoder = try Decoder(modelAt: url.appending(path: "VAEDecoder.mlmodelc"), configuration: unet.configuration)
@@ -124,6 +112,22 @@ extension LocalGenerativeFill {
       decoder: decoder, computeUnits: .cpuAndGPU, reduceMemory: ProcessInfo.processInfo.physicalMemory < 9_000_000_000)
     defer { pipeline.unloadResources() }
     return try use(pipeline)
+  }
+
+  static func verifyPromptModelMetadata(at url: URL, metadata: [String: String], name: String) throws {
+    for (relativePath, expected) in metadata {
+      let file = url.appending(path: relativePath)
+      guard let size = try? file.resourceValues(forKeys: [.fileSizeKey]).fileSize, size <= 1_048_576,
+        let data = try? Data(contentsOf: file),
+        SHA256.hash(data: data).map({ String(format: "%02x", $0) }).joined() == expected else {
+        throw CraftError.invalid("Choose the extracted \(name) model folder linked in the setup guide.")
+      }
+    }
+    for relativePath in ["TextEncoder.mlmodelc/vocab.json", "TextEncoder.mlmodelc/added_vocab.json"] {
+      guard !FileManager.default.fileExists(atPath: url.appending(path: relativePath).path) else {
+        throw CraftError.invalid("Choose the unmodified \(name) folder.")
+      }
+    }
   }
 
   private static let promptModelMetadata = [
@@ -136,7 +140,7 @@ extension LocalGenerativeFill {
     "VAEEncoder.mlmodelc/metadata.json": "3f1e8d8e110e49ad8388d348816e96d656c60ac054355ef631efc59f7285b367",
   ]
 
-  private static func promptImage(samples: [Float], mask: [Float]?) throws -> CGImage {
+  static func promptImage(samples: [Float], mask: [Float]?) throws -> CGImage {
     let count = side * side
     var bytes = [UInt8](repeating: 0, count: count * 4)
     if let mask {

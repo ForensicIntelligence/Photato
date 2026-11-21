@@ -160,6 +160,7 @@ import PhotoCraftCore
       "Edit > Content-Aware Fill…": #selector(contentAwareFill),
       "Edit > Generative Fill…": #selector(generativeFill),
       "Edit > Generate Image…": #selector(generateImage),
+      "Edit > Prompt to Edit…": #selector(promptToEdit),
       "Edit > Content-Aware Scale": #selector(contentAwareScale),
       "Edit > Fill…": #selector(fillDialog),
       "Edit > Stroke…": #selector(strokeSelectionDialog),

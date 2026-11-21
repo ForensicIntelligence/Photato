@@ -114,6 +114,7 @@ public enum PSDCodec {
   package static let fillVariationTagLimit = 96 * 1_024
   package static let fillBackgroundVariationVersion = 4
   package static let generatedImageVariationVersion = 5
+  package static let promptEditVariationVersion = 6
   package static let fillContextTag = "PtFC"
   public static let maximumInputBytes = 512 * 1024 * 1024
   /// Implementation admission, not a claim about the PSB format's upper size.

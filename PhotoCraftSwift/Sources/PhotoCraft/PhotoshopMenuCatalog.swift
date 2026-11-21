@@ -228,6 +228,7 @@ enum PhotoshopMenuCatalog {
         .item("Content-Aware Fill…"),
         .item("Generative Fill…"),
         .item("Generate Image…"),
+        .item("Prompt to Edit…"),
         .item("Create with Apple Intelligence…"),
         .separator,
         .item("Content-Aware Scale", key: "c", modifiers: [.option, .shift, .command]),

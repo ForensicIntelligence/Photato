@@ -65,13 +65,23 @@ final class PhotoshopMenuTests: XCTestCase {
       }
       // Keep every independently captured27.2 entry and shortcut intact.
       // Qualify the recorded reference order and the app-specific entries independently.
-      let additions = ["Photato > Generated Results…", "Photato > Settings… > Workflow Guide…", SaveDialogFormats.menuPath]
+      // Adobe documents Prompt to Edit in the current desktop release. The
+      // observed 27.2 fixture remains the reference for its captured menu rows.
+      let promptEditPath = "Edit > Prompt to Edit…"
+      let additions = ["Photato > Generated Results…", "Photato > Settings… > Workflow Guide…",
+        promptEditPath, SaveDialogFormats.menuPath]
         + ["Light…", "Clarity and dehaze…", "Grain…"].map { "Layer > New Adjustment Layer > " + $0 }
         + ["Filter > Photato", "Filter > Photato > Relight…", "Filter > Photato > Lighting Effects…", "Window > Workflow Guide"]
       XCTAssertEqual(items.count, expected.count + additions.count)
       XCTAssertEqual(items.filter { !additions.contains($0.identifier!.rawValue) }.map { $0.identifier!.rawValue },
         expected.map { $0.path.joined(separator: " > ") })
       XCTAssertEqual(items.filter { additions.contains($0.identifier!.rawValue) }.map { $0.identifier!.rawValue }, additions)
+      let promptEditIndex = try XCTUnwrap(items.firstIndex { $0.identifier?.rawValue == promptEditPath })
+      XCTAssertEqual(items.dropFirst(max(0, promptEditIndex - 1)).prefix(3).map { $0.identifier?.rawValue },
+        ["Edit > Generate Image…", promptEditPath, "Edit > Create with Apple Intelligence…"])
+      let promptEdit = items[promptEditIndex]
+      XCTAssertEqual(promptEdit.action, #selector(AppDelegate.promptToEdit))
+      XCTAssertTrue(promptEdit.keyEquivalent.isEmpty)
       let report: [String: Any] = [
         "menus": menu.items.map(\.title), "entries": items.count,
         "default_preset": PhotoshopMenuCatalog.presetName,

@@ -35,6 +35,7 @@ struct AutomationCommand: Sendable {
     var optionalParameters: Set<String> = []
     var schema: [String: Any] {
       if name == GenerativeFillAPI.run || name == GenerativeFillAPI.image { return GenerativeFillAPI.parameters }
+      if name == GenerativeFillAPI.promptEdit { return GenerativeFillAPI.promptEditParameters }
       if name == GenerativeFillAPI.expand { return GenerativeFillAPI.expandParameters }
       if name == GenerativeFillAPI.background { return GenerativeFillAPI.backgroundParameters }
       if name == BackgroundReplacementAPI.name { return BackgroundReplacementAPI.parameters }
@@ -363,6 +364,12 @@ struct AutomationCommand: Sendable {
       "targetLayerID": "Selected Generate Image layer to append to", "referenceVariationID": "Generate Similar using this saved variation"],
       description: "Generate a new image from a text prompt on-device or append variations to an existing Generate Image layer.",
       optionalParameters: ["prompt", "seed", "variationCount", "targetLayerID", "referenceVariationID"]),
+    .init(name: GenerativeFillAPI.promptEdit, parameters: ["prompt": "Instruction for the selected source image or a saved variation",
+      "sourceLayerID": "Active source pixel layer UUID for a new edit", "seed": "Unsigned 32-bit starting seed",
+      "variationCount": "Number of results (1 to 3)", "targetLayerID": "Selected Prompt Edit layer to append to",
+      "referenceVariationID": "Existing variation to edit instead of the saved original"],
+      description: "Edit the whole selected image on-device with one Undo step and saved alternatives.",
+      optionalParameters: ["prompt", "sourceLayerID", "seed", "variationCount", "targetLayerID", "referenceVariationID"]),
     .init(name: BackgroundReplacementAPI.name, parameters: ["color": "Three normalized working RGB components",
       "foregroundLayerID": "Active masked subject layer UUID", "layerID": "Existing Solid Color layer UUID to edit"],
       description: "Add an editable Solid Color background below the active masked subject or change an existing Solid Color layer.",
