@@ -327,6 +327,10 @@ extension EditorStore {
   var hasToneDraftExceptRemove: Bool {channelDialog != nil || typeEditingDraft != nil || hasToneDraftExceptChannelAndType}
   var hasToneDraftExceptChannelDialog: Bool { removeDraft != nil || typeEditingDraft != nil || hasToneDraftExceptChannelAndType }
   var hasToneDraftExceptTypeEditing: Bool { removeDraft != nil || channelDialog != nil || hasToneDraftExceptChannelAndType }
+  var hasToneDraftExceptCrop: Bool {
+    removeDraft != nil || channelDialog != nil || typeEditingDraft != nil || brushGesture != nil ||
+      hasToneDraftExceptChannelTypeBrushAndCrop
+  }
   var hasToneDraftIgnoringBrushStroke: Bool {
     removeDraft != nil || channelDialog != nil || typeEditingDraft != nil || hasToneDraftExceptChannelTypeAndBrush
   }
@@ -334,8 +338,11 @@ extension EditorStore {
     brushGesture != nil || hasToneDraftExceptChannelTypeAndBrush
   }
   private var hasToneDraftExceptChannelTypeAndBrush: Bool {
+    cropDraft != nil || hasToneDraftExceptChannelTypeBrushAndCrop
+  }
+  private var hasToneDraftExceptChannelTypeBrushAndCrop: Bool {
     if selectionBorderDrag != nil || colorLookupExportDraft != nil || upscaleDraft != nil { return true }
-    return textFindWorkspace != nil || backgroundLayerDraft != nil || selectionModifyDraft != nil || magneticDraft != nil || colorRangeDraft != nil || layerFileDraft != nil || imageExportDraft != nil || fileInfoDraft != nil || guideDraft != nil || guideGesture != nil || channelArithmeticWorkspace != nil || colorProfileWorkspace != nil || printBusy || printWorkspace != nil || proofWorkspace != nil || inkChannelOptions != nil || inkModeWorkspace != nil || restrictedModeWorkspace != nil || documentModeWorkspace != nil || classicToneWorkspace != nil || shapedTypeDraft != nil || freeformGesture != nil || pathFillDraft != nil || shapeCreationDraft != nil || shapeDraft != nil || shapeGesture != nil || skyWorkspace != nil || vanishingWorkspace != nil || frameDraft != nil || frameGesture != nil || artboardDraft != nil || artboardGesture != nil || artboardNeighborPress != nil || warpDraft != nil || photoAlignDraft != nil || photoBlendDraft != nil || regionRetouchDraft != nil || cropDraft != nil || proceduralWorkspace != nil || contentAwareDraft != nil || selectMaskDraft != nil || colorLookupDraft != nil || classicAdjustmentDraft != nil || layerStyleDraft != nil || filterDraft != nil || layerPanelOptionsDraft != nil || channelPanelOptionsDraft != nil
+    return textFindWorkspace != nil || backgroundLayerDraft != nil || selectionModifyDraft != nil || magneticDraft != nil || colorRangeDraft != nil || layerFileDraft != nil || imageExportDraft != nil || fileInfoDraft != nil || guideDraft != nil || guideGesture != nil || channelArithmeticWorkspace != nil || colorProfileWorkspace != nil || printBusy || printWorkspace != nil || proofWorkspace != nil || inkChannelOptions != nil || inkModeWorkspace != nil || restrictedModeWorkspace != nil || documentModeWorkspace != nil || classicToneWorkspace != nil || shapedTypeDraft != nil || freeformGesture != nil || pathFillDraft != nil || shapeCreationDraft != nil || shapeDraft != nil || shapeGesture != nil || skyWorkspace != nil || vanishingWorkspace != nil || frameDraft != nil || frameGesture != nil || artboardDraft != nil || artboardGesture != nil || artboardNeighborPress != nil || warpDraft != nil || photoAlignDraft != nil || photoBlendDraft != nil || regionRetouchDraft != nil || proceduralWorkspace != nil || contentAwareDraft != nil || selectMaskDraft != nil || colorLookupDraft != nil || classicAdjustmentDraft != nil || layerStyleDraft != nil || filterDraft != nil || layerPanelOptionsDraft != nil || channelPanelOptionsDraft != nil
       || layerVisibilityDraft != nil || layerOpacityDraft != nil || confirmingLayerDeletion
       || newLayerDraft != nil
       || newGroupDraft != nil

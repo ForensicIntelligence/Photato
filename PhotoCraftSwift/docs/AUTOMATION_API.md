@@ -4110,3 +4110,9 @@ Send `generativeFill.apply` with `targetLayerID` equal to the selected Generativ
 Add `referenceVariationID` to a request with `targetLayerID` to generate similar results from an existing variation in that layer. For example, send `{"targetLayerID":"<layer UUID>","referenceVariationID":"<variation UUID>","variationCount":1}`. The reference variation supplies the prompt when `prompt` is omitted. State includes `selectedVariations.canGenerateSimilar` and each result’s reference variation ID.
 
 Send `generativeFill.cancel` with `operationID` to cancel an active API operation. Both models run on Apple Silicon with macOS 26 or later. Adobe’s Generative Fill Execute Actions descriptor and job remain to be qualified. [Adobe model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)
+
+## Local Generative Expand
+
+Send `generativeExpand.apply` to the document command route with the current revision. Give the new frame in original document coordinates. For a 1,024 × 768 canvas, `{"x":-64,"y":0,"width":1152,"height":768}` adds 64 pixels to both sides. The frame must enclose the original canvas. Optional `prompt`, `seed` and `variationCount` follow the rules for an initial Generative Fill. Blank prompts use LaMa512 and return one layer.
+
+The crop and editable generated layer are one Undo step. API progress and cancellation share `generativeFill.operationID` and `generativeFill.cancel`. The current generation rectangle may be up to 4,194,304 pixels and 4,096 pixels per side. Use `smartObject.layerComp` for prompted alternatives and the saved-context commands above for another batch. [Model setup](LOCAL_GENERATIVE_FILL.md#extend-the-canvas)

@@ -823,7 +823,7 @@ import UniformTypeIdentifiers
       if command.name == GenerativeFillAPI.cancel {
         let operation = try command.actionUUID("operationID")
         guard store.generativeFillOperationID == operation else {
-          throw AutomationFailure(status: 409, message: "That local fill operation is no longer active.")
+          throw AutomationFailure(status: 409, message: "That local generation operation is no longer active.")
         }
         store.geometryTask?.cancel()
         return .json(state(share, document: document))
@@ -1608,12 +1608,20 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in .contentAwareFill(try options.edit(original)) }
         return .json(state(share,document:document))
       }
-      if command.name == GenerativeFillAPI.run {
+      if command.name == GenerativeFillAPI.run || command.name == GenerativeFillAPI.expand {
         let options = try command.generativeFillOptions()
+        let expand = command.name == GenerativeFillAPI.expand ? try command.cropFrame() : nil
         let prompted = options.target != nil || !options.prompt.isEmpty
-        let eligible = options.target.map(store.canBeginGenerativeFillBatch) ?? store.canBeginGenerativeFill
+        let eligible: Bool
+        if let expand {
+          _ = try GenerativeExpand.protectedCanvas(for: expand, in: store.document)
+          eligible = LocalGenerativeFill.supported && store.canBeginCrop && store.generativeFillDraft == nil
+        } else {
+          eligible = options.target.map(store.canBeginGenerativeFillBatch) ?? store.canBeginGenerativeFill
+        }
         guard eligible, let model = GenerativeFillModelPreference.url(prompted: prompted) else {
-          let message = options.target == nil ? "Select part of a still RGB image and choose a local model in Generative Fill."
+          let message = expand != nil ? "Choose a local model in Generative Expand and finish any active edit."
+            : options.target == nil ? "Select part of a still RGB image and choose a local model in Generative Fill."
             : "Select an unlocked Generative Fill layer with saved context and configure the local prompt model."
           throw AutomationFailure(status: 422, message: message)
         }
@@ -1623,6 +1631,10 @@ import UniformTypeIdentifiers
         defer { if store.generativeFillOperationID == operation { store.generativeFillOperationID = nil } }
         try await executePreparedOperation(document: document, shareID: id, revision: command.revision,
           allowLinkedSmartObject: options.target != nil) { original in
+          if let expand {
+            return try GenerativeExpand.prepare(expand, in: original, model: model, bookmark: bookmark, prompt: options.prompt,
+              seed: options.seed ?? UInt32.random(in: .min ... .max), count: options.count)
+          }
           if let target = options.target {
             return try GenerativeFillVariations.append(to: target, in: original, model: model, bookmark: bookmark,
               prompt: options.prompt.isEmpty ? nil : options.prompt, seed: options.seed, count: options.count,

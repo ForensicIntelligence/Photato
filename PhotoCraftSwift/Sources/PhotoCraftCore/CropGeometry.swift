@@ -23,9 +23,13 @@ public struct CropRequest: Equatable,Sendable {
 }
 
 public struct CropEdit: Sendable {
+  public enum Kind: Sendable { case crop, generativeExpand }
   public let source: CraftDocument
   public let result: CraftDocument
-  public init(source: CraftDocument,result: CraftDocument) { self.source = source;self.result = result }
+  public let kind: Kind
+  public init(source: CraftDocument,result: CraftDocument,kind: Kind = .crop) {
+    self.source = source; self.result = result; self.kind = kind
+  }
   public func applied(to original: CraftDocument) throws -> CraftDocument {
     guard original == source,result.id == original.id else { throw CraftError.invalid("Crop source changed before commit.") };try Task.checkCancellation();try result.validate();return result
   }

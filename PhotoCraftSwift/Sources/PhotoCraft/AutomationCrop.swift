@@ -25,8 +25,15 @@ extension CropRequest {
   }
 }
 extension AutomationCommand {
+  func cropFrame() throws -> CropRequest {
+    CropRequest(x: try integer("x", range: -1_000_000...1_000_000),
+      y: try integer("y", range: -1_000_000...1_000_000),
+      width: try integer("width", range: 1...Double(Surface.maxDimension)),
+      height: try integer("height", range: 1...Double(Surface.maxDimension)))
+  }
+
   func cropOptions() throws -> CropRequest {
-    var r = CropRequest(x:try integer("x",range:-1000000...1000000),y:try integer("y",range:-1000000...1000000),width:try integer("width",range:1...Double(Surface.maxDimension)),height:try integer("height",range:1...Double(Surface.maxDimension)))
+    var r = try cropFrame()
     if parameters["angle"] != nil { r.angle = try number("angle",range:-360...360) }
     if let raw = parameters["deleteCroppedPixels"] { guard case .bool(let value) = raw else { throw AutomationFailure(status:400,message:"Invalid Delete Cropped Pixels.") };r.deleteCroppedPixels = value }
     if parameters["fill"] != nil { guard let fill = CropRequest.Fill(rawValue:try string("fill")) else { throw AutomationFailure(status:400,message:"Unknown crop fill.") };r.fill = fill }

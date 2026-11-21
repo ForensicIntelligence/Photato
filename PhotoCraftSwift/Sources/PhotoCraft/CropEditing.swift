@@ -16,7 +16,11 @@ struct CropDraft: Equatable {
   var height: Double { Double(frame.bounds.height)*frame.scaleY/100 }
   func request(background: Pixel) throws -> CropRequest {
     guard width.isFinite,height.isFinite,(1...Double(Surface.maxDimension)).contains(width),(1...Double(Surface.maxDimension)).contains(height),frame.centerX.isFinite,frame.centerY.isFinite,abs(frame.centerX) <= 1_000_000,abs(frame.centerY) <= 1_000_000 else { throw CraftError.invalid("Crop must be1–300,000 pixels per side.") }
-    let w = Int(width.rounded()),h = Int(height.rounded());var value = CropRequest(x:Int(floor(frame.centerX-Double(w)/2)),y:Int(floor(frame.centerY-Double(h)/2)),width:w,height:h)
+    let w = Int(width.rounded()), h = Int(height.rounded())
+    // Use the actual near edge so rounding size cannot move the anchored edge.
+    let x = Int(floor(frame.centerX - width / 2 + 1e-9))
+    let y = Int(floor(frame.centerY - height / 2 + 1e-9))
+    var value = CropRequest(x: x, y: y, width: w, height: h)
     value.angle = frame.angle;value.deleteCroppedPixels = deletePixels;value.fill = fill;value.seed = seed;value.backgroundColor = Pixel(background.r,background.g,background.b,1);try value.validate();return value
   }
   mutating func setRatio(_ name: String,document: CraftDocument) {
@@ -36,7 +40,10 @@ extension EditorStore {
   var canRetainCroppedPixels:Bool{document.restrictedMode==nil && document.inkMode==nil && !document.layers.contains(where:{$0.isBackground})}
   var cropState:[String:Any]{["available":canBeginCrop,"canRetainCroppedPixels":canRetainCroppedPixels,"workspaceOpen":cropDraft != nil,"previewBusy":cropBusy,"previewReady":cropDraft != nil && cropReadyDraft==cropDraft && cropPrepared != nil,"previewError":cropError as Any? ?? NSNull(),"maximumDimension":Surface.maxDimension,"maximumPixels":CropRequest.maximumPixels,"maximumPreviewDimension":1024]}
   var canBeginCrop: Bool {
-    !geometryBusy && !aiBusy && !hasToneDraft && transformDraft == nil && !coalescingChanges && !editingMask && !editingComponent
+    cropDraft == nil && canUseCropWorkspace
+  }
+  var canUseCropWorkspace: Bool {
+    !geometryBusy && !aiBusy && !hasToneDraftExceptCrop && transformDraft == nil && !coalescingChanges && !editingMask && !editingComponent
   }
   func beginCrop() {
     guard cropDraft == nil,canBeginCrop else { return }

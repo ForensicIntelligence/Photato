@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 705 — Extend the canvas with local generation
+
+Generative Expand is available in Crop after dragging the handles outward. Use a blank prompt or describe the new area. Photato adds an editable masked layer and commits the canvas and generation in one Undo step. Prompted results can be switched in Properties. The Photato API uses the same editing path.
+
+On the owned apple image, each local model preserved all 65,536 original pixels and added 25,632 opaque pixels. The largest mean RGB8 step immediately outside the old canvas dropped from 88.29 levels with LaMa512 and 54.54 with prompted generation to 0.00. Photato reopened the editable PSD and PSB results with identical RGBA bytes. The native editor and local HTTP route produced identical bytes at the same seed. Both models also passed the file and Undo checks in an ad hoc signed App Sandbox test harness.
+
+This generation pass requires the new border’s bounding rectangle to fit within 4,194,304 pixels and 4,096 pixels per side. Local models can leave artifacts near the outer edge of the addition. Larger multi-edge generation, rotation, inward cropping during expansion, multiple blank-prompt results and Firefly equivalence remain open.
+
+[Development record](DEVLOG.md#dev-step-705) · [Qualification](SOURCE_PUBLICATION_705.md).
+
 ## 2026-11-21 — Step 704 — Generate similar variations from a saved local fill
 
 Generate Similar uses a chosen variation as the reference for another batch in the same local Generative Fill layer. Open Variation actions in Properties or pass the reference ID through the Photato API. The earlier results, mask and reference stay editable after reopening, and one Undo removes the new batch.
@@ -1647,14 +1657,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:704 -->
+<!-- current-status-step:705 -->
 ## Current development status — 21 November 2026
 
-Generate Similar uses a chosen variation as the reference for another batch in the same local Generative Fill layer. Open Variation actions in Properties or pass the reference ID through the Photato API. The earlier results, mask and reference stay editable after reopening, and one Undo removes the new batch.
+Generative Expand is available in Crop after dragging the handles outward. Use a blank prompt or describe the new area. Photato adds an editable masked layer and commits the canvas and generation in one Undo step. Prompted results can be switched in Properties. The Photato API uses the same editing path.
 
-484 of 485 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The existing PhotoCraft layer-effect fixture repeated its 118 assertions from build 703 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug.
+494 of 495 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The existing PhotoCraft layer-effect test repeated its 118 assertions from build 704 in each configuration. The Xcode app built in arm64 Debug. Both slices of the signed preview opened offscreen.
 
-[Source checkpoint 704](SOURCE_PUBLICATION_704.md) · [Development record](DEVLOG.md#dev-step-704).
+[Source checkpoint 705](SOURCE_PUBLICATION_705.md) · [Development record](DEVLOG.md#dev-step-705).
 
 <!-- current-status:end -->
 
@@ -2565,6 +2575,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 702 | [Keep editable Generative Fill variations](DEVLOG.md#dev-step-702) |
 | 2026-11-21 | 703 | [Add batches to an existing Generative Fill layer](DEVLOG.md#dev-step-703) |
 | 2026-11-21 | 704 | [Generate similar variations from a saved local fill](DEVLOG.md#dev-step-704) |
+| 2026-11-21 | 705 | [Extend the canvas with local generation](DEVLOG.md#dev-step-705) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

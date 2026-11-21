@@ -318,7 +318,7 @@ public indirect enum Command: Sendable {
     case .autoCorrection(_, let kind): kind.rawValue
     case .applyAdjustment: "Adjustment"
     case .crop: "Crop"
-    case .cropDocument: "Crop"
+    case .cropDocument(let edit): edit.kind == .generativeExpand ? "Generative Expand" : "Crop"
     case .flip: "Flip Layer"
     case .transform: "Free Transform"
     case .canvasSize: "Canvas Size"

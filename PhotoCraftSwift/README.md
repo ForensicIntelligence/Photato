@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 705.** Generative Expand is available in Crop after dragging the handles outward. Use a blank prompt or describe the new area. Photato adds an editable masked layer and commits the canvas and generation in one Undo step. Prompted results can be switched in Properties. The Photato API uses the same editing path. 494 of 495 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The existing PhotoCraft layer-effect test repeated its 118 assertions from build 704 in each configuration. The Xcode app built in arm64 Debug. Both slices of the signed preview opened offscreen. [Qualification](docs/SOURCE_PUBLICATION_705.md).
+
 **Source checkpoint 704.** Generate Similar uses a chosen variation as the reference for another batch in the same local Generative Fill layer. Open Variation actions in Properties or pass the reference ID through the Photato API. The earlier results, mask and reference stay editable after reopening, and one Undo removes the new batch. [Qualification](docs/SOURCE_PUBLICATION_704.md).
 
 **Source checkpoint 703.** Generate More adds another batch to the selected Generative Fill layer. Edit the prompt in Properties or send the layer ID through the Photato API. New results use the original selection and image samples after reopening. Earlier results and the current layer mask stay editable. One Undo removes the batch. [Qualification](docs/SOURCE_PUBLICATION_703.md).

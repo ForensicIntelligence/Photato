@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **704** · The 10 most recent entries, newest first.
+Source build **705** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 705 — Extend the canvas with local generation
+
+Generative Expand is available in Crop after dragging the handles outward. Use a blank prompt or describe the new area. Photato adds an editable masked layer and commits the canvas and generation in one Undo step. Prompted results can be switched in Properties. The Photato API uses the same editing path.
+
+On the owned apple image, each local model preserved all 65,536 original pixels and added 25,632 opaque pixels. The largest mean RGB8 step immediately outside the old canvas dropped from 88.29 levels with LaMa512 and 54.54 with prompted generation to 0.00. Photato reopened the editable PSD and PSB results with identical RGBA bytes. The native editor and local HTTP route produced identical bytes at the same seed. Both models also passed the file and Undo checks in an ad hoc signed App Sandbox test harness.
+
+This generation pass requires the new border’s bounding rectangle to fit within 4,194,304 pixels and 4,096 pixels per side. Local models can leave artifacts near the outer edge of the addition. Larger multi-edge generation, rotation, inward cropping during expansion, multiple blank-prompt results and Firefly equivalence remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-705) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_705.md).
 
 ## 2026-11-21 — Step 704 — Generate similar variations from a saved local fill
 
@@ -93,13 +103,3 @@ Twenty-four RGB8, RGB16 and RGB32 viewport comparisons matched the whole-canvas 
 471 of 472 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture reproduced its existing assertions. Both signed macOS 14+ preview slices opened offscreen. The native Layer Style sheet was inspected offscreen in Light and Dark on the maximum-size document. The installed Photoshop instance timed out on a document query. Direct Adobe pixel comparison remains open. Very wide filters retain a scratch budget. A shadow already filling an entire canvas can require additional preview work. Other effects still use their existing whole-canvas limits.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-696) · [Details](PhotoCraftSwift/docs/REGIONAL_DROP_SHADOW_696.md).
-
-## 2026-11-21 — Step 695 — Keep advanced Drop Shadows editable in PSD and PSB
-
-Drop Shadow contour corners, anti-aliasing, noise and knockout now work through the editor and the Adobe-compatible create-composite route. Supported shadows remain editable in PSD and PSB.
-
-A native editor test covers Preview, commit and Undo/Redo. The Photato style-patch and Adobe-compatible job tests preserve the contour and its corner flags. Owned 8-, 16- and 32-bit files reopen with their controls and Photato renders unchanged. An independent descriptor reader checked noise, knockout, anti-aliasing, local light, and all five contour points in six exports. The complete files match across all three builds tested. All 138 prior effect fixtures produced identical direct and imported-project output on both architectures.
-
-468 of 469 selected tests passed in arm64 Debug, optimized arm64 and Intel under Rosetta. The same strict original PhotoCraft effect fixture still fails with identical assertions. The two unrelated hard-coded Automation count expectations now use the shared catalog count. The checked-in Xcode project built in arm64 Debug with signing disabled. Both signed macOS 14+ preview slices opened offscreen. The changed controls were inspected offscreen in Light and Dark. The installed Photoshop instance timed out on a document query. Exact Adobe shadow opacity, curve interpolation, anti-aliasing and randomized noise output still need Adobe-authored reference measurements. Large-canvas advanced style processing and advanced interchange for other effects remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-695) · [Details](PhotoCraftSwift/docs/ADVANCED_DROP_SHADOW_695.md).

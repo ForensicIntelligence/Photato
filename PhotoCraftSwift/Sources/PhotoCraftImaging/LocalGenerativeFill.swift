@@ -32,6 +32,12 @@ package enum LocalGenerativeFill {
   }
 
   package static func prepare(_ document: CraftDocument, model url: URL) throws -> Command {
+    try withContextModel(url) { predict in try prepare(document, predict: predict) }
+  }
+
+  package static func withContextModel<Result>(
+    _ url: URL, _ operation: (([Float], [Float]) throws -> Surface) throws -> Result
+  ) throws -> Result {
     #if arch(arm64)
     guard #available(macOS 26, *) else {
       throw CraftError.unavailable("Local Generative Fill requires Apple Silicon and macOS 26 or later.")
@@ -40,7 +46,7 @@ package enum LocalGenerativeFill {
     defer { if access { url.stopAccessingSecurityScopedResource() } }
     try Task.checkCancellation()
     let model = try load(url)
-    return try prepare(document) { image, mask in try predict(model, image: image, mask: mask) }
+    return try operation { image, mask in try predict(model, image: image, mask: mask) }
     #else
     throw CraftError.unavailable("Local Generative Fill requires Apple Silicon and macOS 26 or later.")
     #endif
@@ -134,6 +140,7 @@ package enum LocalGenerativeFill {
     let modelMask: Data
     let selectedPixels: Data
     let edge: GenerativeFillEdgeBlend.Context
+    let expansion: GenerativeExpandBoundary?
 
     package func encoded() throws -> Data {
       let encoder = PropertyListEncoder(); encoder.outputFormat = .binary
@@ -165,6 +172,7 @@ package enum LocalGenerativeFill {
         throw CraftError.invalid("Invalid saved Generative Fill context.")
       }
       _ = try recipe.edge.pixels()
+      try recipe.expansion?.validate(in: recipe.region)
       return recipe
     }
 
@@ -228,12 +236,14 @@ package enum LocalGenerativeFill {
             patch.setPixel(x: x, y: y, selected ? blend?.adjusted(pixel, x: docX, y: docY) ?? pixel : pixel)
           }
         }
-        return try ColorManagement.converted(patch, from: reference, to: document)
+        var output = try ColorManagement.converted(patch, from: reference, to: document)
+        try expansion?.join(&output, selection: selection, selectedPixels: selectedPixels)
+        return output
       }
     }
   }
 
-  package static func capture(_ document: CraftDocument) throws -> (Recipe, Surface) {
+  package static func capture(_ document: CraftDocument, protectedCanvas: IntRect? = nil) throws -> (Recipe, Surface) {
     guard let selected = selection(in: document) else {
       throw CraftError.invalid("Select an area of up to 4 megapixels in a still RGB image.")
     }
@@ -297,7 +307,8 @@ package enum LocalGenerativeFill {
       }
       return pixel
     }
+    let expansion = try protectedCanvas.map { try GenerativeExpandBoundary(protected: $0, region: region, composite: crop) }
     return (Recipe(version: 1, selection: selected, region: region, image: image.withUnsafeBytes { Data($0) },
-      modelMask: mask.withUnsafeBytes { Data($0) }, selectedPixels: Data(selectedPixels), edge: edge), editableMask)
+      modelMask: mask.withUnsafeBytes { Data($0) }, selectedPixels: Data(selectedPixels), edge: edge, expansion: expansion), editableMask)
   }
 }

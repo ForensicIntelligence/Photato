@@ -6,11 +6,11 @@
   "implementation_status": "Through177: native alignment/blending action subsets run through both existing execute-actions interfaces. Photomerge and HDR new-document orchestration are Photato-specific; dedicated routes are absent from the pinned Adobe contract. Full endpoint and proprietary-model/algorithm equivalence remain unqualified.",
   "current_api": "Checkpoint 692 reduces eligible large Pattern Overlay overviews in bounded patches on the local PNG routes. Hosted service conformance remains open.",
   "generative_fill": {
-    "checkpoint": 704,
+    "checkpoint": 705,
     "publishedRoute": "POST /v2/execute-actions",
     "publishedModel": "me_md",
-    "compatibility": "Adobe documents Generative Fill and Generate Similar under Execute Actions. Their action descriptors and output jobs remain unqualified.",
-    "localPhotatoAPI": "generativeFill.apply uses the optional on-device model. With targetLayerID, referenceVariationID uses a prior fill variation as a reference and appends results to the same layer.",
+    "compatibility": "The published Execute Actions model is listed. An authoritative Generative Expand ActionJSON descriptor, job validation and Firefly output equivalence remain open.",
+    "localPhotatoAPI": "generativeFill.apply uses the optional on-device model. With targetLayerID, referenceVariationID uses a prior fill variation as a reference and appends results to the same layer. generativeExpand.apply performs local editable outpainting in one canvas history transaction.",
     "references": [
       "https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/",
       "https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models"
@@ -97,7 +97,7 @@
         "compatibility": "Follow published contracts; add alongside Photato interface."
       }
     ],
-    "shared_feature_rule": "Maintain both interfaces as supported product APIs: the Photato API for native document automation and Photato-specific capabilities, and the Adobe Photoshop v2-compatible API for clients using the published contract. They share the native Swift engine; do not duplicate editing algorithms. Preserve the existing Photato /v1 routes and clients rather than replace or silently repurpose them. Every new capability must include Photato API coverage, schemas, documentation and tests; when Adobe defines the corresponding operation, include its compatible interface and conformance tests in the same increment. Keep Photato-only operations distinct rather than inventing Adobe routes. Test equivalent underlying operations across both interfaces and the desktop while respecting each contract\u2019s document/job lifecycle. Report each interface\u2019s actual coverage independently; support for one does not imply support for the other."
+    "shared_feature_rule": "Maintain both interfaces as supported product APIs: the Photato API for native document automation and Photato-specific capabilities, and the Adobe Photoshop v2-compatible API for clients using the published contract. They share the native Swift engine; do not duplicate editing algorithms. Preserve the existing Photato /v1 routes and clients rather than replace or silently repurpose them. Every new capability must include Photato API coverage, schemas, documentation and tests; when Adobe defines the corresponding operation, include its compatible interface and conformance tests in the same increment. Keep Photato-only operations distinct rather than inventing Adobe routes. Test equivalent underlying operations across both interfaces and the desktop while respecting each contract’s document/job lifecycle. Report each interface’s actual coverage independently; support for one does not imply support for the other."
   },
   "later_reference_recheck": {
     "step": "dev-step-100",
@@ -315,7 +315,12 @@
   },
   "layer_stamping_build574": {
     "evidence": "docs/LAYER_STAMP_REFERENCES_574.json",
-    "action_events": ["mergeLayersNew", "$Mrg2", "mergeVisible", "$MrgV"],
+    "action_events": [
+      "mergeLayersNew",
+      "$Mrg2",
+      "mergeVisible",
+      "$MrgV"
+    ],
     "parameters": "A true duplicate or $Dplc boolean requests the stamped operation. Existing local job endpoints retain their respective contracts.",
     "scope": "The shared compositor inserts a new raster above the active or top selected layer while preserving original layers. Saved Photoshop RGB8, RGB16 and RGB32 reference samples pass in both optimized architectures.",
     "limits": "Physical platforms, the hosted Adobe service, other modes and complex sparse cases remain open. Build 575 verifies both local job routes against tagged and untagged RGB8 and RGB16 captures."
@@ -985,7 +990,7 @@
     "step": "dev-step-158",
     "reference": "docs/LAYER_STYLE_REFERENCES.json",
     "contract": "components/schemas/LayerEffects and DropShadow",
-    "subset": "Existing layer edit,1\u201310 drop shadows; default simple contour/zero noise/knockout only; no group effects",
+    "subset": "Existing layer edit,1–10 drop shadows; default simple contour/zero noise/knockout only; no group effects",
     "defaults": "Native fallbacks, not independently proven hosted defaults"
   },
   "subject_selection_step159": {
@@ -997,31 +1002,50 @@
     "adobe": "/v2/remove-background"
   },
   "paged_pattern_overview_build692": {
-    "photatoRoutes": ["preview.png", "channel-preview.png", "proof-preview.png"],
+    "photatoRoutes": [
+      "preview.png",
+      "channel-preview.png",
+      "proof-preview.png"
+    ],
     "adobeRoute": null,
     "scope": "Bounded-memory area reduction of eligible large oblique Pattern Overlay workspaces.",
     "evidence": "docs/SOURCE_PUBLICATION_692.json"
   },
   "quarter_turn_pattern_overview_build691": {
-    "photatoRoutes": ["preview.png", "channel-preview.png", "proof-preview.png"],
+    "photatoRoutes": [
+      "preview.png",
+      "channel-preview.png",
+      "proof-preview.png"
+    ],
     "adobeRoute": null,
     "scope": "Large RGB document overviews for quarter-turn styles with provably repeating Float32 weights.",
     "evidence": "docs/SOURCE_PUBLICATION_691.json"
   },
   "pattern_viewport_build690": {
-    "photatoRoutes": ["preview.png", "channel-preview.png", "proof-preview.png"],
+    "photatoRoutes": [
+      "preview.png",
+      "channel-preview.png",
+      "proof-preview.png"
+    ],
     "adobeRoute": null,
     "scope": "Committed RGB samples from a bounded document viewport, including rotated Pattern Overlay.",
     "evidence": "docs/SOURCE_PUBLICATION_690.json"
   },
   "opaque_pattern_preview_build689": {
-    "photatoRoutes": ["preview.png", "channel-preview.png", "proof-preview.png"],
+    "photatoRoutes": [
+      "preview.png",
+      "channel-preview.png",
+      "proof-preview.png"
+    ],
     "adobeRoute": null,
     "scope": "Display of supported periodic RGB stacks, including opaque raster layers and local corrections.",
     "evidence": "docs/SOURCE_PUBLICATION_689.json"
   },
   "regional_pattern_overlay_build688": {
-    "photatoCommands": ["layer.style", "layer.style.patch"],
+    "photatoCommands": [
+      "layer.style",
+      "layer.style.patch"
+    ],
     "scope": "Editable basic RGB Pattern Overlay on a bounded region and full composition of supported sparse rasters.",
     "maximumCanvasDimension": 300000,
     "adobeRoute": null,
@@ -1341,7 +1365,7 @@
   "liquify_step165": {
     "status": "Native workflow verified by focused/full/platform tests; independent/live Photoshop parity and Adobe mesh descriptors remain open.",
     "reference": "docs/LIQUIFY_REFERENCES.json",
-    "factory_binding": "Filter > Liquify\u2026 (Shift-Command-X)",
+    "factory_binding": "Filter > Liquify… (Shift-Command-X)",
     "photato_commands": [
       "filter.apply",
       "smartFilter.set",
@@ -1354,7 +1378,7 @@
     "reference": "docs/SELECT_MASK_REFERENCES.json",
     "status": "Native Select and Mask plus selection.refine; full/live/Adobe model/action parity open.",
     "typed_commands": 42,
-    "menu": "Select > Select and Mask\u2026",
+    "menu": "Select > Select and Mask…",
     "factory_shortcut": "Option-Command-R",
     "adobe": "No dedicated published route/schema; refinement action descriptors unsupported."
   },
@@ -1628,7 +1652,7 @@
       "alternate_shortcuts": 8,
       "tool": "Frame/K",
       "paths": [
-        "Layer > New > Frame from Layers\u2026",
+        "Layer > New > Frame from Layers…",
         "Layer > New > Convert to Frame"
       ]
     },
@@ -1660,11 +1684,11 @@
       "primary_shortcuts": 102,
       "alternate_shortcuts": 8,
       "paths": [
-        "Filter > Blur Gallery > Field Blur\u2026",
-        "Filter > Blur Gallery > Iris Blur\u2026",
-        "Filter > Blur Gallery > Tilt-Shift\u2026",
-        "Filter > Blur Gallery > Path Blur\u2026",
-        "Filter > Blur Gallery > Spin Blur\u2026"
+        "Filter > Blur Gallery > Field Blur…",
+        "Filter > Blur Gallery > Iris Blur…",
+        "Filter > Blur Gallery > Tilt-Shift…",
+        "Filter > Blur Gallery > Path Blur…",
+        "Filter > Blur Gallery > Spin Blur…"
       ]
     },
     "qualification": "All90 focused Debug and90 optimized tests pass. The universal macOS14+ package verifies. Full parity remains open.",
@@ -1698,10 +1722,10 @@
       "primary_shortcuts": 102,
       "alternate_shortcuts": 8,
       "paths": [
-        "Filter > Lens Correction\u2026"
+        "Filter > Lens Correction…"
       ],
       "shortcut": "Shift+Command+R",
-      "unbound": "File > Automate > Lens Correction\u2026 remains unbound. Lens actions can already run through the native Batch workspace and API."
+      "unbound": "File > Automate > Lens Correction… remains unbound. Lens actions can already run through the native Batch workspace and API."
     },
     "qualification": "97 focused Debug tests pass on current source. Optimized/full regression and universal packaging are batched at the F05 family milestone; the current packaged candidate remains step185 and does not include Lens Correction.",
     "checkpoint": "docs/ACTIVE_CHECKPOINT_186.json",
@@ -1743,7 +1767,7 @@
       "primary_shortcuts": 102,
       "alternate_shortcuts": 8,
       "paths": [
-        "Filter > Adaptive Wide Angle\u2026"
+        "Filter > Adaptive Wide Angle…"
       ],
       "shortcut": "Option+Shift+Command+A"
     },
@@ -1787,7 +1811,7 @@
       "primary_shortcuts": 102,
       "alternate_shortcuts": 8,
       "paths": [
-        "Filter > Vanishing Point\u2026"
+        "Filter > Vanishing Point…"
       ],
       "shortcut": "Option+Command+V"
     },
@@ -1856,7 +1880,7 @@
       "new_menu_bindings": 2,
       "commands": [
         "Select > Sky",
-        "Edit > Sky Replacement\u2026"
+        "Edit > Sky Replacement…"
       ],
       "shortcut": "Captured factory menu positions retained; no invented primary shortcut.",
       "entries": 802,
@@ -1878,7 +1902,7 @@
     "menus": {
       "new_menu_bindings": 1,
       "commands": [
-        "Select > Focus Area\u2026"
+        "Select > Focus Area…"
       ],
       "shortcut": "Captured factory menu order retained; no primary shortcut invented. Local Undo/Redo routing shared with Select and Mask.",
       "entries": 802,
@@ -1934,7 +1958,7 @@
       "primary_shortcuts": 102,
       "alternative_shortcuts": 8
     },
-    "qualification": "All82 focused Debug and82 optimized tests pass. Real Apple Vision inference succeeds on the1024\u00d71024 icon with source retention and Undo/Redo. Latest full/universal baseline194 has1903 passing tests and excludes195.",
+    "qualification": "All82 focused Debug and82 optimized tests pass. Real Apple Vision inference succeeds on the1024×1024 icon with source retention and Undo/Redo. Latest full/universal baseline194 has1903 passing tests and excludes195.",
     "subsequent_batch_checkpoint": "docs/ACTIVE_CHECKPOINT_196.json"
   },
   "object_finder_step196": {
@@ -2023,7 +2047,7 @@
     "adobe_api": "No dedicated shape route in pinned Photoshop v2 contract. Proprietary shape actionJSON descriptors and editable PSD interchange remain unqualified; no fabricated routes. Existing Adobe route regression coverage remains independent.",
     "menus": [
       "Window > Shapes",
-      "Edit > Define Custom Shape\u2026",
+      "Edit > Define Custom Shape…",
       "Layer > Rasterize > Shape"
     ],
     "qualification": "All80 focused Debug and1944 full optimized tests pass. The universal macOS14+ package verifies after fresh extraction, including both architectures, signature, icon/licenses and optional model provenance."
@@ -2056,7 +2080,7 @@
         "text.set"
       ],
       "typed_command_count": 106,
-      "parameters": "font.inspect: installed PostScript font, start/count (1\u2013512). text.glyph: layerID/font/glyphID, optional UTF-16 location/length. Type descriptions: orientation, style.fontOptions features/variations/language and glyphOverride. Omitted font option arrays default empty.",
+      "parameters": "font.inspect: installed PostScript font, start/count (1–512). text.glyph: layerID/font/glyphID, optional UTF-16 location/length. Type descriptions: orientation, style.fontOptions features/variations/language and glyphOverride. Omitted font option arrays default empty.",
       "state": "layers[].text and capabilities.text.fonts expose orientation/options, schemas, installed font inspection and limits. Shared desktop/API glyph insertion retains character/paragraph state.",
       "guards": "Existing authentication, share, revision, lock and interaction guards; read inspection also requires a settled editor. Invalid scalar splits/axes/options reject before mutation.",
       "native_version": 34,
@@ -2113,7 +2137,7 @@
     },
     "menus": {
       "newly_bound": [
-        "Type > Warp Text\u2026"
+        "Type > Warp Text…"
       ],
       "other_entry_points": [
         "Properties > Type > Text Layout",
@@ -2148,7 +2172,7 @@
     },
     "menus": {
       "newly_bound": [
-        "Filter > Filter Gallery\u2026"
+        "Filter > Filter Gallery…"
       ],
       "shortcuts": "Factory order/title retained; no primary factory shortcut for this dialog."
     },
@@ -2183,8 +2207,8 @@
       "limits": "8MP RGB raster/Smart Object layers; component/auxiliary channel targets unsupported. Selection and locks apply. RGB8/16 encoded, RGB32 linear unclipped. Original alpha and zero-alpha hidden samples retained. Source defaults, not verified Adobe defaults."
     },
     "menus": [
-      "Filter > Sharpen > Smart Sharpen\u2026",
-      "Filter > Noise > Reduce Noise\u2026"
+      "Filter > Sharpen > Smart Sharpen…",
+      "Filter > Noise > Reduce Noise…"
     ],
     "supersedes": "Earlier pending-only entries for Smart Sharpen and Reduce Noise; prior evidence remains scoped to its checkpoint."
   },
@@ -2206,7 +2230,7 @@
       "adobe": "No invented route or descriptor. Lens Blur editable Photoshop actionJSON/PSD rejects until independently qualified."
     },
     "menus": [
-      "Filter > Blur > Lens Blur\u2026"
+      "Filter > Blur > Lens Blur…"
     ],
     "native_extension": "Editable Lens Blur Smart Filter is Photato-specific; Adobe excludes Lens Blur from Smart Filter support. Adobe actionJSON/PSD descriptors remain unqualified.",
     "supersedes": "Earlier pending-only Lens Blur inventory; historical results retain original scope."

@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 704.** Generate Similar uses a chosen variation as the reference for another batch in the same local Generative Fill layer. Open Variation actions in Properties or pass the reference ID through the Photato API. The earlier results, mask and reference stay editable after reopening, and one Undo removes the new batch. [Model setup](PhotoCraftSwift/docs/LOCAL_GENERATIVE_FILL.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_704.md).
+**Development alpha — source build 705.** Generative Expand is available in Crop after dragging the handles outward. Use a blank prompt or describe the new area. Photato adds an editable masked layer and commits the canvas and generation in one Undo step. Prompted results can be switched in Properties. The Photato API uses the same editing path. [Model setup](PhotoCraftSwift/docs/LOCAL_GENERATIVE_FILL.md#extend-the-canvas) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_705.md).
 
 ## Project layout
 

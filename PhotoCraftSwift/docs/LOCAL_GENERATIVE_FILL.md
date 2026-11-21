@@ -38,4 +38,12 @@ The selected area can be up to 4,194,304 pixels within a 4,096 px span on either
 
 Photato uses opaque pixels around the selection to reduce color seams. The correction tapers inward to preserve the generated colors farther inside the selection. The edit retains the original feathering and preserves pixels outside the mask.
 
-Photato supports Generate Similar for its local prompted Generative Fill layers. Adobe also documents the operation for Generative Expand, Generate Background and Generate Image. Those workflows, Adobe Execute Actions request compatibility and Firefly output equivalence remain open. [Photoshop desktop workflow](https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html) · [Generate Similar](https://helpx.adobe.com/photoshop/desktop/generative-ai/get-new-variations-of-generated-content-with-generate-similar.html) · [Adobe Execute Actions model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)
+## Extend the canvas
+
+Select the **Crop** tool, drag the handles outward and click **Generative Expand…** in Crop options. Keep the entire original canvas inside the crop frame. Leave the prompt blank to use LaMa512 or add a description to use the local prompt model. Both use the same model setup as Generative Fill.
+
+The canvas and new masked layer are committed together. Undo restores the previous canvas, layer stack and selection. Photato uses the original perimeter to blend into the addition at opaque edges. Prompted expansions can keep up to three results in an embedded Smart Object. The Properties controls can also generate more or similar variations while keeping the expandable area and its captured perimeter.
+
+The bounding rectangle of the new border currently supports up to 4,194,304 pixels and 4,096 pixels per side. This is a limit of the current generation workflow. Larger multi-edge borders, crops that cut into or rotate the original image, and multiple results from a blank prompt remain open. Use `generativeExpand.apply` to automate an outward crop. [Photato API](AUTOMATION_API.md#local-generative-expand) · [Adobe desktop workflow](https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/explore-beyond-the-canvas-with-generative-expand.html)
+
+Generate Background, Generate Image, Adobe Execute Actions request compatibility and Firefly output equivalence remain open. [Adobe Execute Actions model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)

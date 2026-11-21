@@ -44,6 +44,7 @@ enum GenerativeFillModelPreference {
   var variationCount = LocalGenerativeFill.maximumVariations
   var maximumVariations = LocalGenerativeFill.maximumVariations
   var targetLayerID: UUID?
+  var expandRequest: CropRequest?
   var referenceVariationID: UUID?
   var referenceVariationNumber: Int?
   var selectingModel = false
@@ -57,7 +58,7 @@ enum GenerativeFillModelPreference {
 
 extension EditorStore {
   private var canStartLocalFill: Bool {
-    LocalGenerativeFill.supported && generativeFillDraft == nil && !geometryBusy && !aiBusy
+    LocalGenerativeFill.supported && generativeFillDraft == nil && cropDraft == nil && !geometryBusy && !aiBusy
       && !hasToneDraft && !coalescingChanges && transformDraft == nil && !editingComponent && !editingMask
   }
 
@@ -93,6 +94,19 @@ extension EditorStore {
     generativeFillDraft = GenerativeFillDraft()
   }
 
+  var canBeginGenerativeExpand: Bool {
+    guard LocalGenerativeFill.supported, generativeFillDraft == nil, canUseCropWorkspace,
+      let cropDraft, let request = try? cropDraft.request(background: backgroundColor) else { return false }
+    return (try? GenerativeExpand.protectedCanvas(for: request, in: document)) != nil
+  }
+
+  func beginGenerativeExpand() {
+    guard canBeginGenerativeExpand, let request = try? cropDraft?.request(background: backgroundColor) else { return }
+    let draft = GenerativeFillDraft()
+    draft.expandRequest = request
+    generativeFillDraft = draft
+  }
+
   func cancelGenerativeFill() {
     guard let draft = generativeFillDraft else { return }
     if draft.generating { geometryTask?.cancel() }
@@ -107,6 +121,7 @@ extension EditorStore {
     let bookmark = draft.prompted ? draft.promptModelBookmark : nil
     let count = draft.prompted ? draft.variationCount : 1
     let target = draft.targetLayerID, prompted = draft.prompted, reference = draft.referenceVariationID
+    let expand = draft.expandRequest, capturedCrop = cropDraft
     let original = document, generation = layerPanelGeneration, sessionID = sessionGeneration
     geometryBusy = true
     draft.error = nil
@@ -114,7 +129,10 @@ extension EditorStore {
     geometryTask = Task { [weak self, weak draft] in
       let worker = Task.detached(priority: .userInitiated) {
         let command: Command
-        if let target {
+        if let expand {
+          command = try GenerativeExpand.prepare(expand, in: original, model: url, bookmark: bookmark,
+            prompt: prompt, seed: seed, count: count)
+        } else if let target {
           command = try GenerativeFillVariations.append(to: target, in: original, model: url, bookmark: bookmark,
             prompt: prompt, seed: nil, count: count, referenceVariationID: reference)
         } else {
@@ -135,12 +153,14 @@ extension EditorStore {
         try Task.checkCancellation()
         guard let self, let draft, self.generativeFillDraft === draft,
           self.layerPanelGeneration == generation, self.sessionGeneration == sessionID,
-          self.document == original, !self.editingMask, !self.editingComponent else { return }
+          self.document == original, !self.editingMask, !self.editingComponent,
+          expand == nil || self.cropDraft == capturedCrop else { return }
         try self.executeCompositePreparedEdit(edit, allowLinkedSmartObject: target != nil)
         self.selectedLayerIDs = Set(self.document.activeLayerID.map { [$0] } ?? [])
         self.onChange?(.changeDone)
         self.status = edit.label
         self.generativeFillDraft = nil
+        if expand != nil { self.cancelCrop(); self.fit() }
         if prompted { self.reveal(PropertiesTab.properties) }
       } catch is CancellationError {
         return
@@ -161,7 +181,7 @@ struct GenerativeFillSheet: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
-      Text(draft.referenceVariationID != nil ? "Generate Similar" : draft.targetLayerID == nil ? "Generative Fill" : "Generate More Variations")
+      Text(draft.expandRequest != nil ? "Generative Expand" : draft.referenceVariationID != nil ? "Generate Similar" : draft.targetLayerID == nil ? "Generative Fill" : "Generate More Variations")
         .font(.headline)
       LabeledContent("Prompt") {
         TextField("Prompt", text: $draft.prompt, prompt: Text("Describe what to add"))
@@ -170,7 +190,9 @@ struct GenerativeFillSheet: View {
           .onChange(of: draft.prompt) { _, _ in draft.error = nil }
       }
       Group {
-        if let number = draft.referenceVariationNumber {
+        if draft.expandRequest != nil {
+          Text("Leave the prompt blank to extend the image from its edges. Generated pixels appear on a masked layer outside the original canvas.")
+        } else if let number = draft.referenceVariationNumber {
           Text("New results use variation \(number) as a reference and stay in this layer.")
         } else if draft.targetLayerID == nil {
           Text("Leave the prompt blank to fill from surrounding pixels. Results appear on an editable masked layer.")

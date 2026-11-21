@@ -1,8 +1,10 @@
 import Foundation
+import PhotoCraftCore
 import PhotoCraftImaging
 
 enum GenerativeFillAPI {
   static let run = "generativeFill.apply"
+  static let expand = "generativeExpand.apply"
   static let cancel = "generativeFill.cancel"
 
   static var parameters: [String: Any] {
@@ -33,7 +35,7 @@ enum GenerativeFillAPI {
   }
 
   static var capabilities: [String: Any] {
-    ["command": run, "cancelCommand": cancel, "stateSchema": schema,
+    ["command": run, "expandCommand": expand, "cancelCommand": cancel, "stateSchema": schema,
      "minimumMacOS": "26.0", "requiresAppleSilicon": true, "requiresLocalModel": true,
      "maximumSelectionPixels": LocalGenerativeFill.maximumSelectionPixels,
      "maximumSelectionSide": LocalGenerativeFill.maximumSelectionSide,
@@ -44,6 +46,15 @@ enum GenerativeFillAPI {
      "placement": "A fill adds an editable masked layer above the visible stack. A targetLayerID appends variations to the selected layer using its saved context. Each request is one undoable edit.",
      "edgeBlend": "A bounded color correction near selection edges uses opaque surrounding pixels and preserves selection coverage.",
      "model": "Configure LaMa512 for blank prompts and Runway_SD1.5_Inpaint for text prompts in the native Generative Fill sheet. API requests use the configured model. Inference runs on this Mac."]
+  }
+
+  static var expandParameters: [String: Any] {
+    let frame = ["x", "y", "width", "height"]
+    var properties = Dictionary(uniqueKeysWithValues: frame.compactMap { key in CropRequest.apiSchema(key).map { (key, $0) } })
+    properties["prompt"] = ["type": "string", "maxLength": LocalGenerativeFill.maximumPromptCharacters, "default": ""]
+    properties["seed"] = ["type": "integer", "minimum": 0, "maximum": UInt32.max]
+    properties["variationCount"] = ["type": "integer", "minimum": 1, "maximum": LocalGenerativeFill.maximumVariations, "default": 1]
+    return BrushAPI.object(properties, required: frame)
   }
 
   @MainActor static func state(_ store: EditorStore) -> [String: Any] {

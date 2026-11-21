@@ -1,4 +1,5 @@
 import PhotoCraftCore
+import PhotoCraftImaging
 import SwiftUI
 
 extension WorkspaceView {
@@ -18,6 +19,12 @@ extension WorkspaceView {
       if store.cropDraft == nil {
         Button("New Crop") { store.beginCrop() }.disabled(!store.canBeginCrop)
       } else {
+        if LocalGenerativeFill.supported && GenerativeExpand.supports(store.document) {
+          Button("Generative Expand…") { store.beginGenerativeExpand() }
+            .controlSize(.small)
+            .disabled(!store.canBeginGenerativeExpand)
+            .help("Drag the crop handles outward, then generate content beyond the original canvas.")
+        }
         Picker("Ratio",selection:Binding(get:{ store.cropDraft?.ratio ?? "Free" },set:{ value in guard var d = store.cropDraft else { return };d.setRatio(value,document:store.document);store.updateCrop(d) })) {
           ForEach(["Free","Original","1 : 1","4 : 5","5 : 7","2 : 3","16 : 9"],id:\.self) { Text($0).tag($0) }
         }.labelsHidden().frame(width:100).controlSize(.small)

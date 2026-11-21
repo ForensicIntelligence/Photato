@@ -35,6 +35,7 @@ struct AutomationCommand: Sendable {
     var optionalParameters: Set<String> = []
     var schema: [String: Any] {
       if name == GenerativeFillAPI.run { return GenerativeFillAPI.parameters }
+      if name == GenerativeFillAPI.expand { return GenerativeFillAPI.expandParameters }
       if name == "sky.library" {return SkyLibraryAPI.parameterSchema}
       if name == MagicWandAPI.name { return MagicWandAPI.parameterSchema }
       if name == PaintBucketAPI.name { return PaintBucketAPI.parameterSchema }
@@ -343,6 +344,11 @@ struct AutomationCommand: Sendable {
     .init(name:"contentAware.fill",parameters:["layerID":"Raster layer UUID","settings":"Fill settings","output":"current, new or duplicate","strokes":"Sampling and selection edits","samplingChannelID":"Saved alpha sampling source"],description:"Fill the selected area through the native Content-Aware Fill engine, one prepared undo transaction.",optionalParameters:["settings","output","strokes","samplingChannelID"]),
     .init(name: GenerativeFillAPI.run, parameters: ["prompt": "Optional description of the fill", "seed": "Optional unsigned 32-bit starting seed for a text prompt", "variationCount": "Number of prompted results (1 to 3)", "targetLayerID": "Selected Generative Fill layer UUID for appending variations", "referenceVariationID": "Existing variation UUID from the target layer for Generate Similar"],
       description: "Fill the active selection or add new or similar variations to a saved Generative Fill layer on-device.", optionalParameters: ["prompt", "seed", "variationCount", "targetLayerID", "referenceVariationID"]),
+    .init(name: GenerativeFillAPI.expand, parameters: ["x": "New left edge in original document pixels", "y": "New top edge in original document pixels",
+      "width": "Expanded canvas width", "height": "Expanded canvas height", "prompt": "Optional description of the new area",
+      "seed": "Starting seed for a text prompt", "variationCount": "Number of prompted results (1 to 3)"],
+      description: "Extend a still RGB canvas with local generation on an editable masked layer. The new frame must enclose the original canvas.",
+      optionalParameters: ["prompt", "seed", "variationCount"]),
     .init(name: GenerativeFillAPI.cancel, parameters: ["operationID": "Active local fill UUID"], description: "Cancel the active API-initiated local fill."),
     .init(name: ProcessChannelDeletionAPI.name, parameters: ["components": "Distinct zero-based process indices to delete", "mergeVisible": "Consent to flatten visible layers and discard hidden layers"], description: "Delete selected process channels, converting the remaining separations to Multichannel through one Undo.", optionalParameters: ["mergeVisible"]),
     .init(name: SpotChannelMergeAPI.name, parameters: ["channelID": "Saved spot channel UUID", "discardHiddenLayers": "Explicitly discard hidden layers"], description: "Merge a saved spot into a flattened RGB or CMYK Background with one Undo.", optionalParameters: ["discardHiddenLayers"]),

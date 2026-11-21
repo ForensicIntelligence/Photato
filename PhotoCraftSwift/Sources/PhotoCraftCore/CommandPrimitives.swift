@@ -858,6 +858,7 @@ extension Command {
     }
     switch self {
     case .canvasSize(_,_,_,let fill):try d.reframeBackground(over:fill?.a==1 ? fill!:.white)
+    case .cropDocument(let edit) where edit.kind == .generativeExpand: break
     case .crop,.cropDocument,.imageSize,.rotateCanvas:try d.reframeBackground()
     default:break
     }

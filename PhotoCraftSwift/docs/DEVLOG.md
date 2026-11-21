@@ -723,7 +723,32 @@ For a readable account of the project from the beginning, see [Photato developme
 | 702 | 2026-11-21 | [Keep editable Generative Fill variations](#dev-step-702) |
 | 703 | 2026-11-21 | [Add batches to an existing Generative Fill layer](#dev-step-703) |
 | 704 | 2026-11-21 | [Generate similar variations from a saved local fill](#dev-step-704) |
+| 705 | 2026-11-21 | [Extend the canvas with local generation](#dev-step-705) |
 <!-- history-index:end -->
+
+<a id="dev-step-705"></a>
+
+## 2026-11-21 — Extend the canvas with local generation
+
+Adobe’s desktop documentation specified the Crop gesture and Properties workflow. A read-only query reported Photoshop 27.2.0. The earlier two independent model probes preserved the original canvas but left discontinuities at its old boundary. The local solution uses CanvasFrameGeometry to retain the layer stack, with a four-strip selection and saved full-resolution perimeter. LocalGenerativeFill applies the perimeter join to generated pixels through the same saved recipe, including later prompted batches. The existing Crop transaction carries the name Generative Expand and skips a second Background remap.
+
+CropOptions and GenerativeFillControls expose the native action and sheet. AutomationCommands, AutomationCrop and AutomationService add generativeExpand.apply and reuse the operation ID for cancellation. The checked-in Xcode target picked up the new Swift files through its synchronized source groups.
+
+The initial SwiftPM build recorded an input modification during compilation. The initial test run found that the perimeter read used a Float32 surface’s bit depth as a proxy for linear encoding. RGB8 and RGB16 compositor output uses Float32 sRGB, so the boundary now uses its encoding. The native action initially reused the guard for beginning a fresh Crop, which excludes a pending Crop draft. A Crop-specific guard now allows that draft while excluding other edits. The Crop rectangle now rounds from the actual near edge so a half-pixel change on the far edge keeps the anchored side.
+
+The Extend action moved to the leading edge after a 1,000-point offscreen toolbar capture showed it outside the visible scroller. A repeat capture verified the new control location and both prompt sheets. The first standalone file probe compared storage representation. The revised file proof compared mask and composite sample data. The Photoshop scripting attempt to reopen the four disposable transfers timed out.
+
+Separate masked-padding experiments reduced the apple example’s average outer four-pixel RGB8 deviation from a continuation of the old edge from 113.15 to 30.26 in blank generation and from 29.64 to 16.83 with a prompted context-seeded pass. The variants each preserved the source canvas. The alternate curtain prompt exposed poor prompt sensitivity in the cleaner conditioned result. A separate 5,632 × 128 synthetic prototype used 16 LaMa windows along one edge and kept all 720,896 source pixels. Smooth overlap reduced the mean discontinuity across the 15 joins from 9.45 to 0.17 RGB8 levels. The wide-window code remains experimental.
+
+Generative Expand is available in Crop after dragging the handles outward. Use a blank prompt or describe the new area. Photato adds an editable masked layer and commits the canvas and generation in one Undo step. Prompted results can be switched in Properties. The Photato API uses the same editing path.
+
+On the owned apple image, each local model preserved all 65,536 original pixels and added 25,632 opaque pixels. The largest mean RGB8 step immediately outside the old canvas dropped from 88.29 levels with LaMa512 and 54.54 with prompted generation to 0.00. Photato reopened the editable PSD and PSB results with identical RGBA bytes. The native editor and local HTTP route produced identical bytes at the same seed. Both models also passed the file and Undo checks in an ad hoc signed App Sandbox test harness.
+
+494 of 495 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The existing PhotoCraft layer-effect test repeated its 118 assertions from build 704 in each configuration. The Xcode app built in arm64 Debug. Both slices of the signed preview opened offscreen.
+
+This generation pass requires the new border’s bounding rectangle to fit within 4,194,304 pixels and 4,096 pixels per side. Local models can leave artifacts near the outer edge of the addition. Larger multi-edge generation, rotation, inward cropping during expansion, multiple blank-prompt results and Firefly equivalence remain open.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_705.md).
 
 <a id="dev-step-704"></a>
 

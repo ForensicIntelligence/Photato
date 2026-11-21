@@ -395,14 +395,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:704 -->
+<!-- current-status-step:705 -->
 ## Current development status — 21 November 2026
 
-Generate Similar uses a chosen variation as the reference for another batch in the same local Generative Fill layer. Open Variation actions in Properties or pass the reference ID through the Photato API. The earlier results, mask and reference stay editable after reopening, and one Undo removes the new batch.
+Generative Expand is available in Crop after dragging the handles outward. Use a blank prompt or describe the new area. Photato adds an editable masked layer and commits the canvas and generation in one Undo step. Prompted results can be switched in Properties. The Photato API uses the same editing path.
 
-484 of 485 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The existing PhotoCraft layer-effect fixture repeated its 118 assertions from build 703 in each configuration. Both signed preview slices opened offscreen and the checked-in Xcode project built in arm64 Debug.
+494 of 495 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The existing PhotoCraft layer-effect test repeated its 118 assertions from build 704 in each configuration. The Xcode app built in arm64 Debug. Both slices of the signed preview opened offscreen.
 
-[Source checkpoint 704](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_704.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-704).
+[Source checkpoint 705](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_705.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-705).
 
 <!-- current-status:end -->
 
@@ -1313,5 +1313,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 702 | [Keep editable Generative Fill variations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-702) |
 | 2026-11-21 | 703 | [Add batches to an existing Generative Fill layer](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-703) |
 | 2026-11-21 | 704 | [Generate similar variations from a saved local fill](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-704) |
+| 2026-11-21 | 705 | [Extend the canvas with local generation](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-705) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
