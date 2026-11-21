@@ -3339,6 +3339,12 @@ Photato Actions21 is not Adobe ATN. The pinned Photoshop v2 contract defines no 
 
 The step277 preview-ordering repair cancels obsolete queued prefixes and post-commit previews in native brush/retouch workers. Genuinely changed input still rejects. It changes presentation scheduling without adding API commands, parameters or state; final native/API pixels and history remain on the same transaction path.
 
+### One-click wire removal (build 716)
+
+Call `retouch.remove` with `{"operation":"removeWires"}` and the shared document’s current revision. The command captures the active RGB raster, Sample All Layers and Create New Layer settings, and selection. It requires an available target with no pending Remove marks. The same Swift edit runs from Find distractions → Wires and cables. The response includes `removeWiresResult` with `candidateTracks` and `applied`, and `removeTool` exposes `wiresAvailable` and `removingWires`. A successful edit creates one Undo step. An empty or fully protected result retains the document and history. Pending work can be cancelled with the existing `cancel` operation.
+
+The analysis image has a maximum side of 1,536 pixels. Patch samples are reconstructed in native document coordinates. The manual brush and People modes keep their existing limits. Wire removal has no dedicated Firefly Photoshop v2 route, and its Execute Actions descriptor remains unqualified. [Wire removal guide](REMOVE_WIRES.md)
+
 
 ## Large-document extent (step278, qualified sparse foundation)
 

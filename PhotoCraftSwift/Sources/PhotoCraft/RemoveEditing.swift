@@ -18,12 +18,15 @@ struct RemoveDraft: Sendable {
 
 extension EditorStore {
   var canUseRemove: Bool {
+    canUseRemoveTarget && document.width <= RemovePreparation.maximumCanvasPixels / document.height
+  }
+
+  var canUseRemoveTarget: Bool {
     guard removeSettings.size.isFinite, (1...5000).contains(removeSettings.size),
       !geometryBusy, !aiBusy, !hasToneDraftExceptRemove, !coalescingChanges,
       transformDraft == nil, !editingComponent, !editingMask, !smartFilterMaskEditing,
       document.colorMode == .rgb, document.width > 0, document.height > 0,
       document.width <= Surface.maxDimension, document.height <= Surface.maxDimension,
-      document.width <= RemovePreparation.maximumCanvasPixels/document.height,
       let layer = activeLayer, case .raster = layer.content, layer.smartObject == nil,
       layer.sourceProjection == nil,
       selectedLayerIDs.isEmpty || selectedLayerIDs == [layer.id],
@@ -89,6 +92,9 @@ extension EditorStore {
     removeDraft = draft; removeRevision = UUID()
   }
   func cancelRemove() {
+    if removeWiresID != nil {
+      geometryTask?.cancel(); removeWiresID = nil
+    }
     if removeDetectionID != nil {
       removeDetectionTask?.cancel(); removeDetectionTask = nil
       geometryTask?.cancel(); geometryTask = nil; geometryBusy = false; removeDetectionID = nil

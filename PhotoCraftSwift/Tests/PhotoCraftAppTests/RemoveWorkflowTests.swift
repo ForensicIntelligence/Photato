@@ -118,8 +118,14 @@ final class RemoveWorkflowTests: XCTestCase {
       let definition = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == RemoveToolAPI.name })
       let fields = try XCTUnwrap(definition.schema["properties"] as? [String:Any])
       let parameters = try XCTUnwrap(fields["parameters"] as? [String:Any])
-      XCTAssertEqual((parameters["oneOf"] as? [[String:Any]])?.count,7)
-      XCTAssertEqual(AutomationCommand.definitions.count,267)
+      let alternatives = try XCTUnwrap(parameters["oneOf"] as? [[String:Any]])
+      let operations = try alternatives.map { alternative in
+        let values = try XCTUnwrap(alternative["properties"] as? [String:Any])
+        let operation = try XCTUnwrap(values["operation"] as? [String:Any])
+        return try XCTUnwrap(operation["const"] as? String)
+      }
+      XCTAssertEqual(operations.sorted(), ["apply", "cancel", "configure", "execute", "findPeople", "preview", "removeWires", "stroke"])
+      XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
       XCTAssertTrue(JSONSerialization.isValidJSONObject(RemoveToolAPI.capabilities))
       let share = try XCTUnwrap(service.shares.first)
       let response = try await helper.request(service,path:"/v1/documents/\(share.id)")
@@ -127,6 +133,8 @@ final class RemoveWorkflowTests: XCTestCase {
       let remove = try XCTUnwrap(state["removeTool"] as? [String:Any])
       XCTAssertEqual(remove["generativeAvailable"] as? Bool,false)
       XCTAssertEqual(remove["resolvedProcessing"] as? String,"traditional")
+      XCTAssertEqual(remove["wiresAvailable"] as? Bool, true)
+      XCTAssertEqual(remove["removingWires"] as? Bool, false)
     }
   }
   @MainActor func testHTTPPendingControlsStaleInvalidBusyAndUnavailableGeneration() async throws {

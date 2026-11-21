@@ -1,4 +1,4 @@
-[Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
+[Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)
 
 ## 2026-11-21 — Step 715 — Fill a selection from a local reference image
 
@@ -1380,4 +1380,4 @@ All 398 selected tests passed in each configuration. Wide brushes still need fas
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-549) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_549.md).
 
-[Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
+[Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

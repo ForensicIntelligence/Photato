@@ -375,6 +375,8 @@ struct CanvasRenderRequest: Sendable {
   var removeApplying: RemoveDraft?
   var removeRevision = UUID()
   var removeDetectionID: UUID?
+  var removeWiresID: UUID?
+  @ObservationIgnored var removeWiresPreparation: @Sendable (CraftDocument, UUID, RemoveToolSettings) throws -> RemoveWiresResult = RemoveWiresPreparation.prepare
   @ObservationIgnored var removeDetectionTask: Task<Void, Never>?
   @ObservationIgnored var removePreviewPreparation: @Sendable (RemoveRequest,CraftDocument) throws -> String = { try RemoveMarkPreview.encode($0,$1) }
   @ObservationIgnored var removeCompletionTask: Task<Void,Never>?

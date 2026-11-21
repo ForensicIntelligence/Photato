@@ -39,7 +39,7 @@ extension ClonePainter {
   }
 
   /// Shared storage expansion for a bounded paint operation, including region fills.
-  static func paintTarget(
+  package static func paintTarget(
     mask: Bool, bounds: IntRect?, on layer: inout Layer, clipping: IntRect,
     preserveTransparency: Bool = false,
     render: (inout Surface, Transform2D, IntRect) throws -> Bool

@@ -5,7 +5,7 @@ import PhotoCraftImaging
 enum RemoveToolAPI {
   static let name = "retouch.remove"
   static var definition: AutomationCommand.Definition {
-    .init(name:name,parameters:["operation":"configure, findPeople, preview, stroke, apply, cancel or execute",
+    .init(name:name,parameters:["operation":"configure, removeWires, findPeople, preview, stroke, apply, cancel or execute",
       "settings":"Partial window options or immutable execute overrides",
       "stroke":"One pending Add/Subtract stroke", "strokes":"Complete ordered removal marks",
       "layerID":"Raster target UUID; execute only"],
@@ -24,7 +24,7 @@ enum RemoveToolAPI {
   }
   static func schema(_ key:String) -> [String:Any] {
     switch key {
-    case "operation": BrushAPI.enumeration(["configure","findPeople","preview","stroke","apply","cancel","execute"])
+    case "operation": BrushAPI.enumeration(["configure","removeWires","findPeople","preview","stroke","apply","cancel","execute"])
     case "settings": settingsSchema
     case "stroke": strokeSchema
     case "strokes": ["type":"array","minItems":1,"maxItems":256,"items":strokeSchema]
@@ -35,7 +35,7 @@ enum RemoveToolAPI {
   static var branches: [[String:Any]] {
     [("configure",["operation","settings"],["settings"]),
      ("stroke",["operation","stroke"],["stroke"]),
-     ("findPeople",["operation"],[]), ("preview",["operation"],[]),
+     ("removeWires",["operation"],[]), ("findPeople",["operation"],[]), ("preview",["operation"],[]),
      ("apply",["operation"],[]), ("cancel",["operation"],[]),
      ("execute",["operation","layerID","settings","strokes"],["strokes"])].map { operation,keys,required in
       var fields = Dictionary(uniqueKeysWithValues:keys.map { ($0,schema($0)) })
@@ -49,10 +49,11 @@ enum RemoveToolAPI {
   @MainActor static func state(_ store:EditorStore) -> [String:Any] {
     ["available":store.canUseRemove,"settings":BrushAPI.json(store.removeSettings),
       "pendingStrokes":store.removeDraft?.strokes.count ?? 0,
-      "gestureActive":store.removeStroke != nil,"busy":store.removeApplying != nil || store.removeDetectionID != nil,
+      "gestureActive":store.removeStroke != nil,"busy":store.removeApplying != nil || store.removeDetectionID != nil || store.removeWiresID != nil,
       "pendingSourceValid":store.removeDraft.map { store.removeSourceMatches($0) } ?? true,
       "resolvedProcessing":"traditional","generativeAvailable":false,
       "distractionDetectionAvailable":true,"detectingPeople":store.removeDetectionID != nil,
+      "wiresAvailable":store.canRemoveWires,"removingWires":store.removeWiresID != nil,
       "detectedPeople":store.removeDraft?.detectedPeople ?? 0,"hasPendingMarks":store.removeDraft?.hasMarks ?? false]
   }
   static var stateSchema: [String:Any] {
@@ -61,21 +62,24 @@ enum RemoveToolAPI {
       "gestureActive":BrushAPI.flag,"busy":BrushAPI.flag,"pendingSourceValid":BrushAPI.flag,
       "resolvedProcessing":["const":"traditional"],"generativeAvailable":["const":false],
       "distractionDetectionAvailable":["const":true],"detectingPeople":BrushAPI.flag,
-      "detectedPeople":["type":"integer","minimum":0,"maximum":64],"hasPendingMarks":BrushAPI.flag],required:["available","settings","pendingStrokes","gestureActive","busy","pendingSourceValid","resolvedProcessing","generativeAvailable","distractionDetectionAvailable","detectingPeople","detectedPeople","hasPendingMarks"])
+      "wiresAvailable":BrushAPI.flag,"removingWires":BrushAPI.flag,
+      "detectedPeople":["type":"integer","minimum":0,"maximum":64],"hasPendingMarks":BrushAPI.flag],required:["available","settings","pendingStrokes","gestureActive","busy","pendingSourceValid","resolvedProcessing","generativeAvailable","distractionDetectionAvailable","detectingPeople","wiresAvailable","removingWires","detectedPeople","hasPendingMarks"])
   }
   static var capabilities: [String:Any] {
     ["command":name,"stateSchema":stateSchema,
       "resultSchema":["type":"object","additionalProperties":true,"required":["revision","removeTool"],"properties":["revision":["type":"string"],"removeTool":stateSchema,
         "removePeopleResult":BrushAPI.object(["candidates":BrushAPI.number(0,64,integer:true),"protectedForegroundPeople":BrushAPI.number(0,64,integer:true)],required:["candidates","protectedForegroundPeople"]),
+        "removeWiresResult":BrushAPI.object(["candidateTracks":["type":"integer","minimum":0],"applied":BrushAPI.flag],required:["candidateTracks","applied"]),
         "removalMask":BrushAPI.object(["width":BrushAPI.number(1,300000,integer:true),"height":BrushAPI.number(1,300000,integer:true),"coverageBase64":["type":"string","maxLength":22369624],"meaning":["const":"marksBeforeDocumentSelection"]],required:["width","height","coverageBase64","meaning"])]],
       "native":"J tool group, Add/Subtract marking with captured Option alternate, size, processing mode, Sample All Layers, Remove after each stroke, Create New Layer, Return Apply and Escape Clear. Pending strokes and options are window-local.",
-      "processing":"Native traditional content-aware synthesis only. Auto resolves to this engine. generativeOn rejects explicitly. Removal synthesis invokes neither a network request nor a learned model. Find distractions > People stages on-device person-instance marks for review, excluding whole people with majority overlap with the on-device foreground-subject mask. Wires/general-distraction detection, generative modes and Photoshop quality/pixel equivalence remain unfinished.",
+      "processing":"Native traditional removal. Auto resolves to local processing and generativeOn rejects. Find distractions > People stages on-device marks for review, protecting whole people with majority foreground-subject overlap. Find distractions > Wires and cables detects extended thin runs and commits a sparse raster correction. General distractions, generative Remove modes and Photoshop output equivalence remain open.",
       "uniformFields":"Uniform known RGBA fields and constant harmonic boundaries retain their exact Float sample words through the shared native engine. This invariant does not establish Photoshop output equivalence.",
       "supportedModes":["auto","generativeOff"],"unavailableModes":["generativeOn"],
       "history":"One shared prepared transaction per applied batch; exact original selection representation, source layer metadata and unmarked pixels retained. New-layer output is a separate transparent raster patch. Native archive keeps resulting pixels/layers. Semantic Remove Actions and Adobe actionJSON remain unsupported.",
       "cursor":"Add/Subtract follows the setting captured at pointer-down, inverted by captured Option. Control/Command/Shift do not change the operation. Space pans; all16 modifier combinations tested separately.",
       "limits":["maximumCanvasPixels":RemovePreparation.maximumCanvasPixels,"maximumSolvePixels":ContentAwareSynthesis.maximumPixels,"strokes":256,"pointsPerStroke":4096,"pointsPerOperation":16384,"size":[1,5000]],
       "loop":"Near endpoints within one brush diameter fill a nondegenerate loop. This geometric threshold and brush coverage are not Photoshop-qualified. Edge-to-edge corner closure remains unimplemented.",
+      "wireRemoval":"removeWires follows Sample All Layers, Create New Layer and the active selection, with no pending marking batch. One Undo if applied. An empty detection or fully protected target returns applied=false. Candidate tracks are connected ridge samples, so fragmented or intersecting runs need not correspond one-to-one with physical cables. Inference uses a bounded 1536-pixel analysis side followed by native-resolution reconstruction. Small, low-contrast, or heavily occluded wires can be missed.",
       "peopleDetection":"findPeople uses captured source, Sample All Layers and native person detection without the optional feature model. The same source grid feeds foreground-subject detection; whole foreground people are excluded when weighted mask overlap is at least50%. This explicit policy is not an Adobe classifier-equivalence claim. Missing subject classification fails rather than silently marking every person; a valid no-subject result retains all candidates. findPeople also returns candidates/protectedForegroundPeople counts. Detection is read-only. Refine with stroke; detected marks always require explicit apply even when Remove after each stroke is on. preview returns full-canvas row-major UInt8 marking coverage before document selection clipping, plus width/height, and requires document transfer permission. Native/API share cancellation, lifecycle/source guards and one final editing transaction.",
       "api":"execute applies captured strokes without changing defaults. configure requires native preferenceChangesEnabled. stroke/apply/cancel share native pending state; other edits reject pending Remove state. Existing sharing/revision/busy/cancellation/revocation guards apply.",
       "adobe":"No dedicated Remove endpoint in the pinned Firefly Photoshop v2 contract. No invented Adobe route, UXP runtime or plugin compatibility."]
@@ -102,18 +106,19 @@ extension AutomationService {
     case "configure": allowed = ["operation","settings"]
     case "stroke": allowed = ["operation","stroke"]
     case "execute": allowed = ["operation","settings","strokes","layerID"]
-    case "apply","cancel","findPeople","preview": allowed = ["operation"]
+    case "apply","cancel","removeWires","findPeople","preview": allowed = ["operation"]
     default: throw AutomationFailure(status:400,message:"Unknown Remove operation.")
     }
     guard Set(command.parameters.keys).isSubset(of:allowed) else {
       throw AutomationFailure(status:400,message:"Irrelevant Remove parameter for this operation.")
     }
-    if operation == "cancel", store.removeApplying != nil || store.removeDetectionID != nil {
+    if operation == "cancel", store.removeApplying != nil || store.removeDetectionID != nil || store.removeWiresID != nil {
       store.cancelRemove(); return .json(state(try removeShare(shareID),document:document))
     }
     try preflight(document,allowRemove:true)
     guard store.removeStroke == nil else { throw AutomationFailure(status:409,message:"Finish the pointer stroke first.") }
     if operation == "cancel" { store.cancelRemove(); return .json(state(try removeShare(shareID),document:document)) }
+    if operation == "removeWires" { return try await executeRemoveWires(document: document, shareID: shareID) }
     if operation == "findPeople" {
       let expectedToken = token, expectedGeneration = generation
       let result: RemovePeopleDetection
@@ -183,6 +188,35 @@ extension AutomationService {
     }
     return .json(state(try removeShare(shareID),document:document))
   }
+
+  private func executeRemoveWires(document: CraftNSDocument, shareID: UUID) async throws -> AutomationResponse {
+    let store = document.store
+    guard store.removeDraft == nil else { throw AutomationFailure(status:409,message:"Apply or clear pending Remove marks first.") }
+    guard store.canRemoveWires, let layerID = store.activeLayer?.id else {
+      throw AutomationFailure(status:422,message:"Wire removal requires an available RGB raster target.")
+    }
+    let id = UUID(), settings = store.removeSettings, prepare = store.removeWiresPreparation
+    store.removeWiresID = id
+    defer { if store.removeWiresID == id { store.removeWiresID = nil } }
+    let result: RemoveWiresResult
+    do {
+      result = try await executePreparedResult(document: document, shareID: shareID, revision: revision(store),
+        allowPathTarget: true, validateCommit: {
+          guard store.removeWiresID == id else { throw CancellationError() }
+        }, prepare: { original in
+          let prepared = try prepare(original, layerID, settings)
+          return (.regionRetouch(prepared.edit), prepared)
+        })
+    } catch is CancellationError {
+      throw AutomationFailure(status:409,message:"Wire removal was cancelled or its source changed.")
+    }
+    if result.applied { store.selectedLayerIDs = Set(store.document.activeLayerID.map { [$0] } ?? []) }
+    store.removeWiresID = nil
+    var response = state(try removeShare(shareID), document: document)
+    response["removeWiresResult"] = ["candidateTracks":result.candidateTracks,"applied":result.applied]
+    return .json(response)
+  }
+
   private func removeShare(_ id:UUID) throws -> Share {
     guard let share = shares.first(where:{ $0.id == id }) else { throw AutomationFailure(status:409,message:"Sharing ended.") }
     return share

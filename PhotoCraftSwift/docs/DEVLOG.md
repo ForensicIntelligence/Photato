@@ -734,7 +734,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 713 | 2026-11-21 | [Edit a whole image with local instructions and saved variations](#dev-step-713) |
 | 714 | 2026-11-21 | [Guide Generate Image with Style and Composition references](#dev-step-714) |
 | 715 | 2026-11-21 | [Fill a selection from a local reference image](#dev-step-715) |
+| 716 | 2026-11-21 | [Remove extended wire and cable runs in one edit](#dev-step-716) |
 <!-- history-index:end -->
+
+<a id="dev-step-716"></a>
+
+## 2026-11-21 — Remove extended wire and cable runs in one edit
+
+Built four original synthetic controls with exact clean artwork and antialiased wire coverage. Licensed photo inputs tested the feature near a roof, the moon and a transmission tower. The first directional probe marked a branch tip and short roof ridges. Requiring longer interior candidates suppressed those marks. Each candidate needs same-polarity shoulders, along-wire support and a thin connected track. The synthesis samples nearby background at native resolution and reuses shared raster target framing, selection and undo machinery. The app and local API share the prepared edit and cancellation guards.
+
+The first full-resolution samples exposed bright outlines and missed thick runs. Simply widening every scale introduced 1,593 false marks on the crossing control. The revised detector adds a separate wide pass for thin, continuous frame-crossing paths in a reduced analysis image. Guarding the donors beyond the correction and choosing a nearby normal with matching shoulder colours reduced the outlines. Low-contrast and partial tracks remain open.
+
+The first package build hit a nonwritable manifest module cache. The next Debug build hit the inherited Swift optimizer stack fault, so Debug uses the existing single-pass workaround. The first complete Debug comparison also found a stale Remove catalogue test. It now checks the exact eight operation names and the shared current catalogue size instead of a 267-command constant.
+
+The desktop and authenticated API produced the same document and one Undo restored the original. A 4,200 × 4,000 layered fixture processed beyond the old manual Remove limit. Four synthetic controls preserved all samples more than two pixels from the annotated wires. The repaired wire regions averaged less than two RGB8 levels of error per channel against known clean artwork. Three original-resolution photographs preserved all 1,324,130 checked roof, moon and tower pixels. The Apple Silicon and Intel results matched all 192,426,240 decoded RGBA bytes across the seven examples. A selected-region correction reopened with both raster layers and the same composite in Photato, PSD and PSB. The wider path restored all 6,656 known wide cable samples in the detector fixture without marking its horizon or short trim.
+
+574 of 575 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. All six new cases passed in each configuration. The same unrelated PSD layer-effect method repeated its 118 prior differences. The checked-in Xcode project built and the signed preview opened offscreen in both architectures.
+
+Appearance depends on the scene. Some of the moon photo’s darker fragments and the pylon’s faint wires still need manual cleanup. Camera edges, very wide or short structures, and heavily occluded cables need broader testing. Exact Photoshop wire output, the Adobe Execute Actions descriptor, General distractions and Generative AI On for Remove remain open.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_716.md).
 
 <a id="dev-step-715"></a>
 

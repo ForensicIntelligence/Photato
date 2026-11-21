@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **715** · The 10 most recent entries, newest first.
+Source build **716** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 716 — Remove extended wire and cable runs in one edit
+
+The Remove tool’s Find distractions menu can remove extended wire and cable runs in one undoable edit. Photato can edit the selected raster or create a transparent correction layer, and the current selection continues to protect pixels. The Photato API uses the same prepared Swift edit and history.
+
+The desktop and authenticated API produced the same document and one Undo restored the original. A 4,200 × 4,000 layered fixture processed beyond the old manual Remove limit. Four synthetic controls preserved all samples more than two pixels from the annotated wires. The repaired wire regions averaged less than two RGB8 levels of error per channel against known clean artwork. Three original-resolution photographs preserved all 1,324,130 checked roof, moon and tower pixels. The Apple Silicon and Intel results matched all 192,426,240 decoded RGBA bytes across the seven examples. A selected-region correction reopened with both raster layers and the same composite in Photato, PSD and PSB. The wider path restored all 6,656 known wide cable samples in the detector fixture without marking its horizon or short trim.
+
+Appearance depends on the scene. Some of the moon photo’s darker fragments and the pylon’s faint wires still need manual cleanup. Camera edges, very wide or short structures, and heavily occluded cables need broader testing. Exact Photoshop wire output, the Adobe Execute Actions descriptor, General distractions and Generative AI On for Remove remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-716) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_716.md).
 
 ## 2026-11-21 — Step 715 — Fill a selection from a local reference image
 
@@ -93,13 +103,3 @@ A paired four-request Core ML benchmark used 89.9 seconds with fresh workers and
 Generation still takes time for large borders. Prompt quality across distant windows, saved tiled context for Generate More and Generate Similar, and Adobe Firefly output equivalence remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-707) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_707.md).
-
-## 2026-11-21 — Step 706 — Extend wide borders with overlapping model windows
-
-Generative Expand now processes wider and deeper borders in overlapping model windows. The Crop tool and Photato API use the same engine and apply the expansion as one Undo step. Multiple prompted results share an editable mask and appear as layer comps in one embedded PSB.
-
-LaMa preserved all 720,896 original pixels on a 5,632 × 128 source and added 225,280 pixels. The mean step at the model-window joins was 0.47 RGB8 levels. A real 30,144-pixel-wide outpaint preserved 482,304 original pixels and reopened with identical composite bytes in the native format and PSB. A separate 300,000 × 16 outpaint added eight rows at Photoshop’s published maximum canvas width, preserving all 4,800,000 originals through native and PSB reopening. The native Crop action and HTTP produced identical pixels on a separate 4,160-pixel-wide run. Both prompted alternatives on the real 4,104-pixel-wide input stayed distinct and editable after native and PSB reopening. A deterministic deep four-sided test covered editable PSD/PSB alternatives, joined pixels and interior transparency. A separate PSB test retained exact RGB16 and RGB32 sample words.
-
-Tiled alternatives retain their results and mask for editing. Generate More and Generate Similar after reopening still require the single-patch saved context. The two-alternative prompt proof took 572 seconds with other qualification jobs running. Reusing the prompted worker between windows remains a performance task. Dense maximum-area generation, prompted quality across distant windows and Firefly output equivalence remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-706) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_706.md).

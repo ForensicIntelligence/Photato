@@ -17,7 +17,7 @@ extension CraftCanvas {
   }
   func removeKey(_ event: NSEvent) -> Bool {
     guard store.tool == .remove else { return false }
-    if event.keyCode == 53, store.removeDraft != nil || store.removeApplying != nil {
+    if event.keyCode == 53, store.removeDraft != nil || store.removeApplying != nil || store.removeWiresID != nil {
       store.cancelRemove(); return true
     }
     if [36,76].contains(event.keyCode), store.removeDraft != nil {

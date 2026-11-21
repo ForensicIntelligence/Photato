@@ -379,14 +379,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:715 -->
+<!-- current-status-step:716 -->
 ## Current development status — 21 November 2026
 
-Generative Fill accepts Object and Whole Image references with Swap and Place. The local Paint by Example model generates alternatives inside the editable selection. Place keeps the generated subject on transparency. The Photato API uses the same engine and saved reference context as the editor.
+The Remove tool’s Find distractions menu can remove extended wire and cable runs in one undoable edit. Photato can edit the selected raster or create a transparent correction layer, and the current selection continues to protect pixels. The Photato API uses the same prepared Swift edit and history.
 
-541 of 542 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. All three added deterministic cases passed in each configuration. The same layer-effect reference case repeated all 118 existing differences. The real reference test passed separately on the final optimized Apple Silicon build. Xcode built the native project, and both signed universal slices opened offscreen.
+574 of 575 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. All six new cases passed in each configuration. The same unrelated PSD layer-effect method repeated its 118 prior differences. The checked-in Xcode project built and the signed preview opened offscreen in both architectures.
 
-[Source checkpoint 715](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_715.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-715).
+[Source checkpoint 716](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_716.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-716).
 
 <!-- current-status:end -->
 
@@ -1308,5 +1308,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 713 | [Edit a whole image with local instructions and saved variations](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-713) |
 | 2026-11-21 | 714 | [Guide Generate Image with Style and Composition references](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-714) |
 | 2026-11-21 | 715 | [Fill a selection from a local reference image](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-715) |
+| 2026-11-21 | 716 | [Remove extended wire and cable runs in one edit](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-716) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

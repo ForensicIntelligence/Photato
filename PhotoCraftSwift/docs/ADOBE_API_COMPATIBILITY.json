@@ -3351,5 +3351,13 @@
     "reference": "Adobe documents Object and Whole image reference scopes and Swap or Place intents for an active selection.",
     "limits": "The pinned Photoshop v2 contract has no dedicated reference-fill endpoint. No verified Execute Actions descriptor, remote provider parity, or Firefly output claim.",
     "evidence": "docs/SOURCE_PUBLICATION_715.json"
+  },
+  "remove_wires_build716": {
+    "status": "Photato local desktop and API workflow for extended visible cable runs",
+    "photatoCommand": "retouch.remove",
+    "operation": "removeWires",
+    "reference": "The desktop Remove tool applies Wires and cables directly from Find distractions.",
+    "limits": "The pinned Photoshop v2 contract has no dedicated wire removal route. No qualified Execute Actions descriptor or Adobe output match. General distractions remains open.",
+    "evidence": "docs/SOURCE_PUBLICATION_716.json"
   }
 }

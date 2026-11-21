@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 715.** Generative Fill accepts Object and Whole Image references with Swap and Place. The local Paint by Example model generates alternatives inside the editable selection. Place keeps the generated subject on transparency. The Photato API uses the same engine and saved reference context as the editor. [Reference Fill](PhotoCraftSwift/docs/GENERATIVE_FILL_REFERENCE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_715.md).
+**Development alpha — source build 716.** The Remove tool’s Find distractions menu can remove extended wire and cable runs in one undoable edit. Photato can edit the selected raster or create a transparent correction layer, and the current selection continues to protect pixels. The Photato API uses the same prepared Swift edit and history. [Wire removal](PhotoCraftSwift/docs/REMOVE_WIRES.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_716.md).
 
 ## Project layout
 
