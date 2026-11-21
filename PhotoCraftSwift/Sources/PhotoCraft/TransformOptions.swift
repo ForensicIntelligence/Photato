@@ -55,15 +55,10 @@ extension WorkspaceView {
           })
       ) { ForEach(Resampling.allCases, id: \.self) { Text($0.rawValue).tag($0) } }.labelsHidden()
         .frame(width: 105).controlSize(.mini)
-      } else {
-        Button("Warp") { store.beginPathWarp() }.controlSize(.small)
-          .help("Switch to Warp without applying Free Transform first")
-          .disabled(!store.canBeginPathWarp)
+        Button("Cancel") { store.cancelTransform() }.controlSize(.small).keyboardShortcut(.cancelAction)
+        Button("Apply") { store.commitTransform() }.disabled(store.geometryBusy).controlSize(.small)
+          .keyboardShortcut(.defaultAction)
       }
-      Button("Cancel") { store.cancelTransform() }.controlSize(.small).keyboardShortcut(
-        .cancelAction)
-      Button("Apply") { store.commitTransform() }.disabled(store.geometryBusy).controlSize(.small).keyboardShortcut(
-        .defaultAction)
       }
     }
   }

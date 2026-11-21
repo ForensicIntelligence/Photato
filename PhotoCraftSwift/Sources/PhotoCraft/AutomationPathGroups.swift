@@ -24,6 +24,7 @@ enum PathGroupsAPI {
       return BrushAPI.object(targetFields, required: ["target", "id"])
     case "marquee", "extend": return PathAPI.schema(key)
     case "settings": return WarpDefinition.apiSchema
+    case "matrixAfter": return SelectionTransformAPI.schema("matrix")
     default: return SelectionTransformAPI.schema(key)
     }
   }
@@ -42,17 +43,19 @@ enum PathGroupsAPI {
                        "properties": ["revision": ["type": "string"], "pathTransformSelections": choicesStateSchema]],
       "selection": "Select saved paths, shape contours and vector masks together. A focused target remains available for Pen editing. A document-coordinate marquee applies to each selected path. Selection does not add Undo.",
       "transform": "Use one document-coordinate affine or projective matrix for all targets. Different targets may select different components or anchors. All targets commit in one Undo after validation, and resulting anchor indices are returned.",
-      "warp": "Use Warp settings in document coordinates, optionally after a shared transform matrix. Without sourceBounds, the projected selected contours define the mesh frame. Paths remain editable.",
+      "warp": "Use Warp settings in document coordinates. Optional matrix runs before Warp and matrixAfter runs after it. Without sourceBounds, the selected contours after the first matrix define the mesh frame. Paths remain editable.",
       "warpStateSchema": warpStateSchema,
-      "actions": "Native Actions version 77 retains path transform choices and the shared matrix. Version 78 adds editable Warp settings.",
+      "actions": "Native Actions version 77 retains the shared path matrix, version 78 adds Warp, and version 79 retains a transform after Warp.",
       "adobe": "The published Photoshop v2 endpoints do not define a cross-layer path selection, transform or Warp."
     ]
   }
 
   static var warpStateSchema: [String: Any] {
     BrushAPI.object(["available": BrushAPI.flag, "active": BrushAPI.flag, "previewBusy": BrushAPI.flag,
-                     "style": BrushAPI.enumeration(WarpStyle.allCases.map(\.rawValue))],
-                    required: ["available", "active", "previewBusy", "style"])
+                     "style": BrushAPI.enumeration(WarpStyle.allCases.map(\.rawValue)),
+                     "mode": BrushAPI.enumeration(["idle", "warp", "freeTransform"]),
+                     "matrixAfter": ["anyOf": [["type": "null"], SelectionTransformAPI.schema("matrix")]]],
+                    required: ["available", "active", "previewBusy", "style", "mode", "matrixAfter"])
   }
 
   static func state(_ choices: [PathTransformChoice]) -> [[String: Any]] {
@@ -117,7 +120,15 @@ enum PathGroupsAPI {
 extension AutomationCommand {
   func pathWarpRequest() throws -> PathWarpRequest {
     let matrix = parameters["matrix"] == nil ? .identity : try selectionTransformOptions().0
-    return try .init(choices: pathGroupChoices(), matrix: matrix, settings: warpSettings())
+    let after: ProjectiveTransform
+    if let value = parameters["matrixAfter"] {
+      do {
+        let raw = try BrushAPI.merge(value, schema: SelectionTransformAPI.schema("matrix"), path: "matrixAfter") as! [Double]
+        after = try ProjectiveTransform(raw)
+      } catch let failure as AutomationFailure { throw failure }
+      catch { throw AutomationFailure(status: 400, message: error.localizedDescription) }
+    } else { after = .identity }
+    return try .init(choices: pathGroupChoices(), matrix: matrix, settings: warpSettings(), matrixAfter: after)
   }
 
   func pathGroupChoices() throws -> [PathTransformChoice] {
@@ -131,6 +142,21 @@ extension AutomationCommand {
 }
 
 @MainActor extension EditorStore {
+  var pathWarpState: [String: Any] {
+    let transform = selectionTransform
+    let active = pathWarp
+    let model = active ?? transform?.warpModel
+    let result = active?.pathEdit ?? transform?.warpPreview
+    return [
+      "available": canBeginPathWarp,
+      "active": active != nil,
+      "previewBusy": active?.rendering ?? (model != nil && (transform?.loading == true || transform?.previewBusy == true)),
+      "style": model?.settings.style.rawValue ?? WarpStyle.none.rawValue,
+      "mode": active != nil ? "warp" : model != nil ? "freeTransform" : "idle",
+      "matrixAfter": result?.request.matrixAfter.values as Any? ?? NSNull()
+    ]
+  }
+
   func configurePathGroup(_ command: AutomationCommand) throws {
     var choices = try command.pathGroupChoices()
     let focus = try command.parameters["focus"].map { raw -> PathTransformTarget in

@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 675.** Warp saved paths, vector masks and shape contours in the main canvas. Switch from Free Transform and apply both changes in one Undo. The same edit works in the Photato API and Actions. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_675.md).
+**Development alpha — source build 676.** Switch between Warp and Free Transform while editing paths, masks or shape contours. The mesh follows later placement changes, and the whole edit applies in one Undo. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_676.md).
 
 ## Project layout
 

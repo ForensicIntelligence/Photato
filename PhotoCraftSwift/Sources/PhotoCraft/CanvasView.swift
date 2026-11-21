@@ -24,7 +24,7 @@ struct CanvasHost: NSViewRepresentable {
     _ = store.transformDraft;_ = store.selectionTransform?.previewPath;_ = store.selectionTransform?.pixelPreview
     _ = store.selectionTransform?.vectorPreviews;_ = store.selectedPathChoices;_ = store.pathMarquee
     _ = store.pathWarp?.pathEdit; _ = store.pathWarp?.settings; _ = store.pathWarp?.showGuides
-    _ = store.pathWarp?.selectedPoint
+    _ = store.pathWarp?.selectedPoint; _ = store.pathWarp?.pathProjection
     _ = store.guideDraft?.previewLines; _ = store.guideGesture; _ = store.showCanvasGuides; _ = store.guidesLocked; _ = store.selectedGuideIDs
     _ = store.shapeGesture; _ = store.frameGesture; _ = store.frameTarget; _ = store.artboardGesture; _ = store.showArtboardNames; _ = store.showArtboardGuides
     view.store = store
@@ -648,7 +648,9 @@ struct CanvasHost: NSViewRepresentable {
   func viewPoint(_ p: CGPoint) -> CGPoint {
     CGPoint(x: imageRect.minX + p.x * scale, y: imageRect.minY + p.y * scale)
   }
-  override func menu(for event:NSEvent)->NSMenu? {selectionTransformMenu(for:event) ?? super.menu(for:event)}
+  override func menu(for event:NSEvent)->NSMenu? {
+    pathWarpMenu() ?? selectionTransformMenu(for:event) ?? super.menu(for:event)
+  }
   func drawTransform(_ draft: TransformDraft, in c: CGContext) {
     let points = draft.handles.map(viewPoint)
     c.setLineDash(phase: 0, lengths: [])
@@ -1082,7 +1084,7 @@ struct CanvasHost: NSViewRepresentable {
     if store.pathWarp != nil {
       if let gesture = pathWarpGesture {
         let point = docPoint(event)
-        if point.x != gesture.start.x || point.y != gesture.start.y { updatePathWarpGesture(event) }
+        if point != gesture.documentStart { updatePathWarpGesture(event) }
       }
       finishPathWarpGesture()
       return

@@ -136,6 +136,20 @@ extension WorkspaceView {
       }.scrollIndicators(.hidden).frame(minWidth: 0, maxWidth: .infinity)
         .layoutPriority(-1)
         .workflowGuideAnchor(.options)
+      if let warp = store.pathWarp {
+        HStack(spacing: 5) {
+          Button("Cancel") { store.cancelWarp() }.keyboardShortcut(.cancelAction)
+          Button("Apply") { store.commitPathWarp() }.keyboardShortcut(.defaultAction).disabled(!warp.ready)
+        }.controlSize(.small)
+      } else if store.transformDraft?.pathTarget != nil {
+        HStack(spacing: 5) {
+          Button("Warp") { store.beginPathWarp() }
+            .help("Switch to Warp and keep the pending transform")
+            .disabled(!store.canBeginPathWarp)
+          Button("Cancel") { store.cancelTransform() }.keyboardShortcut(.cancelAction)
+          Button("Apply") { store.commitTransform() }.keyboardShortcut(.defaultAction).disabled(store.geometryBusy)
+        }.controlSize(.small)
+      }
       iconButton("square.and.arrow.up", "Export Image") { store.exportImage() }
       iconButton("sparkles", "Create with Apple Intelligence") { store.showAI = true }
       iconButton("list.bullet.rectangle", "Workspace Feature Map") { store.showGaps = true }

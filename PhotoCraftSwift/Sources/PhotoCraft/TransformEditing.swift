@@ -245,6 +245,7 @@ extension EditorStore {
     return !document.isPositionLocked(layer.id)
   }
   func beginTransform() {
+    if pathWarp != nil { returnToPathTransform(); return }
     if pathTarget != nil { beginPathTransform(); return }
     if editingChannel != nil{beginChannelTransform();return}
     if editingMask {beginPixelMaskTransform();return}
@@ -308,7 +309,8 @@ extension EditorStore {
     return preview
   }
   private var compositionPreviewDocument: CraftDocument {
-    if let warp = pathWarp?.pathEdit, warp.source == document { return warp.result }
+    if let warp = pathWarp?.pathEdit ?? selectionTransform?.warpPreview,
+       warp.source == document { return warp.result }
     if let frame = timelinePreviewVideoFrame, let preview = try? document.videoDocument(at: frame) { return preview }
     if let id = timelinePreviewFrameID, let preview = try? document.animationDocument(at: id) { return preview }
     if let draft=shapedTypeDraft,draft.preview,let preview=draft.previewDocument{return preview}

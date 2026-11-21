@@ -1192,7 +1192,7 @@ PSD and PSB reopen with the cached pixels, link metadata and original artwork qu
 
 ### Warp editable paths
 
-`paths.warp` accepts the path `targets` array, a Warp `settings` object and an optional `matrix` applied first. The controls and optional source frame use document pixel coordinates. The result includes `pathTransformSelections`, and state exposes path Warp availability, active mode, preset and preview activity. The transaction keeps editable output and adds one Undo. [Path Warp details](PATH_WARP_675.md)
+`paths.warp` accepts the path `targets` array and Warp `settings`. The optional row-major `matrix` runs before Warp and `matrixAfter` runs after it. A shared source frame comes from the paths after the first matrix unless supplied explicitly. The result returns `pathTransformSelections` and uses one Undo. Editor state exposes the active Warp or Free Transform mode and the accepted matrix after Warp. [Mode-switch details](PATH_WARP_SWITCH_676.md)
 
 ### Cross-layer path selection and transform
 

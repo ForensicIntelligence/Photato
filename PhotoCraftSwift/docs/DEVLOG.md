@@ -694,7 +694,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 673 | 2026-11-20 | [Select path anchors with a Direct Selection marquee](#dev-step-673) |
 | 674 | 2026-11-20 | [Transform editable paths across layers](#dev-step-674) |
 | 675 | 2026-11-20 | [Warp editable paths on the canvas](#dev-step-675) |
+| 676 | 2026-11-20 | [Switch between path Warp and Free Transform](#dev-step-676) |
 <!-- history-index:end -->
+
+<a id="dev-step-676"></a>
+
+## 2026-11-20 — Switch between path Warp and Free Transform
+
+Switch between Warp and Free Transform while editing paths, masks or shape contours. The mesh follows later placement changes, and the whole edit applies in one Undo.
+
+The Warp session retains its settings and fitted curves when Free Transform opens around the current outline. Further affine or projective edits compose after Warp and preview from the same curves. Returning to Warp projects its controls into the new placement and maps pointer input back to the editable mesh. The state checks the source document, workspace, focus and selected paths before applying either mode. The added history step stays atomic when any target is invalid.
+
+The options bar and canvas menu expose the mode switch. The 1,000-point preview showed Free Transform’s actions could scroll away. Warp, Apply and Cancel now stay beside the scrolling Free Transform options. Warp mode already reserves space for Apply and Cancel. The Photato API shares the same ordered operation, and the new Actions encoding retains the final matrix only when present.
+
+The Debug build uses the existing workaround for the Swift compiler’s PredictableDeadAllocationElimination stack fault. Both optimized builds use the standard compiler configuration.
+
+All 202 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. The new tests exercise mixed transform order, a horizon between paths, changing a mesh handle after a perspective edit, mode switching with Apply and Cancel, Actions replay, and authenticated API validation. All 12 earlier whole-layer vector mask outputs match byte for byte.
+
+9 of nine owned mixed-transform PSD, PSB and RGBA outputs agree byte for byte across the three builds. 2 of three native archives also match. The largest recorded change in editable curve coordinates across the builds is 1.48e-11 pixels.
+
+For the owned 1,024-knot case, reusing the fitted Warp curves took a median 0.78 ms on Apple Silicon and 1.56 ms under Rosetta. This measures geometry preparation independently of canvas drawing and display.
+
+Photoshop-authored path output, exact guide and mode behavior in Photoshop, and physical canvas speed remain open. Compare a mixed transform on paths captured in Photoshop and verify path isolation and menu availability.
+
+[Development record](PATH_WARP_SWITCH_676.md) · [Qualification](SOURCE_PUBLICATION_676.md).
 
 <a id="dev-step-675"></a>
 

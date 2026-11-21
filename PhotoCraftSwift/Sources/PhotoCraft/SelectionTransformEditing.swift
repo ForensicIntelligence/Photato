@@ -5,6 +5,11 @@ import PhotoCraftImaging
 
 @MainActor @Observable final class SelectionTransformSession {
   let original:CraftDocument
+  let warpModel: WarpWorkspace?
+  private let warpSeed: PathWarpEdit?
+  private(set) var warpPreview: PathWarpEdit?
+  private var warpPreviewProjection = ProjectiveTransform.identity
+  @ObservationIgnored var warpPreviewChanged: (() -> Void)?
   var originalPath:SelectionContour?
   var pixelPreview:SelectedPixelTransformPreviewImage?
   var vectorPreviews: [PathTransformGeometry] = []
@@ -31,9 +36,25 @@ import PhotoCraftImaging
   private var latest:TransformDraft
   private var generation=0
   private(set) var closed=false
-  init(_ document:CraftDocument,draft:TransformDraft){original=document;latest=draft;pixelLayerID=draft.selectedPixels ? draft.layerID:nil;pixelBackgroundColor=draft.selectedPixelsBackgroundColor;collectionLayerIDs=draft.collectionLayerIDs;channelTarget=draft.channelTarget;channelBackgroundValue=draft.channelBackgroundValue;channelOverlay=draft.channelOverlay;pixelMask=draft.pixelMask;maskViewMode=draft.pixelMaskViewMode;initialBounds=draft.bounds}
+  init(_ document: CraftDocument, draft: TransformDraft, warp: WarpWorkspace? = nil) {
+    original = document
+    latest = draft
+    warpModel = warp
+    warpSeed = warp?.pathEdit
+    warpPreview = warpSeed
+    vectorPreviews = warpSeed?.geometry ?? []
+    pixelLayerID = draft.selectedPixels ? draft.layerID : nil
+    pixelBackgroundColor = draft.selectedPixelsBackgroundColor
+    collectionLayerIDs = draft.collectionLayerIDs
+    channelTarget = draft.channelTarget
+    channelBackgroundValue = draft.channelBackgroundValue
+    channelOverlay = draft.channelOverlay
+    pixelMask = draft.pixelMask
+    maskViewMode = draft.pixelMaskViewMode
+    initialBounds = draft.bounds
+  }
   func prepare()async {
-    let original=original,pixels=pixelLayerID != nil,pixelMask=pixelMask,channelTarget=channelTarget,collectionLayerIDs=collectionLayerIDs,initialBounds=initialBounds,pathTarget=latest.pathTarget
+    let original=original,pixels=warpSeed == nil && pixelLayerID != nil,pixelMask=pixelMask,channelTarget=channelTarget,collectionLayerIDs=collectionLayerIDs,initialBounds=initialBounds,pathTarget=latest.pathTarget
     do {
       let worker=Task.detached(priority:.userInitiated) { ()throws->(SelectionContour,SelectedPixelTransformPreviewSource?) in
         if pathTarget != nil {
@@ -55,6 +76,7 @@ import PhotoCraftImaging
   func refresh(_ draft:TransformDraft) {
     latest=draft;generation+=1
     guard !closed,!committing,!loading,!previewBusy,let originalPath else{return}
+    if let warpSeed { refreshFollowUp(draft, base: warpSeed); return }
     let generation=generation,pixelSource=pixelSource,pixelLayerID=pixelLayerID,pixelBackgroundColor=pixelBackgroundColor,pixelMask=pixelMask,maskViewMode=maskViewMode,channelTarget=channelTarget,channelBackgroundValue=channelBackgroundValue,channelOverlay=channelOverlay,collectionLayerIDs=collectionLayerIDs,original=original;previewBusy=true
     task=Task { [weak self] in
       do {
@@ -90,7 +112,47 @@ import PhotoCraftImaging
       guard let self else{return};self.previewBusy=false;if !Task.isCancelled,!self.closed,self.generation != generation{self.refresh(self.latest)}
     }
   }
-  func close(){closed=true;task?.cancel();commitTask?.cancel()}
+  private func refreshFollowUp(_ draft: TransformDraft, base: PathWarpEdit) {
+    let token = generation
+    previewBusy = true
+    task = Task { [weak self] in
+      do {
+        let worker = Task.detached(priority: .userInitiated) {
+          let projection = try draft.selectionProjection
+          return (projection, try base.followed(by: projection))
+        }
+        let (projection, edit) = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+        try Task.checkCancellation()
+        if let self, !self.closed, !self.committing {
+          self.warpPreviewProjection = projection
+          self.warpPreview = edit
+          self.vectorPreviews = edit.geometry
+          self.error = nil
+          self.warpPreviewChanged?()
+        }
+      } catch {
+        if let self, !self.closed, !self.committing, self.generation == token, !Task.isCancelled {
+          self.error = error.localizedDescription
+        }
+      }
+      guard let self else { return }
+      self.previewBusy = false
+      if !Task.isCancelled, !self.closed, self.generation != token { self.refresh(self.latest) }
+    }
+  }
+  func completedPathWarp(for draft: TransformDraft) -> PathWarpEdit? {
+    guard !closed, !loading, !previewBusy, !committing, error == nil,
+          (try? draft.selectionProjection) == warpPreviewProjection else { return nil }
+    return warpPreview
+  }
+  func close(keepWarp: Bool = false) {
+    closed = true
+    task?.cancel()
+    commitTask?.cancel()
+    if !keepWarp { warpModel?.close() }
+  }
+
+  var followUpBase: PathWarpEdit? { warpSeed }
 }
 // Immutable copy failure is reported without a test-framework dependency.
 private enum SelectionContourCopy {
@@ -122,12 +184,17 @@ private enum SelectionContourCopy {
     let projection:ProjectiveTransform
     do{projection=try draft.selectionProjection}catch{session.error=error.localizedDescription;return}
     session.committing=true;session.task?.cancel();geometryBusy=true;let original=session.original,prepare=selectionTransformPreparation,pixelPrepare=selectedPixelTransformPreparation,movePrepare=selectedPixelMovePreparation,maskPrepare=pixelMaskTransformPreparation,channelPrepare=channelTransformPreparation,collectionPrepare=layerCollectionTransformPreparation,wholeMovePrepare=wholeLayerMovePreparation,generation=layerPanelGeneration
+    let warp = session.followUpBase
     session.commitTask=Task { [weak self,weak session] in
       do {
         let worker=Task.detached(priority:.userInitiated){
           let command:Command
           var pathChoices: [PathTransformChoice] = []
-          if draft.pathTarget != nil {
+          if let warp {
+            let edit = try warp.followed(by: projection)
+            command = .warpPaths(edit)
+            pathChoices = edit.geometry.map(\.choice)
+          } else if draft.pathTarget != nil {
             let request = PathTransformGroupRequest(choices: draft.pathChoices, matrix: projection)
             pathChoices = try PathTransform.geometry(request, in: original).map(\.choice)
             command = request.nativeCommand

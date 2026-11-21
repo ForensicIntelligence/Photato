@@ -1,3 +1,7 @@
+**Source checkpoint 676.** Switch between Warp and Free Transform while editing paths, masks or shape contours. The mesh follows later placement changes, and the whole edit applies in one Undo. All 202 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_676.md).
+
+**Next path editing work.** Compare a mixed transform on paths captured in Photoshop and verify path isolation and menu availability.
+
 **Source checkpoint 675.** Warp saved paths, vector masks and shape contours in the main canvas. Switch from Free Transform and apply both changes in one Undo. The same edit works in the Photato API and Actions. All 198 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. [Qualification](SOURCE_PUBLICATION_675.md).
 
 **Next path Warp work.** Verify paths against files authored in Photoshop and compare switching back to Free Transform, split controls, and target availability.

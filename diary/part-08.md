@@ -1,5 +1,13 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-20 — Step 676 — Switch between path Warp and Free Transform
+
+Switch between Warp and Free Transform while editing paths, masks or shape contours. The mesh follows later placement changes, and the whole edit applies in one Undo.
+
+All 202 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Photoshop-authored path output, exact guide and mode behavior in Photoshop, and physical canvas speed remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-676) · [Details](../PhotoCraftSwift/docs/PATH_WARP_SWITCH_676.md).
+
 ## 2026-11-20 — Step 675 — Warp editable paths on the canvas
 
 Warp saved paths, vector masks and shape contours in the main canvas. Switch from Free Transform and apply both changes in one Undo. The same edit works in the Photato API and Actions.

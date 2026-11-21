@@ -1823,5 +1823,11 @@
     "qualification": "The AppKit pointer test covers mesh hit, drag, cancel and apply.",
     "remaining": "Live Photoshop glyphs and physical mouse and tablet input remain open.",
     "reference": "docs/SOURCE_PUBLICATION_675.json"
+  },
+  "path_warp_switch_676": {
+    "native": "The Warp cursor follows the mesh and Cylinder handles after a later projective placement.",
+    "qualification": "AppKit input hits and drags a projected mesh control and preserves its local displacement.",
+    "remaining": "Live Photoshop cursor glyphs and physical input cadence remain open.",
+    "reference": "docs/SOURCE_PUBLICATION_676.json"
   }
 }

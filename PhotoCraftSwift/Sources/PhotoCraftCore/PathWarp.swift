@@ -1,16 +1,18 @@
 import Foundation
 
-/// Warp runs in document coordinates after the draft's affine or projective transform.
+/// The matrices before and after Warp operate on document coordinates.
 public struct PathWarpRequest: Equatable, Sendable {
   public let choices: [PathTransformChoice]
   public let matrix: ProjectiveTransform
   public let settings: WarpDefinition
+  public let matrixAfter: ProjectiveTransform
 
   public init(choices: [PathTransformChoice], matrix: ProjectiveTransform = .identity,
-              settings: WarpDefinition) {
+              settings: WarpDefinition, matrixAfter: ProjectiveTransform = .identity) {
     self.choices = choices
     self.matrix = matrix
     self.settings = settings
+    self.matrixAfter = matrixAfter
   }
 }
 
@@ -19,12 +21,30 @@ public struct PathWarpEdit: Sendable {
   public let source: CraftDocument
   public let result: CraftDocument
   public let geometry: [PathTransformGeometry]
+  private let warpedGeometry: [PathTransformGeometry]
 
   public static func prepare(_ request: PathWarpRequest, in source: CraftDocument) throws -> Self {
-    let geometry = try PathWarp.geometry(request, in: source)
+    let warped = try PathWarp.warpGeometry(request, in: source)
+    return try finish(request, warped: warped, source: source)
+  }
+
+  /// Apply an additional transform while keeping the fitted Warp curves as the input.
+  public func followed(by delta: ProjectiveTransform) throws -> Self {
+    if delta == .identity { return self }
+    let after = try request.matrixAfter == .identity ? delta : request.matrixAfter.followed(by: delta)
+    let combined = PathWarpRequest(choices: request.choices, matrix: request.matrix,
+                                   settings: request.settings, matrixAfter: after)
+    return try Self.finish(combined, warped: warpedGeometry, source: source)
+  }
+
+  public func bounds() throws -> IntRect { try PathTransform.bounds(geometry) }
+
+  private static func finish(_ request: PathWarpRequest, warped: [PathTransformGeometry],
+                             source: CraftDocument) throws -> Self {
+    let geometry = try PathWarp.finishGeometry(warped, matrix: request.matrixAfter)
     var result = source
     try PathTransform.install(geometry, in: &result)
-    return .init(request: request, source: source, result: result, geometry: geometry)
+    return .init(request: request, source: source, result: result, geometry: geometry, warpedGeometry: warped)
   }
 
   func applied(to document: CraftDocument) throws -> CraftDocument {
@@ -46,6 +66,10 @@ public enum PathWarp {
   }
 
   public static func geometry(_ request: PathWarpRequest, in document: CraftDocument) throws -> [PathTransformGeometry] {
+    try finishGeometry(warpGeometry(request, in: document), matrix: request.matrixAfter)
+  }
+
+  fileprivate static func warpGeometry(_ request: PathWarpRequest, in document: CraftDocument) throws -> [PathTransformGeometry] {
     var settings = request.settings
     try settings.validate()
     let projected = try PathTransform.geometry(.init(choices: request.choices, matrix: request.matrix), in: document)
@@ -58,6 +82,20 @@ public enum PathWarp {
     return try projected.map { item in
       let (path, selection) = try warp.apply(item.path, selection: item.choice.selection)
       return .init(choice: .init(item.choice.target, selection: selection), path: path, original: item.original)
+    }
+  }
+
+  fileprivate static func finishGeometry(_ warped: [PathTransformGeometry], matrix: ProjectiveTransform) throws -> [PathTransformGeometry] {
+    if matrix == .identity { return warped }
+    if warped.count > 1, try matrix.affineValue() == nil {
+      let bounds = try PathTransform.bounds(warped)
+      try matrix.validateSharedHorizon(left: bounds.x, top: bounds.y,
+                                       right: bounds.x + bounds.width, bottom: bounds.y + bounds.height)
+    }
+    return try warped.map { item in
+      let transformed = try PathTransform.geometry(item.path, selection: item.choice.selection, matrix: matrix)
+      return .init(choice: .init(item.choice.target, selection: transformed.selection),
+                   path: transformed.path, original: item.original)
     }
   }
 

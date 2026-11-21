@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 676.** Switch between Warp and Free Transform while editing paths, masks or shape contours. The mesh follows later placement changes, and the whole edit applies in one Undo. [Qualification](docs/SOURCE_PUBLICATION_676.md).
+
 **Source checkpoint 675.** Warp saved paths, vector masks and shape contours in the main canvas. Switch from Free Transform and apply both changes in one Undo. The same edit works in the Photato API and Actions. [Qualification](docs/SOURCE_PUBLICATION_675.md).
 
 **Source checkpoint 674.** Select saved paths, vector masks and shape contours across layers and transform them together with Command-T. The Photato API and native Actions support the same atomic edit. [Qualification](docs/SOURCE_PUBLICATION_674.md).

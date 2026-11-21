@@ -130,6 +130,7 @@ public enum ActionOperation: Codable, Sendable {
   case transformPath(ActionPathTarget, PathTransformSelection, ProjectiveTransform)
   case transformPaths([RecordedPathChoice], ProjectiveTransform)
   case warpPaths([RecordedPathChoice], ProjectiveTransform, WarpDefinition)
+  indirect case warpPathsWithFollowUp([RecordedPathChoice], ProjectiveTransform, WarpDefinition, ProjectiveTransform)
   case mergeSpotChannel(ActionChannelTarget)
   case processChannelDeletion(ProcessChannelDeletion)
   case transformChannel(ActionChannelTarget,ProjectiveTransform,Resampling,Float,Bool)
@@ -335,9 +336,13 @@ public enum ActionOperation: Codable, Sendable {
     case .warpPaths(let edit):
       let request = edit.request
       let choices = request.choices.compactMap { RecordedPathChoice($0, in: d) }
-      self = choices.count == request.choices.count
-        ? .warpPaths(choices, request.matrix, request.settings)
-        : .unsupported("An original path for this Warp is missing.")
+      if choices.count != request.choices.count {
+        self = .unsupported("An original path for this Warp is missing.")
+      } else if request.matrixAfter == .identity {
+        self = .warpPaths(choices, request.matrix, request.settings)
+      } else {
+        self = .warpPathsWithFollowUp(choices, request.matrix, request.settings, request.matrixAfter)
+      }
     case .transformChannel(let request):self = .transformChannel(.init(request.target,in:d),request.matrix,request.interpolation,request.backgroundValue,request.copy)
     case .transformPixelMask(let request):self = .transformPixelMask(target(request.layerID),request.matrix,request.interpolation)
     case .transformPixels(let request):
@@ -467,6 +472,10 @@ public enum ActionOperation: Codable, Sendable {
     case .warpPaths(let choices, let matrix, let settings):
       let request = PathWarpRequest(choices: try choices.map { try $0.resolve(in: d) }, matrix: matrix,
                                     settings: settings)
+      return .warpPaths(try PathWarpEdit.prepare(request, in: d))
+    case .warpPathsWithFollowUp(let choices, let matrix, let settings, let matrixAfter):
+      let request = PathWarpRequest(choices: try choices.map { try $0.resolve(in: d) }, matrix: matrix,
+                                    settings: settings, matrixAfter: matrixAfter)
       return .warpPaths(try PathWarpEdit.prepare(request, in: d))
     case .transformChannel(let t,let m,let r,let background,let copy):return .transformChannel(.init(target:try t.resolve(in:d),matrix:m,interpolation:r,backgroundValue:background,copy:copy))
     case .transformPixelMask(let t,let m,let r):return .transformPixelMask(.init(layerID:try id(t),matrix:m,interpolation:r))
@@ -762,13 +771,17 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
         try matrix.validate()
         for choice in choices { try choice.selection.validate() }
       }
-      if case .warpPaths(let choices, let matrix, let settings) = step.operation {
+      switch step.operation {
+      case .warpPaths(let choices, let matrix, let settings),
+           .warpPathsWithFollowUp(let choices, let matrix, let settings, _):
         guard (1...PathTransformGroupRequest.maximumTargets).contains(choices.count) else {
           throw CraftError.invalid("Invalid recorded Warp targets.")
         }
         try matrix.validate()
         try settings.validate()
         for choice in choices { try choice.selection.validate() }
+        if case .warpPathsWithFollowUp(_, _, _, let matrixAfter) = step.operation { try matrixAfter.validate() }
+      default: break
       }
       if case .replaceText(let request) = step.operation { try request.validate() }
       if case .layerStyles(let edit)=step.operation {try edit.validate()}

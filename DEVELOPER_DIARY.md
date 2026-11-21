@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **675** · The 10 most recent entries, newest first.
+Source build **676** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 676 — Switch between path Warp and Free Transform
+
+Switch between Warp and Free Transform while editing paths, masks or shape contours. The mesh follows later placement changes, and the whole edit applies in one Undo.
+
+All 202 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Photoshop-authored path output, exact guide and mode behavior in Photoshop, and physical canvas speed remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-676) · [Details](PhotoCraftSwift/docs/PATH_WARP_SWITCH_676.md).
 
 ## 2026-11-20 — Step 675 — Warp editable paths on the canvas
 
@@ -75,11 +83,3 @@ PSD and PSB now reopen supported Smart Object Warp presets, cubic meshes and non
 1,537 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop document query timed out. Unchanged saved samples and Photato-regenerated pixels were checked separately. An independent reader compared the encoded merged image planes in both outputs against Photoshop’s stored preview. In each format, 24 of 1,048,576 component bytes differ by one level, including three alpha bytes. Live Photoshop rerendering, Cylinder, PDF Warp and pre-Warp reconstruction of saved pixel masks remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-667) · [Details](PhotoCraftSwift/docs/EDITABLE_SMART_OBJECT_WARP_667.md).
-
-## 2026-11-20 — Step 666 — Relink perspective artwork after reopening PSD and PSB
-
-PSD and PSB preserve the image preview, location and four-corner placement of a linked Smart Object when its original is missing. Free Transform uses the saved artwork frame. Relinking restores source-based perspective editing.
-
-1,511 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. One additional RGB32 test passed on Apple Silicon and reproduced the prior Intel result. Both slices of the signed macOS 14+ universal preview launched offscreen. Photoshop's live document query timed out. The file and pixel comparisons use Photato and owned fixtures. Live Photoshop interchange, linked PDF perspective and non-identity Warp descriptors remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-666) · [Details](PhotoCraftSwift/docs/LINKED_PROJECTIVE_SMART_OBJECTS_666.md).

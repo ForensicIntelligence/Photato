@@ -8,7 +8,7 @@ import XCTest
 
 final class AutomationTests: XCTestCase {
   static let expectedCommandCount = 280
-  static let expectedActionVersion = 78
+  static let expectedActionVersion = 79
   func parse(_ text: String) throws -> AutomationRequest? {
     try AutomationRequest.parse(Data(text.utf8))
   }

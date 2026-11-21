@@ -56,6 +56,8 @@ enum CylinderHandle: CaseIterable {
   var error:String?
   var edit:WarpEdit?
   var pathEdit: PathWarpEdit?
+  private(set) var pathProjection = ProjectiveTransform.identity
+  private(set) var inversePathProjection = ProjectiveTransform.identity
   @ObservationIgnored var pathPreviewChanged: (() -> Void)?
   var selectedPoint:Int?
   var splitPosition=0.5
@@ -81,6 +83,14 @@ enum CylinderHandle: CaseIterable {
     settings.sourceBounds = path.bounds
   }
   var ready:Bool { (edit != nil || pathEdit != nil) && !rendering && !closed && error == nil }
+  func continuePathWarp(with edit: PathWarpEdit) throws {
+    let matrix = edit.request.matrixAfter
+    let inverse = try matrix == .identity ? .identity : matrix.inverted()
+    pathProjection = matrix
+    inversePathProjection = inverse
+    pathEdit = edit
+    error = nil
+  }
   var controls:WarpMesh? {
     guard settings.cylinder == nil else { return nil }
     return settings.mesh ?? (try? settings.custom(width:width,height:height).mesh)
@@ -205,7 +215,8 @@ enum CylinderHandle: CaseIterable {
   private func preparePaths(_ context: PathWarpContext) {
     rendering = true
     let token = generation, source = source
-    let request = PathWarpRequest(choices: context.choices, matrix: context.matrix, settings: settings)
+    let request = PathWarpRequest(choices: context.choices, matrix: context.matrix, settings: settings,
+                                  matrixAfter: pathProjection)
     task = Task { [weak self] in
       do {
         let worker = Task.detached(priority: .userInitiated) { try PathWarpEdit.prepare(request, in: source) }

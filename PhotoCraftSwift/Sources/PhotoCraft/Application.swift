@@ -477,6 +477,7 @@ import SwiftUI
       return store?.document.selection != nil && store?.geometryBusy == false
         && store?.transformDraft == nil
     }
+    if item.action == #selector(freeTransform), store?.pathWarp != nil { return store?.canReturnToPathTransform == true }
     if [
       #selector(freeTransform), #selector(rotateLayer180), #selector(rotateLayerCW),
       #selector(rotateLayerCCW), #selector(flipH), #selector(flipV),

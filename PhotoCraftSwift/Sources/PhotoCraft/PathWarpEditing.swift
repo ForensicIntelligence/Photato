@@ -14,7 +14,11 @@ struct PathWarpContext {
   var canBeginPathWarp: Bool {
     guard pathTarget != nil, !geometryBusy, !aiBusy, !hasToneDraft, editingChannel == nil else { return false }
     if let draft = transformDraft {
-      return draft.pathTarget == pathTarget && draft.pathSelectionContext == selectedPathChoices
+      guard draft.pathTarget == pathTarget, draft.pathSelectionContext == selectedPathChoices else { return false }
+      if let session = selectionTransform, session.warpModel != nil {
+        return session.completedPathWarp(for: draft) != nil
+      }
+      return true
     }
     return canBeginPathTransform
   }
@@ -22,6 +26,18 @@ struct PathWarpContext {
   func beginPathWarp() {
     guard canBeginPathWarp, let focus = pathTarget else { return }
     do {
+      if let draft = transformDraft, let session = selectionTransform, let model = session.warpModel {
+        guard matchesPathWarp(model), let edit = session.completedPathWarp(for: draft) else {
+          throw CraftError.invalid("The path transform source changed.")
+        }
+        try model.continuePathWarp(with: edit)
+        session.close(keepWarp: true)
+        selectionTransform = nil
+        transformDraft = nil
+        warpDraft = model
+        status = "Warp Paths · Return applies · Escape cancels"
+        return
+      }
       let draft = transformDraft
       let matrix = try draft?.selectionProjection ?? .identity
       let choices = draft?.pathChoices ?? pathChoicesForTransform
@@ -36,7 +52,7 @@ struct PathWarpContext {
                                 lifecycle: layerPanelGeneration)
       model.pathPreviewChanged = { [weak self, weak model] in
         guard let self, let model, self.pathWarp === model, model.pathEdit?.source == self.document else { return }
-        if context.choices.contains(where: { if case .saved = $0.target { return false }; return true }) {
+        if context.hasRenderedPaths {
           self.render(startWorkerImmediately: true)
         }
       }
@@ -46,10 +62,48 @@ struct PathWarpContext {
     } catch { self.error = error.localizedDescription }
   }
 
+  var canReturnToPathTransform: Bool {
+    guard !geometryBusy, let model = pathWarp else { return false }
+    return model.ready && matchesPathWarp(model)
+  }
+
+  func returnToPathTransform() {
+    guard canReturnToPathTransform, let model = pathWarp,
+          let context = model.pathContext, let edit = model.pathEdit else { return }
+    do {
+      let bounds = try edit.bounds()
+      model.endGesture()
+      var draft = TransformDraft(layerID: context.focus.id, bounds: bounds)
+      draft.pathTarget = context.focus
+      draft.pathSelection = pathTransformSelection
+      draft.pathChoices = context.choices
+      draft.pathSelectionContext = context.selection
+      draft.selection = true
+      draft.selectedPixels = context.hasRenderedPaths
+      draft.selectionQuad = draft.selectionCorners
+      let session = SelectionTransformSession(document, draft: draft, warp: model)
+      session.warpPreviewChanged = { [weak self, weak session] in
+        guard let self, let session, self.selectionTransform === session,
+              session.original == self.document, context.hasRenderedPaths else { return }
+        self.render(startWorkerImmediately: true)
+      }
+      warpDraft = nil
+      selectionTransform = session
+      transformDraft = draft
+      status = "\(draft.pathTransformTitle) · Return applies · Escape cancels"
+      session.task = Task { await session.prepare() }
+    } catch { model.error = error.localizedDescription }
+  }
+
+  private func matchesPathWarp(_ model: WarpWorkspace) -> Bool {
+    guard let context = model.pathContext else { return false }
+    return model.sourceSession == sessionGeneration && model.sourceLifecycle == layerPanelGeneration &&
+      model.source == document && pathTarget == context.focus && selectedPathChoices == context.selection
+  }
+
   func commitPathWarp() {
-    guard let model = pathWarp, model.ready, let edit = model.pathEdit, let context = model.pathContext else { return }
-    guard model.sourceSession == sessionGeneration, model.sourceLifecycle == layerPanelGeneration,
-          model.source == document, pathTarget == context.focus, selectedPathChoices == context.selection else {
+    guard let model = pathWarp, model.ready, let edit = model.pathEdit else { return }
+    guard matchesPathWarp(model) else {
       model.error = "The Warp source changed. Cancel and start Warp again."
       return
     }
@@ -65,9 +119,18 @@ struct PathWarpContext {
   }
 }
 
+private extension PathWarpContext {
+  var hasRenderedPaths: Bool {
+    choices.contains { if case .saved = $0.target { return false }; return true }
+  }
+}
+
 extension WorkspaceView {
   func pathWarpOptions(_ model: WarpWorkspace) -> some View {
     HStack(spacing: 8) {
+      Button("Free Transform") { store.returnToPathTransform() }
+        .help("Switch to Free Transform and keep the pending Warp")
+        .disabled(!store.canReturnToPathTransform)
       Picker("Warp", selection: Binding(get: { model.settings.style }, set: model.choose)) {
         ForEach(WarpStyle.allCases, id: \.self) { Text($0.title).tag($0) }
       }.frame(width: 128)
@@ -114,8 +177,6 @@ extension WorkspaceView {
           .accessibilityLabel(error)
       }
       Button("Reset") { model.change(WarpDefinition()) }
-      Button("Cancel") { store.cancelWarp() }.keyboardShortcut(.cancelAction)
-      Button("Apply") { store.commitPathWarp() }.keyboardShortcut(.defaultAction).disabled(!model.ready)
     }.controlSize(.small)
   }
 }
