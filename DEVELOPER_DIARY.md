@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **698** · The 10 most recent entries, newest first.
+Source build **699** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 699 — Add local Generative Fill from surrounding pixels
+
+Generative Fill now uses an optional Apple Silicon Core ML model to fill a selection from surrounding pixels. Photato places the result above the visible stack on a raster layer with an editable mask and one Undo step.
+
+The pinned LaMa512 model ran in Debug and optimized Apple Silicon builds. The native transaction and authenticated loopback API returned identical composite samples on the same RGB8 fixture. Tests at RGB8, RGB16 and RGB32 matched protected pixels and every output-mask sample. The owned example retained the editable mask on native, PSD and PSB reopening in Photato.
+
+476 of 477 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture failed with identical assertions in build 698. Both signed preview slices opened offscreen. The local provider fills from context. Text prompts, variant sets and Adobe Execute Actions support remain open. The installed Photoshop session timed out, so Adobe output and physical workflow comparison remain pending.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-699) · [Details](PhotoCraftSwift/docs/GENERATIVE_FILL_699.md).
 
 ## 2026-11-21 — Step 698 — Read raster alpha directly for regional Drop Shadows
 
@@ -93,13 +103,3 @@ At actual size, overlapping panned views matched at 8-, 16-, and 32-bit depth. A
 453 of 456 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. The same three failures reproduced the build 689 assertions. Both signed macOS 14+ preview slices launched offscreen. Fit-to-window on very large nonperiodic canvases still uses full rendering. The bounded route has a source budget of 16,777,216 pixels and an output budget of 4,194,304 pixels. Photoshop’s document-count query timed out, so direct comparison of live zoom presentation remains open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-690) · [Details](PhotoCraftSwift/docs/PATTERN_VIEWPORT_690.md).
-
-## 2026-11-21 — Step 689 — Preview opaque Pattern Overlay on large canvases
-
-The native editor and local API preview supported opaque Pattern Overlay on canvases up to 300,000 × 300,000.
-
-Fit uses the area covered by each screen pixel. At 100% the preview reads the same samples as a full render. Painted pixels, aligned pixel masks and translated raster layers remain visible. Tests also checked isolated RGB channels, soft proofing, native Brush and Undo, and a 2,048 × 2,048 PNG from the local API.
-
-451 of 454 selected tests passed in each of Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Three inherited failures reproduced build 688’s assertions. Both signed macOS 14+ preview slices launched offscreen. The preview requires supported axis-aligned pattern periods and bounded local changes. Other angles and nonperiodic scales still use ordinary rendering. Full-resolution export has its own capacity limits. Photoshop’s document-count query timed out, so live zoom and preview equivalence remain unverified.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-689) · [Details](PhotoCraftSwift/docs/OPAQUE_PATTERN_PREVIEW_689.md).

@@ -545,6 +545,7 @@ import UniformTypeIdentifiers
       "pdfSourceEditing":store.pdfSourceEditingState,
       "contentAwareScale": ["available":store.canBeginContentAwareScale,"transformOpen":store.transformDraft?.contentAware == true,"previewBusy":store.contentAwareScaleBusy,"previewError":store.contentAwareScaleError as Any? ?? NSNull()],
       "contentAwareFill": store.contentAwareFillState,
+      "generativeFill": GenerativeFillAPI.state(store),
       "selectionRefinement": ["available": store.canBeginSelectMask, "workspaceOpen": store.selectMaskDraft != nil && store.selectMaskDraft?.isFocus != true],
       "subjectDetection": ["canSelectSubject": store.canDetectSubject(),
         "canRemoveBackground": store.canDetectSubject(removeBackground: true),
@@ -818,6 +819,14 @@ import UniformTypeIdentifiers
       guard command.revision == revision(store) else {
         throw AutomationFailure(
           status: 409, message: "Stale revision. Refresh the document before retrying.")
+      }
+      if command.name == GenerativeFillAPI.cancel {
+        let operation = try command.actionUUID("operationID")
+        guard store.generativeFillOperationID == operation else {
+          throw AutomationFailure(status: 409, message: "That local fill operation is no longer active.")
+        }
+        store.geometryTask?.cancel()
+        return .json(state(share, document: document))
       }
       if command.name == ChannelMergeAPI.cancel {
         guard documentTransfersEnabled, documentClosingEnabled else { throw AutomationFailure(status:403,message:"Enable document transfers and document closing before cancelling Merge Channels.") }
@@ -1599,6 +1608,19 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in .contentAwareFill(try options.edit(original)) }
         return .json(state(share,document:document))
       }
+      if command.name == GenerativeFillAPI.run {
+        guard store.canBeginGenerativeFill, let model = GenerativeFillModelPreference.url() else {
+          throw AutomationFailure(status: 422, message: "Select part of a still RGB image and choose a local model in Generative Fill.")
+        }
+        let operation = UUID()
+        store.generativeFillOperationID = operation
+        defer { if store.generativeFillOperationID == operation { store.generativeFillOperationID = nil } }
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision) { original in
+          try LocalGenerativeFill.prepare(original, model: model)
+        }
+        store.generativeFillOperationID = nil
+        return .json(state(share, document: document))
+      }
       if command.name == ProcessChannelDeletionAPI.name { return try await deleteProcessChannels(command, document: document, share: share) }
       if command.name == SpotChannelMergeAPI.name { return try await mergeSpotChannel(command, document: document, share: share) }
       if command.name == ChannelDuplicateAPI.name { return try await duplicateChannel(command, document: document, share: share) }
@@ -2018,6 +2040,7 @@ import UniformTypeIdentifiers
       "selectionRefinement": SelectionRefinement.apiCapabilities,
       "alphaChannels": ChannelAPI.capabilities,
       "contentAwareFill": ContentAwareSettings.apiCapabilities,
+      "generativeFill": GenerativeFillAPI.capabilities,
       "photomerge": PhotomergeSettings.apiCapabilities,
       "movieFramesImport":MovieFramesAPI.capabilities,
       "pdfImport":PDFImportAPI.capabilities,
@@ -2105,6 +2128,7 @@ import UniformTypeIdentifiers
       "documentSaving": documentSavingCapabilities,
       "stateSchemas": [
         "contentAwareFill":ContentAwareSettings.workspaceStateSchema,
+        "generativeFill": GenerativeFillAPI.schema,
         "lightPreview": LightPreviewAPI.stateSchema,
         "textFind":TextFindAPI.stateSchema,
         "fitImage":GeometryAPI.fitImageStateSchema,

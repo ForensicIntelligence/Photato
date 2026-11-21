@@ -449,6 +449,8 @@ struct CanvasRenderRequest: Sendable {
   @ObservationIgnored var cameraLensMetadataCache = CameraLensMetadataCache()
   @ObservationIgnored var repeatFilterPreparation: @Sendable (CraftDocument, FilterRepeatRequest) throws -> Command = { try $1.command(in: $0) }
   var contentAwareDraft: ContentAwareWorkspace?
+  var generativeFillDraft: GenerativeFillDraft?
+  var generativeFillOperationID: UUID?
   var selectMaskDraft: SelectMaskWorkspace?
   var layerStyleDraft: LayerStyleDraft?
   static var copiedLayerStyle: LayerStyle?

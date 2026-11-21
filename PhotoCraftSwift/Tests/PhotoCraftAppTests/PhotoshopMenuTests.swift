@@ -212,7 +212,8 @@ final class PhotoshopMenuTests: XCTestCase {
         "Pixel Invert must edit its target without creating an adjustment layer")
       XCTAssertEqual(
         try item("Layer > New Adjustment Layer > Invert…").action, #selector(AppDelegate.invert))
-      XCTAssertNil(try item("Edit > Generative Fill…").action)
+      XCTAssertEqual(try item("Edit > Generative Fill…").action, #selector(AppDelegate.generativeFill))
+      XCTAssertTrue(try item("Edit > Generative Fill…").keyEquivalent.isEmpty)
       XCTAssertEqual(
         try item("Edit > Create with Apple Intelligence…").action, #selector(AppDelegate.ai))
       XCTAssertNil(byID["File > Export Image…"])

@@ -38,6 +38,7 @@ public indirect enum Command: Sendable {
   case channel(ChannelCommand)
   case inkChannel(InkChannelCommand)
   case addLayer(Layer)
+  case generativeFill(Layer)
   case newPixelLayer(NewPixelLayerOptions, below: Bool = false)
   case newGroup(NewLayerGroupOptions, children: [UUID] = [], below: Bool = false)
   case addGradientFill(Layer, Bool = false)
@@ -191,6 +192,7 @@ public indirect enum Command: Sendable {
     case .channel(let value): value.label
     case .inkChannel(let value): value.label
     case .addLayer, .newPixelLayer: "New Layer"
+    case .generativeFill: "Generative Fill"
     case .newGroup(_, let children, _): children.isEmpty ? "New Group" : "Group Layers"
     case .addGradientFill: "New Gradient Fill Layer"
     case .setGradientFill: "Gradient Fill"
@@ -383,6 +385,15 @@ public indirect enum Command: Sendable {
     case .applyAdjustment(let id,let adjustment):try PixelCommandEngine.adjust(id,adjustment,in:&d)
     case .applyFilter(let id,let filter):try PixelCommandEngine.filter(id,filter,in:&d)
     case .blurGalleryMask(let edit):d=try edit.applied(to:d)
+    case .generativeFill(let layer):
+      guard d.colorMode == .rgb, d.inkMode == nil, d.restrictedMode == nil, !d.isChannelOnly,
+        d.videoTimeline == nil, d.animation == nil, d.artboards.isEmpty,
+        layer.parentID == nil, layer.mask != nil, !layer.isClipped,
+        d.layers.count < LayerLimits.maximumLayers, !d.layers.contains(where: { $0.id == layer.id }) else {
+        throw CraftError.invalid("Generative Fill requires a still RGB document with room for another layer.")
+      }
+      d.layers.append(layer)
+      d.activeLayerID = layer.id
     case .smartFilters(let id,let stack):try PixelCommandEngine.stack(id,stack,in:&d)
     case .mergeLayers,.addGradientFill,.addPatternFill,.independentSmartObjectCopy,.autoCorrection,.desaturate:try applyNestedPrimitive(to:&d)
     default:try applyPrimitive(to:&d)
@@ -435,7 +446,7 @@ public indirect enum Command: Sendable {
         throw CraftError.invalid("Document metadata exceeds the native limit.")
       }
       d.sourceMetadata = value
-    case .linkedSmartObject,.channelArithmetic,.mergeLayers,.applyAdjustment,.applyFilter,.smartFilters,.blurGalleryMask: throw CraftError.invalid("Unexpected nested command routing.")
+    case .linkedSmartObject,.channelArithmetic,.mergeLayers,.applyAdjustment,.applyFilter,.smartFilters,.blurGalleryMask,.generativeFill: throw CraftError.invalid("Unexpected nested command routing.")
     case .maskFilter(let request):try MaskFiltering.apply(request,to:&d)
     case .toneAdjustment(let request):try ClassicToneEngine.apply(request,to:&d)
     case .hdrToning(let edit):d=try edit.applied(to:d)

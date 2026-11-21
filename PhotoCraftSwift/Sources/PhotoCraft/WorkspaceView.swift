@@ -87,6 +87,9 @@ struct WorkspaceView: View {
       Text(store.error ?? store.workspaceLibrary.error ?? "")
     }
     .sheet(isPresented: $store.showAI) { aiSheet }
+    .sheet(item: $store.generativeFillDraft, onDismiss: { store.cancelGenerativeFill() }) { draft in
+      GenerativeFillSheet(store: store, draft: draft)
+    }
     .sheet(item:$store.upscaleDraft,onDismiss:{if store.upscaleOperationID != nil {store.geometryTask?.cancel()}}) {GenerativeUpscaleSheet(store:store,draft:$0)}
     .sheet(item: $store.layerProtectionDraft) { draft in
       LayerProtectionSheet(store: store, draft: draft)
@@ -277,8 +280,9 @@ struct WorkspaceView: View {
       } else {
         Button("Fill") { store.fill() }
         Button("Add Layer Mask") { store.addMask() }.disabled(store.activeLayer?.mask != nil)
-        Button("Generative Fill") { store.showGaps = true }.disabled(true).help(
-          "Generative Fill is not available yet")
+        Button("Generative Fill") { store.beginGenerativeFill() }
+          .disabled(!store.canBeginGenerativeFill)
+          .help("Fill a selection using a local model on Apple Silicon with macOS 26 or later")
       }
       Divider().frame(height: 18)
       Button("Deselect") { store.perform(.selection(nil)) }

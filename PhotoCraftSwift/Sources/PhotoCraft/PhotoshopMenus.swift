@@ -158,6 +158,7 @@ import PhotoCraftCore
       "Edit > Auto-Align Layers…": #selector(autoAlignLayers),
       "Edit > Auto-Blend Layers…": #selector(autoBlendLayers),
       "Edit > Content-Aware Fill…": #selector(contentAwareFill),
+      "Edit > Generative Fill…": #selector(generativeFill),
       "Edit > Content-Aware Scale": #selector(contentAwareScale),
       "Edit > Fill…": #selector(fillDialog),
       "Edit > Stroke…": #selector(strokeSelectionDialog),

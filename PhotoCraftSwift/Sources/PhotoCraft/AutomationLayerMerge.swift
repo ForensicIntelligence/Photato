@@ -112,7 +112,7 @@ extension AutomationService {
     case .photoAlign(let edit): store.selectedLayerIDs = edit.selectedLayerIDs
     case .photoBlend(let edit): store.selectedLayerIDs = edit.selectedLayerIDs
     case .preparedAction where colorChannelActionTarget != nil: break
-    case .preparedAction, .preparedDocumentMode, .toneAdjustment, .hdrToning, .proceduralRender, .maskAllObjects, .focusArea, .skyReplacement, .frame, .artboard, .contentAwareFill, .selectionRefinement, .mergeLayers, .preparedLayerMerge, .embedSmartObject, .independentSmartObjectCopy, .addLayer:
+    case .preparedAction, .preparedDocumentMode, .toneAdjustment, .hdrToning, .proceduralRender, .maskAllObjects, .focusArea, .skyReplacement, .frame, .artboard, .contentAwareFill, .selectionRefinement, .mergeLayers, .preparedLayerMerge, .embedSmartObject, .independentSmartObjectCopy, .addLayer, .generativeFill:
       store.selectedLayerIDs = Set(store.document.activeLayerID.map { [$0] } ?? [])
     default: break
     }

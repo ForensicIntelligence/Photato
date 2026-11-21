@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 699 — Add local Generative Fill from surrounding pixels
+
+Generative Fill now uses an optional Apple Silicon Core ML model to fill a selection from surrounding pixels. Photato places the result above the visible stack on a raster layer with an editable mask and one Undo step.
+
+The pinned LaMa512 model ran in Debug and optimized Apple Silicon builds. The native transaction and authenticated loopback API returned identical composite samples on the same RGB8 fixture. Tests at RGB8, RGB16 and RGB32 matched protected pixels and every output-mask sample. The owned example retained the editable mask on native, PSD and PSB reopening in Photato.
+
+476 of 477 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture failed with identical assertions in build 698. Both signed preview slices opened offscreen. The local provider fills from context. Text prompts, variant sets and Adobe Execute Actions support remain open. The installed Photoshop session timed out, so Adobe output and physical workflow comparison remain pending.
+
+[Development record](DEVLOG.md#dev-step-699) · [Details](GENERATIVE_FILL_699.md).
+
 ## 2026-11-21 — Step 698 — Read raster alpha directly for regional Drop Shadows
 
 Regional Drop Shadow preparation reads coverage directly from eligible raster tiles and applies the same mask sampler as the layer compositor. The spread filter skips covered samples whose distance cannot be improved by a neighbor.
@@ -1587,14 +1597,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:698 -->
+<!-- current-status-step:699 -->
 ## Current development status — 21 November 2026
 
-Regional Drop Shadow preparation reads coverage directly from eligible raster tiles and applies the same mask sampler as the layer compositor. The spread filter skips covered samples whose distance cannot be improved by a neighbor.
+Generative Fill now uses an optional Apple Silicon Core ML model to fill a selection from surrounding pixels. Photato places the result above the visible stack on a raster layer with an editable mask and one Undo step.
 
-475 of 476 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture failed with the same assertions in build 697. Both signed preview slices opened offscreen.
+476 of 477 selected tests passed in arm64 Debug, optimized Apple Silicon and Intel under Rosetta. The original PhotoCraft effect fixture failed with identical assertions in build 698. Both signed preview slices opened offscreen.
 
-[Source checkpoint 698](SOURCE_PUBLICATION_698.md) · [Development record](DEVLOG.md#dev-step-698).
+[Source checkpoint 699](SOURCE_PUBLICATION_699.md) · [Development record](DEVLOG.md#dev-step-699).
 
 <!-- current-status:end -->
 
@@ -2499,6 +2509,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 696 | [Render Drop Shadows in bounded canvas regions](DEVLOG.md#dev-step-696) |
 | 2026-11-21 | 697 | [Reduce Fit and proof previews for large uniform Drop Shadows](DEVLOG.md#dev-step-697) |
 | 2026-11-21 | 698 | [Read raster alpha directly for regional Drop Shadows](DEVLOG.md#dev-step-698) |
+| 2026-11-21 | 699 | [Add local Generative Fill from surrounding pixels](DEVLOG.md#dev-step-699) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

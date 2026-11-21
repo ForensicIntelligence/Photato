@@ -7,7 +7,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class AutomationTests: XCTestCase {
-  static let expectedCommandCount = 283
+  static let expectedCommandCount = 285
   static let expectedActionVersion = 81
   func parse(_ text: String) throws -> AutomationRequest? {
     try AutomationRequest.parse(Data(text.utf8))
@@ -466,6 +466,10 @@ final class AutomationTests: XCTestCase {
       XCTAssertThrowsError(try AutomationCommand(data: data).nativeCommand(document: document))
     }
     XCTAssertEqual(Set(AutomationCommand.definitions.map(\.name)).count, AutomationTests.expectedCommandCount)
+    let localFill = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == GenerativeFillAPI.run })
+    XCTAssertTrue(localFill.parameters.isEmpty)
+    let cancellation = try XCTUnwrap(AutomationCommand.definitions.first { $0.name == GenerativeFillAPI.cancel })
+    XCTAssertEqual(Set(cancellation.parameters.keys), ["operationID"])
     for definition in AutomationCommand.definitions {
       let schema = definition.schema
       XCTAssertTrue(JSONSerialization.isValidJSONObject(schema), definition.name)

@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 699.** Generative Fill now uses an optional Apple Silicon Core ML model to fill a selection from surrounding pixels. Photato places the result above the visible stack on a raster layer with an editable mask and one Undo step. [Qualification](docs/SOURCE_PUBLICATION_699.md).
+
 **Source checkpoint 698.** Regional Drop Shadow preparation reads coverage directly from eligible raster tiles and applies the same mask sampler as the layer compositor. The spread filter skips covered samples whose distance cannot be improved by a neighbor. [Qualification](docs/SOURCE_PUBLICATION_698.md).
 
 **Source checkpoint 697.** Large RGB previews reuse uniform Drop Shadow spans while rendering the edges and output affected by sparse raster or mask changes. Eligible reduced HTTP viewports use the same path. [Qualification](docs/SOURCE_PUBLICATION_697.md).

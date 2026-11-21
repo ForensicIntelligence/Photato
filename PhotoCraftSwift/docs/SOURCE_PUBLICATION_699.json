@@ -1,0 +1,209 @@
+{
+  "build": 699,
+  "base": "0e8d6601c1e83480677854771decc5960ef7b1fb",
+  "buildInputs": 9317,
+  "includedBuildInputs": 9304,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "0a855899a83528f390a6d3483f17406def04a3f14c7030470d66f54ebe35e164",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/Application.swift",
+      "sha256": "18d042972a51cc63dff9783eb5ff1d205a43b0ea2c3ce515f5e4dade666d1280"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "33d0cb90bb25b4f5096e1fd36d2a0401d8a758cbc601a6973a36237fe0316c2b"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationGenerativeFill.swift",
+      "sha256": "ed14c81a0c0d5320db3ff3bf852aa7f69d64105705d81d25164797992ac005c1"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationLayerMerge.swift",
+      "sha256": "9b9f9fac20cf9046e9de8b7d58ce6cc2d7dd98497d3eab43020b556a9635b792"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "6fd12cdd708add17693ba38bf77b49703b0f8b190cb32616ef5537bca04c3c06"
+    },
+    {
+      "path": "Sources/PhotoCraft/EditorStore.swift",
+      "sha256": "64f65777c91991b7bf2c4009a40bbe249f848694d905c87b59c782d8ca6e48ca"
+    },
+    {
+      "path": "Sources/PhotoCraft/GenerativeFillControls.swift",
+      "sha256": "05715b35830a884e5ace437ae714b4fc781d3cec8a7050083f4ca8626d9e0a55"
+    },
+    {
+      "path": "Sources/PhotoCraft/PhotoshopMenus.swift",
+      "sha256": "e8f5af07078700b9ddc43c9c505d0fc15afdec6ed615661755ac0896b25e66f8"
+    },
+    {
+      "path": "Sources/PhotoCraft/WorkspaceView.swift",
+      "sha256": "fe4779830c342c2e0a70be420895aebec2da5047cc29901ae4f8424b56e00652"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Engine.swift",
+      "sha256": "91fa514048a0aa3b0d3e0a85835b0d89c95008d995cdf3da9cb0dd26cf678a78"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/LocalGenerativeFill.swift",
+      "sha256": "73e5e0341b3e6874aba37bfc73fd297e1ee2ddcd473ef040d532506ff69fae43"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "f92745ddd403788a350f8038884dc1535eeb4af63421ef9fb38a89f1db487c0d"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/GenerativeFillWorkflowTests.swift",
+      "sha256": "f6f0decf41e93c61754ff630aeb3f4f0717bbe98badc40e7f5800a6b3623b20b"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PhotoshopMenuTests.swift",
+      "sha256": "c34573b60436e4f3bee41742499febbf10767975a0eb47db65d13572a6a81bab"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/LocalGenerativeFillTests.swift",
+      "sha256": "2e77126d47525f02df52e5b0daeae7eff77a37e8a0a213720e975ecb534426bf"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "f8139f0b2f86d5bdbe047793a543fec89886793dd59f178d7135902f048b6fe7"
+    },
+    {
+      "path": "scripts/prepare-inpainting-model.py",
+      "sha256": "07fdef8139ff624f4496ce5ef17fa0a37bae170fccefb61b182c0efcee4cd20a"
+    }
+  ],
+  "packagingMetadata": {
+    "path": "scripts/Info.plist",
+    "previewSHA256": "f8139f0b2f86d5bdbe047793a543fec89886793dd59f178d7135902f048b6fe7"
+  },
+  "casesPerConfiguration": 477,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 477,
+      "passed": 476,
+      "newCasesExpected": 34,
+      "newCasesPassed": 34,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "c76c7bcfdf9821ab4b5c7b2c2cb8d43f9e39ca1630ef668e506ed1aef07b165e"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 477,
+      "passed": 476,
+      "newCasesExpected": 34,
+      "newCasesPassed": 34,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "3f77813e2c281f3f7d876f377d23cae9b8cb1346c164f065a31c6cb4ed37ce0e"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 477,
+      "passed": 476,
+      "newCasesExpected": 34,
+      "newCasesPassed": 34,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "f87f4b6a946edeb7c96834f4cf109005026215e3952b8e928ccfe4b200ca1416"
+    }
+  },
+  "reproducedParentFailures": [
+    "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+  ],
+  "selectedCasesSHA256": "a0b69501c0e8b2b879c2e588653dc52ef35f03bb2c165b2730a3c4d7d45df283",
+  "localInpainting": {
+    "model": {
+      "model": "LaMa512",
+      "repository": "heypatkay/solume-big-lama-coreml",
+      "revision": "c4358e4356b4c576a7fbfaabf27b5ffd5d9d7758",
+      "license": "Apache-2.0",
+      "inputFiles": {
+        "lama/LaMa512.mlpackage/Manifest.json": [
+          617,
+          "a2576a37183e5a04265456092e18271e165564bd2e6578f6091e404236f3069b"
+        ],
+        "lama/LaMa512.mlpackage/Data/com.apple.CoreML/model.mlmodel": [
+          1323980,
+          "a50e4ed35d3588892615046a111d274451ee83d29e854175fc91acc1361ffdd1"
+        ],
+        "lama/LaMa512.mlpackage/Data/com.apple.CoreML/weights/weight.bin": [
+          102068096,
+          "4db509018e12aec710ab28d8ac1a88812665decf7511e538666590db3e5c88fb"
+        ],
+        "LICENSE": [
+          11348,
+          "4ceeeac5a802e86c413c22b16cce8e9a22027b0250c97e6f8ac97c14cf0542c0"
+        ]
+      }
+    },
+    "archiveSHA256": "758492b250428e6eac3d54bbcc90638ab7929b4920b232df52bc407f8085ca06",
+    "ownedProof": {
+      "changedSelectedPixels": 5457,
+      "editableReimport": [
+        "PSD",
+        "PSB"
+      ],
+      "height": 213,
+      "maskedPreparationSeconds": 1.3563515417044982,
+      "nativeRoundTrip": true,
+      "protectedPixels": 60768,
+      "width": 311
+    },
+    "modelTests": {
+      "qualify-focused03.log": "d3c16230f66efb3f3db3158a8a6421d6b1787803985cace9662e6e8ed8aeed80",
+      "qualify-model-arm01.log": "e9acd28dc8d5ff877707cbe941565399442656e17ce4862d43860ac223f469fa"
+    },
+    "proofSHA256": {
+      "before.png": "45ede89bba074fa5bd0c162716a744464b74ded7350c21f1183034e20ddf0202",
+      "after.png": "403c295bf57e3a9f9703e73727b71457082a3a16b3b4cc4e94971ecb184fd3a0",
+      "Editable Fill.photato": "c5223b2835818ba1e0e33446466bc8176ebfcb6a16472895d17a27da2984604a"
+    }
+  },
+  "preview": {
+    "archiveSHA256": "8120881742d39c126982a710dc8e95f582b848b5ec05d7a6cd8ed75cd0852486",
+    "binarySHA256": "17fbd74b16dc23f9ec957fffb2bbb9919e8ecc2f9e4dfe1399810dffb4c52ade",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "bf5b188302bfe01029baecb2d392b20b1a50872eed9db3996a2e67a93e04f10b",
+      "x86_64": "9238c61fb02743c75dc28939a2c6c58df8471c32c879365117d772fbed81a838"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "liveAdobe": {
+    "pixelComparison": false,
+    "reason": "Document-count AppleEvent timeout"
+  },
+  "references": [
+    "https://helpx.adobe.com/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/execute-actions/",
+    "https://developer.adobe.com/firefly-services/docs/photoshop/guides/pegasus-worker-v2-models/",
+    "https://huggingface.co/heypatkay/solume-big-lama-coreml/tree/c4358e4356b4c576a7fbfaabf27b5ffd5d9d7758"
+  ]
+}

@@ -4096,3 +4096,9 @@ The existing `document.convertMode` command and compatible conversion adapter al
 ### Linear Gray32 and fixed gamma
 
 The existing `document.convertMode` command and compatible conversion adapter use the measured RGB primaries for supported 32-bit documents when converting to the default linear Grayscale profile with relative colorimetric intent. Straight HDR colors and independent alpha remain available through `mode.channel.read` and the native channel storage. See `documentModes.linearRGBToGray` and `documentModes.sameModeSDRToHDR`. [Qualification](SOURCE_PUBLICATION_569.md).
+
+## Local Generative Fill
+
+Choose a compiled LaMa512 model in the native Generative Fill sheet before using the API. The document state `generativeFill` reports platform support, model configuration, selection eligibility and the current operation ID.
+
+Send `generativeFill.apply` with the current document revision and empty parameters to the existing document command route. The committed result adds a masked raster layer and one Undo step. Send `generativeFill.cancel` with `operationID` while an API operation is active. The pinned Apple Silicon model runs on this Mac. The desktop and HTTP paths use the same edit. Prompt-driven generation and the Adobe Execute Actions form remain open. [Setup and qualification](GENERATIVE_FILL_699.md)
