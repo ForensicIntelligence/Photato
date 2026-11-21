@@ -463,6 +463,7 @@ public enum Renderer {
     if layer.affine != nil {
       let inverse = try layer.coordinateTransform.inverted()
       let linkedPreviewDepth = LinkedSmartObjectIO.integerPreviewDepth(layer, in: d)
+      let clampBackgroundEdges = SmartObjectIO.usesBackgroundEdgeSampling(layer)
       let bounds =
         isFill
         ? IntRect(x: 0, y: 0, width: d.width, height: d.height)
@@ -478,14 +479,17 @@ public enum Renderer {
         for x in x0..<x1 {
           let point = inverse.point(Double(x) + 0.5, Double(y) + 0.5)
           let local = (x: point.x - Double(sourceX), y: point.y - Double(sourceY))
+          if clampBackgroundEdges || linkedPreviewDepth != nil {
+            // The cache and background edge kernel are defined only inside the artwork.
+            guard local.x >= 0, local.y >= 0,
+              local.x < Double(surface.width), local.y < Double(surface.height) else { continue }
+          }
           var p =
             isFill
             ? surface.pixel(x: x, y: y)
-            : RasterGeometry.sample(surface, x: local.x, y: local.y, method: .bilinear)
+            : RasterGeometry.sample(surface, x: local.x, y: local.y, method: .bilinear,
+                clampEdges: clampBackgroundEdges)
           if let linkedPreviewDepth {
-            // The stored linked preview samples pixel centers in the source rectangle.
-            guard local.x >= 0, local.y >= 0,
-              local.x < Double(surface.width), local.y < Double(surface.height) else { continue }
             p = p.quantized(linkedPreviewDepth)
           }
           p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1

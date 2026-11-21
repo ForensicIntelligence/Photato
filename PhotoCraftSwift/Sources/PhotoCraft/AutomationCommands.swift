@@ -37,6 +37,7 @@ struct AutomationCommand: Sendable {
       if name == GenerativeFillAPI.run { return GenerativeFillAPI.parameters }
       if name == GenerativeFillAPI.expand { return GenerativeFillAPI.expandParameters }
       if name == GenerativeFillAPI.background { return GenerativeFillAPI.backgroundParameters }
+      if name == BackgroundReplacementAPI.name { return BackgroundReplacementAPI.parameters }
       if name == "sky.library" {return SkyLibraryAPI.parameterSchema}
       if name == MagicWandAPI.name { return MagicWandAPI.parameterSchema }
       if name == PaintBucketAPI.name { return PaintBucketAPI.parameterSchema }
@@ -356,6 +357,10 @@ struct AutomationCommand: Sendable {
       "variationCount": "Number of results (1 to 3)"],
       description: "Generate an editable local background below the active masked subject with one Undo step.",
       optionalParameters: ["foregroundLayerID", "prompt", "seed", "variationCount"]),
+    .init(name: BackgroundReplacementAPI.name, parameters: ["color": "Three normalized working RGB components",
+      "foregroundLayerID": "Active masked subject layer UUID", "layerID": "Existing Solid Color layer UUID to edit"],
+      description: "Add an editable Solid Color background below the active masked subject or change an existing Solid Color layer.",
+      optionalParameters: ["foregroundLayerID", "layerID"]),
     .init(name: ProcessChannelDeletionAPI.name, parameters: ["components": "Distinct zero-based process indices to delete", "mergeVisible": "Consent to flatten visible layers and discard hidden layers"], description: "Delete selected process channels, converting the remaining separations to Multichannel through one Undo.", optionalParameters: ["mergeVisible"]),
     .init(name: SpotChannelMergeAPI.name, parameters: ["channelID": "Saved spot channel UUID", "discardHiddenLayers": "Explicitly discard hidden layers"], description: "Merge a saved spot into a flattened RGB or CMYK Background with one Undo.", optionalParameters: ["discardHiddenLayers"]),
     .init(name: ChannelDuplicateAPI.name, parameters: ["source": "Individual numeric channel", "destination": "Current, open or new document", "name": "New channel name", "invert": "Complement channel samples"], description: "Duplicate a channel into the current document, a matching shared document or a new single-channel document.", optionalParameters: ["name", "invert"]),

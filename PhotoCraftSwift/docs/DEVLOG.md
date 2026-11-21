@@ -728,7 +728,32 @@ For a readable account of the project from the beginning, see [Photato developme
 | 707 | 2026-11-21 | [Reuse the local prompt model across an editing job](#dev-step-707) |
 | 708 | 2026-11-21 | [Add more variations to a saved wide expansion](#dev-step-708) |
 | 709 | 2026-11-21 | [Generate and iterate on a local background](#dev-step-709) |
+| 710 | 2026-11-21 | [Replace a masked background with colour or artwork](#dev-step-710) |
 <!-- history-index:end -->
+
+<a id="dev-step-710"></a>
+
+## 2026-11-21 — Replace a masked background with colour or artwork
+
+Build 709 had local and Apple Intelligence generation behind a masked foreground. Adobe’s desktop workflow also exposes colour fill and imported artwork at this point. This increment reuses the fill, original-source decoder, prepared history and Smart Object placement implementations. The subject and its mask remain in their existing group. The imported file is embedded at the chosen canvas fit. The new Photato command and the source upload share these transactions. The native app still discovers its existing local and Private Cloud Compute providers through the prior controls.
+
+The new placement first measured alpha 0.6666666 at a canvas corner of a 3× opaque image. Bilinear sampling now keeps the edge sample within the projected artwork and preserves the source’s alpha. The PSD and PSB previews use the same kernel. A one-byte versioned PtBA record persists this sampling choice. An intermediate reader rejected that record. The corrected decoder validates the version byte and retains the editable source.
+
+The first Debug build encountered the shared module-cache restriction and a compiler stack trap. The corrected command used the native SwiftPM build system, a local cache and the project’s established dead-allocation-pass workaround. The first focused test run required native file-type services and localhost. The first broad run required a writable artifacts directory for ten inherited test outputs. Release XCTest builds used explicit testability. Each attempt has a distinct log in the local evidence folder.
+
+Remove Background selects the subject mask. The final candidate makes both background choices available in that state. The colour picker starts with the image palette. Committing either action selects the new layer while the previous mask stays editable. The native and HTTP tests exercise the mask-selected state before both operations.
+
+After Remove Background, the contextual bar and Properties offer Background Color and Import Background. Photato adds an editable Solid Color layer or an embedded Smart Object below the masked subject. Import supports Fill Canvas, Fit Inside Canvas and Original Size. Both actions work without a model and take one Undo step.
+
+Desktop and Photato HTTP edits produced identical RGBA8 samples and preserved the subject layer. Solid Color remained editable through native, PSD and PSB round trips at RGB8, RGB16 and RGB32. Imported artwork retained the original bytes and exact rendered samples in all three formats for the tested placement modes. A 300,000 × 8 PSB reopened through the native file opener with opaque outer edges and the unmodified subject mask. Four 576 × 376 PSD and PSB merged previews matched all 3,465,216 RGBA bytes in the corresponding PNGs using an independent reader.
+
+526 of 527 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The known layer-effect fixture repeated the same 118 assertions from build 709 in each configuration. Xcode built the app and both signed preview slices opened offscreen. A signed sandbox harness wrote both editable background types. The preview retains the exact People Parts and Local Upscale resources from build 709. All 19 Apple Intelligence background tests and all 12 foreground workflow tests passed, including the Adobe-compatible colour output. The 1,000 × 650 native workspace snapshot showed all three background controls with the subject’s mask thumbnail selected.
+
+Installed Photoshop identified itself as 27.2.0. Its scripting interface timed out on both owned reopen probes and a read-only JavaScript version probe. Photoshop reopening, reference placement and interpolation fidelity, interactive colour panel and Import dialog behavior, and non-RGB contexts still need qualification. The editable background placement marker is supported starting with Photato build 710. The manual background workflow has no dedicated Adobe v2 route in the referenced contract. The existing Adobe-compatible remove-background colour output and create-composite layer operations remain available.
+
+[Adobe desktop background workflow](https://helpx.adobe.com/photoshop/desktop/repair-retouch/remove-objects-fill-space/replace-background-with-generate-background.html) · [Adobe Photoshop file format](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/) · [Adobe Photoshop API v2](https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/v2-ga/)
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_710.md).
 
 <a id="dev-step-709"></a>
 

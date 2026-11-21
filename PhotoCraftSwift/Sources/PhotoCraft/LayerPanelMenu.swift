@@ -138,6 +138,9 @@ struct LayerEditingMenu: View {
       if contextLayer == store.document.activeLayerID, store.canBeginLocalBackground {
         Button("Generate Background…") { store.beginLocalBackground() }
       }
+      if contextLayer == store.backgroundReplacementSubject {
+        Button("Import Background…") { store.chooseBackgroundArtwork() }
+      }
       Divider()
     }
     layerPanelButton(.duplicate, context: contextLayer)

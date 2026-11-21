@@ -3305,5 +3305,13 @@
     "Adobe_route_added": false,
     "cursor_impact": "No new tool/modifier action/factory menu/shortcut; native menu chooser uses system controls.",
     "Debug": "42of43selected; independent triangle convolution mismatch remains."
+  },
+  "manual_background_build710": {
+    "status": "Photato desktop workflow and native API",
+    "photatoCommand": "background.color",
+    "photatoSource": "POST /v1/documents/{id}/smart-objects/source with background placement options",
+    "scope": "Editable fill and embedded art below the masked subject. Standard create-composite layer operations and remove-background colour output remain available.",
+    "limits": "No new Adobe route. Hosted result comparison and Photoshop execution remain unqualified.",
+    "evidence": "docs/SOURCE_PUBLICATION_710.json"
   }
 }

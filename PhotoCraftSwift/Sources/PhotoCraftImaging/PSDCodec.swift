@@ -744,6 +744,8 @@ public enum PSDCodec {
           guard (1...LocalGenerativeFill.Recipe.maximumBytes).contains(content.count) else {
             throw CraftError.invalid("The saved Generative Fill context exceeds its storage budget.")
           }
+        case SmartObjectIO.backgroundArtworkTag:
+          guard content == Data([1]) else { throw CraftError.invalid("Invalid background artwork record.") }
         default:
           throw CraftError.unsupported(
             "PSD layer '\(layerName)' contains unported data '\(tag)' (for example type, effects, groups or smart objects). Import cancelled to preserve its contents."

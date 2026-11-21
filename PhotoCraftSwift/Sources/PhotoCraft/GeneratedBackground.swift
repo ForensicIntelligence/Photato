@@ -3,6 +3,8 @@ import Foundation
 import PhotoCraftAI
 import PhotoCraftCore
 import PhotoCraftImaging
+import SwiftUI
+import UniformTypeIdentifiers
 
 enum ImageGenerationIntent: String, CaseIterable, Sendable {
   case image, background
@@ -130,5 +132,152 @@ enum GeneratedBackground {
     try result.validate(); try Task.checkCancellation()
     // Shared immutable prepared-document transaction, not a second editing algorithm.
     return .regionRetouch(.init(source: source, result: result, label: "Generate Background"))
+  }
+}
+
+enum BackgroundReplacement {
+  static func foreground(in document: CraftDocument) -> Layer? {
+    guard document.colorMode == .rgb, document.restrictedMode == nil, document.inkMode == nil,
+      !document.isChannelOnly, document.animation == nil, document.videoTimeline == nil,
+      document.layers.count < LayerLimits.maximumLayers,
+      let index = document.activeIndex else { return nil }
+    let layer = document.layers[index]
+    let hasPixelMask = layer.mask != nil && layer.effectiveMaskProperties.enabled
+    guard case .raster = layer.content, hasPixelMask || layer.vectorMask?.enabled == true,
+      layer.video == nil, !layer.isBackground, !layer.isClipped, document.isVisible(layer.id),
+      document.ancestors(of: layer.id).allSatisfy({ $0.frame == nil && !$0.protection.fullyLocks }) else { return nil }
+    return layer
+  }
+
+  static func color(_ color: Pixel, in document: CraftDocument, foregroundID: UUID?) throws -> Command {
+    let layer = Layer(name: "Color Fill", content: .fill(Pixel(color.r, color.g, color.b)))
+    return try insert(layer, in: document, foregroundID: foregroundID, label: "Background Color")
+  }
+
+  static func artwork(_ layer: Layer, fit: FrameFit, in document: CraftDocument, foregroundID: UUID) throws -> Command {
+    guard let object = layer.smartObject else { throw CraftError.invalid("Import an image as an embedded Smart Object.") }
+    let placement = fit.placement(sourceWidth: object.width, sourceHeight: object.height,
+      frameWidth: document.width, frameHeight: document.height)
+    let transform = Transform2D(a: placement.scale, d: placement.scale, tx: placement.x, ty: placement.y)
+    try transform.validated()
+    var artwork = layer
+    artwork.x = Int(floor(placement.x)); artwork.y = Int(floor(placement.y))
+    artwork.affine = .translation(-Double(artwork.x), -Double(artwork.y)) * transform
+    artwork.sourceTags = artwork.sourceTags ?? [:]
+    artwork.sourceTags?[SmartObjectIO.backgroundArtworkTag] = Data([1])
+    return try insert(artwork, in: document, foregroundID: foregroundID, label: "Import Background")
+  }
+
+  private static func insert(_ layer: Layer, in document: CraftDocument, foregroundID: UUID?, label: String) throws -> Command {
+    try Task.checkCancellation()
+    guard let foreground = foreground(in: document), foregroundID == nil || foregroundID == foreground.id,
+      let index = document.activeIndex else {
+      throw CraftError.invalid("Select a visible layer with an enabled subject mask. Use Remove Background first.")
+    }
+    var layer = layer
+    layer.parentID = foreground.parentID
+    var result = document
+    result.layers.insert(layer, at: index)
+    result.activeLayerID = layer.id
+    try result.validate()
+    return .regionRetouch(.init(source: document, result: result, label: label))
+  }
+}
+
+extension EditorStore {
+  var backgroundReplacementSubject: UUID? {
+    guard canSelectComponentTarget, !editingComponent, !smartFilterMaskEditing, pathTarget == nil,
+      generativeFillDraft == nil, cropDraft == nil, regionRetouchDraft == nil,
+      clipboardLayerIDs.count == 1 else { return nil }
+    return BackgroundReplacement.foreground(in: document)?.id
+  }
+
+  func applyBackgroundColor(_ color: Pixel, foregroundID: UUID) {
+    guard backgroundReplacementSubject == foregroundID else { return }
+    performGeometry(label: "Background Color", prepare: { original in
+      try BackgroundReplacement.color(color, in: original, foregroundID: foregroundID)
+    }, onSuccess: { [weak self] in self?.finishBackgroundReplacement() })
+  }
+
+  func chooseBackgroundArtwork() {
+    guard let subject = backgroundReplacementSubject else { return }
+    let lifecycle = layerPanelGeneration, session = sessionGeneration
+    let fits: [(FrameFit, String)] = [(.fill, "Fill Canvas"), (.fit, "Fit Inside Canvas"), (.original, "Original Size")]
+    let sizing = NSPopUpButton()
+    sizing.addItems(withTitles: fits.map { $0.1 })
+    let label = NSTextField(labelWithString: "Placement")
+    sizing.setAccessibilityLabel(label.stringValue)
+    let accessory = NSStackView(views: [label, sizing])
+    accessory.orientation = .horizontal
+    accessory.alignment = .firstBaseline
+    accessory.edgeInsets = .init(top: 6, left: 12, bottom: 6, right: 12)
+    let panel = NSOpenPanel()
+    panel.title = "Import Background"
+    panel.prompt = "Import"
+    panel.accessoryView = accessory
+    panel.isAccessoryViewDisclosed = true
+    panel.allowedContentTypes = [.png, .jpeg, .tiff, .heic, .bmp, .gif]
+      + ["psd", "psb", "photato"].compactMap { UTType(filenameExtension: $0) }
+    let finish: (NSApplication.ModalResponse) -> Void = { [weak self] response in
+      guard response == .OK, let url = panel.url, let self,
+        self.layerPanelGeneration == lifecycle, self.sessionGeneration == session,
+        fits.indices.contains(sizing.indexOfSelectedItem) else { return }
+      self.importBackgroundArtwork(url, fit: fits[sizing.indexOfSelectedItem].0, foregroundID: subject)
+    }
+    let window = documentController?.documents.compactMap { $0 as? CraftNSDocument }
+      .first { $0.store === self }?.windowForSheet
+    if let window { panel.beginSheetModal(for: window, completionHandler: finish) }
+    else { panel.begin(completionHandler: finish) }
+  }
+
+  func importBackgroundArtwork(_ url: URL, fit: FrameFit, foregroundID: UUID) {
+    guard backgroundReplacementSubject == foregroundID else { return }
+    performGeometry(label: "Import Background", prepare: { original in
+      let source = try PreparedEmbeddedSource.read(url)
+      var options = EmbeddedSourceOptions()
+      options.background = .init(foregroundLayerID: foregroundID, fit: fit)
+      return try EmbeddedSourceAPI.prepare(source.original, source.fileName, original, options, decoded: source.document)
+    }, onSuccess: { [weak self] in self?.finishBackgroundReplacement() })
+  }
+
+  func finishBackgroundReplacement() {
+    if let id = document.activeLayerID { select(id) }
+    propertiesTab = .properties
+  }
+}
+
+struct BackgroundColorAction: View {
+  let store: EditorStore
+  let identifier: String
+  @State private var choosingColor = false
+  @State private var color = Color.clear
+  @State private var subject: UUID?
+
+  var body: some View {
+    Button("Background Color…") {
+      subject = store.backgroundReplacementSubject
+      guard subject != nil else { return }
+      color = store.displayColor(store.paintPalette.colors(context: .image).background)
+      choosingColor = true
+    }
+    .accessibilityIdentifier(identifier)
+    .disabled(store.backgroundReplacementSubject == nil)
+    .popover(isPresented: $choosingColor) {
+      VStack(alignment: .leading, spacing: 12) {
+        ColorPicker("Background Color", selection: $color, supportsOpacity: false)
+        HStack {
+          Spacer()
+          Button("Cancel") { choosingColor = false }.keyboardShortcut(.cancelAction)
+          Button("Apply") {
+            choosingColor = false
+            if let subject, let pixel = store.workingPixel(color) {
+              store.applyBackgroundColor(pixel, foregroundID: subject)
+            }
+          }
+          .keyboardShortcut(.defaultAction)
+          .disabled(subject == nil || subject != store.backgroundReplacementSubject || store.workingPixel(color) == nil)
+        }
+      }.padding().frame(minWidth: 230)
+    }
   }
 }

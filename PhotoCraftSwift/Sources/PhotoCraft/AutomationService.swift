@@ -546,6 +546,7 @@ import UniformTypeIdentifiers
       "contentAwareScale": ["available":store.canBeginContentAwareScale,"transformOpen":store.transformDraft?.contentAware == true,"previewBusy":store.contentAwareScaleBusy,"previewError":store.contentAwareScaleError as Any? ?? NSNull()],
       "contentAwareFill": store.contentAwareFillState,
       "generativeFill": GenerativeFillAPI.state(store),
+      "backgroundReplacement": BackgroundReplacementAPI.state(store, transfersEnabled: documentTransfersEnabled),
       "selectionRefinement": ["available": store.canBeginSelectMask, "workspaceOpen": store.selectMaskDraft != nil && store.selectMaskDraft?.isFocus != true],
       "subjectDetection": ["canSelectSubject": store.canDetectSubject(),
         "canRemoveBackground": store.canDetectSubject(removeBackground: true),
@@ -1667,6 +1668,26 @@ import UniformTypeIdentifiers
         return .json(state(share,document:document))
       }
       if ChannelArithmeticAPI.commands.contains(command.name) {return try await executeChannelArithmetic(command,document:document,share:share)}
+      if command.name == BackgroundReplacementAPI.name {
+        let options = try command.replacementBackgroundColor()
+        if options.layer == nil {
+          guard let subject = store.backgroundReplacementSubject, options.foreground == nil || options.foreground == subject else {
+            throw AutomationFailure(status: 422, message: "Select the masked foreground layer to add a background.")
+          }
+        }
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision,
+          allowAuxiliary: options.layer == nil) { original in
+          if let layer = options.layer {
+            guard BackgroundReplacementAPI.colorLayer(in: original, id: layer) != nil else {
+              throw AutomationFailure(status: 422, message: "Select an unlocked Solid Color layer.")
+            }
+            return .replaceContent(layer, .fill(options.color))
+          }
+          return try BackgroundReplacement.color(options.color, in: original, foregroundID: options.foreground)
+        }
+        if options.layer == nil { store.finishBackgroundReplacement() }
+        return .json(state(share, document: document))
+      }
       if BackgroundLayerAPI.commands.contains(command.name) {
         let color=store.backgroundColor
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision){original in try command.backgroundCommand(in:original,defaultColor:color)}
@@ -2076,6 +2097,7 @@ import UniformTypeIdentifiers
       "alphaChannels": ChannelAPI.capabilities,
       "contentAwareFill": ContentAwareSettings.apiCapabilities,
       "generativeFill": GenerativeFillAPI.capabilities,
+      "backgroundReplacement": BackgroundReplacementAPI.capabilities,
       "photomerge": PhotomergeSettings.apiCapabilities,
       "movieFramesImport":MovieFramesAPI.capabilities,
       "pdfImport":PDFImportAPI.capabilities,
@@ -2164,6 +2186,7 @@ import UniformTypeIdentifiers
       "stateSchemas": [
         "contentAwareFill":ContentAwareSettings.workspaceStateSchema,
         "generativeFill": GenerativeFillAPI.schema,
+        "backgroundReplacement": BackgroundReplacementAPI.schema,
         "lightPreview": LightPreviewAPI.stateSchema,
         "textFind":TextFindAPI.stateSchema,
         "fitImage":GeometryAPI.fitImageStateSchema,

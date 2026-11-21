@@ -2,6 +2,20 @@ import Foundation
 import PhotoCraftCore
 import PhotoCraftImaging
 
+struct BackgroundArtworkPlacement: Codable, Sendable {
+  let foregroundLayerID: UUID
+  let fit: FrameFit
+
+  static var schema: [String: Any] {
+    var value = BrushAPI.object([
+      "foregroundLayerID": VariablesAPI.uuid,
+      "fit": BrushAPI.enumeration(FrameFit.allCases.map(\.rawValue))
+    ], required: ["foregroundLayerID", "fit"])
+    value["type"] = ["object", "null"]
+    return value
+  }
+}
+
 struct EmbeddedSourceOptions: Codable, Sendable {
   var transform: Transform2D?
   var fit = true
@@ -13,9 +27,11 @@ struct EmbeddedSourceOptions: Codable, Sendable {
   var preserveSize = true
   var allInstances = true
   var rawDevelopment: RawDevelopment?
+  var background: BackgroundArtworkPlacement?
 }
 
 enum EmbeddedSourceAPI {
+  static let path = "/v1/documents/{id}/smart-objects/source"
   static var sizingSchema: [String: Any] {
     ["type": "string", "enum": SmartObjectPlacementSizing.allCases.map(\.rawValue), "default": "pixels"]
   }
@@ -26,7 +42,8 @@ enum EmbeddedSourceAPI {
       "layerID":["type":["string","null"],"format":"uuid"],
       "frameID":["type":["string","null"],"format":"uuid"],
       "frameFit":["type":"string","enum":FrameFit.allCases.map(\.rawValue)],
-      "preserveSize":BrushAPI.flag,"allInstances":BrushAPI.flag,"rawDevelopment":raw])
+      "preserveSize":BrushAPI.flag,"allInstances":BrushAPI.flag,"rawDevelopment":raw,
+      "background":BackgroundArtworkPlacement.schema])
   }
   static func options(_ header: String?) throws -> EmbeddedSourceOptions {
     do {
@@ -40,6 +57,11 @@ enum EmbeddedSourceAPI {
       try value.transform?.validated();try value.rawDevelopment?.validate()
       guard value.layerID == nil || value.frameID == nil else {throw CraftError.invalid("Choose replacement or frame placement, not both.")}
       if case .object(let fields) = raw {
+        if value.background != nil,
+          !Set(fields.keys).isDisjoint(with: ["layerID", "frameID", "transform", "fit", "sizing", "rasterize",
+            "preserveSize", "allInstances", "frameFit"]) {
+          throw CraftError.invalid("Background artwork uses its own placement options.")
+        }
         let ordinary = value.layerID == nil && value.frameID == nil
         guard ordinary || (fields["fit"] == nil && fields["sizing"] == nil
           && fields["transform"] == nil && fields["rasterize"] == nil) else {
@@ -62,6 +84,10 @@ enum EmbeddedSourceAPI {
       throw CraftError.invalid("Encoded Smart Object source exceeds its file format's limit.")
     }
     guard !PDFImport.recognizes(data) else {throw CraftError.invalid("Use the PDF placement endpoint to choose PDF artwork.")}
+    if let background = options.background,
+      BackgroundReplacement.foreground(in: original)?.id != background.foregroundLayerID {
+      throw CraftError.invalid("The masked foreground is no longer available.")
+    }
     var source = try decoded ?? SmartObjectIO.decode(bytes,fileName:name)
     if let settings = options.rawDevelopment {
       guard RawSourceIO.recognizes(data),let id = source.layers.first?.id else {throw CraftError.invalid("RAW settings require a camera RAW source.")}
@@ -72,7 +98,10 @@ enum EmbeddedSourceAPI {
         preserveSize:options.preserveSize,allInstances:options.allInstances)
     }
     var layer = try SmartObjectIO.placed(document: source, original: bytes, fileName: name, in: original,
-      fit: options.fit, sizing: options.sizing)
+      fit: options.background == nil && options.fit, sizing: options.sizing)
+    if let background = options.background {
+      return try BackgroundReplacement.artwork(layer, fit: background.fit, in: original, foregroundID: background.foregroundLayerID)
+    }
     if let id = options.frameID {return .frame(.replace(id,layer,fit:options.frameFit))}
     if let transform = options.transform {layer = try DocumentGeometry.transformLayer(layer,by:transform,in:original)}
     if options.rasterize { layer = try ArtworkPlacementPreparation.finish(layer, in: original, rasterize: true) }
@@ -84,11 +113,12 @@ enum EmbeddedSourceAPI {
       "mediaType":["type":["string","null"]]],required:["stage","layerID","sourceName","mediaType"])
   }
   static var capabilities: [String:Any] {
-    ["method":"POST","path":"/v1/documents/{id}/smart-objects/source","contentType":"application/octet-stream",
+    ["method":"POST","path":path,"contentType":"application/octet-stream",
      "optionsHeader":"X-Photato-Placement-Options","schema":schema,"stateSchema":stateSchema,
      "revisionHeader":"Required X-Photato-Revision; stale/missing returns409.",
      "nameHeader":"Optional X-Photato-Name, default Contents.photato; at most240 printable ASCII bytes without path separators.",
      "result":"HTTP200 shared target state. New layer by default; layerID replaces content, frameID replaces frame artwork. One native Undo transaction.",
+     "background":"Use background:{foregroundLayerID,fit} to place an embedded image below the active masked layer. fit is fill, fit or original. The original image and subject mask stay editable.",
      "source":"Original raster, native, supported PhotoCraft ZIP projects, PSD/PSB or supported camera RAW bytes remain embedded and downloadable. RAW settings are retained separately. PDF uses the existing pdf endpoint.",
      "initialTransform":"Optional document-coordinate delta after centering/fit, committed with placement in one edit. Set rasterize to true to bake the final geometry into a pixel layer. API defaults fit:true and rasterize:false are independent of General preferences. The desktop can offer a cancellable transform preview; RAW first opens native Camera Raw controls.",
      "sizing":"The desktop uses physical source size. API sizing:pixels retains the original pixel grid by default. Choose sizing:physical to match source inches in the destination PPI. Fit reduces oversized artwork after sizing.",
@@ -131,6 +161,9 @@ extension AutomationService {
       throw AutomationFailure(status:413,message:"Embedded source must contain1 byte through64MiB.")
     }
     let options = try EmbeddedSourceAPI.options(request.headers["x-photato-placement-options"])
+    if let background = options.background, document.store.backgroundReplacementSubject != background.foregroundLayerID {
+      throw AutomationFailure(status: 422, message: "Select the masked foreground layer to import a background.")
+    }
     let name = request.headers["x-photato-name"] ?? "Contents.photato"
     guard !name.trimmingCharacters(in:.whitespaces).isEmpty,name.utf8.count <= 240,
       name.utf8.allSatisfy({(32...126).contains($0)}),!name.contains("/"),!name.contains("\\") else {
@@ -140,14 +173,16 @@ extension AutomationService {
     let prepare = embeddedSourcePreparation
     embeddedSourceOperations[id] = operation
     defer {if embeddedSourceOperations[id] == operation {embeddedSourceOperations.removeValue(forKey:id)}}
-    try await executePreparedOperation(document:document,shareID:id,revision:expected,validateCommit:{[weak self] in
+    try await executePreparedOperation(document:document,shareID:id,revision:expected,
+      allowAuxiliary: options.background != nil, validateCommit:{[weak self] in
       guard let self,self.documentTransfersEnabled,self.documentTransferGeneration == generation else {
         throw AutomationFailure(status:409,message:"Source transfer permission changed.")
       }
     }) { original in
       try await prepare(data,name,original,options)
     }
-    document.store.selectedLayerIDs = Set(document.store.document.activeLayerID.map{[$0]} ?? [])
+    if options.background != nil { document.store.finishBackgroundReplacement() }
+    else { document.store.selectedLayerIDs = Set(document.store.document.activeLayerID.map{[$0]} ?? []) }
     return .json(state(share,document:document))
   }
 }

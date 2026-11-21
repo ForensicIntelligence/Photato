@@ -222,3 +222,206 @@ final class LocalGeneratedBackgroundTests: XCTestCase {
     }
   }
 }
+
+final class BackgroundReplacementTests: XCTestCase {
+  private func document(depth: PixelDepth = .u8) throws -> CraftDocument {
+    var document = try CraftDocument(width: 48, height: 32, depth: depth)
+    document.layers[0].content = .raster(try Surface(width: 48, height: 32, depth: depth, fill: Pixel(0.1, 0.2, 0.8)))
+    var mask = try Surface(width: 48, height: 32, fill: .black)
+    try mask.mapPixels(in: .init(x: 18, y: 8, width: 12, height: 16)) { _, _, _ in .white }
+    document.layers[0].mask = mask
+    return document
+  }
+
+  private func artwork() throws -> Data {
+    var source = try CraftDocument(width: 16, height: 24)
+    var pixels = try Surface(width: 16, height: 24)
+    pixels.mapPixels { x, y, _ in Pixel(Float(x) / 15, Float(y) / 23, 0.4) }
+    source.layers[0].content = .raster(pixels)
+    return try DocumentIO.encode(source, format: .png)
+  }
+
+  private func setBackground(_ document: CraftDocument, _ pixels: Data, _ fit: FrameFit) throws -> CraftDocument {
+    var options = EmbeddedSourceOptions()
+    options.background = .init(foregroundLayerID: try XCTUnwrap(document.activeLayerID), fit: fit)
+    var result = document
+    try EmbeddedSourceAPI.prepare(pixels, "Backdrop.png", document, options).apply(to: &result)
+    return result
+  }
+
+  func testSolidColorReopensEditableAtAllRGBDepths() throws {
+    for depth in [PixelDepth.u8, .u16, .f32] {
+      let source = try document(depth: depth)
+      let command = try BackgroundReplacement.color(Pixel(0.125, 0.5, 0.75), in: source, foregroundID: source.activeLayerID)
+      var session = EditorSession(document: source)
+      try session.executePrepared(PreparedEdit(command: command, document: source))
+      let edited = session.document
+      XCTAssertEqual(edited.layers.last, source.layers.last)
+      let composite = try Renderer.composite(edited)
+      let subject = try Renderer.composite(source)
+      XCTAssertTrue(composite.pixel(x: 24, y: 16).hasSameBits(as: subject.pixel(x: 24, y: 16)))
+      XCTAssertEqual(composite.pixel(x: 0, y: 0).a, 1)
+      try session.undo()
+      XCTAssertEqual(session.document, source)
+      try session.redo()
+      XCTAssertEqual(session.document, edited)
+      for format in [DocumentIO.Format.native, .psd, .psb] {
+        let reopened = try DocumentIO.decodeUpload(DocumentIO.encode(edited, format: format), native: format == .native,
+          name: "Fill.\(format.rawValue)")
+        guard case .fill = reopened.layers.first?.content else { return XCTFail("Background fill lost in \(format).") }
+        XCTAssertEqual(try Renderer.composite(reopened).rgbaData(depth: depth), try composite.rgbaData(depth: depth),
+          "\(depth) \(format)")
+      }
+    }
+  }
+
+  func testArtworkPlacementModesPreserveSourceAndReopen() throws {
+    let source = try document(), bytes = try artwork()
+    for fit in FrameFit.allCases {
+      let edited = try setBackground(source, bytes, fit)
+      XCTAssertEqual(edited.layers.last, source.layers.last)
+      let layer = edited.layers[0]
+      XCTAssertEqual(layer.smartObject?.data, bytes)
+      let transform = layer.coordinateTransform
+      switch fit {
+      case .fill: XCTAssertEqual(transform, .init(a: 3, d: 3, ty: -20))
+      case .fit:
+        XCTAssertEqual(transform.a, 4.0 / 3)
+        XCTAssertEqual(transform.tx, 40.0 / 3, accuracy: 1e-12)
+        XCTAssertEqual(transform.ty, 0)
+      case .original: XCTAssertEqual(transform, .translation(16, 4))
+      }
+      let pixels = try Renderer.composite(edited)
+      XCTAssertEqual(pixels.pixel(x: 0, y: 0).a, fit == .fill ? 1 : 0)
+      for format in [DocumentIO.Format.native, .psd, .psb] {
+        let reopened = try DocumentIO.decodeUpload(DocumentIO.encode(edited, format: format), native: format == .native,
+          name: "Artwork.\(format.rawValue)")
+        XCTAssertEqual(reopened.layers[0].smartObject?.data, bytes)
+        XCTAssertEqual(try Renderer.composite(reopened).rgbaData(depth: .u8), try pixels.rgbaData(depth: .u8),
+          "\(fit) \(format)")
+      }
+    }
+  }
+
+  func testMaskedSubjectWithinGroupAndIneligibleTargets() throws {
+    var original = try document()
+    let group = Layer(name: "Portrait", content: .group(.init()))
+    original.layers[0].parentID = group.id
+    original.layers.append(group)
+    let subject = try XCTUnwrap(original.activeLayerID)
+    let edit = try BackgroundReplacement.color(.black, in: original, foregroundID: subject)
+    var result = original
+    try edit.apply(to: &result)
+    XCTAssertEqual(result.layers[0].parentID, group.id)
+    XCTAssertEqual(Array(result.layers.dropFirst()), original.layers)
+    XCTAssertThrowsError(try BackgroundReplacement.color(.black, in: original, foregroundID: UUID()))
+    original.layers[1].visible = false
+    XCTAssertNil(BackgroundReplacement.foreground(in: original))
+    original.layers[1].visible = true
+    original.layers[0].mask = nil
+    XCTAssertNil(BackgroundReplacement.foreground(in: original))
+  }
+
+  func testMaximumWidthArtworkPreservesBothCanvasEdgesAndOriginalBytes() throws {
+    let width = Surface.maxDimension, height = 8
+    var source = try CraftDocument(width: width, height: height)
+    var mask = try Surface(width: width, height: height, fill: .black)
+    mask.setPixel(x: width / 2, y: height / 2, .white)
+    source.layers[0].mask = mask
+    let bytes = try artwork()
+    let edited = try setBackground(source, bytes, .fill)
+    let folder = try EmbeddedPlacementWorkflowTests().folder()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let file = folder.appendingPathComponent("Wide background.psb")
+    try PSDCodec.writeRasterLayers(edited, to: file, format: .psb)
+    let reopened = try DocumentIO.read(file)
+    XCTAssertEqual(reopened.layers[0].smartObject?.data, bytes)
+    XCTAssertEqual(reopened.layers[1].mask, mask)
+    for x in [0, width - 4] {
+      let region = IntRect(x: x, y: 0, width: 4, height: height)
+      let expected = try Renderer.composite(edited, region: region).cropped(to: region)
+      let actual = try Renderer.composite(reopened, region: region).cropped(to: region)
+      XCTAssertEqual(expected.pixel(x: 0, y: 0).a, 1)
+      XCTAssertEqual(try actual.rgbaData(depth: .u8), try expected.rgbaData(depth: .u8))
+    }
+  }
+
+  func testArtworkUploadPlacementRejectsMixedAndIncompleteOptions() throws {
+    let id = UUID().uuidString
+    XCTAssertThrowsError(try EmbeddedSourceAPI.options("""
+      {"background":{"foregroundLayerID":"\(id)","fit":"fit"},"rasterize":true}
+      """))
+    XCTAssertThrowsError(try EmbeddedSourceAPI.options("""
+      {"background":{"foregroundLayerID":"\(id)"}}
+      """))
+    XCTAssertThrowsError(try EmbeddedSourceAPI.options("""
+      {"background":{"foregroundLayerID":"\(id)","fit":"extend"}}
+      """))
+    XCTAssertNotNil(try EmbeddedSourceAPI.options("""
+      {"background":{"foregroundLayerID":"\(id)","fit":"original"}}
+      """).background)
+  }
+
+  @MainActor func testNativeAndHTTPColorAndArtworkUseTheSameUndoableEdit() async throws {
+    let source = try document(), bytes = try artwork()
+    let subject = try XCTUnwrap(source.activeLayerID)
+    let helper = AutomationTests(), uploads = EmbeddedPlacementWorkflowTests()
+    let folder = try uploads.folder()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let file = folder.appendingPathComponent("Backdrop.png")
+    try bytes.write(to: file)
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      let store = shared.store
+      store.session = EditorSession(document: source)
+      try service.share(shared)
+      store.selectMask(subject)
+      XCTAssertTrue(store.editingMask)
+      XCTAssertEqual(store.backgroundReplacementSubject, subject)
+
+      store.applyBackgroundColor(Pixel(0.2, 0.4, 0.6), foregroundID: subject)
+      await store.geometryTask?.value
+      let nativeColor = try Renderer.composite(store.document).rgbaData(depth: .u8)
+      XCTAssertNil(store.error)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      XCTAssertNil(store.maskEditingLayerID)
+      await store.undo()
+      store.selectMask(subject)
+      let colorStatus = try await helper.edit(service, shared, BackgroundReplacementAPI.name,
+        ["foregroundLayerID": subject.uuidString, "color": [0.2, 0.4, 0.6]])
+      XCTAssertEqual(colorStatus, 200)
+      XCTAssertEqual(try Renderer.composite(store.document).rgbaData(depth: .u8), nativeColor)
+      let fill = try XCTUnwrap(store.document.activeLayerID)
+      let recolorStatus = try await helper.edit(service, shared, BackgroundReplacementAPI.name,
+        ["layerID": fill.uuidString, "color": [1, 0, 0]])
+      XCTAssertEqual(recolorStatus, 200)
+      XCTAssertEqual(try Renderer.composite(store.document).pixel(x: 0, y: 0), Pixel(1, 0, 0))
+      await store.undo()
+      await store.undo()
+      XCTAssertEqual(store.document, source)
+
+      store.selectMask(subject)
+      store.importBackgroundArtwork(file, fit: .fill, foregroundID: subject)
+      await store.geometryTask?.value
+      XCTAssertNil(store.error)
+      let nativeArtwork = try Renderer.composite(store.document).rgbaData(depth: .u8)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      await store.undo()
+      store.selectMask(subject)
+      let background = ["background": ["foregroundLayerID": subject.uuidString, "fit": "fill"]]
+      let denied = try await uploads.upload(service, shared, bytes, name: "Backdrop.png", options: background)
+      XCTAssertEqual(denied.0.statusCode, 403)
+      service.setDocumentTransfersEnabled(true)
+      let stale = try await uploads.upload(service, shared, bytes, name: "Backdrop.png", options: background, revision: "older")
+      XCTAssertEqual(stale.0.statusCode, 409)
+      let imported = try await uploads.upload(service, shared, bytes, name: "Backdrop.png", options: background)
+      XCTAssertEqual(imported.0.statusCode, 200)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      XCTAssertNil(store.maskEditingLayerID)
+      XCTAssertEqual(store.document.layers.first?.smartObject?.data, bytes)
+      XCTAssertEqual(store.document.layers.last, source.layers.last)
+      XCTAssertEqual(try Renderer.composite(store.document).rgbaData(depth: .u8), nativeArtwork)
+      await store.undo()
+      XCTAssertEqual(store.document, source)
+    }
+  }
+}

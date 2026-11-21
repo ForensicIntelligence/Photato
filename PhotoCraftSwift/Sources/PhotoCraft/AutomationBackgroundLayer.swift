@@ -1,6 +1,61 @@
 import Foundation
 import PhotoCraftCore
 
+enum BackgroundReplacementAPI {
+  static let name = "background.color"
+
+  static var colorSchema: [String: Any] {
+    ["type": "array", "minItems": 3, "maxItems": 3, "items": BrushAPI.number(0, 1)]
+  }
+
+  static var parameters: [String: Any] {
+    BrushAPI.object(["color": colorSchema, "foregroundLayerID": VariablesAPI.uuid, "layerID": VariablesAPI.uuid],
+      required: ["color"])
+  }
+
+  static var schema: [String: Any] {
+    BrushAPI.object(["foregroundLayerID": VariablesAPI.nullableUUID, "canAddColor": BrushAPI.flag,
+      "canImport": BrushAPI.flag, "editableColorLayerID": VariablesAPI.nullableUUID],
+      required: ["foregroundLayerID", "canAddColor", "canImport", "editableColorLayerID"])
+  }
+
+  static var capabilities: [String: Any] {
+    ["colorCommand": name, "stateSchema": schema,
+      "color": "Use three working RGB components in the 0–1 range. Supply layerID to recolor an existing Solid Color layer.",
+      "artwork": EmbeddedSourceAPI.path,
+      "artworkOptionsHeader": "X-Photato-Placement-Options",
+      "artworkOptions": BackgroundArtworkPlacement.schema,
+      "placement": "Add an editable background directly behind the active masked subject. Both edits use one Undo step."]
+  }
+
+  static func colorLayer(in document: CraftDocument, id: UUID?) -> Layer? {
+    guard document.colorMode == .rgb, let id,
+      let layer = document.layers.first(where: { $0.id == id }),
+      case .fill = layer.content, !document.isLocked(id) else { return nil }
+    return layer
+  }
+
+  @MainActor static func state(_ store: EditorStore, transfersEnabled: Bool) -> [String: Any] {
+    let foreground = store.backgroundReplacementSubject
+    let fill = store.clipboardTargetAvailable ? colorLayer(in: store.document, id: store.document.activeLayerID) : nil
+    return ["foregroundLayerID": foreground?.uuidString as Any? ?? NSNull(), "canAddColor": foreground != nil,
+      "canImport": foreground != nil && transfersEnabled, "editableColorLayerID": fill?.id.uuidString as Any? ?? NSNull()]
+  }
+}
+
+extension AutomationCommand {
+  func replacementBackgroundColor() throws -> (color: Pixel, foreground: UUID?, layer: UUID?) {
+    let foreground = try parameters["foregroundLayerID"].map { _ in try actionUUID("foregroundLayerID") }
+    let layer = try parameters["layerID"].map { _ in try actionUUID("layerID") }
+    guard foreground == nil || layer == nil, let value = parameters["color"] else {
+      throw AutomationFailure(status: 400, message: "Choose a foreground or a Solid Color layer.")
+    }
+    guard let values = try BrushAPI.merge(value, schema: BackgroundReplacementAPI.colorSchema, path: "color") as? [Double],
+      values.count == 3 else { throw AutomationFailure(status: 400, message: "Provide three RGB components.") }
+    return (Pixel(Float(values[0]), Float(values[1]), Float(values[2])), foreground, layer)
+  }
+}
+
 enum BackgroundLayerAPI {
   static let commands=["layer.background","pixels.clear"]
   static func schema(_ key:String)->[String:Any] {switch key {

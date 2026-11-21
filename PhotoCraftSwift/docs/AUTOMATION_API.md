@@ -4111,6 +4111,12 @@ Add `referenceVariationID` to a request with `targetLayerID` to generate similar
 
 Send `generativeFill.cancel` with `operationID` to cancel an active API operation. Both models run on Apple Silicon with macOS 26 or later. Adobe’s Generative Fill Execute Actions descriptor and job remain to be qualified. [Adobe model reference](https://developer.adobe.com/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models)
 
+## Manual Background Replacement
+
+Use `background.color` with `color` set to three normalized working RGB values. It adds an editable fill below the active masked subject. Supply `foregroundLayerID` to pin the intended subject, or supply `layerID` to edit an unlocked Solid Color layer. Document state reports the eligible foreground, available commands and selected editable fill under `backgroundReplacement`.
+
+With document transfers enabled, POST the original bytes to `/v1/documents/{id}/smart-objects/source`. Send the current `X-Photato-Revision` and an `X-Photato-Placement-Options` header such as `{"background":{"foregroundLayerID":"<active subject UUID>","fit":"fill"}}`. Choose `fill`, `fit` or `original`. The result retains the original bytes and the subject mask. Both operations return shared document state and use one native Undo step.
+
 ## Local Generate Background
 
 Select the layer content of a visible, masked RGB subject and configure the same on-device prompt model used by Generative Fill. Send `generativeBackground.apply` with the current document revision. `foregroundLayerID`, when supplied, must match the active subject. Use `prompt`, an optional unsigned `seed`, and `variationCount` from one to three. A blank prompt uses a general lighting and perspective prompt.

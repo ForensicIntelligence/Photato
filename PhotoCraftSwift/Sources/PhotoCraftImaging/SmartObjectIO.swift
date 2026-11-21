@@ -4,6 +4,12 @@ import PhotoCraftCore
 import UniformTypeIdentifiers
 
 public enum SmartObjectIO {
+  /// Identifies an imported background that repeats edge samples inside the artwork boundary.
+  public static let backgroundArtworkTag = "PtBA"
+
+  static func usesBackgroundEdgeSampling(_ layer: Layer) -> Bool {
+    layer.smartObject != nil && layer.sourceTags?[backgroundArtworkTag] == Data([1])
+  }
   public static let maximumCanvasPixels = 8_388_608
   public static let maximumPagedRGBPixels = Surface.maxPixels
   static let maximumDecodedBytes = 256 * 1_024 * 1_024

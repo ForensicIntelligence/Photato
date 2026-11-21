@@ -279,6 +279,13 @@ extension WorkspaceView {
           Button("Generate Background with Apple Intelligence…") { store.prepareBackgroundGeneration() }
             .controlSize(.small).disabled(!store.canStartBackgroundGeneration)
         }
+        if store.backgroundReplacementSubject != nil {
+          VStack(alignment: .leading, spacing: 5) {
+            BackgroundColorAction(store: store, identifier: "background.color.properties")
+            Button("Import Background…") { store.chooseBackgroundArtwork() }
+              .accessibilityIdentifier("background.import.properties")
+          }.controlSize(.small)
+        }
         Toggle("Sample All Layers", isOn: $store.subjectSampleAllLayers)
           .controlSize(.small).disabled(!store.clipboardTargetAvailable)
         HStack(spacing: 6) {

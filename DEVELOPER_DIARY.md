@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **709** · The 10 most recent entries, newest first.
+Source build **710** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 710 — Replace a masked background with colour or artwork
+
+After Remove Background, the contextual bar and Properties offer Background Color and Import Background. Photato adds an editable Solid Color layer or an embedded Smart Object below the masked subject. Import supports Fill Canvas, Fit Inside Canvas and Original Size. Both actions work without a model and take one Undo step.
+
+Desktop and Photato HTTP edits produced identical RGBA8 samples and preserved the subject layer. Solid Color remained editable through native, PSD and PSB round trips at RGB8, RGB16 and RGB32. Imported artwork retained the original bytes and exact rendered samples in all three formats for the tested placement modes. A 300,000 × 8 PSB reopened through the native file opener with opaque outer edges and the unmodified subject mask. Four 576 × 376 PSD and PSB merged previews matched all 3,465,216 RGBA bytes in the corresponding PNGs using an independent reader.
+
+Installed Photoshop identified itself as 27.2.0. Its scripting interface timed out on both owned reopen probes and a read-only JavaScript version probe. Photoshop reopening, reference placement and interpolation fidelity, interactive colour panel and Import dialog behavior, and non-RGB contexts still need qualification. The editable background placement marker is supported starting with Photato build 710. The manual background workflow has no dedicated Adobe v2 route in the referenced contract. The existing Adobe-compatible remove-background colour output and create-composite layer operations remain available.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-710) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_710.md).
 
 ## 2026-11-21 — Step 709 — Generate and iterate on a local background
 
@@ -93,13 +103,3 @@ Mean RGB8 drift across 505 boundary samples fell from 4.39 to 0.31 levels on the
 480 of 481 selected tests passed in arm64 Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft effect fixture reproduced build 700’s assertions. Both signed preview slices opened offscreen, and the checked-in Xcode project built in arm64 Debug. Application-managed variation sets and the Adobe Execute Actions descriptor remain open. A separate seed probe hit a Core ML GPU exception once and succeeded on retry. The installed Photoshop session timed out on a read-only scripting query, so Photoshop output equivalence has yet to be verified.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-701) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_701.md).
-
-## 2026-11-21 — Step 700 — Add prompted Generative Fill on Apple Silicon
-
-Generative Fill accepts a text prompt and selection mask in Photato’s native editing sheet and HTTP API. An optional Core ML model generates the content locally. The existing blank-prompt mode uses LaMa512.
-
-Using the same source, selection and seed, a red-apple prompt and a blue-mug prompt produced distinct subjects. The native and authenticated HTTP paths matched RGB8 output bytes for the same prompt and seed. Both prompts preserved all 49,283 protected pixels. The editable mask retained feathering and a protected hole, and one Undo restored the original document. Both edits reopened in Photato with exact RGB8 composites and mask coverage in native, PSD and PSB files.
-
-477 of 478 selected tests passed in arm64 Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft effect fixture reproduced build 699’s assertions. Both signed preview slices opened offscreen. The checked-in Xcode project built in arm64 Debug, and the sheet was inspected offscreen in Light and Dark. Hard selection edges can show a tonal seam. Editable variation sets, Adobe Execute Actions descriptor compatibility and Firefly output equivalence remain open. The installed Photoshop session timed out on both scripting queries.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-700) · [Model setup](PhotoCraftSwift/docs/LOCAL_GENERATIVE_FILL.md).

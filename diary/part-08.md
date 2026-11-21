@@ -1,5 +1,15 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)
 
+## 2026-11-21 — Step 710 — Replace a masked background with colour or artwork
+
+After Remove Background, the contextual bar and Properties offer Background Color and Import Background. Photato adds an editable Solid Color layer or an embedded Smart Object below the masked subject. Import supports Fill Canvas, Fit Inside Canvas and Original Size. Both actions work without a model and take one Undo step.
+
+Desktop and Photato HTTP edits produced identical RGBA8 samples and preserved the subject layer. Solid Color remained editable through native, PSD and PSB round trips at RGB8, RGB16 and RGB32. Imported artwork retained the original bytes and exact rendered samples in all three formats for the tested placement modes. A 300,000 × 8 PSB reopened through the native file opener with opaque outer edges and the unmodified subject mask. Four 576 × 376 PSD and PSB merged previews matched all 3,465,216 RGBA bytes in the corresponding PNGs using an independent reader.
+
+Installed Photoshop identified itself as 27.2.0. Its scripting interface timed out on both owned reopen probes and a read-only JavaScript version probe. Photoshop reopening, reference placement and interpolation fidelity, interactive colour panel and Import dialog behavior, and non-RGB contexts still need qualification. The editable background placement marker is supported starting with Photato build 710. The manual background workflow has no dedicated Adobe v2 route in the referenced contract. The existing Adobe-compatible remove-background colour output and create-composite layer operations remain available.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-710) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_710.md).
+
 ## 2026-11-21 — Step 709 — Generate and iterate on a local background
 
 Generate Background now offers a local model after Remove Background. Photato places the result on an editable Smart Object below the masked subject. The document retains the original subject context for Generate More and Generate Similar after reopening. The Image Playground workflow is available through its Apple Intelligence action.
@@ -1311,5 +1321,13 @@ Photato composes eligible tone stacks and packs the changed display rows in para
 All 400 selected tests passed in Debug and both optimized builds. Physical display cadence and exact Photoshop brush output remain open.
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-550) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_550.md).
+
+## 2026-11-18 — Step 549 — Faster coverage for large brush strokes
+
+The brush calculates wide-dab coverage in parallel. The 5,000 px example on the 24 MP workspace reached its first AppKit draw in 457 ms, compared with 502 ms in the paired build 548 trials. All 146 tested buffers matched build 548.
+
+All 398 selected tests passed in each configuration. Wide brushes still need faster output and physical display testing. The 24 saved Photoshop brush cases still differ.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-549) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_549.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-07.md)

@@ -50,6 +50,14 @@ The time and scratch storage required grow with the border area and the number o
 
 ## Generate a background
 
+### Use colour or an imported image
+
+After removing a background, choose **Background Color…** to add an editable fill beneath the subject. Select the fill and use its Properties swatch to change the colour.
+
+Choose **Import Background…** and select an image. **Fill Canvas** crops to the frame, **Fit Inside Canvas** shows the entire image, and **Original Size** centres it at its source pixel size. Transform it in the editor or open the embedded original through the Layers panel. The new layer goes above any older background beneath that subject. [Automation API](AUTOMATION_API.md#manual-background-replacement)
+
+### Generate with a model
+
 Start with **Remove Background**, then select the masked subject and click **Generate Background…** in the contextual bar or Properties. Enter a description or leave the prompt blank. Choose the local Runway model and the number of variations. The generated layer sits below the original cutout. Use its Properties to switch variations, Generate More, or Generate Similar after reopening. The layer stores the captured subject context.
 
 The local model fits the subject into a 512-pixel input. Photato scales the editable result to the original canvas. Properties also offers **Generate Background with Apple Intelligence…**. [Automation API](AUTOMATION_API.md#local-generate-background)

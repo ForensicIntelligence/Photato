@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 710 — Replace a masked background with colour or artwork
+
+After Remove Background, the contextual bar and Properties offer Background Color and Import Background. Photato adds an editable Solid Color layer or an embedded Smart Object below the masked subject. Import supports Fill Canvas, Fit Inside Canvas and Original Size. Both actions work without a model and take one Undo step.
+
+Desktop and Photato HTTP edits produced identical RGBA8 samples and preserved the subject layer. Solid Color remained editable through native, PSD and PSB round trips at RGB8, RGB16 and RGB32. Imported artwork retained the original bytes and exact rendered samples in all three formats for the tested placement modes. A 300,000 × 8 PSB reopened through the native file opener with opaque outer edges and the unmodified subject mask. Four 576 × 376 PSD and PSB merged previews matched all 3,465,216 RGBA bytes in the corresponding PNGs using an independent reader.
+
+Installed Photoshop identified itself as 27.2.0. Its scripting interface timed out on both owned reopen probes and a read-only JavaScript version probe. Photoshop reopening, reference placement and interpolation fidelity, interactive colour panel and Import dialog behavior, and non-RGB contexts still need qualification. The editable background placement marker is supported starting with Photato build 710. The manual background workflow has no dedicated Adobe v2 route in the referenced contract. The existing Adobe-compatible remove-background colour output and create-composite layer operations remain available.
+
+[Development record](DEVLOG.md#dev-step-710) · [Qualification](SOURCE_PUBLICATION_710.md).
+
 ## 2026-11-21 — Step 709 — Generate and iterate on a local background
 
 Generate Background now offers a local model after Remove Background. Photato places the result on an editable Smart Object below the masked subject. The document retains the original subject context for Generate More and Generate Similar after reopening. The Image Playground workflow is available through its Apple Intelligence action.
@@ -1697,14 +1707,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:709 -->
+<!-- current-status-step:710 -->
 ## Current development status — 21 November 2026
 
-Generate Background now offers a local model after Remove Background. Photato places the result on an editable Smart Object below the masked subject. The document retains the original subject context for Generate More and Generate Similar after reopening. The Image Playground workflow is available through its Apple Intelligence action.
+After Remove Background, the contextual bar and Properties offer Background Color and Import Background. Photato adds an editable Solid Color layer or an embedded Smart Object below the masked subject. Import supports Fill Canvas, Fit Inside Canvas and Original Size. Both actions work without a model and take one Undo step.
 
-503 of 504 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The original PhotoCraft layer-effect fixture repeated its 118 assertions from build 708. All 19 existing Apple Intelligence background tests passed. Xcode built the app and both signed preview slices opened offscreen. The native setup sheet was checked in light and dark appearances.
+526 of 527 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The known layer-effect fixture repeated the same 118 assertions from build 709 in each configuration. Xcode built the app and both signed preview slices opened offscreen. A signed sandbox harness wrote both editable background types. The preview retains the exact People Parts and Local Upscale resources from build 709. All 19 Apple Intelligence background tests and all 12 foreground workflow tests passed, including the Adobe-compatible colour output. The 1,000 × 650 native workspace snapshot showed all three background controls with the subject’s mask thumbnail selected.
 
-[Source checkpoint 709](SOURCE_PUBLICATION_709.md) · [Development record](DEVLOG.md#dev-step-709).
+[Source checkpoint 710](SOURCE_PUBLICATION_710.md) · [Development record](DEVLOG.md#dev-step-710).
 
 <!-- current-status:end -->
 
@@ -2620,6 +2630,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 707 | [Reuse the local prompt model across an editing job](DEVLOG.md#dev-step-707) |
 | 2026-11-21 | 708 | [Add more variations to a saved wide expansion](DEVLOG.md#dev-step-708) |
 | 2026-11-21 | 709 | [Generate and iterate on a local background](DEVLOG.md#dev-step-709) |
+| 2026-11-21 | 710 | [Replace a masked background with colour or artwork](DEVLOG.md#dev-step-710) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

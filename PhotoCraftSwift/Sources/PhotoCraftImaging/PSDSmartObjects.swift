@@ -337,6 +337,7 @@ enum PSDSmartObjects {
     }
     else {
       let linked=layer.smartObject?.linkedSource != nil
+      let method: Resampling = linked || SmartObjectIO.usesBackgroundEdgeSampling(layer) ? .bilinear : .bicubic
       preview = try PDFSmartObjectIO.renderedLayer(layer,in:document)
       // Preserve numerical mask coverage in document coordinates before changing
       // the raster's local frame. RGBA resampling would ignore gray outside values.
@@ -351,13 +352,13 @@ enum PSDSmartObjects {
         let canvas = IntRect(x: 0, y: 0, width: document.width, height: document.height)
         let bounds = try transform.viewportBounds(width: pixels.width, height: pixels.height, in: canvas)
         preview.content = .raster(try RasterGeometry.render(pixels, transform: transform, bounds: bounds,
-          method: .bicubic, clampEdges: true))
+          method: method, clampEdges: true))
         preview.x = bounds.x
         preview.y = bounds.y
         preview.affine = nil
       } else {
         preview = try DocumentGeometry.transformLayer(preview, by: .identity, in: document,
-          method: linked ? .bilinear : .bicubic, clampRasterEdges: !linked)
+          method: method, clampRasterEdges: !linked)
       }
     }
     preview.smartObject = layer.smartObject
