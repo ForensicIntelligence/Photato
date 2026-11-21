@@ -1219,14 +1219,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:677 -->
+<!-- current-status-step:678 -->
 ## Current development status — 20 November 2026
 
-Double-click a selected shape path or vector mask with either path selection tool to isolate its layer in the Layers and Paths panels. Double-click away from the path, turn off layer filtering, or choose another filter to exit.
+Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB.
 
-All 225 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 256 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 677](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_677.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-677).
+[Source checkpoint 678](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_678.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-678).
 
 <!-- current-status:end -->
 

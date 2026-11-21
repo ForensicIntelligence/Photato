@@ -2,7 +2,15 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **677** · The 10 most recent entries, newest first.
+Source build **678** · The 10 most recent entries, newest first.
+
+## 2026-11-20 — Step 678 — Align and distribute components on an editable path
+
+Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB.
+
+All 256 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop layout comparison, exact Adobe-produced file bytes, arbitrary live origins and shapes outside the supported PSD paint and stroke settings remain open. Native Photato archives retain the edited curves.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-678) · [Details](PhotoCraftSwift/docs/PATH_COMPONENT_LAYOUT_678.md).
 
 ## 2026-11-20 — Step 677 — Isolate a path’s layer while editing
 
@@ -75,11 +83,3 @@ Embedded and linked PDF Smart Objects retain editable Warp in PSD and PSB. The r
 All 88 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed macOS 14+ universal preview launched offscreen. The running Photoshop scripting interface timed out. The independent Photoshop-authored PSD supplies the original PDF page and crop. A Photoshop-authored PDF with Warp, live Adobe rendering comparisons and full dense PDF capacity remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-669) · [Details](PhotoCraftSwift/docs/PDF_SMART_OBJECT_WARP_669.md).
-
-## 2026-11-20 — Step 668 — Wrap editable Smart Objects around a cylinder
-
-Cylinder Warp curves artwork around a product mockup in the native Warp sheet. PSD and PSB keep the editable shape when a Smart Object is reopened, replaced or relinked.
-
-All 134 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The prior Intel RGB32 difference reproduced in a separate run. Both slices of the signed macOS 14+ universal preview launched offscreen. The installed Photoshop document query timed out. The Cylinder renderer uses published measurements. A Photoshop-authored Cylinder PSD, live mouse interaction and byte-identical Photoshop rerendering remain unverified.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-668) · [Details](PhotoCraftSwift/docs/CYLINDER_WARP_668.md).

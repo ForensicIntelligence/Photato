@@ -186,6 +186,7 @@ extension WorkspaceView {
         ) {
           ForEach(PathOperation.allCases, id: \.self) { Text($0.rawValue).tag($0) }
         }.labelsHidden().frame(width: 100).controlSize(.small)
+        if store.usesPathComponentLayout { PathComponentLayoutControls(store: store) }
         Button("Selection") { store.pathToSelection() }.disabled(store.selectedVectorPath == nil)
         Button("Vector Mask") { store.makeVectorMask() }
           .disabled(store.selectedVectorPath == nil || store.activeLayer == nil)

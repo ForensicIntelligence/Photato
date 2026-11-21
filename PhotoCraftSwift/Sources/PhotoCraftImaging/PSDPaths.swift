@@ -132,7 +132,7 @@ enum PSDPaths {
     if try VectorPathGeometry.fillRulesDiffer(path) { path.fillRule = .evenOdd }
     return path
   }
-  static func write(_ path: VectorPath, width: Int, height: Int) throws -> Data {
+  static func write(_ path: VectorPath, width: Int, height: Int, linkShapeOrigins: Bool = false) throws -> Data {
     try path.validate()
     if path.fillRule == .nonZero, try VectorPathGeometry.fillRulesDiffer(path) {
       throw CraftError.unsupported(
@@ -161,6 +161,8 @@ enum PSDPaths {
       }
       length.n(operation, 2)
       length.n(1, 2)
+      length.n(0, 4)
+      length.n(linkShapeOrigins ? i : 0, 4)
       record(component.closed ? 0 : 3, length.data)
       for knot in component.knots {
         var data = PSDWriter()
@@ -208,7 +210,23 @@ enum PSDPaths {
     mask.enabled = flags & 4 == 0
     return mask
   }
-  static func writeMask(_ mask: VectorMask, width: Int, height: Int) throws -> Data {
+  /// Shape contours identify their live origination record in the subpath length record.
+  static func maskOriginationIndices(_ data: Data) throws -> [Int] {
+    var reader = PSDReader(data: data)
+    _ = try reader.bytes(8)
+    var indices: [Int] = []
+    while reader.remaining >= 26 {
+      let selector = try reader.u16()
+      var record = PSDReader(data: try reader.bytes(24))
+      if selector == 0 || selector == 3 {
+        _ = try record.bytes(10)
+        indices.append(try record.u32())
+      }
+    }
+    return indices
+  }
+
+  static func writeMask(_ mask: VectorMask, width: Int, height: Int, linkShapeOrigins: Bool = false) throws -> Data {
     try mask.validate()
     var w = PSDWriter()
     var path = mask.path
@@ -221,7 +239,7 @@ enum PSDPaths {
     }
     w.n(3, 4)
     w.n(flags, 4)
-    w.data.append(try write(path, width: width, height: height))
+    w.data.append(try write(path, width: width, height: height, linkShapeOrigins: linkShapeOrigins))
     return w.data
   }
 }

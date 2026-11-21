@@ -1,3 +1,11 @@
+## 2026-11-20 — Step 678 — Align and distribute components on an editable path
+
+Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB.
+
+All 256 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. Live Photoshop layout comparison, exact Adobe-produced file bytes, arbitrary live origins and shapes outside the supported PSD paint and stroke settings remain open. Native Photato archives retain the edited curves.
+
+[Development record](DEVLOG.md#dev-step-678) · [Details](PATH_COMPONENT_LAYOUT_678.md).
+
 ## 2026-11-20 — Step 677 — Isolate a path’s layer while editing
 
 Double-click a selected shape path or vector mask with either path selection tool to isolate its layer in the Layers and Paths panels. Double-click away from the path, turn off layer filtering, or choose another filter to exit.
@@ -1393,14 +1401,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:677 -->
+<!-- current-status-step:678 -->
 ## Current development status — 20 November 2026
 
-Double-click a selected shape path or vector mask with either path selection tool to isolate its layer in the Layers and Paths panels. Double-click away from the path, turn off layer filtering, or choose another filter to exit.
+Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB.
 
-All 225 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
+All 256 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen.
 
-[Source checkpoint 677](SOURCE_PUBLICATION_677.md) · [Development record](DEVLOG.md#dev-step-677).
+[Source checkpoint 678](SOURCE_PUBLICATION_678.md) · [Development record](DEVLOG.md#dev-step-678).
 
 <!-- current-status:end -->
 
@@ -2284,6 +2292,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-20 | 675 | [Warp editable paths on the canvas](DEVLOG.md#dev-step-675) |
 | 2026-11-20 | 676 | [Switch between path Warp and Free Transform](DEVLOG.md#dev-step-676) |
 | 2026-11-20 | 677 | [Isolate a path’s layer while editing](DEVLOG.md#dev-step-677) |
+| 2026-11-20 | 678 | [Align and distribute components on an editable path](DEVLOG.md#dev-step-678) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

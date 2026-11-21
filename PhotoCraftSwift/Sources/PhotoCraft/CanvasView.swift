@@ -649,7 +649,7 @@ struct CanvasHost: NSViewRepresentable {
     CGPoint(x: imageRect.minX + p.x * scale, y: imageRect.minY + p.y * scale)
   }
   override func menu(for event:NSEvent)->NSMenu? {
-    pathWarpMenu() ?? selectionTransformMenu(for:event) ?? super.menu(for:event)
+    pathWarpMenu() ?? selectionTransformMenu(for: event) ?? pathComponentLayoutMenu() ?? super.menu(for: event)
   }
   func drawTransform(_ draft: TransformDraft, in c: CGContext) {
     let points = draft.handles.map(viewPoint)

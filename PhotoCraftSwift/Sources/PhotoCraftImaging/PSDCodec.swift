@@ -1536,9 +1536,12 @@ public enum PSDCodec {
       try records.text(blendKey)
       try records.n(Int((unit(layer.opacity) * 255).rounded()), 1)
       try records.n(layer.isClipped ? 1 : 0, 1)
-      let adjustmentFlags: Int
-      if case .adjustment = layer.content { adjustmentFlags = 24 } else { adjustmentFlags = 0 }
-      try records.n((layer.visible ? 0 : 2) | (layer.protection.locksTransparency ? 1 : 0) | adjustmentFlags, 1)
+      let pixelCacheFlags: Int
+      switch layer.content {
+      case .adjustment, .shape: pixelCacheFlags = 24
+      default: pixelCacheFlags = 0
+      }
+      try records.n((layer.visible ? 0 : 2) | (layer.protection.locksTransparency ? 1 : 0) | pixelCacheFlags, 1)
       try records.n(0, 1)
       var extra = PSDWriter()
       if layer.mask != nil || layer.vectorMask != nil {
@@ -1613,8 +1616,8 @@ public enum PSDCodec {
       }
       for (key, data) in shapeTags {
         extra.text(format.tagSignature(key) + key)
-        extra.section(data, lengthBytes: format.tagLengthBytes(key))
-        if data.count % 2 != 0 { extra.n(0, 1) }
+        let aligned = data.count.isMultiple(of: 2) ? data : data + Data([0])
+        extra.section(aligned, lengthBytes: format.tagLengthBytes(key))
       }
       if let channels=layer.style?.restrictedChannels {
         extra.text("8BIM");extra.text("brst");extra.section(try PSDChannelBlending.write(channels))

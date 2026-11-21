@@ -7,8 +7,8 @@ import XCTest
 @testable import PhotoCraft
 
 final class AutomationTests: XCTestCase {
-  static let expectedCommandCount = 281
-  static let expectedActionVersion = 79
+  static let expectedCommandCount = 282
+  static let expectedActionVersion = 80
   func parse(_ text: String) throws -> AutomationRequest? {
     try AutomationRequest.parse(Data(text.utf8))
   }

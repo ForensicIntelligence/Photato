@@ -129,7 +129,7 @@ public enum PathTransform {
     rounded(try selectedBounds(path, selection: selection))
   }
 
-  private static func selectedBounds(_ path: VectorPath, selection: PathTransformSelection) throws -> CGRect {
+  static func selectedBounds(_ path: VectorPath, selection: PathTransformSelection) throws -> CGRect {
     try path.validate()
     let indices = try selection.indices(in: path)
     let curves = CGMutablePath()
@@ -248,20 +248,22 @@ public enum PathTransform {
     try install(geometry(request, in: document), in: &document)
   }
 
-  static func install(_ geometry: [PathTransformGeometry], in document: inout CraftDocument) throws {
+  static func install(_ geometry: [PathTransformGeometry], in document: inout CraftDocument,
+                      preservingTranslatedShapes: Bool = false) throws {
     let changes = geometry.filter { $0.path != $0.original }
     guard !changes.isEmpty else { return }
     var candidate = document
     for result in changes {
       try Task.checkCancellation()
-      try install(result, in: &candidate)
+      try install(result, in: &candidate, preservingTranslatedShapes: preservingTranslatedShapes)
     }
     try candidate.validate()
     try Task.checkCancellation()
     document = candidate
   }
 
-  private static func install(_ result: PathTransformGeometry, in candidate: inout CraftDocument) throws {
+  private static func install(_ result: PathTransformGeometry, in candidate: inout CraftDocument,
+                              preservingTranslatedShapes: Bool) throws {
     switch result.choice.target {
     case .saved(let id):
       guard let index = candidate.paths?.firstIndex(where: { $0.id == id }) else {
@@ -278,7 +280,9 @@ public enum PathTransform {
         throw CraftError.invalid("The shape layer is missing.")
       }
       let canvas = IntRect(x: 0, y: 0, width: candidate.width, height: candidate.height)
-      try Command.shape(.configure(id, layer.replacingShapePath(result.path, canvas: canvas))).apply(to: &candidate)
+      let definition = try layer.replacingShapePath(result.path, canvas: canvas,
+                                                    preservingTranslatedComponents: preservingTranslatedShapes)
+      try Command.shape(.configure(id, definition)).apply(to: &candidate)
     }
   }
 }

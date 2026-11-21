@@ -6,10 +6,11 @@ import SwiftUI
 struct PathsPanel: View {
   @Bindable var store: EditorStore
   var body: some View {
+    let targets = Set(store.pathPanelTargets)
     VStack(spacing: 0) {
       ScrollView {
         LazyVStack(spacing: 1) {
-          ForEach(store.document.paths ?? []) { saved in
+          ForEach((store.document.paths ?? []).filter { targets.contains(.saved($0.id)) }) { saved in
             row(saved.name, path: saved.path, target: .saved(saved.id))
               .contextMenu {
                 Button("Fill Path…") {store.selectPath(.saved(saved.id));store.beginPathFill()}
@@ -34,11 +35,13 @@ struct PathsPanel: View {
                 }
               }
           }
-          ForEach(store.document.layers.reversed().filter { $0.shape != nil || $0.vectorMask != nil }) { layer in
-            if let path = try? layer.shapePath() {
+          ForEach(store.document.layers.reversed().filter {
+            targets.contains(.shape($0.id)) || targets.contains(.vectorMask($0.id))
+          }) { layer in
+            if targets.contains(.shape(layer.id)), let path = try? layer.shapePath() {
               row("\(layer.name) Shape Path", path: path, target: .shape(layer.id))
             }
-            if let mask = layer.vectorMask {
+            if targets.contains(.vectorMask(layer.id)), let mask = layer.vectorMask {
               row("\(layer.name) Vector Mask", path: mask.path, target: .vectorMask(layer.id))
             }
           }

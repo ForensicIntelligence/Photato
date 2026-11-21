@@ -21,6 +21,11 @@ enum PSDLiveShape {
     var corners: [(Double, Double)] { [(x, y), (x + width, y), (x + width, y + height), (x, y + height)] }
   }
 
+  private struct Primitive {
+    let geometry: ShapeGeometry
+    let rectangle: Rectangle
+  }
+
   static func hasDefinition(_ tags: [String: Data]) -> Bool {
     tags["vscg"] != nil || (tags["SoCo"] != nil && tags["vmsk"] != nil && tags["vogk"] != nil)
   }
@@ -30,7 +35,7 @@ enum PSDLiveShape {
       origination.starts(with: originVersion) else {
       throw CraftError.unsupported("Editable Photoshop shapes require RGB and retained live shape records.")
     }
-    let (geometry, rectangle) = try readGeometry(origination)
+    var primitives = try readGeometry(origination)
     let vector: Data
     let fill: ShapePaint
     let stroke: ShapeStroke
@@ -44,7 +49,7 @@ enum PSDLiveShape {
       fill = fillEnabled ? .init(color: color) : .none
       stroke = style
     } else {
-      guard let generator = tags["SoCo"], let path = tags["vmsk"], tags["vsms"] == nil,
+      guard primitives.count == 1, let generator = tags["SoCo"], let path = tags["vmsk"], tags["vsms"] == nil,
         tags["vstk"] == nil else {
         throw CraftError.unsupported("Legacy Photoshop live shapes require solid fill and a single vector contour.")
       }
@@ -53,25 +58,53 @@ enum PSDLiveShape {
       stroke = ShapeStroke()
     }
     let mask = try PSDPaths.readMask(vector, width: document.width, height: document.height)
-    guard mask.enabled, mask.linked,
-      try matches(mask.path, geometry, in: rectangle, tolerance: tolerance(document)) else {
+    if primitives.count > 1 {
+      let links = try PSDPaths.maskOriginationIndices(vector)
+      guard links.sorted() == Array(primitives.indices) else {
+        throw CraftError.unsupported("The Photoshop shape contours do not reference distinct live origins.")
+      }
+      primitives = links.map { primitives[$0] }
+    }
+    guard mask.enabled, mask.linked, !mask.path.inverted, mask.path.components.count == primitives.count,
+          let first = mask.path.components.first, first.operation == .combine || first.operation == .join,
+          try zip(mask.path.components, primitives).allSatisfy({ outline, primitive in
+            try matches(outline, primitive: primitive, tolerance: tolerance(document))
+          }) else {
       throw CraftError.unsupported("The linked Photoshop shape path does not match its axis-aligned live geometry.")
     }
-    let placement = Transform2D.translation(rectangle.x - Double(x), rectangle.y - Double(y))
-    var definition = ShapeDefinition(geometry: geometry, fill: fill, stroke: stroke)
-    definition.components[0].transform = placement
-    definition.components[0].pathOverride = mask.path.transformed(.translation(-Double(x), -Double(y)))
-    definition.components[0].pathReferenceTransform = placement
+    var definition = ShapeDefinition(geometry: primitives[0].geometry, fill: fill, stroke: stroke)
+    definition.fillRule = mask.path.fillRule
+    definition.components = localized(primitives, path: mask.path,
+                                      transform: .translation(-Double(x), -Double(y)))
     var shape = try ShapeContent(definition: definition)
     shape.width = cache.width; shape.height = cache.height
     shape.importedAppearance = .init(definition: definition, pixels: cache, vectorRecord: vector)
     return shape
   }
 
-  private static func readGeometry(_ origination: Data) throws -> (ShapeGeometry, Rectangle) {
+  private static func readGeometry(_ origination: Data) throws -> [Primitive] {
     let origin = try PSDDescriptor.read(Data(origination.dropFirst(4)), padding: true)
-    guard case .list(let records)? = origin["keyDescriptorList"], records.count == 1,
-      case .object(let record) = records[0], let type = record["keyOriginType"]?.number,
+    guard case .list(let values)? = origin["keyDescriptorList"], (1...256).contains(values.count) else {
+      throw CraftError.unsupported("Unrepresented Photoshop shape origination.")
+    }
+    var records = try values.map { value in
+      guard case .object(let descriptor) = value else {
+        throw CraftError.unsupported("Unrepresented Photoshop shape origination record.")
+      }
+      return descriptor
+    }
+    if records.count > 1, records.contains(where: { $0["keyOriginIndex"] != nil }) {
+      let indices = records.compactMap { $0["keyOriginIndex"]?.number }
+      guard indices.sorted() == records.indices.map(Double.init) else {
+        throw CraftError.unsupported("Unrepresented Photoshop shape origination indices.")
+      }
+      records = zip(indices, records).sorted { $0.0 < $1.0 }.map { $0.1 }
+    }
+    return try records.map(readPrimitive)
+  }
+
+  private static func readPrimitive(_ record: PSDDescriptor) throws -> Primitive {
+    guard let type = record["keyOriginType"]?.number,
       case .object(let box)? = record["keyOriginShapeBBox"],
       let left = number(box["Left"], unit: "#Pxl"), let top = number(box["Top "], unit: "#Pxl"),
       let right = number(box["Rght"], unit: "#Pxl"), let bottom = number(box["Btom"], unit: "#Pxl") else {
@@ -98,7 +131,20 @@ enum PSDLiveShape {
     default:
       throw CraftError.unsupported("Unrepresented Photoshop live shape type.")
     }
-    return (geometry, rectangle)
+    return Primitive(geometry: geometry, rectangle: rectangle)
+  }
+
+  private static func localized(_ primitives: [Primitive], path: VectorPath,
+                                transform: Transform2D) -> [ShapeComponent] {
+    zip(primitives, path.components).map { primitive, outline in
+      let placement = transform * .translation(primitive.rectangle.x, primitive.rectangle.y)
+      var component = ShapeComponent(geometry: primitive.geometry, transform: placement, operation: outline.operation)
+      var contour = outline
+      contour.operation = .combine
+      component.pathOverride = VectorPath(components: [contour], fillRule: path.fillRule).transformed(transform)
+      component.pathReferenceTransform = placement
+      return component
+    }
   }
 
   private static func readStyle(_ appearance: Data) throws -> (ShapeStroke, Bool) {
@@ -147,7 +193,7 @@ enum PSDLiveShape {
   /// compositor's sampler while keeping the live path in its original document position.
   static func prepared(_ layer: Layer, in document: CraftDocument) throws -> Layer {
     guard layer.affine != nil else { return layer }
-    let (original, rectangle, path) = try exportGeometry(layer, document: document)
+    let (original, primitives, path) = try exportGeometry(layer, document: document)
     let pixels = try Renderer.layerSurface(layer, in: document)
     let placement = layer.coordinateTransform
     let bounds = try placement.bounds(width: pixels.width, height: pixels.height)
@@ -157,10 +203,7 @@ enum PSDLiveShape {
     let cache = try RasterGeometry.render(pixels, transform: placement, bounds: bounds, method: .bilinear)
     let local = Transform2D.translation(-Double(bounds.x), -Double(bounds.y))
     var definition = original
-    let componentPlacement = local * .translation(rectangle.x, rectangle.y)
-    definition.components[0].transform = componentPlacement
-    definition.components[0].pathOverride = path.transformed(local)
-    definition.components[0].pathReferenceTransform = componentPlacement
+    definition.components = localized(primitives, path: path, transform: local)
     var shape = try ShapeContent(definition: definition)
     shape.width = cache.width
     shape.height = cache.height
@@ -179,31 +222,37 @@ enum PSDLiveShape {
   }
 
   private static func exportGeometry(_ layer: Layer, document: CraftDocument) throws
-    -> (ShapeDefinition, Rectangle, VectorPath) {
+    -> (ShapeDefinition, [Primitive], VectorPath) {
     guard document.colorMode == .rgb, document.depth != .f32, let shape = layer.shape,
       layer.vectorMask == nil, layer.smartObject == nil else { throw unsupported }
     if let affine = layer.affine {
       guard affine.a == 1, affine.b == 0, affine.c == 0, affine.d == 1 else { throw unsupported }
     }
     let definition = shape.editableDefinition
-    guard definition.components.count == 1, let part = definition.components.first,
-      [.rectangle, .ellipse].contains(part.geometry.kind),
-      (part.operation == .combine || part.operation == .join), definition.inverted != true,
+    guard let first = definition.components.first, first.operation == .combine || first.operation == .join,
+      definition.inverted != true,
       definition.stroke.dash.isEmpty || (definition.stroke.widthRelativeDashes == true && definition.stroke.phase == 0),
       definition.stroke.pathContours != true,
       [.none, .solid].contains(definition.fill.kind), [.none, .solid].contains(definition.stroke.paint.kind),
-      definition.fill.color.a == 1, definition.stroke.paint.color.a == 1, let path = try layer.shapePath() else {
+      definition.fill.color.a == 1, definition.stroke.paint.color.a == 1, let path = try layer.shapePath(),
+      !path.inverted, path.components.count == definition.components.count else {
       throw unsupported
     }
-    let transform = try layer.shapeTransform() * part.transform
-    guard transform.a == 1, transform.b == 0, transform.c == 0, transform.d == 1 else { throw unsupported }
-    let rectangle = Rectangle(x: transform.tx, y: transform.ty, width: part.geometry.width, height: part.geometry.height)
-    guard try matches(path, part.geometry, in: rectangle, tolerance: tolerance(document)) else { throw unsupported }
-    return (definition, rectangle, path)
+    let origin = try layer.shapeTransform()
+    let primitives = try zip(definition.components, path.components).map { part, outline in
+      let transform = origin * part.transform
+      guard [.rectangle, .ellipse].contains(part.geometry.kind),
+            transform.a == 1, transform.b == 0, transform.c == 0, transform.d == 1 else { throw unsupported }
+      let border = Rectangle(x: transform.tx, y: transform.ty, width: part.geometry.width, height: part.geometry.height)
+      let primitive = Primitive(geometry: part.geometry, rectangle: border)
+      guard try matches(outline, primitive: primitive, tolerance: tolerance(document)) else { throw unsupported }
+      return primitive
+    }
+    return (definition, primitives, path)
   }
 
   static func write(_ layer: Layer, document: CraftDocument) throws -> [(String, Data)] {
-    let (definition, rectangle, path) = try exportGeometry(layer, document: document)
+    let (definition, primitives, path) = try exportGeometry(layer, document: document)
     if let original = layer.shape?.importedAppearance, original.definition == definition,
       let raw = layer.sourceTags, let vector = original.vectorRecord,
       let parsed = try? PSDPaths.readMask(vector, width: document.width, height: document.height), parsed.path == path {
@@ -231,14 +280,27 @@ enum PSDLiveShape {
       .init("strokeStyleOpacity", unit("#Prc", Double(stroke.opacity ?? 1) * 100)),
       .init("strokeStyleContent", .object(PSDDescriptor("solidColorLayer", items: paint.items))),
       .init("strokeStyleResolution", .number(document.pixelsPerInch))])
+    let records = primitives.enumerated().map {
+      PSDValue.object(origination($0.element, index: $0.offset, resolution: document.pixelsPerInch))
+    }
+    let origin = PSDDescriptor("null", items: [.init("keyDescriptorList", .list(records))])
+    return try [("vscg", header + PSDSolidColor.write(fill)),
+      ("vsms", PSDPaths.writeMask(VectorMask(path: path), width: document.width, height: document.height,
+                                 linkShapeOrigins: true)),
+      ("vowv", Data([0,0,0,2])), ("vogk", originVersion + origin.encoded()),
+      ("vstk", strokeStyle.encoded()), ("sn2P", originVersion)]
+  }
+
+  private static func origination(_ primitive: Primitive, index: Int, resolution: Double) -> PSDDescriptor {
+    let rectangle = primitive.rectangle
     let bounds = PSDDescriptor("unitRect", items: [
       .init("unitValueQuadVersion", .integer(1)), .init("Top ", unit("#Pxl", rectangle.y)),
       .init("Left", unit("#Pxl", rectangle.x)), .init("Btom", unit("#Pxl", rectangle.y + rectangle.height)),
       .init("Rght", unit("#Pxl", rectangle.x + rectangle.width))])
-    let geometry = definition.components[0].geometry
+    let geometry = primitive.geometry
     let type: Int32 = geometry.kind == .ellipse ? 5 : (geometry.radii.contains { $0 > 0 } ? 2 : 1)
     var live: [PSDDescriptor.Item] = [
-      .init("keyOriginType", .integer(type)), .init("keyOriginResolution", .number(document.pixelsPerInch))]
+      .init("keyOriginType", .integer(type)), .init("keyOriginResolution", .number(resolution))]
     if type == 2 {
       let values = zip(radiiKeys, geometry.radii).map { PSDDescriptor.Item($0.0, unit("#Pxl", $0.1)) }
       let radii = PSDDescriptor("radii", items: [.init("unitValueQuadVersion", .integer(1))] + values)
@@ -254,24 +316,17 @@ enum PSDLiveShape {
         .map { PSDDescriptor.Item($0.0, .number($0.1)) })
       live.append(.init("Trnf", .object(transform)))
     }
-    live.append(.init("keyOriginIndex", .integer(0)))
-    let origin = PSDDescriptor("null", items: [.init("keyDescriptorList", .list([.object(PSDDescriptor("null", items: live))]))])
-    return try [("vscg", header + PSDSolidColor.write(fill)),
-      ("vsms", PSDPaths.writeMask(VectorMask(path: path), width: document.width, height: document.height)),
-      ("vowv", Data([0,0,0,2])), ("vogk", originVersion + origin.encoded()),
-      ("vstk", strokeStyle.encoded()), ("sn2P", originVersion)]
+    live.append(.init("keyOriginIndex", .integer(Int32(index))))
+    return PSDDescriptor("null", items: live)
   }
 
   private static let unsupported = CraftError.unsupported("PSD editable shape export currently supports axis-aligned rectangles and ellipses with solid paint and zero-phase, width-relative dashes. Save other shapes as Photato.")
   private static func tolerance(_ document: CraftDocument) -> Double { Double(max(document.width, document.height)) / 16_777_216 + 1e-8 }
 
-  private static func matches(_ path: VectorPath, _ geometry: ShapeGeometry, in rectangle: Rectangle,
-    tolerance: Double
-  ) throws -> Bool {
-    guard !path.inverted, path.components.count == 1, let component = path.components.first,
-      component.closed, (4...8).contains(component.knots.count),
-      component.operation == .combine || component.operation == .join else { return false }
-    let expected = try geometry.path().transformed(.translation(rectangle.x, rectangle.y))
+  private static func matches(_ component: PathComponent, primitive: Primitive, tolerance: Double) throws -> Bool {
+    guard component.closed, (4...8).contains(component.knots.count) else { return false }
+    let rectangle = primitive.rectangle
+    let expected = try primitive.geometry.path().transformed(.translation(rectangle.x, rectangle.y))
     // At maximum corner radius a straight run can collapse to one point. Photoshop may omit it.
     func segments(_ knots: [PathKnot]) -> [[PathPoint]] {
       knots.indices.compactMap { index in

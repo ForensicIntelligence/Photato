@@ -529,6 +529,7 @@ import UniformTypeIdentifiers
       "warp": ["available":store.canBeginWarp,"previewOpen":store.warpDraft != nil,"previewBusy":store.warpDraft?.rendering ?? false],
       "pathWarp": store.pathWarpState,
       "pathIsolation": store.pathIsolationState,
+      "pathComponentLayout": store.pathComponentLayoutState,
       "photoAlign": ["available":store.canBeginPhotoAlign,"previewOpen":store.photoAlignDraft != nil,"previewBusy":store.photoAlignDraft?.rendering ?? false],
       "photoBlend": ["available":store.canBeginPhotoBlend,"previewOpen":store.photoBlendDraft != nil,"previewBusy":store.photoBlendDraft?.rendering ?? false],
       "selectionTools":store.selectionToolsState,
@@ -1158,6 +1159,21 @@ import UniformTypeIdentifiers
         }
         try store.setPathIsolation(command.pathFlag("enabled", false))
         return .json(state(share, document: document))
+      }
+      if command.name == PathComponentLayoutAPI.name {
+        guard store.canApplyPathComponentLayout else {
+          throw AutomationFailure(status: 409, message: "Finish the current edit before laying out path components.")
+        }
+        let request = try command.pathComponentLayoutRequest()
+        let indices = try await executePreparedResult(document: document, shareID: id, revision: command.revision,
+                                                       allowPathTarget: true) { original in
+          let path = try PathTransform.editablePath(request.target, in: original)
+          let components = try PathComponentLayout.componentIndices(request, in: path)
+          return (.layoutPathComponents(request), components)
+        }
+        var result = state(share, document: document)
+        result["pathTransformSelection"] = PathTransformAPI.selection(.components(indices))
+        return .json(result)
       }
       if command.name == PathGroupsAPI.warp {
         let request = try command.pathWarpRequest()
@@ -1954,6 +1970,7 @@ import UniformTypeIdentifiers
       "paths":PathAPI.capabilities,
       "pathTransform":PathTransformAPI.capabilities,
       "crossLayerPaths":PathGroupsAPI.capabilities,
+      "pathComponentLayout": PathComponentLayoutAPI.capabilities,
       "frames": FrameDefinition.apiCapabilities,
       "fileInfo": FileInfoAPI.capabilities,
       "guides": GuideAPI.capabilities,

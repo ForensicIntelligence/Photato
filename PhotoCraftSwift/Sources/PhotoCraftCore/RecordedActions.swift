@@ -129,6 +129,7 @@ public enum ActionOperation: Codable, Sendable {
   case transformLayers([ActionLayerTarget],Transform2D,Resampling)
   case transformPath(ActionPathTarget, PathTransformSelection, ProjectiveTransform)
   case transformPaths([RecordedPathChoice], ProjectiveTransform)
+  case layoutPathComponents(ActionPathTarget, [Int]?, LayerLayoutOperation)
   case warpPaths([RecordedPathChoice], ProjectiveTransform, WarpDefinition)
   indirect case warpPathsWithFollowUp([RecordedPathChoice], ProjectiveTransform, WarpDefinition, ProjectiveTransform)
   case mergeSpotChannel(ActionChannelTarget)
@@ -333,6 +334,12 @@ public enum ActionOperation: Codable, Sendable {
       self = choices.count == request.choices.count
         ? .transformPaths(choices, request.matrix)
         : .unsupported("An original path for this transform is missing.")
+    case .layoutPathComponents(let request):
+      if let target = ActionPathTarget(request.target, in: d) {
+        self = .layoutPathComponents(target, request.components, request.operation)
+      } else {
+        self = .unsupported("The original path for this layout is missing.")
+      }
     case .warpPaths(let edit):
       let request = edit.request
       let choices = request.choices.compactMap { RecordedPathChoice($0, in: d) }
@@ -469,6 +476,8 @@ public enum ActionOperation: Codable, Sendable {
       return .transformPath(.init(target: try target.resolve(in: d), selection: selection, matrix: matrix))
     case .transformPaths(let choices, let matrix):
       return .transformPaths(.init(choices: try choices.map { try $0.resolve(in: d) }, matrix: matrix))
+    case .layoutPathComponents(let target, let components, let operation):
+      return .layoutPathComponents(.init(target: try target.resolve(in: d), components: components, operation: operation))
     case .warpPaths(let choices, let matrix, let settings):
       let request = PathWarpRequest(choices: try choices.map { try $0.resolve(in: d) }, matrix: matrix,
                                     settings: settings)
@@ -770,6 +779,9 @@ public struct RecordedAction: Codable, Identifiable, Sendable {
         }
         try matrix.validate()
         for choice in choices { try choice.selection.validate() }
+      }
+      if case .layoutPathComponents(_, let components, let operation) = step.operation {
+        try PathComponentLayoutRequest.validateComponents(components, operation: operation)
       }
       switch step.operation {
       case .warpPaths(let choices, let matrix, let settings),

@@ -1,0 +1,1087 @@
+{
+  "build": 678,
+  "base": "eb8ad05540da6346566ee31a47ebd3da9a977900",
+  "buildInputs": 9302,
+  "includedBuildInputs": 9289,
+  "excludedBuildInputs": 13,
+  "candidateManifestSHA256": "874fcf13c5d9dbf57f9e2c5adec7639c8a76dd93ae8ce654c3547479da8b1368",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/ActionLibrary.swift",
+      "sha256": "75fd893b781a0dce7af7b7e05c108814341ea2b609a3a105fa70c8a942ddb9a2"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationCommands.swift",
+      "sha256": "05250d26ba282bb0c19b909155dd7808ffe6eaa1ee8d8233a04999fe7bddb503"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationPathComponentLayout.swift",
+      "sha256": "5498bef2e9655abb7f9036369223361eb5e7355e17f8ad6d7dd3e12111959ab5"
+    },
+    {
+      "path": "Sources/PhotoCraft/AutomationService.swift",
+      "sha256": "af4ea596a6c6ff3ebaabb2b8074fa11b9f897a2e0c112a0e71fa29d39c078e3f"
+    },
+    {
+      "path": "Sources/PhotoCraft/CanvasView.swift",
+      "sha256": "dc20b6434698957fca41741323802a75074e4f4ab2898d17c21500f2ac0854d8"
+    },
+    {
+      "path": "Sources/PhotoCraft/PathComponentLayoutControls.swift",
+      "sha256": "7189f7753fc8ac82d2489e4415c2875d2eff90aa0d4aa31212dfdc6686adde38"
+    },
+    {
+      "path": "Sources/PhotoCraft/WorkspacePaths.swift",
+      "sha256": "8d5f32c965b24f00dbfdd10fc66fe4be58e75013615d688e15bbcd605ccbe448"
+    },
+    {
+      "path": "Sources/PhotoCraft/WorkspaceTools.swift",
+      "sha256": "88db5d04a1d5a371f060c9e237aa35e6fd0b7a17156a2eb920fc8884e0476244"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/Engine.swift",
+      "sha256": "988e11ebd959913d68535d01dd3699276c8b2a58dbca16202d3e4bfd131150bf"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/LayerLayout.swift",
+      "sha256": "94c66b0b14d8c8b22082ae7f591801e706e9486768cd7dd0029cd35b94aea30b"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PathComponentLayout.swift",
+      "sha256": "81ddda2c23fd589fa7b1e7801174ccc5e19de43e77227ddb1a2f7d68c9fffe29"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/PathTransform.swift",
+      "sha256": "9ba678ed5fd2b5866806c5a6efb5e04bf45daea0ebedde00a186e5cd4942cbe3"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/RecordedActions.swift",
+      "sha256": "d71089e3cca364c2c33ee4951f0c361f3dfe2f6f3e2324bc53e1de64e87ae4b3"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/ShapePathEditing.swift",
+      "sha256": "229820b2873710d5b626592602a5cfb9f9504f30c0b16107610da82af7a46b67"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDCodec.swift",
+      "sha256": "48dd56574115c27fce2fbf3be51e7b9aa41c413367012ecb765e30ab245625a4"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDLiveShape.swift",
+      "sha256": "6739b325875bf7f683684f8ec52cfdec94e0b9fc3ef168ce1a3e8380f4f5c081"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/PSDPaths.swift",
+      "sha256": "6b3e95f7648ea154516c53fcec52cb48d50f0946bd8543828a3efc96be71fead"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/AutomationTests.swift",
+      "sha256": "d3ba4872fc004f4dfc3537318bd46cd190e6ce9f7e062550084439a0bf2b9345"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/PathComponentLayoutWorkflowTests.swift",
+      "sha256": "834944ff22875272be47eabc3574c8efe92c5f0b46a896e29fd82c716fd634dc"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/PathComponentLayoutTests.swift",
+      "sha256": "a88677feb725adeb7d12689ddf225eef2bf52e4c913847c50beb5b7a3537fd87"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDCompoundShapeLayoutTests.swift",
+      "sha256": "e579428c63aed6b4c9bc87c156293b3440c948d06ea64f4c22cbe8686cafef3d"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "74c8543909bb5e1bcc15f36ec07dc759b77a413670516f4ccea65e98fb33dad2"
+    }
+  ],
+  "casesPerConfiguration": 256,
+  "tests": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 256,
+      "passed": 256,
+      "newCasesExpected": 8,
+      "newCasesPassed": 8,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "dc395e9b2f399341ac4712c13d2aa62f9fcfba06c6f91a1c14c0d6bf2ee1e29f"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 256,
+      "passed": 256,
+      "newCasesExpected": 8,
+      "newCasesPassed": 8,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "b9c4051db49e8ef4380e634aee2c13e690bf10bc4e301b47a5cb2fb772cd82d2"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 256,
+      "passed": 256,
+      "newCasesExpected": 8,
+      "newCasesPassed": 8,
+      "failed": [],
+      "failedOrMissing": [],
+      "qualifiesSelectedCases": true,
+      "testExecutableSHA256": "a46fd6f50c7fe5090e758f8ecaa9bae0586cc16438ea683d76a253fbd9008bdb"
+    }
+  },
+  "priorWholeLayerVectorMasks": {
+    "build": 678,
+    "referenceBuild": 671,
+    "configurations": [
+      "debug",
+      "arm",
+      "intel"
+    ],
+    "outputs": {
+      "embedded-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "embedded-fixed.psb": {
+        "bytes": 184860,
+        "sha256": "f0c3bcbef6518f7872f421783a0c3cdbb8fbdf0ed8a951e31f0093535ac3761e"
+      },
+      "embedded-fixed.psd": {
+        "bytes": 184832,
+        "sha256": "7d91a4d07a206dc2ee37fec77ce37e1305c38b7dca53918f195ad89d95cadab5"
+      },
+      "embedded-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "embedded-linked.psb": {
+        "bytes": 184940,
+        "sha256": "38286424a94c3295a0daf6b0a6e8d4d69912c0abb68f06192404ce6ea9f0fe1c"
+      },
+      "embedded-linked.psd": {
+        "bytes": 184912,
+        "sha256": "88f5e46a8d044958ff521684e9b4eb5f6fabb9c8d64bdeb572f7630e2efea550"
+      },
+      "external-fixed-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "483fb341bd9df4b40e3b5c4aa39b4a819ea351e475e18e9de405a01180c5f95b"
+      },
+      "external-fixed.psb": {
+        "bytes": 181192,
+        "sha256": "5f5fa9faa4b5840c468ed05b1c606678738cfd5ab402798b7022300919ff4675"
+      },
+      "external-fixed.psd": {
+        "bytes": 181164,
+        "sha256": "831808a037492aa7bd10d633af86229a0941a4125dbe938e4021bb93fd348191"
+      },
+      "external-linked-composite.rgba": {
+        "bytes": 174592,
+        "sha256": "953f8dadb83736ddaa2f4719d50c3c87c822041826c974494bd028c7b1fe1976"
+      },
+      "external-linked.psb": {
+        "bytes": 181272,
+        "sha256": "1b9f5cc6c6d3ed96fb65604de74143de8f25296bbd09dbe22d1e4373881022ce"
+      },
+      "external-linked.psd": {
+        "bytes": 181244,
+        "sha256": "aad0adffdfb131cf541ba7eaee4385ab9a59b7e48ea905236ef1a605f152bd58"
+      }
+    },
+    "referenceReceiptSHA256": "1eafcc712e89205e60d9278a3636a46b5f36499ad192262dab4f4b0720abc616"
+  },
+  "ownedPathLayoutOutputs": {
+    "build": 678,
+    "run": "05",
+    "records": {
+      "align-top.paths.json": {
+        "debug": {
+          "sha256": "a0c00f019da447b17813489afa7addc619d0c29b449bfcdd78a4e3428312da03",
+          "bytes": 5602
+        },
+        "arm": {
+          "sha256": "a0c00f019da447b17813489afa7addc619d0c29b449bfcdd78a4e3428312da03",
+          "bytes": 5602
+        },
+        "intel": {
+          "sha256": "a0c00f019da447b17813489afa7addc619d0c29b449bfcdd78a4e3428312da03",
+          "bytes": 5602
+        }
+      },
+      "align-top.photato": {
+        "debug": {
+          "sha256": "88e3b63fb300603cf26055debdba45a0811ebcac3602788540472dd6a0dd92c9",
+          "bytes": 4842
+        },
+        "arm": {
+          "sha256": "88e3b63fb300603cf26055debdba45a0811ebcac3602788540472dd6a0dd92c9",
+          "bytes": 4842
+        },
+        "intel": {
+          "sha256": "88e3b63fb300603cf26055debdba45a0811ebcac3602788540472dd6a0dd92c9",
+          "bytes": 4842
+        }
+      },
+      "align-top.psb": {
+        "debug": {
+          "sha256": "70dd12acea2274d271f0be751e0cc134b868260b5081b5310e3566882897efb2",
+          "bytes": 386226
+        },
+        "arm": {
+          "sha256": "70dd12acea2274d271f0be751e0cc134b868260b5081b5310e3566882897efb2",
+          "bytes": 386226
+        },
+        "intel": {
+          "sha256": "70dd12acea2274d271f0be751e0cc134b868260b5081b5310e3566882897efb2",
+          "bytes": 386226
+        }
+      },
+      "align-top.psd": {
+        "debug": {
+          "sha256": "9ef9def3ababcd6da5bd544c5e1592774a54f8282529b393af5a4c951ffa72bb",
+          "bytes": 386186
+        },
+        "arm": {
+          "sha256": "9ef9def3ababcd6da5bd544c5e1592774a54f8282529b393af5a4c951ffa72bb",
+          "bytes": 386186
+        },
+        "intel": {
+          "sha256": "9ef9def3ababcd6da5bd544c5e1592774a54f8282529b393af5a4c951ffa72bb",
+          "bytes": 386186
+        }
+      },
+      "align-top.rgba": {
+        "debug": {
+          "sha256": "c2787a7679c2c7b9a2e27e52a3953c276e82e459afd0d2ca4b87665b2f987042",
+          "bytes": 374400
+        },
+        "arm": {
+          "sha256": "c2787a7679c2c7b9a2e27e52a3953c276e82e459afd0d2ca4b87665b2f987042",
+          "bytes": 374400
+        },
+        "intel": {
+          "sha256": "c2787a7679c2c7b9a2e27e52a3953c276e82e459afd0d2ca4b87665b2f987042",
+          "bytes": 374400
+        }
+      },
+      "centers.paths.json": {
+        "debug": {
+          "sha256": "c56b81a73eb744c4290f3269b8171e5310759cf67d9414cd24b8c2db4a134e41",
+          "bytes": 5629
+        },
+        "arm": {
+          "sha256": "c56b81a73eb744c4290f3269b8171e5310759cf67d9414cd24b8c2db4a134e41",
+          "bytes": 5629
+        },
+        "intel": {
+          "sha256": "c56b81a73eb744c4290f3269b8171e5310759cf67d9414cd24b8c2db4a134e41",
+          "bytes": 5629
+        }
+      },
+      "centers.photato": {
+        "debug": {
+          "sha256": "f5a57105fb1ffffacb3ff0f63addd72a51cb4a46cfd88c43c6a9722160c3e63b",
+          "bytes": 4478
+        },
+        "arm": {
+          "sha256": "f5a57105fb1ffffacb3ff0f63addd72a51cb4a46cfd88c43c6a9722160c3e63b",
+          "bytes": 4478
+        },
+        "intel": {
+          "sha256": "f5a57105fb1ffffacb3ff0f63addd72a51cb4a46cfd88c43c6a9722160c3e63b",
+          "bytes": 4478
+        }
+      },
+      "centers.psb": {
+        "debug": {
+          "sha256": "fc9fefc267f2a5e9343b4bb0ae6b6188a4e816e0aa03a2d057b7f1be57025dbe",
+          "bytes": 386794
+        },
+        "arm": {
+          "sha256": "fc9fefc267f2a5e9343b4bb0ae6b6188a4e816e0aa03a2d057b7f1be57025dbe",
+          "bytes": 386794
+        },
+        "intel": {
+          "sha256": "fc9fefc267f2a5e9343b4bb0ae6b6188a4e816e0aa03a2d057b7f1be57025dbe",
+          "bytes": 386794
+        }
+      },
+      "centers.psd": {
+        "debug": {
+          "sha256": "6b6b93b202821d1ddc2d7f9955a1baac2f2f1bb679e7e414367cc5935a63f716",
+          "bytes": 386754
+        },
+        "arm": {
+          "sha256": "6b6b93b202821d1ddc2d7f9955a1baac2f2f1bb679e7e414367cc5935a63f716",
+          "bytes": 386754
+        },
+        "intel": {
+          "sha256": "6b6b93b202821d1ddc2d7f9955a1baac2f2f1bb679e7e414367cc5935a63f716",
+          "bytes": 386754
+        }
+      },
+      "centers.rgba": {
+        "debug": {
+          "sha256": "f8a296e198c0947555c551ad35a6a8a7b08ae45ec6284700dfb2cb86363b96bc",
+          "bytes": 374400
+        },
+        "arm": {
+          "sha256": "f8a296e198c0947555c551ad35a6a8a7b08ae45ec6284700dfb2cb86363b96bc",
+          "bytes": 374400
+        },
+        "intel": {
+          "sha256": "f8a296e198c0947555c551ad35a6a8a7b08ae45ec6284700dfb2cb86363b96bc",
+          "bytes": 374400
+        }
+      },
+      "gaps.paths.json": {
+        "debug": {
+          "sha256": "3824be8c1e8205a6f69147cbdabb3aacb83130e80ea0e8776a70edd69953d7d7",
+          "bytes": 5650
+        },
+        "arm": {
+          "sha256": "3824be8c1e8205a6f69147cbdabb3aacb83130e80ea0e8776a70edd69953d7d7",
+          "bytes": 5650
+        },
+        "intel": {
+          "sha256": "3824be8c1e8205a6f69147cbdabb3aacb83130e80ea0e8776a70edd69953d7d7",
+          "bytes": 5650
+        }
+      },
+      "gaps.photato": {
+        "debug": {
+          "sha256": "cc83fea950b6a7e3641c8a9984e4d1508654b0637d22d3f908a31ced97597b82",
+          "bytes": 4478
+        },
+        "arm": {
+          "sha256": "cc83fea950b6a7e3641c8a9984e4d1508654b0637d22d3f908a31ced97597b82",
+          "bytes": 4478
+        },
+        "intel": {
+          "sha256": "cc83fea950b6a7e3641c8a9984e4d1508654b0637d22d3f908a31ced97597b82",
+          "bytes": 4478
+        }
+      },
+      "gaps.psb": {
+        "debug": {
+          "sha256": "4d02f6230e15d517ab33c06c17e3554afa5ac3262ae64fcd687e4b65cd748402",
+          "bytes": 386782
+        },
+        "arm": {
+          "sha256": "4d02f6230e15d517ab33c06c17e3554afa5ac3262ae64fcd687e4b65cd748402",
+          "bytes": 386782
+        },
+        "intel": {
+          "sha256": "4d02f6230e15d517ab33c06c17e3554afa5ac3262ae64fcd687e4b65cd748402",
+          "bytes": 386782
+        }
+      },
+      "gaps.psd": {
+        "debug": {
+          "sha256": "6a2c4339e92a8b2fb63e8377322d9030b9963f108cf2ca7c652fcfcf47caf70c",
+          "bytes": 386742
+        },
+        "arm": {
+          "sha256": "6a2c4339e92a8b2fb63e8377322d9030b9963f108cf2ca7c652fcfcf47caf70c",
+          "bytes": 386742
+        },
+        "intel": {
+          "sha256": "6a2c4339e92a8b2fb63e8377322d9030b9963f108cf2ca7c652fcfcf47caf70c",
+          "bytes": 386742
+        }
+      },
+      "gaps.rgba": {
+        "debug": {
+          "sha256": "877de30418c827db8a8b0bef52faba5b7e3386097f1ebb4319507110e00a4917",
+          "bytes": 374400
+        },
+        "arm": {
+          "sha256": "877de30418c827db8a8b0bef52faba5b7e3386097f1ebb4319507110e00a4917",
+          "bytes": 374400
+        },
+        "intel": {
+          "sha256": "877de30418c827db8a8b0bef52faba5b7e3386097f1ebb4319507110e00a4917",
+          "bytes": 374400
+        }
+      }
+    },
+    "exact": {
+      "json": 3,
+      "photato": 3,
+      "psb": 3,
+      "psd": 3,
+      "rgba": 3
+    }
+  },
+  "nativeWorkspace": {
+    "layout-dark-all": {
+      "width": 1000,
+      "height": 650,
+      "sha256": "63352c8afab3ef5f4cc3c84e87eea60bf823f96c34959d0916c5640d3e9a994f",
+      "matchesInitialCapture": true
+    },
+    "layout-dark-isolated": {
+      "width": 1000,
+      "height": 650,
+      "sha256": "97462377eab98211faa82d8db857aa895ce0021e06f63cec556298cee5ab09e1",
+      "matchesInitialCapture": true
+    },
+    "layout-light-isolated": {
+      "width": 1000,
+      "height": 650,
+      "sha256": "97462377eab98211faa82d8db857aa895ce0021e06f63cec556298cee5ab09e1",
+      "matchesInitialCapture": true
+    },
+    "observations": {
+      "layoutMenusVisible": true,
+      "isolationOnlyShowsSelectedShape": true,
+      "unfilteredShowsUnrelatedSavedPath": true,
+      "bothAppearanceAttemptsUseDarkEditorChrome": true
+    }
+  },
+  "independentPSDShapeRead": {
+    "debug": {
+      "parser": "psd-tools",
+      "version": "1.27.0",
+      "files": {
+        "align-top.psb": {
+          "sha256": "70dd12acea2274d271f0be751e0cc134b868260b5081b5310e3566882897efb2",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              1.75,
+              152.0,
+              50.25
+            ],
+            [
+              221.25,
+              1.75,
+              273.25,
+              32.25
+            ]
+          ]
+        },
+        "align-top.psd": {
+          "sha256": "9ef9def3ababcd6da5bd544c5e1592774a54f8282529b393af5a4c951ffa72bb",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              1.75,
+              152.0,
+              50.25
+            ],
+            [
+              221.25,
+              1.75,
+              273.25,
+              32.25
+            ]
+          ]
+        },
+        "centers.psb": {
+          "sha256": "fc9fefc267f2a5e9343b4bb0ae6b6188a4e816e0aa03a2d057b7f1be57025dbe",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              101.5,
+              81.5,
+              164.5,
+              130.0
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        },
+        "centers.psd": {
+          "sha256": "6b6b93b202821d1ddc2d7f9955a1baac2f2f1bb679e7e414367cc5935a63f716",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              101.5,
+              81.5,
+              164.5,
+              130.0
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        },
+        "gaps.psb": {
+          "sha256": "4d02f6230e15d517ab33c06c17e3554afa5ac3262ae64fcd687e4b65cd748402",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              63.625,
+              152.0,
+              112.125
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        },
+        "gaps.psd": {
+          "sha256": "6a2c4339e92a8b2fb63e8377322d9030b9963f108cf2ca7c652fcfcf47caf70c",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              63.625,
+              152.0,
+              112.125
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        }
+      }
+    },
+    "arm": {
+      "parser": "psd-tools",
+      "version": "1.27.0",
+      "files": {
+        "align-top.psb": {
+          "sha256": "70dd12acea2274d271f0be751e0cc134b868260b5081b5310e3566882897efb2",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              1.75,
+              152.0,
+              50.25
+            ],
+            [
+              221.25,
+              1.75,
+              273.25,
+              32.25
+            ]
+          ]
+        },
+        "align-top.psd": {
+          "sha256": "9ef9def3ababcd6da5bd544c5e1592774a54f8282529b393af5a4c951ffa72bb",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              1.75,
+              152.0,
+              50.25
+            ],
+            [
+              221.25,
+              1.75,
+              273.25,
+              32.25
+            ]
+          ]
+        },
+        "centers.psb": {
+          "sha256": "fc9fefc267f2a5e9343b4bb0ae6b6188a4e816e0aa03a2d057b7f1be57025dbe",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              101.5,
+              81.5,
+              164.5,
+              130.0
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        },
+        "centers.psd": {
+          "sha256": "6b6b93b202821d1ddc2d7f9955a1baac2f2f1bb679e7e414367cc5935a63f716",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              101.5,
+              81.5,
+              164.5,
+              130.0
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        },
+        "gaps.psb": {
+          "sha256": "4d02f6230e15d517ab33c06c17e3554afa5ac3262ae64fcd687e4b65cd748402",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              63.625,
+              152.0,
+              112.125
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        },
+        "gaps.psd": {
+          "sha256": "6a2c4339e92a8b2fb63e8377322d9030b9963f108cf2ca7c652fcfcf47caf70c",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              63.625,
+              152.0,
+              112.125
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        }
+      }
+    },
+    "intel": {
+      "parser": "psd-tools",
+      "version": "1.27.0",
+      "files": {
+        "align-top.psb": {
+          "sha256": "70dd12acea2274d271f0be751e0cc134b868260b5081b5310e3566882897efb2",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              1.75,
+              152.0,
+              50.25
+            ],
+            [
+              221.25,
+              1.75,
+              273.25,
+              32.25
+            ]
+          ]
+        },
+        "align-top.psd": {
+          "sha256": "9ef9def3ababcd6da5bd544c5e1592774a54f8282529b393af5a4c951ffa72bb",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              1.75,
+              152.0,
+              50.25
+            ],
+            [
+              221.25,
+              1.75,
+              273.25,
+              32.25
+            ]
+          ]
+        },
+        "centers.psb": {
+          "sha256": "fc9fefc267f2a5e9343b4bb0ae6b6188a4e816e0aa03a2d057b7f1be57025dbe",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              101.5,
+              81.5,
+              164.5,
+              130.0
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        },
+        "centers.psd": {
+          "sha256": "6b6b93b202821d1ddc2d7f9955a1baac2f2f1bb679e7e414367cc5935a63f716",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              101.5,
+              81.5,
+              164.5,
+              130.0
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        },
+        "gaps.psb": {
+          "sha256": "4d02f6230e15d517ab33c06c17e3554afa5ac3262ae64fcd687e4b65cd748402",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              63.625,
+              152.0,
+              112.125
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        },
+        "gaps.psd": {
+          "sha256": "6a2c4339e92a8b2fb63e8377322d9030b9963f108cf2ca7c652fcfcf47caf70c",
+          "originationIndices": [
+            0,
+            1,
+            2
+          ],
+          "primitiveTypes": [
+            "Rectangle",
+            "Ellipse",
+            "Rectangle"
+          ],
+          "documentBounds": [
+            [
+              1.5,
+              1.75,
+              36.0,
+              33.75
+            ],
+            [
+              89.0,
+              63.625,
+              152.0,
+              112.125
+            ],
+            [
+              221.25,
+              142.0,
+              273.25,
+              172.5
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "selectedCasesSHA256": "02e464df6b36512203c2e9f3857b27f87a02e17c4dc123d7653585db9180c0f9",
+  "nativeChecks": [
+    "AppKit Shift-click component selection and native context menus",
+    "Undo and Redo",
+    "subpixel B\u00e9zier bounds and distribution",
+    "unchanged nonselected paths and masks",
+    "portable Actions replay",
+    "authenticated API result and stale revision checks",
+    "live compound shape PSD and PSB reopen"
+  ],
+  "preview": {
+    "archiveSHA256": "607f36a1ed823aec68c5078e336b00dbf1002cf3dc1d4a3d8328ee5eec078148",
+    "binarySHA256": "4ece4b974560e5bcdf1190fdc9fe4dd34a9dc7e40474ea7aa27e519fcb05d12d",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "4c904ff6b806b9cb6a1da34814151064bce02e52431e8fb6c7991b2e089f9aa2",
+      "x86_64": "d68a2bf77e85b9b6b8ee5897b1c233fa4175517fc71471d5d4749d739f5ea5ae"
+    }
+  },
+  "offscreenSlices": [
+    "arm64",
+    "x86_64"
+  ],
+  "release": "source and diary only",
+  "debugCompilerWorkaround": "Disabled PredictableDeadAllocationElimination for Debug only.",
+  "liveAdobeCompared": false,
+  "reference": "https://helpx.adobe.com/photoshop/desktop/draw-shapes-paths/create-shapes/manage-path-components.html"
+}

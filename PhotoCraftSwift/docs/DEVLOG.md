@@ -696,7 +696,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 675 | 2026-11-20 | [Warp editable paths on the canvas](#dev-step-675) |
 | 676 | 2026-11-20 | [Switch between path Warp and Free Transform](#dev-step-676) |
 | 677 | 2026-11-20 | [Isolate a path’s layer while editing](#dev-step-677) |
+| 678 | 2026-11-20 | [Align and distribute components on an editable path](#dev-step-678) |
 <!-- history-index:end -->
+
+<a id="dev-step-678"></a>
+
+## 2026-11-20 — Align and distribute components on an editable path
+
+Select several whole components on one path and align their edges, distribute their centers, or space them evenly. Supported compound shape layers remain editable in PSD and PSB.
+
+The layout engine measures the actual Bézier curves in document coordinates. It translates their anchors and handles, retaining their order and boolean operation. Native layout, script calls and Actions replay use the same transaction. The native test verifies that Undo restores the original document and Redo restores the edit.
+
+Mixed live rectangles and ellipses now write a vector outline and an indexed origination record for each primitive. Reopening those samples retains individual geometry and boolean operations. The first compound round-trip showed that a subtract contour needs to remain an ordinary primitive internally, with subtraction applied by its owner. The independent read also caught missing origin indices, cache flags and a misaligned descriptor. The Paths panel now uses the same filtered row list as the selection and isolation state.
+
+All 256 selected tests passed in Apple Silicon Debug, optimized Apple Silicon, and optimized Intel under Rosetta. Both slices of the signed macOS 14+ preview launched offscreen. 15 of 15 owned PSD, PSB, RGBA, native archive and editable-coordinate outputs matched byte for byte across builds. An independent PSD reader found three indexed rectangle and ellipse primitives in each of six owned PSD and PSB samples from each build and checked their alignment and spacing from the stored bounds.
+
+The Debug build used the existing Swift compiler workaround for PredictableDeadAllocationElimination. Both optimized builds used the standard compiler configuration. Live Photoshop layout comparison, exact Adobe-produced file bytes, arbitrary live origins and shapes outside the supported PSD paint and stroke settings remain open. Native Photato archives retain the edited curves. Check component arrangement order and overlap operations in the Photoshop path workflow.
+
+[Development record](PATH_COMPONENT_LAYOUT_678.md) · [Qualification](SOURCE_PUBLICATION_678.md).
 
 <a id="dev-step-677"></a>
 

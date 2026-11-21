@@ -63,11 +63,16 @@ extension ShapeDefinition {
 extension Layer {
   /// Direct-selection coordinates are document pixels. The original logical
   /// placement and independent masks survive conversion from a live primitive.
-  public func replacingShapePath(_ path:VectorPath,canvas:IntRect)throws->ShapeDefinition {
+  public func replacingShapePath(_ path: VectorPath, canvas: IntRect,
+                                 preservingTranslatedComponents: Bool = false) throws -> ShapeDefinition {
     guard let shape else{throw CraftError.invalid("Choose a shape layer.")}
     let transform=try shapeTransform(),local=path.transformed(try transform.inverted())
     var definition=shape.editableDefinition
-    definition.components=[try ShapeDefinition.regularPathComponent(local)]
+    if preservingTranslatedComponents, let translated = try definition.translatedComponents(matching: local) {
+      definition.components = translated
+    } else {
+      definition.components = [try ShapeDefinition.regularPathComponent(local)]
+    }
     definition.fillRule=path.fillRule;definition.inverted=path.inverted ? true:nil
     definition.inversionBounds=try path.inverted ? ShapeDefinition.inversionFrame(canvas:canvas,transform:transform):nil
     let points=local.components.flatMap(\.knots).flatMap{[$0.anchor,$0.incoming,$0.outgoing]}
@@ -76,5 +81,47 @@ extension Layer {
       definition.paintFrame = .init(x:x,y:y,width:points.map(\.x).max()!-x,height:points.map(\.y).max()!-y)
     }else{definition.paintFrame=nil}
     try definition.validate();return definition
+  }
+}
+
+private extension ShapeDefinition {
+  func translatedComponents(matching destination: VectorPath) throws -> [ShapeComponent]? {
+    let source = try path()
+    guard source.components.count == destination.components.count else { return nil }
+    var candidate = self
+    var index = 0
+    var groups: [Range<Int>] = []
+    for primitive in components.indices {
+      let end = index + (try components[primitive].path()).components.count
+      groups.append(index..<end)
+      if let first = (index..<end).first(where: { !source.components[$0].knots.isEmpty }),
+         let start = source.components[first].knots.first?.anchor,
+         let finish = destination.components[first].knots.first?.anchor,
+         start != finish {
+        candidate.components[primitive].transform = .translation(finish.x - start.x, finish.y - start.y)
+          * candidate.components[primitive].transform
+      }
+      index = end
+    }
+    let recomputed = try candidate.path()
+    for (primitive, group) in groups.enumerated() {
+      let expected = destination.components[group]
+      let actual = recomputed.components[group]
+      guard actual != expected else { continue }
+      guard zip(actual, expected).allSatisfy({ a, b in
+        a.closed == b.closed && a.operation == b.operation && a.knots.count == b.knots.count
+          && zip(a.knots, b.knots).allSatisfy { first, second in
+            first.smooth == second.smooth
+              && zip([first.anchor, first.incoming, first.outgoing], [second.anchor, second.incoming, second.outgoing])
+              .allSatisfy { a, b in abs(a.x - b.x) < 1e-9 && abs(a.y - b.y) < 1e-9 }
+          }
+      }) else { return nil }
+      // Keep the exact translated knots when recomputing a primitive introduces roundoff.
+      var contours = Array(expected)
+      if candidate.components[primitive].operation != .combine { contours[0].operation = .combine }
+      candidate.components[primitive].pathOverride = .init(components: contours, fillRule: destination.fillRule)
+      candidate.components[primitive].pathReferenceTransform = candidate.components[primitive].transform
+    }
+    return try candidate.path() == destination ? candidate.components : nil
   }
 }

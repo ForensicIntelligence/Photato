@@ -94,6 +94,7 @@ struct AutomationCommand: Sendable {
         if PathAPI.commands.contains(name) {properties[key]=PathAPI.schema(key);continue}
         if name == PathTransformAPI.name {properties[key]=PathTransformAPI.schema(key);continue}
         if PathGroupsAPI.commands.contains(name) {properties[key]=PathGroupsAPI.schema(key, command:name);continue}
+        if name == PathComponentLayoutAPI.name { properties[key] = PathComponentLayoutAPI.schema(key); continue }
         if ShapeAPI.commands.contains(name) { properties[key]=ShapeAPI.schema(key);continue }
         if name.hasPrefix("frame.") { properties[key] = AutomationCommand.frameSchema(key); continue }
         if name == "file.info" { properties[key] = FileInfoAPI.schema(key); continue }
@@ -258,6 +259,7 @@ struct AutomationCommand: Sendable {
     .init(name:PathGroupsAPI.transform, parameters:["targets":"Paths and optional component or anchor scopes","matrix":"Shared row-major transform in document pixels"], description:"Transform multiple editable paths across layers in one Undo."),
     .init(name:PathGroupsAPI.warp, parameters:["targets":"Paths and optional component or anchor scopes","matrix":"Optional row-major transform applied before Warp","settings":"Warp preset, Cylinder or mesh in document coordinates","matrixAfter":"Optional row-major transform applied after Warp"], description:"Warp editable paths across layers in one Undo.", optionalParameters:["matrix","matrixAfter"]),
     .init(name:PathGroupsAPI.isolate, parameters:["enabled":"Enable or disable isolation for the focused shape path or vector mask"], description:"Isolate the focused path’s layer in the Layers and Paths panels."),
+    .init(name: PathComponentLayoutAPI.name, parameters: ["target": "Saved path, shape, or vector mask", "id": "Path or owning layer UUID", "components": "Optional zero-based component indices", "layout": "Alignment or distribution and its edge"], description: "Align or distribute components of one editable path.", optionalParameters: ["components"]),
     .init(name:"path.paint",parameters:["fill":"Extended Fill Path options","pathID":"Saved path UUID","layerID":"Raster layer","brush":"Current brush overrides","stroke":"Stroke instead of foreground fill","simulatePressure":"Taper brush pressure"],description:"Fill or stroke a path using native raster painting with Undo.",optionalParameters:["fill","pathID","layerID","brush","stroke","simulatePressure"]),
     .init(name:"shape.edit",parameters:["point":"Precise creation point","fromCenter":"Center dimensions at point","combine":"Optional precise shape combination","strokePreset":"Optional solid, dashed or dotted stroke preset","operation":"create, configure, append or path","path":"Document-space Bézier path","definition":"Live shape definition","component":"Parametric component to append","layerID":"Shape or raster target","name":"New shape/path name","mode":"shape, path or pixels","transform":"Logical origin transform"],description:"Create or edit live shapes, work paths or raster pixels in one native transaction.",optionalParameters:["point","fromCenter","combine","strokePreset","definition","component","layerID","name","mode","transform","path"]),
     .init(name:"shape.configure",parameters:["strokePreset":"Optional solid, dashed or dotted stroke preset","definition":"Single primitive tool template","mode":"shape, path or pixels","combine":"null for new layer or path operation","presetID":"Custom shape preset"],description:"Configure native shape drawing tools without changing document history.",optionalParameters:["strokePreset","definition","mode","combine","presetID"]),
@@ -584,6 +586,9 @@ struct AutomationCommand: Sendable {
     if name == LayerCollectionTransformAPI.name {for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:LayerCollectionTransformAPI.schema(key),path:key)}}
     if name == PathTransformAPI.name {for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:PathTransformAPI.schema(key),path:key)}}
     if PathGroupsAPI.commands.contains(name) {for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:PathGroupsAPI.schema(key,command:name),path:key)}}
+    if name == PathComponentLayoutAPI.name {
+      for (key, value) in parameters { _ = try BrushAPI.merge(value, schema: PathComponentLayoutAPI.schema(key), path: key) }
+    }
     if name == ChannelTransformAPI.name {for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:ChannelTransformAPI.schema(key),path:key)}}
     if name == PixelMaskTransformAPI.name {for(key,value) in parameters{_ = try BrushAPI.merge(value,schema:PixelMaskTransformAPI.schema(key),path:key)}}
     if name == SelectedPixelMoveAPI.name {for (key,value) in parameters {_ = try BrushAPI.merge(value,schema:SelectedPixelMoveAPI.schema(key),path:key)}}

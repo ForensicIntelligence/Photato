@@ -1,6 +1,6 @@
 import Foundation
 
-public enum LayerAlignment: String, CaseIterable, Sendable {
+public enum LayerAlignment: String, CaseIterable, Codable, Sendable {
   case top = "Top Edges"
   case verticalCenter = "Vertical Centers"
   case bottom = "Bottom Edges"
@@ -20,7 +20,7 @@ public enum LayerAlignment: String, CaseIterable, Sendable {
   }
 }
 
-public enum LayerDistribution: String, CaseIterable, Sendable {
+public enum LayerDistribution: String, CaseIterable, Codable, Sendable {
   case top = "Top Edges"
   case verticalCenter = "Vertical Centers"
   case bottom = "Bottom Edges"
@@ -41,7 +41,7 @@ public enum LayerLayoutTarget: String, CaseIterable, Sendable {
   case canvas = "Canvas"
 }
 
-public enum LayerLayoutOperation: Equatable, Sendable {
+public enum LayerLayoutOperation: Codable, Equatable, Sendable {
   case align(LayerAlignment)
   case distribute(LayerDistribution)
   public var label: String {
