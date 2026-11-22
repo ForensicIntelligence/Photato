@@ -23,9 +23,6 @@ public struct RemoveToolSettings: Codable, Equatable, Sendable {
     guard size.isFinite, (1...5000).contains(size) else {
       throw CraftError.invalid("Remove brush size must be 1–5000 pixels.")
     }
-    guard mode != .generativeOn else {
-      throw CraftError.unsupported("Generative Remove is not available. Choose Auto or Generative AI off for native traditional processing.")
-    }
   }
 }
 
@@ -45,9 +42,27 @@ public struct RemoveStroke: Codable, Equatable, Sendable {
     guard points.count >= 4, points.allSatisfy({ $0.count == 2 }),
       let first = points.first, let last = points.last,
       hypot(last[0]-first[0],last[1]-first[1]) <= size else { return false }
+    return hasInterior(points)
+  }
+  public func enclosedPoints(width: Int, height: Int) -> [[Double]]? {
+    if closesLoop { return points }
+    guard points.count >= 2, points.allSatisfy({ $0.count == 2 }),
+      let first = points.first, let last = points.last else { return nil }
+    let right = Double(width), bottom = Double(height)
+    func edge(_ p: [Double]) -> Int? {
+      let distances = [abs(p[0]), abs(p[0] - right), abs(p[1]), abs(p[1] - bottom)]
+      guard let nearest = distances.indices.min(by: { distances[$0] < distances[$1] }), distances[nearest] <= size / 2 else { return nil }
+      return nearest
+    }
+    guard let a = edge(first), let b = edge(last), (a < 2) != (b < 2) else { return nil }
+    let vertical = a < 2 ? a : b, horizontal = a >= 2 ? a : b
+    let path = points + [[vertical == 0 ? 0 : right, horizontal == 2 ? 0 : bottom]]
+    return hasInterior(path) ? path : nil
+  }
+  private func hasInterior(_ path: [[Double]]) -> Bool {
     var area = 0.0
-    for i in points.indices {
-      let a = points[i], b = points[(i+1)%points.count]
+    for i in path.indices {
+      let a = path[i], b = path[(i+1)%path.count]
       area += a[0]*b[1]-a[1]*b[0]
     }
     return abs(area) > size*size
@@ -57,7 +72,10 @@ public struct RemoveStroke: Codable, Equatable, Sendable {
     var brush = ContentAwareStroke(); brush.target = .selection
     brush.add = !subtract; brush.size = size; brush.points = points
     var result = mask
-    if closesLoop { var loop = brush; loop.kind = .lasso; result = try loop.applying(to:result) }
+    if let enclosing = enclosedPoints(width: mask.width, height: mask.height) {
+      var loop = brush; loop.kind = .lasso; loop.points = enclosing
+      result = try loop.applying(to:result)
+    }
     return try brush.applying(to:result)
   }
 }

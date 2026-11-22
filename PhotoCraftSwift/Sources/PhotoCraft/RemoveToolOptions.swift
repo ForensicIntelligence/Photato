@@ -1,9 +1,13 @@
+import AppKit
 import SwiftUI
 import PhotoCraftCore
+import PhotoCraftImaging
 
 struct RemoveToolOptions: View {
   @Bindable var store: EditorStore
   @State private var reviewOpen = false
+  @State private var validatingModel = false
+  @AppStorage(GenerativeFillModelPreference.key) private var modelBookmark: Data?
   private func setting<T>(_ key: WritableKeyPath<RemoveToolSettings,T>) -> Binding<T> {
     Binding(get:{ store.removeSettings[keyPath:key] },set:{ value in
       var settings = store.removeSettings; settings[keyPath:key] = value
@@ -32,10 +36,22 @@ struct RemoveToolOptions: View {
           RemoveDistractionControls(store: store) { reviewOpen = false }
         }
       Text("Mode")
-      RemoveModeControl(selection:setting(\.mode),enabled:store.removeDraft == nil && !store.geometryBusy)
+      RemoveModeControl(selection:setting(\.mode),enabled:store.removeDraft == nil && !store.geometryBusy && !validatingModel,
+        localAvailable: store.localRemoveAvailable)
         .frame(width:205)
-      Text("Traditional processing").foregroundStyle(.secondary)
-        .help("Auto uses traditional processing. People detection and wire removal run on this Mac.")
+      if LocalGenerativeFill.supported {
+        Menu {
+          Button(modelBookmark == nil ? "Choose Model…" : "Change Model…", action: chooseLocalModel)
+        } label: {
+          Text(store.removeProcessing(store.removeSettings, in: store.document).title)
+        }
+        .accessibilityLabel("Remove processing device and model")
+        .help("Manage the on-device Remove model used by Auto and Generative AI on.")
+        .disabled(store.removeDraft != nil || store.geometryBusy || validatingModel)
+      } else {
+        Text("Traditional").foregroundStyle(.secondary)
+          .help("Generative AI on requires Apple Silicon with macOS 26 or later.")
+      }
       Toggle("Sample All Layers",isOn:setting(\.sampleAllLayers))
         .disabled(store.removeDraft != nil || store.geometryBusy)
       Toggle("Remove after each stroke",isOn:setting(\.removeAfterEachStroke))
@@ -49,15 +65,42 @@ struct RemoveToolOptions: View {
       Button { store.applyRemove() } label: { Label("Apply removal",systemImage:"checkmark") }
         .labelStyle(.iconOnly).help("Apply removal (Return)")
         .disabled(store.geometryBusy || store.removeDraft?.hasMarks != true || store.removeStroke != nil)
-      if store.removeApplying != nil || store.removeDetectionID != nil || store.removeDistractionID != nil || store.removeWiresID != nil {
+      if validatingModel || store.removeApplying != nil || store.removeDetectionID != nil || store.removeDistractionID != nil || store.removeWiresID != nil {
         ProgressView().controlSize(.small).accessibilityLabel(progressTitle)
       }
     }.controlSize(.small).toggleStyle(.checkbox)
   }
 
   private var progressTitle: String {
+    if validatingModel { return "Checking the Remove model" }
     if store.removeWiresID != nil { return "Removing wires and cables" }
     if store.removeDistractionID != nil { return "Finding general distractions" }
     return store.removeDetectionID != nil ? "Detecting people for removal" : "Removing marked areas"
+  }
+
+  private func chooseLocalModel() {
+    let panel = NSOpenPanel()
+    panel.canChooseDirectories = true; panel.canChooseFiles = true
+    panel.allowsMultipleSelection = false; panel.prompt = "Choose Model"
+    panel.message = "Select a compiled LaMa512.mlmodelc model."
+    panel.begin { result in
+      guard result == .OK, let url = panel.url else { return }
+      Task { @MainActor in
+        validatingModel = true
+        defer { validatingModel = false }
+        do {
+          guard url.pathExtension.lowercased() == "mlmodelc" else { throw CraftError.invalid("Choose a compiled .mlmodelc package.") }
+          let bookmark = try GenerativeFillModelPreference.bookmark(for: url)
+          try await Task.detached(priority: .userInitiated) {
+            let access = url.startAccessingSecurityScopedResource()
+            defer { if access { url.stopAccessingSecurityScopedResource() } }
+            try LocalGenerativeFill.validateModel(url)
+          }.value
+          guard store.removeDraft == nil, !store.geometryBusy else { return }
+          modelBookmark = bookmark
+          store.removeRevision = UUID()
+        } catch { store.status = error.localizedDescription }
+      }
+    }
   }
 }

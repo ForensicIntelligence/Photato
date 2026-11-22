@@ -74,6 +74,13 @@ public struct SelectionMask: Equatable, Sendable, Codable {
     width=rawWidth;self.height=height;storage=SelectionCoverageStorage(dense:dense,paged:paged);self.bounds=bounds
   }
   public init(coverage surface:Surface)throws {try self.init(paged:PagedSelectionCoverage(surface:surface))}
+  package static func empty(width: Int, height: Int) throws -> Self {
+    _ = try Surface(width: width, height: height)
+    if width <= Surface.maximumDensePixels / height {
+      return Self(rawWidth: width, height: height, dense: Array(repeating: 0, count: width * height), paged: nil, bounds: nil)
+    }
+    return try sampledCoverage(width: width, height: height, regions: []) { _, _ in 0 }
+  }
   /// Assemble quantized document-space coverage through bounded, deduplicated
   /// patches. Unlisted regions are zero; no logical full-canvas byte array is made.
   public static func sampledCoverage(width: Int, height: Int, regions: [IntRect],

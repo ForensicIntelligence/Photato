@@ -1,3 +1,7 @@
+### Generative Remove (checkpoint 718)
+
+`retouch.remove` accepts `settings.mode: generativeOn` for an eligible shared RGB document when the editor has a local LaMa512 model. The state exposes `generativeAvailable` and `resolvedProcessing`. Brush edits and reviewed distractions share one prepared transaction. Use `execute` to submit ordered strokes, or `configure`, `stroke`, and `apply` to stage them. The existing raw `preview` route requires transfer permission and remains capped at 16 megapixels. [Generative Remove](REMOVE_GENERATIVE.md)
+
 ### General distractions review (checkpoint 717)
 
 `retouch.remove` adds `findDistractions` and `configureDistractionReview`. The find call creates one review with typed categories and counts. Configure replaces the enabled categories and can set opacity. `stroke` and `preview` share native marking. `apply` records one Undo and `cancel` clears the review. `resolvedProcessing` can report `localFillWhenEligible` in Auto with a configured LaMa512 model. `Generative AI Off` forces traditional fill. [Operation details](REMOVE_GENERAL_DISTRACTIONS.md)

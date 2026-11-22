@@ -32,8 +32,8 @@ struct RemoveDistractionControls: View {
           Text("No general distractions found.").foregroundStyle(.secondary)
         } else {
           categories(review)
-          if store.distractionFillModel(for: store.removeDraft) != nil {
-            Text("Auto uses local fill for eligible areas.").foregroundStyle(.secondary)
+          if let draft = store.removeDraft, store.removeProcessing(draft.settings, in: draft.original) != .traditional {
+            Text("Remove uses the on-device model.").foregroundStyle(.secondary)
           }
         }
       } else {

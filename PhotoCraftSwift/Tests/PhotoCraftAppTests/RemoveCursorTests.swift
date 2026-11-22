@@ -83,7 +83,7 @@ final class RemoveCursorTests: XCTestCase {
     XCTAssertEqual(store.removeSettings.mode,.generativeOff); XCTAssertEqual(popup.selectedTag(),1)
     popup.selectItem(withTag:2); XCTAssertTrue(popup.sendAction(action,to:coordinator))
     XCTAssertEqual(store.removeSettings.mode,.generativeOff); XCTAssertEqual(popup.selectedTag(),1)
-    RemoveModeControl.synchronize(popup,selection:.generativeOff,enabled:false)
+    RemoveModeControl.synchronize(popup,selection:.generativeOff,enabled:false,localAvailable:false)
     popup.selectItem(withTag:0); coordinator.changed(popup)
     XCTAssertFalse(popup.isEnabled); XCTAssertEqual(store.removeSettings.mode,.generativeOff)
     XCTAssertEqual(popup.selectedTag(),1); XCTAssertFalse(try XCTUnwrap(popup.item(at:2)).isEnabled)
@@ -96,5 +96,12 @@ final class RemoveCursorTests: XCTestCase {
     XCTAssertNotNil(NSImage(systemSymbolName:symbol,accessibilityDescription:"Remove"))
     XCTAssertEqual(EditorTool.remove.cursor(modifiers:[]),.symbol(symbol,.add))
     XCTAssertEqual(EditorTool.remove.cursor(modifiers:.option),.symbol(symbol,.subtract))
+    store.removeLocalPreparation = { _, _ in throw CancellationError() }
+    coordinator.localAvailable = true
+    RemoveModeControl.synchronize(popup, selection: .generativeOff, enabled: true, localAvailable: true)
+    XCTAssertTrue(try XCTUnwrap(popup.item(at: 2)).isEnabled)
+    popup.selectItem(withTag: 2); coordinator.changed(popup)
+    XCTAssertEqual(store.removeSettings.mode, .generativeOn)
+    XCTAssertEqual(popup.selectedTag(), 2)
   }
 }

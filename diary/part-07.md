@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-18 — Step 548 — Faster first draw for wide Normal brushes
-
-The brush prepares its Normal ink once per stroke. The 5,000 px example on the 24 MP workspace reached its first AppKit draw in 505 ms, compared with 679 ms in the paired build 547 trials. All 121 tested outputs matched.
-
-All 397 selected tests passed in each configuration. Large-tip editing still needs faster coverage work and physical display testing.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-548) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_548.md).
-
 ## 2026-11-18 — Step 547 — Reuse work during a wide brush stroke
 
 Wide raster brushes keep their coverage between pointer samples. On the 24 MP trial, nine prefixes of a 5,000 px stroke took 4,749 ms with the complete painter and 1,872 ms with retained coverage on Apple Silicon. All 60 saved painting outputs matched.
@@ -379,14 +371,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:717 -->
+<!-- current-status-step:718 -->
 ## Current development status — 21 November 2026
 
-Remove → Find distractions → General distractions gives you a review before it changes the image. Choose which of the six categories to apply, adjust overlay opacity and refine the marks with the brush. Apply uses the selected raster or a new correction layer and records one Undo. The Photato API shares the same review and edit.
+The Remove brush can use a configured LaMa512 model on Apple Silicon with macOS 26 or later. Generative AI on requires the device model, and Auto can select it for eligible documents. Separated or wide marks use localized repairs and commit in one Undo. Adjacent-edge brush strokes can enclose a corner. The desktop and Photato API share the selection, target, mark geometry and prepared edit.
 
-581 of 582 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. All seven new tests passed in each configuration. The earlier PSD layer-effect test repeated the same 118 differences. The Xcode project built successfully. Both architectures opened the signed macOS 14+ preview offscreen.
+585 of 586 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. All four new tests passed in each configuration. The existing PSD layer-effect test repeated the same 118 differences. The Xcode project built successfully. Both slices target macOS 14.0 and opened the signed preview offscreen on macOS 27.2.
 
-[Source checkpoint 717](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_717.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-717).
+[Source checkpoint 718](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_718.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-718).
 
 <!-- current-status:end -->
 
@@ -1310,5 +1302,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 715 | [Fill a selection from a local reference image](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-715) |
 | 2026-11-21 | 716 | [Remove extended wire and cable runs in one edit](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-716) |
 | 2026-11-21 | 717 | [Review and remove general distractions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-717) |
+| 2026-11-21 | 718 | [Use on-device Generative Remove from the brush and API](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-718) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

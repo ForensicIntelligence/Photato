@@ -42,9 +42,7 @@ public struct ContentAwareEdit: Sendable {
           let old = original.depth == .f32 ? target.linearPixel(x:x,y:y):target.pixel(x:x,y:y)
           if preserve && old.a == 0 { continue }
           let fill = original.depth == .f32 ? pixels.linearPixel(x:ix-window.x,y:iy-window.y):pixels.pixel(x:ix-window.x,y:iy-window.y)
-          // Full coverage must copy samples directly; subtraction/addition loses HDR mantissa bits.
-          let value = k == 1 ? Pixel(fill.r,fill.g,fill.b,preserve ? old.a:fill.a)
-            : Pixel(old.r+(fill.r-old.r)*k,old.g+(fill.g-old.g)*k,old.b+(fill.b-old.b)*k,preserve ? old.a:old.a+(fill.a-old.a)*k)
+          let value = Self.removeSample(old, fill: fill, coverage: k, preserveTransparency: preserve)
           if original.depth == .f32 { target.setLinearPixel(x:x,y:y,value) } else { target.setPixel(x:x,y:y,value) }
           changed = true
         } }
@@ -53,5 +51,12 @@ public struct ContentAwareEdit: Sendable {
     }
     if output == .current { doc.layers[index] = layer } else { doc.layers.insert(layer,at:index+1) }
     doc.activeLayerID = layer.id; doc.setCoverageSelection(selection); try doc.validate(); return doc
+  }
+
+  package static func removeSample(_ old: Pixel, fill: Pixel, coverage: Float, preserveTransparency: Bool) -> Pixel {
+    // Full coverage must copy HDR mantissa bits directly.
+    if coverage == 1 { return Pixel(fill.r, fill.g, fill.b, preserveTransparency ? old.a : fill.a) }
+    return Pixel(old.r + (fill.r - old.r) * coverage, old.g + (fill.g - old.g) * coverage,
+      old.b + (fill.b - old.b) * coverage, preserveTransparency ? old.a : old.a + (fill.a - old.a) * coverage)
   }
 }

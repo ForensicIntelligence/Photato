@@ -15,11 +15,16 @@ package enum LocalGenerativeFill {
     return false
   }
 
-  package static func selection(in document: CraftDocument) -> IntRect? {
-    guard document.colorMode == .rgb, document.inkMode == nil, document.restrictedMode == nil,
-      !document.isChannelOnly, document.videoTimeline == nil, document.animation == nil,
-      document.artboards.isEmpty, document.layers.count < LayerLimits.maximumLayers,
-      let bounds = document.selectionMask?.bounds ?? document.selection,
+  static func supportsDocument(_ document: CraftDocument) -> Bool {
+    document.colorMode == .rgb && document.inkMode == nil && document.restrictedMode == nil &&
+      !document.isChannelOnly && document.videoTimeline == nil && document.animation == nil && document.artboards.isEmpty
+  }
+
+  package static func selection(in document: CraftDocument, bounds override: IntRect? = nil) -> IntRect? {
+    guard supportsDocument(document),
+      (override != nil || document.layers.count < LayerLimits.maximumLayers),
+      let bounds = override ?? document.selectionMask?.bounds ?? document.selection,
+      bounds == bounds.clipped(toWidth: document.width, height: document.height),
       bounds.width > 0, bounds.height > 0,
       max(bounds.width, bounds.height) <= maximumSelectionSide,
       bounds.width <= maximumSelectionPixels / bounds.height else { return nil }
@@ -244,8 +249,8 @@ package enum LocalGenerativeFill {
   }
 
   package static func capture(_ document: CraftDocument, protectedCanvas: IntRect? = nil,
-    samplingLayer: Layer? = nil) throws -> (Recipe, Surface) {
-    guard let selected = selection(in: document) else {
+    samplingLayer: Layer? = nil, selectionBounds: IntRect? = nil) throws -> (Recipe, Surface) {
+    guard let selected = selection(in: document, bounds: selectionBounds) else {
       throw CraftError.invalid("Select an area of up to 4 megapixels in a still RGB image.")
     }
     if selected.width == document.width, selected.height == document.height,

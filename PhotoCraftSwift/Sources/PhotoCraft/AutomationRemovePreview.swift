@@ -4,8 +4,11 @@ import PhotoCraftCore
 
 enum RemoveMarkPreview {
   static func encode(_ request: RemoveRequest, _ source: CraftDocument) throws -> String {
+    guard source.width <= RemovePreparation.maximumCanvasPixels / source.height else {
+      throw CraftError.unsupported("Remove mask transfers support canvases up to 16 megapixels.")
+    }
     let mask = try RemovePreparation.markCoverage(request,in:source)
-    try Task.checkCancellation(); let bytes = try mask.bytes
+    try Task.checkCancellation(); let bytes = try mask.denseBytes(maximumPixels: RemovePreparation.maximumCanvasPixels)
     try Task.checkCancellation(); return Data(bytes).base64EncodedString()
   }
 }

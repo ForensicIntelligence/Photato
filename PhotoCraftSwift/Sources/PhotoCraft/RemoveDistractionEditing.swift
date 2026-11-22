@@ -25,19 +25,6 @@ struct RemoveDistractionReview: Sendable {
 }
 
 extension EditorStore {
-  func distractionFillModel(for draft: RemoveDraft?) -> URL? {
-    guard LocalGenerativeFill.supported, let draft, draft.settings.mode == .auto,
-      draft.distractionReview?.enabled.isEmpty == false else { return nil }
-    return GenerativeFillModelPreference.url()
-  }
-
-  func removeWorker(for draft: RemoveDraft) -> @Sendable (RemoveRequest, CraftDocument) throws -> RegionRetouchEdit {
-    if let model = distractionFillModel(for: draft) {
-      return { request, source in try RemovePreparation.prepareReview(request, document: source, model: model) }
-    }
-    return removePreparation
-  }
-
   var canFindGeneralDistractions: Bool {
     canFindRemovePeople && removeDistractionID == nil && removeApplying == nil
   }

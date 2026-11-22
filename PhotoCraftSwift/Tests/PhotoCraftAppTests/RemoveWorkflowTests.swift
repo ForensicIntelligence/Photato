@@ -81,6 +81,47 @@ final class RemoveWorkflowTests: XCTestCase {
     XCTAssertTrue(store.beginRemoveStroke(at:.init(x:12,y:12),alternate:false))
     store.cancelRemoveGesture(); XCTAssertNil(store.removeDraft); XCTAssertNil(store.removeStroke)
   }
+
+  @MainActor func testGenerativeModeMatchesEditorAndHTTPAndNeverFallsBackAfterModelFailure() async throws {
+    let helper = AutomationTests(), original = try fixture()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      let store = shared.store
+      store.session = EditorSession(document: original); store.tool = .remove
+      store.removeLocalPreparation = { request, source in
+        let prepared = try RemovePreparation.generativeGuides(request, document: source)
+        return try RemovePreparation.prepareGenerative(request, source: source, prepared: prepared) { _, _ in
+          try Surface(width: 512, height: 512, fill: Pixel(0.1, 0.7, 0.2))
+        }
+      }
+      XCTAssertEqual(RemoveToolAPI.state(store)["generativeAvailable"] as? Bool, true)
+      XCTAssertEqual(RemoveToolAPI.state(store)["resolvedProcessing"] as? String, "localFillWhenEligible")
+      var settings = store.removeSettings; settings.mode = .generativeOn; settings.size = 7
+      try store.updateRemoveSettings(settings)
+      XCTAssertEqual(RemoveToolAPI.state(store)["resolvedProcessing"] as? String, "localFill")
+      XCTAssertFalse(store.canRemoveWires)
+      XCTAssertTrue(store.beginRemoveStroke(at: .init(x: 12, y: 12), alternate: false))
+      store.finishRemoveStroke(at: .init(x: 12, y: 12))
+      await store.geometryTask?.value; await store.removeCompletionTask?.value
+      let expected = store.document
+      XCTAssertNotEqual(expected, original); XCTAssertEqual(store.session.undoStack.count, 1)
+      await store.undo(); XCTAssertEqual(store.document, original)
+      try service.share(shared)
+      let body: [String: Any] = ["operation": "execute", "settings": ["mode": "generativeOn"],
+        "strokes": [["points": [[12, 12]]]]]
+      let success = try await helper.edit(service, shared, RemoveToolAPI.name, body)
+      XCTAssertEqual(success, 200); XCTAssertEqual(store.document, expected)
+      XCTAssertEqual(store.session.undoStack.count, 1)
+      await store.undo()
+      store.removeLocalPreparation = { _, _ in throw CraftError.unavailable("Model failed.") }
+      let failed = try await helper.edit(service, shared, RemoveToolAPI.name, body)
+      XCTAssertEqual(failed, 422); XCTAssertEqual(store.document, original)
+      XCTAssertTrue(store.session.undoStack.isEmpty)
+      store.removeLocalPreparation = { _, _ in XCTFail("Off dispatched the local model"); throw CancellationError() }
+      let off = try await helper.edit(service, shared, RemoveToolAPI.name, ["operation": "execute",
+        "settings": ["mode": "generativeOff"], "strokes": [["points": [[12, 12]]]]])
+      XCTAssertEqual(off, 200); XCTAssertNotEqual(store.document, expected)
+    }
+  }
   @MainActor func testNativeCancellationAndChangedSourceCannotPublishPreparedRemoval() async throws {
     let d = try fixture(), store = EditorStore(document:d)
     defer { store.cancelRemove(); store.renderTask?.cancel() }

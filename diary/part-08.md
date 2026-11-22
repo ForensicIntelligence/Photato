@@ -1380,4 +1380,12 @@ All 398 selected tests passed in each configuration. Wide brushes still need fas
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-549) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_549.md).
 
+## 2026-11-18 — Step 548 — Faster first draw for wide Normal brushes
+
+The brush prepares its Normal ink once per stroke. The 5,000 px example on the 24 MP workspace reached its first AppKit draw in 505 ms, compared with 679 ms in the paired build 547 trials. All 121 tested outputs matched.
+
+All 397 selected tests passed in each configuration. Large-tip editing still needs faster coverage work and physical display testing.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-548) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_548.md).
+
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

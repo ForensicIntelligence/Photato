@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **717** · The 10 most recent entries, newest first.
+Source build **718** · The 10 most recent entries, newest first.
+
+## 2026-11-21 — Step 718 — Use on-device Generative Remove from the brush and API
+
+The Remove brush can use a configured LaMa512 model on Apple Silicon with macOS 26 or later. Generative AI on requires the device model, and Auto can select it for eligible documents. Separated or wide marks use localized repairs and commit in one Undo. Adjacent-edge brush strokes can enclose a corner. The desktop and Photato API share the selection, target, mark geometry and prepared edit.
+
+The on-device model repaired two copies of a photograph in a 12,000 × 9,000 document. All rendered copies were byte-identical in Debug and optimized Apple Silicon. Every sampled unmarked pixel stayed exact. The authenticated API made the same document as the editor, and one Undo restored the source. An independent test used known fill samples to check two distant marks on a sparse 300,000 × 300,000 canvas with both current-layer and transparent correction-layer output. Other tests cover corner closure, blending across repair boundaries, mandatory model failure behavior and native menu availability. The optimized Intel app retained traditional Auto and rejected Generative AI on under Rosetta.
+
+The photo’s repaired grass remains softer than the surroundings. Photoshop 27.2.0 identified itself but its editing controls were unavailable for the comparison. Automatic removal of related effects, cloud Remove processing, the Adobe Execute Actions descriptor and exact Adobe pixels remain open. The 300,000-pixel check used sparse storage and known fill samples.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-718) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_718.md).
 
 ## 2026-11-21 — Step 717 — Review and remove general distractions
 
@@ -93,13 +103,3 @@ The Vision and Runway test on project artwork preserved 422,792 fully opaque sub
 The local model samples the document within a 512-pixel frame and scales the result to the canvas. Dense maximum-area export, lighting and texture quality, dedicated background colour and import choices, and Firefly output equivalence remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-709) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_709.md).
-
-## 2026-11-21 — Step 708 — Add more variations to a saved wide expansion
-
-Generate More and Generate Similar now work on prompted Generative Expand layers that used overlapping model windows. The embedded PSB stores the original perimeter pixels, including when the edit starts with one result. Changing the underlying layers after saving leaves the model context intact. The edit keeps the earlier results and the current outer mask.
-
-A 4,104-pixel-wide fixture matched every original Float32 model input after reopening in native, PSD and PSB, even after edits to the base pixels and mask. The real Runway model reproduced the first build 707 result byte for byte on a 4,104 × 120 image, then generated a new result from that saved reference. The proof kept both results, 393,984 original pixels, the edited mask and one-step Undo. The two results reopened byte for byte in PSB and Photato. The native Properties draft accepted the saved reference. The prepared edit and HTTP produced the same RGBA8 results and mask after reopening. A signed App Sandbox proof retained all 11 model inputs and 73,836 original pixels in PSB at each of RGB8, RGB16 and RGB32. The first result took 312.2 seconds and the similar variation took 164.8 seconds while build qualification ran.
-
-Older tiled files still open and retain the saved results. They lack the captured source needed to regenerate. Large dense borders, long-range prompt continuity, rotation, blank-prompt alternatives and Adobe Firefly output equivalence remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-708) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_708.md).

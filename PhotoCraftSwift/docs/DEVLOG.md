@@ -736,7 +736,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 715 | 2026-11-21 | [Fill a selection from a local reference image](#dev-step-715) |
 | 716 | 2026-11-21 | [Remove extended wire and cable runs in one edit](#dev-step-716) |
 | 717 | 2026-11-21 | [Review and remove general distractions](#dev-step-717) |
+| 718 | 2026-11-21 | [Use on-device Generative Remove from the brush and API](#dev-step-718) |
 <!-- history-index:end -->
+
+<a id="dev-step-718"></a>
+
+## 2026-11-21 — Use on-device Generative Remove from the brush and API
+
+Adobe documents Auto, On and Off, a choice of processing source, and adjacent-edge corner closure. The native options bar can now select and validate the compiled device model. The initial model test succeeded on both copies, but the original absolute repair grid produced different pixels when the same mark moved across a tile boundary. The revised path groups occupied coverage and anchors the overlapping regions to the marks. The repeated model test then produced identical photo bytes. The photo mark included the waste bin and its cast shadow, so both were in the fill mask.
+
+Empty dense masks use the existing fast allocation and clipping touches only their selected bounds. Large masks use sparse coverage and writes into bounded regions. Current-layer output uses the same soft-mask interpolation as traditional removal. Generative AI on returns an error if the selected local route cannot run. The existing public Photoshop v2 contract has no dedicated Remove endpoint.
+
+The installed Adobe app returned its version but exposed no accessibility toolbar. Attempts to read the current editing tool through the scripting interface and activate the workspace timed out. Those attempts are saved separately from the Photato photo verification.
+
+The on-device model repaired two copies of a photograph in a 12,000 × 9,000 document. All rendered copies were byte-identical in Debug and optimized Apple Silicon. Every sampled unmarked pixel stayed exact. The authenticated API made the same document as the editor, and one Undo restored the source. An independent test used known fill samples to check two distant marks on a sparse 300,000 × 300,000 canvas with both current-layer and transparent correction-layer output. Other tests cover corner closure, blending across repair boundaries, mandatory model failure behavior and native menu availability. The optimized Intel app retained traditional Auto and rejected Generative AI on under Rosetta.
+
+585 of 586 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. All four new tests passed in each configuration. The existing PSD layer-effect test repeated the same 118 differences. The Xcode project built successfully. Both slices target macOS 14.0 and opened the signed preview offscreen on macOS 27.2.
+
+The photo’s repaired grass remains softer than the surroundings. Photoshop 27.2.0 identified itself but its editing controls were unavailable for the comparison. Automatic removal of related effects, cloud Remove processing, the Adobe Execute Actions descriptor and exact Adobe pixels remain open. The 300,000-pixel check used sparse storage and known fill samples.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_718.md).
 
 <a id="dev-step-717"></a>
 

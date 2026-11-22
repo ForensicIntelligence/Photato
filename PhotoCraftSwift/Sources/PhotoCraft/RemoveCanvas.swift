@@ -49,9 +49,9 @@ extension CraftCanvas {
       guard let first = points.first else { continue }
       context.setBlendMode(stroke.subtract ? .clear:.normal)
       context.setFillColor(NSColor.systemPink.cgColor); context.setStrokeColor(NSColor.systemPink.cgColor)
-      if stroke.closesLoop {
+      if let enclosed = stroke.enclosedPoints(width: store.document.width, height: store.document.height) {
         context.beginPath(); context.move(to:first)
-        for point in points.dropFirst() { context.addLine(to:point) }
+        for point in enclosed.dropFirst() { context.addLine(to: viewPoint(CGPoint(x: point[0], y: point[1]))) }
         context.closePath(); context.fillPath(using:.evenOdd)
       }
       let diameter = stroke.size*scale

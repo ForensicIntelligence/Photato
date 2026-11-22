@@ -49,26 +49,45 @@ public struct ContentAwareStroke: Codable, Equatable, Sendable {
     try validate(); let w = mask.width, h = mask.height
     if let selectionMode {
       var shape = self; shape.selectionMode = nil; shape.add = true
-      let empty = try SelectionMask(width:w,height:h,bytes:Array(repeating:0,count:w*h))
+      let empty = try SelectionMask.empty(width: w, height: h)
       return try shape.applying(to:empty).combined(with:mask,mode:selectionMode)
+    }
+    if mask.isPaged {
+      let shape: SelectionMask
+      if kind == .lasso {
+        shape = try .make(.polygon(points.map { SelectionPoint($0[0], $0[1]) }), width: w, height: h, antiAlias: true)
+      } else {
+        var coverage = try Surface(width: w, height: h, fill: .black)
+        try brushPixels(width: w, height: h) { x, y in coverage.setPixel(x: x, y: y, .white) }
+        shape = try .init(coverage: coverage)
+      }
+      return try SelectionMask(coverage: mask.coverageSurface().combiningStoredSamples(with: shape.coverageSurface()) { a, b in
+        let first = Int((a.r * 255).rounded()), second = Int((b.r * 255).rounded())
+        let value = Float(add ? max(first, second) : min(first, 255 - second)) / 255
+        return Pixel(value, value, value)
+      })
     }
     var bytes = (try mask.bytes)
     if kind == .lasso {
       let shape = try SelectionMask.make(.polygon(points.map { SelectionPoint($0[0],$0[1]) }),width:w,height:h,antiAlias:true)
       for y in 0..<h { try Task.checkCancellation(); for x in 0..<w { let i = y*w+x; bytes[i] = add ? max(bytes[i],shape.byte(at:i)):min(bytes[i],255-shape.byte(at:i)) } }
     } else {
-      var visits = 0; let r = size/2
-      for j in points.indices {
+      try brushPixels(width: w, height: h) { x, y in bytes[y * w + x] = add ? 255 : 0 }
+    }
+    return try SelectionMask(width:w,height:h,bytes:bytes)
+  }
+
+  private func brushPixels(width w: Int, height h: Int, _ visit: (Int, Int) -> Void) throws {
+    var visits = 0; let r = size/2
+    for j in points.indices {
         let a = points[max(0,j-1)], b = points[j], dx = b[0]-a[0], dy = b[1]-a[1], length = dx*dx+dy*dy
         let x0 = max(0,min(w,Int(floor(min(a[0],b[0])-r)))), x1 = max(0,min(w,Int(ceil(max(a[0],b[0])+r))))
         let y0 = max(0,min(h,Int(floor(min(a[1],b[1])-r)))), y1 = max(0,min(h,Int(ceil(max(a[1],b[1])+r))))
         visits += (x1-x0)*(y1-y0); guard visits <= 100_000_000 else { throw CraftError.invalid("Sampling stroke is too large.") }
         for y in y0..<y1 { try Task.checkCancellation(); for x in x0..<x1 {
           let px = Double(x)+0.5-a[0], py = Double(y)+0.5-a[1], t = length == 0 ? 0:min(1,max(0,(px*dx+py*dy)/length))
-          if hypot(px-t*dx,py-t*dy) <= r { bytes[y*w+x] = add ? 255:0 }
+          if hypot(px-t*dx,py-t*dy) <= r { visit(x, y) }
         } }
-      }
     }
-    return try SelectionMask(width:w,height:h,bytes:bytes)
   }
 }

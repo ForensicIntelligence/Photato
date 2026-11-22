@@ -384,6 +384,7 @@ struct CanvasRenderRequest: Sendable {
   @ObservationIgnored var removePreviewPreparation: @Sendable (RemoveRequest,CraftDocument) throws -> String = { try RemoveMarkPreview.encode($0,$1) }
   @ObservationIgnored var removeCompletionTask: Task<Void,Never>?
   @ObservationIgnored var removePreparation: @Sendable (RemoveRequest,CraftDocument) throws -> RegionRetouchEdit = { try RemovePreparation.prepare($0,document:$1) }
+  @ObservationIgnored var removeLocalPreparation: (@Sendable (RemoveRequest, CraftDocument) throws -> RegionRetouchEdit)?
   var regionRetouchSettings = RegionRetouchRequest(kind:.patch)
   @ObservationIgnored var channelFooterPreparation: @Sendable (ChannelFooterRequest,CraftDocument,ColorSettings) throws -> Command = {
     try ChannelFooterPreparation.prepare($0,document:$1,colorSettings:$2)

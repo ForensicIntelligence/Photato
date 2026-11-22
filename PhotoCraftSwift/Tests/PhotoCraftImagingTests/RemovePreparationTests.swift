@@ -127,4 +127,22 @@ final class RemovePreparationTests: XCTestCase {
     XCTAssertGreaterThan(pixels.linearPixel(x:10,y:11).r, pixels.linearPixel(x:11,y:11).r)
     XCTAssertLessThan(pixels.linearPixel(x:10,y:11).r, source.linearPixel(x:10,y:11).r)
   }
+
+  func testCornerBrushEnclosesOnlyAdjacentCanvasEdges() throws {
+    let empty = try SelectionMask.sampledCoverage(width: 40, height: 40, regions: []) { _, _ in 0 }
+    for (flipX, flipY) in [(false, false), (false, true), (true, false), (true, true)] {
+      func point(_ x: Double, _ y: Double) -> [Double] { [flipX ? 40 - x : x, flipY ? 40 - y : y] }
+      let points = [point(0, 20), point(12, 10), point(20, 0)]
+      let stroke = RemoveStroke(size: 3, points: points)
+      let added = try stroke.applying(to: empty)
+      let inside = point(4, 4), outside = point(25, 16)
+      XCTAssertEqual(added.coverage(x: Int(inside[0]), y: Int(inside[1])), 1)
+      XCTAssertEqual(added.coverage(x: Int(outside[0]), y: Int(outside[1])), 0)
+      let subtracted = try RemoveStroke(size: 3, subtract: true, points: Array(points.reversed())).applying(to: added)
+      XCTAssertEqual(subtracted.coverage(x: Int(inside[0]), y: Int(inside[1])), 0)
+    }
+    let across = RemoveStroke(size: 3, points: [[0, 10], [20, 13], [40, 10]])
+    XCTAssertNil(across.enclosedPoints(width: 40, height: 40))
+    XCTAssertEqual(try across.applying(to: empty).coverage(x: 10, y: 2), 0)
+  }
 }

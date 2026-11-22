@@ -1,3 +1,13 @@
+## 2026-11-21 — Step 718 — Use on-device Generative Remove from the brush and API
+
+The Remove brush can use a configured LaMa512 model on Apple Silicon with macOS 26 or later. Generative AI on requires the device model, and Auto can select it for eligible documents. Separated or wide marks use localized repairs and commit in one Undo. Adjacent-edge brush strokes can enclose a corner. The desktop and Photato API share the selection, target, mark geometry and prepared edit.
+
+The on-device model repaired two copies of a photograph in a 12,000 × 9,000 document. All rendered copies were byte-identical in Debug and optimized Apple Silicon. Every sampled unmarked pixel stayed exact. The authenticated API made the same document as the editor, and one Undo restored the source. An independent test used known fill samples to check two distant marks on a sparse 300,000 × 300,000 canvas with both current-layer and transparent correction-layer output. Other tests cover corner closure, blending across repair boundaries, mandatory model failure behavior and native menu availability. The optimized Intel app retained traditional Auto and rejected Generative AI on under Rosetta.
+
+The photo’s repaired grass remains softer than the surroundings. Photoshop 27.2.0 identified itself but its editing controls were unavailable for the comparison. Automatic removal of related effects, cloud Remove processing, the Adobe Execute Actions descriptor and exact Adobe pixels remain open. The 300,000-pixel check used sparse storage and known fill samples.
+
+[Development record](DEVLOG.md#dev-step-718) · [Qualification](SOURCE_PUBLICATION_718.md).
+
 ## 2026-11-21 — Step 717 — Review and remove general distractions
 
 Remove → Find distractions → General distractions gives you a review before it changes the image. Choose which of the six categories to apply, adjust overlay opacity and refine the marks with the brush. Apply uses the selected raster or a new correction layer and records one Undo. The Photato API shares the same review and edit.
@@ -1777,14 +1787,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:717 -->
+<!-- current-status-step:718 -->
 ## Current development status — 21 November 2026
 
-Remove → Find distractions → General distractions gives you a review before it changes the image. Choose which of the six categories to apply, adjust overlay opacity and refine the marks with the brush. Apply uses the selected raster or a new correction layer and records one Undo. The Photato API shares the same review and edit.
+The Remove brush can use a configured LaMa512 model on Apple Silicon with macOS 26 or later. Generative AI on requires the device model, and Auto can select it for eligible documents. Separated or wide marks use localized repairs and commit in one Undo. Adjacent-edge brush strokes can enclose a corner. The desktop and Photato API share the selection, target, mark geometry and prepared edit.
 
-581 of 582 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. All seven new tests passed in each configuration. The earlier PSD layer-effect test repeated the same 118 differences. The Xcode project built successfully. Both architectures opened the signed macOS 14+ preview offscreen.
+585 of 586 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. All four new tests passed in each configuration. The existing PSD layer-effect test repeated the same 118 differences. The Xcode project built successfully. Both slices target macOS 14.0 and opened the signed preview offscreen on macOS 27.2.
 
-[Source checkpoint 717](SOURCE_PUBLICATION_717.md) · [Development record](DEVLOG.md#dev-step-717).
+[Source checkpoint 718](SOURCE_PUBLICATION_718.md) · [Development record](DEVLOG.md#dev-step-718).
 
 <!-- current-status:end -->
 
@@ -2708,6 +2718,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 715 | [Fill a selection from a local reference image](DEVLOG.md#dev-step-715) |
 | 2026-11-21 | 716 | [Remove extended wire and cable runs in one edit](DEVLOG.md#dev-step-716) |
 | 2026-11-21 | 717 | [Review and remove general distractions](DEVLOG.md#dev-step-717) |
+| 2026-11-21 | 718 | [Use on-device Generative Remove from the brush and API](DEVLOG.md#dev-step-718) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

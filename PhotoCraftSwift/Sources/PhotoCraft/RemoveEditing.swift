@@ -2,6 +2,18 @@ import AppKit
 import PhotoCraftCore
 import PhotoCraftImaging
 
+enum RemoveProcessing: String, CaseIterable {
+  case traditional, localFillWhenEligible, localFill, unavailable
+
+  var title: String {
+    switch self {
+    case .traditional: "Traditional"
+    case .localFillWhenEligible, .localFill: "Device"
+    case .unavailable: "Model unavailable"
+    }
+  }
+}
+
 struct RemoveDraft: Sendable {
   let original: CraftDocument
   let session: UUID
@@ -22,8 +34,43 @@ struct RemoveDraft: Sendable {
 }
 
 extension EditorStore {
+  var localRemoveModel: URL? { LocalGenerativeFill.supported ? GenerativeFillModelPreference.url() : nil }
+
+  var localRemoveAvailable: Bool {
+    localRemoveIsAvailable(in: document)
+  }
+
+  private func localRemoveIsAvailable(in source: CraftDocument) -> Bool {
+    RemovePreparation.supportsLocalProcessing(source) && (removeLocalPreparation != nil || localRemoveModel != nil)
+  }
+
+  func removeProcessing(_ settings: RemoveToolSettings, in source: CraftDocument) -> RemoveProcessing {
+    switch settings.mode {
+    case .generativeOff: .traditional
+    case .auto: localRemoveIsAvailable(in: source) ? .localFillWhenEligible : .traditional
+    case .generativeOn: localRemoveIsAvailable(in: source) ? .localFill : .unavailable
+    }
+  }
+
+  func removeWorker(for draft: RemoveDraft) throws -> @Sendable (RemoveRequest, CraftDocument) throws -> RegionRetouchEdit {
+    let mode = draft.settings.mode
+    if mode != .generativeOff, RemovePreparation.supportsLocalProcessing(draft.original) {
+      if let removeLocalPreparation { return removeLocalPreparation }
+      if let model = localRemoveModel {
+        return { request, source in try RemovePreparation.prepareGenerative(request, document: source, model: model) }
+      }
+    }
+    if mode == .generativeOn { throw CraftError.unavailable("Generative AI on requires an eligible RGB document and the on-device LaMa512 model.") }
+    return removePreparation
+  }
+
   var canUseRemove: Bool {
-    canUseRemoveTarget && document.width <= RemovePreparation.maximumCanvasPixels / document.height
+    guard canUseRemoveTarget else { return false }
+    switch removeProcessing(removeSettings, in: document) {
+    case .unavailable: return false
+    case .traditional: return document.width <= RemovePreparation.maximumCanvasPixels / document.height
+    case .localFill, .localFillWhenEligible: return true
+    }
   }
 
   var canUseRemoveTarget: Bool {
@@ -36,7 +83,7 @@ extension EditorStore {
       layer.sourceProjection == nil,
       selectedLayerIDs.isEmpty || selectedLayerIDs == [layer.id],
       !document.ancestors(of:layer.id).contains(where: { $0.protection.fullyLocks }) else { return false }
-    return removeSettings.mode != .generativeOn && (removeSettings.createNewLayer || !document.isImageLocked(layer.id))
+    return removeSettings.createNewLayer || !document.isImageLocked(layer.id)
   }
   func removeSourceMatches(_ draft: RemoveDraft) -> Bool {
     draft.original == document && draft.session == sessionGeneration && draft.generation == layerPanelGeneration
@@ -44,6 +91,9 @@ extension EditorStore {
   func updateRemoveSettings(_ settings: RemoveToolSettings) throws {
     try settings.validate()
     guard !geometryBusy, removeStroke == nil else { throw CraftError.invalid("Finish the current Remove stroke first.") }
+    if settings.mode == .generativeOn, settings.mode != removeSettings.mode, !localRemoveAvailable {
+      throw CraftError.unavailable("Choose the on-device LaMa512 model for an eligible RGB document first.")
+    }
     if let draft = removeDraft {
       guard settings.mode == draft.settings.mode,
         settings.sampleAllLayers == draft.settings.sampleAllLayers,
@@ -118,8 +168,11 @@ extension EditorStore {
     guard canUseRemove, removeSourceMatches(draft) else {
       status = "The Remove source changed or is unavailable. Clear the pending strokes first."; return
     }
+    let prepare: @Sendable (RemoveRequest, CraftDocument) throws -> RegionRetouchEdit
+    do { prepare = try removeWorker(for: draft) }
+    catch { status = error.localizedDescription; return }
     removeDraft = nil; removeApplying = draft; removeRevision = UUID()
-    let request = draft.request, prepare = removeWorker(for: draft)
+    let request = draft.request
     performGeometry(label:"Remove",prepare:{ original in
       guard original == draft.original else { throw CraftError.invalid("The Remove source changed.") }
       return .regionRetouch(try prepare(request,original))
