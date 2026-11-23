@@ -371,14 +371,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:721 -->
+<!-- current-status-step:722 -->
 ## Current development status — 23 November 2026
 
-Layered PSD and PSB exports place the editable text record and its padding before the following protection record. Photato can still open older files written with the uncounted pad. Whole-pixel translations of editable text now render the same way before and after reopening an RGB32 file.
+Relinking a projected Smart Object to the same source preserves its rendered appearance in the tested PSD and PSB files. The original placement, editable Smart Filters and their mask stay with the layer.
 
-656 of 657 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The two new tests passed in each configuration. The one existing PSD layer-effect method repeated the same 118 differences as build 720. The checked-in Xcode project built, and both signed preview slices target macOS 14.0 and opened offscreen.
+717 of 718 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Debug passed 716 of 718. The new regression passed in all three configurations. The existing PSD layer-effect test repeated the same 118 assertions as build 721. The Adobe-compatible Smart Filter export exhausted the Debug worker stack in both builds 721 and 722. That case passed on both optimized slices. Xcode built the checked-in project. Both signed preview slices target macOS 14.0 and opened offscreen.
 
-[Source checkpoint 721](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_721.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-721).
+[Source checkpoint 722](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_722.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-722).
 
 <!-- current-status:end -->
 
@@ -1306,5 +1306,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 719 | [Review related shadows and reflections before removing them](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-719) |
 | 2026-11-23 | 720 | [Recover partial transparency in product cutouts](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-720) |
 | 2026-11-23 | 721 | [Preserve editable type and RGB32 composites in layered Photoshop files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-721) |
+| 2026-11-23 | 722 | [Keep projected Smart Object edges stable when relinking](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-722) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

@@ -740,7 +740,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 719 | 2026-11-23 | [Review related shadows and reflections before removing them](#dev-step-719) |
 | 720 | 2026-11-23 | [Recover partial transparency in product cutouts](#dev-step-720) |
 | 721 | 2026-11-23 | [Preserve editable type and RGB32 composites in layered Photoshop files](#dev-step-721) |
+| 722 | 2026-11-23 | [Keep projected Smart Object edges stable when relinking](#dev-step-722) |
 <!-- history-index:end -->
+
+<a id="dev-step-722"></a>
+
+## 2026-11-23 — Keep projected Smart Object edges stable when relinking
+
+The baseline differed by 386, 3,120 and 9,231 rendered bytes at RGB8, RGB16 and RGB32 when binding identical source bytes. The only differing source-edge sample mapped to 12.999999999999998 before saving and to 13.0 after reconstruction from the PSD corners. The resulting alpha flip spread through Gaussian Blur and High Pass. The trace inserted only the original homography into the rebound document and recovered the original rendered bytes. `ProjectiveRaster.swift` now keeps half-open source coverage when equivalent projective coefficients place an inverse sample within a few representable values of an outer boundary. The new `PSDProjectiveSmartObjectTests.swift` regression checks the source edge, coordinate mapping and cache-to-link equality across both formats and all three depths. `scripts/Info.plist` identifies build 722.
+
+The test moves a linked PSB, opens the document from its saved preview and relinks the same source bytes. Photato matches every rendered byte in the initial cache, resolved link and edited reopen at RGB8, RGB16 and RGB32. A filter-mask stroke and a filter reorder retain separate Undo steps. The authenticated Photato API matches the native rebind and Undo. An independent reader recovered the external filenames, projected corners and filter order in twelve files per configuration. It decompressed the painted filter mask and found the marked center at zero coverage in each edited file.
+
+The first Debug build stopped with compiler signal 4. The retry used the established PredictableDeadAllocationElimination workaround. All 52 focused tests passed. The initial loopback harness captured a revision before linked status had settled and received HTTP 409. Its successful retry used the published document revision from a state request.
+
+717 of 718 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Debug passed 716 of 718. The new regression passed in all three configurations. The existing PSD layer-effect test repeated the same 118 assertions as build 721. The Adobe-compatible Smart Filter export exhausted the Debug worker stack in both builds 721 and 722. That case passed on both optimized slices. Xcode built the checked-in project. Both signed preview slices target macOS 14.0 and opened offscreen.
+
+The verified case uses an unchanged local linked file and two native filters. The outputs compare Photato before and after reopening and relinking. Direct Photoshop comparisons, other deformation geometries and the full Smart Filter and linked-source acceptance workflows remain open. Photoshop 27.2.0 returned its version and exposed zero accessible windows and menu bars.
+
+The API guide and layered workflow acceptance row record the verified result. The overall README estimate stays at 50%.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_722.md).
 
 <a id="dev-step-721"></a>
 

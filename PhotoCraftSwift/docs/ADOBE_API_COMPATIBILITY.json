@@ -3425,5 +3425,11 @@
     "reference": "Adobe Photoshop File Formats Specification, additional layer information",
     "limits": "The authenticated Photato download was verified. This correction adds no Adobe endpoint or action contract; Adobe job-level conformance and live Photoshop reopening remain open.",
     "evidence": "docs/SOURCE_PUBLICATION_721.json"
+  },
+  "projected_linked_exchange_build722": {
+    "status": "Existing shared native compositor correction",
+    "photatoCommand": "smartObject.linked.relink",
+    "limits": "The Photato relink contract was verified with a local authorized asset. Adobe job-level relink and direct Photoshop comparison remain open.",
+    "evidence": "docs/SOURCE_PUBLICATION_722.json"
   }
 }

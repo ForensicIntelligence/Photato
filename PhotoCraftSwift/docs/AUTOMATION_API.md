@@ -1,3 +1,7 @@
+### Relink a projected Smart Object (checkpoint 722)
+
+`smartObject.linked.relink` takes the authorized asset ID, its current fingerprint and the target layer ID. Start with the document revision returned by the state endpoint. The native renderer retains the same edge samples for the tested identical-source rebind while keeping editable filters and one Undo. [Linked artwork guide](LINKED_FILTER_EDGE_EXCHANGE.md)
+
 ### Layered PSD and PSB with editable type (checkpoint 721)
 
 Desktop Save As, `document.saveAs`, and authenticated `file.psd` and `file.psb` downloads share the corrected type tag and whole-pixel type sampler. The tested downloads match native file bytes in all three RGB depths. [Layered file guide](LAYERED_TYPE_EXCHANGE.md)

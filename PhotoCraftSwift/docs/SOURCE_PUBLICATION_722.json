@@ -1,0 +1,394 @@
+{
+  "build": 722,
+  "base": "02d2ca765588e24caf48e8ce690705e067a53bf0",
+  "buildInputs": 9421,
+  "includedBuildInputs": 9421,
+  "candidateManifestSHA256": "bd6d3310cd8bb076ae3fb500054d375ce6d2ea9457dee7658a06d49c7523a69f",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraftCore/ProjectiveRaster.swift",
+      "sha256": "e98d00618e90b3eaad25b3389ae2ec7579bc703cc3bd3f369d014c47745fb93e"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/PSDProjectiveSmartObjectTests.swift",
+      "sha256": "63a850fca3578a4105eb329dfec2393379c547fbc7fcaa58b89fe6a1eb0fd10f"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "fa257d32400fe78b836d99c80912d170e3cf2eb62b90281e91db83b0f74a6001"
+    }
+  ],
+  "casesPerConfiguration": 718,
+  "qualifications": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 718,
+      "passed": 716,
+      "newCasesExpected": 1,
+      "newCasesPassed": 1,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.SmartFilterWorkflowTests/testPublishedExecuteActionsRetainsEditablePSDStack",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "80db49b3483fd01633b2129185bd37a66c648f4ad69f83e00f4530dc0490b5b7"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 718,
+      "passed": 717,
+      "newCasesExpected": 1,
+      "newCasesPassed": 1,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "4b9504b28c09cc56eed7970e64df5828247c31852a2ff7501ad516144cdae94c"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 718,
+      "passed": 717,
+      "newCasesExpected": 1,
+      "newCasesPassed": 1,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "8b9087e56e1dac59c8fabacb9c85518e5672427aa35f7f63dda9de1a6867eef3"
+    }
+  },
+  "linkedExchange": {
+    "debug": [
+      {
+        "depth": "u8",
+        "container": "psd",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 8558,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "u8",
+        "container": "psb",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 8558,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "u16",
+        "container": "psd",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 18056,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "u16",
+        "container": "psb",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 18056,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "f32",
+        "container": "psd",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 30452,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "f32",
+        "container": "psb",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 30452,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      }
+    ],
+    "arm": [
+      {
+        "depth": "u8",
+        "container": "psd",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 8558,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "u8",
+        "container": "psb",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 8558,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "u16",
+        "container": "psd",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 18056,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "u16",
+        "container": "psb",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 18056,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "f32",
+        "container": "psd",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 30452,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "f32",
+        "container": "psb",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 30452,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      }
+    ],
+    "intel": [
+      {
+        "depth": "u8",
+        "container": "psd",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 8558,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "u8",
+        "container": "psb",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 8558,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "u16",
+        "container": "psd",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 18056,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "u16",
+        "container": "psb",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 18056,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "f32",
+        "container": "psd",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 30451,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      },
+      {
+        "depth": "f32",
+        "container": "psb",
+        "cachedByteDifferences": 0,
+        "rebindByteDifferences": 0,
+        "reorderChangedBytes": 30451,
+        "editedCacheByteDifferences": 0,
+        "authenticatedRelinkAndUndoExact": true
+      }
+    ]
+  },
+  "debugStackControl": {
+    "build": 721,
+    "selector": "PhotoCraftAppTests.SmartFilterWorkflowTests/testPublishedExecuteActionsRetainsEditablePSDStack",
+    "returnCode": -10,
+    "testSHA256": "f287950ee98e9679e7c366bec7809bf38072dff68bcb82f155dd512205c028fc"
+  },
+  "photoshopReference": {
+    "liveOutputCompared": false,
+    "version": "27.2.0",
+    "accessibleWindows": 0,
+    "accessibleMenuBars": 0
+  },
+  "preview": {
+    "archiveSHA256": "165ebc0117826c7da2bbef56119738ece2ad1bf38333dc101fe43928682c3ab0",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "dbf93c6b6c1828c390ee020ed49ac962723f7afe7cbe6daedbf4b2e4ef431e0c",
+      "x86_64": "e29d48721352798ab175bbaad45fcce9d4ea95d5fbcdeb22388bc8422d6469e3"
+    },
+    "binarySHA256": "50fdd7fb615f57b0ecf4f179d31f321d56f1829f1d397087243d23721e12cdc4",
+    "verifiedOffscreenWorkspaces": {
+      "arm64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "0f71fbc46c420789582d38c6bfdbced913079c4350fdcef280886225909058af"
+      },
+      "x86_64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "737809cd565f82b52fc896909aee5e8e6173be406cf3305bd5da70a547a89757"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "file": "build-debug01.log",
+      "sha256": "c03d04e50ad1094755dbb254b1e38d36e38cf7a3f737f88e9b2a64f55065a24c"
+    },
+    {
+      "file": "build-debug02.log",
+      "sha256": "dbc1a8168e48fc9594bf072fdb21d675f8600f9b2efea743517bcee002d2ded2"
+    },
+    {
+      "file": "harness-build01.log",
+      "sha256": "f6382f8df11b30605e9705ae0e07316fbdd1d51c3c068a035d079b16154cdebf"
+    },
+    {
+      "file": "focus-debug-core01.log",
+      "sha256": "56b14fcec959107988954bf62d0689c85df2765514e7607936b069d3df4b06ab"
+    },
+    {
+      "file": "focus-debug-imaging01.log",
+      "sha256": "d641d94e34ca2c5ae7cbe269d25b2dabd1ba520c1d8e53b2d6d570efe20ecae4"
+    },
+    {
+      "file": "focus-debug-app01.log",
+      "sha256": "3cdbf9a61b898df5153f7f90b2cf3e5ae041de83cefe3c2bf31580fe3d0a73c0"
+    },
+    {
+      "file": "linked-exchange-debug01.log",
+      "sha256": "7ef7c0883af051fca14b606a737800846f120a174f452afac6cd9423927c0849"
+    },
+    {
+      "file": "linked-exchange-debug02.log",
+      "sha256": "20aa11b3d15d0a3c925e4f3aa90b9315f9cd6825cd60dedef4f763434af2129a"
+    },
+    {
+      "file": "linked-exchange-debug03.log",
+      "sha256": "ea8b42538da560277dac1f995848128c8bbc19ed74f5f849548e6afac59984c1"
+    },
+    {
+      "file": "api-linked-debug01.log",
+      "sha256": "36643d1ab9a38e48229dade92fa75282659173961632c757507fceb51715d0af"
+    },
+    {
+      "file": "adobe-reference01.log",
+      "sha256": "e419226b7b571f120c1f3d46873833ec1d71bf318ecca4eabe32f32bdd978937"
+    },
+    {
+      "file": "xcode-build01.log",
+      "sha256": "25595f93d8a3d4bf54b7ce2a8d7bfc529b1cd7d9f2d4575c8a3993557087a8cd"
+    },
+    {
+      "file": "control-721-build-debug01.log",
+      "sha256": "a72d86473b3559f04d2bce4518bb4970807660c6dcd0e43b2ee352458d4a027c"
+    },
+    {
+      "file": "control-adobe-actions-721-debug01.json",
+      "sha256": "bd285fbc6cb90a09c7dab2abfb43a56f2302426da0e42ba8b7bc3ff07e218afc"
+    },
+    {
+      "file": "retry-adobe-actions-debug01.log",
+      "sha256": "160a518d6b51eb23205e5e1cee8332a21ca1d8c5caf778388e6fd3ef553b61ed"
+    },
+    {
+      "file": "lldb-adobe-actions-721-debug01.log",
+      "sha256": "b9b35729906753dea418a78397fec3faa28b0182592b09cd9f3ca50d9b9dff02"
+    },
+    {
+      "file": "lldb-adobe-actions-debug03.log",
+      "sha256": "585d7471b0bdc196f4b2a3c8cb3160af40a2e3e4d9347eb3ed12fea2b4f6e70d"
+    },
+    {
+      "file": "build-release-arm6401.log",
+      "sha256": "c26a9440e08ee293507c7672cdc1e4893fc08c5f25b4cbaa41374fbfebb7e355"
+    },
+    {
+      "file": "build-release-x86_6401.log",
+      "sha256": "de7eb68dd7394a3f0731abcdbb3f0ed02215ec18a48fe773739ca01902d2842e"
+    },
+    {
+      "file": "preview-final01/preview-offscreen01.json",
+      "sha256": "212952ce4ad62860b678d2fe42a23c544a7c721b32d7bc7868a9fe2634a2ad74"
+    },
+    {
+      "file": "linked-exchange-debug04.log",
+      "sha256": "dd304b0359487e726ac9b9364c2225b0f3e62f76a2c1bebcee5515c3ad291253"
+    },
+    {
+      "file": "api-linked-debug02.log",
+      "sha256": "b5c9cb694eb1ff22f7d30a6fc96b13ec1d1d360fbffb82eae53d0f9e3a902d63"
+    },
+    {
+      "file": "independent-linked-debug01.log",
+      "sha256": "43e104ceed4f96f00ddc35b6e902ff9c6fa76b1d2d354dc2e886f4f4bf334657"
+    },
+    {
+      "file": "linked-exchange-arm01.log",
+      "sha256": "dd304b0359487e726ac9b9364c2225b0f3e62f76a2c1bebcee5515c3ad291253"
+    },
+    {
+      "file": "api-linked-arm01.log",
+      "sha256": "b5c9cb694eb1ff22f7d30a6fc96b13ec1d1d360fbffb82eae53d0f9e3a902d63"
+    },
+    {
+      "file": "independent-linked-arm01.log",
+      "sha256": "43e104ceed4f96f00ddc35b6e902ff9c6fa76b1d2d354dc2e886f4f4bf334657"
+    },
+    {
+      "file": "linked-exchange-intel01.log",
+      "sha256": "a75047a59a0501ed072ccfc0a1ca2b448f9c722f7ea04c15a739aaead612826c"
+    },
+    {
+      "file": "api-linked-intel01.log",
+      "sha256": "b5c9cb694eb1ff22f7d30a6fc96b13ec1d1d360fbffb82eae53d0f9e3a902d63"
+    },
+    {
+      "file": "independent-linked-intel01.log",
+      "sha256": "43e104ceed4f96f00ddc35b6e902ff9c6fa76b1d2d354dc2e886f4f4bf334657"
+    }
+  ]
+}

@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 721.** Layered PSD and PSB exports place the editable text record and its padding before the following protection record. Photato can still open older files written with the uncounted pad. Whole-pixel translations of editable text now render the same way before and after reopening an RGB32 file. [Layered file guide](PhotoCraftSwift/docs/LAYERED_TYPE_EXCHANGE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_721.md).
+**Development alpha — source build 722.** Relinking a projected Smart Object to the same source preserves its rendered appearance in the tested PSD and PSB files. The original placement, editable Smart Filters and their mask stay with the layer. [Linked artwork guide](PhotoCraftSwift/docs/LINKED_FILTER_EDGE_EXCHANGE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_722.md).
 
 ## Project layout
 

@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **721** · The 10 most recent entries, newest first.
+Source build **722** · The 10 most recent entries, newest first.
+
+## 2026-11-23 — Step 722 — Keep projected Smart Object edges stable when relinking
+
+Relinking a projected Smart Object to the same source preserves its rendered appearance in the tested PSD and PSB files. The original placement, editable Smart Filters and their mask stay with the layer.
+
+The test moves a linked PSB, opens the document from its saved preview and relinks the same source bytes. Photato matches every rendered byte in the initial cache, resolved link and edited reopen at RGB8, RGB16 and RGB32. A filter-mask stroke and a filter reorder retain separate Undo steps. The authenticated Photato API matches the native rebind and Undo. An independent reader recovered the external filenames, projected corners and filter order in twelve files per configuration. It decompressed the painted filter mask and found the marked center at zero coverage in each edited file.
+
+The verified case uses an unchanged local linked file and two native filters. The outputs compare Photato before and after reopening and relinking. Direct Photoshop comparisons, other deformation geometries and the full Smart Filter and linked-source acceptance workflows remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-722) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_722.md).
 
 ## 2026-11-23 — Step 721 — Preserve editable type and RGB32 composites in layered Photoshop files
 
@@ -93,13 +103,3 @@ The real InstructPix2Pix model delivered identical same-seed pixels through the 
 The local workflow uses the optional 512 × 512 Core ML model on Apple Silicon and macOS 26 or later. Current input support is still RGB and visible root pixel or supported generative layers outside clipping stacks. The installed Photoshop 27.2.0 document query timed out. Direct Photoshop reopening, Adobe model output equality, shared Firefly action descriptors, and live keyboard and assistive technology checks remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-713) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_713.md).
-
-## 2026-11-21 — Step 712 — Generate editable images from a text prompt on-device
-
-Edit → Generate Image and the canvas controls now generate artwork from a text prompt on eligible Macs. The optional local Core ML model creates one to three alternatives in a single editable Smart Object and preserves the original layers and selection. Properties switches variations and can generate more from the prompt or generate similar results from a saved variation. The Photato API shares the same prepared edit and history. The existing Apple Intelligence route remains available.
-
-The real local model produced identical same-seed rendered pixels through the native editor and authenticated HTTP API. Edited test documents retained their variations in Photato, PSD and PSB at RGB8, RGB16 and RGB32. A 768 × 512 locally generated still life retained both variants and identical rendered bytes across all three formats. An independent reader matched all 3,145,728 merged RGBA bytes in the PSD and PSB previews to the PNG. A 300,000 × 8 PSB reopened with exact edge samples, editable placement and the original square model resolution.
-
-The on-device model generates at 512 × 512 and offers a centered canvas crop. Adobe’s model picker and hosted Firefly output have separate engines and remain unqualified. The installed Photoshop 27.2.0 document query timed out. Direct Photoshop reopening, live keyboard and assistive technology checks, and Adobe-compatible Generate Image action coverage remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-712) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_712.md).

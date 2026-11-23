@@ -182,4 +182,63 @@ final class PSDProjectiveSmartObjectTests: XCTestCase {
     try session.undo()
     XCTAssertEqual(session.document, cached)
   }
+  func testSameProjectedSourceRelinkKeepsFilterCompositeAtExactSourceEdge() throws {
+    let points = [PathPoint(9, 7), .init(51, 12), .init(47, 46), .init(6, 41)]
+    for depth in PixelDepth.allCases {
+      var artwork = try CraftDocument(width: 19, height: 13, depth: depth)
+      var pixels = try Surface(width: 19, height: 13, depth: depth)
+      for y in 0..<13 {
+        for x in 0..<19 {
+          let stripe: Float = (x + 2 * y).isMultiple(of: 3) ? 0.82 : 0.19
+          pixels.setPixel(x: x, y: y, Pixel(stripe, Float(x) / 18, Float(y) / 12, 0.8))
+        }
+      }
+      artwork.layers[0].content = .raster(pixels)
+      let original = try PSDCodec.writeRasterLayers(artwork, format: .psb)
+      let link = try LinkedSmartObjectSource(reference: "/Original/Artwork.psb",
+        contentHash: LinkedSmartObjectSource.fingerprint(original), byteLength: UInt64(original.count))
+      let relocated = try LinkedSmartObjectSource(reference: "/Relocated/Artwork.psb",
+        contentHash: LinkedSmartObjectSource.fingerprint(original), byteLength: UInt64(original.count))
+      var document = try CraftDocument(width: 64, height: 52, depth: depth)
+      var layer = try LinkedSmartObjectIO.place(original, fileName: "Artwork.psb", reference: link,
+        in: document, fit: false)
+      layer.x = 0
+      layer.y = 0
+      layer.affine = nil
+      layer.sourceProjection = try SelectionTransform.projection(
+        bounds: .init(x: 0, y: 0, width: 19, height: 13), corners: points)
+      layer.warp = WarpDefinition()
+      try Command.addLayer(layer).apply(to: &document)
+      try Command.applyFilter(layer.id, RasterFilter(.gaussianBlur)).apply(to: &document)
+      try Command.applyFilter(layer.id, RasterFilter(.highPass)).apply(to: &document)
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      let expected = try Renderer.composite(document).rgbaData(depth: depth, colorEncoding: encoding)
+
+      // The center of this destination pixel falls exactly on the excluded
+      // bottom source edge at y = 13, even when the inverse rounds just below it.
+      let baked = try WarpRaster.baked(layer, in: document)
+      guard case .raster(let projected) = baked.content else { return XCTFail("Missing projected pixels") }
+      XCTAssertEqual(projected.pixel(x: 26 - baked.x, y: 43 - baked.y).a, 0)
+      let projection = try XCTUnwrap(layer.sourceProjection)
+      let mapping = try ProjectiveRaster.mapping(projection, width: 19, height: 13, transform: .identity)
+      let edgeIndex = (43 - mapping.bounds.y) * mapping.bounds.width + 26 - mapping.bounds.x
+      XCTAssertTrue(mapping.uv[edgeIndex].y.isNaN)
+
+      for format in PSDFileFormat.allCases {
+        let data = try PSDCodec.writeRasterLayers(document, format: format)
+        let cached = try PSDCodec.readPaged(data)
+        XCTAssertEqual(try Renderer.composite(cached).rgbaData(depth: depth, colorEncoding: encoding), expected)
+        let cachedLayer = try XCTUnwrap(cached.layers.last)
+        XCTAssertNotNil(try cachedLayer.linkedSmartObjectPreview())
+        var session = EditorSession(document: cached)
+        try session.execute(LinkedSmartObjectIO.replacement(original, fileName: "Artwork.psb",
+          reference: relocated, in: cached, layerID: layer.id, preserveSize: true))
+        XCTAssertEqual(session.document.layers.last?.smartObject?.linkedSource, relocated)
+        XCTAssertEqual(try Renderer.composite(session.document).rgbaData(depth: depth, colorEncoding: encoding), expected)
+        try session.undo()
+        XCTAssertEqual(session.document, cached)
+      }
+    }
+  }
+
 }

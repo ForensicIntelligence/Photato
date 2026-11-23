@@ -8,6 +8,7 @@ public enum ProjectiveRaster {
     if let affine=try placement.affineValue(){return try RasterGeometry.render(source,transform:affine,bounds:bounds,method:method,clampEdges:true)}
     _ = try placement.bounds(width:source.width,height:source.height)
     let inverse=try placement.inverted().values,linear=source.colorEncoding == .linearRGB
+    let xRange = sourceRange(source.width), yRange = sourceRange(source.height)
     let builder=try Surface.PagedBuilder(width:bounds.width,height:bounds.height,depth:source.depth,fill:.clear,colorEncoding:source.colorEncoding)
     let sourceBox=IntRect(x:0,y:0,width:source.width,height:source.height),supports:[IntRect]
     if source.defaultPixel.hasSameBits(as:.clear),source.tileCount<=RasterGeometry.sparseGridSourceTileLimit {
@@ -20,9 +21,9 @@ public enum ProjectiveRaster {
         let px=Double(bounds.x+region.x+x)+0.5,py=Double(bounds.y+region.y+y)+0.5,w=inverse[6]*px+inverse[7]*py+inverse[8]
         guard w.isFinite,abs(w)>1e-15 else{continue}
         let sx=(inverse[0]*px+inverse[1]*py+inverse[2])/w,sy=(inverse[3]*px+inverse[4]*py+inverse[5])/w
-        guard sx>=0,sy>=0,sx<Double(source.width),sy<Double(source.height) else{continue}
-        if method == .nearest{patch.copyStoredSample(from:source,x:Int(floor(sx)),y:Int(floor(sy)),toX:x,toY:y);continue}
-        let p=WarpRaster.sample(source,.init(sx,sy),method:method,clampEdges:true,encoding:source.colorEncoding)
+        guard let point = sourcePoint(sx, sy, xRange: xRange, yRange: yRange) else { continue }
+        if method == .nearest{patch.copyStoredSample(from:source,x:Int(floor(point.x)),y:Int(floor(point.y)),toX:x,toY:y);continue}
+        let p=WarpRaster.sample(source,point,method:method,clampEdges:true,encoding:source.colorEncoding)
         if linear{patch.setLinearPixel(x:x,y:y,p)}else{patch.setPixel(x:x,y:y,p)}
       }}
       try builder.append(patch,atX:region.x,atY:region.y)
@@ -34,6 +35,7 @@ public enum ProjectiveRaster {
     let full=try projection.followed(by:transform),bounds=try full.bounds(width:width,height:height)
     guard width<=WarpRaster.maximumPixels/height,bounds.width<=WarpRaster.maximumPixels/bounds.height else{throw CraftError.unsupported("Projective preparation currently supports8,388,608 source/output pixels.")}
     let inverse=try full.inverted(),a=inverse.values
+    let xRange = sourceRange(width), yRange = sourceRange(height)
     var uv=[PathPoint](repeating:.init(.nan,.nan),count:bounds.width*bounds.height)
     for y in 0..<bounds.height {
       try Task.checkCancellation()
@@ -41,10 +43,26 @@ public enum ProjectiveRaster {
         let px=Double(bounds.x+x)+0.5,py=Double(bounds.y+y)+0.5,w=a[6]*px+a[7]*py+a[8]
         guard w.isFinite,w != 0 else{continue}
         let sx=(a[0]*px+a[1]*py+a[2])/w,sy=(a[3]*px+a[4]*py+a[5])/w
-        if sx.isFinite,sy.isFinite,sx>=0,sy>=0,sx<Double(width),sy<Double(height){uv[y*bounds.width+x] = .init(sx,sy)}
+        if let point = sourcePoint(sx, sy, xRange: xRange, yRange: yRange) {
+          uv[y*bounds.width+x] = point
+        }
       }
     }
     return .init(bounds:bounds,uv:uv)
+  }
+
+  private static func sourceRange(_ dimension: Int) -> Range<Double> {
+    let edge = Double(dimension)
+    // Reconstructing the same homography from PSD corners can move an exact
+    // edge sample a few representable values. Keep source coverage half-open.
+    let rounding = 8 * edge.ulp
+    return -rounding..<(edge - rounding)
+  }
+
+  private static func sourcePoint(_ x: Double, _ y: Double,
+                                  xRange: Range<Double>, yRange: Range<Double>) -> PathPoint? {
+    guard xRange.contains(x), yRange.contains(y) else { return nil }
+    return .init(max(0, x), max(0, y))
   }
 }
 
