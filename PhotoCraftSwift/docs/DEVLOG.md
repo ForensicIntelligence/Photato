@@ -743,7 +743,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 722 | 2026-11-23 | [Keep projected Smart Object edges stable when relinking](#dev-step-722) |
 | 723 | 2026-11-23 | [Refine hair in Select and Mask](#dev-step-723) |
 | 724 | 2026-11-23 | [Reuse the canvas composite for Clone Stamp and Healing Brush](#dev-step-724) |
+| 725 | 2026-11-23 | [Speed up RGB8 and RGB16 retouch sample conversion](#dev-step-725) |
 <!-- history-index:end -->
+
+<a id="dev-step-725"></a>
+
+## 2026-11-23 — Speed up RGB8 and RGB16 retouch sample conversion
+
+The inner loop now reuses the native tile compositor in Clipboard.swift. It retains the existing default sample, rounding, partial-tile padding and straight-alpha treatment. The optimized path applies to dense sRGB storage, and the existing conversion handles linear RGB, floating-point output and paged or mapped inputs. SurfaceStorageIdentityTests compares the former scalar path with the new path at each applicable depth pair. It checks exact surface samples and encoded archive bytes across hidden color, signed zero, partial tiles and rounding edges. An early direct tile loop hit a Swift frontend trap. The existing stored-depth mapper produced different default and tile bytes in the edge cases. The accepted candidate instead reuses the transactional tile compositor.
+
+On the 2,096 × 2,592 portrait, the Apple Silicon depth conversion took 119 ms for RGB8 and 117 ms for RGB16. The former scalar loop took 194 and 193 ms. Every raw sample word matched at both depths on both optimized architectures. Each architecture matched all 12 build 724 PNGs across ordinary and cropped correction layers. Preview, commit, editable reopen and authenticated API pixels matched, with one Undo per stroke.
+
+The ordinary New Layer first preview took 117–125 ms on optimized Apple Silicon after source selection. In the adjacent build 724 run it took 181–192 ms. A scripted 48-sample gesture produced 42 Clone Stamp and 41 Healing Brush software previews on an ordinary new layer. The cropped control produced 3 and 3, respectively.
+
+795 of 797 selected tests passed on each optimized architecture, with Intel tested under Rosetta. The existing PSD layer-effect test repeated the same 118 assertions. The wider suite also surfaced a color-profile fixture failure. The retained build 723 bundles reproduced all 34 Apple Silicon and 294 translated Intel assertions. On each architecture the two builds also produced identical dense and paged color-profile output bytes. The new exact-storage regression passed on both architectures and among 23 focused Xcode Debug tests. Xcode successfully built the application, and both signed macOS 14+ preview slices opened offscreen. The SwiftPM Debug frontend trapped before the broad suite could run. Xcode Debug separately matched the benchmark sample words and the two tools’ selected native and API output for each layer geometry.
+
+The timings measure software preparation and the first complete preview on one test host. Physical pointer-to-display cadence and direct Photoshop comparison remain open. The last Photoshop 27.2.0 workspace inspection at build 724 exposed no accessible editing window or menu bar.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_725.md).
 
 <a id="dev-step-724"></a>
 

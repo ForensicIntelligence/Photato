@@ -3444,5 +3444,11 @@
     "photatoCommand": "retouch.stroke",
     "publishedAdobeContractChanges": [],
     "evidence": "docs/SOURCE_PUBLICATION_724.json"
+  },
+  "retouch_depth_conversion_build725": {
+    "status": "Shared native editor and Photato API sample-depth optimization",
+    "photatoCommand": "retouch.stroke",
+    "publishedAdobeContractChanges": [],
+    "evidence": "docs/SOURCE_PUBLICATION_725.json"
   }
 }

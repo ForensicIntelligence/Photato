@@ -1,7 +1,35 @@
+import Foundation
 import XCTest
 @testable import PhotoCraftCore
 
 final class SurfaceStorageIdentityTests:XCTestCase {
+  func testDenseSDRDepthConversionMatchesScalarStorageExactly() throws {
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = .sortedKeys
+    let colors = [Pixel(-0.0, 0.3, 0.7, 0), Pixel(0, 0.3, 0.7, -0.0),
+                  Pixel(1.3, -0.5, 123.5 / 255, 0.51), Pixel(0.8, 0.2, 0.4, 0)]
+    for inputDepth in PixelDepth.allCases {
+      var input = try Surface(width: 129, height: 67, depth: inputDepth, fill: colors[0])
+      input.setPixel(x: 0, y: 0, colors[1])
+      input.setPixel(x: 1, y: 1, Pixel(Float.leastNonzeroMagnitude, 0.3, 0.7, 0))
+      input.setPixel(x: 63, y: 64, colors[2])
+      input.setPixel(x: 128, y: 66, colors[3])
+      for depth in [PixelDepth.u8, .u16] where depth != inputDepth {
+        var expected = try Surface(width: input.width, height: input.height, depth: depth, fill: input.defaultPixel)
+        for y in 0..<input.height {
+          for x in 0..<input.width {
+            let pixel = input.pixel(x: x, y: y).quantized(depth)
+            if pixel != expected.defaultPixel { expected.setPixel(x: x, y: y, pixel) }
+          }
+        }
+        let converted = try input.converted(to: depth)
+        XCTAssertEqual(converted, expected)
+        XCTAssertEqual(converted.tileCount, 2)
+        XCTAssertEqual(try encoder.encode(converted), try encoder.encode(expected))
+      }
+    }
+  }
+
   func testDirectSharedTilesAndCopyOnWriteKeepIdentityProofSound()throws {
     let tile=RasterTile(repeating:Pixel(0.25,0.5,0.75),count:4096)
     let a:RasterTileMap=[0:tile,5:tile];var b=a

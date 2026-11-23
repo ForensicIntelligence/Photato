@@ -1,3 +1,15 @@
+## 2026-11-23 — Step 725 — Speed up RGB8 and RGB16 retouch sample conversion
+
+Photato converts allocated tiles when a bounded sRGB raster changes to 8 or 16 bits per channel. Clone Stamp and Healing Brush use the faster conversion when preparing samples for a stroke. The desktop and authenticated Photato API share that conversion.
+
+On the 2,096 × 2,592 portrait, the Apple Silicon depth conversion took 119 ms for RGB8 and 117 ms for RGB16. The former scalar loop took 194 and 193 ms. Every raw sample word matched at both depths on both optimized architectures. Each architecture matched all 12 build 724 PNGs across ordinary and cropped correction layers. Preview, commit, editable reopen and authenticated API pixels matched, with one Undo per stroke.
+
+The ordinary New Layer first preview took 117–125 ms on optimized Apple Silicon after source selection. In the adjacent build 724 run it took 181–192 ms. A scripted 48-sample gesture produced 42 Clone Stamp and 41 Healing Brush software previews on an ordinary new layer. The cropped control produced 3 and 3, respectively.
+
+The timings measure software preparation and the first complete preview on one test host. Physical pointer-to-display cadence and direct Photoshop comparison remain open.
+
+[Development record](DEVLOG.md#dev-step-725) · [Qualification](SOURCE_PUBLICATION_725.md).
+
 ## 2026-11-23 — Step 724 — Reuse the canvas composite for Clone Stamp and Healing Brush
 
 Clone Stamp and Healing Brush can reuse the prepared canvas composite for Current & Below and All Layers. The renderer checks that the cached document matches the requested source and layer cutoff. Source selection, previews and authenticated Photato edits share this sampling path.
@@ -1849,14 +1861,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:724 -->
+<!-- current-status-step:725 -->
 ## Current development status — 23 November 2026
 
-Clone Stamp and Healing Brush can reuse the prepared canvas composite for Current & Below and All Layers. The renderer checks that the cached document matches the requested source and layer cutoff. Source selection, previews and authenticated Photato edits share this sampling path.
+Photato converts allocated tiles when a bounded sRGB raster changes to 8 or 16 bits per channel. Clone Stamp and Healing Brush use the faster conversion when preparing samples for a stroke. The desktop and authenticated Photato API share that conversion.
 
-765 of 766 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Debug passed 764 of 766. The new sampling regression passed on all three configurations. The existing PSD layer-effect test repeated its 118 assertions. Debug also reproduced the inherited Smart Filter PSD export stack overflow. Xcode built the checked-in project. The signed macOS 14+ preview opened offscreen on both architectures.
+795 of 797 selected tests passed on each optimized architecture, with Intel tested under Rosetta. The existing PSD layer-effect test repeated the same 118 assertions. The wider suite also surfaced a color-profile fixture failure. The retained build 723 bundles reproduced all 34 Apple Silicon and 294 translated Intel assertions. On each architecture the two builds also produced identical dense and paged color-profile output bytes. The new exact-storage regression passed on both architectures and among 23 focused Xcode Debug tests. Xcode successfully built the application, and both signed macOS 14+ preview slices opened offscreen. The SwiftPM Debug frontend trapped before the broad suite could run. Xcode Debug separately matched the benchmark sample words and the two tools’ selected native and API output for each layer geometry.
 
-[Source checkpoint 724](SOURCE_PUBLICATION_724.md) · [Development record](DEVLOG.md#dev-step-724).
+[Source checkpoint 725](SOURCE_PUBLICATION_725.md) · [Development record](DEVLOG.md#dev-step-725).
 
 <!-- current-status:end -->
 
@@ -2787,6 +2799,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 722 | [Keep projected Smart Object edges stable when relinking](DEVLOG.md#dev-step-722) |
 | 2026-11-23 | 723 | [Refine hair in Select and Mask](DEVLOG.md#dev-step-723) |
 | 2026-11-23 | 724 | [Reuse the canvas composite for Clone Stamp and Healing Brush](DEVLOG.md#dev-step-724) |
+| 2026-11-23 | 725 | [Speed up RGB8 and RGB16 retouch sample conversion](DEVLOG.md#dev-step-725) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

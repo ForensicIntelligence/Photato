@@ -10,3 +10,7 @@ Photato can reuse the raw canvas render when it matches the exact sampled docume
 The portrait benchmark applies both tools to the same three defects. Healing reduced the local pixel error at all three sites. Two of the tested Clone Stamp sources were a poor match. The preview and committed pixels matched in the tested operations. Source preparation timings measure software work and physical display cadence remains a separate test.
 
 [Photato automation guide](AUTOMATION_API.md) · [Adobe Healing Brush workflow](https://helpx.adobe.com/photoshop/desktop/repair-retouch/clean-restore-images/healing-brush-tool.html)
+
+## Sample depth conversion
+
+When a bounded sRGB source needs an 8-bit or 16-bit sample, Photato converts just the stored tiles. The editor and authenticated API use the same conversion and preserve the existing sample values. [Build 725 measurements](SOURCE_PUBLICATION_725.md).

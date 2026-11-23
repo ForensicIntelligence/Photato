@@ -1,3 +1,7 @@
+### RGB depth conversion for retouch samples (checkpoint 725)
+
+The authenticated `retouch.stroke` operation uses the native depth converter before a sampled stroke. It retains the request format, sampled values and editable correction-layer history. [Retouch guide](RETOUCH_SAMPLE_REUSE.md).
+
 ### Sampling for Clone Stamp and Healing Brush (checkpoint 724)
 
 The authenticated `retouch.stroke` operation can use the matching raw canvas render for multilayer sampling. The request format, source selection and editable correction-layer history are the same. A stale render or a different sampled layer stack triggers fresh composition. [Retouch guide](RETOUCH_SAMPLE_REUSE.md)

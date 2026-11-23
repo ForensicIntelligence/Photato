@@ -263,6 +263,20 @@ extension Surface {
       return try builder.finish()
     }
     var output = try Surface(width: width, height: height, depth: depth, fill: defaultPixel)
+    if colorEncoding == .sRGB, depth != .f32 {
+      try Task.checkCancellation()
+      let side = Self.tileSide
+      let columns = (width + side - 1) / side
+      for key in storedTileKeys {
+        let tile = IntRect(x: key % columns * side, y: key / columns * side, width: side, height: side)
+        output = try (consume output).compositingPixels(in: tile) { x, y, current in
+          let value = pixel(x: x, y: y).quantized(depth)
+          // Match the scalar default comparison, including signed zeros.
+          return value == current ? nil : value
+        }
+      }
+      return output
+    }
     for y in 0..<height {
       try Task.checkCancellation()
       for x in 0..<width {
