@@ -1,0 +1,405 @@
+{
+  "build": 721,
+  "base": "7ca406879b457d227510e5696707e5f629837445",
+  "buildInputs": 9421,
+  "includedBuildInputs": 9421,
+  "candidateManifestSHA256": "43be7f442d4e9ec3d99696b0a3d3c7a906585923b1d36dc089664bd3a3afb781",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraftImaging/PSDText.swift",
+      "sha256": "f7ec0e76869c513b8ea59f491b76f0dbdf2a66953dfd1394db65562c717a69e1"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/Renderer.swift",
+      "sha256": "b6d63445f5d8a517f0d2ddf693ce76cb0c8b8f45e158ea33d7310d6661828335"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/NativeTextTests.swift",
+      "sha256": "5851f6b111fba6ba6d628c6c8c6030620da8c4bf234d837a45b801ed357b8a2b"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "784e038918b8583b254c69605a134d9cf22b0a1780d5d863101c7353cba4025e"
+    }
+  ],
+  "casesPerConfiguration": 657,
+  "qualifications": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 657,
+      "passed": 656,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "4d3045c89be9df671829a55a341d30c9f006d8061f49c8f9b3e3b03d8970a02f"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 657,
+      "passed": 656,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "51dcd39a20e61bf3935fd29f3059b546f65dea3a365a83df832601eefea31ffe"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 657,
+      "passed": 656,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "c21ec5e25f5d6b4302b5b0b6bdd77f6b451b427143119c0018989d9beeaf231a"
+    }
+  },
+  "layeredExchange": {
+    "debug": [
+      {
+        "depth": 8,
+        "container": "psd",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 8,
+        "container": "psb",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 16,
+        "container": "psd",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 16,
+        "container": "psb",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 32,
+        "container": "psd",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 32,
+        "container": "psb",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      }
+    ],
+    "arm": [
+      {
+        "depth": 8,
+        "container": "psd",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 8,
+        "container": "psb",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 16,
+        "container": "psd",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 16,
+        "container": "psb",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 32,
+        "container": "psd",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 32,
+        "container": "psb",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      }
+    ],
+    "intel": [
+      {
+        "depth": 8,
+        "container": "psd",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 8,
+        "container": "psb",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 16,
+        "container": "psd",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 16,
+        "container": "psb",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 32,
+        "container": "psd",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      },
+      {
+        "depth": 32,
+        "container": "psb",
+        "typePayloadBytes": 3466,
+        "nativeInitialByteDifferences": 0,
+        "nativeEditedByteDifferences": 0,
+        "independentMergedWords": 49152,
+        "independentMergedDifferences": 0,
+        "authenticatedDownloadByteDifferences": 0
+      }
+    ]
+  },
+  "photoshopReference": {
+    "liveOutputCompared": false,
+    "version": "27.2.0",
+    "accessibleWindows": 0,
+    "accessibleMenuBars": 0
+  },
+  "preview": {
+    "archiveSHA256": "80a2bcef3b5cd7bcaa0d7ba1a23e1bceff3dfbff2c0099a141b4186ad50c64c2",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "cd6fa30abd77701c60b761c06b6c6084895862a1e691c9fd516c3720cff09140",
+      "x86_64": "277408571f2c36c6a545637f51a704b444c8c3d7b6c61087a0f1346783c4b0ad"
+    },
+    "binarySHA256": "01f6a015342712ed99089fdf2b8f759b8f502a6b3a565d519d19f4dccb14d991",
+    "verifiedOffscreenWorkspaces": {
+      "arm64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "0f71fbc46c420789582d38c6bfdbced913079c4350fdcef280886225909058af"
+      },
+      "x86_64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "737809cd565f82b52fc896909aee5e8e6173be406cf3305bd5da70a547a89757"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "file": "build-debug01.log",
+      "sha256": "d2eba681579cd8540036480b43480e67f35d2e742d956203fd903ed1eb7b5a8e"
+    },
+    {
+      "file": "build-debug02.log",
+      "sha256": "33fa47709a408fc1f9dfa5db3deb33138dcd039c6905c3d4a4e5d3d520692f65"
+    },
+    {
+      "file": "focused-debug02.log",
+      "sha256": "bcf675e1e69651d9f8a976455b784f23b10112cd05f21f843079a3e100e89cc4"
+    },
+    {
+      "file": "modern-debug01.log",
+      "sha256": "019a8b27c40b4edb2cafbfb0a9e5a4fcf00b44f41de360e816d944cd816b80df"
+    },
+    {
+      "file": "independent-721-debug01.log",
+      "sha256": "be9f493c400f56d0ad637f313acdbdab76d39b8018475876e01ec38c85264ce0"
+    },
+    {
+      "file": "legacy-debug01.log",
+      "sha256": "6048e6e20ae3eb18c6f627ba037e9e0cea6812b3a2faf68ccd24afeee73e483e"
+    },
+    {
+      "file": "trace-debug01.log",
+      "sha256": "be352c94f07d51b16d7918e410a718ab1b3557e0ffcc0bcac2da9f1553b95500"
+    },
+    {
+      "file": "trace-modern01.log",
+      "sha256": "9b5cecb8cf72e92c60e4aae4a72dbc731394c8f54a4a0c7d8f2bb1adf75afc33"
+    },
+    {
+      "file": "transfer-debug02.log",
+      "sha256": "6e9e9c5454917789f7588e158180935fc8d585cd5d66292ce00229a568856a00"
+    },
+    {
+      "file": "transfer-debug03.log",
+      "sha256": "a2d458af9f399411861e32ef3e8243432870e4ae70b415b6b0ad0a2e6cb6470b"
+    },
+    {
+      "file": "merged-independent-debug01.log",
+      "sha256": "0eeeb7a37ae0803f0fc4009e35968c22dd5304f08b0892ad1f64261f2491e895"
+    },
+    {
+      "file": "adobe-reference01.log",
+      "sha256": "e419226b7b571f120c1f3d46873833ec1d71bf318ecca4eabe32f32bdd978937"
+    },
+    {
+      "file": "xcode-build01.log",
+      "sha256": "82cb97c0be7c3862b7d7110429300601f2da2d1931c767eaa2d06fddf59dbc18"
+    },
+    {
+      "file": "build-release-arm6401.log",
+      "sha256": "99639582f30ccfab251d2a03292f5d2cc4c56cece9c5738aaa8d6bcd9fa7a8e8"
+    },
+    {
+      "file": "build-release-x86_6401.log",
+      "sha256": "585874560632b4516429ea584a2e466e1b3d8a31e76853fe80fa1856fb51d5f6"
+    },
+    {
+      "file": "preview-final01/preview-offscreen01.json",
+      "sha256": "ff988bc7f1e6b1be040d36dbe7c351e611487cabbb02d0cb9d0814bcca6ac212"
+    },
+    {
+      "file": "modern-debug02.log",
+      "sha256": "6048e6e20ae3eb18c6f627ba037e9e0cea6812b3a2faf68ccd24afeee73e483e"
+    },
+    {
+      "file": "independent-721-debug03.log",
+      "sha256": "70c5af5056b34fd0575d6094bea6e840eb07bbea5d3c906160bf7bf3f24b329a"
+    },
+    {
+      "file": "transfer-debug04.log",
+      "sha256": "a2d458af9f399411861e32ef3e8243432870e4ae70b415b6b0ad0a2e6cb6470b"
+    },
+    {
+      "file": "merged-independent-debug02.log",
+      "sha256": "78440dd068848e2e33ed423fd296ca4c2ca04ecdebe2089d4e624d2944f913d8"
+    },
+    {
+      "file": "modern-arm01.log",
+      "sha256": "6048e6e20ae3eb18c6f627ba037e9e0cea6812b3a2faf68ccd24afeee73e483e"
+    },
+    {
+      "file": "independent-arm01.log",
+      "sha256": "70c5af5056b34fd0575d6094bea6e840eb07bbea5d3c906160bf7bf3f24b329a"
+    },
+    {
+      "file": "transfer-arm01.log",
+      "sha256": "a2d458af9f399411861e32ef3e8243432870e4ae70b415b6b0ad0a2e6cb6470b"
+    },
+    {
+      "file": "merged-independent-arm01.log",
+      "sha256": "78440dd068848e2e33ed423fd296ca4c2ca04ecdebe2089d4e624d2944f913d8"
+    },
+    {
+      "file": "modern-intel01.log",
+      "sha256": "6048e6e20ae3eb18c6f627ba037e9e0cea6812b3a2faf68ccd24afeee73e483e"
+    },
+    {
+      "file": "independent-intel01.log",
+      "sha256": "70c5af5056b34fd0575d6094bea6e840eb07bbea5d3c906160bf7bf3f24b329a"
+    },
+    {
+      "file": "transfer-intel01.log",
+      "sha256": "a2d458af9f399411861e32ef3e8243432870e4ae70b415b6b0ad0a2e6cb6470b"
+    },
+    {
+      "file": "merged-independent-intel01.log",
+      "sha256": "78440dd068848e2e33ed423fd296ca4c2ca04ecdebe2089d4e624d2944f913d8"
+    }
+  ]
+}

@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **720** · The 10 most recent entries, newest first.
+Source build **721** · The 10 most recent entries, newest first.
+
+## 2026-11-23 — Step 721 — Preserve editable type and RGB32 composites in layered Photoshop files
+
+Layered PSD and PSB exports place the editable text record and its padding before the following protection record. Photato can still open older files written with the uncounted pad. Whole-pixel translations of editable text now render the same way before and after reopening an RGB32 file.
+
+The mixed document keeps editable type and its protection settings, group and pixel masks, an Exposure adjustment, and a projected embedded Smart Object with an editable Gaussian Blur and filter mask. Initial and edited reopens match every rendered RGBA byte at 8, 16 and 32 bits per channel in PSD and PSB. An independent reader recovered the tagged structure in all twelve files per configuration. An independent comparison matched 294,912 stored merged channel words per configuration, including the transparency plane. Authenticated Photato downloads matched the native files byte for byte.
+
+The test uses exact file-representable group opacity. Photoshop files store the group opacity in one byte, so a literal 84% differs from the saved 214/255. These tests use owned input and compare round-trip output with Photato’s own pre-save render. Direct Photoshop reopening, Adobe pixel equivalence, linked asset rebind and broader Smart Filter ordering remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-721) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_721.md).
 
 ## 2026-11-23 — Step 720 — Recover partial transparency in product cutouts
 
@@ -93,13 +103,3 @@ The real local model produced identical same-seed rendered pixels through the na
 The on-device model generates at 512 × 512 and offers a centered canvas crop. Adobe’s model picker and hosted Firefly output have separate engines and remain unqualified. The installed Photoshop 27.2.0 document query timed out. Direct Photoshop reopening, live keyboard and assistive technology checks, and Adobe-compatible Generate Image action coverage remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-712) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_712.md).
-
-## 2026-11-21 — Step 711 — Match a subject to its background with editable Harmonize variations
-
-Harmonize adds Subtle, Balanced and Ambient colour, tone and contact-shadow variations for a pixel subject over a background. Use the contextual bar, Layer menu or Properties. The original subject and mask are retained. The group contains ordinary editable Curves and separate shadow layers. Properties switches alternatives and each change can be undone.
-
-The native editor and Photato HTTP commands produced the same RGBA8 results from a selected pixel mask. All three variations and rendered samples survived native, PSD and PSB reopening in the RGB8, RGB16 and RGB32 test fixtures. On the 1,024 × 1,024 project mascot, all three formats reopened with identical rendered bytes. The independent reader matched all 8,388,608 merged RGBA bytes in the two Photoshop-format files to the PNG. A 300,000 × 28 file retained the original mask, editable variations and matching sampled regions through native and paged PSB reopening.
-
-Harmonize estimates the adjustment and shadow locally. Adobe documents its separate Firefly model. No corresponding public Harmonize request schema was found in the pinned Photoshop v2 contract. The installed Photoshop reported 27.2.0, but its document scripting timed out. Firefly output equivalence, direct Photoshop reopening, and live keyboard and assistive technology checks remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-711) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_711.md).

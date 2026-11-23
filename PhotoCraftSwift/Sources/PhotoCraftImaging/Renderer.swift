@@ -460,7 +460,22 @@ public enum Renderer {
       if case .fill = layer.content { return true }
       return false
     }()
-    if layer.affine != nil {
+    let alignedTypeOrigin: (x: Int, y: Int)?
+    if layer.affine != nil, case .text = layer.content {
+      let transform = layer.coordinateTransform
+      if transform == .translation(transform.tx, transform.ty),
+        let x = Int(exactly: transform.tx), let y = Int(exactly: transform.ty),
+        (-1_000_000...1_000_000).contains(x), (-1_000_000...1_000_000).contains(y) {
+        // PSD type imports carry an affine transform even for integer placement.
+        // Sample the glyph pixels directly to retain the linear RGB32 words.
+        alignedTypeOrigin = (x, y)
+      } else {
+        alignedTypeOrigin = nil
+      }
+    } else {
+      alignedTypeOrigin = nil
+    }
+    if layer.affine != nil, alignedTypeOrigin == nil {
       let inverse = try layer.coordinateTransform.inverted()
       let linkedPreviewDepth = LinkedSmartObjectIO.integerPreviewDepth(layer, in: d)
       let clampBackgroundEdges = SmartObjectIO.usesBackgroundEdgeSampling(layer)
@@ -504,8 +519,8 @@ public enum Renderer {
       }
       return output
     }
-    let ox = isFill ? 0 : layer.x + sourceX
-    let oy = isFill ? 0 : layer.y + sourceY
+    let ox = isFill ? 0 : (alignedTypeOrigin?.x ?? layer.x) + sourceX
+    let oy = isFill ? 0 : (alignedTypeOrigin?.y ?? layer.y) + sourceY
     let x0 = max(region.x, ox)
     let y0 = max(region.y, oy)
     let x1 = min(region.x + region.width, ox + surface.width)

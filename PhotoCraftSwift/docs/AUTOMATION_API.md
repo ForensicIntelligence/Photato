@@ -1,3 +1,7 @@
+### Layered PSD and PSB with editable type (checkpoint 721)
+
+Desktop Save As, `document.saveAs`, and authenticated `file.psd` and `file.psb` downloads share the corrected type tag and whole-pixel type sampler. The tested downloads match native file bytes in all three RGB depths. [Layered file guide](LAYERED_TYPE_EXCHANGE.md)
+
 ### Recover Transparency (checkpoint 720)
 
 `selection.refine` accepts `settings.transparency`. An empty object estimates a smooth background. Set `backgroundLayerID` inside it to use an aligned reference pixel layer. The command requires a single image-layer guide for this mode. Use `settings.decontaminate` for backing-color removal and the existing output value to choose a mask or transparent cutout. Both input forms, options and history use the desktop engine. [Transparency guide](TRANSPARENCY_RECOVERY.md)

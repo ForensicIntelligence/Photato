@@ -174,6 +174,9 @@ enum PSDText {
     for value in [matrix.a, matrix.b, matrix.c, matrix.d, matrix.tx, matrix.ty] { writer.n(Int(truncatingIfNeeded: value.bitPattern), 8) }
     writer.n(50, 2); writer.data.append(try desc.encoded()); writer.n(1, 2); writer.data.append(try warp.encoded())
     for value in [0, Int(floor(top)), metrics.width, Int(ceil(Double(metrics.height) + top))] { writer.n(value, 4) }
+    // Adobe counts the alignment byte in the TySh record's declared length.
+    // Counting it here keeps the next layer tag at the declared boundary.
+    if !writer.data.count.isMultiple(of: 2) { writer.n(0, 1) }
     return writer.data
   }
   static func preview(_ layer: Layer, in document: CraftDocument) throws -> Layer {

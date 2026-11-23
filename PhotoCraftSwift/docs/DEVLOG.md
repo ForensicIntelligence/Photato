@@ -739,7 +739,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 718 | 2026-11-21 | [Use on-device Generative Remove from the brush and API](#dev-step-718) |
 | 719 | 2026-11-23 | [Review related shadows and reflections before removing them](#dev-step-719) |
 | 720 | 2026-11-23 | [Recover partial transparency in product cutouts](#dev-step-720) |
+| 721 | 2026-11-23 | [Preserve editable type and RGB32 composites in layered Photoshop files](#dev-step-721) |
 <!-- history-index:end -->
+
+<a id="dev-step-721"></a>
+
+## 2026-11-23 — Preserve editable type and RGB32 composites in layered Photoshop files
+
+The generated `TySh` tag originally declared 3,465 bytes followed by an uncounted zero. The independent reader stopped before the `lspf` protection tag. Changing only the count to 3,466 recovered that record. `PSDText.swift` now returns the padded payload. The existing reader accepts either count when opening and the next save writes the corrected form. After controlling for opacity, the first RGB32 reopen still differed by 44 rendered bytes. The text raster matched before and after reopening. An imported whole-pixel translation had entered the affine sampler and incurred an extra color conversion. `Renderer.swift` uses direct sampling for exact whole-pixel translations of editable text. Fractional translations and other affine transforms still use filtered sampling. `NativeTextTests.swift` covers both defects, and `scripts/Info.plist` identifies build 721. [Adobe file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/)
+
+The mixed document keeps editable type and its protection settings, group and pixel masks, an Exposure adjustment, and a projected embedded Smart Object with an editable Gaussian Blur and filter mask. Initial and edited reopens match every rendered RGBA byte at 8, 16 and 32 bits per channel in PSD and PSB. An independent reader recovered the tagged structure in all twelve files per configuration. An independent comparison matched 294,912 stored merged channel words per configuration, including the transparency plane. Authenticated Photato downloads matched the native files byte for byte.
+
+The first stored-plane check used straight RGBA as the expectation and flagged differences at RGB16 and RGB32. The independent comparison then used the file’s compatibility sample rules. RGB16 uses a bounded 0–32768 working grid for the transparency matte, and RGB32 uses separate Float32 operations for its white matte when the transparency plane is present. The independent check covered 49,152 words for each format/depth pair. No production change was needed for the stored planes.
+
+656 of 657 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The two new tests passed in each configuration. The one existing PSD layer-effect method repeated the same 118 differences as build 720. The checked-in Xcode project built, and both signed preview slices target macOS 14.0 and opened offscreen.
+
+The test uses exact file-representable group opacity. Photoshop files store the group opacity in one byte, so a literal 84% differs from the saved 214/255. These tests use owned input and compare round-trip output with Photato’s own pre-save render. Direct Photoshop reopening, Adobe pixel equivalence, linked asset rebind and broader Smart Filter ordering remain open. Photoshop 27.2.0 returned its version and exposed zero accessible windows and menu bars.
+
+The desktop save and authenticated download share the codec. The API guide, compatibility record and both workflow acceptance rows carry the scoped evidence. The tested workflow is one part of a larger interchange requirement. The overall README estimate stays at 50%.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_721.md).
 
 <a id="dev-step-720"></a>
 

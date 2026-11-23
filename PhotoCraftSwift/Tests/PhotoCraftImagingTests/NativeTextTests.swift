@@ -69,6 +69,70 @@ final class NativeTextTests: XCTestCase {
       }
     }
   }
+  func testTypeBlockLengthKeepsFollowingProtectionAndRepairsLegacyFilesOnSave() throws {
+    let typeSignature = Data("8BIMTySh".utf8)
+    let protectionSignature = Data("8BIMlspf".utf8)
+    for depth in PixelDepth.allCases {
+      var source = try CraftDocument(width: 128, height: 72, depth: depth)
+      var label = Layer(name: "Editable label", content: .text(TextContent(
+        text: "Retouched Label", fontName: "Menlo-Regular", size: 15, color: .white)))
+      label.protection = .position
+      label.mask = try Surface(width: source.width, height: source.height, depth: depth, fill: .white)
+      label.mask?.setPixel(x: 13, y: 8, Pixel(0.4, 0.4, 0.4))
+      source.layers.append(label)
+      source.activeLayerID = label.id
+      for format in [PSDFileFormat.psd, .psb] {
+        let data = try PSDCodec.writeRasterLayers(source, format: format)
+        let start = try XCTUnwrap(data.range(of: typeSignature)).upperBound
+        let length = data[start..<(start + 4)].reduce(0) { ($0 << 8) | Int($1) }
+        let payload = start + 4, end = payload + length
+        XCTAssertTrue(length.isMultiple(of: 2))
+        XCTAssertEqual(data[end..<(end + protectionSignature.count)], protectionSignature)
+        // The legacy writer placed the same zero outside the declared payload.
+        // Verifying the shortened payload also ensures this fixture exercises padding.
+        XCTAssertEqual(data[end - 1], 0)
+        XCTAssertNoThrow(try PSDText.descriptor(data.subdata(in: payload..<(end - 1))))
+        var legacy = data
+        var header = PSDWriter(); header.n(length - 1, 4)
+        legacy.replaceSubrange(start..<payload, with: header.data)
+        let expected = try PSDCodec.read(data)
+        let reopened = try PSDCodec.read(legacy)
+        let restored = try XCTUnwrap(reopened.layers.last)
+        XCTAssertEqual(restored.typeContent?.text, label.typeContent?.text)
+        XCTAssertEqual(restored.mask, expected.layers.last?.mask)
+        XCTAssertEqual(restored.protection, .position)
+        let before = try Renderer.composite(expected).rgbaData(depth: depth)
+        XCTAssertEqual(try Renderer.composite(reopened).rgbaData(depth: depth), before)
+        let resaved = try PSDCodec.writeRasterLayers(reopened, format: format)
+        let resavedStart = try XCTUnwrap(resaved.range(of: typeSignature)).upperBound
+        let resavedLength = resaved[resavedStart..<(resavedStart + 4)].reduce(0) { ($0 << 8) | Int($1) }
+        XCTAssertTrue(resavedLength.isMultiple(of: 2))
+        XCTAssertEqual(try PSDCodec.read(resaved).layers.last?.protection, .position)
+      }
+    }
+  }
+  func testWholePixelAffineTypePreservesLinear32CompositeThroughPSDAndPSB() throws {
+    var source = try CraftDocument(width: 128, height: 72, depth: .f32)
+    source.layers[0].content = .raster(try Surface(width: source.width, height: source.height,
+      depth: source.depth, fill: Pixel(0.25, 0.42, 0.56)))
+    let content = TextContent(text: "Studio Test", fontName: "Menlo-Regular", size: 15, color: .white)
+      .promoted(dpi: source.pixelsPerInch)
+    var label = Layer(name: "Label", content: .text(content))
+    label.x = 18; label.y = 15
+    label.mask = try Surface(width: source.width, height: source.height, depth: source.depth, fill: .white)
+    label.mask?.setPixel(x: 20, y: 6, Pixel(0.4, 0.4, 0.4))
+    source.layers.append(label); source.activeLayerID = label.id
+    let expected = try Renderer.composite(source).rgbaData(depth: .f32)
+    var placed = source
+    placed.layers[1].x = 7; placed.layers[1].y = 12
+    placed.layers[1].affine = .translation(11, 3)
+    XCTAssertEqual(try Renderer.composite(placed).rgbaData(depth: .f32), expected)
+    for format in [PSDFileFormat.psd, .psb] {
+      let reopened = try PSDCodec.read(PSDCodec.writeRasterLayers(placed, format: format))
+      XCTAssertEqual(reopened.layers.last?.coordinateTransform, label.coordinateTransform)
+      XCTAssertEqual(try Renderer.composite(reopened).rgbaData(depth: .f32), expected)
+    }
+  }
   func testEngineDataEscapesAndMalformedInput() throws {
     let text = "A(\\)😀\nZ"
     let value = PSDTextValue.dictionary(["Text": .string(text)])

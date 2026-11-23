@@ -371,14 +371,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:720 -->
+<!-- current-status-step:721 -->
 ## Current development status — 23 November 2026
 
-Select and Mask can recover partial coverage from a rough selection. Estimate a smooth background or choose an aligned photo of an empty textured backdrop. Erase Refinement restores the input coverage where you brush. Decontaminate Colors removes the backing color and the result can keep an editable mask or export as transparent PNG. The Photato API uses the same workflow.
+Layered PSD and PSB exports place the editable text record and its padding before the following protection record. Photato can still open older files written with the uncounted pad. Whole-pixel translations of editable text now render the same way before and after reopening an RGB32 file.
 
-623 of 624 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The two new tests passed in all three configurations and cover RGB8, RGB16 and RGB32 smooth recovery and the desktop/API textured workflow. The PSD layer-effect test repeated the same 118 differences as build 719. Xcode built the checked-in project. Both slices target macOS 14.0 and opened the signed preview offscreen.
+656 of 657 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The two new tests passed in each configuration. The one existing PSD layer-effect method repeated the same 118 differences as build 720. The checked-in Xcode project built, and both signed preview slices target macOS 14.0 and opened offscreen.
 
-[Source checkpoint 720](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_720.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-720).
+[Source checkpoint 721](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_721.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-721).
 
 <!-- current-status:end -->
 
@@ -1305,5 +1305,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 718 | [Use on-device Generative Remove from the brush and API](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-718) |
 | 2026-11-23 | 719 | [Review related shadows and reflections before removing them](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-719) |
 | 2026-11-23 | 720 | [Recover partial transparency in product cutouts](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-720) |
+| 2026-11-23 | 721 | [Preserve editable type and RGB32 composites in layered Photoshop files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-721) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

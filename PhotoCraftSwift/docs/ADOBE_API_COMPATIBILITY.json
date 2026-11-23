@@ -3414,5 +3414,16 @@
     "reference": "Photoshop desktop documents Select and Mask, its refinement modes and color decontamination.",
     "limits": "The published Photoshop v2 API has no dedicated Select and Mask endpoint. Adobe refinement outputs and action descriptors remain unqualified.",
     "evidence": "docs/SOURCE_PUBLICATION_720.json"
+  },
+  "layered_type_exchange_build721": {
+    "status": "Existing shared native PSD/PSB codec correction",
+    "photatoRoutes": [
+      "document.saveAs",
+      "GET /v1/documents/{id}/file.psd",
+      "GET /v1/documents/{id}/file.psb"
+    ],
+    "reference": "Adobe Photoshop File Formats Specification, additional layer information",
+    "limits": "The authenticated Photato download was verified. This correction adds no Adobe endpoint or action contract; Adobe job-level conformance and live Photoshop reopening remain open.",
+    "evidence": "docs/SOURCE_PUBLICATION_721.json"
   }
 }
