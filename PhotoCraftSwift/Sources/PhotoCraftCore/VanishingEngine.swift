@@ -436,42 +436,70 @@ public struct VanishingEdit:Sendable {
         }
         var new=Layer(name:"Vanishing Point",content:.raster(pixels));new.parentID=layer.parentID
         let index=d.layers.firstIndex(where:{$0.id==layerID})!;result.layers.insert(new,at:index+1);result.activeLayerID=new.id
-      } else if case .raster(let original)=layer.content {
-        var pixels = original
-        let alphaLocked = d.isTransparencyLocked(layerID)
-        let transform = layer.coordinateTransform
-        let originalBounds = IntRect(x: 0, y: 0, width: original.width, height: original.height)
-        // Bilinear sampling can see the adjacent document pixel at a tile boundary.
-        let support: [IntRect]
-        if let inverse = try? transform.inverted() {
-          support = try overlay.projectedGeometrySupport(inverse, bounds: originalBounds, halo: 1)
-        } else {
-          support = [originalBounds]
-        }
-        for patch in GeometryPatchRegions(width: original.width, height: original.height, rectangles: support) {
-          try Task.checkCancellation()
-          for y in patch.y..<(patch.y + patch.height) {
-            for x in patch.x..<(patch.x + patch.width) {
-              let q = PathPoint(Double(x) + 0.5, Double(y) + 0.5).transformed(transform)
-              guard q.x >= 0, q.x < Double(d.width), q.y >= 0, q.y < Double(d.height) else { continue }
-              let coverage = d.selectionCoverage(x: Int(floor(q.x)), y: Int(floor(q.y)))
-              guard coverage > 0 else { continue }
-              let ink = WarpRaster.sample(overlay, q, method: .bilinear, clampEdges: false)
-              guard ink.a > 0 else { continue }
-              let before = VanishingEngine.read(original, x, y)
-              if alphaLocked && before.a == 0 { continue }
-              var after = VanishingEngine.over(ink, before)
-              if alphaLocked { after.a = before.a }
-              let pixel = before.mixing(after, coverage: coverage)
-              guard pixel.isFinite else { throw CraftError.invalid("Nonfinite Vanishing Point output.") }
-              VanishingEngine.write(&pixels, x, y, pixel)
-            }
-          }
-        }
-        result.layers[result.layers.firstIndex(where: { $0.id == layerID })!].content = .raster(pixels)
+      } else {
+        let index = d.layers.firstIndex { $0.id == layerID }!
+        result.layers[index] = try applying(overlay, to: layer, in: d)
       }
     }
     try result.validate();try Task.checkCancellation();return Self(source:d,result:result,layerID:layerID,program:program)
   }
+  private static func applying(_ overlay: Surface, to layer: Layer, in document: CraftDocument) throws -> Layer {
+    let canvas = IntRect(x: 0, y: 0, width: document.width, height: document.height)
+    let clipping: IntRect
+    if let selection = document.selectionMask {
+      guard let bounds = selection.bounds else { return layer }
+      clipping = bounds
+    } else {
+      clipping = (document.selection ?? canvas).clipped(toWidth: canvas.width, height: canvas.height)
+    }
+    guard let content = try overlay.contentBounds() else { return layer }
+
+    let transform = layer.coordinateTransform
+    // Bilinear reconstruction has a one-pixel fringe on nonintegral sample grids.
+    let sameGrid = transform.a == 1 && transform.b == 0 && transform.c == 0 && transform.d == 1
+      && transform.tx == transform.tx.rounded() && transform.ty == transform.ty.rounded()
+    let halo = sameGrid ? 0 : 1
+    let left = max(clipping.x, content.x - halo)
+    let top = max(clipping.y, content.y - halo)
+    let right = min(clipping.x + clipping.width, content.x + content.width + halo)
+    let bottom = min(clipping.y + clipping.height, content.y + content.height + halo)
+    guard right > left, bottom > top else { return layer }
+    let bounds = IntRect(x: left, y: top, width: right - left, height: bottom - top)
+
+    var result = layer
+    let alphaLocked = document.isTransparencyLocked(layer.id)
+    _ = try ClonePainter.paintTarget(mask: false, bounds: bounds, on: &result, clipping: clipping,
+      preserveTransparency: alphaLocked) { pixels, transform, clipping in
+      let local = IntRect(x: 0, y: 0, width: pixels.width, height: pixels.height)
+      let inverse = try transform.inverted()
+      let support = try overlay.projectedGeometrySupport(inverse, bounds: local, halo: 1)
+      var changed = false
+      for patch in GeometryPatchRegions(width: local.width, height: local.height, rectangles: support) {
+        try Task.checkCancellation()
+        for y in patch.y..<(patch.y + patch.height) {
+          for x in patch.x..<(patch.x + patch.width) {
+            let point = PathPoint(Double(x) + 0.5, Double(y) + 0.5).transformed(transform)
+            guard point.x >= Double(clipping.x), point.x < Double(clipping.x + clipping.width),
+              point.y >= Double(clipping.y), point.y < Double(clipping.y + clipping.height) else { continue }
+            let coverage = document.selectionCoverage(x: Int(floor(point.x)), y: Int(floor(point.y)))
+            guard coverage > 0 else { continue }
+            let ink = WarpRaster.sample(overlay, point, method: .bilinear, clampEdges: false)
+            guard ink.a > 0 else { continue }
+            let before = VanishingEngine.read(pixels, x, y)
+            if alphaLocked && before.a == 0 { continue }
+            var after = VanishingEngine.over(ink, before)
+            if alphaLocked { after.a = before.a }
+            let pixel = before.mixing(after, coverage: coverage)
+            guard pixel.isFinite else { throw CraftError.invalid("Nonfinite Vanishing Point output.") }
+            VanishingEngine.write(&pixels, x, y, pixel)
+            changed = true
+          }
+        }
+      }
+      return changed
+    }
+    return result
+  }
+
   public func applied(to document:CraftDocument) throws -> CraftDocument { guard document==source else { throw CraftError.invalid("Vanishing Point source changed; preview again.") };return result }
 }

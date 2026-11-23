@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **731** · The 10 most recent entries, newest first.
+Source build **732** · The 10 most recent entries, newest first.
+
+## 2026-11-23 — Step 732 — Repair directly on cropped Vanishing Point layers
+
+Vanishing Point can now apply Brush, Stamp and pasted repairs to an existing cropped pixel layer. The layer grows where needed and keeps its identity, original pixels and mask position. The native editor and authenticated Photato API use the same edit.
+
+On the 1,600 × 1,200 owned layered PSD, Heal On extends the 1 × 1 Repair raster inside the selection. The existing-layer and separate-layer renders match across the full composite. The selected crop hashes match in Xcode Debug and both optimized architectures. The native editor and authenticated API retain the existing layer ID, its two underlying layers, the protected swatch, the archive and Undo. PNG export retains the tested repair sample.
+
+The saved Photoshop Off-mode fixture preserves the repaired layer and its perspective data. The corresponding Photato crop still differs at 455 of 901 pixels, by a mean 0.71 RGB8 levels per channel. Both outputs preserve the protected swatch. Photato preserved the imported Photoshop plane record byte for byte through a native archive and PSD re-export. Editable PSD exchange of the perspective planes remains open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-732) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_732.md).
 
 ## 2026-11-23 — Step 731 — Blend projected repairs with Vanishing Point Heal
 
@@ -107,13 +117,3 @@ The owned patterned-backdrop control recovered 85.0% of missing strand coverage,
 The measured reference set includes wigs, toy hair, fibers and two controlled backdrops. Darkening the new background can reveal residual color on very fine strands. Complex backgrounds and strands far from the coarse mask still need manual refinement. Live Photoshop comparison and physical VoiceOver and keyboard checks remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-723) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_723.md).
-
-## 2026-11-23 — Step 722 — Keep projected Smart Object edges stable when relinking
-
-Relinking a projected Smart Object to the same source preserves its rendered appearance in the tested PSD and PSB files. The original placement, editable Smart Filters and their mask stay with the layer.
-
-The test moves a linked PSB, opens the document from its saved preview and relinks the same source bytes. Photato matches every rendered byte in the initial cache, resolved link and edited reopen at RGB8, RGB16 and RGB32. A filter-mask stroke and a filter reorder retain separate Undo steps. The authenticated Photato API matches the native rebind and Undo. An independent reader recovered the external filenames, projected corners and filter order in twelve files per configuration. It decompressed the painted filter mask and found the marked center at zero coverage in each edited file.
-
-The verified case uses an unchanged local linked file and two native filters. The outputs compare Photato before and after reopening and relinking. Direct Photoshop comparisons, other deformation geometries and the full Smart Filter and linked-source acceptance workflows remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-722) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_722.md).

@@ -1,3 +1,7 @@
+### Vanishing Point on cropped layers (checkpoint 732)
+
+With `newLayer: false`, `filter.vanishingPoint` can grow the target raster to cover a Brush, Clone Stamp or Paste operation. The target layer ID, existing samples and mask placement are retained. The current selection and transparency or image locks still apply. [Native and HTTP checks](SOURCE_PUBLICATION_732.md).
+
 ### Vanishing Point Heal (checkpoint 731)
 
 Send an optional `heal` string on a Brush, Clone Stamp or Paste operation in `filter.vanishingPoint`. The values are `off`, `luminance` and `on`. Omit the field for the default Off. Workspace state includes the active Brush/Stamp mode and selected paste mode. [Archive and replay checks](SOURCE_PUBLICATION_731.md).

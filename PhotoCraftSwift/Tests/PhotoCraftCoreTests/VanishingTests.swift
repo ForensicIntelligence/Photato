@@ -357,6 +357,99 @@ final class VanishingTests:XCTestCase {
     }
   }
 
+  func testVanishingPointGrowsBlankLayerThroughFeatheredSelection() throws {
+    for depth in PixelDepth.allCases {
+      var document = try CraftDocument(width: 64, height: 48, depth: depth)
+      let layer = Layer(name: "Repair", content: .raster(try Surface(width: 1, height: 1, depth: depth)))
+      document.layers.append(layer)
+      document.activeLayerID = layer.id
+      var coverage = [UInt8](repeating: 0, count: 64 * 48)
+      coverage[24 * 64 + 29] = 128
+      coverage[24 * 64 + 30] = 255
+      document.setCoverageSelection(try SelectionMask(width: 64, height: 48, bytes: coverage))
+
+      var program = plain()
+      var brush = VanishingOperation(.brush)
+      brush.points = [.init(30.5, 24.5)]
+      brush.color = Pixel(0.25, 0.5, 0.75)
+      brush.diameter = 12
+      brush.hardness = 100
+      program.operations = [brush]
+      let sample = try Surface(width: 64, height: 48, depth: depth, fill: .white)
+      let result = try VanishingEdit.prepare(document, layerID: layer.id, program: program, sample: sample).result
+      XCTAssertEqual(result.layers.map(\.id), document.layers.map(\.id))
+      XCTAssertEqual(result.layers.first, document.layers.first)
+      XCTAssertEqual(result.activeLayerID, layer.id)
+      guard case .raster(let repair) = result.layers[1].content else { return XCTFail("Missing repair raster") }
+      XCTAssertEqual(try repair.contentBounds(), document.selection)
+      XCTAssertEqual(repair.pixel(x: 29, y: 24).a, 128.0 / 255.0, accuracy: 0.00002)
+      XCTAssertGreaterThan(repair.pixel(x: 29, y: 24).b, 0.73)
+      XCTAssertEqual(repair.pixel(x: 30, y: 24).a, 1)
+      XCTAssertEqual(repair.pixel(x: 28, y: 24), .clear)
+      XCTAssertEqual(repair.pixel(x: 30, y: 23), .clear)
+      XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(result)), result)
+
+      var locked = document
+      locked.layers[1].protection = [.transparency]
+      let guarded = try VanishingEdit.prepare(locked, layerID: layer.id, program: program, sample: sample)
+      XCTAssertEqual(guarded.result.layers, locked.layers)
+    }
+  }
+
+  func testVanishingPointReframesCroppedAffineLayerWithoutMovingItsMask() throws {
+    for depth in PixelDepth.allCases {
+      for linked in [false, true] {
+        var document = try CraftDocument(width: 64, height: 48, depth: depth)
+        let original = try Surface(width: 10, height: 7, depth: depth, fill: Pixel(0.2, 0.65, 0.31))
+        var target = Layer(name: "Cropped with a mask", content: .raster(original))
+        target.x = 43
+        target.y = 29
+        target.affine = .init(a: 1, b: 0.125, c: -0.0625, d: 1, tx: 0.25, ty: -0.125)
+        target.mask = try Surface(width: 6, height: 4, depth: depth, fill: Pixel(0.2, 0.2, 0.2))
+        var mask = MaskProperties()
+        mask.linked = linked
+        mask.outside = 1
+        mask.transform = .translation(1, 4)
+        target.maskProperties = mask
+        document.layers.append(target)
+        document.activeLayerID = target.id
+        document.selection = .init(x: 19, y: 15, width: 9, height: 8)
+
+        var program = plain()
+        var brush = VanishingOperation(.brush)
+        brush.points = [.init(24, 20)]
+        brush.diameter = 14
+        brush.color = Pixel(0.65, 0.21, 0.15)
+        brush.hardness = 100
+        program.operations = [brush]
+        let sample = try Surface(width: 64, height: 48, depth: depth, fill: .white)
+        let result = try VanishingEdit.prepare(document, layerID: target.id, program: program, sample: sample).result
+        let updated = result.layers[1]
+        guard case .raster(let repair) = updated.content else { return XCTFail("Missing grown raster") }
+        XCTAssertEqual(updated.id, target.id)
+        XCTAssertEqual(updated.mask, target.mask)
+        XCTAssertEqual(updated.maskCoordinateTransform, target.maskCoordinateTransform)
+        XCTAssertEqual(updated.effectiveMaskProperties.linked, linked)
+        XCTAssertGreaterThan(repair.width, original.width)
+        XCTAssertGreaterThan(repair.height, original.height)
+        let retained = try updated.coordinateTransform.inverted() * target.coordinateTransform
+        let start = retained.point(0, 0)
+        let ox = Int(start.x.rounded()), oy = Int(start.y.rounded())
+        XCTAssertGreaterThan(ox, 0)
+        XCTAssertGreaterThan(oy, 0)
+        XCTAssertEqual(retained.a, 1, accuracy: 0.000001)
+        XCTAssertEqual(retained.d, 1, accuracy: 0.000001)
+        XCTAssertTrue((0..<original.height).allSatisfy { y in
+          (0..<original.width).allSatisfy { x in
+            VanishingEngine.read(original, x, y).hasSameBits(as: VanishingEngine.read(repair, x + ox, y + oy))
+          }
+        })
+        let painted = try updated.coordinateTransform.inverted().point(23.5, 20.5)
+        XCTAssertGreaterThan(repair.pixel(x: Int(floor(painted.x)), y: Int(floor(painted.y))).a, 0.9)
+      }
+    }
+  }
+
   func testDefaultCameraPinsAndReopensAtSupportedCanvasLimit() throws {
     let limit = Surface.maxDimension
     for (width, height) in [(100_000, 500), (100_001, 500), (500, limit), (limit, limit)] {

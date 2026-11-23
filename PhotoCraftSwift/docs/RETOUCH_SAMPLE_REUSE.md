@@ -30,3 +30,5 @@ A stamp can land between pixel centers after perspective projection. Vanishing P
 The default camera can resolve and save focal lengths across the native canvas size range. A local correction passed on a sparse 300,000 × 300,000 document. [Build 730 measurements](SOURCE_PUBLICATION_730.md).
 
 In Vanishing Point, choose **Heal** with Brush or Stamp, or select a pasted patch and set its Heal mode. **Off** uses the source as-is. **Luminance** matches local lighting, and **On** blends lighting and color. [Build 731 measurements](SOURCE_PUBLICATION_731.md).
+
+To repair on an existing cropped pixel layer, select it before opening Vanishing Point and leave **New Layer** off. The layer can expand into the repaired area while keeping the existing pixels and masks in place. [Build 732 validation](SOURCE_PUBLICATION_732.md).

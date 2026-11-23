@@ -750,7 +750,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 729 | 2026-11-23 | [Keep narrow Vanishing Point strokes visible](#dev-step-729) |
 | 730 | 2026-11-23 | [Preserve Vanishing Point cameras at the canvas size limit](#dev-step-730) |
 | 731 | 2026-11-23 | [Blend projected repairs with Vanishing Point Heal](#dev-step-731) |
+| 732 | 2026-11-23 | [Repair directly on cropped Vanishing Point layers](#dev-step-732) |
 <!-- history-index:end -->
+
+<a id="dev-step-732"></a>
+
+## 2026-11-23 — Repair directly on cropped Vanishing Point layers
+
+Photato uses the existing raster growth routine to reframe a cropped target. It limits new pixels to the document selection and preserves transparency locks. Two core tests cover soft selections at RGB8, RGB16 and RGB32, retained source samples, and linked and unlinked masks on a transformed layer. The application test opens a PSD with a 1 × 1 repair layer and checks the same-layer edit through the native preview and API.
+
+On the 1,600 × 1,200 owned layered PSD, Heal On extends the 1 × 1 Repair raster inside the selection. The existing-layer and separate-layer renders match across the full composite. The selected crop hashes match in Xcode Debug and both optimized architectures. The native editor and authenticated API retain the existing layer ID, its two underlying layers, the protected swatch, the archive and Undo. PNG export retains the tested repair sample.
+
+833 of 835 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new cases passed on both. The existing layer-effect and color-profile fixtures repeated their earlier differences. The paired color-profile outputs matched build 731 byte for byte. Xcode built the project. All 16 focused core cases and the cropped-layer application test passed in Debug. The signed macOS 14+ preview opened both architectures offscreen.
+
+The saved Photoshop Off-mode fixture preserves the repaired layer and its perspective data. The corresponding Photato crop still differs at 455 of 901 pixels, by a mean 0.71 RGB8 levels per channel. Both outputs preserve the protected swatch. Photato preserved the imported Photoshop plane record byte for byte through a native archive and PSD re-export. Editable PSD exchange of the perspective planes remains open. [Adobe’s Photoshop file format specification](https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/)
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_732.md).
 
 <a id="dev-step-731"></a>
 

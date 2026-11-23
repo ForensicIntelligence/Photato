@@ -3480,5 +3480,11 @@
     "photatoCommand": "filter.vanishingPoint",
     "publishedAdobeContractChanges": [],
     "evidence": "docs/SOURCE_PUBLICATION_731.json"
+  },
+  "vanishing_point_cropped_layer_build732": {
+    "status": "Vanishing Point current-layer growth through native and authenticated Photato commands",
+    "photatoCommand": "filter.vanishingPoint",
+    "publishedAdobeContractChanges": [],
+    "evidence": "docs/SOURCE_PUBLICATION_732.json"
   }
 }

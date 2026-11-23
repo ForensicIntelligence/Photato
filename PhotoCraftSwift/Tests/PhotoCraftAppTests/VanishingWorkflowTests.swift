@@ -248,6 +248,84 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testNativeAndAPIGrowExistingPSDRepairLayerWithoutAddingLayer() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(actions: ActionLibrary(), pressedMouseButtons: { 0 }) { service, document in
+      var artwork = try CraftDocument(width: 64, height: 48)
+      var texture = try Surface(width: 64, height: 48, fill: Pixel(0.2, 0.4, 0.65))
+      for y in 25..<32 {
+        for x in 39..<46 { texture.setPixel(x: x, y: y, Pixel(0.9, 0.2, 0.15)) }
+      }
+      artwork.layers[0].content = .raster(texture)
+      let blank = try Surface(width: 1, height: 1)
+      artwork.layers.append(Layer(name: "Repair", content: .raster(blank)))
+      let psd = try DocumentIO.encode(artwork, format: .psd)
+      var source = try DocumentIO.decode(psd, native: false, name: "Layered product")
+      let repair = try XCTUnwrap(source.layers.first { $0.name == "Repair" })
+      guard case .raster(let initial) = repair.content else { return XCTFail("Missing PSD repair raster") }
+      XCTAssertEqual(initial.width, 1)
+      XCTAssertEqual(initial.height, 1)
+      source.activeLayerID = repair.id
+      source.selection = IntRect(x: 39, y: 25, width: 7, height: 7)
+      document.store.session = EditorSession(document: source)
+      try service.share(document)
+      service.setDocumentTransfersEnabled(true)
+      let share = try XCTUnwrap(service.shares.first?.id)
+      document.store.beginVanishingPoint()
+      let workspace = try XCTUnwrap(document.store.vanishingWorkspace)
+      var draft = self.program()
+      draft.operations = []
+      XCTAssertFalse(draft.newLayer)
+      workspace.change(draft)
+      await workspace.task?.value
+      workspace.tool = .stamp
+      workspace.diameter = 16
+      workspace.hardness = 100
+      workspace.heal = .on
+      workspace.setSource(.init(15.5, 15.5))
+      workspace.stroke([.init(42.5, 28.5)])
+      await workspace.task?.value
+      XCTAssertTrue(workspace.ready, workspace.error ?? "Repair preview failed")
+      let prepared = try XCTUnwrap(workspace.preparedEdit?.result)
+      let full = try ColorManagement.conversionPreview(prepared)
+      XCTAssertEqual(workspace.image?.dataProvider?.data as Data?, full.dataProvider?.data as Data?)
+      XCTAssertEqual(document.store.document, source)
+      document.store.commitVanishingPoint()
+      await document.store.geometryTask?.value
+      let native = document.store.document
+      XCTAssertEqual(native, prepared)
+      XCTAssertEqual(native.layers.map(\.id), source.layers.map(\.id))
+      XCTAssertEqual(native.layers.first, source.layers.first)
+      XCTAssertEqual(native.activeLayerID, repair.id)
+      let target = try XCTUnwrap(native.layers.first { $0.id == repair.id })
+      guard case .raster(let pixels) = target.content else { return XCTFail("Missing repaired pixels") }
+      XCTAssertEqual(try pixels.contentBounds(), source.selection)
+      let before = try Renderer.composite(source), after = try Renderer.composite(native)
+      XCTAssertNotEqual(after.pixel(x: 42, y: 28), before.pixel(x: 42, y: 28))
+      XCTAssertEqual(after.pixel(x: 38, y: 28), before.pixel(x: 38, y: 28))
+      XCTAssertEqual(document.store.session.undoStack.count, 1)
+      _ = await document.store.requestHistory(redo: false).value
+      XCTAssertEqual(document.store.document, source)
+
+      let request: [String: Any] = ["layerID": repair.id.uuidString, "newLayer": false,
+        "settings": draft.settings.apiValue, "operations": [[
+          "kind": "clone", "heal": "on", "diameter": 16, "hardness": 100,
+          "sourcePoint": ["x": 15.5, "y": 15.5], "points": [["x": 42.5, "y": 28.5]],
+        ]],
+      ]
+      let applied = try await helper.edit(service, document, "filter.vanishingPoint", request)
+      XCTAssertEqual(applied, 200)
+      XCTAssertEqual(document.store.document, native)
+      let (status, archive) = try await helper.request(service, path: "/v1/documents/\(share)/file.photato",
+        headers: ["X-Photato-Archive-Version": "32"])
+      XCTAssertEqual(status.statusCode, 200)
+      XCTAssertEqual(try NativeArchive.decode(archive), native)
+      let undo = try await helper.edit(service, document, "history.undo")
+      XCTAssertEqual(undo, 200)
+      XCTAssertEqual(document.store.document, source)
+    }
+  }
+
   @MainActor func testHealModesNativeControlsAndAuthenticatedAPI() async throws {
     let helper = AutomationTests()
     try await helper.withService(actions: ActionLibrary(), pressedMouseButtons: { 0 }) { service, document in
