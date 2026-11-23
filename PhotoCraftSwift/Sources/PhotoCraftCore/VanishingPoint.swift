@@ -104,6 +104,7 @@ public struct VanishingScene:Sendable {
 
 public struct VanishingOperation:Codable,Equatable,Sendable {
   public enum Kind:String,Codable,CaseIterable,Sendable { case paste,clone,brush }
+  public enum Heal: String, Codable, CaseIterable, Sendable { case off, luminance, on }
   public var kind:Kind
   public var plane=0
   public var at=PathPoint(0.25,0.25)
@@ -117,6 +118,7 @@ public struct VanishingOperation:Codable,Equatable,Sendable {
   public var opacity=100.0
   public var color=Pixel.black
   public var clip=true
+  public var heal: Heal?
   public init(_ kind:Kind) { self.kind=kind }
 }
 public struct VanishingProgram:Codable,Equatable,Sendable {

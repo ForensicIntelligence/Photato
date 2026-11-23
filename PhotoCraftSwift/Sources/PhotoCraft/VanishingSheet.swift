@@ -10,6 +10,15 @@ struct VanishingSheet:View {
   func number(_ title:String,_ value:Binding<Double>,_ range:ClosedRange<Double>)->some View { VStack(spacing:3) { HStack { Text(title);Spacer();TextField(title,value:value,format:.number.precision(.fractionLength(0...2))).frame(width:68) };Slider(value:value,in:range) } }
   func planeNumber(_ key:WritableKeyPath<VanishingPlane,Double>)->Binding<Double> { .init(get:{model.program.settings.planes[model.selected][keyPath:key]},set:{n in var p=model.program;p.settings.planes[model.selected][keyPath:key]=n;model.change(p)}) }
   func pasteNumber(_ index:Int,_ key:WritableKeyPath<VanishingOperation,Double>)->Binding<Double> { .init(get:{model.program.operations[index][keyPath:key]},set:{n in var p=model.program;p.operations[index][keyPath:key]=n;model.change(p)}) }
+  private func healPicker(_ mode: Binding<VanishingOperation.Heal>) -> some View {
+    Picker("Heal", selection: mode) {
+      ForEach(VanishingOperation.Heal.allCases, id: \.self) { option in
+        Text(option.rawValue.capitalized).tag(option)
+      }
+    }
+    .pickerStyle(.menu)
+    .help("Luminance blends surrounding light. On also blends surrounding color.")
+  }
   var body:some View {
     VStack(spacing:12) {
       HStack { Text("Vanishing Point").font(.headline);Spacer();if model.rendering { ProgressView().controlSize(.small) };Toggle("New Layer",isOn:Binding(get:{model.program.newLayer},set:{v in var p=model.program;p.newLayer=v;model.change(p)})) }
@@ -34,6 +43,7 @@ struct VanishingSheet:View {
           }
           if model.tool == .brush || model.tool == .stamp {
             number("Diameter (px)",$model.diameter,1...500);number("Hardness (%)",$model.hardness,0...100);number("Opacity (%)",$model.opacity,0...100)
+            healPicker($model.heal)
             Toggle("Clip to Surface",isOn:$model.clip)
             if model.tool == .stamp { Toggle("Aligned",isOn:$model.aligned);Text("Option-click a plane to sample, then drag to clone in perspective.").font(.caption).foregroundStyle(.secondary) }
             else { ColorPicker("Brush Color",selection:Binding(get:{Color(.sRGB,red:Double(model.color.r),green:Double(model.color.g),blue:Double(model.color.b),opacity:Double(model.color.a))},set:{c in if let c=NSColor(c).usingColorSpace(.sRGB) { model.color=Pixel(Float(c.redComponent),Float(c.greenComponent),Float(c.blueComponent),Float(c.alphaComponent)) } })) }
@@ -46,9 +56,10 @@ struct VanishingSheet:View {
           if !pastes.isEmpty {
             Picker("Pasted Item",selection:$model.selectedPaste) { Text("None").tag(nil as Int?);ForEach(pastes,id:\.self) { Text("Item \($0+1)").tag(Optional($0)) } }
           }
-          if let index=model.selectedPaste,model.program.operations.indices.contains(index) {
+          if let index=model.selectedPaste,pastes.contains(index) {
             Text("Use Transform to drag this item across a plane.").font(.caption).foregroundStyle(.secondary)
             number("Width (plane fraction)",pasteNumber(index,\.width),0.01...2);number("Rotation (°)",pasteNumber(index,\.angle),-180...180);number("Opacity (%)",pasteNumber(index,\.opacity),0...100)
+            healPicker(Binding(get: { model.selectedPasteHeal ?? .off }, set: { model.setSelectedPasteHeal($0) }))
             Button("Delete Pasted Item") { var p=model.program;p.operations.remove(at:index);model.selectedPaste=nil;model.change(p) }
           }
           if let error=model.error { Text(error).font(.caption).foregroundStyle(.red) }

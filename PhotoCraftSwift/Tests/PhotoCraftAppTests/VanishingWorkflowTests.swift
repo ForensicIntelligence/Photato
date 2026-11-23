@@ -248,6 +248,114 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testHealModesNativeControlsAndAuthenticatedAPI() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(actions: ActionLibrary(), pressedMouseButtons: { 0 }) { service, document in
+      var source = try self.fixture()
+      let target = source.layers[0].id
+      var paste = try Surface(width: 12, height: 8, fill: Pixel(0.2, 0.4, 0.7))
+      paste.setPixel(x: 0, y: 0, .clear)
+      var layer = Layer(name: "Clipboard fixture", content: .raster(paste))
+      layer.visible = false
+      source.layers.append(layer)
+      document.store.session = EditorSession(document: source)
+      try service.share(document)
+      let share = try XCTUnwrap(service.shares.first?.id)
+      let path = "/v1/documents/\(share)"
+      document.store.beginVanishingPoint()
+      let workspace = try XCTUnwrap(document.store.vanishingWorkspace)
+      XCTAssertEqual(workspace.heal, .off)
+      var draft = self.program()
+      draft.operations = []
+      draft.newLayer = true
+      workspace.change(draft)
+      await workspace.task?.value
+      workspace.tool = .stamp
+      workspace.heal = .luminance
+      workspace.setSource(.init(12, 12))
+      workspace.diameter = 6
+      workspace.hardness = 95
+      workspace.stroke([.init(40, 27)])
+      await workspace.task?.value
+      workspace.tool = .brush
+      workspace.heal = .on
+      workspace.color = Pixel(0.1, 0.5, 0.7)
+      workspace.stroke([.init(35, 28)])
+      await workspace.task?.value
+      workspace.pasteLayer(layer.id)
+      await workspace.task?.value
+      XCTAssertEqual(workspace.selectedPasteHeal, .off)
+      workspace.setSelectedPasteHeal(.on)
+      await workspace.task?.value
+      XCTAssertTrue(workspace.ready, workspace.error ?? "Missing healed preview")
+      XCTAssertEqual(workspace.program.operations.compactMap(\.heal), [.luminance, .on, .on])
+      let workspaceState = workspace.apiState
+      XCTAssertEqual(workspaceState["heal"] as? String, "on")
+      XCTAssertEqual(workspaceState["selectedPasteHeal"] as? String, "on")
+      let accepted = try XCTUnwrap(workspace.preparedEdit?.result)
+      let full = try ColorManagement.conversionPreview(accepted)
+      XCTAssertEqual(workspace.image?.dataProvider?.data as Data?, full.dataProvider?.data as Data?)
+      workspace.undo()
+      await workspace.task?.value
+      XCTAssertEqual(workspace.selectedPasteHeal, .off)
+      workspace.redo()
+      await workspace.task?.value
+      XCTAssertEqual(workspace.selectedPasteHeal, .on)
+      let initialRepairID = try XCTUnwrap(accepted.activeLayerID)
+      let initialRepair = try XCTUnwrap(accepted.layers.first { $0.id == initialRepairID })
+      let redone = try XCTUnwrap(workspace.preparedEdit?.result)
+      let redoneRepairID = try XCTUnwrap(redone.activeLayerID)
+      let redoneRepair = try XCTUnwrap(redone.layers.first { $0.id == redoneRepairID })
+      XCTAssertEqual(redoneRepair.content, initialRepair.content)
+      XCTAssertEqual(document.store.document, source)
+      document.store.commitVanishingPoint()
+      await document.store.geometryTask?.value
+      let native = document.store.document
+      let repairID = try XCTUnwrap(native.activeLayerID)
+      let repaired = try XCTUnwrap(native.layers.first { $0.id == repairID })
+      XCTAssertEqual(native.layers.map(\.id), [target, repairID, layer.id])
+      XCTAssertEqual(native.layers.filter { $0.id != repairID }, source.layers)
+      XCTAssertEqual(repaired, redoneRepair)
+      XCTAssertEqual(document.store.session.undoStack.count, 1)
+      _ = await document.store.requestHistory(redo: false).value
+      XCTAssertEqual(document.store.document, source)
+
+      let operations: [[String: Any]] = [
+        ["kind": "clone", "heal": "luminance", "sourcePoint": ["x": 12, "y": 12],
+         "points": [["x": 40, "y": 27]], "diameter": 6, "hardness": 95],
+        ["kind": "brush", "heal": "on", "points": [["x": 35, "y": 28]], "diameter": 6, "hardness": 95,
+         "color": ["r": 0.1, "g": 0.5, "b": 0.7, "a": 1]],
+        ["kind": "paste", "heal": "on", "sourceLayerID": layer.id.uuidString],
+      ]
+      var request: [String: Any] = ["layerID": target.uuidString, "newLayer": true,
+                                    "settings": draft.settings.apiValue, "operations": operations]
+      var bad = operations
+      bad[0]["heal"] = NSNull()
+      request["operations"] = bad
+      let invalid = try await helper.edit(service, document, "filter.vanishingPoint", request)
+      XCTAssertEqual(invalid, 400)
+      XCTAssertEqual(document.store.document, source)
+      request["operations"] = operations
+      let applied = try await helper.edit(service, document, "filter.vanishingPoint", request)
+      XCTAssertEqual(applied, 200)
+      let remote = document.store.document
+      let remoteRepairID = try XCTUnwrap(remote.activeLayerID)
+      let remoteRepair = try XCTUnwrap(remote.layers.first { $0.id == remoteRepairID })
+      XCTAssertEqual(remote.layers.map(\.id), [target, remoteRepairID, layer.id])
+      XCTAssertEqual(remote.layers.filter { $0.id != remoteRepairID }, source.layers)
+      XCTAssertEqual(remoteRepair.content, repaired.content)
+      XCTAssertEqual(remote.vanishingPoint, native.vanishingPoint)
+      service.setDocumentTransfersEnabled(true)
+      let (response, archive) = try await helper.request(service, path: path + "/file.photato",
+        headers: ["X-Photato-Archive-Version": "32"])
+      XCTAssertEqual(response.statusCode, 200)
+      XCTAssertEqual(try NativeArchive.decode(archive), document.store.document)
+      let undone = try await helper.edit(service, document, "history.undo")
+      XCTAssertEqual(undone, 200)
+      XCTAssertEqual(document.store.document, source)
+    }
+  }
+
   @MainActor func testMaximumCanvasCameraMatchesNativeAPIExportAndReplay() async throws {
     let helper = AutomationTests()
     try await helper.withService(actions: ActionLibrary(), pressedMouseButtons: { 0 }) { service, document in

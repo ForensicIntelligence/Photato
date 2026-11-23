@@ -3474,5 +3474,11 @@
     "photatoCommand": "filter.vanishingPoint",
     "publishedAdobeContractChanges": [],
     "evidence": "docs/SOURCE_PUBLICATION_730.json"
+  },
+  "vanishing_point_heal_build731": {
+    "status": "Vanishing Point Brush, Clone Stamp and pasted patch Heal through authenticated Photato automation",
+    "photatoCommand": "filter.vanishingPoint",
+    "publishedAdobeContractChanges": [],
+    "evidence": "docs/SOURCE_PUBLICATION_731.json"
   }
 }

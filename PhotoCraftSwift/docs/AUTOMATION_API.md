@@ -1,3 +1,7 @@
+### Vanishing Point Heal (checkpoint 731)
+
+Send an optional `heal` string on a Brush, Clone Stamp or Paste operation in `filter.vanishingPoint`. The values are `off`, `luminance` and `on`. Omit the field for the default Off. Workspace state includes the active Brush/Stamp mode and selected paste mode. [Archive and replay checks](SOURCE_PUBLICATION_731.md).
+
 ### Vanishing Point maximum-size cameras (checkpoint 730)
 
 The existing authenticated `filter.vanishingPoint` command accepts finite, non-negative focal lengths. A requested zero infers the camera from the first plane or uses the longer canvas side. The resulting projection must be valid. The document state returns the resolved focal length for replay. [Archive and replay checks](SOURCE_PUBLICATION_730.md).

@@ -213,6 +213,150 @@ final class VanishingTests:XCTestCase {
     do { _=try await task.value;XCTFail("Cancelled preparation succeeded") } catch is CancellationError {} catch { XCTFail("Unexpected error: \(error)") }
     XCTAssertNil(d.vanishingPoint)
   }
+  func testPerspectiveHealSeparatesLightingAndColorAtAllDepths() throws {
+    let width = 256, height = 128
+    let sourceColor = SIMD3<Float>(48, 86, 142) / 255
+    let destinationColor = SIMD3<Float>(110, 96, 63) / 255
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners: [.init(8, 8), .init(248, 8), .init(248, 120), .init(8, 120)])]
+    var clone = VanishingOperation(.clone)
+    clone.sourcePoint = .init(52, 64)
+    clone.points = [.init(180, 64)]
+    clone.diameter = 32
+    clone.hardness = 100
+    let defect = IntRect(x: 175, y: 59, width: 10, height: 10)
+    func light(_ p: SIMD3<Float>) -> Float { 0.2126 * p.x + 0.7152 * p.y + 0.0722 * p.z }
+    for depth in PixelDepth.allCases {
+      var clean = try Surface(width: width, height: height, depth: depth,
+        colorEncoding: depth == .f32 ? .linearRGB : .sRGB)
+      for y in 44..<84 {
+        for x in 32..<202 where x < 76 || x >= 158 {
+          let detail = Float((x % 8) - (y % 8)) / 255
+          let rgb = (x < 76 ? sourceColor : destinationColor) + SIMD3(repeating: detail)
+          VanishingEngine.write(&clean, x, y, Pixel(rgb.x, rgb.y, rgb.z))
+        }
+      }
+      var damaged = clean
+      for y in defect.y..<(defect.y + defect.height) {
+        for x in defect.x..<(defect.x + defect.width) {
+          VanishingEngine.write(&damaged, x, y, Pixel(0.75, 0.45, 0.1))
+        }
+      }
+      clone.heal = nil
+      program.operations = [clone]
+      let direct = try VanishingEngine.render(program, sample: damaged)
+      let encoded = try JSONEncoder().encode(program)
+      let legacy = try JSONDecoder().decode(VanishingProgram.self, from: encoded)
+      XCTAssertNil(legacy.operations[0].heal)
+      clone.heal = .off
+      program.operations = [clone]
+      XCTAssertEqual(try VanishingEngine.render(program, sample: damaged), direct)
+      program.operations[0].heal = .luminance
+      let lit = try VanishingEngine.render(program, sample: damaged)
+      program.operations[0].heal = .on
+      let repaired = try VanishingEngine.render(program, sample: damaged)
+      XCTAssertEqual(try repaired.contentBounds(), try direct.contentBounds())
+      XCTAssertEqual(try lit.contentBounds(), try direct.contentBounds())
+      let tolerance: Float = depth == .u8 ? 0.004 : 0.00003
+      for y in defect.y..<(defect.y + defect.height) {
+        for x in defect.x..<(defect.x + defect.width) {
+          let raw = VanishingEngine.read(direct, x, y), lightOnly = VanishingEngine.read(lit, x, y)
+          let full = VanishingEngine.read(repaired, x, y), expected = VanishingEngine.read(clean, x, y)
+          XCTAssertEqual(full.a, raw.a)
+          XCTAssertEqual(lightOnly.a, raw.a)
+          XCTAssertEqual(full.r, expected.r, accuracy: tolerance)
+          XCTAssertEqual(full.g, expected.g, accuracy: tolerance)
+          XCTAssertEqual(full.b, expected.b, accuracy: tolerance)
+          XCTAssertEqual(light(lightOnly.rgb), light(expected.rgb), accuracy: tolerance)
+          XCTAssertEqual(lightOnly.r - lightOnly.g, raw.r - raw.g, accuracy: 2 * tolerance)
+          XCTAssertEqual(lightOnly.g - lightOnly.b, raw.g - raw.b, accuracy: 2 * tolerance)
+        }
+      }
+    }
+  }
+
+  func testPerspectiveHealsPastedCutoutWithTransparentBoundaryAndSelection() throws {
+    let depth = PixelDepth.f32
+    var sample = try Surface(width: 128, height: 128, depth: depth, colorEncoding: .linearRGB)
+    var paste = try Surface(width: 48, height: 48, depth: depth, colorEncoding: .linearRGB)
+    for y in 6..<42 {
+      for x in 6..<42 {
+        let texture = Float((x % 8) - (y % 8)) / 256
+        paste.setLinearPixel(x: x, y: y, Pixel(0.19 + texture, 0.28 + texture, 0.49 + texture))
+        if (7..<41).contains(x), (8..<41).contains(y) {
+          sample.setLinearPixel(x: 48 + x, y: 36 + y, Pixel(0.41 + texture, 0.32 + texture, 0.38 + texture))
+        }
+      }
+    }
+    let clean = sample
+    for y in 56..<64 { for x in 68..<76 { sample.setLinearPixel(x: x, y: y, Pixel(0.75, 0.42, 0.12)) } }
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners: [.init(8, 8), .init(120, 8), .init(120, 120), .init(8, 120)])]
+    let frame = try XCTUnwrap(VanishingScene(program.settings, width: 128, height: 128).frames.first)
+    var op = VanishingOperation(.paste)
+    op.source = paste
+    op.at = frame.uv(.init(48, 36))
+    op.width = 48.0 / 112
+    op.opacity = 60
+    program.operations = [op]
+    let direct = try VanishingEngine.render(program, sample: sample)
+    program.operations[0].heal = .on
+    let healed = try VanishingEngine.render(program, sample: sample)
+    program.operations[0].heal = .luminance
+    let lit = try VanishingEngine.render(program, sample: sample)
+    XCTAssertEqual(try healed.contentBounds(), try direct.contentBounds())
+    for y in 56..<64 {
+      for x in 68..<76 {
+        let actual = healed.linearPixel(x: x, y: y), wanted = clean.linearPixel(x: x, y: y)
+        let raw = direct.linearPixel(x: x, y: y), light = lit.linearPixel(x: x, y: y)
+        XCTAssertEqual(actual.r, wanted.r, accuracy: 0.00004)
+        XCTAssertEqual(actual.g, wanted.g, accuracy: 0.00004)
+        XCTAssertEqual(actual.b, wanted.b, accuracy: 0.00004)
+        XCTAssertEqual(actual.a, raw.a)
+        XCTAssertEqual(light.a, raw.a)
+        XCTAssertEqual(light.r - light.g, raw.r - raw.g, accuracy: 0.00001)
+      }
+    }
+    var document = try CraftDocument(width: 128, height: 128, depth: depth)
+    document.layers[0].content = .raster(sample)
+    document.selection = IntRect(x: 70, y: 58, width: 4, height: 4)
+    program.operations[0].heal = .on
+    program.newLayer = true
+    let edit = try VanishingEdit.prepare(document, layerID: document.layers[0].id, program: program, sample: sample)
+    XCTAssertEqual(edit.result.layers.first, document.layers.first)
+    guard case .raster(let repair) = edit.result.layers.last?.content else { return XCTFail("Missing correction") }
+    XCTAssertEqual(try repair.contentBounds(), document.selection)
+    XCTAssertEqual(repair.linearPixel(x: 71, y: 60), healed.linearPixel(x: 71, y: 60))
+    XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(edit.result)), edit.result)
+  }
+
+  func testPerspectiveHealBrushAndOversizedRepairBoundary() throws {
+    var program = plain()
+    var brush = VanishingOperation(.brush)
+    brush.points = [.init(32, 24)]
+    brush.diameter = 12
+    brush.color = Pixel(0.2, 0.4, 0.6)
+    brush.heal = .on
+    program.operations = [brush]
+    let background = Pixel(0.45, 0.6, 0.25)
+    let sample = try Surface(width: 64, height: 48, depth: .u16, fill: background)
+    let healed = try VanishingEngine.render(program, sample: sample)
+    let center = healed.pixel(x: 32, y: 24)
+    XCTAssertEqual(center.r, sample.defaultPixel.r, accuracy: 0.00003)
+    XCTAssertEqual(center.g, sample.defaultPixel.g, accuracy: 0.00003)
+    XCTAssertEqual(center.b, sample.defaultPixel.b, accuracy: 0.00003)
+    XCTAssertEqual(healed.pixel(x: 0, y: 0), .clear)
+
+    // A narrow stroke whose endpoints make the local solve too large.
+    let wide = try Surface(width: 5_000, height: 5_000, fill: .white)
+    program.settings.planes = [.init(corners: [.init(10, 10), .init(4_990, 10), .init(4_990, 4_990), .init(10, 4_990)])]
+    program.operations[0].diameter = 10
+    program.operations[0].points = [.init(100, 100), .init(3_000, 3_000)]
+    XCTAssertThrowsError(try VanishingEngine.render(program, sample: wide)) {
+      XCTAssertTrue($0.localizedDescription.contains("local repair budget"))
+    }
+  }
+
   func testDefaultCameraPinsAndReopensAtSupportedCanvasLimit() throws {
     let limit = Surface.maxDimension
     for (width, height) in [(100_000, 500), (100_001, 500), (500, limit), (limit, limit)] {

@@ -355,14 +355,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:730 -->
+<!-- current-status-step:731 -->
 ## Current development status — 23 November 2026
 
-Vanishing Point can now apply a local correction with the default camera on a sparse 300,000 × 300,000 document. The editable archive and authenticated Photato API retain and replay the resolved focal length.
+Vanishing Point adds Heal Off, Luminance and On for the Brush, Stamp and pasted patches. Luminance matches the surrounding light while keeping the source color differences. On blends both light and color. The native workspace and authenticated Photato API share the renderer.
 
-826 of 828 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new cases passed on both. The existing layer-effect and color-profile fixtures repeated their earlier differences, and the paired color-profile outputs matched build 729 byte for byte. Xcode built the project, all 11 focused core tests passed, and both signed macOS 14+ slices opened offscreen.
+830 of 832 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All four new cases passed on both. The existing layer-effect and color-profile fixtures repeated their earlier differences, and the paired color-profile outputs matched build 730 byte for byte. Xcode built the project, all 14 focused core tests passed, and both signed macOS 14+ slices opened offscreen.
 
-[Source checkpoint 730](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_730.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-730).
+[Source checkpoint 731](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_731.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-731).
 
 <!-- current-status:end -->
 
@@ -1299,5 +1299,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 728 | [Reuse the editor composite for Vanishing Point previews](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-728) |
 | 2026-11-23 | 729 | [Keep narrow Vanishing Point strokes visible](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-729) |
 | 2026-11-23 | 730 | [Preserve Vanishing Point cameras at the canvas size limit](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-730) |
+| 2026-11-23 | 731 | [Blend projected repairs with Vanishing Point Heal](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-731) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

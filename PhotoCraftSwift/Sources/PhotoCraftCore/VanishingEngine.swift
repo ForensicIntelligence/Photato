@@ -120,6 +120,159 @@ private struct ProjectedDabCoverage {
   }
 }
 
+private enum VanishingHealing {
+  struct Coverage {
+    private(set) var bounds: IntRect?
+    let mode: VanishingOperation.Heal
+    private var pixels: Surface
+
+    init(mode: VanishingOperation.Heal, canvas: Surface) throws {
+      self.mode = mode
+      pixels = try Surface(width: canvas.width, height: canvas.height, depth: .f32)
+    }
+
+    func alpha(_ x: Int, _ y: Int) -> Float { pixels.pixel(x: x, y: y).a }
+
+    mutating func add(_ alpha: Float, atX x: Int, y: Int) throws {
+      let a = unit(alpha)
+      guard a > 0 else { return }
+      if let bounds, !bounds.contains(x, y) {
+        let left = min(bounds.x, x), top = min(bounds.y, y)
+        let right = max(bounds.x + bounds.width, x + 1), bottom = max(bounds.y + bounds.height, y + 1)
+        let expanded = IntRect(x: left, y: top, width: right - left, height: bottom - top)
+        guard expanded.width + 2 <= HealingSolver.maxPixels / (expanded.height + 2) else {
+          throw CraftError.unsupported("The healed perspective edit exceeds the 4-megapixel local repair budget.")
+        }
+        self.bounds = expanded
+      } else if bounds == nil {
+        bounds = IntRect(x: x, y: y, width: 1, height: 1)
+      }
+      let old = self.alpha(x, y)
+      pixels.setPixel(x: x, y: y, Pixel(0, 0, 0, a + old * (1 - a)))
+    }
+  }
+
+  static func apply(_ coverage: Coverage, sample: Surface, previous: Surface, output: inout Surface,
+    charge: (Int) throws -> Void, sourceAt: (Int, Int) -> Pixel) throws {
+    guard let bounds = coverage.bounds else { return }
+    let region = IntRect(x: bounds.x - 1, y: bounds.y - 1, width: bounds.width + 2, height: bounds.height + 2)
+    let count = region.width * region.height
+    let channels = coverage.mode == .luminance ? 1 : 3
+    try charge(count * channels)
+    var source = [Float](repeating: 0, count: count * channels)
+    var destination = source
+    var unknown = [Bool](repeating: false, count: count)
+    var support = [Float](repeating: 0, count: count)
+    let canvas = IntRect(x: 0, y: 0, width: sample.width, height: sample.height)
+    func luminance(_ p: Pixel) -> Float { 0.2126 * p.r + 0.7152 * p.g + 0.0722 * p.b }
+
+    for row in 0..<region.height {
+      try Task.checkCancellation()
+      let y = region.y + row
+      for column in 0..<region.width {
+        let x = region.x + column, i = row * region.width + column
+        let a = sourceAt(x, y)
+        let b = canvas.contains(x, y)
+          ? VanishingEngine.over(VanishingEngine.read(previous, x, y), VanishingEngine.read(sample, x, y)) : .clear
+        unknown[i] = bounds.contains(x, y) && coverage.alpha(x, y) > 0
+        support[i] = min(a.a, b.a)
+        if channels == 1 {
+          source[i] = luminance(a)
+          destination[i] = luminance(b)
+        } else {
+          source[i * 3] = a.r; source[i * 3 + 1] = a.g; source[i * 3 + 2] = a.b
+          destination[i * 3] = b.r; destination[i * 3 + 1] = b.g; destination[i * 3 + 2] = b.b
+        }
+      }
+    }
+
+    try matchTransparentBoundary(width: region.width, height: region.height, channels: channels,
+      source: source, destination: &destination, unknown: unknown, support: support, charge: charge)
+    let healed = try HealingSolver.seamlessClone(width: region.width, height: region.height,
+      channels: channels, source: source, destination: destination, mask: unknown)
+    for row in 1..<(region.height - 1) {
+      try Task.checkCancellation()
+      let y = region.y + row
+      for column in 1..<(region.width - 1) {
+        let x = region.x + column, i = row * region.width + column
+        guard unknown[i] else { continue }
+        let color: SIMD3<Float>
+        if channels == 1 {
+          color = sourceAt(x, y).rgb + SIMD3(repeating: healed[i] - source[i])
+        } else {
+          color = SIMD3(healed[i * 3], healed[i * 3 + 1], healed[i * 3 + 2])
+        }
+        let ink = Pixel(color.x, color.y, color.z, coverage.alpha(x, y))
+        guard ink.isFinite else { throw CraftError.invalid("Perspective healing produced nonfinite color.") }
+        VanishingEngine.write(&output, x, y, VanishingEngine.over(ink, VanishingEngine.read(output, x, y)))
+      }
+    }
+  }
+
+  /// Transparent samples supply no color constraint. Estimate the difference from
+  /// visible source/destination pairs at the same projected position.
+  private static func matchTransparentBoundary(width: Int, height: Int, channels: Int,
+    source: [Float], destination: inout [Float], unknown: [Bool], support: [Float],
+    charge: (Int) throws -> Void) throws {
+    let minimumSupport: Float = 0.00001
+    var unpaired = [Int]()
+    var measured = SIMD3<Float>.zero
+    var reliability: Float = 0
+    func difference(_ i: Int) -> SIMD3<Float> {
+      let p = i * channels
+      if channels == 1 { return SIMD3(destination[p] - source[p], 0, 0) }
+      return SIMD3(destination[p] - source[p], destination[p + 1] - source[p + 1],
+        destination[p + 2] - source[p + 2])
+    }
+    func nearestPair(_ x: Int, _ y: Int) throws -> (SIMD3<Float>, Float) {
+      for radius in 1...3 {
+        try charge(8 * radius)
+        var sum = SIMD3<Float>.zero
+        var weight: Float = 0
+        for row in max(0, y - radius)...min(height - 1, y + radius) {
+          for column in max(0, x - radius)...min(width - 1, x + radius)
+            where max(abs(x - column), abs(y - row)) == radius {
+            let i = row * width + column
+            if support[i] > minimumSupport {
+              sum += difference(i) * support[i]
+              weight += support[i]
+            }
+          }
+        }
+        if weight > 0 { return (sum / weight, weight) }
+      }
+      return (.zero, 0)
+    }
+    for y in 0..<height {
+      try Task.checkCancellation()
+      for x in 0..<width {
+        let i = y * width + x
+        guard !unknown[i],
+          (x > 0 && unknown[i - 1]) || (x < width - 1 && unknown[i + 1])
+          || (y > 0 && unknown[i - width]) || (y < height - 1 && unknown[i + width])
+        else { continue }
+        if support[i] > minimumSupport {
+          measured += difference(i) * support[i]
+          reliability += support[i]
+        } else {
+          let (correction, weight) = try nearestPair(x, y)
+          if weight > 0 {
+            for c in 0..<channels { destination[i * channels + c] = source[i * channels + c] + correction[c] }
+            measured += correction * weight
+            reliability += weight
+          } else {
+            unpaired.append(i)
+          }
+        }
+      }
+    }
+    let fallback = reliability > 0 ? measured / reliability : .zero
+    for i in unpaired {
+      for c in 0..<channels { destination[i * channels + c] = source[i * channels + c] + fallback[c] }
+    }
+  }
+}
+
 public enum VanishingEngine {
   static func over(_ foreground:Pixel,_ background:Pixel)->Pixel {
     let a=unit(foreground.a),b=unit(background.a),out=a+b*(1-a)
@@ -145,19 +298,39 @@ public enum VanishingEngine {
     for op in program.operations {
       try Task.checkCancellation();let frame=scene.frames[op.plane],opacity=Float(op.opacity/100)
       if opacity==0 { continue }
+      let mode = op.heal ?? .off
+      var coverage = mode == .off ? nil : try VanishingHealing.Coverage(mode: mode, canvas: sample)
+      func deposit(_ color: Pixel, x: Int, y: Int) throws {
+        if coverage != nil { try coverage?.add(color.a, atX: x, y: y) }
+        else { write(&output, x, y, over(color, read(output, x, y))) }
+      }
       if op.kind == .paste {
         let source=try op.source!.converted(to:sample.depth),w=op.width*frame.width,h=w*Double(source.height)/Double(source.width),a=op.angle * .pi/180,c=cos(a),s=sin(a),origin=PathPoint(op.at.x*frame.width,op.at.y*frame.height)
         func metric(_ x:Double,_ y:Double)->PathPoint { .init(origin.x+x*c-y*s,origin.y+x*s+y*c) }
         let corners=[metric(0,0),metric(w,0),metric(w,h),metric(0,h)].map{frame.projected($0)},r=try region(corners)
         // Requiring a convex projected quad also detects a rectangle crossing the horizon.
         guard PerspectiveSettings.validQuad(corners) else { throw CraftError.invalid("Paste crosses the plane horizon.") }
+        let previous = mode == .off ? nil : output
+        func position(_ p: PathPoint) -> (Double, Double) {
+          let m = frame.metric(p), dx = m.x - origin.x, dy = m.y - origin.y
+          return ((dx * c + dy * s) / w, (-dx * s + dy * c) / h)
+        }
+        func sourceColor(_ u: Double, _ v: Double) -> Pixel {
+          WarpRaster.sample(source, .init(u * Double(source.width), v * Double(source.height)), method: .bicubic)
+        }
         for y in r.y..<(r.y+r.height) { try Task.checkCancellation();for x in r.x..<(r.x+r.width) {
           let p=PathPoint(Double(x)+0.5,Double(y)+0.5);if op.clip && !frame.contains(p) { continue }
-          let m=frame.metric(p),dx=m.x-origin.x,dy=m.y-origin.y,u=(dx*c+dy*s)/w,v=(-dx*s+dy*c)/h
+          let (u, v) = position(p)
           guard (0...1).contains(u),(0...1).contains(v) else { continue }
-          var pixel=WarpRaster.sample(source,.init(u*Double(source.width),v*Double(source.height)),method:.bicubic);pixel.a *= opacity
-          write(&output,x,y,over(pixel,read(output,x,y)))
+          var pixel = sourceColor(u, v); pixel.a *= opacity
+          try deposit(pixel, x: x, y: y)
         } }
+        if let coverage, let previous {
+          try VanishingHealing.apply(coverage, sample: sample, previous: previous, output: &output, charge: charge) { x, y in
+            let (u, v) = position(.init(Double(x) + 0.5, Double(y) + 0.5))
+            return sourceColor(clamped(u), clamped(v))
+          }
+        }
       } else {
         let first=op.points[0],m0=frame.metric(first),probe=frame.metric(.init(first.x+op.diameter/2,first.y)),radius=hypot(probe.x-m0.x,probe.y-m0.y)
         guard radius.isFinite,radius>1e-9,frame.contains(first) else { throw CraftError.invalid("Start the stroke inside its perspective plane.") }
@@ -178,16 +351,17 @@ public enum VanishingEngine {
         }
         let hard = min(0.99, op.hardness / 100)
         let brush = linear ? SRGBTransfer.linear(op.color) : op.color
-        func paint(_ x: Int, _ y: Int, _ metric: PathPoint, _ coverage: Double) throws {
-          var color = brush
-          if let sourceFrame {
-            let q = sourceFrame.projected(.init(metric.x + offset.x, metric.y + offset.y))
-            guard VanishingSettings.validPoint(q) else { throw CraftError.invalid("Clone sampling crosses a projective horizon.") }
-            color = over(WarpRaster.sample(previous, q, method: .bilinear, clampEdges: false),
-              WarpRaster.sample(sample, q, method: .bilinear, clampEdges: false))
-          }
-          color.a *= Float(coverage) * opacity
-          write(&output, x, y, over(color, read(output, x, y)))
+        func sourceColor(_ metric: PathPoint) -> Pixel? {
+          guard let sourceFrame else { return brush }
+          let q = sourceFrame.projected(.init(metric.x + offset.x, metric.y + offset.y))
+          guard VanishingSettings.validPoint(q) else { return nil }
+          return over(WarpRaster.sample(previous, q, method: .bilinear, clampEdges: false),
+            WarpRaster.sample(sample, q, method: .bilinear, clampEdges: false))
+        }
+        func paint(_ x: Int, _ y: Int, _ metric: PathPoint, _ fraction: Double) throws {
+          guard var color = sourceColor(metric) else { throw CraftError.invalid("Clone sampling crosses a projective horizon.") }
+          color.a *= Float(fraction) * opacity
+          try deposit(color, x: x, y: y)
         }
         for center in centers {
           let ring=(0..<32).map { k in let a=Double(k)/32*2 * .pi;return frame.projected(.init(center.x+radius*cos(a),center.y+radius*sin(a))) },r=try region(ring)
@@ -208,8 +382,18 @@ public enum VanishingEngine {
             try paint(x, y, m, fall * fall * (3 - 2 * fall))
           } }
         }
+        if let coverage {
+          try VanishingHealing.apply(coverage, sample: sample, previous: previous, output: &output, charge: charge) { x, y in
+            let p = PathPoint(Double(x) + 0.5, Double(y) + 0.5)
+            return sourceColor(frame.metric(p)) ?? .clear
+          }
+        }
       }
     };return output
+  }
+
+  private static func clamped(_ value: Double) -> Double {
+    value.isFinite ? min(max(value, 0), 1) : value
   }
 }
 public struct VanishingEdit:Sendable {

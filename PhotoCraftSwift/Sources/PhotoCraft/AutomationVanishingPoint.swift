@@ -17,7 +17,8 @@ extension VanishingSettings {
   static var operationSchema:[String:Any] {
     let number:(Double,Double,Double)->[String:Any] = { ["type":"number","minimum":$0,"maximum":$1,"default":$2] }
     let color:[String:Any]=["type":"object","additionalProperties":false,"required":["r","g","b","a"],"properties":Dictionary(uniqueKeysWithValues:["r","g","b","a"].map{($0,number(0,1,$0 == "a" ? 1:0))})]
-    let shared:[String:Any]=["plane":["type":"integer","minimum":0,"maximum":31,"default":0],"opacity":number(0,100,100),"clip":["type":"boolean","default":true]]
+    let shared:[String:Any]=["plane":["type":"integer","minimum":0,"maximum":31,"default":0],"opacity":number(0,100,100),"clip":["type":"boolean","default":true],
+      "heal":["type":"string","enum":VanishingOperation.Heal.allCases.map(\.rawValue),"default":"off"]]
     let variants=VanishingOperation.Kind.allCases.map { kind -> [String:Any] in
       var properties=shared;properties["kind"]=["const":kind.rawValue];var required=["kind"]
       if kind == .paste { properties["sourceLayerID"]=["type":"string","format":"uuid"];properties["at"]=pointSchema;properties["width"]=number(0.001,20,0.5);properties["angle"]=number(-360,360,0);required.append("sourceLayerID") }
@@ -34,9 +35,10 @@ extension VanishingSettings {
      "coordinates":"Corners and stroke/source points are document pixels. Paste at is plane(u,v), width is a fraction of metric plane width, rotation clockwise about paste origin. Focal length is in pixels; zero infers from the first plane or falls back to the longer canvas side.",
      "state":"Document and workspace state include resolved camera/plane corners and metric dimensions so clients can draw derived planes without reimplementing the solver.",
      "operations":"Create/save/edit planes with no operations; brush, clone and perspective paste with sourceLayerID (raw raster layer pixels, resolved before mutation). Sequential operations sample the visible composite plus earlier draft operations; each clone stroke takes an immutable source snapshot.",
+     "heal":"Brush, clone and paste accept off, luminance or on. Luminance adjusts lighting. On adjusts lighting and color. The gradient-domain solve includes a one-pixel boundary within the 4-megapixel local repair budget.",
      "output":"Current raster layer or newLayer:true; original placement/masks preserved, selection and transparency/image locks honored. Smart Objects must be rasterized for the target. One cancellable prepared undo transaction for the entire program.",
      "limits":"32 planes,256 operations,16,384 supplied points,4,096 points per stroke,128MiB embedded paste sources with up to 8,388,608 pixels, up to \(Surface.maxDimension) pixels per canvas side, 134,217,728 raster visits per program. Large canvases use a bounded overview. Existing API sharing limits also apply.",
-     "unsupported":"Perspective marquee/measurement, healing, multi-surface stroke wrapping, Adobe .vpe/PSD plane metadata and exact Adobe pixels remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
+     "unsupported":"Perspective marquee/measurement, multi-surface stroke wrapping, Adobe .vpe/PSD plane metadata and exact Adobe pixels remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
      "adobe":"No dedicated pinned v2 Vanishing Point operation. No invented route or unqualified actionJSON support."]
   }
 }
@@ -65,7 +67,12 @@ extension AutomationCommand {
       p.operations=try items.map { item in
         guard case .object(let fields)=item,case .string(let name)=fields["kind"],let kind=VanishingOperation.Kind(rawValue:name) else { throw fail("Invalid operation kind.") }
         let allowed:Set<String>=kind == .paste ? ["kind","plane","at","width","angle","opacity","clip","sourceLayerID"]:kind == .clone ? ["kind","plane","points","sourcePoint","diameter","hardness","opacity","clip"]:["kind","plane","points","diameter","hardness","opacity","color","clip"]
-        guard Set(fields.keys).isSubset(of:allowed) else { throw fail("Unknown or irrelevant operation field.") }
+        guard Set(fields.keys).isSubset(of:allowed.union(["heal"])) else { throw fail("Unknown or irrelevant operation field.") }
+        if let heal = fields["heal"] {
+          guard case .string(let mode) = heal, VanishingOperation.Heal(rawValue: mode) != nil else {
+            throw fail("Heal must be off, luminance or on.")
+          }
+        }
         var raw=try JSONSerialization.jsonObject(with:JSONEncoder().encode(VanishingOperation(kind))) as! [String:Any]
         for (k,v) in fields where k != "sourceLayerID" { raw[k]=v.jsonValue }
         for key in ["at","sourcePoint"] { if let value=raw[key] { guard let point=value as? [String:Any],Set(point.keys)==["x","y"] else { throw fail("Invalid operation point.") } } }
@@ -84,5 +91,5 @@ extension AutomationCommand {
   }
 }
 @MainActor extension VanishingWorkspace {
-  var apiState:[String:Any] { ["settings":program.settings.apiValue,"scene":scene?.apiValue as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"canUndo":!undoStates.isEmpty || !pending.isEmpty,"canRedo":!redoStates.isEmpty,"error":error as Any? ?? NSNull()] }
+  var apiState:[String:Any] { ["settings":program.settings.apiValue,"scene":scene?.apiValue as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"canUndo":!undoStates.isEmpty || !pending.isEmpty,"canRedo":!redoStates.isEmpty,"heal":heal.rawValue,"selectedPasteHeal":selectedPasteHeal?.rawValue as Any? ?? NSNull(),"error":error as Any? ?? NSNull()] }
 }

@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **730** · The 10 most recent entries, newest first.
+Source build **731** · The 10 most recent entries, newest first.
+
+## 2026-11-23 — Step 731 — Blend projected repairs with Vanishing Point Heal
+
+Vanishing Point adds Heal Off, Luminance and On for the Brush, Stamp and pasted patches. Luminance matches the surrounding light while keeping the source color differences. On blends both light and color. The native workspace and authenticated Photato API share the renderer.
+
+On the 1,600 × 1,200 owned texture, Luminance lowered the mean lighting error on 901 defect pixels from 0.06803 to 0.00137. On lowered the mean RGB error from 0.15817 to 0.00000. The tested crop hashes agree in Xcode Debug and both optimized slices. The native and authenticated HTTP paths agree on each mode’s preview, editable archive, source and Undo. The core checks cover RGB8, RGB16, RGB32, a translucent pasted patch and an active selection.
+
+The solver bounds each local repair region, including its one-pixel boundary, to 4,194,304 pixels. Applying into an imported 1 × 1 transparent repair layer leaves an out-of-bounds defect unchanged. The New Layer option handled the same repair. Photoshop 2026 pixel comparison and full product retouch acceptance remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-731) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_731.md).
 
 ## 2026-11-23 — Step 730 — Preserve Vanishing Point cameras at the canvas size limit
 
@@ -107,13 +117,3 @@ The test moves a linked PSB, opens the document from its saved preview and relin
 The verified case uses an unchanged local linked file and two native filters. The outputs compare Photato before and after reopening and relinking. Direct Photoshop comparisons, other deformation geometries and the full Smart Filter and linked-source acceptance workflows remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-722) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_722.md).
-
-## 2026-11-23 — Step 721 — Preserve editable type and RGB32 composites in layered Photoshop files
-
-Layered PSD and PSB exports place the editable text record and its padding before the following protection record. Photato can still open older files written with the uncounted pad. Whole-pixel translations of editable text now render the same way before and after reopening an RGB32 file.
-
-The mixed document keeps editable type and its protection settings, group and pixel masks, an Exposure adjustment, and a projected embedded Smart Object with an editable Gaussian Blur and filter mask. Initial and edited reopens match every rendered RGBA byte at 8, 16 and 32 bits per channel in PSD and PSB. An independent reader recovered the tagged structure in all twelve files per configuration. An independent comparison matched 294,912 stored merged channel words per configuration, including the transparency plane. Authenticated Photato downloads matched the native files byte for byte.
-
-The test uses exact file-representable group opacity. Photoshop files store the group opacity in one byte, so a literal 84% differs from the saved 214/255. These tests use owned input and compare round-trip output with Photato’s own pre-save render. Direct Photoshop reopening, Adobe pixel equivalence, linked asset rebind and broader Smart Filter ordering remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-721) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_721.md).

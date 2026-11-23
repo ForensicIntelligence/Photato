@@ -18,6 +18,7 @@ import PhotoCraftImaging
   var diameter=40.0
   var hardness=50.0
   var opacity=100.0
+  var heal: VanishingOperation.Heal = .off
   var color=Pixel.black
   var clip=true
   var aligned=true
@@ -86,6 +87,7 @@ import PhotoCraftImaging
   func stroke(_ points:[PathPoint]) {
     guard let first=points.first,let scene,let plane=scene.plane(at:first) else { error="Start inside a perspective plane.";return }
     var op=VanishingOperation(tool == .stamp ? .clone:.brush);op.plane=plane;op.points=points;op.diameter=diameter;op.hardness=hardness;op.opacity=opacity;op.color=color;op.clip=clip
+    op.heal = heal == .off ? nil : heal
     if op.kind == .clone {
       guard let source=cloneSource,let sourcePlane=scene.plane(at:source) else { error="Option-click inside a plane to choose a clone source.";return }
       if aligned,let anchor=cloneAnchor,clonePlane==plane {
@@ -98,6 +100,17 @@ import PhotoCraftImaging
   func paste(_ source:Surface) {
     guard scene?.frames.indices.contains(selected)==true else { error="Create or select a plane before pasting.";return }
     var p=program,op=VanishingOperation(.paste);op.plane=selected;op.source=source;op.opacity=opacity;op.clip=clip;p.operations.append(op);selectedPaste=p.operations.count-1;change(p);tool = .transform
+  }
+  var selectedPasteHeal: VanishingOperation.Heal? {
+    guard let i = selectedPaste, program.operations.indices.contains(i),
+      program.operations[i].kind == .paste else { return nil }
+    return program.operations[i].heal ?? .off
+  }
+  func setSelectedPasteHeal(_ heal: VanishingOperation.Heal) {
+    guard let i = selectedPaste, let current = selectedPasteHeal, heal != current else { return }
+    var draft = program
+    draft.operations[i].heal = heal == .off ? nil : heal
+    change(draft)
   }
   func movePaste(to point:PathPoint) {
     guard let i=selectedPaste,program.operations.indices.contains(i),let scene,let plane=scene.plane(at:point) else { return };var p=program;p.operations[i].plane=plane;p.operations[i].at=scene.frames[plane].uv(point);selected=plane;change(p)

@@ -28,3 +28,5 @@ When the canvas has a matching ready composite, Vanishing Point can reuse it. A 
 A stamp can land between pixel centers after perspective projection. Vanishing Point now covers the intersected pixel area for narrow Brush and Clone Stamp dabs, including where the active plane clips the footprint. [Build 729 measurements](SOURCE_PUBLICATION_729.md).
 
 The default camera can resolve and save focal lengths across the native canvas size range. A local correction passed on a sparse 300,000 × 300,000 document. [Build 730 measurements](SOURCE_PUBLICATION_730.md).
+
+In Vanishing Point, choose **Heal** with Brush or Stamp, or select a pasted patch and set its Heal mode. **Off** uses the source as-is. **Luminance** matches local lighting, and **On** blends lighting and color. [Build 731 measurements](SOURCE_PUBLICATION_731.md).

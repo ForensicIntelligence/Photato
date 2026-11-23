@@ -749,7 +749,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 728 | 2026-11-23 | [Reuse the editor composite for Vanishing Point previews](#dev-step-728) |
 | 729 | 2026-11-23 | [Keep narrow Vanishing Point strokes visible](#dev-step-729) |
 | 730 | 2026-11-23 | [Preserve Vanishing Point cameras at the canvas size limit](#dev-step-730) |
+| 731 | 2026-11-23 | [Blend projected repairs with Vanishing Point Heal](#dev-step-731) |
 <!-- history-index:end -->
+
+<a id="dev-step-731"></a>
+
+## 2026-11-23 — Blend projected repairs with Vanishing Point Heal
+
+The renderer samples source and destination color at the same position on the projected plane. Repair boundaries use visible pairs where possible. In transparent areas the solver looks for nearby matched pairs and falls back to the weighted result from the visible pairs. This keeps source transparency and selection coverage separate from the color correction. The edit uses the original composite as its reference and saves the resulting pixels and perspective planes in the editable archive. The first optimized application test assumed the correction layer would land above a hidden clipboard layer. The corrected test checks that the result is inserted above the selected layer and compares pixels after local Redo and after API replay.
+
+On the 1,600 × 1,200 owned texture, Luminance lowered the mean lighting error on 901 defect pixels from 0.06803 to 0.00137. On lowered the mean RGB error from 0.15817 to 0.00000. The tested crop hashes agree in Xcode Debug and both optimized slices. The native and authenticated HTTP paths agree on each mode’s preview, editable archive, source and Undo. The core checks cover RGB8, RGB16, RGB32, a translucent pasted patch and an active selection.
+
+830 of 832 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All four new cases passed on both. The existing layer-effect and color-profile fixtures repeated their earlier differences, and the paired color-profile outputs matched build 730 byte for byte. Xcode built the project, all 14 focused core tests passed, and both signed macOS 14+ slices opened offscreen.
+
+The solver bounds each local repair region, including its one-pixel boundary, to 4,194,304 pixels. Applying into an imported 1 × 1 transparent repair layer leaves an out-of-bounds defect unchanged. The New Layer option handled the same repair. Photoshop 2026 pixel comparison and full product retouch acceptance remain open. [Adobe’s painting controls](https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/paint-in-vanishing-point.html) · [Adobe’s floating selections](https://helpx.adobe.com/ph_fil/photoshop/using/vanishing-point.html)
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_731.md).
 
 <a id="dev-step-730"></a>
 
