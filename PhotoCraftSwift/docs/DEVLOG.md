@@ -738,7 +738,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 717 | 2026-11-21 | [Review and remove general distractions](#dev-step-717) |
 | 718 | 2026-11-21 | [Use on-device Generative Remove from the brush and API](#dev-step-718) |
 | 719 | 2026-11-23 | [Review related shadows and reflections before removing them](#dev-step-719) |
+| 720 | 2026-11-23 | [Recover partial transparency in product cutouts](#dev-step-720) |
 <!-- history-index:end -->
+
+<a id="dev-step-720"></a>
+
+## 2026-11-23 — Recover partial transparency in product cutouts
+
+The prior edge solver retained almost fully opaque interiors in the glass and fabric controls. This change estimates the background near the object and restores interior coverage using color projection. For aligned backgrounds it also measures local transmission in bounded tiles. The old preview and a separate high-frequency test show why local estimates are gated by agreement and subject texture. The editable workflow accepts the same transparent selection data in the native editor, shared API, native archive, PSD and PSB. Adobe documents its Color Aware and Object Aware modes separately. This numerical comparison uses the fixture mattes. [Adobe Select and Mask](https://helpx.adobe.com/photoshop/desktop/make-selections/refine-modify-selections/refine-your-selection-and-mask.html)
+
+Four controlled glass and fabric cases compared the exported alpha and the recovered colors over light and dark backgrounds. Partial-alpha mean absolute error fell from 0.589–0.626 to 0.062–0.117. Both backgrounds improved on all four cases. The first aligned reference test showed a visible textured imprint. Using changes in the aligned backing estimated the local transmission and reduced the measurable checkerboard imprint by 88% in the sampled clear interior. Desktop and API exported identical PNGs. Native, PSD and PSB reopened with editable masks and retained the same PNG bytes. One Undo restored each input exactly. The exported PNGs also matched across Debug, optimized Apple Silicon and optimized Intel under Rosetta. The optimized Apple Silicon prepared edit ran in 0.15 seconds on the 1,536 × 1,152 aligned test image.
+
+623 of 624 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The two new tests passed in all three configurations and cover RGB8, RGB16 and RGB32 smooth recovery and the desktop/API textured workflow. The PSD layer-effect test repeated the same 118 differences as build 719. Xcode built the checked-in project. Both slices target macOS 14.0 and opened the signed preview offscreen.
+
+The four cases use independently generated scalar alpha masks. The recovered glass still has some edge tint and near-opaque coverage errors. The photographic GT03 case from the Rhemann et al. CVPR 2009 matting dataset exceeded the smooth-background limit. The tool asked for an aligned backing, which that photographic input archive lacks. Single-image recovery against complex backgrounds, physical refraction and exact Photoshop behavior remain open. [Matting benchmark](https://static.alphamatting.com/datasets.html)
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_720.md).
 
 <a id="dev-step-719"></a>
 

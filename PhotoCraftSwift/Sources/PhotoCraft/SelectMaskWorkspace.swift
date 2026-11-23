@@ -119,10 +119,13 @@ enum SelectMaskView: String, CaseIterable, Sendable { case onion = "Onion Skin",
     task = Task { [weak self] in
       do {
         let worker = Task.detached(priority:.userInitiated) {
-          let mask:SelectionMask
-          if state.focus != nil{mask=try Self.preparedEdit(input:input,focus:focus,state:state).mask}
-          else{mask=try input.refined(settings:state.settings,strokes:state.strokes,initial:state.initial)}
-          let guide = original ? input.guide : try input.previewGuide(mask:mask,settings:state.settings)
+          let (mask, guide): (SelectionMask, Surface)
+          if state.focus != nil {
+            mask = try Self.preparedEdit(input:input,focus:focus,state:state).mask
+            guide = input.guide
+          } else {
+            (mask, guide) = try input.preview(settings:state.settings,strokes:state.strokes,initial:state.initial,showOriginal:original)
+          }
           let image = try original && state.focus != nil ? ColorManagement.displayImage(input.guide,in:input.original):Self.preview(input:input,mask:original ? state.initial ?? input.mask : mask,view:view,opacity:opacity,guide:guide)
           return (mask,image,try state.focus.map{try focus?.analysis.effectiveSettings($0)})
         }

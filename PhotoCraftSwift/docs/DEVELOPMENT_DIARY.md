@@ -1,3 +1,13 @@
+## 2026-11-23 — Step 720 — Recover partial transparency in product cutouts
+
+Select and Mask can recover partial coverage from a rough selection. Estimate a smooth background or choose an aligned photo of an empty textured backdrop. Erase Refinement restores the input coverage where you brush. Decontaminate Colors removes the backing color and the result can keep an editable mask or export as transparent PNG. The Photato API uses the same workflow.
+
+Four controlled glass and fabric cases compared the exported alpha and the recovered colors over light and dark backgrounds. Partial-alpha mean absolute error fell from 0.589–0.626 to 0.062–0.117. Both backgrounds improved on all four cases. The first aligned reference test showed a visible textured imprint. Using changes in the aligned backing estimated the local transmission and reduced the measurable checkerboard imprint by 88% in the sampled clear interior. Desktop and API exported identical PNGs. Native, PSD and PSB reopened with editable masks and retained the same PNG bytes. One Undo restored each input exactly. The exported PNGs also matched across Debug, optimized Apple Silicon and optimized Intel under Rosetta. The optimized Apple Silicon prepared edit ran in 0.15 seconds on the 1,536 × 1,152 aligned test image.
+
+The four cases use independently generated scalar alpha masks. The recovered glass still has some edge tint and near-opaque coverage errors. The photographic GT03 case from the Rhemann et al. CVPR 2009 matting dataset exceeded the smooth-background limit. The tool asked for an aligned backing, which that photographic input archive lacks. Single-image recovery against complex backgrounds, physical refraction and exact Photoshop behavior remain open. [Matting benchmark](https://static.alphamatting.com/datasets.html)
+
+[Development record](DEVLOG.md#dev-step-720) · [Qualification](SOURCE_PUBLICATION_720.md).
+
 ## 2026-11-23 — Step 719 — Review related shadows and reflections before removing them
 
 The Remove processing menu can find shadows and reflections around a marked object using two optional models on Apple Silicon with macOS 26 or later. The canvas shows the reviewed object and each enabled effect. Use the checkboxes or the Add and Subtract brush to refine coverage. Apply creates a correction layer with one Undo. The Photato API shares the same review and edit.
@@ -1797,14 +1807,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:719 -->
+<!-- current-status-step:720 -->
 ## Current development status — 23 November 2026
 
-The Remove processing menu can find shadows and reflections around a marked object using two optional models on Apple Silicon with macOS 26 or later. The canvas shows the reviewed object and each enabled effect. Use the checkboxes or the Add and Subtract brush to refine coverage. Apply creates a correction layer with one Undo. The Photato API shares the same review and edit.
+Select and Mask can recover partial coverage from a rough selection. Estimate a smooth background or choose an aligned photo of an empty textured backdrop. Erase Refinement restores the input coverage where you brush. Decontaminate Colors removes the backing color and the result can keep an editable mask or export as transparent PNG. The Photato API uses the same workflow.
 
-586 of 587 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The new native/API regression passed in each configuration. The existing PSD layer-effect test repeated the same 118 differences. The checked-in Xcode project built successfully. Both signed preview slices target macOS 14.0 and opened offscreen. The optimized Intel build rejected the optional local models and completed a traditional Remove edit under Rosetta.
+623 of 624 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The two new tests passed in all three configurations and cover RGB8, RGB16 and RGB32 smooth recovery and the desktop/API textured workflow. The PSD layer-effect test repeated the same 118 differences as build 719. Xcode built the checked-in project. Both slices target macOS 14.0 and opened the signed preview offscreen.
 
-[Source checkpoint 719](SOURCE_PUBLICATION_719.md) · [Development record](DEVLOG.md#dev-step-719).
+[Source checkpoint 720](SOURCE_PUBLICATION_720.md) · [Development record](DEVLOG.md#dev-step-720).
 
 <!-- current-status:end -->
 
@@ -2730,6 +2740,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 717 | [Review and remove general distractions](DEVLOG.md#dev-step-717) |
 | 2026-11-21 | 718 | [Use on-device Generative Remove from the brush and API](DEVLOG.md#dev-step-718) |
 | 2026-11-23 | 719 | [Review related shadows and reflections before removing them](DEVLOG.md#dev-step-719) |
+| 2026-11-23 | 720 | [Recover partial transparency in product cutouts](DEVLOG.md#dev-step-720) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

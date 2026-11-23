@@ -6,6 +6,7 @@ public struct SelectionRefinementInput: Sendable {
   public let layerID: UUID
   public let guide: Surface
   public let mask: SelectionMask
+  private let sampleAllLayers: Bool
   /// Read-only rendered source for raster copy outputs; the original stays editable.
   public let materializedLayer: Layer?
   public static func prepare(_ document: CraftDocument,layerID: UUID,fromLayerMask: Bool = false,sampleAllLayers: Bool = false) throws -> Self {
@@ -39,9 +40,13 @@ public struct SelectionRefinementInput: Sendable {
     } else {
       mask = try document.coverageSelection() ?? SelectionMask(width:document.width,height:document.height,bytes:Array(repeating:0,count:document.width*document.height))
     }
-    return Self(original:document,layerID:layerID,guide:guide,mask:mask,materializedLayer:materialized)
+    return Self(original:document,layerID:layerID,guide:guide,mask:mask,sampleAllLayers:sampleAllLayers,materializedLayer:materialized)
   }
   public func refined(settings: SelectionRefinement,strokes: [SelectionRefinementStroke] = [], initial: SelectionMask? = nil) throws -> SelectionMask {
+    try refinement(settings:settings,strokes:strokes,initial:initial).mask
+  }
+  private func refinement(settings: SelectionRefinement, strokes: [SelectionRefinementStroke], initial: SelectionMask?)
+    throws -> (mask: SelectionMask, background: SelectionTransparency.Background?) {
     let input = initial ?? mask, w = guide.width, h = guide.height
     guard input.width == w, input.height == h, strokes.count <= 1024, strokes.reduce(0,{ $0+$1.points.count }) <= 16384 else { throw CraftError.invalid("Refinement brush limit exceeded or input size differs.") }
     var bytes = (try input.bytes), edge = [UInt8](repeating:0,count:w*h), excluded = edge
@@ -81,22 +86,42 @@ public struct SelectionRefinementInput: Sendable {
         }
       }
     }
-    return try SelectionMatting.refine(SelectionMask(width:w,height:h,bytes:bytes),guide:guide,settings:settings,
+    let edges = try SelectionMatting.refine(SelectionMask(width:w,height:h,bytes:bytes),guide:guide,settings:settings,
       edge:SelectionMask(width:w,height:h,bytes:edge),excluded:SelectionMask(width:w,height:h,bytes:excluded))
+    guard let transparency = settings.transparency else { return (edges, nil) }
+    guard original.colorMode == .rgb, original.inkMode == nil, original.restrictedMode == nil, !sampleAllLayers else {
+      throw CraftError.unsupported("Transparency recovery requires a single RGB image layer.")
+    }
+    let plate = try transparency.backgroundLayerID.map { id in
+      guard id != layerID, var layer = original.layers.first(where: { $0.id == id }),
+        case .raster = layer.content, layer.smartObject == nil else {
+        throw CraftError.invalid("Choose a separate pixel layer as the background reference.")
+      }
+      layer.visible = true
+      layer.style = nil
+      return try Renderer.clippingCoverage(layer, in: original)
+    }
+    return try SelectionTransparency.recover(edges, guide: guide, plate: plate, linear: original.depth == .f32, protected: excluded)
   }
   public func edit(settings: SelectionRefinement,output: SelectionRefinementOutput,strokes: [SelectionRefinementStroke] = [],initial: SelectionMask? = nil) throws -> SelectionRefinementEdit {
-    let mask = try refined(settings:settings,strokes:strokes,initial:initial)
-    let corrected = try correctedPixels(mask:mask,settings:settings)
+    let refined = try refinement(settings:settings,strokes:strokes,initial:initial)
+    let corrected = try correctedPixels(mask:refined.mask,settings:settings,background:refined.background)
     let effective = output.allowingDecontamination(settings.decontaminate)
-    return SelectionRefinementEdit(layerID:layerID,output:effective,mask:mask,corrected:corrected,
+    return SelectionRefinementEdit(layerID:layerID,output:effective,mask:refined.mask,corrected:corrected,
       materialized:effective == .selection || effective == .layerMask ? nil : materializedLayer)
   }
-  public func correctedPixels(mask: SelectionMask,settings: SelectionRefinement) throws -> Surface? {
+  private func correctedPixels(mask: SelectionMask,settings: SelectionRefinement,
+    background: SelectionTransparency.Background?) throws -> Surface? {
     try settings.validate()
     guard mask.width == original.width, mask.height == original.height else { throw CraftError.invalid("Refinement canvas sizes differ.") }
     var corrected: Surface?
     if settings.decontaminate, let layer = materializedLayer ?? original.layers.first(where: { $0.id == layerID }), case .raster(let source) = layer.content {
       try SelectionMatting.checkSize(source.width,source.height)
+      if settings.transparency != nil {
+        guard let background, settings.amount > 0 else { return nil }
+        return try SelectionTransparency.corrected(source, on: layer, mask: mask, background: background,
+          linear: original.depth == .f32, amount: settings.amount)
+      }
       var bytes = [UInt8](repeating:0,count:source.width*source.height)
       for y in 0..<source.height { try Task.checkCancellation(); for x in 0..<source.width {
         let p = layer.coordinateTransform.point(Double(x)+0.5,Double(y)+0.5), ix = Int(floor(p.x)), iy = Int(floor(p.y))
@@ -106,8 +131,27 @@ public struct SelectionRefinementInput: Sendable {
     }
     return corrected
   }
+  package func preview(settings: SelectionRefinement, strokes: [SelectionRefinementStroke], initial: SelectionMask?,
+    showOriginal: Bool) throws -> (mask: SelectionMask, guide: Surface) {
+    let refined = try refinement(settings:settings,strokes:strokes,initial:initial)
+    guard !showOriginal else { return (refined.mask, guide) }
+    return try (refined.mask, previewGuide(mask:refined.mask,settings:settings,background:refined.background))
+  }
+  public func correctedPixels(mask: SelectionMask, settings: SelectionRefinement) throws -> Surface? {
+    let background = try settings.transparency.flatMap { _ in
+      try refinement(settings: settings, strokes: [], initial: nil).background
+    }
+    return try correctedPixels(mask:mask,settings:settings,background:background)
+  }
   public func previewGuide(mask: SelectionMask,settings: SelectionRefinement) throws -> Surface {
-    guard let corrected = try correctedPixels(mask:mask,settings:settings), var layer = materializedLayer ?? original.layers.first(where: { $0.id == layerID }) else { return guide }
+    let background = try settings.transparency.flatMap { _ in
+      try refinement(settings:settings,strokes:[],initial:nil).background
+    }
+    return try previewGuide(mask:mask,settings:settings,background:background)
+  }
+  private func previewGuide(mask: SelectionMask,settings: SelectionRefinement,
+    background: SelectionTransparency.Background?) throws -> Surface {
+    guard let corrected = try correctedPixels(mask:mask,settings:settings,background:background), var layer = materializedLayer ?? original.layers.first(where: { $0.id == layerID }) else { return guide }
     layer.content = .raster(corrected); layer.mask = nil; layer.maskProperties = nil; layer.vectorMask = nil; layer.style = nil; layer.visible = true
     return try Renderer.clippingCoverage(layer,in:original)
   }

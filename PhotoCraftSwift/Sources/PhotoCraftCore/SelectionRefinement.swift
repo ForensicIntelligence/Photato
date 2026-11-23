@@ -2,6 +2,11 @@ import Foundation
 
 /// Native Select and Mask parameters, translated from PhotoCraft matting.rs.
 public struct SelectionRefinement: Codable, Equatable, Sendable {
+  public struct Transparency: Codable, Equatable, Sendable {
+    public var backgroundLayerID: UUID?
+    public init(backgroundLayerID: UUID? = nil) { self.backgroundLayerID = backgroundLayerID }
+  }
+
   public var radius: Double = 0
   public var smartRadius = false
   public var smooth: Double = 0
@@ -10,6 +15,7 @@ public struct SelectionRefinement: Codable, Equatable, Sendable {
   public var shiftEdge: Double = 0
   public var decontaminate = false
   public var amount: Double = 100
+  public var transparency: Transparency?
   public init() {}
   public var neutral: Bool { radius == 0 && smooth == 0 && feather == 0 && contrast == 0 && shiftEdge == 0 }
   public func validate() throws {
@@ -19,7 +25,13 @@ public struct SelectionRefinement: Codable, Equatable, Sendable {
   }
   public static func decodeJSON(_ data: Data) throws -> Self {
     guard let raw = try JSONSerialization.jsonObject(with:data) as? [String:Any],
-      Set(raw.keys).isSubset(of:["radius","smartRadius","smooth","feather","contrast","shiftEdge","decontaminate","amount"]) else { throw CraftError.invalid("Unknown refinement parameter.") }
+      Set(raw.keys).isSubset(of:["radius","smartRadius","smooth","feather","contrast","shiftEdge","decontaminate","amount","transparency"]) else { throw CraftError.invalid("Unknown refinement parameter.") }
+    if let value = raw["transparency"] {
+      guard let options = value as? [String: Any], Set(options.keys).isSubset(of: ["backgroundLayerID"]),
+        options["backgroundLayerID"] == nil || options["backgroundLayerID"] is String else {
+        throw CraftError.invalid("Invalid transparency recovery settings.")
+      }
+    }
     var fields = try JSONSerialization.jsonObject(with:JSONEncoder().encode(Self())) as! [String:Any]
     for (key,value) in raw { fields[key] = value }
     let result = try JSONDecoder().decode(Self.self,from:JSONSerialization.data(withJSONObject:fields))

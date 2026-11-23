@@ -18,7 +18,9 @@ extension EditorStore {
   }
   func cancelSelectMask() { selectMaskDraft?.close(); selectMaskDraft = nil; render() }
   func commitSelectMask() {
-    guard let draft = selectMaskDraft, draft.ready, (!draft.isFocus || draft.canCommit), let input = draft.input else { return }
+    guard let draft = selectMaskDraft, draft.ready,
+      (!(draft.isFocus || draft.state.settings.transparency != nil) || draft.canCommit),
+      let input = draft.input else { return }
     draft.end(); let state = draft.state,focus = draft.focusInput
     if draft.effectiveOutput.createsDocument && documentController == nil { draft.error = "No document controller is available."; return }
     draft.committing = true; draft.error = nil

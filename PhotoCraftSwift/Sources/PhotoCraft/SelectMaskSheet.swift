@@ -58,6 +58,37 @@ struct SelectMaskSheet: View {
                 Toggle("Smart Radius",isOn:Binding(get:{ model.state.settings.smartRadius },set:{ var next = model.state; next.settings.smartRadius = $0; model.change(next) }))
               }.padding(5)
             }
+            GroupBox("Transparency") {
+              VStack(alignment: .leading, spacing: 8) {
+                Toggle("Recover Transparency", isOn: Binding(get: {
+                  model.state.settings.transparency != nil
+                }, set: { enabled in
+                  var next = model.state
+                  next.settings.transparency = enabled ? .init() : nil
+                  model.change(next)
+                }))
+                if model.state.settings.transparency != nil {
+                  Text("Background")
+                  Picker("Background", selection: Binding(get: {
+                    model.state.settings.transparency?.backgroundLayerID
+                  }, set: { id in
+                    var next = model.state
+                    next.settings.transparency = .init(backgroundLayerID: id)
+                    model.change(next)
+                  })) {
+                    Text("Estimate Smooth Background").tag(nil as UUID?)
+                    ForEach(model.input?.original.layers.filter { layer in
+                      guard layer.id != model.input?.layerID, layer.smartObject == nil, case .raster = layer.content else { return false }
+                      return true
+                    } ?? []) { layer in
+                      Text(layer.name).tag(Optional(layer.id))
+                    }
+                  }.labelsHidden()
+                  Text("Use an aligned image of the empty background for textured scenes.")
+                    .font(.caption).foregroundStyle(.secondary)
+                }
+              }.padding(5)
+            }
             GroupBox("Global Refinements") {
               VStack(spacing:12) {
                 number("Smooth",\.smooth,0...100)
@@ -92,7 +123,8 @@ struct SelectMaskSheet: View {
         Text("⌥ Subtract · Space Pan · [ ] Brush Size").font(.caption).foregroundStyle(.secondary)
         Spacer()
         Button("Cancel") { store.cancelSelectMask() }.keyboardShortcut(.cancelAction)
-        Button("OK") { store.commitSelectMask() }.keyboardShortcut(.defaultAction).disabled(!model.ready || model.error != nil || (model.isFocus && !model.canCommit))
+        Button("OK") { store.commitSelectMask() }.keyboardShortcut(.defaultAction)
+          .disabled(!model.ready || model.error != nil || ((model.isFocus || model.state.settings.transparency != nil) && !model.canCommit))
       }.padding(12)
     }.frame(width:1040,height:740).background(Color(nsColor:.windowBackgroundColor)).onDisappear { model.close() }
   }

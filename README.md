@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 719.** The Remove processing menu can find shadows and reflections around a marked object using two optional models on Apple Silicon with macOS 26 or later. The canvas shows the reviewed object and each enabled effect. Use the checkboxes or the Add and Subtract brush to refine coverage. Apply creates a correction layer with one Undo. The Photato API shares the same review and edit. [Remove Related Elements](PhotoCraftSwift/docs/REMOVE_RELATED_ELEMENTS.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_719.md).
+**Development alpha — source build 720.** Select and Mask can recover partial coverage from a rough selection. Estimate a smooth background or choose an aligned photo of an empty textured backdrop. Erase Refinement restores the input coverage where you brush. Decontaminate Colors removes the backing color and the result can keep an editable mask or export as transparent PNG. The Photato API uses the same workflow. [Transparency guide](PhotoCraftSwift/docs/TRANSPARENCY_RECOVERY.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_720.md).
 
 ## Project layout
 

@@ -1,3 +1,7 @@
+### Recover Transparency (checkpoint 720)
+
+`selection.refine` accepts `settings.transparency`. An empty object estimates a smooth background. Set `backgroundLayerID` inside it to use an aligned reference pixel layer. The command requires a single image-layer guide for this mode. Use `settings.decontaminate` for backing-color removal and the existing output value to choose a mask or transparent cutout. Both input forms, options and history use the desktop engine. [Transparency guide](TRANSPARENCY_RECOVERY.md)
+
 ### Remove Related Elements (checkpoint 719)
 
 Use `retouch.remove` with `beginRelatedElements`, an object-marking `stroke`, and `findRelatedElements`. The state exposes `removeTool.relatedElements`. Use `configureRelatedElements` with `enabledElements` to choose suggested shadows and reflections. The original strokes become the reviewed object mask and the brush then refines the visible mask. `preview` requires document-transfer permission. `apply` creates a new correction layer and `cancel` discards the review. [Remove Related Elements](REMOVE_RELATED_ELEMENTS.md)

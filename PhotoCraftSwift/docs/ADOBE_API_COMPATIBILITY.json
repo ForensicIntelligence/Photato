@@ -3402,5 +3402,17 @@
     "reference": "The Photoshop desktop Remove tool offers Remove Related Elements with cloud processing and new-layer output.",
     "limits": "The pinned Photoshop v2 contract has no dedicated Remove route. Additional effects, Adobe Enhance and live Photoshop output are unqualified.",
     "evidence": "docs/SOURCE_PUBLICATION_719.json"
+  },
+  "transparency_recovery_build720": {
+    "status": "Photato desktop and API workflow",
+    "photatoCommand": "selection.refine",
+    "settings": [
+      "transparency",
+      "transparency.backgroundLayerID",
+      "decontaminate"
+    ],
+    "reference": "Photoshop desktop documents Select and Mask, its refinement modes and color decontamination.",
+    "limits": "The published Photoshop v2 API has no dedicated Select and Mask endpoint. Adobe refinement outputs and action descriptors remain unqualified.",
+    "evidence": "docs/SOURCE_PUBLICATION_720.json"
   }
 }
