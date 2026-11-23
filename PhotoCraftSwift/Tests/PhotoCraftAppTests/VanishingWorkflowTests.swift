@@ -205,6 +205,49 @@ final class VanishingWorkflowTests:XCTestCase {
     XCTAssertNotEqual(current.dataProvider?.data as Data?, old.dataProvider?.data as Data?)
   }
 
+  @MainActor func testTinyPerspectiveStampUsesTheSameCoverageInNativeAndAuthenticatedAPI() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(actions: ActionLibrary(), pressedMouseButtons: { 0 }) { service, document in
+      let source = try self.fixture()
+      let id = source.layers[0].id
+      document.store.session = EditorSession(document: source)
+      try service.share(document)
+      var draft = self.program()
+      draft.newLayer = true
+      var stamp = VanishingOperation(.clone)
+      stamp.sourcePoint = .init(11, 11)
+      stamp.points = [.init(32, 24)]
+      stamp.diameter = 1
+      stamp.hardness = 95
+      draft.operations = [stamp]
+      document.store.beginVanishingPoint()
+      let workspace = try XCTUnwrap(document.store.vanishingWorkspace)
+      workspace.change(draft)
+      await workspace.task?.value
+      XCTAssertTrue(workspace.ready, workspace.error ?? "Missing partial-pixel preview")
+      document.store.commitVanishingPoint()
+      await document.store.geometryTask?.value
+      let native = document.store.document
+      guard case .raster(let repair) = native.layers.last?.content else { return XCTFail("Missing correction raster") }
+      XCTAssertEqual(try repair.contentBounds(), IntRect(x: 31, y: 23, width: 2, height: 2))
+      XCTAssertGreaterThan(repair.pixel(x: 32, y: 24).a, 0.1)
+      XCTAssertLessThan(repair.pixel(x: 32, y: 24).a, 0.4)
+      XCTAssertEqual(native.layers.first, source.layers.first)
+      _ = await document.store.requestHistory(redo: false).value
+      XCTAssertEqual(document.store.document, source)
+      let request: [String: Any] = [
+        "layerID": id.uuidString, "newLayer": true, "settings": draft.settings.apiValue,
+        "operations": [["kind": "clone", "sourcePoint": ["x": 11, "y": 11], "points": [["x": 32, "y": 24]],
+                        "diameter": 1, "hardness": 95]],
+      ]
+      let status = try await helper.edit(service, document, "filter.vanishingPoint", request)
+      XCTAssertEqual(status, 200)
+      XCTAssertEqual(document.store.document.layers.last?.content, native.layers.last?.content)
+      XCTAssertEqual(document.store.session.undoStack.count, 1)
+      XCTAssertNotNil(VanishingSettings.apiCapabilities["narrowStrokeCoverage"])
+    }
+  }
+
   @MainActor func testFactoryMenuAndOffscreenWorkspace() async throws {
     try PhotoshopMenuTests().withMenus { app,menu in
       let item=try XCTUnwrap(PhotoshopMenuTests().allItems(menu).first{$0.identifier?.rawValue=="Filter > Vanishing Point…"});XCTAssertEqual(item.action,#selector(AppDelegate.vanishingPoint));XCTAssertEqual(item.keyEquivalent,"v");XCTAssertEqual(item.keyEquivalentModifierMask,[.option,.command]);XCTAssertFalse(app.validateMenuItem(item))

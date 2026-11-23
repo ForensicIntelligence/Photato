@@ -1,3 +1,15 @@
+## 2026-11-23 — Step 729 — Keep narrow Vanishing Point strokes visible
+
+A narrow perspective stamp can partially cover a row of pixels even when the pixel centers lie outside it. Vanishing Point now renders that coverage for Clone Stamp and Brush, including pixels partly inside a clipped plane.
+
+The default camera projected the failing 48-megapixel fixture to about 0.81 pixels of vertical brush thickness. The repaired fixture paints 20 pixels across two rows, with about 39% opacity near the center. Independent integration matched 36 native depth, hardness and pixel-offset cases within 0.003 normalized opacity. Rotated-plane and plane-clipping checks passed. The native preview and full render agree, and the selected crop matches the authenticated API. The source layer, local Undo, accepted edit, editable archive and document Undo also match. The tested thicker 24-megapixel and fixed-camera 48-megapixel crops retain their previous bytes.
+
+The first edited 48-megapixel overview took 68 ms on optimized Apple Silicon and 109 ms under Rosetta once the source was ready. The overview retains 2,048 × 1,536 display pixels.
+
+Photoshop 2026 opened Vanishing Point on the owned reference image. The UI exposed the dialog and its OK and Cancel controls. The process disappeared before a reference export, so Adobe pixel equivalence remains open. The default camera also reaches a separate save limit above 100,000 pixels on the longer canvas side. Healing modes and Photoshop plane interchange still need qualification.
+
+[Development record](DEVLOG.md#dev-step-729) · [Qualification](SOURCE_PUBLICATION_729.md).
+
 ## 2026-11-23 — Step 728 — Reuse the editor composite for Vanishing Point previews
 
 Vanishing Point opens from the ready editor composite when it matches the current document. A local correction on a plain top pixel layer updates only its coverage. Apply commits the prepared preview as one editable history step.
@@ -1897,14 +1909,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:728 -->
+<!-- current-status-step:729 -->
 ## Current development status — 23 November 2026
 
-Vanishing Point opens from the ready editor composite when it matches the current document. A local correction on a plain top pixel layer updates only its coverage. Apply commits the prepared preview as one editable history step.
+A narrow perspective stamp can partially cover a row of pixels even when the pixel centers lie outside it. Vanishing Point now renders that coverage for Clone Stamp and Brush, including pixels partly inside a clipped plane.
 
-820 of 822 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All four new regressions passed on both architectures. The existing layer-effect and color-profile fixtures repeated their earlier differences, and the paired color-profile outputs matched build 727 byte for byte. Xcode built the project, all 28 focused Debug tests passed, and both signed macOS 14+ slices opened offscreen.
+823 of 825 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new regressions passed on both architectures. The existing layer-effect and color-profile fixtures repeated their earlier differences. The paired color-profile output matched build 728 byte for byte. Xcode built the project, all nine focused Debug core tests passed, and both signed macOS 14+ slices opened offscreen.
 
-[Source checkpoint 728](SOURCE_PUBLICATION_728.md) · [Development record](DEVLOG.md#dev-step-728).
+[Source checkpoint 729](SOURCE_PUBLICATION_729.md) · [Development record](DEVLOG.md#dev-step-729).
 
 <!-- current-status:end -->
 
@@ -2839,6 +2851,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 726 | [Keep cropped-layer retouch previews regional](DEVLOG.md#dev-step-726) |
 | 2026-11-23 | 727 | [Extend perspective texture repair to large canvases](DEVLOG.md#dev-step-727) |
 | 2026-11-23 | 728 | [Reuse the editor composite for Vanishing Point previews](DEVLOG.md#dev-step-728) |
+| 2026-11-23 | 729 | [Keep narrow Vanishing Point strokes visible](DEVLOG.md#dev-step-729) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

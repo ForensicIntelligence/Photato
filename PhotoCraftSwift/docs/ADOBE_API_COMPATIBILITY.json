@@ -3462,5 +3462,11 @@
     "photatoCommand": "filter.vanishingPoint",
     "publishedAdobeContractChanges": [],
     "evidence": "docs/SOURCE_PUBLICATION_727.json"
+  },
+  "narrow_vanishing_point_build729": {
+    "status": "Native and authenticated Photato area coverage for narrow perspective dabs",
+    "photatoCommand": "filter.vanishingPoint",
+    "publishedAdobeContractChanges": [],
+    "evidence": "docs/SOURCE_PUBLICATION_729.json"
   }
 }

@@ -1,3 +1,7 @@
+### Narrow Vanishing Point strokes (checkpoint 729)
+
+The existing authenticated `filter.vanishingPoint` command uses area coverage for thin projected brush and stamp marks. The capability response describes the shared rendering work budget. [Native/API checks](SOURCE_PUBLICATION_729.md).
+
 ### Vanishing Point preview reuse (checkpoint 728)
 
 The workspace reuses its prepared edit on Apply. The authenticated `filter.vanishingPoint` command still uses the same edit, error handling and history. [Native/API output checks](SOURCE_PUBLICATION_728.md).

@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 728.** Vanishing Point opens from the ready editor composite when it matches the current document. A local correction on a plain top pixel layer updates only its coverage. Apply commits the prepared preview as one editable history step. [Retouch guide](PhotoCraftSwift/docs/RETOUCH_SAMPLE_REUSE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_728.md).
+**Development alpha — source build 729.** A narrow perspective stamp can partially cover a row of pixels even when the pixel centers lie outside it. Vanishing Point now renders that coverage for Clone Stamp and Brush, including pixels partly inside a clipped plane. [Retouch guide](PhotoCraftSwift/docs/RETOUCH_SAMPLE_REUSE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_729.md).
 
 ## Project layout
 

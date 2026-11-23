@@ -50,6 +50,109 @@ final class VanishingTests:XCTestCase {
       XCTAssertThrowsError(try edit.applied(to:changed));XCTAssertEqual(d.layers.count,1)
     }
   }
+  func testNarrowClonePreservesPartialPixelCoverageAndSelection() throws {
+    for depth in PixelDepth.allCases {
+      var source = try CraftDocument(width: 8_000, height: 6_000, depth: depth)
+      let sample = try Surface(width: source.width, height: source.height, depth: depth, fill: Pixel(0.1, 0.5, 0.8))
+      source.layers[0].content = .raster(sample)
+      var program = VanishingProgram()
+      program.newLayer = true
+      program.settings.planes = [.init(corners: [.init(80, 80), .init(280, 80), .init(260, 220), .init(95, 220)])]
+      var stamp = VanishingOperation(.clone)
+      stamp.sourcePoint = .init(120, 120)
+      stamp.points = [.init(192, 141)]
+      stamp.diameter = 10
+      stamp.hardness = 95
+      program.operations = [stamp]
+      let full = try VanishingEngine.render(program, sample: sample)
+      // Independent 512 × 512 midpoint integration per image pixel.
+      let expectedOpacity = 6.049914649656903
+      var alpha = 0.0, covered = 0
+      for y in 139..<143 {
+        for x in 185..<200 {
+          let pixel = full.pixel(x: x, y: y)
+          alpha += Double(pixel.a)
+          if pixel.a > 0 {
+            covered += 1
+            XCTAssertEqual(pixel.b, sample.defaultPixel.b, accuracy: 0.004)
+          }
+        }
+      }
+      XCTAssertEqual(covered, 20)
+      XCTAssertEqual(alpha, expectedOpacity, accuracy: 0.04)
+      XCTAssertEqual(full.pixel(x: 192, y: 140).a, 0.39251, accuracy: 0.013)
+      source.selection = IntRect(x: 189, y: 140, width: 5, height: 1)
+      let edit = try VanishingEdit.prepare(source, layerID: source.layers[0].id, program: program, sample: sample)
+      XCTAssertEqual(edit.result.layers.first, source.layers.first)
+      guard case .raster(let repair) = edit.result.layers.last?.content else { return XCTFail("Missing correction pixels") }
+      XCTAssertEqual(try repair.contentBounds(), source.selection)
+      XCTAssertEqual(repair.pixel(x: 192, y: 140), full.pixel(x: 192, y: 140))
+      XCTAssertEqual(repair.pixel(x: 192, y: 141).a, 0)
+      XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(edit.result)), edit.result)
+    }
+  }
+
+  func testNarrowBrushIntegratesRotatedAndPartiallyClippedPixels() throws {
+    let side = 64
+    let sample = try Surface(width: side, height: side, depth: .f32, fill: .white)
+    let angle = 37.0 * .pi / 180
+    func screen(_ x: Double, _ y: Double) -> PathPoint {
+      .init(24.1 + x * cos(angle) - y * sin(angle), 24.3 + x * sin(angle) + y * cos(angle))
+    }
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners: [screen(0, 0), screen(24, 0), screen(24, 16), screen(0, 16)])]
+    let frame = try XCTUnwrap(VanishingScene(program.settings, width: side, height: side).frames.first)
+    var brush = VanishingOperation(.brush)
+    brush.color = Pixel(0.5, 0.1, 0.8)
+    brush.points = [screen(0.15, 6)]
+    brush.diameter = 1
+    brush.hardness = 40
+    brush.opacity = 75
+    let origin = frame.metric(brush.points[0])
+    let offset = frame.metric(.init(brush.points[0].x + 0.5, brush.points[0].y))
+    let radius = hypot(origin.x - offset.x, origin.y - offset.y)
+    var areas = [Double]()
+    for clip in [false, true] {
+      brush.clip = clip
+      program.operations = [brush]
+      let rendered = try VanishingEngine.render(program, sample: sample)
+      var area = 0.0
+      for y in 27..<32 {
+        for x in 18..<24 {
+          var expected = 0.0
+          for row in 0..<96 {
+            for column in 0..<96 {
+              let point = PathPoint(Double(x) + (Double(column) + 0.5) / 96,
+                                    Double(y) + (Double(row) + 0.5) / 96)
+              if clip && !frame.contains(point) { continue }
+              let p = frame.metric(point)
+              let distance = hypot(p.x - origin.x, p.y - origin.y) / radius
+              guard distance < 1 else { continue }
+              let weight = min(1.0, (1 - distance) / 0.6)
+              expected += 0.75 * weight * weight * (3 - 2 * weight) / (96 * 96)
+            }
+          }
+          let actual = Double(rendered.pixel(x: x, y: y).a)
+          XCTAssertEqual(actual, expected, accuracy: 0.002)
+          area += actual
+        }
+      }
+      areas.append(area)
+      brush.clip = clip
+      program.operations = [brush, brush]
+      let twice = try VanishingEngine.render(program, sample: sample)
+      let bounds = try XCTUnwrap(rendered.contentBounds())
+      for y in bounds.y..<(bounds.y + bounds.height) {
+        for x in bounds.x..<(bounds.x + bounds.width) {
+          let a = rendered.pixel(x: x, y: y).a
+          XCTAssertEqual(twice.pixel(x: x, y: y).a, a + a * (1 - a), accuracy: 0.00001)
+        }
+      }
+    }
+    XCTAssertGreaterThan(areas[1], 0.1)
+    XCTAssertLessThan(areas[1], areas[0])
+  }
+
   func testLargePerspectiveStrokeTouchesOnlyTheSelectedTiles() throws {
     for depth in PixelDepth.allCases {
       var document = try CraftDocument(width: 6_000, height: 4_000, depth: depth)

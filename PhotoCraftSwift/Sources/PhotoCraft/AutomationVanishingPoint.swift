@@ -29,6 +29,7 @@ extension VanishingSettings {
   }
   static var apiCapabilities:[String:Any] {
     ["command":"filter.vanishingPoint","settingsSchema":apiSchema,"operationsSchema":operationSchema,"nativeArchiveVersion":32,
+     "narrowStrokeCoverage":"Brush and clone footprints that project to about a pixel thick or less use area coverage and honor plane clipping. Coverage work shares the Vanishing Point rendering budget.",
      "coordinates":"Corners and stroke/source points are document pixels. Paste at is plane(u,v), width is a fraction of metric plane width, rotation clockwise about paste origin. Focal length is in pixels; zero infers from the first plane or falls back to the longer canvas side.",
      "state":"Document and workspace state include resolved camera/plane corners and metric dimensions so clients can draw derived planes without reimplementing the solver.",
      "operations":"Create/save/edit planes with no operations; brush, clone and perspective paste with sourceLayerID (raw raster layer pixels, resolved before mutation). Sequential operations sample the visible composite plus earlier draft operations; each clone stroke takes an immutable source snapshot.",
