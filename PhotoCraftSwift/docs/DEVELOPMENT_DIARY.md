@@ -1,3 +1,15 @@
+## 2026-11-23 — Step 728 — Reuse the editor composite for Vanishing Point previews
+
+Vanishing Point opens from the ready editor composite when it matches the current document. A local correction on a plain top pixel layer updates only its coverage. Apply commits the prepared preview as one editable history step.
+
+The 24-megapixel native canvas kept its full-resolution preview. The 48-megapixel case used a 2,048 × 1,536 overview. Both edited preview buffers matched their independent full renders. Local Undo restored the earlier preview. Apply kept the accepted layer ID, and the authenticated API produced the same selected crop. Protecting the source, native save and reopen, and document Undo also passed.
+
+The first 24-megapixel edit from a cold workspace took 1.49 s on Apple Silicon and 2.88 s under Rosetta. The adjacent build 727 measurements were 2.94 s and 5.26 s. With the editor composite ready, the first 24-megapixel stamp took 519 ms on Apple Silicon. The second edit preview took 1.2 ms. The first edit in the 48-megapixel overview took 64 ms.
+
+The 48-megapixel repair used the same explicit camera projection as the 24-megapixel control. A narrow stamp on the larger fixture with default camera inference produced no sampled correction in builds 727 and 728. Its projected footprint and direct Photoshop output still need qualification. The timings measure software preview publication on one host.
+
+[Development record](DEVLOG.md#dev-step-728) · [Qualification](SOURCE_PUBLICATION_728.md).
+
 ## 2026-11-23 — Step 727 — Extend perspective texture repair to large canvases
 
 Vanishing Point can repair a selected texture on a full-resolution product image and keep the correction on an editable layer. The plane solver now accepts an off-axis plane whose corner rays all point in front of the camera. The desktop workspace and Photato API share the same edit.
@@ -1885,14 +1897,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:727 -->
+<!-- current-status-step:728 -->
 ## Current development status — 23 November 2026
 
-Vanishing Point can repair a selected texture on a full-resolution product image and keep the correction on an editable layer. The plane solver now accepts an off-axis plane whose corner rays all point in front of the camera. The desktop workspace and Photato API share the same edit.
+Vanishing Point opens from the ready editor composite when it matches the current document. A local correction on a plain top pixel layer updates only its coverage. Apply commits the prepared preview as one editable history step.
 
-810 of 812 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new perspective tests passed in the optimized suites. The existing layer-effect and color-profile fixtures reproduced known failures, and paired color-profile output bytes matched the retained predecessor. The Xcode project built and all seven focused Debug methods passed. Both signed macOS 14+ slices opened offscreen.
+820 of 822 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All four new regressions passed on both architectures. The existing layer-effect and color-profile fixtures repeated their earlier differences, and the paired color-profile outputs matched build 727 byte for byte. Xcode built the project, all 28 focused Debug tests passed, and both signed macOS 14+ slices opened offscreen.
 
-[Source checkpoint 727](SOURCE_PUBLICATION_727.md) · [Development record](DEVLOG.md#dev-step-727).
+[Source checkpoint 728](SOURCE_PUBLICATION_728.md) · [Development record](DEVLOG.md#dev-step-728).
 
 <!-- current-status:end -->
 
@@ -2826,6 +2838,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 725 | [Speed up RGB8 and RGB16 retouch sample conversion](DEVLOG.md#dev-step-725) |
 | 2026-11-23 | 726 | [Keep cropped-layer retouch previews regional](DEVLOG.md#dev-step-726) |
 | 2026-11-23 | 727 | [Extend perspective texture repair to large canvases](DEVLOG.md#dev-step-727) |
+| 2026-11-23 | 728 | [Reuse the editor composite for Vanishing Point previews](DEVLOG.md#dev-step-728) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

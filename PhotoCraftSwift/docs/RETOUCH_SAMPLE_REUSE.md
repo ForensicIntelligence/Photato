@@ -22,3 +22,5 @@ Painting beyond an eligible cropped layer now redraws the area covered by its pr
 ## Perspective texture repair
 
 In Vanishing Point, define a plane on the product surface, sample from a clean repeat of its texture and paint over the defect. Use a new layer to keep the source editable. The 24-megapixel test preserves its selection and repairs the same crop as the smaller control. [Build 727 measurements](SOURCE_PUBLICATION_727.md).
+
+When the canvas has a matching ready composite, Vanishing Point can reuse it. A plain top correction can refresh its edited pixels, and Apply commits the accepted preview. [Build 728 measurements](SOURCE_PUBLICATION_728.md).

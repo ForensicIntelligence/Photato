@@ -270,6 +270,46 @@ final class RegionalRenderTests: XCTestCase {
     }
   }
 
+  func testPlainCorrectionOnTopRecompositesOnlyItsCoverage() throws {
+    for depth in PixelDepth.allCases {
+      var source = try CraftDocument(width: 130, height: 71, depth: depth)
+      var pixels = try Surface(width: source.width, height: source.height, depth: depth, fill: Pixel(0.13, 0.49, 0.77, 0.61))
+      pixels.setPixel(x: 64, y: 63, Pixel(0.2, 0.7, 0.1, 0.48))
+      source.layers[0].content = .raster(pixels)
+      let baseline = try Renderer.render(source)
+
+      var correction = try Surface(width: source.width, height: source.height, depth: depth)
+      correction.setPixel(x: 63, y: 63, Pixel(0.8, 0.1, 0.4, 0.67))
+      correction.setPixel(x: 64, y: 64, Pixel(0.2, 0.3, 0.6, 0.37))
+      var edited = source
+      edited.layers.append(Layer(name: "Correction", content: .raster(correction)))
+      edited.activeLayerID = edited.layers.last?.id
+      let preview = try Renderer.render(edited, reusing: baseline)
+      XCTAssertEqual(preview.update, .region(IntRect(x: 63, y: 63, width: 2, height: 2)))
+      try equalBits(preview.surface, Renderer.composite(edited))
+      XCTAssertNotEqual(preview.surface, baseline.surface)
+    }
+  }
+
+  func testCorrectionInsertedBelowClippedLayerRebuildsComposite() throws {
+    var source = try CraftDocument(width: 130, height: 71)
+    let pixels = try Surface(width: source.width, height: source.height, fill: Pixel(0.3, 0.4, 0.7))
+    source.layers[0].content = .raster(pixels)
+    var clipped = Layer(name: "Clipped red", content: .fill(Pixel(1, 0, 0)))
+    clipped.clipped = true
+    source.layers.append(clipped)
+    let baseline = try Renderer.render(source)
+
+    var correction = try Surface(width: source.width, height: source.height)
+    correction.setPixel(x: 64, y: 36, Pixel(0, 1, 0))
+    var edited = source
+    edited.layers.insert(Layer(name: "Correction", content: .raster(correction)), at: 1)
+    let preview = try Renderer.render(edited, reusing: baseline)
+    XCTAssertEqual(preview.update, .full)
+    try equalBits(preview.surface, Renderer.composite(edited))
+    XCTAssertNotEqual(preview.surface.pixel(x: 5, y: 5), baseline.surface.pixel(x: 5, y: 5))
+  }
+
   func testUnchangedSelectionOffCanvasEditsAndFullFallbacks() throws {
     var d = try CraftDocument(width: 140, height: 100)
     let before = try Renderer.render(d)

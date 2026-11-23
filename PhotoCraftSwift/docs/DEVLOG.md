@@ -746,7 +746,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 725 | 2026-11-23 | [Speed up RGB8 and RGB16 retouch sample conversion](#dev-step-725) |
 | 726 | 2026-11-23 | [Keep cropped-layer retouch previews regional](#dev-step-726) |
 | 727 | 2026-11-23 | [Extend perspective texture repair to large canvases](#dev-step-727) |
+| 728 | 2026-11-23 | [Reuse the editor composite for Vanishing Point previews](#dev-step-728) |
 <!-- history-index:end -->
+
+<a id="dev-step-728"></a>
+
+## 2026-11-23 — Reuse the editor composite for Vanishing Point previews
+
+The editor associates an ordinary source composite with the session generation that produced it. VanishingWorkspace retains that composite and the normalized sampling surface, rejects superseded workers, and uses the existing regional compositor and display packer. The large-canvas path retains its bounded overview. The authenticated Photato API continues to use the shared VanishingEdit and history. This presentation change leaves the native and published Adobe request schemas unchanged.
+
+The 24-megapixel native canvas kept its full-resolution preview. The 48-megapixel case used a 2,048 × 1,536 overview. Both edited preview buffers matched their independent full renders. Local Undo restored the earlier preview. Apply kept the accepted layer ID, and the authenticated API produced the same selected crop. Protecting the source, native save and reopen, and document Undo also passed.
+
+The first 24-megapixel edit from a cold workspace took 1.49 s on Apple Silicon and 2.88 s under Rosetta. The adjacent build 727 measurements were 2.94 s and 5.26 s. With the editor composite ready, the first 24-megapixel stamp took 519 ms on Apple Silicon. The second edit preview took 1.2 ms. The first edit in the 48-megapixel overview took 64 ms.
+
+820 of 822 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All four new regressions passed on both architectures. The existing layer-effect and color-profile fixtures repeated their earlier differences, and the paired color-profile outputs matched build 727 byte for byte. Xcode built the project, all 28 focused Debug tests passed, and both signed macOS 14+ slices opened offscreen.
+
+The 48-megapixel repair used the same explicit camera projection as the 24-megapixel control. A narrow stamp on the larger fixture with default camera inference produced no sampled correction in builds 727 and 728. Its projected footprint and direct Photoshop output still need qualification. The timings measure software preview publication on one host. [Adobe Vanishing Point Stamp workflow](https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/paint-in-vanishing-point.html)
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_728.md).
 
 <a id="dev-step-727"></a>
 

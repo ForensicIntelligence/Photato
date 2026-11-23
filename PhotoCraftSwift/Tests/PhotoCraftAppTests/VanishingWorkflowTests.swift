@@ -135,6 +135,76 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testRetainedVanishingPreviewCommitAndLocalUndoMatchFullDisplay() async throws {
+    let source = try fixture(.u16)
+    let store = EditorStore(document: source)
+    defer { store.cancelVanishingPoint(); store.renderTask?.cancel() }
+    store.render()
+    await store.renderTask?.value
+    let canvas = try XCTUnwrap(store.canvasRasterPreview?.base)
+    store.beginVanishingPoint()
+    let workspace = try XCTUnwrap(store.vanishingWorkspace)
+    await workspace.prepare()
+    XCTAssertTrue(workspace.ready)
+    XCTAssertTrue(workspace.image === canvas)
+    var draft = program()
+    draft.newLayer = true
+    workspace.change(draft)
+    await workspace.task?.value
+    let first = try XCTUnwrap(workspace.preparedEdit)
+    let full = try ColorManagement.conversionPreview(first.result)
+    let preview = try XCTUnwrap(workspace.image)
+    XCTAssertEqual(preview.dataProvider?.data as Data?, full.dataProvider?.data as Data?)
+    XCTAssertFalse(preview === canvas)
+    XCTAssertEqual(store.document, source)
+
+    var different = draft
+    different.operations[0].color = Pixel(0, 0, 1)
+    workspace.change(different)
+    let superseded = workspace.task
+    workspace.undo()
+    await superseded?.value
+    await workspace.task?.value
+    XCTAssertEqual(workspace.program, draft)
+    XCTAssertEqual(workspace.image?.dataProvider?.data as Data?, full.dataProvider?.data as Data?)
+    workspace.undo()
+    await workspace.task?.value
+    XCTAssertTrue(workspace.image === canvas)
+    workspace.redo()
+    await workspace.task?.value
+    let accepted = try XCTUnwrap(workspace.preparedEdit?.result)
+    store.commitVanishingPoint()
+    await store.geometryTask?.value
+    XCTAssertEqual(store.document.layers.last?.id, accepted.layers.last?.id)
+    XCTAssertEqual(store.document, accepted)
+    XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(accepted)), accepted)
+    XCTAssertEqual(store.session.undoStack.count, 1)
+    _ = await store.requestHistory(redo: false).value
+    XCTAssertEqual(store.document, source)
+  }
+
+  @MainActor func testStaleEditorBitmapCannotSeedVanishingPoint() async throws {
+    var source = try fixture(.f32)
+    source.layers[0].content = .raster(try Surface(width: source.width, height: source.height,
+      depth: source.depth, fill: Pixel(0.4, 0.5, 0.6)))
+    let store = EditorStore(document: source)
+    defer { store.cancelVanishingPoint(); store.renderTask?.cancel() }
+    store.render()
+    await store.renderTask?.value
+    let old = try XCTUnwrap(store.canvasRasterPreview?.base)
+    source.layers[0].content = .raster(try Surface(width: source.width, height: source.height,
+      depth: source.depth, fill: Pixel(0.8, 0.5, 0.2)))
+    store.session = EditorSession(document: source)
+    store.beginVanishingPoint()
+    let workspace = try XCTUnwrap(store.vanishingWorkspace)
+    await workspace.prepare()
+    let current = try XCTUnwrap(workspace.image)
+    let independent = try ColorManagement.conversionPreview(source)
+    XCTAssertFalse(current === old)
+    XCTAssertEqual(current.dataProvider?.data as Data?, independent.dataProvider?.data as Data?)
+    XCTAssertNotEqual(current.dataProvider?.data as Data?, old.dataProvider?.data as Data?)
+  }
+
   @MainActor func testFactoryMenuAndOffscreenWorkspace() async throws {
     try PhotoshopMenuTests().withMenus { app,menu in
       let item=try XCTUnwrap(PhotoshopMenuTests().allItems(menu).first{$0.identifier?.rawValue=="Filter > Vanishing Point…"});XCTAssertEqual(item.action,#selector(AppDelegate.vanishingPoint));XCTAssertEqual(item.keyEquivalent,"v");XCTAssertEqual(item.keyEquivalentModifierMask,[.option,.command]);XCTAssertFalse(app.validateMenuItem(item))

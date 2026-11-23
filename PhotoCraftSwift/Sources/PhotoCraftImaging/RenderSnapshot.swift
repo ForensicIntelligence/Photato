@@ -72,7 +72,8 @@ extension Renderer {
     if old.inkMode != d.inkMode || old.isChannelOnly != d.isChannelOnly { return .full }
     if d.isChannelOnly, old.alphaChannels?.first?.pixels != d.alphaChannels?.first?.pixels { return .full }
     if old.layers.count != d.layers.count {
-      return try addedMaskedAdjustmentDamage(from: old, to: d) ?? .full
+      return try addedMaskedAdjustmentDamage(from: old, to: d)
+        ?? addedPlainRasterDamage(from: old, to: d) ?? .full
     }
     if old != d, (old.layers + d.layers).contains(where: { ($0.style != nil && $0.style?.isChannelBlendingOnly != true) || $0.smartFilters != nil }) { return .full }
     let oldPatterns = old.patterns ?? []
@@ -189,6 +190,33 @@ extension Renderer {
       && layer.smartObject == nil && layer.smartFilters == nil && layer.nativeMode == nil
       && layer.sourceProjection == nil && layer.importedSmartAppearance == nil
       && layer.video == nil && layer.videoTiming == nil && layer.videoKeyframes == nil
+  }
+
+  /// A plain correction placed over a flat raster stack only contributes inside
+  /// its alpha coverage. Inserting it lower can change a clipping base.
+  private static func addedPlainRasterDamage(from old: CraftDocument, to d: CraftDocument) throws
+    -> RenderSnapshot.Update? {
+    guard d.layers.count == old.layers.count + 1, let layer = d.layers.last,
+      d.animation == nil, d.videoTimeline == nil, d.variables == nil,
+      d.modeDescriptor == nil, d.restrictedMode == nil, d.inkMode == nil, !d.isChannelOnly,
+      case .raster(let pixels) = layer.content, plainTransparentRaster(layer, pixels),
+      pixels.width == d.width, pixels.height == d.height, pixels.depth == d.depth,
+      layer.x == 0, layer.y == 0
+    else { return nil }
+    var plain = Layer(name: layer.name, content: layer.content)
+    plain.id = layer.id
+    guard layer == plain, old.layers.allSatisfy({ existing in
+      guard case .raster = existing.content else { return false }
+      return existing.parentID == nil && !existing.isClipped && existing.style == nil
+        && existing.smartObject == nil && existing.smartFilters == nil && existing.warp == nil
+        && existing.sourceProjection == nil && existing.importedSmartAppearance == nil
+    }) else { return nil }
+    var remainder = d
+    remainder.layers.removeLast()
+    remainder.activeLayerID = old.activeLayerID
+    remainder.vanishingPoint = old.vanishingPoint
+    guard remainder == old, try renderDamage(from: old, to: remainder) == .unchanged else { return nil }
+    return try pixels.contentBounds().map { .region($0) } ?? .unchanged
   }
 
   /// A newly painted plain top adjustment cannot affect pixels outside its black mask.

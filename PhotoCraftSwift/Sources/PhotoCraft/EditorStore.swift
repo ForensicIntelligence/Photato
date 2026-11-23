@@ -197,6 +197,7 @@ struct CanvasRenderRequest: Sendable {
   var rasterViewportPreview: RasterViewportPreview?
   private(set) var channelCompositeRevision = UUID()
   @ObservationIgnored var renderSnapshot: RenderSnapshot?
+  @ObservationIgnored private(set) var renderSnapshotSourceGeneration: UUID?
   var selectionPath: CGPath?
   @ObservationIgnored let selectionOutlineCache = SelectionOutlineCache()
   @ObservationIgnored var selectionPathRequest: SelectionOutlineRequest?
@@ -908,6 +909,10 @@ struct CanvasRenderRequest: Sendable {
     let selectionTool = brushGesture.flatMap { $0.sessionGeneration==sessionGeneration && $0.generation==layerPanelGeneration ? $0.selectionRequest:nil }
     let selectionOverlay = tool == .selectionBrush ? selectionOverlayColor:nil
     let lightPreview = lightEditingPreview
+    let unchangedRenderSource = !hasToneDraft && transformDraft == nil && selectionTransform == nil
+      && pathWarp == nil && embeddedPlacement == nil
+      && timelinePreviewVideoFrame == nil && timelinePreviewFrameID == nil && lightPreview.pausedLayerIDs.isEmpty
+      ? sessionGeneration : nil
     let painting = brushPreviewCommand
     let paintTools = brushGesture.flatMap { $0.sessionGeneration==sessionGeneration && $0.generation==layerPanelGeneration ? $0.paintingPreviewRequest:nil }
     let gradientFill = gradientFillDraft.flatMap { $0.preview ? $0.command : nil }
@@ -1125,6 +1130,7 @@ struct CanvasRenderRequest: Sendable {
           operation: { try await worker.value }, onCancel: { worker.cancel() })
         guard !Task.isCancelled, let self, self.revision == request else { return }
         self.renderSnapshot = pair.0
+        self.renderSnapshotSourceGeneration = unchangedRenderSource
         self.patternCanvasPreview = pair.9
         self.rasterViewportPreview = pair.10
         self.surface = pair.0?.surface

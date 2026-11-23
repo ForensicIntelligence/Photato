@@ -1,3 +1,7 @@
+### Vanishing Point preview reuse (checkpoint 728)
+
+The workspace reuses its prepared edit on Apply. The authenticated `filter.vanishingPoint` command still uses the same edit, error handling and history. [Native/API output checks](SOURCE_PUBLICATION_728.md).
+
 ### Full-resolution Vanishing Point (checkpoint 727)
 
 The native workspace and authenticated `filter.vanishingPoint` operation support bounded perspective edits on larger canvases. Paste source and per-program work budgets still apply. [Qualification](SOURCE_PUBLICATION_727.md).

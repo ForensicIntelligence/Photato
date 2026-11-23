@@ -84,12 +84,11 @@ public struct VanishingEdit:Sendable {
   public static func prepare(_ d:CraftDocument,layerID:UUID,program:VanishingProgram,sample:Surface) throws -> Self {
     try program.validate();let layer=try target(d,layerID:layerID,newLayer:program.newLayer)
     guard sample.width==d.width,sample.height==d.height else { throw CraftError.invalid("Vanishing Point sample does not match its document.") }
-    let sample=try sample.converted(to:d.depth)
     let scene = try VanishingScene(program.settings,width:d.width,height:d.height)
     var result=d,settings=program.settings;settings.center=scene.center;settings.focalLength=scene.focal
     result.vanishingPoint=settings.planes.isEmpty ? nil:settings
     if !program.operations.isEmpty {
-      let overlay=try VanishingEngine.render(program,sample:sample)
+      let overlay=try VanishingEngine.render(program,sample:sample.converted(to:d.depth))
       if program.newLayer {
         guard d.layers.count<LayerLimits.maximumLayers else { throw CraftError.invalid("Layer limit reached.") }
         var pixels = overlay
