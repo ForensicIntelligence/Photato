@@ -26,3 +26,5 @@ In Vanishing Point, define a plane on the product surface, sample from a clean r
 When the canvas has a matching ready composite, Vanishing Point can reuse it. A plain top correction can refresh its edited pixels, and Apply commits the accepted preview. [Build 728 measurements](SOURCE_PUBLICATION_728.md).
 
 A stamp can land between pixel centers after perspective projection. Vanishing Point now covers the intersected pixel area for narrow Brush and Clone Stamp dabs, including where the active plane clips the footprint. [Build 729 measurements](SOURCE_PUBLICATION_729.md).
+
+The default camera can resolve and save focal lengths across the native canvas size range. A local correction passed on a sparse 300,000 × 300,000 document. [Build 730 measurements](SOURCE_PUBLICATION_730.md).

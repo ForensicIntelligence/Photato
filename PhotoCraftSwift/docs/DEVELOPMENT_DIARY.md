@@ -1,3 +1,15 @@
+## 2026-11-23 — Step 730 — Preserve Vanishing Point cameras at the canvas size limit
+
+Vanishing Point can now apply a local correction with the default camera on a sparse 300,000 × 300,000 document. The editable archive and authenticated Photato API retain and replay the resolved focal length.
+
+A 300,000 × 300,000 sparse document passed the native preview, Apply, archive reopen, HTTP archive download, and Undo. The API accepted the default camera and replayed the resolved 300,000-pixel focal length. The automatic and explicit camera controls produced the same local composite crop on both optimized slices and in Xcode Debug. Separate core tests cross the 100,000-pixel boundary in both document orientations and retain a calibrated 500,000-pixel focal length.
+
+The automatic-camera edit produced a 2,048 × 2,048 preview in 104 ms on optimized Apple Silicon and 185 ms under Rosetta on this sparse fixture.
+
+The maximum-size fixture is sparse and the correction uses one tile. Editable archives with focal lengths above 100,000 pixels require build 730 or later. Photoshop 2026 opened the reference modal on the owned texture fixture. The app disappeared before a stamp could be applied, so Adobe pixel equivalence remains open. Adobe documents the PSB dimension limit separately from this native workflow.
+
+[Development record](DEVLOG.md#dev-step-730) · [Qualification](SOURCE_PUBLICATION_730.md).
+
 ## 2026-11-23 — Step 729 — Keep narrow Vanishing Point strokes visible
 
 A narrow perspective stamp can partially cover a row of pixels even when the pixel centers lie outside it. Vanishing Point now renders that coverage for Clone Stamp and Brush, including pixels partly inside a clipped plane.
@@ -1909,14 +1921,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:729 -->
+<!-- current-status-step:730 -->
 ## Current development status — 23 November 2026
 
-A narrow perspective stamp can partially cover a row of pixels even when the pixel centers lie outside it. Vanishing Point now renders that coverage for Clone Stamp and Brush, including pixels partly inside a clipped plane.
+Vanishing Point can now apply a local correction with the default camera on a sparse 300,000 × 300,000 document. The editable archive and authenticated Photato API retain and replay the resolved focal length.
 
-823 of 825 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new regressions passed on both architectures. The existing layer-effect and color-profile fixtures repeated their earlier differences. The paired color-profile output matched build 728 byte for byte. Xcode built the project, all nine focused Debug core tests passed, and both signed macOS 14+ slices opened offscreen.
+826 of 828 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new cases passed on both. The existing layer-effect and color-profile fixtures repeated their earlier differences, and the paired color-profile outputs matched build 729 byte for byte. Xcode built the project, all 11 focused core tests passed, and both signed macOS 14+ slices opened offscreen.
 
-[Source checkpoint 729](SOURCE_PUBLICATION_729.md) · [Development record](DEVLOG.md#dev-step-729).
+[Source checkpoint 730](SOURCE_PUBLICATION_730.md) · [Development record](DEVLOG.md#dev-step-730).
 
 <!-- current-status:end -->
 
@@ -2852,6 +2864,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 727 | [Extend perspective texture repair to large canvases](DEVLOG.md#dev-step-727) |
 | 2026-11-23 | 728 | [Reuse the editor composite for Vanishing Point previews](DEVLOG.md#dev-step-728) |
 | 2026-11-23 | 729 | [Keep narrow Vanishing Point strokes visible](DEVLOG.md#dev-step-729) |
+| 2026-11-23 | 730 | [Preserve Vanishing Point cameras at the canvas size limit](DEVLOG.md#dev-step-730) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

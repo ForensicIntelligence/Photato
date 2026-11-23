@@ -213,6 +213,73 @@ final class VanishingTests:XCTestCase {
     do { _=try await task.value;XCTFail("Cancelled preparation succeeded") } catch is CancellationError {} catch { XCTFail("Unexpected error: \(error)") }
     XCTAssertNil(d.vanishingPoint)
   }
+  func testDefaultCameraPinsAndReopensAtSupportedCanvasLimit() throws {
+    let limit = Surface.maxDimension
+    for (width, height) in [(100_000, 500), (100_001, 500), (500, limit), (limit, limit)] {
+      var original = try CraftDocument(width: width, height: height)
+      let sample = try Surface(width: width, height: height, fill: .white)
+      original.layers[0].content = .raster(sample)
+      let id = original.layers[0].id
+      var program = VanishingProgram()
+      program.newLayer = true
+      program.settings.planes = [.init(corners: [.init(80, 80), .init(280, 80), .init(280, 220), .init(80, 220)])]
+      var brush = VanishingOperation(.brush)
+      brush.points = [.init(185, 140)]
+      brush.diameter = 10
+      brush.color = Pixel(0.2, 0.5, 0.8)
+      program.operations = [brush]
+      let edit = try VanishingEdit.prepare(original, layerID: id, program: program, sample: sample)
+      let camera = try XCTUnwrap(edit.result.vanishingPoint)
+      XCTAssertEqual(camera.focalLength, Double(max(width, height)))
+      XCTAssertEqual(camera.center, PathPoint(Double(width) / 2, Double(height) / 2))
+      XCTAssertEqual(edit.result.layers.first, original.layers.first)
+      guard case .raster(let repair) = edit.result.layers.last?.content else { return XCTFail("Missing correction") }
+      XCTAssertEqual(repair.tileCount, 1)
+      XCTAssertGreaterThan(repair.pixel(x: 185, y: 140).a, 0.9)
+      XCTAssertEqual(repair.pixel(x: width - 1, y: height - 1), .clear)
+      let reopened = try NativeArchive.decode(NativeArchive.encodeChunked(edit.result))
+      XCTAssertEqual(reopened, edit.result)
+      program.settings = try XCTUnwrap(reopened.vanishingPoint)
+      let replay = try VanishingEdit.prepare(original, layerID: id, program: program, sample: sample)
+      XCTAssertEqual(replay.result.layers.last?.content, edit.result.layers.last?.content)
+      XCTAssertEqual(replay.result.vanishingPoint, camera)
+      var session = EditorSession(document: original)
+      try session.execute(.vanishingPoint(edit))
+      try session.undo()
+      XCTAssertEqual(session.document, original)
+    }
+  }
+
+  func testCalibratedCameraBeyondCanvasExtentSurvivesPreparation() throws {
+    let size = Surface.maxDimension
+    let center = PathPoint(Double(size) / 2, Double(size) / 2)
+    var automatic = cameraPlane()
+    automatic.center = center
+    automatic.planes[0].corners = automatic.planes[0].corners.map {
+      .init(center.x + ($0.x - 400) * 1_000, center.y + ($0.y - 300) * 1_000)
+    }
+    let scene = try VanishingScene(automatic, width: size, height: size)
+    XCTAssertEqual(scene.focal, 500_000, accuracy: 0.00001)
+    let original = try CraftDocument(width: size, height: size)
+    let sample = try Surface(width: size, height: size, fill: .white)
+    var program = VanishingProgram()
+    program.settings = automatic
+    let id = original.layers[0].id
+    let edited = try VanishingEdit.prepare(original, layerID: id, program: program, sample: sample)
+    let reopened = try NativeArchive.decode(NativeArchive.encodeChunked(edited.result))
+    program.settings = try XCTUnwrap(reopened.vanishingPoint)
+    XCTAssertEqual(program.settings.focalLength, scene.focal)
+    let pinned = try VanishingScene(program.settings, width: size, height: size)
+    XCTAssertEqual(pinned.frames[0].points, scene.frames[0].points)
+
+    for invalid in [-1.0, .infinity, .nan] {
+      program.settings.focalLength = invalid
+      XCTAssertThrowsError(try program.settings.validate())
+    }
+    program.settings.focalLength = .greatestFiniteMagnitude
+    XCTAssertThrowsError(try VanishingScene(program.settings, width: size, height: size))
+  }
+
   func testInvalidPlanesAndMetadataCanvasTransform() throws {
     var focal=plain().settings;focal.focalLength=1;XCTAssertEqual(try VanishingScene(focal,width:64,height:48).focal,1)
     var p=plain();p.settings.planes.append(.init(parent:1,edge:.top));XCTAssertThrowsError(try p.validate())

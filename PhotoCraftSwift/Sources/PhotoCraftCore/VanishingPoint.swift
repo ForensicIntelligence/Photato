@@ -12,12 +12,13 @@ public struct VanishingPlane:Codable,Equatable,Sendable {
 }
 public struct VanishingSettings:Codable,Equatable,Sendable {
   public var planes:[VanishingPlane]=[]
-  /// Camera focal length in pixels; zero infers it from the first plane.
+  /// Camera focal length in pixels. Zero infers it from the first plane or uses
+  /// the longer canvas side. Scene construction validates the resulting projection.
   public var focalLength=0.0
   public var center:PathPoint?
   public init() {}
   public func validate() throws {
-    guard planes.count<=32,focalLength.isFinite,(0...100_000).contains(focalLength),center.map({Self.validPoint($0)}) ?? true else { throw CraftError.invalid("Invalid Vanishing Point camera or plane count.") }
+    guard planes.count<=32,focalLength.isFinite,focalLength>=0,center.map({Self.validPoint($0)}) ?? true else { throw CraftError.invalid("Invalid Vanishing Point camera or plane count.") }
     for (i,p) in planes.enumerated() {
       guard p.angle.isFinite,(0...180).contains(p.angle),p.depth.isFinite,(0.05...20).contains(p.depth) else { throw CraftError.invalid("Invalid related plane angle or depth.") }
       if let parent=p.parent { guard (0..<i).contains(parent),p.corners.isEmpty else { throw CraftError.invalid("A related plane must reference an earlier plane and omit corners.") } }

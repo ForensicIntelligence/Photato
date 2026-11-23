@@ -748,7 +748,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 727 | 2026-11-23 | [Extend perspective texture repair to large canvases](#dev-step-727) |
 | 728 | 2026-11-23 | [Reuse the editor composite for Vanishing Point previews](#dev-step-728) |
 | 729 | 2026-11-23 | [Keep narrow Vanishing Point strokes visible](#dev-step-729) |
+| 730 | 2026-11-23 | [Preserve Vanishing Point cameras at the canvas size limit](#dev-step-730) |
 <!-- history-index:end -->
+
+<a id="dev-step-730"></a>
+
+## 2026-11-23 — Preserve Vanishing Point cameras at the canvas size limit
+
+The old focal-length cap was below the default camera on documents whose longer side exceeded 100,000 pixels. The camera model accepts a finite, non-negative focal length and validates the resulting projection. The authenticated API schema uses the same range and explains how zero resolves. Tests also cover a calibrated focal length above the canvas extent.
+
+A 300,000 × 300,000 sparse document passed the native preview, Apply, archive reopen, HTTP archive download, and Undo. The API accepted the default camera and replayed the resolved 300,000-pixel focal length. The automatic and explicit camera controls produced the same local composite crop on both optimized slices and in Xcode Debug. Separate core tests cross the 100,000-pixel boundary in both document orientations and retain a calibrated 500,000-pixel focal length.
+
+The automatic-camera edit produced a 2,048 × 2,048 preview in 104 ms on optimized Apple Silicon and 185 ms under Rosetta on this sparse fixture.
+
+826 of 828 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new cases passed on both. The existing layer-effect and color-profile fixtures repeated their earlier differences, and the paired color-profile outputs matched build 729 byte for byte. Xcode built the project, all 11 focused core tests passed, and both signed macOS 14+ slices opened offscreen.
+
+The maximum-size fixture is sparse and the correction uses one tile. Editable archives with focal lengths above 100,000 pixels require build 730 or later. Photoshop 2026 opened the reference modal on the owned texture fixture. The app disappeared before a stamp could be applied, so Adobe pixel equivalence remains open. Adobe documents the PSB dimension limit separately from this native workflow. [Adobe’s PSB limits](https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/image-file-formats-supported-in-photoshop.html)
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_730.md).
 
 <a id="dev-step-729"></a>
 

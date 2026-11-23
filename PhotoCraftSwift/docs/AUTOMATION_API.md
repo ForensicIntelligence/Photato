@@ -1,3 +1,7 @@
+### Vanishing Point maximum-size cameras (checkpoint 730)
+
+The existing authenticated `filter.vanishingPoint` command accepts finite, non-negative focal lengths. A requested zero infers the camera from the first plane or uses the longer canvas side. The resulting projection must be valid. The document state returns the resolved focal length for replay. [Archive and replay checks](SOURCE_PUBLICATION_730.md).
+
 ### Narrow Vanishing Point strokes (checkpoint 729)
 
 The existing authenticated `filter.vanishingPoint` command uses area coverage for thin projected brush and stamp marks. The capability response describes the shared rendering work budget. [Native/API checks](SOURCE_PUBLICATION_729.md).

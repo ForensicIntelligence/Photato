@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 546 — Faster canvas updates
-
-Changed pixels now go directly into the display buffer. At 12.5% zoom, Apple Silicon display conversion for the 5,000 px brush fell from 357 to 103 ms on the 24 MP test image. All 80 saved outputs match build 545 on each architecture.
-
-All 392 selected tests passed in the three configurations. Large brushes still need faster preparation to reach the display target.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-546) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_546.md).
-
 ## 2026-11-17 — Step 545 — Faster composition under tone layers
 
 The renderer combines a raster and eligible tone layers in one pass through its tiles. On Apple Silicon, the 5,000 px first-dab software composition fell from 1,628 to 124 ms on the 24 MP test image. The hosted AppKit first draw took 896 ms in the paired runs.
@@ -363,14 +355,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:729 -->
+<!-- current-status-step:730 -->
 ## Current development status — 23 November 2026
 
-A narrow perspective stamp can partially cover a row of pixels even when the pixel centers lie outside it. Vanishing Point now renders that coverage for Clone Stamp and Brush, including pixels partly inside a clipped plane.
+Vanishing Point can now apply a local correction with the default camera on a sparse 300,000 × 300,000 document. The editable archive and authenticated Photato API retain and replay the resolved focal length.
 
-823 of 825 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new regressions passed on both architectures. The existing layer-effect and color-profile fixtures repeated their earlier differences. The paired color-profile output matched build 728 byte for byte. Xcode built the project, all nine focused Debug core tests passed, and both signed macOS 14+ slices opened offscreen.
+826 of 828 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new cases passed on both. The existing layer-effect and color-profile fixtures repeated their earlier differences, and the paired color-profile outputs matched build 729 byte for byte. Xcode built the project, all 11 focused core tests passed, and both signed macOS 14+ slices opened offscreen.
 
-[Source checkpoint 729](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_729.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-729).
+[Source checkpoint 730](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_730.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-730).
 
 <!-- current-status:end -->
 
@@ -1306,5 +1298,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 727 | [Extend perspective texture repair to large canvases](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-727) |
 | 2026-11-23 | 728 | [Reuse the editor composite for Vanishing Point previews](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-728) |
 | 2026-11-23 | 729 | [Keep narrow Vanishing Point strokes visible](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-729) |
+| 2026-11-23 | 730 | [Preserve Vanishing Point cameras at the canvas size limit](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-730) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

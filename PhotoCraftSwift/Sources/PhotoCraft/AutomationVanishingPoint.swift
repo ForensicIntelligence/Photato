@@ -9,7 +9,8 @@ extension VanishingSettings {
   var apiValue:Any { (try? JSONSerialization.jsonObject(with:JSONEncoder().encode(self))) ?? NSNull() }
   static var pointSchema:[String:Any] { ["type":"object","additionalProperties":false,"required":["x","y"],"properties":Dictionary(uniqueKeysWithValues:["x","y"].map{($0,["type":"number","minimum":-1_000_000,"maximum":1_000_000] as [String:Any])})] }
   static var apiSchema:[String:Any] {
-    ["type":"object","additionalProperties":false,"properties":["focalLength":["type":"number","minimum":0,"maximum":100_000,"default":0],"center":pointSchema,
+    ["type":"object","additionalProperties":false,"properties":["focalLength":["type":"number","minimum":0,"default":0,
+      "description":"Finite focal length in pixels. Zero infers the camera or uses the longer canvas side. The resulting projection must be valid."],"center":pointSchema,
       "planes":["type":"array","maxItems":32,"default":[],"items":["type":"object","additionalProperties":false,"properties":[
         "corners":["type":"array","minItems":0,"maxItems":4,"items":pointSchema,"default":[]],"parent":["type":"integer","minimum":0,"maximum":30],"edge":["type":"string","enum":VanishingPlane.Edge.allCases.map(\.rawValue),"default":"top"],"angle":["type":"number","minimum":0,"maximum":180,"default":90],"depth":["type":"number","minimum":0.05,"maximum":20,"default":1]],"description":"Four convex corners in document pixels, or an earlier parent index with empty corners. Related planes recompute when their parent changes."]]]]
   }

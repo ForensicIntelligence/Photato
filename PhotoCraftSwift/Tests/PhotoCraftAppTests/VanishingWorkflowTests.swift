@@ -248,6 +248,71 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testMaximumCanvasCameraMatchesNativeAPIExportAndReplay() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(actions: ActionLibrary(), pressedMouseButtons: { 0 }) { service, document in
+      let limit = Surface.maxDimension
+      var source = try CraftDocument(width: limit, height: limit)
+      let id = source.layers[0].id
+      source.layers[0].content = .raster(try Surface(width: limit, height: limit, fill: .white))
+      document.store.session = EditorSession(document: source)
+      try service.share(document)
+      service.setDocumentTransfersEnabled(true)
+      var draft = VanishingProgram()
+      draft.newLayer = true
+      draft.settings.planes = [.init(corners: [.init(80, 80), .init(280, 80), .init(280, 220), .init(80, 220)])]
+      var brush = VanishingOperation(.brush)
+      brush.points = [.init(185, 140)]
+      brush.diameter = 10
+      brush.color = Pixel(0.2, 0.5, 0.8)
+      draft.operations = [brush]
+      document.store.beginVanishingPoint()
+      let workspace = try XCTUnwrap(document.store.vanishingWorkspace)
+      workspace.change(draft)
+      await workspace.task?.value
+      XCTAssertTrue(workspace.ready, workspace.error ?? "Missing sparse document preview")
+      XCTAssertEqual(workspace.image?.width, 2_048)
+      XCTAssertEqual(workspace.image?.height, 2_048)
+      document.store.commitVanishingPoint()
+      await document.store.geometryTask?.value
+      let native = document.store.document
+      XCTAssertEqual(native.vanishingPoint?.focalLength, Double(limit))
+      XCTAssertEqual(native.layers.first, source.layers.first)
+      XCTAssertEqual(native.layers.count, 2)
+
+      let share = try XCTUnwrap(service.shares.first?.id)
+      let path = "/v1/documents/\(share)"
+      let (summaryResponse, summaryData) = try await helper.request(service, path: path)
+      XCTAssertEqual(summaryResponse.statusCode, 200)
+      let summary = try XCTUnwrap(JSONSerialization.jsonObject(with: summaryData) as? [String: Any])
+      let vanishing = try XCTUnwrap(summary["vanishingPoint"] as? [String: Any])
+      let reported = try XCTUnwrap(vanishing["settings"] as? [String: Any])
+      XCTAssertEqual((reported["focalLength"] as? NSNumber)?.doubleValue, Double(limit))
+      let (_, archive) = try await helper.request(service, path: path + "/file.photato",
+        headers: ["X-Photato-Archive-Version": "32"])
+      XCTAssertEqual(try NativeArchive.decode(archive), native)
+      _ = await document.store.requestHistory(redo: false).value
+      XCTAssertEqual(document.store.document, source)
+
+      var request: [String: Any] = [
+        "layerID": id.uuidString, "newLayer": true,
+        "operations": [["kind": "brush", "points": [["x": 185, "y": 140]], "diameter": 10,
+                        "color": ["r": 0.2, "g": 0.5, "b": 0.8, "a": 1]]],
+      ]
+      for camera in [draft.settings.apiValue, reported] {
+        request["settings"] = camera
+        let status = try await helper.edit(service, document, "filter.vanishingPoint", request)
+        XCTAssertEqual(status, 200)
+        XCTAssertEqual(document.store.document.vanishingPoint, native.vanishingPoint)
+        XCTAssertEqual(document.store.document.layers.last?.content, native.layers.last?.content)
+        XCTAssertEqual(document.store.session.undoStack.count, 1)
+        let undo = try await helper.edit(service, document, "history.undo")
+        XCTAssertEqual(undo, 200)
+        XCTAssertEqual(document.store.document, source)
+      }
+    }
+  }
+
   @MainActor func testFactoryMenuAndOffscreenWorkspace() async throws {
     try PhotoshopMenuTests().withMenus { app,menu in
       let item=try XCTUnwrap(PhotoshopMenuTests().allItems(menu).first{$0.identifier?.rawValue=="Filter > Vanishing Point…"});XCTAssertEqual(item.action,#selector(AppDelegate.vanishingPoint));XCTAssertEqual(item.keyEquivalent,"v");XCTAssertEqual(item.keyEquivalentModifierMask,[.option,.command]);XCTAssertFalse(app.validateMenuItem(item))
