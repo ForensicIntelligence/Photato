@@ -16,6 +16,7 @@ public struct SelectionRefinement: Codable, Equatable, Sendable {
   public var decontaminate = false
   public var amount: Double = 100
   public var transparency: Transparency?
+  public var refineHair: Bool?
   public init() {}
   public var neutral: Bool { radius == 0 && smooth == 0 && feather == 0 && contrast == 0 && shiftEdge == 0 }
   public func validate() throws {
@@ -25,7 +26,8 @@ public struct SelectionRefinement: Codable, Equatable, Sendable {
   }
   public static func decodeJSON(_ data: Data) throws -> Self {
     guard let raw = try JSONSerialization.jsonObject(with:data) as? [String:Any],
-      Set(raw.keys).isSubset(of:["radius","smartRadius","smooth","feather","contrast","shiftEdge","decontaminate","amount","transparency"]) else { throw CraftError.invalid("Unknown refinement parameter.") }
+      Set(raw.keys).isSubset(of:["radius","smartRadius","smooth","feather","contrast","shiftEdge","decontaminate","amount","transparency","refineHair"]) else { throw CraftError.invalid("Unknown refinement parameter.") }
+    if raw["refineHair"] is NSNull { throw CraftError.invalid("Refine Hair must be boolean.") }
     if let value = raw["transparency"] {
       guard let options = value as? [String: Any], Set(options.keys).isSubset(of: ["backgroundLayerID"]),
         options["backgroundLayerID"] == nil || options["backgroundLayerID"] is String else {

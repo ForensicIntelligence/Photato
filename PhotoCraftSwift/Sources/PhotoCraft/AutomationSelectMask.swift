@@ -9,6 +9,7 @@ extension SelectionRefinement {
       p[key] = ["type":"number","minimum":lo,"maximum":hi,"default":key == "amount" ? 100:0]
     }
     p["smartRadius"] = ["type":"boolean","default":false]; p["decontaminate"] = ["type":"boolean","default":false]
+    p["refineHair"] = ["type":"boolean","default":false,"description":"Refine fine strands from the initial selection before applying brush strokes and edge settings."]
     p["transparency"] = ["type":"object","additionalProperties":false,
       "properties":["backgroundLayerID":["type":"string","format":"uuid"]]]
     return ["type":"object","additionalProperties":false,"properties":p]
@@ -27,7 +28,8 @@ extension SelectionRefinement {
      "decontamination":"selection/layerMask output changes to newLayerWithMask when decontaminate=true. Original RGB8/16/32 pixels are retained in the hidden source layer.",
      "transparency":"Use settings.transparency={} to fit a smooth background or supply an aligned raster backgroundLayerID. Sweep an approximate selection around the subject and use Erase Refinement to retain opacity where needed. Decontaminate Colors removes the backing contribution from the recovered pixels. Requires a single RGB image layer and rejects sampleAllLayers=true.",
      "smartObjects":"Selection and Layer Mask retain the editable source. Copy outputs use the existing Smart Object/PDF/Smart Filter renderer to create raster results, retaining the original source. Decontamination affects only rendered output pixels. Filter masks are not refinement inputs.",
-     "limits":"Raster layers and Smart Objects within current refinement/rendering limits. New layers retain rendered geometry and effects; their pixel mask is replaced. Focus Area retains its ordinary-raster restriction. Native guided matting is not Adobe Color/Object Aware or Refine Hair model equivalence. Photoshop refinement action descriptors remain unsupported; no invented Adobe endpoint."]
+     "refineHair":"Use settings.refineHair=true with a starting selection or an existing layer mask. Refines nearby strands from local foreground and background samples. Strokes and global refinements run after this step.",
+     "limits":"Raster layers and Smart Objects within current refinement/rendering limits. New layers retain rendered geometry and effects and replace their pixel mask. Focus Area retains its ordinary-raster restriction. Adobe Color/Object Aware model parity and Photoshop refinement action descriptors remain open."]
   }
 }
 struct SelectMaskAPIOptions: Sendable {

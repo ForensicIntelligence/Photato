@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 722.** Relinking a projected Smart Object to the same source preserves its rendered appearance in the tested PSD and PSB files. The original placement, editable Smart Filters and their mask stay with the layer. [Linked artwork guide](PhotoCraftSwift/docs/LINKED_FILTER_EDGE_EXCHANGE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_722.md).
+**Development alpha — source build 723.** Select and Mask adds Refine Hair for a rough selection or an existing layer mask. Photato recovers soft strand coverage near the subject and keeps it editable. The native workspace previews the result before committing. The optional Photato API uses the same refinement. [Refine Hair guide](PhotoCraftSwift/docs/REFINE_HAIR.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_723.md).
 
 ## Project layout
 

@@ -42,12 +42,16 @@ public struct SelectionRefinementInput: Sendable {
     }
     return Self(original:document,layerID:layerID,guide:guide,mask:mask,sampleAllLayers:sampleAllLayers,materializedLayer:materialized)
   }
+  public func hairRefinedMask(initial: SelectionMask? = nil) throws -> SelectionMask {
+    try SelectionHairMatting.refine(initial ?? mask, guide: guide)
+  }
   public func refined(settings: SelectionRefinement,strokes: [SelectionRefinementStroke] = [], initial: SelectionMask? = nil) throws -> SelectionMask {
     try refinement(settings:settings,strokes:strokes,initial:initial).mask
   }
   private func refinement(settings: SelectionRefinement, strokes: [SelectionRefinementStroke], initial: SelectionMask?)
     throws -> (mask: SelectionMask, background: SelectionTransparency.Background?) {
-    let input = initial ?? mask, w = guide.width, h = guide.height
+    let input = try settings.refineHair == true ? hairRefinedMask(initial: initial) : initial ?? mask
+    let w = guide.width, h = guide.height
     guard input.width == w, input.height == h, strokes.count <= 1024, strokes.reduce(0,{ $0+$1.points.count }) <= 16384 else { throw CraftError.invalid("Refinement brush limit exceeded or input size differs.") }
     var bytes = (try input.bytes), edge = [UInt8](repeating:0,count:w*h), excluded = edge
     var visits = 0

@@ -1,0 +1,409 @@
+{
+  "build": 723,
+  "base": "5d6caca87bf9813af253cb68f268a8df6201aac4",
+  "buildInputs": 9423,
+  "includedBuildInputs": 9423,
+  "candidateManifestSHA256": "34d01853ffe5bc0f3da16abd59f24d90d2ddfdc9dcc02314f921ebdf74e978c8",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationSelectMask.swift",
+      "sha256": "7514617147ed5c594842d15cd4dd28db94195928eefe116a984c8f31b0bfbc5c"
+    },
+    {
+      "path": "Sources/PhotoCraft/SelectMaskEditing.swift",
+      "sha256": "050e07f25b6fd4fb9cecbb2d343840aa5631b70a5de5e69c6ff0c36515161611"
+    },
+    {
+      "path": "Sources/PhotoCraft/SelectMaskSheet.swift",
+      "sha256": "f6d855e20169ffbfdc8be2ed0a10bfa9b723b62706d9ca7decd712866d12ca71"
+    },
+    {
+      "path": "Sources/PhotoCraft/SelectMaskWorkspace.swift",
+      "sha256": "242fedfd3cdda8b3449c79111b1ddd77dbec0189d4822572fb91f57c5c4d49c7"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/SelectionHairMatting.swift",
+      "sha256": "3c832c5c918ee437765a948c09262309ae9567663cb3ef6d13fc0e2660d26d25"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/SelectionRefinement.swift",
+      "sha256": "4b1e92d5b096ed80db9d454fa0ac54eb9439c58fbada62d0f7b62607b9e50675"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/SelectionRefinementInput.swift",
+      "sha256": "c794fd543c9631a4f93e92eb810bf1a8cfea2eb15ffed3e8059a2e29e49ccc2c"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/HairRefinementWorkflowTests.swift",
+      "sha256": "1fe3f34360a8417d2cd0e27141d2c20c3dfb2954f67cfad4bcd9c3ef8dedac6b"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "3cb95e442887db89a13d2f74411ea1120bbd5444e68807c67e53e1183130029c"
+    }
+  ],
+  "casesPerConfiguration": 720,
+  "qualifications": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 720,
+      "passed": 718,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.SmartFilterWorkflowTests/testPublishedExecuteActionsRetainsEditablePSDStack",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "04953d66f9980a0bcc4f64e737d4cb3cbfe84ecbcf6533ddab794c101338f4ca"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 720,
+      "passed": 719,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "48570305fcdc50c0f9d83d1a71f911203943f7c9c0a639b1cf30fb43cc8094a6"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 720,
+      "passed": 719,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "808f7c0b9e09fabdcd47140385115a4251ecbb25616ff195a6116203cf1ad09a"
+    }
+  },
+  "hairMatteBenchmark": {
+    "smooth": {
+      "arm": {
+        "coverageSHA256": "abdead1f6793e2eaa2e4b3fd3aaf2dd582ea58dc0ae3d41c64b94cb20f88987b",
+        "compositePngSHA256": "8c1dc960e939a6973b44f6d82c746141a99a89f11b2b643faf9b2663fa0f9b6d"
+      },
+      "intel": {
+        "coverageSHA256": "abdead1f6793e2eaa2e4b3fd3aaf2dd582ea58dc0ae3d41c64b94cb20f88987b",
+        "compositePngSHA256": "8c1dc960e939a6973b44f6d82c746141a99a89f11b2b643faf9b2663fa0f9b6d"
+      }
+    },
+    "structured": {
+      "arm": {
+        "coverageSHA256": "4673648fdaa3a941eb70d3fd07fccfea876f5058d45595c40c048bf66def781c",
+        "compositePngSHA256": "bf4a5669b461d5a7f9f96ccc05718c263f8a41138f9406632b2f127557a12e68"
+      },
+      "intel": {
+        "coverageSHA256": "4673648fdaa3a941eb70d3fd07fccfea876f5058d45595c40c048bf66def781c",
+        "compositePngSHA256": "bf4a5669b461d5a7f9f96ccc05718c263f8a41138f9406632b2f127557a12e68"
+      }
+    },
+    "GT03": {
+      "arm": {
+        "coverageSHA256": "08b808cd2c7628c2bb64158d5d723d87195a7d4b495af24f904d364381c81928",
+        "compositePngSHA256": "b9e48ba39001bb453f14b6aa18fec4754de9252a963d90b04d2dea5d6bc31289"
+      },
+      "intel": {
+        "coverageSHA256": "08b808cd2c7628c2bb64158d5d723d87195a7d4b495af24f904d364381c81928",
+        "compositePngSHA256": "b9e48ba39001bb453f14b6aa18fec4754de9252a963d90b04d2dea5d6bc31289"
+      }
+    },
+    "GT04": {
+      "arm": {
+        "coverageSHA256": "aca24785dace7070a4463b7d1153746279cdf489f298a0947b2d4b84acc832d5",
+        "compositePngSHA256": "a8e795c8aa5de1a92b3a327b83e891455e2c07728c579afaaa41c6c7e2b99379"
+      },
+      "intel": {
+        "coverageSHA256": "aca24785dace7070a4463b7d1153746279cdf489f298a0947b2d4b84acc832d5",
+        "compositePngSHA256": "a8e795c8aa5de1a92b3a327b83e891455e2c07728c579afaaa41c6c7e2b99379"
+      }
+    },
+    "GT08": {
+      "arm": {
+        "coverageSHA256": "6b852cf94f05a42acb2192761c20a6ed4dfd9b639cd46972642ee2614507432f",
+        "compositePngSHA256": "d1b167ae911fcff76579e5337314342115233a6d08a3aacc9705ed8496fce210"
+      },
+      "intel": {
+        "coverageSHA256": "6b852cf94f05a42acb2192761c20a6ed4dfd9b639cd46972642ee2614507432f",
+        "compositePngSHA256": "d1b167ae911fcff76579e5337314342115233a6d08a3aacc9705ed8496fce210"
+      }
+    },
+    "GT22": {
+      "arm": {
+        "coverageSHA256": "9886c760fa06bcc9309b9a5f95d57c672e2fbc027d9335ff1d622e5726ed5cc7",
+        "compositePngSHA256": "79fcea28149f22f5f670354a69bbd85b2d2f73fe95cf5367cf7660657bdc8bf2"
+      },
+      "intel": {
+        "coverageSHA256": "9886c760fa06bcc9309b9a5f95d57c672e2fbc027d9335ff1d622e5726ed5cc7",
+        "compositePngSHA256": "79fcea28149f22f5f670354a69bbd85b2d2f73fe95cf5367cf7660657bdc8bf2"
+      }
+    },
+    "GT27": {
+      "arm": {
+        "coverageSHA256": "d4f24742d17c76fca541d0a5393c544281b2b084b70e4061d8a7f0837b51e59d",
+        "compositePngSHA256": "7d4d3a8579c1261e1bc150509d479c16062fc6cc964f1a55e2ed5d6abc7c5187"
+      },
+      "intel": {
+        "coverageSHA256": "d4f24742d17c76fca541d0a5393c544281b2b084b70e4061d8a7f0837b51e59d",
+        "compositePngSHA256": "7d4d3a8579c1261e1bc150509d479c16062fc6cc964f1a55e2ed5d6abc7c5187"
+      }
+    }
+  },
+  "ownedQuality": {
+    "smooth": {
+      "coarse": {
+        "nearBoundaryMAE": 0.10213405638933182,
+        "partialCoverageMAE": 0.3510589003562927,
+        "retainedForegroundOutsideCoarse": 0.0,
+        "falseCoverageInNearbyBackground": 0.0
+      },
+      "native-refine-hair": {
+        "nearBoundaryMAE": 0.011075030080974102,
+        "partialCoverageMAE": 0.1094970703125,
+        "retainedForegroundOutsideCoarse": 0.7745908028059236,
+        "falseCoverageInNearbyBackground": 0.0
+      }
+    },
+    "structured": {
+      "coarse": {
+        "nearBoundaryMAE": 0.10213405638933182,
+        "partialCoverageMAE": 0.3510589003562927,
+        "retainedForegroundOutsideCoarse": 0.0,
+        "falseCoverageInNearbyBackground": 0.0
+      },
+      "native-refine-hair": {
+        "nearBoundaryMAE": 0.01361154206097126,
+        "partialCoverageMAE": 0.1043594479560852,
+        "retainedForegroundOutsideCoarse": 0.8503507404520655,
+        "falseCoverageInNearbyBackground": 0.035229992023398035
+      }
+    }
+  },
+  "trainingQuality": {
+    "GT03": {
+      "coarse": {
+        "nearBoundaryMAE": 0.2767183184623718,
+        "partialCoverageMAE": 0.3791567385196686,
+        "retainedForegroundOutsideCoarse": 0.0,
+        "falseCoverageInNearbyBackground": 0.0
+      },
+      "native-refine-hair": {
+        "nearBoundaryMAE": 0.0898732915520668,
+        "partialCoverageMAE": 0.21138349175453186,
+        "retainedForegroundOutsideCoarse": 0.5748295884877557,
+        "falseCoverageInNearbyBackground": 0.000630119722747322
+      }
+    },
+    "GT04": {
+      "coarse": {
+        "nearBoundaryMAE": 0.3351737856864929,
+        "partialCoverageMAE": 0.5299921035766602,
+        "retainedForegroundOutsideCoarse": 0.0,
+        "falseCoverageInNearbyBackground": 0.0
+      },
+      "native-refine-hair": {
+        "nearBoundaryMAE": 0.23385339975357056,
+        "partialCoverageMAE": 0.4699912965297699,
+        "retainedForegroundOutsideCoarse": 0.22618829408530056,
+        "falseCoverageInNearbyBackground": 0.006495824113070169
+      }
+    },
+    "GT08": {
+      "coarse": {
+        "nearBoundaryMAE": 0.3002575933933258,
+        "partialCoverageMAE": 0.4856214225292206,
+        "retainedForegroundOutsideCoarse": 0.0,
+        "falseCoverageInNearbyBackground": 0.0
+      },
+      "native-refine-hair": {
+        "nearBoundaryMAE": 0.14926230907440186,
+        "partialCoverageMAE": 0.37772876024246216,
+        "retainedForegroundOutsideCoarse": 0.38682810750279956,
+        "falseCoverageInNearbyBackground": 0.09119170984455958
+      }
+    },
+    "GT22": {
+      "coarse": {
+        "nearBoundaryMAE": 0.22208748757839203,
+        "partialCoverageMAE": 0.5233368873596191,
+        "retainedForegroundOutsideCoarse": 0.0,
+        "falseCoverageInNearbyBackground": 0.0
+      },
+      "native-refine-hair": {
+        "nearBoundaryMAE": 0.05442452430725098,
+        "partialCoverageMAE": 0.15699277818202972,
+        "retainedForegroundOutsideCoarse": 0.8353349596547195,
+        "falseCoverageInNearbyBackground": 0.010656479340504675
+      }
+    },
+    "GT27": {
+      "coarse": {
+        "nearBoundaryMAE": 0.3687218427658081,
+        "partialCoverageMAE": 0.5550823211669922,
+        "retainedForegroundOutsideCoarse": 0.0,
+        "falseCoverageInNearbyBackground": 0.0
+      },
+      "native-refine-hair": {
+        "nearBoundaryMAE": 0.2633875012397766,
+        "partialCoverageMAE": 0.4201183617115021,
+        "retainedForegroundOutsideCoarse": 0.38049367850692356,
+        "falseCoverageInNearbyBackground": 0.17180686593197494
+      }
+    }
+  },
+  "photoshopReference": {
+    "liveOutputCompared": false,
+    "lastInspectionBuild": 722,
+    "lastAccessibleWindows": 0,
+    "lastAccessibleMenuBars": 0,
+    "installedVersion": "27.2.0"
+  },
+  "preview": {
+    "archiveSHA256": "e4dca9a1d6c5627595a82c9b88a38f12a8bcf5f9e596f7ed7684abfa861d071a",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "2a37abc6b6c130236427574d94468d030f8fcdd0d288cb5f78214d0b6cc37bf3",
+      "x86_64": "ab76d4d2c43598ba9471025fcaae5eae9e2d96b9254b7c2273b4c4fcf01b7077"
+    },
+    "binarySHA256": "2eaefceab588a6d3c0e61ef5f20a8fdecb294fc4eb0770dbecda26995c73066d",
+    "verifiedOffscreenWorkspaces": {
+      "arm64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "0f71fbc46c420789582d38c6bfdbced913079c4350fdcef280886225909058af"
+      },
+      "x86_64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "737809cd565f82b52fc896909aee5e8e6173be406cf3305bd5da70a547a89757"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "file": "build-debug01.log",
+      "sha256": "cda771e318ed7df94179e240e1d4426a6e7604708f1e97899d67633efc713bd5"
+    },
+    {
+      "file": "build-debug02.log",
+      "sha256": "a116bd9f1094af9651573aa6791fd6b62ccfcf1704ccb6f9a45c856319030ef2"
+    },
+    {
+      "file": "focused-debug01.log",
+      "sha256": "be50e695dd8f9ae6f12d1d82563217cf8f8a58a5460a265c3db71ac362f82f65"
+    },
+    {
+      "file": "focused-debug02.log",
+      "sha256": "5b438e788769b365c1aa7b1c5ff0c5cd31a13a0eea41d1fddc3376ed7d076d62"
+    },
+    {
+      "file": "hair-sheet-debug01.log",
+      "sha256": "ff3fa760ab06c272b91b531c68f6ca73fd43cdb25a7480a5a90f79c9541ae48f"
+    },
+    {
+      "file": "native-training02.log",
+      "sha256": "ee21690624cf5d299991178bf4972379b961be46d9af69573d82f6444fb7ea44"
+    },
+    {
+      "file": "native-owned02.log",
+      "sha256": "0b8903b6d8663564931c388cd6be4ddbf39741fe8a76e97e2d61007e740dcbc2"
+    },
+    {
+      "file": "independent-owned-debug01.log",
+      "sha256": "64bd31cebaab5f5a8fb9b8da67f5748ae291cdf1c03fc2a7f22ba08dfc4924e7"
+    },
+    {
+      "file": "metrics-prototype04.log",
+      "sha256": "e309d053c1cfe890e55ae21b7bf9868e2f48f9846520234b1bb423264b4c211d"
+    },
+    {
+      "file": "metrics-owned-prototype04.log",
+      "sha256": "c575b741eefe4758a5280fd7a54805e1491f9947e73b837675c70d25f27bc9e2"
+    },
+    {
+      "file": "composites-owned-native02.log",
+      "sha256": "2a5b59baba202e2ac0491f4488db9bc8995e5584d7334b86332a2ca2342ada3b"
+    },
+    {
+      "file": "adobe-reference01.log",
+      "sha256": "7dc7715b8fda10ffb7a0e966781a5770e0697c4d9bf8f4fd35d9c879dbb3991f"
+    },
+    {
+      "file": "capacity-debug01.log",
+      "sha256": "7db06b74fe299621fc56b4c088486fc3515dd408a2cbf2f984d9f92771f8a477"
+    },
+    {
+      "file": "capacity-arm01.log",
+      "sha256": "31b159bf3f96251f0d7237e2d7257c216c755ea1b10556fd4c26f365555b5dd6"
+    },
+    {
+      "file": "capacity-intel01.log",
+      "sha256": "96cf8aef01059f569a4038fb3365d545cb521719b7ff433c832379c7d710a867"
+    },
+    {
+      "file": "xcode-build01.log",
+      "sha256": "90bbb114a28be7e4bb7512b3b70e38d04f23e77e1aa03c79f0c04c27e9930417"
+    },
+    {
+      "file": "build-release-arm6401.log",
+      "sha256": "bcf97b46df30aa01b5c561d4c4963fd6a74c7763de4d79418c5695212ad8e8c8"
+    },
+    {
+      "file": "build-release-x86_6401.log",
+      "sha256": "3b3bcf4a2c4d3e254300b3a57cce837bb6ce53c1ba121d735d8e578b29532707"
+    },
+    {
+      "file": "preview-final01/preview-offscreen01.json",
+      "sha256": "df55077d9d284464684223a5c9acd6b3f5b28f045f2a1f655a306b64c0606b18"
+    },
+    {
+      "file": "native-owned-arm01.log",
+      "sha256": "4ed6a299c7197cf1f8f81241e34df0f6659f6c9693217449fd0d8b965414284a"
+    },
+    {
+      "file": "native-owned-intel01.log",
+      "sha256": "9790f2b8ed67ca3ea9e99c22749001ecc2889e1183829e71b27be6ba66fd0e8b"
+    },
+    {
+      "file": "native-training-arm01.log",
+      "sha256": "8d60f8df3661721bc6aeb8c9f2019d9e8d092acd2417af8b7c76624c17d4b41f"
+    },
+    {
+      "file": "native-training-intel01.log",
+      "sha256": "2ae76083d07a8aaed02950dcd4eb8b305404a8cf559bb9b79ffec30ad14a672d"
+    },
+    {
+      "file": "independent-owned-arm01.log",
+      "sha256": "64bd31cebaab5f5a8fb9b8da67f5748ae291cdf1c03fc2a7f22ba08dfc4924e7"
+    },
+    {
+      "file": "independent-owned-intel01.log",
+      "sha256": "64bd31cebaab5f5a8fb9b8da67f5748ae291cdf1c03fc2a7f22ba08dfc4924e7"
+    },
+    {
+      "file": "independent-training-arm01.log",
+      "sha256": "86e6990410e03cc079988d48ba0b5631c52e4d70eb1cb60167df581392fcee31"
+    },
+    {
+      "file": "independent-training-intel01.log",
+      "sha256": "86e6990410e03cc079988d48ba0b5631c52e4d70eb1cb60167df581392fcee31"
+    }
+  ]
+}

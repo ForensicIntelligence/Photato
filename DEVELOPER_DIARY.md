@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **722** · The 10 most recent entries, newest first.
+Source build **723** · The 10 most recent entries, newest first.
+
+## 2026-11-23 — Step 723 — Refine hair in Select and Mask
+
+Select and Mask adds Refine Hair for a rough selection or an existing layer mask. Photato recovers soft strand coverage near the subject and keeps it editable. The native workspace previews the result before committing. The optional Photato API uses the same refinement.
+
+The owned patterned-backdrop control recovered 85.0% of missing strand coverage, with 3.5% false coverage in nearby background. Partial-coverage alpha error fell from 0.335 to 0.104. Seven fixtures matched mask and PNG output bytes across Debug, optimized Apple Silicon and Intel under Rosetta. Masks stayed editable through native, PSD and PSB reopen. The independent reader matched stored coverage in both Photoshop file formats.
+
+The measured reference set includes wigs, toy hair, fibers and two controlled backdrops. Darkening the new background can reveal residual color on very fine strands. Complex backgrounds and strands far from the coarse mask still need manual refinement. Live Photoshop comparison and physical VoiceOver and keyboard checks remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-723) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_723.md).
 
 ## 2026-11-23 — Step 722 — Keep projected Smart Object edges stable when relinking
 
@@ -93,13 +103,3 @@ Changing only the Composition reference moved the measured orange centre from x=
 Local models are optional on Apple Silicon with macOS 26 or later. The Style model operates at 224 pixels internally and can soften fine detail. Composition can add objects when edges are ambiguous. The Photoshop 27.2.0 AppleEvent query timed out. Direct Photoshop reopen, Firefly output fidelity, the Firefly ActionJSON descriptor, keyboard and assistive-technology testing remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-714) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_714.md).
-
-## 2026-11-21 — Step 713 — Edit a whole image with local instructions and saved variations
-
-Edit → Prompt to Edit and the canvas action use the selected pixel layer and a text instruction to create alternatives on this Mac. The new editable Smart Object preserves the original layer and source alpha. The original is hidden and can be restored in one Undo. Generate More uses the saved reference. Edit This Variation starts from a chosen result. The Photato HTTP API shares the same edit and history.
-
-The real InstructPix2Pix model delivered identical same-seed pixels through the native editor and authenticated HTTP API. A saved second variation matched the same seed run independently.On a locally generated 512 × 512 still life, a blue-teapot instruction moved the average red-minus-blue value in the sampled pot from 0.879 to −0.775. The model also changed some surrounding colours. Photato, PSD and PSB reopened with both variants and identical rendered bytes. An independent reader compared all 2,097,152 merged RGBA bytes from the PSD and PSB previews to the PNG. A 300,000 × 8 PSB kept the original source, editable placement and exact pixels at both sampled edges.
-
-The local workflow uses the optional 512 × 512 Core ML model on Apple Silicon and macOS 26 or later. Current input support is still RGB and visible root pixel or supported generative layers outside clipping stacks. The installed Photoshop 27.2.0 document query timed out. Direct Photoshop reopening, Adobe model output equality, shared Firefly action descriptors, and live keyboard and assistive technology checks remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-713) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_713.md).

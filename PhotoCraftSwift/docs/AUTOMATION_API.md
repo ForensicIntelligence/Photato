@@ -1,3 +1,7 @@
+### Refine Hair (checkpoint 723)
+
+Pass `settings.refineHair=true` to `selection.refine` with a rough selection or `fromLayerMask=true` and a pixel mask. The local pass runs before the requested brush strokes. Selection and layer mask edits retain their existing Undo and revision checks. [Refine Hair guide](REFINE_HAIR.md)
+
 ### Relink a projected Smart Object (checkpoint 722)
 
 `smartObject.linked.relink` takes the authorized asset ID, its current fingerprint and the target layer ID. Start with the document revision returned by the state endpoint. The native renderer retains the same edge samples for the tested identical-source rebind while keeping editable filters and one Undo. [Linked artwork guide](LINKED_FILTER_EDGE_EXCHANGE.md)

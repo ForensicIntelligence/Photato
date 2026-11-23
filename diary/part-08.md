@@ -1,15 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)
 
-## 2026-11-21 — Step 715 — Fill a selection from a local reference image
-
-Generative Fill accepts Object and Whole Image references with Swap and Place. The local Paint by Example model generates alternatives inside the editable selection. Place keeps the generated subject on transparency. The Photato API uses the same engine and saved reference context as the editor.
-
-With the same seed and selection, the model used a teapot or orange reference to generate different subjects. The Place example added a teapot beside an existing orange and left 27,222 selected background pixels exact. Every sample outside the selection remained exact in all four owned examples. Photato, PSD and PSB preserved the result and embedded reference. An independent merged preview reader compared 8,388,608 RGBA bytes. Generate More and Generate Similar kept the first saved variation, original reference and mask after a PSB reopen. The editor and authenticated HTTP matched at the same seed.
-
-The optional model requires Apple Silicon and macOS 26 or later and uses a visual reference without text. Place depends on foreground detection and can omit generated shadows. The installed Photoshop 27.2.0 document query timed out. Exact Firefly output, the Adobe Execute Actions descriptor, partner providers, keyboard and assistive-technology checks remain open.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-715) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_715.md).
-
 ## 2026-11-21 — Step 714 — Guide Generate Image with Style and Composition references
 
 Generate Image accepts an optional reference. Style transfers colours and textures to the image described by the prompt. Composition uses edges to guide layout during generation. Photato keeps the reference with the editable Smart Object for Generate More and Generate Similar. The authenticated Photato API uses the same edit and history.
@@ -1387,5 +1377,13 @@ The brush prepares its Normal ink once per stroke. The 5,000 px example on the 2
 All 397 selected tests passed in each configuration. Large-tip editing still needs faster coverage work and physical display testing.
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-548) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_548.md).
+
+## 2026-11-18 — Step 547 — Reuse work during a wide brush stroke
+
+Wide raster brushes keep their coverage between pointer samples. On the 24 MP trial, nine prefixes of a 5,000 px stroke took 4,749 ms with the complete painter and 1,872 ms with retained coverage on Apple Silicon. All 60 saved painting outputs matched.
+
+All 395 selected tests passed in each configuration. The cost of a new wide dab and physical editing cadence remain open.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-547) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_547.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

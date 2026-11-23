@@ -8,6 +8,8 @@ struct SelectMaskState: Equatable, Sendable {
   var settings = SelectionRefinement()
   var strokes: [SelectionRefinementStroke] = []
   var initial: SelectionMask?
+  var hairMask: SelectionMask?
+  var refinementBase: SelectionMask? { hairMask ?? initial }
   var output: SelectionRefinementOutput = .selection
 }
 enum SelectMaskView: String, CaseIterable, Sendable { case onion = "Onion Skin", overlay = "Overlay", black = "On Black", white = "On White", mask = "Black & White", layers = "On Layers" }
@@ -31,6 +33,7 @@ enum SelectMaskView: String, CaseIterable, Sendable { case onion = "Onion Skin",
   var loading = false
   var rendering = false
   var detecting = false
+  var refiningHair = false
   var committing = false
   var task: Task<Void,Never>?
   var detectionTask: Task<Void,Never>?
@@ -41,11 +44,14 @@ enum SelectMaskView: String, CaseIterable, Sendable { case onion = "Onion Skin",
   private var generation = 0
   private var closed = false
   private var sliderStart: SelectMaskState?
-  var ready: Bool { input != nil && !loading && !detecting && !committing && !closed }
+  var ready: Bool { input != nil && !loading && !detecting && !refiningHair && !committing && !closed }
   var isFocus:Bool{state.focus != nil}
   var title:String{isFocus ? "Focus Area":"Select and Mask"}
   var effectiveFocus:FocusAreaSettings?
   var canCommit:Bool{ready && !rendering && error==nil && refinedMask != nil && stroke==nil}
+  var canRefineHair: Bool {
+    ready && !isFocus && stroke == nil && state.hairMask == nil && (state.initial ?? input?.mask)?.bounds != nil
+  }
   var effectiveOutput: SelectionRefinementOutput { state.output.allowingDecontamination(state.settings.decontaminate) }
   func prepare(_ original: CraftDocument,layerID: UUID,fromMask: Bool,focus:Bool=false) async {
     loading = true
@@ -93,7 +99,7 @@ enum SelectMaskView: String, CaseIterable, Sendable { case onion = "Onion Skin",
   func refineFocusEdges(){guard isFocus,canCommit,let mask=refinedMask else{return};var next=state;next.focus=nil;next.initial=mask;next.strokes=[];next.settings = .init();change(next);tool = .add}
   nonisolated static func preparedEdit(input:SelectionRefinementInput,focus:FocusAreaInput?,state:SelectMaskState)throws->SelectionRefinementEdit {
     if let settings=state.focus {guard let focus else{throw CraftError.invalid("Focus analysis is not ready.")};return try focus.edit(settings:settings,output:state.output,strokes:state.strokes)}
-    return try input.edit(settings:state.settings,output:state.output,strokes:state.strokes,initial:state.initial)
+    return try input.edit(settings:state.settings,output:state.output,strokes:state.strokes,initial:state.refinementBase)
   }
   func detect(using detector: any ForegroundDetecting) {
     guard ready, let input else { return }; detecting = true
@@ -104,9 +110,29 @@ enum SelectMaskView: String, CaseIterable, Sendable { case onion = "Onion Skin",
           return try await detector.mask(for:proxy)
         }
         let mask = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
-        guard let self, !self.closed else { return }; var next = self.state; next.initial = mask; next.strokes = []; self.change(next)
+        guard let self, !self.closed else { return }; var next = self.state; next.initial = mask; next.hairMask = nil; next.strokes = []; self.change(next)
       } catch { if !Task.isCancelled { self?.error = error.localizedDescription } }
       self?.detecting = false
+    }
+  }
+  func refineHair() {
+    guard canRefineHair, let input else { return }
+    let initial = state.initial
+    refiningHair = true
+    error = nil
+    detectionTask = Task { [weak self] in
+      defer { self?.refiningHair = false }
+      do {
+        let worker = Task.detached(priority: .userInitiated) { try input.hairRefinedMask(initial: initial) }
+        let mask = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+        try Task.checkCancellation()
+        guard let self, !self.closed else { return }
+        var next = self.state
+        next.hairMask = mask
+        self.change(next)
+      } catch {
+        if !Task.isCancelled { self?.error = error.localizedDescription }
+      }
     }
   }
   func refresh() {
@@ -124,7 +150,7 @@ enum SelectMaskView: String, CaseIterable, Sendable { case onion = "Onion Skin",
             mask = try Self.preparedEdit(input:input,focus:focus,state:state).mask
             guide = input.guide
           } else {
-            (mask, guide) = try input.preview(settings:state.settings,strokes:state.strokes,initial:state.initial,showOriginal:original)
+            (mask, guide) = try input.preview(settings:state.settings,strokes:state.strokes,initial:state.refinementBase,showOriginal:original)
           }
           let image = try original && state.focus != nil ? ColorManagement.displayImage(input.guide,in:input.original):Self.preview(input:input,mask:original ? state.initial ?? input.mask : mask,view:view,opacity:opacity,guide:guide)
           return (mask,image,try state.focus.map{try focus?.analysis.effectiveSettings($0)})

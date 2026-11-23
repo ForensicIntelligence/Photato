@@ -1,5 +1,15 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-23 — Step 723 — Refine hair in Select and Mask
+
+Select and Mask adds Refine Hair for a rough selection or an existing layer mask. Photato recovers soft strand coverage near the subject and keeps it editable. The native workspace previews the result before committing. The optional Photato API uses the same refinement.
+
+The owned patterned-backdrop control recovered 85.0% of missing strand coverage, with 3.5% false coverage in nearby background. Partial-coverage alpha error fell from 0.335 to 0.104. Seven fixtures matched mask and PNG output bytes across Debug, optimized Apple Silicon and Intel under Rosetta. Masks stayed editable through native, PSD and PSB reopen. The independent reader matched stored coverage in both Photoshop file formats.
+
+The measured reference set includes wigs, toy hair, fibers and two controlled backdrops. Darkening the new background can reveal residual color on very fine strands. Complex backgrounds and strands far from the coarse mask still need manual refinement. Live Photoshop comparison and physical VoiceOver and keyboard checks remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-723) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_723.md).
+
 ## 2026-11-23 — Step 722 — Keep projected Smart Object edges stable when relinking
 
 Relinking a projected Smart Object to the same source preserves its rendered appearance in the tested PSD and PSB files. The original placement, editable Smart Filters and their mask stay with the layer.
@@ -69,5 +79,15 @@ The desktop and authenticated API produced the same document and one Undo restor
 Appearance depends on the scene. Some of the moon photo’s darker fragments and the pylon’s faint wires still need manual cleanup. Camera edges, very wide or short structures, and heavily occluded cables need broader testing. Exact Photoshop wire output, the Adobe Execute Actions descriptor, General distractions and Generative AI On for Remove remain open.
 
 [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-716) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_716.md).
+
+## 2026-11-21 — Step 715 — Fill a selection from a local reference image
+
+Generative Fill accepts Object and Whole Image references with Swap and Place. The local Paint by Example model generates alternatives inside the editable selection. Place keeps the generated subject on transparency. The Photato API uses the same engine and saved reference context as the editor.
+
+With the same seed and selection, the model used a teapot or orange reference to generate different subjects. The Place example added a teapot beside an existing orange and left 27,222 selected background pixels exact. Every sample outside the selection remained exact in all four owned examples. Photato, PSD and PSB preserved the result and embedded reference. An independent merged preview reader compared 8,388,608 RGBA bytes. Generate More and Generate Similar kept the first saved variation, original reference and mask after a PSB reopen. The editor and authenticated HTTP matched at the same seed.
+
+The optional model requires Apple Silicon and macOS 26 or later and uses a visual reference without text. Place depends on foreground detection and can omit generated shadows. The installed Photoshop 27.2.0 document query timed out. Exact Firefly output, the Adobe Execute Actions descriptor, partner providers, keyboard and assistive-technology checks remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-715) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_715.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)

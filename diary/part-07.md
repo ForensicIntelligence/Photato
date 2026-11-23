@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-18 — Step 547 — Reuse work during a wide brush stroke
-
-Wide raster brushes keep their coverage between pointer samples. On the 24 MP trial, nine prefixes of a 5,000 px stroke took 4,749 ms with the complete painter and 1,872 ms with retained coverage on Apple Silicon. All 60 saved painting outputs matched.
-
-All 395 selected tests passed in each configuration. The cost of a new wide dab and physical editing cadence remain open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-547) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_547.md).
-
 ## 2026-11-17 — Step 546 — Faster canvas updates
 
 Changed pixels now go directly into the display buffer. At 12.5% zoom, Apple Silicon display conversion for the 5,000 px brush fell from 357 to 103 ms on the 24 MP test image. All 80 saved outputs match build 545 on each architecture.
@@ -371,14 +363,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:722 -->
+<!-- current-status-step:723 -->
 ## Current development status — 23 November 2026
 
-Relinking a projected Smart Object to the same source preserves its rendered appearance in the tested PSD and PSB files. The original placement, editable Smart Filters and their mask stay with the layer.
+Select and Mask adds Refine Hair for a rough selection or an existing layer mask. Photato recovers soft strand coverage near the subject and keeps it editable. The native workspace previews the result before committing. The optional Photato API uses the same refinement.
 
-717 of 718 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Debug passed 716 of 718. The new regression passed in all three configurations. The existing PSD layer-effect test repeated the same 118 assertions as build 721. The Adobe-compatible Smart Filter export exhausted the Debug worker stack in both builds 721 and 722. That case passed on both optimized slices. Xcode built the checked-in project. Both signed preview slices target macOS 14.0 and opened offscreen.
+719 of 720 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Debug passed 718 of 720. Both new regression methods passed on all three configurations. The optimized suites repeated the existing PSD layer-effect failure. Debug also reproduced the inherited Adobe-compatible Smart Filter stack overflow. Xcode built the checked-in project. The signed preview opened both macOS 14+ slices offscreen, and the Select and Mask control was inspected offscreen in Light and Dark.
 
-[Source checkpoint 722](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_722.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-722).
+[Source checkpoint 723](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_723.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-723).
 
 <!-- current-status:end -->
 
@@ -1307,5 +1299,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 720 | [Recover partial transparency in product cutouts](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-720) |
 | 2026-11-23 | 721 | [Preserve editable type and RGB32 composites in layered Photoshop files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-721) |
 | 2026-11-23 | 722 | [Keep projected Smart Object edges stable when relinking](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-722) |
+| 2026-11-23 | 723 | [Refine hair in Select and Mask](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-723) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

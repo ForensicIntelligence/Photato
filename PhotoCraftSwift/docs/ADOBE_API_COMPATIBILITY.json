@@ -3431,5 +3431,12 @@
     "photatoCommand": "smartObject.linked.relink",
     "limits": "The Photato relink contract was verified with a local authorized asset. Adobe job-level relink and direct Photoshop comparison remain open.",
     "evidence": "docs/SOURCE_PUBLICATION_722.json"
+  },
+  "refine_hair_build723": {
+    "status": "Native editor and Photato API workflow",
+    "photatoCommand": "selection.refine",
+    "setting": "settings.refineHair",
+    "limits": "Adobe documents a desktop Refine Hair action. Published Photoshop v2 action and proprietary model parity remain open.",
+    "evidence": "docs/SOURCE_PUBLICATION_723.json"
   }
 }

@@ -1,3 +1,13 @@
+## 2026-11-23 — Step 723 — Refine hair in Select and Mask
+
+Select and Mask adds Refine Hair for a rough selection or an existing layer mask. Photato recovers soft strand coverage near the subject and keeps it editable. The native workspace previews the result before committing. The optional Photato API uses the same refinement.
+
+The owned patterned-backdrop control recovered 85.0% of missing strand coverage, with 3.5% false coverage in nearby background. Partial-coverage alpha error fell from 0.335 to 0.104. Seven fixtures matched mask and PNG output bytes across Debug, optimized Apple Silicon and Intel under Rosetta. Masks stayed editable through native, PSD and PSB reopen. The independent reader matched stored coverage in both Photoshop file formats.
+
+The measured reference set includes wigs, toy hair, fibers and two controlled backdrops. Darkening the new background can reveal residual color on very fine strands. Complex backgrounds and strands far from the coarse mask still need manual refinement. Live Photoshop comparison and physical VoiceOver and keyboard checks remain open.
+
+[Development record](DEVLOG.md#dev-step-723) · [Qualification](SOURCE_PUBLICATION_723.md).
+
 ## 2026-11-23 — Step 722 — Keep projected Smart Object edges stable when relinking
 
 Relinking a projected Smart Object to the same source preserves its rendered appearance in the tested PSD and PSB files. The original placement, editable Smart Filters and their mask stay with the layer.
@@ -1827,14 +1837,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:722 -->
+<!-- current-status-step:723 -->
 ## Current development status — 23 November 2026
 
-Relinking a projected Smart Object to the same source preserves its rendered appearance in the tested PSD and PSB files. The original placement, editable Smart Filters and their mask stay with the layer.
+Select and Mask adds Refine Hair for a rough selection or an existing layer mask. Photato recovers soft strand coverage near the subject and keeps it editable. The native workspace previews the result before committing. The optional Photato API uses the same refinement.
 
-717 of 718 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Debug passed 716 of 718. The new regression passed in all three configurations. The existing PSD layer-effect test repeated the same 118 assertions as build 721. The Adobe-compatible Smart Filter export exhausted the Debug worker stack in both builds 721 and 722. That case passed on both optimized slices. Xcode built the checked-in project. Both signed preview slices target macOS 14.0 and opened offscreen.
+719 of 720 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Debug passed 718 of 720. Both new regression methods passed on all three configurations. The optimized suites repeated the existing PSD layer-effect failure. Debug also reproduced the inherited Adobe-compatible Smart Filter stack overflow. Xcode built the checked-in project. The signed preview opened both macOS 14+ slices offscreen, and the Select and Mask control was inspected offscreen in Light and Dark.
 
-[Source checkpoint 722](SOURCE_PUBLICATION_722.md) · [Development record](DEVLOG.md#dev-step-722).
+[Source checkpoint 723](SOURCE_PUBLICATION_723.md) · [Development record](DEVLOG.md#dev-step-723).
 
 <!-- current-status:end -->
 
@@ -2763,6 +2773,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 720 | [Recover partial transparency in product cutouts](DEVLOG.md#dev-step-720) |
 | 2026-11-23 | 721 | [Preserve editable type and RGB32 composites in layered Photoshop files](DEVLOG.md#dev-step-721) |
 | 2026-11-23 | 722 | [Keep projected Smart Object edges stable when relinking](DEVLOG.md#dev-step-722) |
+| 2026-11-23 | 723 | [Refine hair in Select and Mask](DEVLOG.md#dev-step-723) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

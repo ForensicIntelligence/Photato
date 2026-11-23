@@ -741,7 +741,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 720 | 2026-11-23 | [Recover partial transparency in product cutouts](#dev-step-720) |
 | 721 | 2026-11-23 | [Preserve editable type and RGB32 composites in layered Photoshop files](#dev-step-721) |
 | 722 | 2026-11-23 | [Keep projected Smart Object edges stable when relinking](#dev-step-722) |
+| 723 | 2026-11-23 | [Refine hair in Select and Mask](#dev-step-723) |
 <!-- history-index:end -->
+
+<a id="dev-step-723"></a>
+
+## 2026-11-23 — Refine hair in Select and Mask
+
+The first local color estimate recovered strands and also picked up the backing pattern. A second pass looked for corroborating color in known backing samples. Keeping newly estimated coverage connected to the starting subject reduced false patches while retaining a soft fringe. SelectionHairMatting.swift implements the shared bounded sampler and continuity check. The workspace caches one hair mask for preview, Undo and later brush corrections. The `selection.refine` schema accepts `settings.refineHair` and applies it before strokes. Two regression methods cover stored masks at all three RGB depths, faint detached input, brush precedence, invalid settings, editable archive and native/API Undo. [Adobe’s Refine Hair workflow](https://helpx.adobe.com/photoshop/desktop/make-selections/automatic-color-based-selections/make-improved-hair-selections.html)
+
+The owned patterned-backdrop control recovered 85.0% of missing strand coverage, with 3.5% false coverage in nearby background. Partial-coverage alpha error fell from 0.335 to 0.104. Seven fixtures matched mask and PNG output bytes across Debug, optimized Apple Silicon and Intel under Rosetta. Masks stayed editable through native, PSD and PSB reopen. The independent reader matched stored coverage in both Photoshop file formats.
+
+719 of 720 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Debug passed 718 of 720. Both new regression methods passed on all three configurations. The optimized suites repeated the existing PSD layer-effect failure. Debug also reproduced the inherited Adobe-compatible Smart Filter stack overflow. Xcode built the checked-in project. The signed preview opened both macOS 14+ slices offscreen, and the Select and Mask control was inspected offscreen in Light and Dark.
+
+The measured reference set includes wigs, toy hair, fibers and two controlled backdrops. Darkening the new background can reveal residual color on very fine strands. Complex backgrounds and strands far from the coarse mask still need manual refinement. Live Photoshop comparison and physical VoiceOver and keyboard checks remain open. The installed Photoshop version is 27.2.0. Its last live inspection at build 722 exposed no accessible windows or menu bars.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_723.md).
 
 <a id="dev-step-722"></a>
 

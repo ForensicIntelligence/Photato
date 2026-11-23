@@ -32,9 +32,17 @@ struct SelectMaskSheet: View {
         }.frame(width:230).onChange(of:model.tool) { _,_ in model.panTool = false }
         Text("Size")
         TextField("Brush Size",value:$model.size,format:.number).frame(width:52).textFieldStyle(.roundedBorder)
-        if !model.isFocus{Button("Select Subject") { model.detect(using:store.foregroundDetector) }.disabled(!model.ready)}
+        if !model.isFocus {
+          Button("Select Subject") { model.detect(using:store.foregroundDetector) }.disabled(!model.ready)
+          Button("Refine Hair", action: model.refineHair)
+            .disabled(!model.canRefineHair)
+            .help("Recover strands along the current subject selection.")
+        }
         Spacer()
-        if model.loading || model.rendering || model.detecting || model.committing { ProgressView().controlSize(.small) }
+        if model.loading || model.rendering || model.detecting || model.refiningHair || model.committing {
+          ProgressView().controlSize(.small)
+            .accessibilityLabel(model.refiningHair ? "Refining Hair" : "Updating Selection")
+        }
       }.padding(12)
       Divider()
       HStack(spacing:0) {
@@ -124,7 +132,7 @@ struct SelectMaskSheet: View {
         Spacer()
         Button("Cancel") { store.cancelSelectMask() }.keyboardShortcut(.cancelAction)
         Button("OK") { store.commitSelectMask() }.keyboardShortcut(.defaultAction)
-          .disabled(!model.ready || model.error != nil || ((model.isFocus || model.state.settings.transparency != nil) && !model.canCommit))
+          .disabled(!model.ready || model.error != nil || ((model.isFocus || model.state.settings.transparency != nil || model.state.hairMask != nil) && !model.canCommit))
       }.padding(12)
     }.frame(width:1040,height:740).background(Color(nsColor:.windowBackgroundColor)).onDisappear { model.close() }
   }
