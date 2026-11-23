@@ -14,3 +14,7 @@ The portrait benchmark applies both tools to the same three defects. Healing red
 ## Sample depth conversion
 
 When a bounded sRGB source needs an 8-bit or 16-bit sample, Photato converts just the stored tiles. The editor and authenticated API use the same conversion and preserve the existing sample values. [Build 725 measurements](SOURCE_PUBLICATION_725.md).
+
+## Cropped transparent layers
+
+Painting beyond an eligible cropped layer now redraws the area covered by its previous and expanded tiles. The preview and committed pixels match when the layer origin shifts. [Build 726 measurements](SOURCE_PUBLICATION_726.md).

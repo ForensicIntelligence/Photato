@@ -744,7 +744,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 723 | 2026-11-23 | [Refine hair in Select and Mask](#dev-step-723) |
 | 724 | 2026-11-23 | [Reuse the canvas composite for Clone Stamp and Healing Brush](#dev-step-724) |
 | 725 | 2026-11-23 | [Speed up RGB8 and RGB16 retouch sample conversion](#dev-step-725) |
+| 726 | 2026-11-23 | [Keep cropped-layer retouch previews regional](#dev-step-726) |
 <!-- history-index:end -->
+
+<a id="dev-step-726"></a>
+
+## 2026-11-23 — Keep cropped-layer retouch previews regional
+
+RenderSnapshot.swift computes a conservative union of the previous and current stored tile extents for an eligible raster resize. It verifies the remaining layer state and uses the normal composite for the region. Masks, opaque defaults, layer effects, affine transforms and the tagged or time-dependent document paths continue through the full-render path when their extent can change. The two new HealingRenderTests methods compare Clone Stamp, Healing Brush, and the reverse edit against exact complete composites at all three RGB depths. They also cover mask and opaque-default fallback.
+
+The independent Xcode Debug checks matched raw composites at RGB8, RGB16 and RGB32. The cropped portrait replays matched the saved PNG, editable archive, authenticated API and exact Undo. Each optimized architecture matched all 12 build 725 PNGs across ordinary and cropped correction layers.
+
+The cropped correction layer's first preview took 115–124 ms on optimized Apple Silicon, compared with 498–554 ms in the adjacent build 725 run. A scripted 48-sample cropped-layer stroke published 42 Clone Stamp and 41 Healing Brush previews. The preceding build published three for each tool on the same fixture.
+
+797 of 799 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Both new cropped-layer tests passed in Xcode Debug and in both optimized suites. The existing PSD layer-effect fixture repeated 118 assertions. The retained build 725 bundles repeated the color-profile fixture results, including identical dense and paged output bytes on each architecture. The Xcode project built, all six focused Debug tests passed, and both signed macOS 14+ preview slices opened offscreen.
+
+These measurements cover software rendering and publication of previews. Physical pointer-to-display cadence and direct comparison with Photoshop 2026 remain open. The running Photoshop 2026 process exposed no accessible editing windows or menu bars during this phase.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_726.md).
 
 <a id="dev-step-725"></a>
 

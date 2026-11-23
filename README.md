@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 725.** Photato converts allocated tiles when a bounded sRGB raster changes to 8 or 16 bits per channel. Clone Stamp and Healing Brush use the faster conversion when preparing samples for a stroke. The desktop and authenticated Photato API share that conversion. [Retouch guide](PhotoCraftSwift/docs/RETOUCH_SAMPLE_REUSE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_725.md).
+**Development alpha — source build 726.** Clone Stamp and Healing Brush now redraw the affected area when a plain, integer-aligned transparent layer grows. The renderer includes both the old and new tile bounds, including when expansion shifts the layer origin. The native editor and authenticated Photato API use the same compositor. [Retouch guide](PhotoCraftSwift/docs/RETOUCH_SAMPLE_REUSE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_726.md).
 
 ## Project layout
 

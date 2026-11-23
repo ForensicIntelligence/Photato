@@ -1,3 +1,7 @@
+### Cropped-layer retouch rendering (checkpoint 726)
+
+The editor and authenticated `retouch.stroke` operation share the same compositor. The renderer uses a bounded area when an eligible transparent raster expands. [Retouch guide](RETOUCH_SAMPLE_REUSE.md).
+
 ### RGB depth conversion for retouch samples (checkpoint 725)
 
 The authenticated `retouch.stroke` operation uses the native depth converter before a sampled stroke. It retains the request format, sampled values and editable correction-layer history. [Retouch guide](RETOUCH_SAMPLE_REUSE.md).

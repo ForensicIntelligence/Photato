@@ -1386,12 +1386,4 @@ All 395 selected tests passed in each configuration. The cost of a new wide dab 
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-547) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_547.md).
 
-## 2026-11-17 — Step 546 — Faster canvas updates
-
-Changed pixels now go directly into the display buffer. At 12.5% zoom, Apple Silicon display conversion for the 5,000 px brush fell from 357 to 103 ms on the 24 MP test image. All 80 saved outputs match build 545 on each architecture.
-
-All 392 selected tests passed in the three configurations. Large brushes still need faster preparation to reach the display target.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-546) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_546.md).
-
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

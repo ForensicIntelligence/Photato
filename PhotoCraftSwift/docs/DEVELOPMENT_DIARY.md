@@ -1,3 +1,15 @@
+## 2026-11-23 — Step 726 — Keep cropped-layer retouch previews regional
+
+Clone Stamp and Healing Brush now redraw the affected area when a plain, integer-aligned transparent layer grows. The renderer includes both the old and new tile bounds, including when expansion shifts the layer origin. The native editor and authenticated Photato API use the same compositor.
+
+The independent Xcode Debug checks matched raw composites at RGB8, RGB16 and RGB32. The cropped portrait replays matched the saved PNG, editable archive, authenticated API and exact Undo. Each optimized architecture matched all 12 build 725 PNGs across ordinary and cropped correction layers.
+
+The cropped correction layer's first preview took 115–124 ms on optimized Apple Silicon, compared with 498–554 ms in the adjacent build 725 run. A scripted 48-sample cropped-layer stroke published 42 Clone Stamp and 41 Healing Brush previews. The preceding build published three for each tool on the same fixture.
+
+These measurements cover software rendering and publication of previews. Physical pointer-to-display cadence and direct comparison with Photoshop 2026 remain open.
+
+[Development record](DEVLOG.md#dev-step-726) · [Qualification](SOURCE_PUBLICATION_726.md).
+
 ## 2026-11-23 — Step 725 — Speed up RGB8 and RGB16 retouch sample conversion
 
 Photato converts allocated tiles when a bounded sRGB raster changes to 8 or 16 bits per channel. Clone Stamp and Healing Brush use the faster conversion when preparing samples for a stroke. The desktop and authenticated Photato API share that conversion.
@@ -1861,14 +1873,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:725 -->
+<!-- current-status-step:726 -->
 ## Current development status — 23 November 2026
 
-Photato converts allocated tiles when a bounded sRGB raster changes to 8 or 16 bits per channel. Clone Stamp and Healing Brush use the faster conversion when preparing samples for a stroke. The desktop and authenticated Photato API share that conversion.
+Clone Stamp and Healing Brush now redraw the affected area when a plain, integer-aligned transparent layer grows. The renderer includes both the old and new tile bounds, including when expansion shifts the layer origin. The native editor and authenticated Photato API use the same compositor.
 
-795 of 797 selected tests passed on each optimized architecture, with Intel tested under Rosetta. The existing PSD layer-effect test repeated the same 118 assertions. The wider suite also surfaced a color-profile fixture failure. The retained build 723 bundles reproduced all 34 Apple Silicon and 294 translated Intel assertions. On each architecture the two builds also produced identical dense and paged color-profile output bytes. The new exact-storage regression passed on both architectures and among 23 focused Xcode Debug tests. Xcode successfully built the application, and both signed macOS 14+ preview slices opened offscreen. The SwiftPM Debug frontend trapped before the broad suite could run. Xcode Debug separately matched the benchmark sample words and the two tools’ selected native and API output for each layer geometry.
+797 of 799 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Both new cropped-layer tests passed in Xcode Debug and in both optimized suites. The existing PSD layer-effect fixture repeated 118 assertions. The retained build 725 bundles repeated the color-profile fixture results, including identical dense and paged output bytes on each architecture. The Xcode project built, all six focused Debug tests passed, and both signed macOS 14+ preview slices opened offscreen.
 
-[Source checkpoint 725](SOURCE_PUBLICATION_725.md) · [Development record](DEVLOG.md#dev-step-725).
+[Source checkpoint 726](SOURCE_PUBLICATION_726.md) · [Development record](DEVLOG.md#dev-step-726).
 
 <!-- current-status:end -->
 
@@ -2800,6 +2812,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 723 | [Refine hair in Select and Mask](DEVLOG.md#dev-step-723) |
 | 2026-11-23 | 724 | [Reuse the canvas composite for Clone Stamp and Healing Brush](DEVLOG.md#dev-step-724) |
 | 2026-11-23 | 725 | [Speed up RGB8 and RGB16 retouch sample conversion](DEVLOG.md#dev-step-725) |
+| 2026-11-23 | 726 | [Keep cropped-layer retouch previews regional](DEVLOG.md#dev-step-726) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

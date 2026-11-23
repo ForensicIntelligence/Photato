@@ -111,10 +111,26 @@ extension Renderer {
       var lhs = before
       var rhs = after
       var rasters: [(Surface, Surface, Transform2D, Double)] = []
+      var resizedRaster: (Surface, Surface)?
       if case .raster(let a) = before.content, case .raster(let b) = after.content {
         lhs.content = .fill(.clear)
         rhs.content = .fill(.clear)
-        rasters.append((a, b, after.coordinateTransform, after.affine == nil ? 0 : 1))
+        if a.width != b.width || a.height != b.height {
+          guard a.depth == b.depth, a.colorEncoding == b.colorEncoding,
+            old.modeDescriptor == nil, old.restrictedMode == nil, old.inkMode == nil, !old.isChannelOnly,
+            d.modeDescriptor == nil, d.restrictedMode == nil, d.inkMode == nil, !d.isChannelOnly,
+            old.animation == nil, old.videoTimeline == nil, old.variables == nil,
+            d.animation == nil, d.videoTimeline == nil, d.variables == nil,
+            !requiresFullComposition(d),
+            plainTransparentRaster(before, a), plainTransparentRaster(after, b)
+          else { return .full }
+          // An expanding raster can change its storage origin without moving its contents.
+          lhs.x = rhs.x
+          lhs.y = rhs.y
+          resizedRaster = (a, b)
+        } else {
+          rasters.append((a, b, after.coordinateTransform, after.affine == nil ? 0 : 1))
+        }
       }
       if let a = before.mask, let b = after.mask {
         lhs.mask = nil
@@ -138,6 +154,16 @@ extension Renderer {
       let encoder = JSONEncoder()
       encoder.outputFormatting = .sortedKeys
       guard try encoder.encode(lhs) == encoder.encode(rhs) else { return .full }
+      if let (a, b) = resizedRaster {
+        // Outside both allocated extents, each integer-aligned raster is clear.
+        for (pixels, layer) in [(a, before), (b, after)] {
+          let clear = try Surface(width: pixels.width, height: pixels.height,
+            depth: pixels.depth, colorEncoding: pixels.colorEncoding)
+          if let occupied = try pixels.changedTileBounds(comparedTo: clear) {
+            include(footprint(occupied, transform: layer.coordinateTransform, padding: 0, document: d))
+          }
+        }
+      }
       for (a, b, transform, padding) in rasters {
         // Changed geometry can also change mask edge-extension rules. Fully invalidate it.
         guard a.width == b.width, a.height == b.height, a.depth == b.depth else { return .full }
@@ -154,6 +180,15 @@ extension Renderer {
       }
     }
     return region.map { .region($0) } ?? .unchanged
+  }
+
+  private static func plainTransparentRaster(_ layer: Layer, _ pixels: Surface) -> Bool {
+    pixels.defaultPixel.hasSameBits(as: .clear) && !layer.isBackground
+      && layer.affine == nil && layer.warp == nil && layer.parentID == nil && layer.clipped != true
+      && layer.mask == nil && layer.vectorMask == nil && layer.style == nil
+      && layer.smartObject == nil && layer.smartFilters == nil && layer.nativeMode == nil
+      && layer.sourceProjection == nil && layer.importedSmartAppearance == nil
+      && layer.video == nil && layer.videoTiming == nil && layer.videoKeyframes == nil
   }
 
   /// A newly painted plain top adjustment cannot affect pixels outside its black mask.

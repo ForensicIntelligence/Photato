@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **725** · The 10 most recent entries, newest first.
+Source build **726** · The 10 most recent entries, newest first.
+
+## 2026-11-23 — Step 726 — Keep cropped-layer retouch previews regional
+
+Clone Stamp and Healing Brush now redraw the affected area when a plain, integer-aligned transparent layer grows. The renderer includes both the old and new tile bounds, including when expansion shifts the layer origin. The native editor and authenticated Photato API use the same compositor.
+
+The independent Xcode Debug checks matched raw composites at RGB8, RGB16 and RGB32. The cropped portrait replays matched the saved PNG, editable archive, authenticated API and exact Undo. Each optimized architecture matched all 12 build 725 PNGs across ordinary and cropped correction layers.
+
+The cropped correction layer's first preview took 115–124 ms on optimized Apple Silicon, compared with 498–554 ms in the adjacent build 725 run. A scripted 48-sample cropped-layer stroke published 42 Clone Stamp and 41 Healing Brush previews. The preceding build published three for each tool on the same fixture.
+
+These measurements cover software rendering and publication of previews. Physical pointer-to-display cadence and direct comparison with Photoshop 2026 remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-726) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_726.md).
 
 ## 2026-11-23 — Step 725 — Speed up RGB8 and RGB16 retouch sample conversion
 
@@ -97,13 +109,3 @@ The reviewer marked bins in two independent photographs. A sampled point on the 
 The bin sample retained a mounting post, and a strong cast shadow remained in the Footpath photo. Classification still depends on the scene. General distractions uses the 16-megapixel Remove canvas limit. The explicit Generative AI On mode, byte-exact Photoshop output and the Adobe Execute Actions descriptor remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-717) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_717.md).
-
-## 2026-11-21 — Step 716 — Remove extended wire and cable runs in one edit
-
-The Remove tool’s Find distractions menu can remove extended wire and cable runs in one undoable edit. Photato can edit the selected raster or create a transparent correction layer, and the current selection continues to protect pixels. The Photato API uses the same prepared Swift edit and history.
-
-The desktop and authenticated API produced the same document and one Undo restored the original. A 4,200 × 4,000 layered fixture processed beyond the old manual Remove limit. Four synthetic controls preserved all samples more than two pixels from the annotated wires. The repaired wire regions averaged less than two RGB8 levels of error per channel against known clean artwork. Three original-resolution photographs preserved all 1,324,130 checked roof, moon and tower pixels. The Apple Silicon and Intel results matched all 192,426,240 decoded RGBA bytes across the seven examples. A selected-region correction reopened with both raster layers and the same composite in Photato, PSD and PSB. The wider path restored all 6,656 known wide cable samples in the detector fixture without marking its horizon or short trim.
-
-Appearance depends on the scene. Some of the moon photo’s darker fragments and the pylon’s faint wires still need manual cleanup. Camera edges, very wide or short structures, and heavily occluded cables need broader testing. Exact Photoshop wire output, the Adobe Execute Actions descriptor, General distractions and Generative AI On for Remove remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-716) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_716.md).

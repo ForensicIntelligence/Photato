@@ -3450,5 +3450,11 @@
     "photatoCommand": "retouch.stroke",
     "publishedAdobeContractChanges": [],
     "evidence": "docs/SOURCE_PUBLICATION_725.json"
+  },
+  "cropped_layer_preview_build726": {
+    "status": "Shared compositor for cropped-layer retouch preview",
+    "photatoCommand": "retouch.stroke",
+    "publishedAdobeContractChanges": [],
+    "evidence": "docs/SOURCE_PUBLICATION_726.json"
   }
 }
