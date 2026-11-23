@@ -3386,5 +3386,21 @@
     "reference": "The Photoshop desktop Remove options expose Auto, Generative AI On and Off, with a Device processing choice.",
     "limits": "The pinned Photoshop v2 contract has no dedicated Remove route. Execute Actions and exact Adobe pixels remain unqualified.",
     "evidence": "docs/SOURCE_PUBLICATION_718.json"
+  },
+  "remove_related_elements_build719": {
+    "status": "Photato on-device desktop and API workflow",
+    "photatoCommand": "retouch.remove",
+    "operations": [
+      "beginRelatedElements",
+      "stroke",
+      "findRelatedElements",
+      "configureRelatedElements",
+      "preview",
+      "apply",
+      "cancel"
+    ],
+    "reference": "The Photoshop desktop Remove tool offers Remove Related Elements with cloud processing and new-layer output.",
+    "limits": "The pinned Photoshop v2 contract has no dedicated Remove route. Additional effects, Adobe Enhance and live Photoshop output are unqualified.",
+    "evidence": "docs/SOURCE_PUBLICATION_719.json"
   }
 }

@@ -1,3 +1,13 @@
+## 2026-11-23 — Step 719 — Review related shadows and reflections before removing them
+
+The Remove processing menu can find shadows and reflections around a marked object using two optional models on Apple Silicon with macOS 26 or later. The canvas shows the reviewed object and each enabled effect. Use the checkboxes or the Add and Subtract brush to refine coverage. Apply creates a correction layer with one Undo. The Photato API shares the same review and edit.
+
+Two licensed photos checked a waste-bin shadow and a vehicle reflection. The first masks left a dark silhouette in each photo. Testing wider masks showed how much overlap was needed and where the review started to touch an unrelated effect. The smaller final margins removed the silhouettes and left the designated neighboring areas and all pixels outside the edit exact. The editor and authenticated API returned equal review masks and rendered RGBA8 bytes on both photos in each Apple Silicon configuration. One Undo restored each original document exactly. The repaired PNGs also match byte for byte across those two configurations.
+
+The vehicle photo also suggested a shadow. The test deselected it before applying. Some grass texture remains soft and the repaired water shows slight color artifacts. Footprints, smoke, steam, water wakes, Adobe’s separate Enhance action and live Photoshop output comparisons remain open. Adobe documents a cloud provider for this feature. The optional Photato models run locally.
+
+[Development record](DEVLOG.md#dev-step-719) · [Qualification](SOURCE_PUBLICATION_719.md).
+
 ## 2026-11-21 — Step 718 — Use on-device Generative Remove from the brush and API
 
 The Remove brush can use a configured LaMa512 model on Apple Silicon with macOS 26 or later. Generative AI on requires the device model, and Auto can select it for eligible documents. Separated or wide marks use localized repairs and commit in one Undo. Adjacent-edge brush strokes can enclose a corner. The desktop and Photato API share the selection, target, mark geometry and prepared edit.
@@ -1787,14 +1797,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:718 -->
-## Current development status — 21 November 2026
+<!-- current-status-step:719 -->
+## Current development status — 23 November 2026
 
-The Remove brush can use a configured LaMa512 model on Apple Silicon with macOS 26 or later. Generative AI on requires the device model, and Auto can select it for eligible documents. Separated or wide marks use localized repairs and commit in one Undo. Adjacent-edge brush strokes can enclose a corner. The desktop and Photato API share the selection, target, mark geometry and prepared edit.
+The Remove processing menu can find shadows and reflections around a marked object using two optional models on Apple Silicon with macOS 26 or later. The canvas shows the reviewed object and each enabled effect. Use the checkboxes or the Add and Subtract brush to refine coverage. Apply creates a correction layer with one Undo. The Photato API shares the same review and edit.
 
-585 of 586 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. All four new tests passed in each configuration. The existing PSD layer-effect test repeated the same 118 differences. The Xcode project built successfully. Both slices target macOS 14.0 and opened the signed preview offscreen on macOS 27.2.
+586 of 587 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The new native/API regression passed in each configuration. The existing PSD layer-effect test repeated the same 118 differences. The checked-in Xcode project built successfully. Both signed preview slices target macOS 14.0 and opened offscreen. The optimized Intel build rejected the optional local models and completed a traditional Remove edit under Rosetta.
 
-[Source checkpoint 718](SOURCE_PUBLICATION_718.md) · [Development record](DEVLOG.md#dev-step-718).
+[Source checkpoint 719](SOURCE_PUBLICATION_719.md) · [Development record](DEVLOG.md#dev-step-719).
 
 <!-- current-status:end -->
 
@@ -2719,6 +2729,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-21 | 716 | [Remove extended wire and cable runs in one edit](DEVLOG.md#dev-step-716) |
 | 2026-11-21 | 717 | [Review and remove general distractions](DEVLOG.md#dev-step-717) |
 | 2026-11-21 | 718 | [Use on-device Generative Remove from the brush and API](DEVLOG.md#dev-step-718) |
+| 2026-11-23 | 719 | [Review related shadows and reflections before removing them](DEVLOG.md#dev-step-719) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

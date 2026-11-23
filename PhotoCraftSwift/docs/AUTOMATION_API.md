@@ -1,3 +1,7 @@
+### Remove Related Elements (checkpoint 719)
+
+Use `retouch.remove` with `beginRelatedElements`, an object-marking `stroke`, and `findRelatedElements`. The state exposes `removeTool.relatedElements`. Use `configureRelatedElements` with `enabledElements` to choose suggested shadows and reflections. The original strokes become the reviewed object mask and the brush then refines the visible mask. `preview` requires document-transfer permission. `apply` creates a new correction layer and `cancel` discards the review. [Remove Related Elements](REMOVE_RELATED_ELEMENTS.md)
+
 ### Generative Remove (checkpoint 718)
 
 `retouch.remove` accepts `settings.mode: generativeOn` for an eligible shared RGB document when the editor has a local LaMa512 model. The state exposes `generativeAvailable` and `resolvedProcessing`. Brush edits and reviewed distractions share one prepared transaction. Use `execute` to submit ordered strokes, or `configure`, `stroke`, and `apply` to stage them. The existing raw `preview` route requires transfer permission and remains capped at 16 megapixels. [Generative Remove](REMOVE_GENERATIVE.md)

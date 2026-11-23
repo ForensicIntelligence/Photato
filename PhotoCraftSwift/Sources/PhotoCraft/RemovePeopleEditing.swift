@@ -5,7 +5,7 @@ import PhotoCraftImaging
 extension EditorStore {
   var canFindRemovePeople: Bool {
     canUseRemove && document.width <= RemovePreparation.maximumCanvasPixels / document.height
-      && removeDraft == nil && removeStroke == nil && removeDetectionID == nil
+      && !removeRelatedArmed && removeDraft == nil && removeStroke == nil && removeDetectionID == nil
   }
   func findRemovePeople() {
     guard canFindRemovePeople else { return }

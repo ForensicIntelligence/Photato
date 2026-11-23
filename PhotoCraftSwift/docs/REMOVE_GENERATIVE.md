@@ -25,3 +25,5 @@ Send `retouch.remove` to the authenticated shared document command route with a 
 `retouch.remove` also accepts `configure`, `stroke`, `preview`, and `apply` for staged work. `generativeAvailable` indicates whether a local model can run on the active document. `resolvedProcessing` can report `traditional`, `localFillWhenEligible`, `localFill`, or `unavailable`. Choose the local model in the editor. An explicit On request without the model receives HTTP 422. The raw mark preview remains bounded to 16 megapixels and requires transfer permission. Large-document editing uses the standard shared document limits.
 
 The published Firefly Photoshop v2 schema has no dedicated equivalent route. The Execute Actions descriptor remains unqualified. [Automation API](AUTOMATION_API.md) · [Adobe API reference](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/)
+
+To review shadows and reflections around a marked object, see [Remove Related Elements](REMOVE_RELATED_ELEMENTS.md).

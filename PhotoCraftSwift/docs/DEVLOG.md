@@ -737,7 +737,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 716 | 2026-11-21 | [Remove extended wire and cable runs in one edit](#dev-step-716) |
 | 717 | 2026-11-21 | [Review and remove general distractions](#dev-step-717) |
 | 718 | 2026-11-21 | [Use on-device Generative Remove from the brush and API](#dev-step-718) |
+| 719 | 2026-11-23 | [Review related shadows and reflections before removing them](#dev-step-719) |
 <!-- history-index:end -->
+
+<a id="dev-step-719"></a>
+
+## 2026-11-23 — Review related shadows and reflections before removing them
+
+The optional detector uses separately configured CLIPSeg weights from a pinned publisher checkpoint. Baking the position table removes the model converter’s unsupported resize step, and comparing identical inputs checks the Core ML conversion. The first native crop test failed because the sparse selection writer also samples tile padding. Guarding the exact crop before reading the local model mask fixed the crash. The final review preserves the object mark and each suggested effect as editable masks with a bounded visible margin. The Photato API adds `beginRelatedElements`, `findRelatedElements` and `configureRelatedElements` to the existing Remove command. The published Photoshop v2 contract has no dedicated route.
+
+Two licensed photos checked a waste-bin shadow and a vehicle reflection. The first masks left a dark silhouette in each photo. Testing wider masks showed how much overlap was needed and where the review started to touch an unrelated effect. The smaller final margins removed the silhouettes and left the designated neighboring areas and all pixels outside the edit exact. The editor and authenticated API returned equal review masks and rendered RGBA8 bytes on both photos in each Apple Silicon configuration. One Undo restored each original document exactly. The repaired PNGs also match byte for byte across those two configurations.
+
+586 of 587 selected tests passed in Apple Silicon Debug, optimized Apple Silicon and optimized Intel under Rosetta. The new native/API regression passed in each configuration. The existing PSD layer-effect test repeated the same 118 differences. The checked-in Xcode project built successfully. Both signed preview slices target macOS 14.0 and opened offscreen. The optimized Intel build rejected the optional local models and completed a traditional Remove edit under Rosetta.
+
+The vehicle photo also suggested a shadow. The test deselected it before applying. Some grass texture remains soft and the repaired water shows slight color artifacts. Footprints, smoke, steam, water wakes, Adobe’s separate Enhance action and live Photoshop output comparisons remain open. Adobe documents a cloud provider for this feature. The optional Photato models run locally.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_719.md).
 
 <a id="dev-step-718"></a>
 

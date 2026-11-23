@@ -6,6 +6,7 @@ import PhotoCraftImaging
 struct RemoveToolOptions: View {
   @Bindable var store: EditorStore
   @State private var reviewOpen = false
+  @State private var relatedOpen = false
   @State private var validatingModel = false
   @AppStorage(GenerativeFillModelPreference.key) private var modelBookmark: Data?
   private func setting<T>(_ key: WritableKeyPath<RemoveToolSettings,T>) -> Binding<T> {
@@ -36,36 +37,41 @@ struct RemoveToolOptions: View {
           RemoveDistractionControls(store: store) { reviewOpen = false }
         }
       Text("Mode")
-      RemoveModeControl(selection:setting(\.mode),enabled:store.removeDraft == nil && !store.geometryBusy && !validatingModel,
+      RemoveModeControl(selection:store.removeRelatedArmed ? .constant(.generativeOn) : setting(\.mode),
+        enabled:store.removeDraft == nil && !store.removeRelatedArmed && !store.geometryBusy && !validatingModel,
         localAvailable: store.localRemoveAvailable)
         .frame(width:205)
       if LocalGenerativeFill.supported {
         Menu {
           Button(modelBookmark == nil ? "Choose Model…" : "Change Model…", action: chooseLocalModel)
+            .disabled(store.removeDraft != nil || store.geometryBusy || validatingModel)
+          Button("Remove Related Elements…") { relatedOpen = true }
         } label: {
-          Text(store.removeProcessing(store.removeSettings, in: store.document).title)
+          Text(store.removeProcessing(store.effectiveRemoveSettings(store.removeSettings), in: store.document).title)
         }
         .accessibilityLabel("Remove processing device and model")
         .help("Manage the on-device Remove model used by Auto and Generative AI on.")
-        .disabled(store.removeDraft != nil || store.geometryBusy || validatingModel)
+        .popover(isPresented: $relatedOpen, arrowEdge: .bottom) {
+          RemoveRelatedControls(store: store) { relatedOpen = false }
+        }
       } else {
         Text("Traditional").foregroundStyle(.secondary)
           .help("Generative AI on requires Apple Silicon with macOS 26 or later.")
       }
       Toggle("Sample All Layers",isOn:setting(\.sampleAllLayers))
         .disabled(store.removeDraft != nil || store.geometryBusy)
-      Toggle("Remove after each stroke",isOn:setting(\.removeAfterEachStroke))
-        .disabled(store.removeDraft != nil || store.geometryBusy)
-      Toggle("Create New Layer",isOn:setting(\.createNewLayer))
-        .disabled(store.removeDraft != nil || store.geometryBusy)
+      Toggle("Remove after each stroke",isOn:store.removeRelatedArmed ? .constant(false) : setting(\.removeAfterEachStroke))
+        .disabled(store.removeDraft != nil || store.removeRelatedArmed || store.geometryBusy)
+      Toggle("Create New Layer",isOn:store.removeRelatedArmed ? .constant(true) : setting(\.createNewLayer))
+        .disabled(store.removeDraft != nil || store.removeRelatedArmed || store.geometryBusy)
       let clearTitle = store.removeWiresID == nil ? "Clear removal marks" : "Cancel wire removal"
       Button { store.cancelRemove() } label: { Label(clearTitle,systemImage:"xmark") }
         .labelStyle(.iconOnly).help("\(clearTitle) (Escape)")
-        .disabled(store.removeDraft == nil && store.removeApplying == nil && store.removeWiresID == nil)
+        .disabled(store.removeDraft == nil && store.removeApplying == nil && store.removeWiresID == nil && !store.removeRelatedArmed)
       Button { store.applyRemove() } label: { Label("Apply removal",systemImage:"checkmark") }
         .labelStyle(.iconOnly).help("Apply removal (Return)")
         .disabled(store.geometryBusy || store.removeDraft?.hasMarks != true || store.removeStroke != nil)
-      if validatingModel || store.removeApplying != nil || store.removeDetectionID != nil || store.removeDistractionID != nil || store.removeWiresID != nil {
+      if validatingModel || store.removeApplying != nil || store.removeDetectionID != nil || store.removeDistractionID != nil || store.removeWiresID != nil || store.removeRelatedID != nil {
         ProgressView().controlSize(.small).accessibilityLabel(progressTitle)
       }
     }.controlSize(.small).toggleStyle(.checkbox)
@@ -73,6 +79,7 @@ struct RemoveToolOptions: View {
 
   private var progressTitle: String {
     if validatingModel { return "Checking the Remove model" }
+    if store.removeRelatedID != nil { return "Finding related elements" }
     if store.removeWiresID != nil { return "Removing wires and cables" }
     if store.removeDistractionID != nil { return "Finding general distractions" }
     return store.removeDetectionID != nil ? "Detecting people for removal" : "Removing marked areas"

@@ -4,15 +4,18 @@ import PhotoCraftImaging
 
 enum RemoveToolAPI {
   static let name = "retouch.remove"
+  static let operations = ["configure", "removeWires", "findPeople", "findDistractions", "configureDistractionReview",
+    "beginRelatedElements", "findRelatedElements", "configureRelatedElements", "preview", "stroke", "apply", "cancel", "execute"]
   static var definition: AutomationCommand.Definition {
-    .init(name:name,parameters:["operation":"configure, removeWires, findPeople, findDistractions, configureDistractionReview, preview, stroke, apply, cancel or execute",
+    .init(name:name,parameters:["operation":operations.joined(separator: ", "),
       "settings":"Partial window options or immutable execute overrides",
       "stroke":"One pending Add/Subtract stroke", "strokes":"Complete ordered removal marks",
       "enabledCategories":"Replace enabled general-distraction categories in the current review",
+      "enabledElements":"Replace enabled related elements in the current review",
       "overlayOpacity":"General-distraction overlay opacity from 0 to 1",
       "layerID":"Raster target UUID; execute only"],
       description:"Mark or remove objects through the native Remove tool. Choose Auto, traditional or eligible on-device generation. One Undo per applied batch.",
-      optionalParameters:["settings","stroke","strokes","layerID","enabledCategories","overlayOpacity"])
+      optionalParameters:["settings","stroke","strokes","layerID","enabledCategories","enabledElements","overlayOpacity"])
   }
   static var distractionCategorySchema: [String:Any] {
     BrushAPI.enumeration(RemoveDistractionCategory.allCases.map(\.rawValue))
@@ -29,12 +32,13 @@ enum RemoveToolAPI {
   }
   static func schema(_ key:String) -> [String:Any] {
     switch key {
-    case "operation": BrushAPI.enumeration(["configure","removeWires","findPeople","findDistractions","configureDistractionReview","preview","stroke","apply","cancel","execute"])
+    case "operation": BrushAPI.enumeration(operations)
     case "settings": settingsSchema
     case "stroke": strokeSchema
     case "strokes": ["type":"array","minItems":1,"maxItems":256,"items":strokeSchema]
     case "layerID": ["type":"string","format":"uuid"]
     case "enabledCategories": ["type":"array","items":distractionCategorySchema,"maxItems":6,"uniqueItems":true]
+    case "enabledElements": ["type":"array","items":BrushAPI.enumeration(RemoveRelatedElement.allCases.map(\.rawValue)),"maxItems":2,"uniqueItems":true]
     case "overlayOpacity": BrushAPI.number()
     default: [:]
     }
@@ -44,6 +48,8 @@ enum RemoveToolAPI {
      ("stroke",["operation","stroke"],["stroke"]),
      ("removeWires",["operation"],[]), ("findPeople",["operation"],[]), ("preview",["operation"],[]),
      ("findDistractions",["operation"],[]), ("configureDistractionReview",["operation","enabledCategories","overlayOpacity"],[]),
+     ("beginRelatedElements",["operation"],[]), ("findRelatedElements",["operation"],[]),
+     ("configureRelatedElements",["operation","enabledElements"],["enabledElements"]),
      ("apply",["operation"],[]), ("cancel",["operation"],[]),
      ("execute",["operation","layerID","settings","strokes"],["strokes"])].map { operation,keys,required in
       var fields = Dictionary(uniqueKeysWithValues:keys.map { ($0,schema($0)) })
@@ -70,17 +76,18 @@ enum RemoveToolAPI {
     let categories: [[String:Any]] = review?.groups.map { group in
       ["category":group.category.rawValue,"count":group.count,"enabled":review?.enabled.contains(group.category) == true]
     } ?? []
-    return ["available":store.canUseRemove,"settings":BrushAPI.json(store.removeSettings),
+    return ["available":store.canUseRemove,"settings":BrushAPI.json(store.effectiveRemoveSettings(store.removeSettings)),
       "pendingStrokes":store.removeDraft?.strokes.count ?? 0,
-      "gestureActive":store.removeStroke != nil,"busy":store.removeApplying != nil || store.removeDetectionID != nil || store.removeDistractionID != nil || store.removeWiresID != nil,
+      "gestureActive":store.removeStroke != nil,"busy":store.removeApplying != nil || store.removeDetectionID != nil || store.removeDistractionID != nil || store.removeWiresID != nil || store.removeRelatedID != nil,
       "pendingSourceValid":store.removeDraft.map { store.removeSourceMatches($0) } ?? true,
-      "resolvedProcessing":store.removeProcessing(draft?.settings ?? store.removeSettings, in: draft?.original ?? store.document).rawValue,
+      "resolvedProcessing":store.removeProcessing(draft?.settings ?? store.effectiveRemoveSettings(store.removeSettings), in: draft?.original ?? store.document).rawValue,
       "generativeAvailable":store.localRemoveAvailable,
       "distractionDetectionAvailable":true,"detectingPeople":store.removeDetectionID != nil,
       "wiresAvailable":store.canRemoveWires,"removingWires":store.removeWiresID != nil,
       "generalDistractions":["available":store.canFindGeneralDistractions,"detecting":store.removeDistractionID != nil,
         "reviewOpen":review != nil,"modelConfigured":RemoveDistractionModelPreference.url(bookmark: store.removeDistractionModelBookmark) != nil,
         "overlayOpacity":review?.overlayOpacity ?? 0.45,"categories":categories],
+      "relatedElements":relatedState(store),
       "detectedPeople":store.removeDraft?.detectedPeople ?? 0,"hasPendingMarks":store.removeDraft?.hasMarks ?? false]
   }
   static var stateSchema: [String:Any] {
@@ -91,7 +98,24 @@ enum RemoveToolAPI {
       "distractionDetectionAvailable":["const":true],"detectingPeople":BrushAPI.flag,
       "wiresAvailable":BrushAPI.flag,"removingWires":BrushAPI.flag,
       "generalDistractions":distractionSchema,
-      "detectedPeople":["type":"integer","minimum":0,"maximum":64],"hasPendingMarks":BrushAPI.flag],required:["available","settings","pendingStrokes","gestureActive","busy","pendingSourceValid","resolvedProcessing","generativeAvailable","distractionDetectionAvailable","detectingPeople","wiresAvailable","removingWires","generalDistractions","detectedPeople","hasPendingMarks"])
+      "relatedElements":relatedSchema,
+      "detectedPeople":["type":"integer","minimum":0,"maximum":64],"hasPendingMarks":BrushAPI.flag],required:["available","settings","pendingStrokes","gestureActive","busy","pendingSourceValid","resolvedProcessing","generativeAvailable","distractionDetectionAvailable","detectingPeople","wiresAvailable","removingWires","generalDistractions","relatedElements","detectedPeople","hasPendingMarks"])
+  }
+  static var relatedSchema: [String:Any] {
+    let element = BrushAPI.object(["kind":BrushAPI.enumeration(RemoveRelatedElement.allCases.map(\.rawValue)),
+      "enabled":BrushAPI.flag],required:["kind","enabled"])
+    return BrushAPI.object(["available":BrushAPI.flag,"modelConfigured":BrushAPI.flag,"armed":BrushAPI.flag,
+      "analyzing":BrushAPI.flag,"reviewOpen":BrushAPI.flag,"elements":["type":"array","maxItems":2,"items":element]],
+      required:["available","modelConfigured","armed","analyzing","reviewOpen","elements"])
+  }
+
+  @MainActor static func relatedState(_ store: EditorStore) -> [String:Any] {
+    let review = store.removeDraft?.relatedReview
+    return ["available":store.canStartRelatedElements,"modelConfigured":store.removeRelatedModelURL != nil,
+      "armed":store.removeRelatedArmed,"analyzing":store.removeRelatedID != nil,"reviewOpen":review != nil,
+      "elements":review?.groups.map { group in
+        ["kind":group.element.rawValue,"enabled":review?.enabled.contains(group.element) == true]
+      } ?? []]
   }
   static var capabilities: [String:Any] {
     ["command":name,"stateSchema":stateSchema,
@@ -105,6 +129,7 @@ enum RemoveToolAPI {
       "supportedModes":["auto","generativeOff"],"conditionalModes":["generativeOn"],
       "device":"Apple Silicon on macOS 26 and later with a configured compiled LaMa512 model and still RGB document.",
       "history":"One shared prepared transaction per applied batch; exact original selection representation, source layer metadata and unmarked pixels retained. New-layer output is a separate transparent raster patch. Native archive keeps resulting pixels/layers. Semantic Remove Actions and Adobe actionJSON remain unsupported.",
+      "relatedElements":"Begin, mark one object, then find suggested shadows and reflections with both configured device models. Find turns the original strokes into an editable preview mask with a small edge margin. Preview includes enabled effects and any subsequent refinement strokes. Apply creates a new raster layer.",
       "cursor":"Add/Subtract follows the setting captured at pointer-down, inverted by captured Option. Control/Command/Shift do not change the operation. Space pans; all16 modifier combinations tested separately.",
       "limits":["maximumCanvasPixels":RemovePreparation.maximumCanvasPixels,"maximumSolvePixels":ContentAwareSynthesis.maximumPixels,
         "maximumLocalCanvasSide":Surface.maxDimension,"maximumLocalRepairRegions":RemovePreparation.maximumGenerativeRegions,
@@ -138,19 +163,23 @@ extension AutomationService {
     case "configure": allowed = ["operation","settings"]
     case "stroke": allowed = ["operation","stroke"]
     case "execute": allowed = ["operation","settings","strokes","layerID"]
-    case "apply","cancel","removeWires","findPeople","findDistractions","preview": allowed = ["operation"]
+    case "apply","cancel","removeWires","findPeople","findDistractions","beginRelatedElements","findRelatedElements","preview": allowed = ["operation"]
     case "configureDistractionReview": allowed = ["operation","enabledCategories","overlayOpacity"]
+    case "configureRelatedElements": allowed = ["operation","enabledElements"]
     default: throw AutomationFailure(status:400,message:"Unknown Remove operation.")
     }
     guard Set(command.parameters.keys).isSubset(of:allowed) else {
       throw AutomationFailure(status:400,message:"Irrelevant Remove parameter for this operation.")
     }
-    if operation == "cancel", store.removeApplying != nil || store.removeDetectionID != nil || store.removeDistractionID != nil || store.removeWiresID != nil {
+    if operation == "cancel", store.removeApplying != nil || store.removeDetectionID != nil || store.removeDistractionID != nil || store.removeWiresID != nil || store.removeRelatedID != nil {
       store.cancelRemove(); return .json(state(try removeShare(shareID),document:document))
     }
     try preflight(document,allowRemove:true)
     guard store.removeStroke == nil else { throw AutomationFailure(status:409,message:"Finish the pointer stroke first.") }
     if operation == "cancel" { store.cancelRemove(); return .json(state(try removeShare(shareID),document:document)) }
+    if ["beginRelatedElements", "findRelatedElements", "configureRelatedElements"].contains(operation) {
+      return try await executeRelatedElements(operation, command: command, document: document, shareID: shareID)
+    }
     if operation == "removeWires" { return try await executeRemoveWires(document: document, shareID: shareID) }
     if operation == "findDistractions" {
       let expectedToken = token, expectedGeneration = generation
@@ -230,7 +259,7 @@ extension AutomationService {
     }
     let draft: RemoveDraft
     if operation == "execute" {
-      guard store.removeDraft == nil else { throw AutomationFailure(status:409,message:"Apply or clear pending Remove strokes first.") }
+      guard store.removeDraft == nil, !store.removeRelatedArmed else { throw AutomationFailure(status:409,message:"Apply or clear pending Remove strokes first.") }
       let settings = try RemoveToolAPI.settings(command.parameters["settings"],base:store.removeSettings)
       guard case .array(let values) = command.parameters["strokes"], !values.isEmpty,
         let id = try command.parameters["layerID"].map({ _ in try command.actionUUID("layerID") }) ?? store.document.activeLayerID else {
@@ -242,6 +271,9 @@ extension AutomationService {
       guard let pending = store.removeDraft, pending.hasMarks, store.removeSourceMatches(pending) else {
         throw AutomationFailure(status:409,message:"There is no valid pending Remove batch.")
       }
+      guard !pending.relatedElements || pending.relatedReview != nil else {
+        throw AutomationFailure(status:409,message:"Find related elements before applying the review.")
+      }
       draft = pending
     }
     try draft.request.validate()
@@ -252,6 +284,7 @@ extension AutomationService {
         .regionRetouch(try prepare(request,original))
       }
       store.selectedLayerIDs = Set(store.document.activeLayerID.map { [$0] } ?? [])
+      if draft.relatedElements { store.removeRelatedArmed = false }
       store.removeApplying = nil; store.removeRevision = UUID()
     } catch {
       if store.removeApplying != nil, store.removeSourceMatches(draft) { store.removeDraft = restore }
@@ -286,6 +319,42 @@ extension AutomationService {
     var response = state(try removeShare(shareID), document: document)
     response["removeWiresResult"] = ["candidateTracks":result.candidateTracks,"applied":result.applied]
     return .json(response)
+  }
+
+  private func executeRelatedElements(_ operation: String, command: AutomationCommand, document: CraftNSDocument,
+    shareID: UUID) async throws -> AutomationResponse {
+    let store = document.store
+    switch operation {
+    case "beginRelatedElements": try store.armRelatedElements()
+    case "findRelatedElements":
+      let expectedToken = token, expectedGeneration = generation
+      do {
+        try await store.detectRelatedElements { [self] in
+          prune()
+          guard isRunning, token == expectedToken, generation == expectedGeneration,
+            shares.contains(where: { $0.id == shareID && $0.document === document }) else {
+            throw AutomationFailure(status:409,message:"Related element analysis was cancelled or sharing changed.")
+          }
+          try preflight(document,allowRemove:true)
+        }
+      } catch is CancellationError {
+        throw AutomationFailure(status:409,message:"Related element analysis was cancelled or its source changed.")
+      }
+    default:
+      guard case .array(let values) = command.parameters["enabledElements"], values.count <= 2 else {
+        throw AutomationFailure(status:400,message:"Supply up to two related elements.")
+      }
+      let elements = try values.map { value -> RemoveRelatedElement in
+        guard case .string(let name) = value, let element = RemoveRelatedElement(rawValue:name) else {
+          throw AutomationFailure(status:400,message:"Unknown related element.")
+        }
+        return element
+      }
+      let enabled = Set(elements)
+      guard enabled.count == elements.count else { throw AutomationFailure(status:400,message:"Duplicate related elements.") }
+      try store.updateRelatedElements(enabled)
+    }
+    return .json(state(try removeShare(shareID),document:document))
   }
 
   private func removeShare(_ id:UUID) throws -> Share {

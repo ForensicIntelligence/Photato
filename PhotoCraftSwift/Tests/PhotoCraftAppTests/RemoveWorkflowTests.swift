@@ -165,7 +165,8 @@ final class RemoveWorkflowTests: XCTestCase {
         let operation = try XCTUnwrap(values["operation"] as? [String:Any])
         return try XCTUnwrap(operation["const"] as? String)
       }
-      XCTAssertEqual(operations.sorted(), ["apply", "cancel", "configure", "configureDistractionReview", "execute", "findDistractions", "findPeople", "preview", "removeWires", "stroke"])
+      XCTAssertEqual(operations.sorted(), ["apply", "beginRelatedElements", "cancel", "configure", "configureDistractionReview",
+        "configureRelatedElements", "execute", "findDistractions", "findPeople", "findRelatedElements", "preview", "removeWires", "stroke"])
       XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
       XCTAssertTrue(JSONSerialization.isValidJSONObject(RemoveToolAPI.capabilities))
       let share = try XCTUnwrap(service.shares.first)

@@ -17,7 +17,7 @@ extension CraftCanvas {
   }
   func removeKey(_ event: NSEvent) -> Bool {
     guard store.tool == .remove else { return false }
-    if event.keyCode == 53, store.removeDraft != nil || store.removeApplying != nil || store.removeWiresID != nil {
+    if event.keyCode == 53, store.removeDraft != nil || store.removeApplying != nil || store.removeWiresID != nil || store.removeRelatedArmed {
       store.cancelRemove(); return true
     }
     if [36,76].contains(event.keyCode), store.removeDraft != nil {
@@ -39,7 +39,8 @@ extension CraftCanvas {
     context.saveGState(); context.clip(to:imageRect)
     // Isolate subtract's Clear blend so it only erases the marking overlay.
     context.setAlpha(CGFloat(draft?.distractionReview?.overlayOpacity ?? 0.45)); context.beginTransparencyLayer(auxiliaryInfo:nil)
-    let overlays = (draft?.distractionReview?.selectedGroups.map(\.overlay) ?? []) + [draft?.initialOverlay].compactMap { $0 }
+    let overlays = (draft?.distractionReview?.selectedGroups.map(\.overlay) ?? [])
+      + (draft?.relatedReview?.selected.map(\.overlay) ?? []) + [draft?.initialOverlay].compactMap { $0 }
     for overlay in overlays {
       context.saveGState(); context.translateBy(x: imageRect.minX, y: imageRect.maxY); context.scaleBy(x: 1, y: -1)
       context.draw(overlay, in: CGRect(origin: .zero, size: imageRect.size)); context.restoreGState()

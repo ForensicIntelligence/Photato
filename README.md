@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 718.** The Remove brush can use a configured LaMa512 model on Apple Silicon with macOS 26 or later. Generative AI on requires the device model, and Auto can select it for eligible documents. Separated or wide marks use localized repairs and commit in one Undo. Adjacent-edge brush strokes can enclose a corner. The desktop and Photato API share the selection, target, mark geometry and prepared edit. [Generative Remove](PhotoCraftSwift/docs/REMOVE_GENERATIVE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_718.md).
+**Development alpha — source build 719.** The Remove processing menu can find shadows and reflections around a marked object using two optional models on Apple Silicon with macOS 26 or later. The canvas shows the reviewed object and each enabled effect. Use the checkboxes or the Add and Subtract brush to refine coverage. Apply creates a correction layer with one Undo. The Photato API shares the same review and edit. [Remove Related Elements](PhotoCraftSwift/docs/REMOVE_RELATED_ELEMENTS.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_719.md).
 
 ## Project layout
 

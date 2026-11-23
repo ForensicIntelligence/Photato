@@ -25,11 +25,13 @@ struct RemoveDraft: Sendable {
   var initialOverlay: CGImage?
   var detectedPeople = 0
   var distractionReview: RemoveDistractionReview?
-  var requiresExplicitApply: Bool { initialCoverage != nil || distractionReview != nil }
+  var relatedElements = false
+  var relatedReview: RemoveRelatedReview?
+  var requiresExplicitApply: Bool { initialCoverage != nil || distractionReview != nil || relatedElements }
   var hasMarks: Bool { initialCoverage?.bounds != nil || distractionReview?.enabled.isEmpty == false || !strokes.isEmpty }
   var request: RemoveRequest {
     .init(layerID: layerID, settings: settings, strokes: strokes, initialCoverage: initialCoverage,
-      categoryCoverages: distractionReview?.selectedGroups.map(\.coverage) ?? [])
+      categoryCoverages: (distractionReview?.selectedGroups.map(\.coverage) ?? []) + (relatedReview?.selected.map(\.coverage) ?? []))
   }
 }
 
@@ -66,7 +68,7 @@ extension EditorStore {
 
   var canUseRemove: Bool {
     guard canUseRemoveTarget else { return false }
-    switch removeProcessing(removeSettings, in: document) {
+    switch removeProcessing(effectiveRemoveSettings(removeSettings), in: document) {
     case .unavailable: return false
     case .traditional: return document.width <= RemovePreparation.maximumCanvasPixels / document.height
     case .localFill, .localFillWhenEligible: return true
@@ -74,7 +76,11 @@ extension EditorStore {
   }
 
   var canUseRemoveTarget: Bool {
-    guard removeSettings.size.isFinite, (1...5000).contains(removeSettings.size),
+    canUseRemoveTarget(for: effectiveRemoveSettings(removeSettings))
+  }
+
+  func canUseRemoveTarget(for settings: RemoveToolSettings) -> Bool {
+    guard settings.size.isFinite, (1...5000).contains(settings.size),
       !geometryBusy, !aiBusy, !hasToneDraftExceptRemove, !coalescingChanges,
       transformDraft == nil, !editingComponent, !editingMask, !smartFilterMaskEditing,
       document.colorMode == .rgb, document.width > 0, document.height > 0,
@@ -83,7 +89,7 @@ extension EditorStore {
       layer.sourceProjection == nil,
       selectedLayerIDs.isEmpty || selectedLayerIDs == [layer.id],
       !document.ancestors(of:layer.id).contains(where: { $0.protection.fullyLocks }) else { return false }
-    return removeSettings.createNewLayer || !document.isImageLocked(layer.id)
+    return settings.createNewLayer || !document.isImageLocked(layer.id)
   }
   func removeSourceMatches(_ draft: RemoveDraft) -> Bool {
     draft.original == document && draft.session == sessionGeneration && draft.generation == layerPanelGeneration
@@ -95,10 +101,11 @@ extension EditorStore {
       throw CraftError.unavailable("Choose the on-device LaMa512 model for an eligible RGB document first.")
     }
     if let draft = removeDraft {
-      guard settings.mode == draft.settings.mode,
-        settings.sampleAllLayers == draft.settings.sampleAllLayers,
-        settings.removeAfterEachStroke == draft.settings.removeAfterEachStroke,
-        settings.createNewLayer == draft.settings.createNewLayer else {
+      let effective = effectiveRemoveSettings(settings)
+      guard effective.mode == draft.settings.mode,
+        effective.sampleAllLayers == draft.settings.sampleAllLayers,
+        effective.removeAfterEachStroke == draft.settings.removeAfterEachStroke,
+        effective.createNewLayer == draft.settings.createNewLayer else {
         throw CraftError.invalid("Apply or clear pending Remove strokes before changing processing options.")
       }
     }
@@ -113,7 +120,7 @@ extension EditorStore {
     }
     if removeDraft == nil, let id = activeLayer?.id {
       removeDraft = .init(original:document,session:sessionGeneration,generation:layerPanelGeneration,
-        layerID:id,settings:removeSettings)
+        layerID:id,settings:effectiveRemoveSettings(removeSettings),relatedElements:removeRelatedArmed)
     }
     removeStroke = .init(size:removeSettings.size,subtract:removeSettings.subtract != alternate,
       points:[[point.x,point.y]])
@@ -138,7 +145,7 @@ extension EditorStore {
     guard canUseRemove else { throw CraftError.invalid("Remove is unavailable for the current editing target.") }
     if removeDraft == nil, let id = activeLayer?.id {
       removeDraft = .init(original:document,session:sessionGeneration,generation:layerPanelGeneration,
-        layerID:id,settings:removeSettings)
+        layerID:id,settings:effectiveRemoveSettings(removeSettings),relatedElements:removeRelatedArmed)
     }
     guard var draft = removeDraft, removeSourceMatches(draft) else {
       throw CraftError.invalid("The Remove source changed. Clear the pending strokes first.")
@@ -150,12 +157,13 @@ extension EditorStore {
     if removeWiresID != nil {
       geometryTask?.cancel(); removeWiresID = nil
     }
-    if removeDetectionID != nil || removeDistractionID != nil {
+    if removeDetectionID != nil || removeDistractionID != nil || removeRelatedID != nil {
       removeDetectionTask?.cancel(); removeDetectionTask = nil
-      geometryTask?.cancel(); geometryTask = nil; geometryBusy = false; removeDetectionID = nil; removeDistractionID = nil
+      geometryTask?.cancel(); geometryTask = nil; geometryBusy = false
+      removeDetectionID = nil; removeDistractionID = nil; removeRelatedID = nil
     }
     if removeApplying != nil { geometryTask?.cancel() }
-    removeDraft = nil; removeStroke = nil; removeApplying = nil; removeRevision = UUID()
+    removeDraft = nil; removeStroke = nil; removeApplying = nil; removeRelatedArmed = false; removeRevision = UUID()
   }
   func cancelRemoveGesture() {
     guard removeStroke != nil else { return }
@@ -165,6 +173,7 @@ extension EditorStore {
   }
   func applyRemove() {
     guard removeStroke == nil, let draft = removeDraft, draft.hasMarks else { return }
+    if draft.relatedElements && draft.relatedReview == nil { findRelatedElements(); return }
     guard canUseRemove, removeSourceMatches(draft) else {
       status = "The Remove source changed or is unavailable. Clear the pending strokes first."; return
     }
@@ -186,6 +195,7 @@ extension EditorStore {
       guard let self, self.removeApplying?.session == draft.session else { return }
       self.removeApplying = nil
       if self.removeSourceMatches(draft), self.error != nil { self.removeDraft = draft }
+      else if draft.relatedElements { self.removeRelatedArmed = false }
       self.removeRevision = UUID()
     }
   }

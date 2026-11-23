@@ -4,7 +4,7 @@ import PhotoCraftImaging
 
 extension EditorStore {
   var canRemoveWires: Bool {
-    canUseRemoveTarget && removeSettings.mode != .generativeOn && removeDraft == nil && removeStroke == nil && removeApplying == nil
+    canUseRemoveTarget && !removeRelatedArmed && removeSettings.mode != .generativeOn && removeDraft == nil && removeStroke == nil && removeApplying == nil
       && removeDetectionID == nil && removeWiresID == nil
   }
 
