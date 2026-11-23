@@ -33,7 +33,7 @@ extension VanishingSettings {
      "state":"Document and workspace state include resolved camera/plane corners and metric dimensions so clients can draw derived planes without reimplementing the solver.",
      "operations":"Create/save/edit planes with no operations; brush, clone and perspective paste with sourceLayerID (raw raster layer pixels, resolved before mutation). Sequential operations sample the visible composite plus earlier draft operations; each clone stroke takes an immutable source snapshot.",
      "output":"Current raster layer or newLayer:true; original placement/masks preserved, selection and transparency/image locks honored. Smart Objects must be rasterized for the target. One cancellable prepared undo transaction for the entire program.",
-     "limits":"32 planes,256 operations,16,384 supplied points,4,096 points per stroke,128MiB embedded paste sources,8,388,608 canvas/target pixels,134,217,728 raster visits. Existing API sharing limits also apply.",
+     "limits":"32 planes,256 operations,16,384 supplied points,4,096 points per stroke,128MiB embedded paste sources with up to 8,388,608 pixels, up to \(Surface.maxDimension) pixels per canvas side, 134,217,728 raster visits per program. Large canvases use a bounded overview. Existing API sharing limits also apply.",
      "unsupported":"Perspective marquee/measurement, healing, multi-surface stroke wrapping, Adobe .vpe/PSD plane metadata and exact Adobe pixels remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
      "adobe":"No dedicated pinned v2 Vanishing Point operation. No invented route or unqualified actionJSON support."]
   }

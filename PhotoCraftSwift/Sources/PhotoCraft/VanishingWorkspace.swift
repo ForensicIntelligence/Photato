@@ -106,8 +106,14 @@ import PhotoCraftImaging
         try await Task.sleep(for:.milliseconds(70))
         let worker=Task.detached(priority:.userInitiated) { () throws -> (CGImage,CGImage?,Surface) in
           let sample=try cached ?? Renderer.composite(original),edit=try VanishingEdit.prepare(original,layerID:id,program:p,sample:sample)
-          let image=try ColorManagement.displayImage(Renderer.composite(edit.result),in:original)
-          return (image,needsOriginal ? try ColorManagement.displayImage(sample,in:original):nil,sample)
+          let image = try ColorManagement.conversionPreview(edit.result)
+          var originalImage: CGImage?
+          if needsOriginal {
+            let overview = original.width > Surface.maximumDensePixels / original.height
+              ? try RasterPreviewRequest.overview(width: original.width, height: original.height) : nil
+            originalImage = try ColorManagement.displayImage(overview?.reducing(sample) ?? sample, in: original)
+          }
+          return (image, originalImage, sample)
         }
         let result=try await withTaskCancellationHandler { try await worker.value } onCancel:{worker.cancel()}
         try Task.checkCancellation();guard let self,!self.closed,self.generation==token else { return };self.image=result.0;self.sample=result.2;if let original=result.1 { self.originalImage=original };self.rendering=false

@@ -61,8 +61,16 @@ public struct VanishingScene:Sendable {
     let h=try PerspectiveMap.homography(q);guard let inverse=h.inverse() else { throw CraftError.invalid("Singular perspective plane.") }
     func ray(_ p:PathPoint)->SIMD3<Double> { .init((p.x-center.x)/focal,(p.y-center.y)/focal,1) }
     func direction(_ a:PathPoint,_ b:PathPoint,_ c:PathPoint,_ d:PathPoint)->SIMD3<Double> { let v=meet(a,b,c,d);return abs(v.z)<1e-9*max(1,abs(v.x)+abs(v.y)) ? unit(.init(v.x,v.y,0)):unit(ray(.init(v.x/v.z,v.y/v.z))) }
-    var normal=unit(cross(direction(q[0],q[1],q[3],q[2]),direction(q[0],q[3],q[1],q[2])));if normal.z<0 { normal = -normal }
-    let points=try q.map { p -> SIMD3<Double> in let r=ray(p),d=dot(normal,r);guard d>1e-8 else { throw CraftError.invalid("Plane crosses the camera horizon.") };return r/d }
+    var normal = unit(cross(direction(q[0], q[1], q[3], q[2]), direction(q[0], q[3], q[1], q[2])))
+    let rays = q.map(ray)
+    // Orient the plane from a visible corner. The optical axis can cross the
+    // horizon even when all four corner rays lie on the same side of it.
+    if dot(normal, rays[0]) < 0 { normal = -normal }
+    let points = try rays.map { ray -> SIMD3<Double> in
+      let distance = dot(normal, ray)
+      guard distance > 1e-8 else { throw CraftError.invalid("Plane crosses the camera horizon.") }
+      return ray / distance
+    }
     let width=(length(points[1]-points[0])+length(points[2]-points[3]))/2,height=(length(points[3]-points[0])+length(points[2]-points[1]))/2
     guard width.isFinite,height.isFinite,min(width,height)>1e-9,max(width,height)<1e9 else { throw CraftError.invalid("Invalid plane metric.") }
     return Frame(corners:q,points:points,width:width,height:height,map:h,inverse:inverse)

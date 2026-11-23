@@ -1,3 +1,7 @@
+### Full-resolution Vanishing Point (checkpoint 727)
+
+The native workspace and authenticated `filter.vanishingPoint` operation support bounded perspective edits on larger canvases. Paste source and per-program work budgets still apply. [Qualification](SOURCE_PUBLICATION_727.md).
+
 ### Cropped-layer retouch rendering (checkpoint 726)
 
 The editor and authenticated `retouch.stroke` operation share the same compositor. The renderer uses a bounded area when an eligible transparent raster expands. [Retouch guide](RETOUCH_SAMPLE_REUSE.md).

@@ -3456,5 +3456,11 @@
     "photatoCommand": "retouch.stroke",
     "publishedAdobeContractChanges": [],
     "evidence": "docs/SOURCE_PUBLICATION_726.json"
+  },
+  "large_vanishing_point_build727": {
+    "status": "Shared native and Photato perspective engine for larger canvases",
+    "photatoCommand": "filter.vanishingPoint",
+    "publishedAdobeContractChanges": [],
+    "evidence": "docs/SOURCE_PUBLICATION_727.json"
   }
 }

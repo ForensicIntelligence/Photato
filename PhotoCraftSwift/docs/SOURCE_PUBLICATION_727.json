@@ -1,0 +1,275 @@
+{
+  "build": 727,
+  "base": "0a56edf7e04dd9e5e4735975fa893b7d67121470",
+  "buildInputs": 9423,
+  "includedBuildInputs": 9423,
+  "candidateManifestSHA256": "d9376888fecae6443d6164a446158294fc71293ceaa108929475b71b9b2ea52f",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationVanishingPoint.swift",
+      "sha256": "5ed0900f6de2ee58a0a5b5cfcbe6e978fe0f200fc062e5eeb799ddc8feebbe30"
+    },
+    {
+      "path": "Sources/PhotoCraft/VanishingWorkspace.swift",
+      "sha256": "7f72608826a3537d4f95fee28bf998dfcef4694ee3b8f516c1ff95e4fa6636e9"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/VanishingEngine.swift",
+      "sha256": "465cf6cfc0635a32a18db53257f1ec77540e2adcbdb44eaa9b9b177d52467458"
+    },
+    {
+      "path": "Sources/PhotoCraftCore/VanishingPoint.swift",
+      "sha256": "450a1996045bd7cf1111c1b028b1508456d5361de1c54de56b1556de969f3853"
+    },
+    {
+      "path": "Tests/PhotoCraftAppTests/VanishingWorkflowTests.swift",
+      "sha256": "24ced82bf90107f5e067ee2ab7df68bc36d3b3c1e660866e489435cc9775289c"
+    },
+    {
+      "path": "Tests/PhotoCraftCoreTests/VanishingTests.swift",
+      "sha256": "4c4b790ef86f1d4e97ffc530b854371219cfca72cea155d2b7ee1a1e6250461b"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "3e6e013d80ffa256a238e36d12e18193dcf16df2af3fa87ef7043804880e1c36"
+    }
+  ],
+  "casesPerConfiguration": 812,
+  "qualifications": {
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 812,
+      "passed": 810,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "91b57eb49f64cffd19f096895abf2e560f9d0332ae3c6b4c71478bdc8bcf76fd"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 812,
+      "passed": 810,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "4748e87caa31c0f9b4bbaead490fbb9c56ff033a9775adf850b57ee170d8f815"
+    }
+  },
+  "inheritedColorProfileFixture": {
+    "arm": {
+      "predecessorBuild": 726,
+      "assertions": 34,
+      "wordSHA256ByLayout": {
+        "dense": "e6b8a62df2badf9d314c3ce7bbe8bd630535e211750da118db1a9887f8ff3efb",
+        "paged": "e6b8a62df2badf9d314c3ce7bbe8bd630535e211750da118db1a9887f8ff3efb"
+      },
+      "byteCountPerLayout": 1984272
+    },
+    "intel": {
+      "predecessorBuild": 726,
+      "assertions": 294,
+      "wordSHA256ByLayout": {
+        "dense": "c1340974a81be77cfa6e9af2347db37e0b2262e312d3a80d03e800bc7cc1c20e",
+        "paged": "c1340974a81be77cfa6e9af2347db37e0b2262e312d3a80d03e800bc7cc1c20e"
+      },
+      "byteCountPerLayout": 1984272
+    }
+  },
+  "xcodeDebug": {
+    "appSHA256": "29e1d164273ccd27806c168380c24a910f438c6cc36615b4403a33867cc56a25",
+    "focusedCases": [
+      "VanishingTests/testCancellationDoesNotPublishPixelsOrPlaneMetadata",
+      "VanishingTests/testHistorySelectionLocksNative32AndAtomicInvalidEdits",
+      "VanishingTests/testIndependentCameraMetricAndConnectedPlane",
+      "VanishingTests/testInvalidPlanesAndMetadataCanvasTransform",
+      "VanishingTests/testLargePerspectiveStrokeTouchesOnlyTheSelectedTiles",
+      "VanishingTests/testOffAxisPlaneKeepsAllCornersInFrontOfTheCamera",
+      "VanishingTests/testPerspectivePasteBrushCloneAndClippingAtEveryDepth"
+    ],
+    "nativeAndHTTPFixtures": 1,
+    "nativePreviewSeconds": 65.115870417
+  },
+  "perspectiveTextureBenchmark": {
+    "benchmarks": {
+      "arm": {
+        "architecture": "arm64",
+        "textureCrops": {
+          "2048x1536": {
+            "sha256": "11dd91fdfbfb85e8d5076ec12cd384abd2c7f3e2849bec259276a7346dfddc2e",
+            "stampSeconds": 0.003253083,
+            "defectPixels": 805,
+            "meanErrorBefore": 0.5190141937007077,
+            "meanErrorAfter": 0.0011757661405310629,
+            "tiles": 2
+          },
+          "6000x4000": {
+            "sha256": "11dd91fdfbfb85e8d5076ec12cd384abd2c7f3e2849bec259276a7346dfddc2e",
+            "stampSeconds": 0.000591958,
+            "defectPixels": 805,
+            "meanErrorBefore": 0.5190141937007077,
+            "meanErrorAfter": 0.0011757661405310629,
+            "tiles": 2
+          },
+          "300000x300000": {
+            "sha256": "11dd91fdfbfb85e8d5076ec12cd384abd2c7f3e2849bec259276a7346dfddc2e",
+            "stampSeconds": 0.00064325,
+            "defectPixels": 805,
+            "meanErrorBefore": 0.5190141937007077,
+            "meanErrorAfter": 0.0011757661405310629,
+            "tiles": 2
+          },
+          "8000x6000": {
+            "sha256": "11dd91fdfbfb85e8d5076ec12cd384abd2c7f3e2849bec259276a7346dfddc2e",
+            "stampSeconds": 0.002089125,
+            "defectPixels": 805,
+            "meanErrorBefore": 0.5190141937007077,
+            "meanErrorAfter": 0.0011757661405310629,
+            "tiles": 2
+          }
+        },
+        "overview": [
+          2048,
+          1536
+        ],
+        "nativePreviewSeconds": 2.942120875,
+        "nativeCropSHA256": "12279506c23347b29cd329dbdaf279a5baa9002d88d295dd605278bd3dcf7fd7",
+        "nativeAndHTTPMatch": true
+      },
+      "intel": {
+        "architecture": "x86_64",
+        "textureCrops": {
+          "2048x1536": {
+            "sha256": "11dd91fdfbfb85e8d5076ec12cd384abd2c7f3e2849bec259276a7346dfddc2e",
+            "stampSeconds": 0.002208708,
+            "defectPixels": 805,
+            "meanErrorBefore": 0.5190141937007077,
+            "meanErrorAfter": 0.0011757661405310629,
+            "tiles": 2
+          },
+          "6000x4000": {
+            "sha256": "11dd91fdfbfb85e8d5076ec12cd384abd2c7f3e2849bec259276a7346dfddc2e",
+            "stampSeconds": 0.000969417,
+            "defectPixels": 805,
+            "meanErrorBefore": 0.5190141937007077,
+            "meanErrorAfter": 0.0011757661405310629,
+            "tiles": 2
+          },
+          "300000x300000": {
+            "sha256": "11dd91fdfbfb85e8d5076ec12cd384abd2c7f3e2849bec259276a7346dfddc2e",
+            "stampSeconds": 0.001082625,
+            "defectPixels": 805,
+            "meanErrorBefore": 0.5190141937007077,
+            "meanErrorAfter": 0.0011757661405310629,
+            "tiles": 2
+          },
+          "8000x6000": {
+            "sha256": "11dd91fdfbfb85e8d5076ec12cd384abd2c7f3e2849bec259276a7346dfddc2e",
+            "stampSeconds": 0.002008041,
+            "defectPixels": 805,
+            "meanErrorBefore": 0.5190141937007077,
+            "meanErrorAfter": 0.0011757661405310629,
+            "tiles": 2
+          }
+        },
+        "overview": [
+          2048,
+          1536
+        ],
+        "nativePreviewSeconds": 5.263780666,
+        "nativeCropSHA256": "12279506c23347b29cd329dbdaf279a5baa9002d88d295dd605278bd3dcf7fd7",
+        "nativeAndHTTPMatch": true
+      }
+    },
+    "referenceSHA256": "11dd91fdfbfb85e8d5076ec12cd384abd2c7f3e2849bec259276a7346dfddc2e"
+  },
+  "photoshopReference": {
+    "lastInspectionBuild": 726,
+    "version": "27.2.0",
+    "liveOutputCompared": false
+  },
+  "preview": {
+    "archiveSHA256": "fdd859005270713cb0fcbb6ec309d9a95211c1b2312cf416e81efbf33363fd7a",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "c38f6bafa88cf26ad88dce8dde49786cc1f3503ef31d837893140dafa3e2d0ab",
+      "x86_64": "775262d1f29172f7ff242ecbda275b8d47d74936beedb61f17f9fa41f314366c"
+    },
+    "binarySHA256": "399a5479aac0379412fe0e223894f8e2b35396ae1877ff3655170bd4e7fbc9d2",
+    "verifiedOffscreenWorkspaces": {
+      "arm64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "0f71fbc46c420789582d38c6bfdbced913079c4350fdcef280886225909058af"
+      },
+      "x86_64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "737809cd565f82b52fc896909aee5e8e6173be406cf3305bd5da70a547a89757"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "file": "xcode-build02.log",
+      "sha256": "8e1ff2676e57df040f06c4cffbbae9e4b317205a14241d9240df03320005c6d1"
+    },
+    {
+      "file": "xcode-core-tests02.log",
+      "sha256": "d6e446da1b9a6b5b34c06c5eae3aaac0ec52f7723c17ed0752a735032c64e25b"
+    },
+    {
+      "file": "native-perspective02.log",
+      "sha256": "c9ad9056cb9b0210b9e7dec88f72260a5a02d9a7c0fada3eb74395b4dc545c21"
+    },
+    {
+      "file": "perspective-candidate03.log",
+      "sha256": "a0114a379f11108f9523d5d4205049de562a1781d5224d87a0fb4f4fa5527ffd"
+    },
+    {
+      "file": "perspective-overview04.log",
+      "sha256": "d1f5133653836df6711144724bf7cce829208cc26ed394e5c9c52ddd182465e0"
+    },
+    {
+      "file": "paired-color-control01.json",
+      "sha256": "378b5ba306de4175b479014f25a824185d489ad39654bccc6fdf20e3c34c1a80"
+    },
+    {
+      "file": "build-release-arm6402.log",
+      "sha256": "32390b5e721d20efa255ea0620339c2250a7572d8c01e614cb065a8735be7897"
+    },
+    {
+      "file": "build-release-x86_6402.log",
+      "sha256": "5e7149987770fdf43eaefb1058f2dc5de1f92e385ba1ef7882bbeed206968061"
+    },
+    {
+      "file": "preview-final01/preview-offscreen01.json",
+      "sha256": "c59bde4d85362feb8416ea0f925518a16801dd36f12816e99cff2610a431882f"
+    },
+    {
+      "file": "optimized-proof-arm01.json",
+      "sha256": "b8a4ec2d9e07be9fe94b49376679af80e5fe7454cb3a66e414cba7f06333d61b"
+    },
+    {
+      "file": "optimized-proof-intel01.json",
+      "sha256": "4cad7267fa15c9889da3c7a5751c5e4bcffc4ee61f774dd7ed06b513b58b2f3c"
+    }
+  ]
+}

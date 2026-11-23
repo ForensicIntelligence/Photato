@@ -18,3 +18,7 @@ When a bounded sRGB source needs an 8-bit or 16-bit sample, Photato converts jus
 ## Cropped transparent layers
 
 Painting beyond an eligible cropped layer now redraws the area covered by its previous and expanded tiles. The preview and committed pixels match when the layer origin shifts. [Build 726 measurements](SOURCE_PUBLICATION_726.md).
+
+## Perspective texture repair
+
+In Vanishing Point, define a plane on the product surface, sample from a clean repeat of its texture and paint over the defect. Use a new layer to keep the source editable. The 24-megapixel test preserves its selection and repairs the same crop as the smaller control. [Build 727 measurements](SOURCE_PUBLICATION_727.md).

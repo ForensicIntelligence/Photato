@@ -81,6 +81,60 @@ final class VanishingWorkflowTests:XCTestCase {
       XCTAssertNoThrow(try JSONSerialization.data(withJSONObject:VanishingSettings.apiCapabilities))
     }
   }
+  @MainActor func testPerspectiveCloneOnTwentyFourMegapixelsMatchesAuthenticatedAPI() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(actions: ActionLibrary(), pressedMouseButtons: { 0 }) { service, document in
+      var source = try CraftDocument(width: 6_000, height: 4_000)
+      var pixels = try Surface(width: source.width, height: source.height, fill: Pixel(0.7, 0.6, 0.5))
+      for y in 110..<131 {
+        for x in 110..<131 { pixels.setPixel(x: x, y: y, Pixel(0.1, 0.5, 0.8)) }
+      }
+      source.layers[0].content = .raster(pixels)
+      source.selection = IntRect(x: 186, y: 135, width: 12, height: 12)
+      document.store.session = EditorSession(document: source)
+      try service.share(document)
+
+      var draft = VanishingProgram()
+      draft.newLayer = true
+      draft.settings.planes = [.init(corners: [.init(80, 80), .init(280, 80), .init(260, 220), .init(95, 220)])]
+      var stamp = VanishingOperation(.clone)
+      stamp.diameter = 10
+      stamp.hardness = 95
+      stamp.sourcePoint = .init(120, 120)
+      stamp.points = [.init(192, 141)]
+      draft.operations = [stamp]
+
+      XCTAssertTrue(document.store.canBeginVanishingPoint)
+      document.store.beginVanishingPoint()
+      let workspace = try XCTUnwrap(document.store.vanishingWorkspace)
+      workspace.change(draft)
+      await workspace.task?.value
+      XCTAssertTrue(workspace.ready, workspace.error ?? "Missing full-resolution preview")
+      document.store.commitVanishingPoint()
+      await document.store.geometryTask?.value
+      let native = document.store.document
+      XCTAssertNil(document.store.error)
+      XCTAssertEqual(native.layers.first, source.layers.first)
+      XCTAssertEqual(native.layers.count, 2)
+      XCTAssertEqual(document.store.session.undoStack.count, 1)
+      _ = await document.store.requestHistory(redo: false).value
+      XCTAssertEqual(document.store.document, source)
+
+      let parameters: [String: Any] = [
+        "layerID": source.layers[0].id.uuidString, "newLayer": true, "settings": draft.settings.apiValue,
+        "operations": [["kind": "clone", "sourcePoint": ["x": 120, "y": 120],
+                        "points": [["x": 192, "y": 141]], "diameter": 10, "hardness": 95]],
+      ]
+      let status = try await helper.edit(service, document, "filter.vanishingPoint", parameters)
+      XCTAssertEqual(status, 200)
+      let authenticated = document.store.document
+      XCTAssertEqual(authenticated.layers.last?.content, native.layers.last?.content)
+      XCTAssertEqual(authenticated.vanishingPoint, native.vanishingPoint)
+      XCTAssertEqual(authenticated.layers.first, source.layers.first)
+      XCTAssertEqual(document.store.session.undoStack.count, 1)
+    }
+  }
+
   @MainActor func testFactoryMenuAndOffscreenWorkspace() async throws {
     try PhotoshopMenuTests().withMenus { app,menu in
       let item=try XCTUnwrap(PhotoshopMenuTests().allItems(menu).first{$0.identifier?.rawValue=="Filter > Vanishing Point…"});XCTAssertEqual(item.action,#selector(AppDelegate.vanishingPoint));XCTAssertEqual(item.keyEquivalent,"v");XCTAssertEqual(item.keyEquivalentModifierMask,[.option,.command]);XCTAssertFalse(app.validateMenuItem(item))

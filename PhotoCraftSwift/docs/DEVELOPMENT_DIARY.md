@@ -1,3 +1,15 @@
+## 2026-11-23 — Step 727 — Extend perspective texture repair to large canvases
+
+Vanishing Point can repair a selected texture on a full-resolution product image and keep the correction on an editable layer. The plane solver now accepts an off-axis plane whose corner rays all point in front of the camera. The desktop workspace and Photato API share the same edit.
+
+The editable 6,000 × 4,000 repair used two correction tiles. The selected texture matched the 2,048 × 1,536 reference byte for byte. The same selected crop matched in the 48-megapixel overview control and on a sparse 300,000 × 300,000 canvas. The tested native and authenticated API repairs preserved the original layer, editable archive and exact Undo. Their selected composite matched across optimized architectures.
+
+The first 24-megapixel workspace preview took 2.94 s on optimized Apple Silicon and 5.26 s under Rosetta. The Xcode Debug preview took 65.1 s. The separate 48-megapixel control produced a 2,048 × 1,536 overview.
+
+The 300,000 × 300,000 control uses a sparse canvas and a local selected repair. The Photoshop comparison, durable PSD perspective-plane metadata and Stamp healing modes remain open.
+
+[Development record](DEVLOG.md#dev-step-727) · [Qualification](SOURCE_PUBLICATION_727.md).
+
 ## 2026-11-23 — Step 726 — Keep cropped-layer retouch previews regional
 
 Clone Stamp and Healing Brush now redraw the affected area when a plain, integer-aligned transparent layer grows. The renderer includes both the old and new tile bounds, including when expansion shifts the layer origin. The native editor and authenticated Photato API use the same compositor.
@@ -1873,14 +1885,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:726 -->
+<!-- current-status-step:727 -->
 ## Current development status — 23 November 2026
 
-Clone Stamp and Healing Brush now redraw the affected area when a plain, integer-aligned transparent layer grows. The renderer includes both the old and new tile bounds, including when expansion shifts the layer origin. The native editor and authenticated Photato API use the same compositor.
+Vanishing Point can repair a selected texture on a full-resolution product image and keep the correction on an editable layer. The plane solver now accepts an off-axis plane whose corner rays all point in front of the camera. The desktop workspace and Photato API share the same edit.
 
-797 of 799 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Both new cropped-layer tests passed in Xcode Debug and in both optimized suites. The existing PSD layer-effect fixture repeated 118 assertions. The retained build 725 bundles repeated the color-profile fixture results, including identical dense and paged output bytes on each architecture. The Xcode project built, all six focused Debug tests passed, and both signed macOS 14+ preview slices opened offscreen.
+810 of 812 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new perspective tests passed in the optimized suites. The existing layer-effect and color-profile fixtures reproduced known failures, and paired color-profile output bytes matched the retained predecessor. The Xcode project built and all seven focused Debug methods passed. Both signed macOS 14+ slices opened offscreen.
 
-[Source checkpoint 726](SOURCE_PUBLICATION_726.md) · [Development record](DEVLOG.md#dev-step-726).
+[Source checkpoint 727](SOURCE_PUBLICATION_727.md) · [Development record](DEVLOG.md#dev-step-727).
 
 <!-- current-status:end -->
 
@@ -2813,6 +2825,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 724 | [Reuse the canvas composite for Clone Stamp and Healing Brush](DEVLOG.md#dev-step-724) |
 | 2026-11-23 | 725 | [Speed up RGB8 and RGB16 retouch sample conversion](DEVLOG.md#dev-step-725) |
 | 2026-11-23 | 726 | [Keep cropped-layer retouch previews regional](DEVLOG.md#dev-step-726) |
+| 2026-11-23 | 727 | [Extend perspective texture repair to large canvases](DEVLOG.md#dev-step-727) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

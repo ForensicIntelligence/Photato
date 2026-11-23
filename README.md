@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 726.** Clone Stamp and Healing Brush now redraw the affected area when a plain, integer-aligned transparent layer grows. The renderer includes both the old and new tile bounds, including when expansion shifts the layer origin. The native editor and authenticated Photato API use the same compositor. [Retouch guide](PhotoCraftSwift/docs/RETOUCH_SAMPLE_REUSE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_726.md).
+**Development alpha — source build 727.** Vanishing Point can repair a selected texture on a full-resolution product image and keep the correction on an editable layer. The plane solver now accepts an off-axis plane whose corner rays all point in front of the camera. The desktop workspace and Photato API share the same edit. [Retouch guide](PhotoCraftSwift/docs/RETOUCH_SAMPLE_REUSE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_727.md).
 
 ## Project layout
 

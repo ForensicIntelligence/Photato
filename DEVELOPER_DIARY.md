@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **726** · The 10 most recent entries, newest first.
+Source build **727** · The 10 most recent entries, newest first.
+
+## 2026-11-23 — Step 727 — Extend perspective texture repair to large canvases
+
+Vanishing Point can repair a selected texture on a full-resolution product image and keep the correction on an editable layer. The plane solver now accepts an off-axis plane whose corner rays all point in front of the camera. The desktop workspace and Photato API share the same edit.
+
+The editable 6,000 × 4,000 repair used two correction tiles. The selected texture matched the 2,048 × 1,536 reference byte for byte. The same selected crop matched in the 48-megapixel overview control and on a sparse 300,000 × 300,000 canvas. The tested native and authenticated API repairs preserved the original layer, editable archive and exact Undo. Their selected composite matched across optimized architectures.
+
+The first 24-megapixel workspace preview took 2.94 s on optimized Apple Silicon and 5.26 s under Rosetta. The Xcode Debug preview took 65.1 s. The separate 48-megapixel control produced a 2,048 × 1,536 overview.
+
+The 300,000 × 300,000 control uses a sparse canvas and a local selected repair. The Photoshop comparison, durable PSD perspective-plane metadata and Stamp healing modes remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-727) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_727.md).
 
 ## 2026-11-23 — Step 726 — Keep cropped-layer retouch previews regional
 
@@ -99,13 +111,3 @@ The on-device model repaired two copies of a photograph in a 12,000 × 9,000 doc
 The photo’s repaired grass remains softer than the surroundings. Photoshop 27.2.0 identified itself but its editing controls were unavailable for the comparison. Automatic removal of related effects, cloud Remove processing, the Adobe Execute Actions descriptor and exact Adobe pixels remain open. The 300,000-pixel check used sparse storage and known fill samples.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-718) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_718.md).
-
-## 2026-11-21 — Step 717 — Review and remove general distractions
-
-Remove → Find distractions → General distractions gives you a review before it changes the image. Choose which of the six categories to apply, adjust overlay opacity and refine the marks with the brush. Apply uses the selected raster or a new correction layer and records one Undo. The Photato API shares the same review and edit.
-
-The reviewer marked bins in two independent photographs. A sampled point on the neighboring bench stayed outside the first mask. Traditional fill and optional Apple Silicon LaMa512 fill changed only selected-mask pixels. One Undo restored each original. The authenticated API produced the exact same document as the editor with the real model on Footpath. The tests cover category-only preview, ordered brush refinement, the current selection, layer output and source sampling. The optimized Intel slice also completed the Footpath workflow under Rosetta with traditional fill. The native detection returned one fewer vegetation mark on that run.
-
-The bin sample retained a mounting post, and a strong cast shadow remained in the Footpath photo. Classification still depends on the scene. General distractions uses the 16-megapixel Remove canvas limit. The explicit Generative AI On mode, byte-exact Photoshop output and the Adobe Execute Actions descriptor remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-717) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_717.md).

@@ -50,6 +50,60 @@ final class VanishingTests:XCTestCase {
       XCTAssertThrowsError(try edit.applied(to:changed));XCTAssertEqual(d.layers.count,1)
     }
   }
+  func testLargePerspectiveStrokeTouchesOnlyTheSelectedTiles() throws {
+    for depth in PixelDepth.allCases {
+      var document = try CraftDocument(width: 6_000, height: 4_000, depth: depth)
+      var sample = try Surface(width: document.width, height: document.height, depth: depth, fill: .white)
+      for y in 3_924..<3_934 {
+        for x in 5_911..<5_921 { sample.setPixel(x: x, y: y, Pixel(1, 0.1, 0.2)) }
+      }
+      document.layers[0].content = .raster(sample)
+      document.selection = IntRect(x: 5_944, y: 3_942, width: 9, height: 7)
+      let id = document.layers[0].id
+      var program = plain()
+      program.settings.focalLength = 150
+      program.settings.center = .init(5_935, 3_940)
+      program.settings.planes[0].corners = program.settings.planes[0].corners.map {
+        .init($0.x + 5_905, $0.y + 3_920)
+      }
+      var clone = VanishingOperation(.clone)
+      clone.sourcePoint = .init(5_916, 3_929)
+      clone.points = [.init(5_949, 3_945)]
+      clone.diameter = 18
+      clone.hardness = 100
+      program.operations = [clone]
+      let edited = try VanishingEdit.prepare(document, layerID: id, program: program, sample: sample)
+      guard case .raster(let raster) = edited.result.layers[0].content else { return XCTFail("Missing edited raster") }
+      XCTAssertLessThan(raster.pixel(x: 5_948, y: 3_945).g, 0.2)
+      XCTAssertEqual(raster.pixel(x: 5_943, y: 3_945), .white)
+      XCTAssertEqual(raster.pixel(x: 0, y: 0), sample.pixel(x: 0, y: 0))
+      XCTAssertLessThan(raster.tileCount, 10)
+
+      program.newLayer = true
+      let correction = try VanishingEdit.prepare(document, layerID: id, program: program, sample: sample)
+      XCTAssertEqual(correction.result.layers[0], document.layers[0])
+      let newLayer = try XCTUnwrap(correction.result.layers.last)
+      guard case .raster(let repair) = newLayer.content else { return XCTFail("Missing correction layer") }
+      XCTAssertGreaterThan(repair.pixel(x: 5_948, y: 3_945).a, 0.9)
+      XCTAssertEqual(repair.pixel(x: 5_943, y: 3_945).a, 0)
+      XCTAssertLessThan(repair.tileCount, 10)
+      XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(correction.result)), correction.result)
+    }
+  }
+
+  func testOffAxisPlaneKeepsAllCornersInFrontOfTheCamera() throws {
+    let corners = [PathPoint(80, 80), .init(280, 80), .init(260, 220), .init(95, 220)]
+    var settings = VanishingSettings()
+    settings.planes = [.init(corners: corners)]
+    let scene = try VanishingScene(settings, width: 6_000, height: 4_000)
+    let frame = try XCTUnwrap(scene.frames.first)
+    XCTAssertEqual(frame.corners, corners)
+    XCTAssertTrue(frame.points.allSatisfy { $0.z > 0 })
+    let origin = frame.point(.init(0, 0))
+    XCTAssertEqual(origin.x, corners[0].x, accuracy: 1e-9)
+    XCTAssertEqual(origin.y, corners[0].y, accuracy: 1e-9)
+  }
+
   func testCancellationDoesNotPublishPixelsOrPlaneMetadata() async throws {
     let d=try CraftDocument(width:64,height:48),id=d.layers[0].id,p=plain(),sample=try Surface(width:64,height:48,fill:.white)
     let task=Task.detached { withUnsafeCurrentTask { $0?.cancel() };return try VanishingEdit.prepare(d,layerID:id,program:p,sample:sample) }

@@ -8,7 +8,7 @@ public enum VanishingEngine {
   static func read(_ s:Surface,_ x:Int,_ y:Int)->Pixel { s.depth == .f32 ? s.linearPixel(x:x,y:y):s.pixel(x:x,y:y) }
   static func write(_ s:inout Surface,_ x:Int,_ y:Int,_ p:Pixel) { if s.depth == .f32 { s.setLinearPixel(x:x,y:y,p) } else { s.setPixel(x:x,y:y,p) } }
   public static func render(_ program:VanishingProgram,sample:Surface) throws -> Surface {
-    try program.validate();try sample.validated();guard sample.width<=WarpRaster.maximumPixels/sample.height else { throw CraftError.unsupported("Vanishing Point supports canvases up to8,388,608 pixels.") }
+    try program.validate();try sample.validated()
     let scene=try VanishingScene(program.settings,width:sample.width,height:sample.height),linear=sample.depth == .f32
     var output=try Surface(width:sample.width,height:sample.height,depth:sample.depth,colorEncoding:linear ? .linearRGB:.sRGB),work=0
     func region(_ points:[PathPoint]) throws -> IntRect {
@@ -74,8 +74,11 @@ public struct VanishingEdit:Sendable {
   public let layerID:UUID
   public let program:VanishingProgram
   public static func target(_ d:CraftDocument,layerID:UUID,newLayer:Bool=false) throws -> Layer {
-    guard let layer=d.layers.first(where:{$0.id==layerID}),case .raster(let pixels)=layer.content,layer.smartObject==nil,
-      newLayer || !d.isImageLocked(layerID),d.width<=WarpRaster.maximumPixels/d.height,pixels.width<=WarpRaster.maximumPixels/pixels.height else { throw CraftError.unsupported("Vanishing Point requires a pixel layer and a canvas up to8,388,608 pixels. Rasterize Smart Objects first; unlock pixels for current-layer output.") }
+    guard let layer = d.layers.first(where: { $0.id == layerID }), case .raster = layer.content,
+      layer.smartObject == nil, newLayer || !d.isImageLocked(layerID)
+    else {
+      throw CraftError.unsupported("Vanishing Point requires a rasterized pixel layer. Unlock it for current-layer output.")
+    }
     return layer
   }
   public static func prepare(_ d:CraftDocument,layerID:UUID,program:VanishingProgram,sample:Surface) throws -> Self {
@@ -89,21 +92,57 @@ public struct VanishingEdit:Sendable {
       let overlay=try VanishingEngine.render(program,sample:sample)
       if program.newLayer {
         guard d.layers.count<LayerLimits.maximumLayers else { throw CraftError.invalid("Layer limit reached.") }
-        var pixels=overlay
-        for y in 0..<d.height { try Task.checkCancellation();for x in 0..<d.width { var p=VanishingEngine.read(pixels,x,y);p.a *= d.selectionCoverage(x:x,y:y);VanishingEngine.write(&pixels,x,y,p) } }
+        var pixels = overlay
+        if d.selection != nil || d.selectionMask != nil {
+          let side = Surface.tileSide
+          let columns = (d.width + side - 1) / side
+          for key in overlay.storedTileKeys {
+            try Task.checkCancellation()
+            let x0 = key % columns * side, y0 = key / columns * side
+            for y in y0..<min(d.height, y0 + side) {
+              for x in x0..<min(d.width, x0 + side) {
+                var pixel = VanishingEngine.read(overlay, x, y)
+                pixel.a *= d.selectionCoverage(x: x, y: y)
+                VanishingEngine.write(&pixels, x, y, pixel)
+              }
+            }
+          }
+        }
         var new=Layer(name:"Vanishing Point",content:.raster(pixels));new.parentID=layer.parentID
         let index=d.layers.firstIndex(where:{$0.id==layerID})!;result.layers.insert(new,at:index+1);result.activeLayerID=new.id
       } else if case .raster(let original)=layer.content {
-        var pixels=original;let alphaLocked=d.isTransparencyLocked(layerID)
-        for y in 0..<original.height { try Task.checkCancellation();for x in 0..<original.width {
-          let q=PathPoint(Double(x)+0.5,Double(y)+0.5).transformed(layer.coordinateTransform)
-          guard q.x>=0,q.x<Double(d.width),q.y>=0,q.y<Double(d.height) else { continue }
-          let coverage=d.selectionCoverage(x:Int(floor(q.x)),y:Int(floor(q.y)));if coverage<=0 { continue }
-          let ink=WarpRaster.sample(overlay,q,method:.bilinear,clampEdges:false);if ink.a==0 { continue }
-          let before=VanishingEngine.read(original,x,y);if alphaLocked && before.a==0 { continue }
-          var after=VanishingEngine.over(ink,before);if alphaLocked { after.a=before.a }
-          let p=before.mixing(after,coverage:coverage);guard p.isFinite else { throw CraftError.invalid("Nonfinite Vanishing Point output.") };VanishingEngine.write(&pixels,x,y,p)
-        } };result.layers[result.layers.firstIndex(where:{$0.id==layerID})!].content = .raster(pixels)
+        var pixels = original
+        let alphaLocked = d.isTransparencyLocked(layerID)
+        let transform = layer.coordinateTransform
+        let originalBounds = IntRect(x: 0, y: 0, width: original.width, height: original.height)
+        // Bilinear sampling can see the adjacent document pixel at a tile boundary.
+        let support: [IntRect]
+        if let inverse = try? transform.inverted() {
+          support = try overlay.projectedGeometrySupport(inverse, bounds: originalBounds, halo: 1)
+        } else {
+          support = [originalBounds]
+        }
+        for patch in GeometryPatchRegions(width: original.width, height: original.height, rectangles: support) {
+          try Task.checkCancellation()
+          for y in patch.y..<(patch.y + patch.height) {
+            for x in patch.x..<(patch.x + patch.width) {
+              let q = PathPoint(Double(x) + 0.5, Double(y) + 0.5).transformed(transform)
+              guard q.x >= 0, q.x < Double(d.width), q.y >= 0, q.y < Double(d.height) else { continue }
+              let coverage = d.selectionCoverage(x: Int(floor(q.x)), y: Int(floor(q.y)))
+              guard coverage > 0 else { continue }
+              let ink = WarpRaster.sample(overlay, q, method: .bilinear, clampEdges: false)
+              guard ink.a > 0 else { continue }
+              let before = VanishingEngine.read(original, x, y)
+              if alphaLocked && before.a == 0 { continue }
+              var after = VanishingEngine.over(ink, before)
+              if alphaLocked { after.a = before.a }
+              let pixel = before.mixing(after, coverage: coverage)
+              guard pixel.isFinite else { throw CraftError.invalid("Nonfinite Vanishing Point output.") }
+              VanishingEngine.write(&pixels, x, y, pixel)
+            }
+          }
+        }
+        result.layers[result.layers.firstIndex(where: { $0.id == layerID })!].content = .raster(pixels)
       }
     }
     try result.validate();try Task.checkCancellation();return Self(source:d,result:result,layerID:layerID,program:program)
