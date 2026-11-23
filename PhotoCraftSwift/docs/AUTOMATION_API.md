@@ -1,3 +1,7 @@
+### Sampling for Clone Stamp and Healing Brush (checkpoint 724)
+
+The authenticated `retouch.stroke` operation can use the matching raw canvas render for multilayer sampling. The request format, source selection and editable correction-layer history are the same. A stale render or a different sampled layer stack triggers fresh composition. [Retouch guide](RETOUCH_SAMPLE_REUSE.md)
+
 ### Refine Hair (checkpoint 723)
 
 Pass `settings.refineHair=true` to `selection.refine` with a rough selection or `fromLayerMask=true` and a pixel mask. The local pass runs before the requested brush strokes. Selection and layer mask edits retain their existing Undo and revision checks. [Refine Hair guide](REFINE_HAIR.md)

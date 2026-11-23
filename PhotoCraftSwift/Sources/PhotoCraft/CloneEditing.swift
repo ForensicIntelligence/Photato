@@ -104,10 +104,11 @@ struct CloneSourceRequest: Sendable {
   let ignoreAdjustments: Bool
   let mask: Bool
   var target: CraftDocument? = nil
+  var snapshot: RenderSnapshot? = nil
   func sample() throws -> CloneSample {
     let sampled = try Renderer.cloneSample(
       in: document, layerID: layerID, sampling: sampling, ignoreAdjustments: ignoreAdjustments,
-      mask: mask)
+      mask: mask, reusing: snapshot)
     guard !mask, let target else { return sampled }
     var origin = sampled.origin; origin?.convertToTarget = true
     return CloneSample(
@@ -257,7 +258,8 @@ extension EditorStore {
     }
     return CloneSourceRequest(
       document: source.document, layerID: layerID, sampling: retouchSettings.sampling,
-      ignoreAdjustments: retouchSettings.ignoreAdjustments, mask: slot.mask, target: document)
+      ignoreAdjustments: retouchSettings.ignoreAdjustments, mask: slot.mask, target: document,
+      snapshot: source.renderSnapshot)
   }
   func beginClone(_ point: StrokePoint, alternate: Bool = false, eventTimestamp: TimeInterval? = nil) {
     guard canClone, let layerID = activeLayer?.id else {
@@ -294,7 +296,7 @@ extension EditorStore {
           document: document, layerID: layerID,
           sampling: focus != nil
             ? (focusOptions.sampleAllLayers ? .all : .current) : retouchSettings.sampling,
-          ignoreAdjustments: false, mask: editingMask) : try cloneRequest()
+          ignoreAdjustments: false, mask: editingMask, snapshot: renderSnapshot) : try cloneRequest()
       let mapping =
         automatic
         ? CloneMapping(source: .init(0, 0), anchor: .init(0, 0))
@@ -306,7 +308,7 @@ extension EditorStore {
         healing && retouchSettings.sampling != .current && !editingMask
         ? CloneSourceRequest(
           document: document, layerID: layerID, sampling: retouchSettings.sampling,
-          ignoreAdjustments: retouchSettings.ignoreAdjustments, mask: false) : nil
+          ignoreAdjustments: retouchSettings.ignoreAdjustments, mask: false, snapshot: renderSnapshot) : nil
       let draft = CloneDraft(
         sessionGeneration: sessionGeneration, layerID: layerID, slot: cloneState.active, sourceToken: cloneState.slot.token,
         mapping: mapping,

@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **723** · The 10 most recent entries, newest first.
+Source build **724** · The 10 most recent entries, newest first.
+
+## 2026-11-23 — Step 724 — Reuse the canvas composite for Clone Stamp and Healing Brush
+
+Clone Stamp and Healing Brush can reuse the prepared canvas composite for Current & Below and All Layers. The renderer checks that the cached document matches the requested source and layer cutoff. Source selection, previews and authenticated Photato edits share this sampling path.
+
+On the 2,096 × 2,592 portrait, the optimized Apple Silicon raw sampling step went from 190.2 ms to 0.17 ms with a ready exact composite. Under Rosetta it went from 352.4 ms to 0.22 ms. All source bytes matched. The six optimized portrait edits matched build 723 PNGs exactly. The editor preview, commit and authenticated API output matched. Each repair stayed on an editable correction layer after reopening and could be reversed with one Undo.
+
+With the ordinary New Layer action, Apple Silicon rendered the first preview in 183–192 ms. Using a compact 2 × 2 raster that had to expand, the first preview took 641–682 ms. The normal sparse New Layer raster can update a small region. Depth conversion still took most of its first-frame time. Both layer geometries produced the same tested PNGs.
+
+These tests compare Photato’s output across configurations and against a clean portrait reference. Live Photoshop comparison is still open. Raw sampling time measures a single preparation stage. Actual pointing-device feedback and physical frame cadence remain open. The Clone Stamp still requires the user to match both source texture and tone.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-724) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_724.md).
 
 ## 2026-11-23 — Step 723 — Refine hair in Select and Mask
 
@@ -93,13 +105,3 @@ With the same seed and selection, the model used a teapot or orange reference to
 The optional model requires Apple Silicon and macOS 26 or later and uses a visual reference without text. Place depends on foreground detection and can omit generated shadows. The installed Photoshop 27.2.0 document query timed out. Exact Firefly output, the Adobe Execute Actions descriptor, partner providers, keyboard and assistive-technology checks remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-715) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_715.md).
-
-## 2026-11-21 — Step 714 — Guide Generate Image with Style and Composition references
-
-Generate Image accepts an optional reference. Style transfers colours and textures to the image described by the prompt. Composition uses edges to guide layout during generation. Photato keeps the reference with the editable Smart Object for Generate More and Generate Similar. The authenticated Photato API uses the same edit and history.
-
-Changing only the Composition reference moved the measured orange centre from x=151.5 to x=386.5 in a 512-pixel image. Changing only the Style reference moved mean red minus blue from 0.506 to -0.506. Editor and authenticated HTTP pixels matched exactly at the same seed for both modes. All four owned renders and their embedded reference samples survived Photato, PSD, and PSB reopens. An independent merged-preview reader matched each PSD and PSB to its PNG. Generate More after reopening PSB matched a fresh generation at the same seed and retained the earlier result. The optimized Apple Silicon worker and a signed sandbox harness each reproduced all four outputs byte for byte.
-
-Local models are optional on Apple Silicon with macOS 26 or later. The Style model operates at 224 pixels internally and can soften fine detail. Composition can add objects when edges are ambiguous. The Photoshop 27.2.0 AppleEvent query timed out. Direct Photoshop reopen, Firefly output fidelity, the Firefly ActionJSON descriptor, keyboard and assistive-technology testing remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-714) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_714.md).

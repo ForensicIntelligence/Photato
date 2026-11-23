@@ -1,3 +1,15 @@
+## 2026-11-23 — Step 724 — Reuse the canvas composite for Clone Stamp and Healing Brush
+
+Clone Stamp and Healing Brush can reuse the prepared canvas composite for Current & Below and All Layers. The renderer checks that the cached document matches the requested source and layer cutoff. Source selection, previews and authenticated Photato edits share this sampling path.
+
+On the 2,096 × 2,592 portrait, the optimized Apple Silicon raw sampling step went from 190.2 ms to 0.17 ms with a ready exact composite. Under Rosetta it went from 352.4 ms to 0.22 ms. All source bytes matched. The six optimized portrait edits matched build 723 PNGs exactly. The editor preview, commit and authenticated API output matched. Each repair stayed on an editable correction layer after reopening and could be reversed with one Undo.
+
+With the ordinary New Layer action, Apple Silicon rendered the first preview in 183–192 ms. Using a compact 2 × 2 raster that had to expand, the first preview took 641–682 ms. The normal sparse New Layer raster can update a small region. Depth conversion still took most of its first-frame time. Both layer geometries produced the same tested PNGs.
+
+These tests compare Photato’s output across configurations and against a clean portrait reference. Live Photoshop comparison is still open. Raw sampling time measures a single preparation stage. Actual pointing-device feedback and physical frame cadence remain open. The Clone Stamp still requires the user to match both source texture and tone.
+
+[Development record](DEVLOG.md#dev-step-724) · [Qualification](SOURCE_PUBLICATION_724.md).
+
 ## 2026-11-23 — Step 723 — Refine hair in Select and Mask
 
 Select and Mask adds Refine Hair for a rough selection or an existing layer mask. Photato recovers soft strand coverage near the subject and keeps it editable. The native workspace previews the result before committing. The optional Photato API uses the same refinement.
@@ -1837,14 +1849,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:723 -->
+<!-- current-status-step:724 -->
 ## Current development status — 23 November 2026
 
-Select and Mask adds Refine Hair for a rough selection or an existing layer mask. Photato recovers soft strand coverage near the subject and keeps it editable. The native workspace previews the result before committing. The optional Photato API uses the same refinement.
+Clone Stamp and Healing Brush can reuse the prepared canvas composite for Current & Below and All Layers. The renderer checks that the cached document matches the requested source and layer cutoff. Source selection, previews and authenticated Photato edits share this sampling path.
 
-719 of 720 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Debug passed 718 of 720. Both new regression methods passed on all three configurations. The optimized suites repeated the existing PSD layer-effect failure. Debug also reproduced the inherited Adobe-compatible Smart Filter stack overflow. Xcode built the checked-in project. The signed preview opened both macOS 14+ slices offscreen, and the Select and Mask control was inspected offscreen in Light and Dark.
+765 of 766 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Debug passed 764 of 766. The new sampling regression passed on all three configurations. The existing PSD layer-effect test repeated its 118 assertions. Debug also reproduced the inherited Smart Filter PSD export stack overflow. Xcode built the checked-in project. The signed macOS 14+ preview opened offscreen on both architectures.
 
-[Source checkpoint 723](SOURCE_PUBLICATION_723.md) · [Development record](DEVLOG.md#dev-step-723).
+[Source checkpoint 724](SOURCE_PUBLICATION_724.md) · [Development record](DEVLOG.md#dev-step-724).
 
 <!-- current-status:end -->
 
@@ -2774,6 +2786,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 721 | [Preserve editable type and RGB32 composites in layered Photoshop files](DEVLOG.md#dev-step-721) |
 | 2026-11-23 | 722 | [Keep projected Smart Object edges stable when relinking](DEVLOG.md#dev-step-722) |
 | 2026-11-23 | 723 | [Refine hair in Select and Mask](DEVLOG.md#dev-step-723) |
+| 2026-11-23 | 724 | [Reuse the canvas composite for Clone Stamp and Healing Brush](DEVLOG.md#dev-step-724) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

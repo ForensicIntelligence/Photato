@@ -1,0 +1,397 @@
+{
+  "build": 724,
+  "base": "3343a1a05c1adc5b6f0278b59d6f2c5b89718358",
+  "buildInputs": 9423,
+  "includedBuildInputs": 9423,
+  "candidateManifestSHA256": "117c592a1498e5b1512fa69d945a73dc43dc48d5bd87a405d90e26d579be47f1",
+  "sourceChanges": [
+    {
+      "path": "Sources/PhotoCraft/AutomationRetouch.swift",
+      "sha256": "9e721b6d1e2f27f8b5a2ef33eb8125aed54257724f31b4e006b0d49c05c7a175"
+    },
+    {
+      "path": "Sources/PhotoCraft/CloneEditing.swift",
+      "sha256": "d98b625150f2af1e6e96c327f94d17d2855c0dcb8a824a234631b489df1239f0"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/CloneSampling.swift",
+      "sha256": "9431369e74a503e8fc19913715338d1080cc4790906daab2473b2018065655c2"
+    },
+    {
+      "path": "Sources/PhotoCraftImaging/RetouchPreparation.swift",
+      "sha256": "b128596d298c4a6aa5713b3319966f40aa617953e49844d64031395f245db464"
+    },
+    {
+      "path": "Tests/PhotoCraftImagingTests/HealingRenderTests.swift",
+      "sha256": "14371401cf31030eb7e5d2658bd12132ba9dc87e68448e6e013068f7afd4a214"
+    },
+    {
+      "path": "scripts/Info.plist",
+      "sha256": "6661b2fa20b7c839674c31cd950d6a959dd0d597eed8beb8450241f1c6ec5bd7"
+    }
+  ],
+  "casesPerConfiguration": 766,
+  "qualifications": {
+    "debug": {
+      "architecture": "arm64",
+      "configuration": "debug",
+      "expected": 766,
+      "passed": 764,
+      "newCasesExpected": 1,
+      "newCasesPassed": 1,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftAppTests.SmartFilterWorkflowTests/testPublishedExecuteActionsRetainsEditablePSDStack",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "4d411c63175d4a9d4e6c8008a074e2855120654bd017bd07fefa09806df9c920"
+    },
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 766,
+      "passed": 765,
+      "newCasesExpected": 1,
+      "newCasesPassed": 1,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "5b4457ce4191c2133577befb7f5246bf14c218029159bf6ef95fdc74655cf98d"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 766,
+      "passed": 765,
+      "newCasesExpected": 1,
+      "newCasesPassed": 1,
+      "failed": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "failedOrMissing": [
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "qualifiesSelectedCases": false,
+      "testExecutableSHA256": "362058d82398f7eb6cca822491925115505f496c1150004c981c58e569cd1f1b"
+    }
+  },
+  "portraitBenchmark": {
+    "pixels": [
+      2096,
+      2592
+    ],
+    "sampleTimes": {
+      "debug": {
+        "freshSeconds": 3.146617791,
+        "readySeconds": 0.000435375
+      },
+      "arm": {
+        "freshSeconds": 0.190175291,
+        "readySeconds": 0.000168625
+      },
+      "intel": {
+        "freshSeconds": 0.352418208,
+        "readySeconds": 0.000221416
+      }
+    },
+    "compactLayerFrameTimes": {
+      "debug": {
+        "healing-0": {
+          "sourcePreparationSeconds": 3.82239275,
+          "softwarePreviewSeconds": 13.996239583000001
+        },
+        "clone-0": {
+          "sourcePreparationSeconds": 3.72196325,
+          "softwarePreviewSeconds": 13.699069042
+        }
+      },
+      "arm": {
+        "healing-0": {
+          "sourcePreparationSeconds": 0.185563625,
+          "softwarePreviewSeconds": 0.6627655
+        },
+        "healing-1": {
+          "sourcePreparationSeconds": 0.182254333,
+          "softwarePreviewSeconds": 0.681761416
+        },
+        "healing-2": {
+          "sourcePreparationSeconds": 0.183360875,
+          "softwarePreviewSeconds": 0.648787959
+        },
+        "clone-0": {
+          "sourcePreparationSeconds": 0.181270208,
+          "softwarePreviewSeconds": 0.66664225
+        },
+        "clone-1": {
+          "sourcePreparationSeconds": 0.182409541,
+          "softwarePreviewSeconds": 0.6583925
+        },
+        "clone-2": {
+          "sourcePreparationSeconds": 0.181614333,
+          "softwarePreviewSeconds": 0.640857708
+        }
+      },
+      "intel": {
+        "healing-0": {
+          "sourcePreparationSeconds": 0.3334045,
+          "softwarePreviewSeconds": 1.179618
+        },
+        "healing-1": {
+          "sourcePreparationSeconds": 0.334101334,
+          "softwarePreviewSeconds": 1.165216917
+        },
+        "healing-2": {
+          "sourcePreparationSeconds": 0.33494875,
+          "softwarePreviewSeconds": 1.1547615
+        },
+        "clone-0": {
+          "sourcePreparationSeconds": 0.330592,
+          "softwarePreviewSeconds": 1.157685917
+        },
+        "clone-1": {
+          "sourcePreparationSeconds": 0.331541042,
+          "softwarePreviewSeconds": 1.140992375
+        },
+        "clone-2": {
+          "sourcePreparationSeconds": 0.327524084,
+          "softwarePreviewSeconds": 1.156901209
+        }
+      }
+    },
+    "newLayerFrameTimes": {
+      "arm": {
+        "healing-0": {
+          "sourcePreparationSeconds": 0.184708875,
+          "softwarePreviewSeconds": 0.192025542
+        },
+        "healing-1": {
+          "sourcePreparationSeconds": 0.180178708,
+          "softwarePreviewSeconds": 0.188346042
+        },
+        "healing-2": {
+          "sourcePreparationSeconds": 0.178958542,
+          "softwarePreviewSeconds": 0.1843015
+        },
+        "clone-0": {
+          "sourcePreparationSeconds": 0.181334041,
+          "softwarePreviewSeconds": 0.184709666
+        },
+        "clone-1": {
+          "sourcePreparationSeconds": 0.179119375,
+          "softwarePreviewSeconds": 0.182703958
+        },
+        "clone-2": {
+          "sourcePreparationSeconds": 0.17966575,
+          "softwarePreviewSeconds": 0.183092625
+        }
+      },
+      "intel": {
+        "healing-0": {
+          "sourcePreparationSeconds": 0.328582666,
+          "softwarePreviewSeconds": 0.339671666
+        },
+        "healing-1": {
+          "sourcePreparationSeconds": 0.337952583,
+          "softwarePreviewSeconds": 0.348392333
+        },
+        "healing-2": {
+          "sourcePreparationSeconds": 0.332510458,
+          "softwarePreviewSeconds": 0.340611167
+        },
+        "clone-0": {
+          "sourcePreparationSeconds": 0.326898292,
+          "softwarePreviewSeconds": 0.333180792
+        },
+        "clone-1": {
+          "sourcePreparationSeconds": 0.33010125,
+          "softwarePreviewSeconds": 0.335883875
+        },
+        "clone-2": {
+          "sourcePreparationSeconds": 0.329503125,
+          "softwarePreviewSeconds": 0.335502458
+        }
+      }
+    },
+    "baselinePNGMatches": {
+      "healing-0": {
+        "debug": "b1d2fc027edcfdbed6c00f1e39f6bbfd14333ae1804f57a21a09654e657dd059",
+        "arm": "b1d2fc027edcfdbed6c00f1e39f6bbfd14333ae1804f57a21a09654e657dd059",
+        "intel": "b1d2fc027edcfdbed6c00f1e39f6bbfd14333ae1804f57a21a09654e657dd059"
+      },
+      "clone-0": {
+        "debug": "e551bf88719399293c9d9e4ff6225f71a042d9ee98fb9a3db52d63abe7f94a0c",
+        "arm": "e551bf88719399293c9d9e4ff6225f71a042d9ee98fb9a3db52d63abe7f94a0c",
+        "intel": "e551bf88719399293c9d9e4ff6225f71a042d9ee98fb9a3db52d63abe7f94a0c"
+      },
+      "healing-1": {
+        "arm": "bfe29c4f850f8c5e7529509e3bce8cb272a3081156d452edf574e8e4bbaf66d6",
+        "intel": "bfe29c4f850f8c5e7529509e3bce8cb272a3081156d452edf574e8e4bbaf66d6"
+      },
+      "healing-2": {
+        "arm": "dc0b88830fd69a419fe0fe38d050ca963ef721ece106f04d50e8db3abfdc2cb1",
+        "intel": "dc0b88830fd69a419fe0fe38d050ca963ef721ece106f04d50e8db3abfdc2cb1"
+      },
+      "clone-1": {
+        "arm": "49c155d3f829750017c6aa02be666dfc5d5675d9578c901d58d90d88e5ece7df",
+        "intel": "49c155d3f829750017c6aa02be666dfc5d5675d9578c901d58d90d88e5ece7df"
+      },
+      "clone-2": {
+        "arm": "c2d0cbd33e85bb4e4ab877dad8a25a6c1f2cde37bea4be576c4defc3cab1769f",
+        "intel": "c2d0cbd33e85bb4e4ab877dad8a25a6c1f2cde37bea4be576c4defc3cab1769f"
+      }
+    },
+    "quality": {
+      "clone-0": {
+        "blemishMAEBefore": 14.261359867330016,
+        "blemishMAEAfter": 15.002985074626865,
+        "collarMAEAfter": 5.836968228325256,
+        "skinDetailGradientMAE": 4.4026731958762895,
+        "changedPixelsOutsideBrushBounds": 0
+      },
+      "clone-1": {
+        "blemishMAEBefore": 12.6234395379169,
+        "blemishMAEAfter": 13.236072293646357,
+        "collarMAEAfter": 4.402214022140221,
+        "skinDetailGradientMAE": 2.982351664753158,
+        "changedPixelsOutsideBrushBounds": 0
+      },
+      "clone-2": {
+        "blemishMAEBefore": 11.85364281108962,
+        "blemishMAEAfter": 8.811734364925854,
+        "collarMAEAfter": 3.099787685774947,
+        "skinDetailGradientMAE": 1.5514520325203256,
+        "changedPixelsOutsideBrushBounds": 0
+      },
+      "healing-0": {
+        "blemishMAEBefore": 14.261359867330016,
+        "blemishMAEAfter": 8.324709784411278,
+        "collarMAEAfter": 2.3210823909531504,
+        "skinDetailGradientMAE": 4.406117525773197,
+        "changedPixelsOutsideBrushBounds": 0
+      },
+      "healing-1": {
+        "blemishMAEBefore": 12.6234395379169,
+        "blemishMAEAfter": 4.975405254332029,
+        "collarMAEAfter": 1.5547355473554736,
+        "skinDetailGradientMAE": 3.0043680826636057,
+        "changedPixelsOutsideBrushBounds": 0
+      },
+      "healing-2": {
+        "blemishMAEBefore": 11.85364281108962,
+        "blemishMAEAfter": 3.0786589297227596,
+        "collarMAEAfter": 1.0070771408351027,
+        "skinDetailGradientMAE": 1.5501207317073173,
+        "changedPixelsOutsideBrushBounds": 0
+      }
+    },
+    "physicalFrameCadenceMeasured": false
+  },
+  "photoshopReference": {
+    "version": "27.2.0",
+    "accessibleWindows": 0,
+    "accessibleMenuBars": 0,
+    "liveOutputCompared": false
+  },
+  "preview": {
+    "archiveSHA256": "72ac2938a1ecb6f29a4412876988099a9842354ce4c0d80b1f15b59679515340",
+    "minimumSystemVersion": "14.0",
+    "archInputsSHA256": {
+      "arm64": "eaf2fd167fedcbfdef89717ca22c9991aa3da9e4b0393d5de9bcb0d5b78f67f5",
+      "x86_64": "a6d3402b6965730e9474439bf46531fb7d0e08eebedb7d90e9c60c7960b94460"
+    },
+    "binarySHA256": "ec80478032bbdf9b2ef244f6b708b20cad19bc7c5cc8ea68fba214b48c4e2cb2",
+    "verifiedOffscreenWorkspaces": {
+      "arm64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "0f71fbc46c420789582d38c6bfdbced913079c4350fdcef280886225909058af"
+      },
+      "x86_64": {
+        "width": 1000,
+        "height": 650,
+        "sha256": "f16758bbec8b65599bea439ed0fa2b3adf0db2f1ec7bde34cd48c4c1dc4e31dd"
+      }
+    }
+  },
+  "evidence": [
+    {
+      "file": "build-debug01.log",
+      "sha256": "a8985b79a6937489a9e273853a378e5fddf7863aa84fc66c089c880ffb0d9f73"
+    },
+    {
+      "file": "focused-debug01.log",
+      "sha256": "69508b6f803264b4b1841bd3ed6fc11bb2700cccbcffc1c6d796ff0e13eac416"
+    },
+    {
+      "file": "adobe-reference01.log",
+      "sha256": "e419226b7b571f120c1f3d46873833ec1d71bf318ecca4eabe32f32bdd978937"
+    },
+    {
+      "file": "xcode-build01.log",
+      "sha256": "5311a2dd72e4e71451261af78a4e0309ef29cb231da5c48305a7dc50dfdf719c"
+    },
+    {
+      "file": "build-release-arm6401.log",
+      "sha256": "9f2c11b77f4da9b54bf9f989444cbd803f9c91427e3481dd157ee00d8a67a541"
+    },
+    {
+      "file": "build-release-x86_6401.log",
+      "sha256": "b9eb45906c7cf026a30ad6bec539e01f7dca0321429caf7dd432ba8a644acc5f"
+    },
+    {
+      "file": "portrait-baseline-arm02.log",
+      "sha256": "a94cf3b3f776ebf690aa8d09494fee8b5a2b7b9480657be767758492febadad5"
+    },
+    {
+      "file": "portrait-metrics-arm02.log",
+      "sha256": "eec011616f21844bcaec6c4d87bb523c308f5bdbf324e569d7c29db295568db6"
+    },
+    {
+      "file": "preview-profile-arm05.log",
+      "sha256": "c1ebfa47e64e4fa971ad9a48c3c125112744de69ccbbb9c9451e6df3db020434"
+    },
+    {
+      "file": "portrait-new-layer-arm01.log",
+      "sha256": "ea6b617069a4ae5b1d29415f2a5e92f548d32c8247a84c035a61e5a0949897b1"
+    },
+    {
+      "file": "portrait-new-layer-intel01.log",
+      "sha256": "d68e19dc58b6bdfdd611cb6316200c0bd91d59be949829aa49eedd850c84d67e"
+    },
+    {
+      "file": "preview-final01/preview-offscreen01.json",
+      "sha256": "697048daad3d529d18b3e500fa4585581265600c6ba21bf2a887ace208574765"
+    },
+    {
+      "file": "sample-benchmark-debug01.log",
+      "sha256": "b8a01b01ab2b65107bf68a27c03dc7664f96935c730bce05d0657701a5f158a7"
+    },
+    {
+      "file": "sample-benchmark-arm01.log",
+      "sha256": "2a75a23853aaa6a5bcff7252e521914771db215d74deac13ea3d0721d720dfb1"
+    },
+    {
+      "file": "sample-benchmark-intel01.log",
+      "sha256": "d2a67b4e6fe914b87663efd5e7c179e32a79816a2d2b2b3424289bc63820267d"
+    },
+    {
+      "file": "portrait-candidate-debug01.log",
+      "sha256": "a8feaeafb2076b930ca8a5ee1cac3a2925da2b85cb54d75c715119dcb2e4561e"
+    },
+    {
+      "file": "portrait-candidate-arm01.log",
+      "sha256": "e6e6a88adf56d1ff0c9aa3d2e7b3db59cf1211208b33d0eeab52534d7145f426"
+    },
+    {
+      "file": "portrait-candidate-intel01.log",
+      "sha256": "4042d19d53dbe1b668c0fb690aeb7f29a081bddfeba70e02f8451fd576bb3edb"
+    }
+  ]
+}

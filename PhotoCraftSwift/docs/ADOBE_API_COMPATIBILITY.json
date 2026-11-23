@@ -3438,5 +3438,11 @@
     "setting": "settings.refineHair",
     "limits": "Adobe documents a desktop Refine Hair action. Published Photoshop v2 action and proprietary model parity remain open.",
     "evidence": "docs/SOURCE_PUBLICATION_723.json"
+  },
+  "retouch_sampling_build724": {
+    "status": "Shared native editor and Photato API sampling optimization",
+    "photatoCommand": "retouch.stroke",
+    "publishedAdobeContractChanges": [],
+    "evidence": "docs/SOURCE_PUBLICATION_724.json"
   }
 }

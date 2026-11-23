@@ -742,7 +742,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 721 | 2026-11-23 | [Preserve editable type and RGB32 composites in layered Photoshop files](#dev-step-721) |
 | 722 | 2026-11-23 | [Keep projected Smart Object edges stable when relinking](#dev-step-722) |
 | 723 | 2026-11-23 | [Refine hair in Select and Mask](#dev-step-723) |
+| 724 | 2026-11-23 | [Reuse the canvas composite for Clone Stamp and Healing Brush](#dev-step-724) |
 <!-- history-index:end -->
+
+<a id="dev-step-724"></a>
+
+## 2026-11-23 — Reuse the canvas composite for Clone Stamp and Healing Brush
+
+The portrait reaches 5.43 megapixels at original resolution and contains three controlled defects with a clean reference. The earlier workflow recomposited the full sampling stack even when that exact composite was already available. CloneSampling.swift now accepts a matching raw RenderSnapshot. CloneEditing.swift captures the relevant native source or destination snapshot for the overlay and the gesture. RetouchPreparation.swift and AutomationRetouch.swift use the same reuse rule in authenticated retouch jobs. A stale document, different layer cutoff or different adjustment visibility still goes through the full compositor. The regression checks exact samples across all three RGB depths and covers a different layer cutoff and an edited source.
+
+On the 2,096 × 2,592 portrait, the optimized Apple Silicon raw sampling step went from 190.2 ms to 0.17 ms with a ready exact composite. Under Rosetta it went from 352.4 ms to 0.22 ms. All source bytes matched. The six optimized portrait edits matched build 723 PNGs exactly. The editor preview, commit and authenticated API output matched. Each repair stayed on an editable correction layer after reopening and could be reversed with one Undo.
+
+With the ordinary New Layer action, Apple Silicon rendered the first preview in 183–192 ms. Using a compact 2 × 2 raster that had to expand, the first preview took 641–682 ms. The normal sparse New Layer raster can update a small region. Depth conversion still took most of its first-frame time. Both layer geometries produced the same tested PNGs.
+
+765 of 766 selected tests passed on each optimized architecture, with Intel tested under Rosetta. Debug passed 764 of 766. The new sampling regression passed on all three configurations. The existing PSD layer-effect test repeated its 118 assertions. Debug also reproduced the inherited Smart Filter PSD export stack overflow. Xcode built the checked-in project. The signed macOS 14+ preview opened offscreen on both architectures.
+
+These tests compare Photato’s output across configurations and against a clean portrait reference. Live Photoshop comparison is still open. Raw sampling time measures a single preparation stage. Actual pointing-device feedback and physical frame cadence remain open. The Clone Stamp still requires the user to match both source texture and tone. Photoshop 27.2.0 exposed zero accessible windows and menu bars during the comparison attempt.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_724.md).
 
 <a id="dev-step-723"></a>
 

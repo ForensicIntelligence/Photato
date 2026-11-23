@@ -4,7 +4,7 @@ import PhotoCraftCore
 extension Renderer {
   public static func cloneSample(
     in document: CraftDocument, layerID: UUID, sampling: CloneSampling,
-    ignoreAdjustments: Bool = false, mask: Bool = false
+    ignoreAdjustments: Bool = false, mask: Bool = false, reusing snapshot: RenderSnapshot? = nil
   ) throws -> CloneSample {
     try Task.checkCancellation()
     try document.validate()
@@ -48,6 +48,9 @@ extension Renderer {
       if ignoreAdjustments, case .adjustment = probe.layers[index].content {
         probe.layers[index].visible = false
       }
+    }
+    if let snapshot, snapshot.document == probe {
+      return CloneSample(surface: snapshot.surface, origin: origin)
     }
     return CloneSample(surface: try composite(probe), origin: origin)
   }

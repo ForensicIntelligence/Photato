@@ -58,6 +58,7 @@ enum RetouchStrokeAPI {
      "targets": ["pixels", "layerMask"], "maximumSamples": 4096,
      "settings": "Partial settings override the selected retouch tool's native defaults. Values use native units: opacity/flow/exposure/strength0–1, size in document pixels, source scaling in percent.",
      "sources": "Clone/Healing accept an explicit shared source id/revision and sourceLayerID. Other tools sample the target document. No source file paths or unshared documents are admitted. Sources are rechecked before atomic commit.",
+     "cachedSampling": "Reuse an existing raw composite when it matches the complete requested sampling document.",
      "actions": "Semantic settings, samples and portable layer/source references; playback resamples each current document. External source UUID is preferred, otherwise its unique document name must match an explicitly supplied/open source. No captured image buffers or ATN support.",
      "history": "One shared native transaction, with Undo/Redo and source/target busy, stale, cancellation and sharing checks.",
      "limits": "Existing native solve/storage budgets and API document/body limits apply. Native retouch kernels, full Photoshop preference parity and physical60fps remain unqualified.",
@@ -178,6 +179,7 @@ extension AutomationService {
     }
     let snapshot = source?.store.document
     let request = try command.retouchRequest(store: document.store, sourceDocument: snapshot)
+    let targetRender = document.store.renderSnapshot, sourceRender = source?.store.renderSnapshot
     let capturedSource = source, capturedID = sourceID, capturedRevision = expected
     try await executePreparedOperation(document: document, shareID: shareID, revision: command.revision,
       validateCommit: { [self] in
@@ -188,6 +190,9 @@ extension AutomationService {
           }
           try preflight(source)
         }
-      }) { original in try RetouchPreparation.command(request, in: original, sources: snapshot.map { [$0] } ?? []) }
+      }) { original in
+        try RetouchPreparation.command(request, in: original, sources: snapshot.map { [$0] } ?? [],
+          reusing: targetRender, externalSnapshot: sourceRender)
+      }
   }
 }

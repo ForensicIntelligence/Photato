@@ -3,7 +3,7 @@ import PhotoCraftCore
 
 public enum RetouchPreparation {
   public static func sample(_ reference: RecordedRetouchSource, in target: CraftDocument,
-    sources: [CraftDocument] = []) throws -> CloneSample {
+    sources: [CraftDocument] = [], reusing snapshot: RenderSnapshot? = nil) throws -> CloneSample {
     try reference.validate()
     let document: CraftDocument
     if let id = reference.documentID {
@@ -16,21 +16,24 @@ public enum RetouchPreparation {
     } else { document = target }
     let id = try reference.layer.resolve(in: document)
     let sample = try Renderer.cloneSample(in: document, layerID: id, sampling: reference.sampling,
-      ignoreAdjustments: reference.ignoreAdjustments, mask: reference.mask)
+      ignoreAdjustments: reference.ignoreAdjustments, mask: reference.mask, reusing: snapshot)
     guard reference.convertToTarget && !reference.mask else { return sample }
     var origin = sample.origin; origin?.convertToTarget = true
     return CloneSample(surface: try ColorManagement.converted(sample.surface, from: document, to: target),
       transform: sample.transform, outside: sample.outside, origin: origin)
   }
   public static func command(_ request: RecordedRetouchStroke, in document: CraftDocument,
-    sources: [CraftDocument] = []) throws -> Command {
+    sources: [CraftDocument] = [], reusing snapshot: RenderSnapshot? = nil,
+    externalSnapshot: RenderSnapshot? = nil) throws -> Command {
     try Task.checkCancellation(); try request.validate()
     let id = try request.target.resolve(in: document)
     if let tool = request.tool.toning {
       return .toning(id, .init(tool: tool, options: request.toning, brush: request.brush,
         points: request.points, mask: request.mask))
     }
-    let source = try sample(request.source!, in: document, sources: sources)
+    let recipe = request.source!
+    let source = try sample(recipe, in: document, sources: sources,
+      reusing: recipe.documentID == nil ? snapshot : externalSnapshot)
     if let tool = request.tool.focus {
       return .focus(id, .init(tool: tool, options: request.focus, brush: request.brush,
         points: request.points, mask: request.mask, foreground: request.foreground, sample: source))
@@ -43,7 +46,9 @@ public enum RetouchPreparation {
       points: request.points, mask: request.mask)
     if request.tool == .healingBrush {
       return .healingBrush(id, .init(stroke: clone,
-        destination: try request.destination.map { try sample($0, in: document, sources: sources) }))
+        destination: try request.destination.map {
+          try sample($0, in: document, sources: sources, reusing: $0.documentID == nil ? snapshot : externalSnapshot)
+        }))
     }
     return .cloneStamp(id, clone)
   }

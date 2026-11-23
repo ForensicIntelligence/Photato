@@ -5,6 +5,36 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class HealingRenderTests: XCTestCase {
+
+  func testCompositeSampleReuseMatchesFreshAndRejectsStaleOrDifferentLayerCoverage() throws {
+    for depth in PixelDepth.allCases {
+      var document = try CraftDocument(width: 24, height: 16, depth: depth)
+      document.layers[0].content = .raster(try Surface(width: 24, height: 16, depth: depth, fill: Pixel(0.31, 0.22, 0.19)))
+      let correction = Layer(name: "Retouch", content: .raster(try Surface(width: 2, height: 2, depth: depth)))
+      try Command.addLayer(correction).apply(to: &document)
+      let before = try Renderer.render(document)
+      let sample = try Renderer.cloneSample(in: document, layerID: correction.id, sampling: .currentAndBelow, reusing: before)
+      let fresh = try Renderer.cloneSample(in: document, layerID: correction.id, sampling: .currentAndBelow)
+      XCTAssertEqual(sample, fresh)
+      XCTAssertEqual(sample.surface, before.surface)
+
+      let overlay = Layer(name: "Above", content: .raster(try Surface(width: 24, height: 16, depth: depth, fill: Pixel(0.78, 0.74, 0.45))))
+      try Command.addLayer(overlay).apply(to: &document)
+      let withOverlay = try Renderer.render(document)
+      let below = try Renderer.cloneSample(in: document, layerID: correction.id, sampling: .currentAndBelow, reusing: withOverlay)
+      let all = try Renderer.cloneSample(in: document, layerID: correction.id, sampling: .all, reusing: withOverlay)
+      XCTAssertEqual(below.surface, before.surface)
+      XCTAssertEqual(all.surface, withOverlay.surface)
+      XCTAssertNotEqual(all.surface, below.surface)
+
+      document.layers[0].content = .raster(try Surface(width: 24, height: 16, depth: depth, fill: Pixel(0.58, 0.37, 0.3)))
+      let after = try Renderer.cloneSample(in: document, layerID: correction.id, sampling: .currentAndBelow, reusing: before)
+      let current = try Renderer.cloneSample(in: document, layerID: correction.id, sampling: .currentAndBelow)
+      XCTAssertEqual(after, current)
+      XCTAssertNotEqual(after.surface, before.surface)
+    }
+  }
+
   func testRepairPersistsAndRegionalRenderMatchesFullAtEveryDepth() throws {
     for depth in PixelDepth.allCases {
       var d = try CraftDocument(width: 128, height: 64, depth: depth)
