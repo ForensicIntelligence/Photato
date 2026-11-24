@@ -9,10 +9,17 @@ extension VanishingSettings {
   var apiValue:Any { (try? JSONSerialization.jsonObject(with:JSONEncoder().encode(self))) ?? NSNull() }
   static var pointSchema:[String:Any] { ["type":"object","additionalProperties":false,"required":["x","y"],"properties":Dictionary(uniqueKeysWithValues:["x","y"].map{($0,["type":"number","minimum":-1_000_000,"maximum":1_000_000] as [String:Any])})] }
   static var apiSchema:[String:Any] {
-    ["type":"object","additionalProperties":false,"properties":["focalLength":["type":"number","minimum":0,"default":0,
+    let corners: [String: Any] = ["type":"array","minItems":4,"maxItems":4,"items":pointSchema]
+    let orientation: [String: Any] = ["type":"number","enum":[-1,1]]
+    let calibration: [String: Any] = ["type":"object","additionalProperties":false,
+      "required":["corners","parentCorners","angle","depth","rotationSign"],"properties":[
+        "corners":corners,"parentCorners":corners,
+        "angle":["type":"number","minimum":0,"maximum":180],
+        "depth":["type":"number","exclusiveMinimum":0],"rotationSign":orientation]]
+    return ["type":"object","additionalProperties":false,"properties":["focalLength":["type":"number","minimum":0,"default":0,
       "description":"Finite focal length in pixels. Zero infers the camera or uses the longer canvas side. The resulting projection must be valid."],"center":pointSchema,
       "planes":["type":"array","maxItems":32,"default":[],"items":["type":"object","additionalProperties":false,"properties":[
-        "corners":["type":"array","minItems":0,"maxItems":4,"items":pointSchema,"default":[]],"parent":["type":"integer","minimum":0,"maximum":30],"edge":["type":"string","enum":VanishingPlane.Edge.allCases.map(\.rawValue),"default":"top"],"angle":["type":"number","minimum":0,"maximum":180,"default":90],"depth":["type":"number","minimum":0.05,"maximum":20,"default":1]],"description":"Four convex corners in document pixels, or an earlier parent index with empty corners. Related planes recompute when their parent changes."]]]]
+        "corners":["type":"array","minItems":0,"maxItems":4,"items":pointSchema,"default":[]],"parent":["type":"integer","minimum":0,"maximum":30],"edge":["type":"string","enum":VanishingPlane.Edge.allCases.map(\.rawValue),"default":"top"],"angle":["type":"number","minimum":0,"maximum":180,"default":90],"depth":["type":"number","exclusiveMinimum":0,"default":1],"rotationSign":orientation,"calibration":calibration],"description":"Four convex corners in document pixels, or an earlier parent index with empty corners. Related planes recompute when their parent changes."]]]]
   }
   static var operationSchema:[String:Any] {
     let number:(Double,Double,Double)->[String:Any] = { ["type":"number","minimum":$0,"maximum":$1,"default":$2] }
@@ -38,7 +45,8 @@ extension VanishingSettings {
      "heal":"Brush, clone and paste accept off, luminance or on. Luminance adjusts lighting. On adjusts lighting and color. The gradient-domain solve includes a one-pixel boundary within the 4-megapixel local repair budget.",
      "output":"The current raster layer can expand to cover the repair while keeping existing samples and masks in place. Use newLayer:true for a separate layer. Selection and transparency/image locks are honored. Smart Objects must be rasterized for the target. One cancellable undo transaction for the entire program.",
      "limits":"32 planes,256 operations,16,384 supplied points,4,096 points per stroke,128MiB embedded paste sources with up to 8,388,608 pixels, up to \(Surface.maxDimension) pixels per canvas side, 134,217,728 raster visits per program. Large canvases use a bounded overview. Existing API sharing limits also apply.",
-     "unsupported":"Perspective marquee/measurement, multi-surface stroke wrapping, Adobe .vpe/PSD plane metadata and exact Adobe pixels remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
+     "fileInterchange":"PSD and PSB open supported Photoshop perspective planes and retain the original resource when geometry is unchanged. Edited and newly created planes are written as Photoshop resource 4000.",
+     "unsupported":"Perspective marquee/measurement, multi-surface stroke wrapping, Adobe .vpe export and exact Adobe pixels remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
      "adobe":"No dedicated pinned v2 Vanishing Point operation. No invented route or unqualified actionJSON support."]
   }
 }
@@ -54,11 +62,17 @@ extension AutomationCommand {
       if let items=raw["planes"] {
         guard let items=items as? [[String:Any]],items.count<=32 else { throw fail("Invalid planes.") }
         raw["planes"]=try items.map { value -> [String:Any] in
-          guard Set(value.keys).isSubset(of:["corners","parent","edge","angle","depth"]) else { throw fail("Unknown plane field.") }
+          guard Set(value.keys).isSubset(of:["corners","parent","edge","angle","depth","rotationSign","calibration"]) else { throw fail("Unknown plane field.") }
+          if let rawCalibration = value["calibration"] {
+            guard let calibration = rawCalibration as? [String:Any],
+              Set(calibration.keys) == ["corners","parentCorners","angle","depth","rotationSign"] else {
+              throw fail("Invalid related plane calibration.")
+            }
+          }
           var d:[String:Any]=["corners":[],"edge":"top","angle":90,"depth":1];d.merge(value){_,new in new};return d
         }
       }
-      func pointsAreStrict(_ value:Any)->Bool { if let d=value as? [String:Any] { for (k,v) in d { if k == "center" { guard let q=v as? [String:Any],Set(q.keys)==["x","y"] else { return false } };if k == "corners" { guard let q=v as? [[String:Any]],q.allSatisfy({Set($0.keys)==["x","y"]}) else { return false } };if !pointsAreStrict(v) { return false } } };if let a=value as? [Any] { return a.allSatisfy(pointsAreStrict) };return true }
+      func pointsAreStrict(_ value:Any)->Bool { if let d=value as? [String:Any] { for (k,v) in d { if k == "center" { guard let q=v as? [String:Any],Set(q.keys)==["x","y"] else { return false } };if k == "corners" || k == "parentCorners" { guard let q=v as? [[String:Any]],q.allSatisfy({Set($0.keys)==["x","y"]}) else { return false } };if !pointsAreStrict(v) { return false } } };if let a=value as? [Any] { return a.allSatisfy(pointsAreStrict) };return true }
       guard pointsAreStrict(raw) else { throw fail("Invalid plane coordinates.") }
       do { p.settings=try JSONDecoder().decode(VanishingSettings.self,from:JSONSerialization.data(withJSONObject:raw));try p.settings.validate() } catch { throw fail(error.localizedDescription) }
     }

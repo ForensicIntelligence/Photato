@@ -15,7 +15,7 @@ extension DocumentIO.Format {
     case .native: return "Keeps all editable Photato content."
     case .psd, .psb:
       return
-        "Keeps supported editable layers, masks, alpha/spot channels, Quick Mask and the working profile. Full Photoshop metadata, rendering and 32-bit output equivalence are still in development."
+        "Keeps supported editable layers, masks, alpha/spot channels, Quick Mask, Vanishing Point planes and the working profile. Full Photoshop metadata, rendering and 32-bit output equivalence are still in development."
     case .exr:
       return "Keeps one flat 32-bit scene-linear RGB layer and optional transparency. Use Save a Copy for Half precision, profile conversion or flattened content."
     case .png:
@@ -62,7 +62,10 @@ extension DocumentIO {
     if document.variables != nil { return "Save as Photato to retain variables, data sets and replacement images. Export a data-set variation for other formats." }
     if document.videoTimeline != nil { return "Save as Photato to retain video frames and timing. Still-image copies contain only the current frame." }
     if document.animation != nil { return "Save as Photato to retain animation. Still-image copies contain only the selected frame." }
-    if document.vanishingPoint != nil { return "Save as Photato to retain Vanishing Point planes, or export a rendered copy." }
+    if document.vanishingPoint != nil,
+      (format != .psd && format != .psb) || document.restrictedMode != nil || document.inkMode != nil {
+      return "Save as Photato to retain Vanishing Point planes. PSD and PSB retain planes for supported editable color modes."
+    }
     if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind == .adaptiveWideAngle }) == true }) { return "Save as Photato to retain editable Adaptive Wide Angle, or export a rendered copy." }
     if document.layers.contains(where: { $0.smartFilters?.filters.contains(where: { $0.filter.kind == .lensCorrection }) == true }) { return "Save as Photato to retain editable Lens Correction, or export a rendered copy." }
     if document.layers.contains(where:{$0.smartFilters?.filters.contains(where:{$0.filter.kind.isRender}) == true}) {return "Save as Photato to retain editable Render settings."}

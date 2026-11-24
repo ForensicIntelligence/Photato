@@ -1,3 +1,7 @@
+### Vanishing Point plane exchange (checkpoint 733)
+
+Document state and `filter.vanishingPoint` accept measured connected-plane geometry. The optional `rotationSign` is `-1` or `1`. For imported planes, replay the returned `calibration` object alongside its parent, edge, angle and depth. The service validates the shared edge. With document transfers enabled, a PSD or PSB download can retain supported planes. An unchanged recognized plane record is preserved verbatim. [File and API checks](SOURCE_PUBLICATION_733.md).
+
 ### Vanishing Point on cropped layers (checkpoint 732)
 
 With `newLayer: false`, `filter.vanishingPoint` can grow the target raster to cover a Brush, Clone Stamp or Paste operation. The target layer ID, existing samples and mask placement are retained. The current selection and transparency or image locks still apply. [Native and HTTP checks](SOURCE_PUBLICATION_732.md).
@@ -2571,7 +2575,7 @@ Example parameters, using existing layer UUIDs:
 
 Current-layer output preserves placement/masks and applies document selection and transparency/image locks. New-layer output retains the original layer. Smart Object targets require explicit rasterization. Limits are32 planes,256 operations,16,384 points total/4,096 per stroke,128MiB embedded paste sources,8,388,608 canvas/target pixels and134,217,728 raster visits; existing API sharing limits apply as well. Unknown, irrelevant, malformed and out-of-range fields reject.
 
-Native downloads containing saved planes require `X-Photato-Archive-Version:32`; older negotiation and editable PSD/PSB saves reject rather than discard metadata. Raster exports remain available. No dedicated Adobe v2 route exists in the pinned contract; no new route is invented. Unqualified Adobe actionJSON and recorded Actions remain explicitly unsupported. Additional gaps are recorded in [Vanishing Point evidence](VANISHING_POINT_REFERENCES.json).
+Native downloads containing saved planes require `X-Photato-Archive-Version:32`. Supported editable PSD and PSB downloads retain their planes. Raster exports remain available. No dedicated Adobe v2 route exists in the pinned contract; no new route is invented. Unqualified Adobe actionJSON and recorded Actions remain explicitly unsupported. Additional gaps are recorded in [Vanishing Point evidence](VANISHING_POINT_REFERENCES.json).
 
 ## Brush Settings and presets (step189)
 

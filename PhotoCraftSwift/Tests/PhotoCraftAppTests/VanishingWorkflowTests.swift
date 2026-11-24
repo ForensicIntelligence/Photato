@@ -50,7 +50,9 @@ final class VanishingWorkflowTests:XCTestCase {
       guard case .raster(let before)=d.layers[0].content,case .raster(let after)=edit.result.layers[0].content else { return XCTFail() }
       XCTAssertNotEqual(before,after);for y in 0..<48 { for x in 0..<64 { XCTAssertEqual(after.pixel(x:x,y:y).a,before.pixel(x:x,y:y).a) } }
       XCTAssertEqual(try NativeArchive.decode(NativeArchive.encodeChunked(edit.result)),edit.result)
-      XCTAssertThrowsError(try DocumentIO.encode(edit.result,format:.psd));XCTAssertNotNil(DocumentIO.persistenceIssue(edit.result,format:.png))
+      // The transformed raster layer still requires the native format.
+      XCTAssertThrowsError(try DocumentIO.encode(edit.result,format:.psd))
+      XCTAssertNotNil(DocumentIO.persistenceIssue(edit.result,format:.png))
       XCTAssertNotNil(ActionOperation(recording:.vanishingPoint(edit),in:d).unsupportedReason)
       XCTAssertThrowsError(try PhotoshopActionProgram(actionJSON:"[{\"_obj\":\"vanishingPoint\"}]"))
     }
@@ -245,6 +247,127 @@ final class VanishingWorkflowTests:XCTestCase {
       XCTAssertEqual(document.store.document.layers.last?.content, native.layers.last?.content)
       XCTAssertEqual(document.store.session.undoStack.count, 1)
       XCTAssertNotNil(VanishingSettings.apiCapabilities["narrowStrokeCoverage"])
+    }
+  }
+
+  @MainActor func testPhotoshopRelatedPlanesRemainEditableAndRetainTheOriginalPSDRecord() async throws {
+    let p = """
+    tNaF203
+    1
+    100
+    2
+    1268089504
+    0
+    -1
+    0
+    -49546.1
+    200
+    1480 1000 -49546.1 200 0 0 1
+    1480 200 -49546.1 200 0 0 5
+    1480 1000 1480 -6777.14 0 1 7
+    13 977 1480 -6777.14 0 1 3
+    2040590144
+    1268089504
+    45
+    2
+    1387.27
+    4894.87
+    1482.74 998.566 1480 -6777.14 0 1 1
+    1480 1000 1480 -6777.14 0 1 5
+    1482.74 998.566 -4855.6 4319.42 0 2 7
+    1482.46 198.403 -4855.6 4319.42 0 2 3
+    201 100 0 100 0
+    """
+    let record = Data((p+"\n").utf8)
+    var resource=Data([56,66,73,77,15,160,0,0])
+    let length = UInt32(record.count)
+    resource.append(contentsOf:[UInt8(truncatingIfNeeded:length>>24),UInt8(truncatingIfNeeded:length>>16),
+      UInt8(truncatingIfNeeded:length>>8),UInt8(truncatingIfNeeded:length)])
+    resource.append(record)
+    if record.count%2 != 0 { resource.append(0) }
+    var document = try CraftDocument(width:1600,height:1200)
+    document.sourceMetadata = ["psdResources":resource]
+    let pose = try PSDCodec.read(DocumentIO.encode(document,format:.psd))
+    let settings = try XCTUnwrap(pose.vanishingPoint)
+    XCTAssertEqual(settings.planes.count,2)
+    XCTAssertEqual(settings.planes[1].parent,0)
+    XCTAssertEqual(settings.planes[1].edge,.right)
+    XCTAssertLessThan(settings.planes[1].depth,0.01)
+    let scene=try VanishingScene(settings,width:1600,height:1200)
+    XCTAssertEqual(scene.frames[0].corners[1],scene.frames[1].corners[0])
+    XCTAssertEqual(scene.frames[0].corners[2],scene.frames[1].corners[3])
+    XCTAssertEqual(scene.frames[1].corners[2].x,1482.74,accuracy:0.005)
+    XCTAssertEqual(scene.frames[1].corners[2].y,998.566,accuracy:0.005)
+
+    let store=EditorStore(document:pose)
+    defer { store.cancelVanishingPoint(); store.renderTask?.cancel() }
+    store.beginVanishingPoint()
+    let workspace=try XCTUnwrap(store.vanishingWorkspace)
+    await workspace.prepare()
+    XCTAssertTrue(workspace.ready, workspace.error ?? "Imported plane preview failed")
+    XCTAssertEqual(workspace.program.settings,settings)
+    let initial = try XCTUnwrap(workspace.scene)
+    workspace.moveCorner(0,0,to:.init(185,220))
+    await workspace.task?.value
+    let moved=try XCTUnwrap(workspace.scene)
+    XCTAssertEqual(moved.frames[0].corners[1],moved.frames[1].corners[0])
+    XCTAssertNotEqual(moved.frames[1].corners[2],initial.frames[1].corners[2])
+    XCTAssertTrue(workspace.ready)
+    workspace.undo()
+    await workspace.task?.value
+    XCTAssertEqual(workspace.program.settings,settings)
+    store.cancelVanishingPoint()
+
+    let archive = try NativeArchive.decode(NativeArchive.encodeChunked(pose))
+    XCTAssertEqual(archive.vanishingPoint,settings)
+    XCTAssertNil(DocumentIO.persistenceIssue(archive,format:.psd))
+    let same = try DocumentIO.encode(archive,format:.psd)
+    XCTAssertNotNil(same.range(of:resource))
+    var edited=archive
+    edited.vanishingPoint?.planes[0].corners[0] = .init(185,220)
+    let regenerated = try DocumentIO.encode(edited,format:.psb)
+    XCTAssertNil(regenerated.range(of:resource))
+    let psb=try PSDCodec.read(regenerated)
+    let newer=try XCTUnwrap(psb.vanishingPoint)
+    XCTAssertEqual(newer.planes[1].parent,0)
+    XCTAssertEqual(newer.planes[1].edge,.right)
+    let expected=try VanishingScene(XCTUnwrap(edited.vanishingPoint),width:1600,height:1200)
+    let actual=try VanishingScene(newer,width:1600,height:1200)
+    for (want,got) in zip(expected.frames[1].corners,actual.frames[1].corners) {
+      XCTAssertEqual(got.x,want.x,accuracy:0.001)
+      XCTAssertEqual(got.y,want.y,accuracy:0.001)
+    }
+    edited.vanishingPoint=nil
+    let removed=try DocumentIO.encode(edited,format:.psd)
+    XCTAssertNil(removed.range(of:resource))
+    XCTAssertNil(try PSDCodec.read(removed).vanishingPoint)
+  }
+
+  func testNewIndependentVanishingPointPlanesRoundTripInPSD() throws {
+    for version in [DocumentIO.Format.psd, .psb] {
+      var input=try CraftDocument(width:120,height:96)
+      var settings=VanishingSettings()
+      settings.planes=[
+        .init(corners:[.init(8,8),.init(55,8),.init(55,80),.init(8,80)]),
+        .init(corners:[.init(61,10),.init(111,13),.init(106,78),.init(66,75)]),
+      ]
+      input.vanishingPoint=settings
+      let encoded=try DocumentIO.encode(input,format:version)
+      let opened=try PSDCodec.read(encoded)
+      let resources = try XCTUnwrap(opened.sourceMetadata?["psdResources"])
+      let header = try XCTUnwrap(resources.range(of:Data("tNaF203\n2\n".utf8)))
+      let footer = try XCTUnwrap(resources.range(of:Data("201\n100\n100\n0\n100\n0\n100\n0\n".utf8)))
+      let sceneRecord = try XCTUnwrap(String(data:resources[header.lowerBound..<footer.lowerBound],encoding:.ascii))
+      XCTAssertEqual(sceneRecord.components(separatedBy:"\n\n").count-1,18)
+      let recovered=try XCTUnwrap(opened.vanishingPoint)
+      XCTAssertEqual(recovered.planes.count,2)
+      for (a,b) in zip(settings.planes,recovered.planes) {
+        XCTAssertNil(b.parent)
+        for (want,got) in zip(a.corners,b.corners) {
+          XCTAssertEqual(want.x,got.x,accuracy:0.00001)
+          XCTAssertEqual(want.y,got.y,accuracy:0.00001)
+        }
+      }
     }
   }
 

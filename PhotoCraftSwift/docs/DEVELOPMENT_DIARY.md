@@ -1,3 +1,13 @@
+## 2026-11-24 — Step 733 — Keep Vanishing Point grids editable in PSD and PSB
+
+Photato opens supported Photoshop Vanishing Point grids as editable planes. A connected grid stays attached to its parent edge. PSD and PSB retain the original plane record byte for byte when an edit changes only the pixels.
+
+The owned Photoshop 27.2.0 files cover an oblique plane with a thin hinged child and two independent planes. The native tests reopen both relations, preserve the original records and verify that moving the parent updates the joined plane. The authenticated API returns and replays the measured settings, applies a Brush stroke, downloads PSD and PSB, and undoes the edit.
+
+Photoshop displayed both grids in Photato’s new two-plane PSD. Its Vanishing Point filter also opened the matching PSB and displayed the moved parent grid from a second PSD. Exact-parallel Photoshop export, grid settings and measurement tools still need work. A diagnostic exact-parallel grid opened with distorted geometry.
+
+[Development record](DEVLOG.md#dev-step-733) · [Qualification](SOURCE_PUBLICATION_733.md).
+
 ## 2026-11-23 — Step 732 — Repair directly on cropped Vanishing Point layers
 
 Vanishing Point can now apply Brush, Stamp and pasted repairs to an existing cropped pixel layer. The layer grows where needed and keeps its identity, original pixels and mask position. The native editor and authenticated Photato API use the same edit.
@@ -1941,14 +1951,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:732 -->
-## Current development status — 23 November 2026
+<!-- current-status-step:733 -->
+## Current development status — 24 November 2026
 
-Vanishing Point can now apply Brush, Stamp and pasted repairs to an existing cropped pixel layer. The layer grows where needed and keeps its identity, original pixels and mask position. The native editor and authenticated Photato API use the same edit.
+Photato opens supported Photoshop Vanishing Point grids as editable planes. A connected grid stays attached when its parent moves. PSD and PSB keep the original record byte for byte when an edit changes only the pixels.
 
-833 of 835 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new cases passed on both. The existing layer-effect and color-profile fixtures repeated their earlier differences. The paired color-profile outputs matched build 731 byte for byte. Xcode built the project. All 16 focused core cases and the cropped-layer application test passed in Debug. The signed macOS 14+ preview opened both architectures offscreen.
+Photoshop displayed both grids in Photato’s new two-plane PSD and opened the matching PSB. It also displayed the moved grid from the connected-plane test. All 19 focused Debug tests passed. The optimized runs passed 835 of 837 selected tests on each architecture, including both new tests. The two inherited layer-effect and color-profile cases still fail.
 
-[Source checkpoint 732](SOURCE_PUBLICATION_732.md) · [Development record](DEVLOG.md#dev-step-732).
+[Source checkpoint 733](SOURCE_PUBLICATION_733.md) · [Development record](DEVLOG.md#dev-step-733).
 
 <!-- current-status:end -->
 
@@ -2887,6 +2897,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 730 | [Preserve Vanishing Point cameras at the canvas size limit](DEVLOG.md#dev-step-730) |
 | 2026-11-23 | 731 | [Blend projected repairs with Vanishing Point Heal](DEVLOG.md#dev-step-731) |
 | 2026-11-23 | 732 | [Repair directly on cropped Vanishing Point layers](DEVLOG.md#dev-step-732) |
+| 2026-11-24 | 733 | [Keep Vanishing Point grids editable in PSD and PSB](DEVLOG.md#dev-step-733) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

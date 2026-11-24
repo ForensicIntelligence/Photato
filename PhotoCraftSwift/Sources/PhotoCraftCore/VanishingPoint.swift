@@ -7,6 +7,19 @@ public struct VanishingPlane:Codable,Equatable,Sendable {
   public var edge:Edge = .top
   public var angle=90.0
   public var depth=1.0
+
+  /// Explicit direction of a calibrated hinge. Nil keeps the native automatic choice.
+  public var rotationSign: Double?
+  /// Keep the measured corners until the parent or the hinge is edited.
+  public struct Calibration: Codable, Equatable, Sendable {
+    public var corners: [PathPoint]
+    public var parentCorners: [PathPoint]
+    public var angle: Double
+    public var depth: Double
+    public var rotationSign: Double
+  }
+  public var calibration: Calibration?
+
   public init(corners:[PathPoint]) { self.corners=corners }
   public init(parent:Int,edge:Edge,angle:Double=90,depth:Double=1) { self.parent=parent;self.edge=edge;self.angle=angle;self.depth=depth }
 }
@@ -20,16 +33,52 @@ public struct VanishingSettings:Codable,Equatable,Sendable {
   public func validate() throws {
     guard planes.count<=32,focalLength.isFinite,focalLength>=0,center.map({Self.validPoint($0)}) ?? true else { throw CraftError.invalid("Invalid Vanishing Point camera or plane count.") }
     for (i,p) in planes.enumerated() {
-      guard p.angle.isFinite,(0...180).contains(p.angle),p.depth.isFinite,(0.05...20).contains(p.depth) else { throw CraftError.invalid("Invalid related plane angle or depth.") }
-      if let parent=p.parent { guard (0..<i).contains(parent),p.corners.isEmpty else { throw CraftError.invalid("A related plane must reference an earlier plane and omit corners.") } }
-      else { guard PerspectiveSettings.validQuad(p.corners) else { throw CraftError.invalid("A plane requires four finite convex corners.") };_ = try PerspectiveMap.homography(p.corners) }
+      guard p.angle.isFinite, (0...180).contains(p.angle), p.depth.isFinite, p.depth > 0,
+        p.rotationSign.map({ $0 == 1 || $0 == -1 }) ?? true else {
+        throw CraftError.invalid("Invalid related plane angle, depth or orientation.")
+      }
+      if let parent = p.parent {
+        guard (0..<i).contains(parent), p.corners.isEmpty else {
+          throw CraftError.invalid("A related plane must reference an earlier plane and omit corners.")
+        }
+        if let geometry = p.calibration {
+          guard PerspectiveSettings.validQuad(geometry.corners), PerspectiveSettings.validQuad(geometry.parentCorners),
+            (0...180).contains(geometry.angle), geometry.depth.isFinite, geometry.depth > 0,
+            geometry.rotationSign == 1 || geometry.rotationSign == -1 else {
+            throw CraftError.invalid("Invalid connected plane calibration.")
+          }
+          let (parentA,parentB,_) = VanishingScene.edgeIndices(p.edge)
+          let (outerA,outerB) = VanishingScene.outsideIndices(p.edge)
+          guard geometry.corners[(outerA+3)%4] == geometry.parentCorners[parentA],
+            geometry.corners[(outerB+1)%4] == geometry.parentCorners[parentB] else {
+            throw CraftError.invalid("Measured related planes must retain the parent edge.")
+          }
+        }
+      } else {
+        guard p.calibration == nil, p.rotationSign == nil, PerspectiveSettings.validQuad(p.corners) else {
+          throw CraftError.invalid("A plane requires four finite convex corners.")
+        }
+        _ = try PerspectiveMap.homography(p.corners)
+      }
     }
   }
   static func validPoint(_ p:PathPoint)->Bool { p.x.isFinite && p.y.isFinite && abs(p.x)<=1_000_000 && abs(p.y)<=1_000_000 }
-  public var estimatedBytes:Int { planes.count*192+128 }
+  public var estimatedBytes: Int {
+    planes.reduce(128) { $0 + ($1.calibration == nil ? 192 : 320) }
+  }
   public func transformed(_ t:Transform2D)->Self {
-    var s=self;for i in s.planes.indices { s.planes[i].corners=s.planes[i].corners.map{$0.transformed(t)} }
-    if let center { s.center=center.transformed(t) };s.focalLength *= (hypot(t.a,t.b)+hypot(t.c,t.d))/2;return s
+    var s = self
+    for i in s.planes.indices {
+      s.planes[i].corners = s.planes[i].corners.map { $0.transformed(t) }
+      if var measured = s.planes[i].calibration {
+        measured.corners = measured.corners.map { $0.transformed(t) }
+        measured.parentCorners = measured.parentCorners.map { $0.transformed(t) }
+        s.planes[i].calibration = measured
+      }
+    }
+    if let center { s.center = center.transformed(t) }
+    s.focalLength *= (hypot(t.a,t.b)+hypot(t.c,t.d))/2
+    return s
   }
 }
 
@@ -76,14 +125,85 @@ public struct VanishingScene:Sendable {
     guard width.isFinite,height.isFinite,min(width,height)>1e-9,max(width,height)<1e9 else { throw CraftError.invalid("Invalid plane metric.") }
     return Frame(corners:q,points:points,width:width,height:height,map:h,inverse:inverse)
   }
+  static func edgeIndices(_ edge: VanishingPlane.Edge) -> (Int, Int, Int) {
+    switch edge {
+    case .top: (0,1,3)
+    case .right: (1,2,0)
+    case .bottom: (2,3,1)
+    case .left: (3,0,2)
+    }
+  }
+
+  static func outsideIndices(_ edge: VanishingPlane.Edge) -> (Int, Int) {
+    switch edge {
+    case .top: (0,1)
+    case .right: (1,2)
+    case .bottom: (2,3)
+    case .left: (3,0)
+    }
+  }
+
+  static func rotated(_ outward: SIMD3<Double>, about axis: SIMD3<Double>, by angle: Double) -> SIMD3<Double> {
+    let c = cos(angle), s = sin(angle)
+    return outward*c + cross(axis,outward)*s + axis*(dot(axis,outward)*(1-c))
+  }
+
+  /// Calibrate a related plane from measured projected corners at the current camera.
+  public func calibratedPlane(parent index: Int, edge: VanishingPlane.Edge, corners: [PathPoint],
+    angleFromCoplanar: Double? = nil) throws -> VanishingPlane
+  {
+    guard frames.indices.contains(index) else { throw CraftError.invalid("Missing parent perspective plane.") }
+    let parent = frames[index]
+    let (ia, ib, ic) = Self.edgeIndices(edge)
+    let (ua, ub) = Self.outsideIndices(edge)
+    let a = parent.points[ia], b = parent.points[ib], inward = parent.points[ic] - a
+    let axis = Self.unit(b-a), outward = -Self.unit(inward)
+    let child = try Self.frame(corners, focal: focal, center: center)
+    let ca = child.points[(ua+3)%4], cb = child.points[(ub+1)%4]
+    let scale = (Self.length(a)/Self.length(ca)+Self.length(b)/Self.length(cb))/2
+    let displacement = (child.points[ua]*scale-a + child.points[ub]*scale-b)/2
+    let free = displacement-axis*Self.dot(displacement,axis)
+    let inferred = acos(min(1,max(-1,Self.dot(Self.unit(free),outward))))
+    let angle = angleFromCoplanar.map { abs($0) * .pi/180 } ?? inferred
+    guard angle.isFinite, (0...Double.pi).contains(angle) else {
+      throw CraftError.invalid("Invalid measured related-plane angle.")
+    }
+    func ray(_ p: PathPoint) -> SIMD3<Double> {
+      .init((p.x-center.x)/focal,(p.y-center.y)/focal,1)
+    }
+    var best: (length: Double, sign: Double, residual: Double)?
+    for sign in [1.0,-1.0] {
+      let direction = Self.rotated(outward, about: axis, by: sign*angle)
+      let ra = ray(corners[ua]), rb = ray(corners[ub])
+      let da = Self.cross(direction,ra), db = Self.cross(direction,rb)
+      let ca = Self.cross(a,ra), cb = Self.cross(b,rb)
+      let length = -(Self.dot(da,ca)+Self.dot(db,cb))/(Self.dot(da,da)+Self.dot(db,db))
+      let r = Self.length(ca+da*length)+Self.length(cb+db*length)
+      if length.isFinite, length>0, r.isFinite, best.map({ r < $0.residual }) ?? true {
+        best = (length,sign,r)
+      }
+    }
+    guard let best else { throw CraftError.invalid("Unable to calibrate the measured related plane.") }
+    var plane = VanishingPlane(parent:index,edge:edge,angle:max(0,180-angle*180/Double.pi),
+      depth:best.length/Self.length(inward))
+    plane.rotationSign = best.sign
+    plane.calibration = .init(corners:corners,parentCorners:parent.corners,angle:plane.angle,
+      depth:plane.depth,rotationSign:best.sign)
+    return plane
+  }
+
   static func related(_ plane:VanishingPlane,from frame:Frame,focal:Double,center:PathPoint) throws -> [PathPoint] {
-    let ia:Int,ib:Int,ic:Int
-    switch plane.edge { case .top:(ia,ib,ic)=(0,1,3);case .right:(ia,ib,ic)=(1,2,0);case .bottom:(ia,ib,ic)=(2,3,1);case .left:(ia,ib,ic)=(3,0,2) }
-    let a=frame.points[ia],b=frame.points[ib],axis=unit(b-a),inward=frame.points[ic]-a,out = -unit(inward),len=length(inward)*plane.depth,angle=(180-plane.angle) * .pi/180
+    if let geometry = plane.calibration, geometry.parentCorners == frame.corners,
+      geometry.angle == plane.angle, geometry.depth == plane.depth, geometry.rotationSign == plane.rotationSign {
+      return geometry.corners
+    }
+    let (ia,ib,ic) = edgeIndices(plane.edge)
+    let a=frame.points[ia],b=frame.points[ib],axis=unit(b-a),inward=frame.points[ic]-a
+    let out = -unit(inward), len=length(inward)*plane.depth, angle=(180-plane.angle) * .pi/180
     func project(_ p:SIMD3<Double>)->PathPoint? { guard p.z>1e-8 else { return nil };let q=PathPoint(center.x+focal*p.x/p.z,center.y+focal*p.y/p.z);return VanishingSettings.validPoint(q) ? q:nil }
     var best:(Double,[PathPoint])?
-    for sign in [1.0,-1.0] {
-      let c=cos(sign*angle),s=sin(sign*angle),rot=out*c+cross(axis,out)*s+axis*(dot(axis,out)*(1-c)),a2=a+rot*len,b2=b+rot*len
+    for sign in plane.rotationSign.map({[$0]}) ?? [1.0,-1.0] {
+      let rot=rotated(out,about:axis,by:sign*angle),a2=a+rot*len,b2=b+rot*len
       guard let pa=project(a),let pb=project(b),let pa2=project(a2),let pb2=project(b2) else { continue }
       var normal=unit(cross(b-a,a2-a));if dot(normal,a)>0 { normal = -normal };let score=dot(normal,inward),q:[PathPoint]
       switch plane.edge { case .top:q=[pa2,pb2,pb,pa];case .right:q=[pa,pa2,pb2,pb];case .bottom:q=[pb,pa,pa2,pb2];case .left:q=[pb2,pb,pa,pa2] }

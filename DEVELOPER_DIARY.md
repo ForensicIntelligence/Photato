@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **732** · The 10 most recent entries, newest first.
+Source build **733** · The 10 most recent entries, newest first.
+
+## 2026-11-24 — Step 733 — Keep Vanishing Point grids editable in PSD and PSB
+
+Photato opens supported Photoshop Vanishing Point grids as editable planes. A connected grid stays attached to its parent edge. PSD and PSB retain the original plane record byte for byte when an edit changes only the pixels.
+
+The owned Photoshop 27.2.0 files cover an oblique plane with a thin hinged child and two independent planes. The native tests reopen both relations, preserve the original records and verify that moving the parent updates the joined plane. The authenticated API returns and replays the measured settings, applies a Brush stroke, downloads PSD and PSB, and undoes the edit.
+
+Photoshop displayed both grids in Photato’s new two-plane PSD. Its Vanishing Point filter also opened the matching PSB and displayed the moved parent grid from a second PSD. Exact-parallel Photoshop export, grid settings and measurement tools still need work. A diagnostic exact-parallel grid opened with distorted geometry.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-733) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_733.md).
 
 ## 2026-11-23 — Step 732 — Repair directly on cropped Vanishing Point layers
 
@@ -107,13 +117,3 @@ With the ordinary New Layer action, Apple Silicon rendered the first preview in 
 These tests compare Photato’s output across configurations and against a clean portrait reference. Live Photoshop comparison is still open. Raw sampling time measures a single preparation stage. Actual pointing-device feedback and physical frame cadence remain open. The Clone Stamp still requires the user to match both source texture and tone.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-724) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_724.md).
-
-## 2026-11-23 — Step 723 — Refine hair in Select and Mask
-
-Select and Mask adds Refine Hair for a rough selection or an existing layer mask. Photato recovers soft strand coverage near the subject and keeps it editable. The native workspace previews the result before committing. The optional Photato API uses the same refinement.
-
-The owned patterned-backdrop control recovered 85.0% of missing strand coverage, with 3.5% false coverage in nearby background. Partial-coverage alpha error fell from 0.335 to 0.104. Seven fixtures matched mask and PNG output bytes across Debug, optimized Apple Silicon and Intel under Rosetta. Masks stayed editable through native, PSD and PSB reopen. The independent reader matched stored coverage in both Photoshop file formats.
-
-The measured reference set includes wigs, toy hair, fibers and two controlled backdrops. Darkening the new background can reveal residual color on very fine strands. Complex backgrounds and strands far from the coarse mask still need manual refinement. Live Photoshop comparison and physical VoiceOver and keyboard checks remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-723) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_723.md).

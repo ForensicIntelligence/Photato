@@ -32,3 +32,5 @@ The default camera can resolve and save focal lengths across the native canvas s
 In Vanishing Point, choose **Heal** with Brush or Stamp, or select a pasted patch and set its Heal mode. **Off** uses the source as-is. **Luminance** matches local lighting, and **On** blends lighting and color. [Build 731 measurements](SOURCE_PUBLICATION_731.md).
 
 To repair on an existing cropped pixel layer, select it before opening Vanishing Point and leave **New Layer** off. The layer can expand into the repaired area while keeping the existing pixels and masks in place. [Build 732 validation](SOURCE_PUBLICATION_732.md).
+
+Open a supported PSD or PSB and choose **Filter → Vanishing Point** to work with its saved grids. Connected grids stay attached when their parent moves. Save as PSD or PSB to keep the supported grids editable. [File exchange checks](SOURCE_PUBLICATION_733.md).

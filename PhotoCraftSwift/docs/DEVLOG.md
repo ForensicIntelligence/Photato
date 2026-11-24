@@ -751,7 +751,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 730 | 2026-11-23 | [Preserve Vanishing Point cameras at the canvas size limit](#dev-step-730) |
 | 731 | 2026-11-23 | [Blend projected repairs with Vanishing Point Heal](#dev-step-731) |
 | 732 | 2026-11-23 | [Repair directly on cropped Vanishing Point layers](#dev-step-732) |
+| 733 | 2026-11-24 | [Keep Vanishing Point grids editable in PSD and PSB](#dev-step-733) |
 <!-- history-index:end -->
+
+<a id="dev-step-733"></a>
+
+## 2026-11-24 — Keep Vanishing Point grids editable in PSD and PSB
+
+The PSD reader reconstructs clipped perspective rays and measures the original position of an attached grid. The projective transform keeps that measured shape until its parent moves. When saving, the codec uses the original record where it can. New records use the measured version-203 coordinate separators and one complete workspace settings entry per independent grid.
+
+The owned Photoshop 27.2.0 files cover an oblique plane with a thin hinged child and two independent planes. The native tests reopen both relations, preserve the original records and verify that moving the parent updates the joined plane. The authenticated API returns and replays the measured settings, applies a Brush stroke, downloads PSD and PSB, and undoes the edit.
+
+Photoshop displayed both grids in Photato’s new two-plane PSD. Its Vanishing Point filter also opened the matching PSB and displayed the moved parent grid from a second PSD.
+
+835 of 837 selected tests passed on each optimized architecture. Both new tests passed on Apple Silicon and under Rosetta. The two inherited layer-effect and color-profile cases still fail. The color-profile outputs match build 732 byte for byte. Xcode built the Debug app and passed all 19 focused tests. Each of the three generated test files is byte-identical across Debug and both optimized slices. Both slices of the local macOS 14+ preview opened offscreen.
+
+Exact-parallel Photoshop export, grid settings and measurement tools still need work. A diagnostic exact-parallel grid opened with distorted geometry. The original Heal Off crop comparison and full retouch workflow acceptance remain open. Photato keeps unsupported perspective resources as file metadata and reports a conflict before replacing one.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_733.md).
 
 <a id="dev-step-732"></a>
 

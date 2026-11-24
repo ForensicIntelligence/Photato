@@ -418,6 +418,8 @@ public enum PSDCodec {
     }
     // Preserve all image resource blocks in the development archive, including unknown metadata.
     doc.sourceMetadata = ["psdResources": resourceData, "psdColorModeData": colorData]
+    doc.vanishingPoint = try PSDVanishingPoint.read(resourceBlocks,width:width,height:height)
+    if doc.vanishingPoint != nil { doc.sourceMetadata?[PSDVanishingPoint.importedKey] = Data([1]) }
     try PSDGuides.read(into:&doc)
     doc.sourceICC = profile
     if colorMode == .rgb {
@@ -1370,7 +1372,6 @@ public enum PSDCodec {
       guard includeComposite else { throw CraftError.unsupported("Restricted Photoshop files require their merged index/bit plane.") }
       try PSDRestrictedStorage.write(doc, format: format, compression: compositeCompression, to: output); return
     }
-    guard doc.vanishingPoint == nil else { throw CraftError.unsupported("Vanishing Point plane metadata requires Photato format. Export a rendered copy for other formats.") }
     try PSDModeStorage.validateExport(doc)
     guard !doc.hasFrames else { throw CraftError.unsupported("Editable frame PSD/PSB interchange is not implemented. Save as Photato or export a rendered image.") }
     guard includeComposite || !doc.hasArtboards else { throw CraftError.unsupported("Editable artboard TIFF interchange remains unqualified. Save as Photato, PSD or PSB.") }
@@ -1437,7 +1438,8 @@ public enum PSDCodec {
     var resources = PSDWriter()
     let originalResources = doc.sourceMetadata?["psdResources"] ?? Data()
     let retainedResources = compOutput.layerIDs.isEmpty ? originalResources : try PSDImageResources.blocks(originalResources).filter { $0.id != 1065 }.reduce(into: Data()) { $0.append($1.raw) }
-    resources.data = try PSDImageResources.preserved(retainedResources,preservingLayerLinks:true)
+    let preserved = try PSDImageResources.preserved(retainedResources,preservingLayerLinks:true)
+    resources.data = try PSDVanishingPoint.applying(to:preserved,document:doc)
     if !maximizeCompatibility { resources.data.append(PSDImageResources.versionInfo(hasRealMergedData: false)) }
     if let compResource = compOutput.resource { resources.data.append(compResource) }
     resources.data.append(try PSDAuxiliaryChannels.resources(doc,first:colorChannels+(mergedTransparency ? 1:0)))

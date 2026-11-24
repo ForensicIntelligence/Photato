@@ -3486,5 +3486,11 @@
     "photatoCommand": "filter.vanishingPoint",
     "publishedAdobeContractChanges": [],
     "evidence": "docs/SOURCE_PUBLICATION_732.json"
+  },
+  "vanishing_point_plane_exchange_build733": {
+    "status": "Native file exchange and authenticated Photato replay of editable perspective planes",
+    "photatoCommand": "filter.vanishingPoint",
+    "publishedAdobeContractChanges": [],
+    "evidence": "docs/SOURCE_PUBLICATION_733.json"
   }
 }
