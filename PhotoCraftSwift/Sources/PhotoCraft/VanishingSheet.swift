@@ -26,7 +26,23 @@ struct VanishingSheet:View {
         VStack {
           Picker("Tool",selection:$model.tool) { ForEach(VanishingWorkspace.Tool.allCases,id:\.self) { Text($0.rawValue).tag($0) } }.pickerStyle(.segmented).labelsHidden()
           VanishingPreview(model:model)
-          HStack { Toggle("Show Grid",isOn:$model.showGrid);Text("Grid Size");Slider(value:$model.gridSize,in:2...40).frame(width:150);Spacer() }.controlSize(.small)
+          HStack(spacing: 8) {
+            Toggle("Show Grid", isOn: $model.showGrid)
+            Spacer()
+            if model.tool == .create || model.tool == .edit {
+              LabeledContent("Grid Size") {
+                TextField("Grid Size", value: $model.gridSize, format: .number.precision(.fractionLength(0...4)))
+                  .labelsHidden().frame(width: 72)
+              }
+              Slider(value: $model.gridSize, in: VanishingSettings.gridSizeRange) {
+                Text("Grid Size")
+              } onEditingChanged: { dragging in
+                if dragging { model.beginGesture() } else { model.endGesture() }
+              }
+              .labelsHidden().frame(width: 120)
+            }
+          }
+          .controlSize(.small)
         }.frame(minWidth:550)
         ScrollView { VStack(alignment:.leading,spacing:12) {
           if model.tool == .create { Text("Click four corners around a rectangular surface. The grid follows its perspective.").font(.caption);Button("Clear Points") { model.pending=[];model.error=nil }.disabled(model.pending.isEmpty) }
@@ -96,8 +112,26 @@ struct VanishingPreview:View {
         if let image=model.preview ? model.image:model.originalImage { context.draw(Image(decorative:image,scale:1),in:CGRect(x:offset.x,y:offset.y,width:model.size.width*scale,height:model.size.height*scale)) }
         if model.showGrid,let scene {
           for (i,frame) in scene.frames.enumerated() {
-            var grid=Path();let n=max(2,Int(model.gridSize))
-            for j in 0...n { let u=Double(j)/Double(n);grid.move(to:screen(frame.point(.init(u,0))));grid.addLine(to:screen(frame.point(.init(u,1))));grid.move(to:screen(frame.point(.init(0,u))));grid.addLine(to:screen(frame.point(.init(1,u)))) }
+            var grid = Path()
+            grid.addLines(frame.corners.map(screen))
+            grid.closeSubpath()
+            let interval = model.gridSize / scene.focal
+            func drawLines(length: Double, horizontal: Bool) {
+              let count = length / interval
+              guard count.isFinite, count > 1 else { return }
+              // Thin out small projected intervals to bound preview work.
+              let stride = max(1, (count / 384).rounded(.up))
+              for index in 1...384 {
+                let position = Double(index) * stride / count
+                guard position < 1 else { break }
+                let start = horizontal ? PathPoint(0,position) : PathPoint(position,0)
+                let end = horizontal ? PathPoint(1,position) : PathPoint(position,1)
+                grid.move(to: screen(frame.point(start)))
+                grid.addLine(to: screen(frame.point(end)))
+              }
+            }
+            drawLines(length: frame.width, horizontal: false)
+            drawLines(length: frame.height, horizontal: true)
             context.stroke(grid,with:.color(i==model.selected ? .cyan:.blue.opacity(0.6)),lineWidth:i==model.selected ? 1:0.6)
             for p in frame.corners { let q=screen(p);context.fill(Path(ellipseIn:CGRect(x:q.x-4,y:q.y-4,width:8,height:8)),with:.color(i==model.selected ? .cyan:.blue)) }
           }

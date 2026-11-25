@@ -25,7 +25,17 @@ import PhotoCraftImaging
   var image:CGImage?
   var originalImage:CGImage?
   var showGrid=true
-  var gridSize=10.0
+  var gridSize: Double {
+    get { program.settings.effectiveGridSize }
+    set {
+      guard newValue.isFinite else { return }
+      let range = VanishingSettings.gridSizeRange
+      let size = min(range.upperBound, max(range.lowerBound, newValue))
+      var draft = program
+      draft.settings.gridSize = size == VanishingSettings.defaultGridSize ? nil : size
+      change(draft)
+    }
+  }
   var preview=true
   var rendering=false
   var zoom=1.0
@@ -59,7 +69,19 @@ import PhotoCraftImaging
   func remember(_ p:VanishingProgram) { undoStates.append(p);if undoStates.count>40 { undoStates.removeFirst() };redoStates=[] }
   func change(_ p:VanishingProgram,remember:Bool=true) {
     do { try p.validate();_ = try VanishingScene(p.settings,width:original.width,height:original.height) } catch { self.error=error.localizedDescription;return }
-    guard p != program else { error=nil;return };if remember && gestureStart==nil { self.remember(program) };program=p;selected=max(0,min(selected,p.settings.planes.count-1));if let i=selectedPaste,!p.operations.indices.contains(i) { selectedPaste=nil };refresh()
+    guard p != program else { error=nil;return }
+    var previous = program
+    previous.settings.gridSize = p.settings.gridSize
+    if remember && gestureStart == nil { self.remember(program) }
+    program = p
+    selected = max(0,min(selected,p.settings.planes.count-1))
+    if let i = selectedPaste, !p.operations.indices.contains(i) { selectedPaste = nil }
+    if p == previous, let edit = preparedEdit, let updated = try? edit.updatingGridSize(p.settings.gridSize) {
+      preparedEdit = updated
+      error = nil
+    } else {
+      refresh()
+    }
   }
   func beginGesture() { if gestureStart==nil { gestureStart=program } }
   func endGesture() { if let start=gestureStart,start != program { remember(start) };gestureStart=nil }

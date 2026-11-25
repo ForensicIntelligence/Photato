@@ -6,6 +6,7 @@ enum PSDVanishingPoint {
   static let id = 4000
   static let importedKey = "psdVanishingPoint"
   private static let maximumPayload = 64 * 1024
+  private static let parallelOffset = 0.25
 
   private struct Cursor {
     let words: [Substring]
@@ -45,6 +46,7 @@ enum PSDVanishingPoint {
     let identity: UInt32
     let parent: UInt32
     let angle: Double?
+    let calibrationPoint: PathPoint?
     let rays: [Int: Ray]
 
     func corners() throws -> [PathPoint] {
@@ -58,7 +60,7 @@ enum PSDVanishingPoint {
       }
     }
 
-    func rootCorners() throws -> [PathPoint] {
+    func rootCorners(restoreSquare: Bool) throws -> [PathPoint] {
       let ring = try corners()
       let sides = [5,7,1,3]
       let widthAxis = min(rays[1]!.axis,rays[7]!.axis)
@@ -66,16 +68,78 @@ enum PSDVanishingPoint {
       let step = cross > 0 ? 1 : -1
       let candidates = (0..<4).filter { rays[sides[step>0 ? $0 : ($0+3)%4]]!.axis == widthAxis }
       guard let start = candidates.min(by:{ ring[$0].x+ring[$0].y < ring[$1].x+ring[$1].y }) else { throw invalid() }
-      return (0..<4).map { ring[(start+4+$0*step)%4] }
+      let q = (0..<4).map { ring[(start+4+$0*step)%4] }
+      guard restoreSquare, let marker = calibrationPoint,
+        let across = direction(from: marker, to: q[2]),
+        let down = direction(from: q[1], to: q[2]),
+        abs(across.x*down.x + across.y*down.y) < 1e-6 else { return q }
+      // The square-to-camera record offsets the top-right and bottom-left ray
+      // origins. The calibration point still gives the original bottom-left.
+      let outside = offset(marker, by: across, distance: -parallelOffset)
+      guard distance(outside, q[3]) < 1e-5 else { return q }
+      let upperRight = offset(q[1], by: down, distance: parallelOffset)
+      let upperLeft = PathPoint(upperRight.x+marker.x-q[2].x,upperRight.y+marker.y-q[2].y)
+      guard distance(q[0], upperLeft) < parallelOffset else { return q }
+      return [upperLeft, upperRight, q[2], marker]
     }
   }
 
   private struct Resource {
     let planes: [Plane]
     let footer: [String]
+    let relationGridIndices: [Int]
+    let footerIndex: Int
+    var gridSize: Double? {
+      let precise = footer.dropFirst().first.flatMap(Double.init)
+      let size = precise ?? planes.first?.grid ?? VanishingSettings.defaultGridSize
+      return VanishingSettings.gridSizeRange.contains(size)
+        && size != VanishingSettings.defaultGridSize ? size : nil
+    }
   }
 
   private static func invalid() -> CraftError { .invalid("Invalid Photoshop perspective plane resource.") }
+
+  private static func distance(_ a: PathPoint, _ b: PathPoint) -> Double {
+    hypot(a.x-b.x,a.y-b.y)
+  }
+
+  private static func direction(from a: PathPoint, to b: PathPoint) -> PathPoint? {
+    let length = distance(a,b)
+    guard length > 1 else { return nil }
+    return .init((b.x-a.x)/length,(b.y-a.y)/length)
+  }
+
+  private static func offset(_ p: PathPoint, by d: PathPoint, distance: Double) -> PathPoint {
+    .init(p.x+d.x*distance,p.y+d.y*distance)
+  }
+
+  private static func signedDistance(_ point: PathPoint, from origin: PathPoint, along axis: PathPoint) -> Double {
+    (point.x-origin.x)*axis.x + (point.y-origin.y)*axis.y
+  }
+
+  private static func decimal(_ value: Double) -> String {
+    if value.isFinite, abs(value) < 1e15, value == value.rounded() { return String(Int64(value)) }
+    return String(format:"%.12g",locale:Locale(identifier:"en_US_POSIX"),value)
+  }
+
+  private static func updatingGrid(in data: Data, resource: Resource, size: Double) throws -> Data {
+    guard let source = String(data:data,encoding:.ascii) else { throw invalid() }
+    let words = source.split(whereSeparator: \.isWhitespace)
+    let rounded = decimal(size.rounded(.towardZero))
+    let precise = decimal(size)
+    var replacements = resource.relationGridIndices.map { ($0,rounded) }
+    if !resource.footer.isEmpty {
+      replacements += resource.relationGridIndices.indices.map { (resource.footerIndex+1+$0,precise) }
+    }
+    var text = "", last = source.startIndex
+    for (index, value) in replacements {
+      let token = words[index]
+      text += source[last..<token.startIndex] + value
+      last = token.endIndex
+    }
+    text += source[last...]
+    return Data(text.utf8)
+  }
 
   private static func isVanishingPoint(_ block: PSDImageResources.Block) -> Bool {
     guard block.id == id, block.data.count >= 7,
@@ -92,8 +156,10 @@ enum PSDVanishingPoint {
     guard (1...32).contains(relations) else { throw invalid() }
     var planes: [Plane] = []
     var identities = Set<UInt32>()
+    var relationGridIndices: [Int] = []
     for _ in 0..<relations {
       try Task.checkCancellation()
+      relationGridIndices.append(input.offset)
       let grid = try input.number()
       let count: Int = try input.integer()
       guard grid > 0, count > 0, count <= 32-planes.count else { throw invalid() }
@@ -104,15 +170,16 @@ enum PSDVanishingPoint {
         guard identity != 0, identities.insert(identity).inserted,
           index == 0 ? parent == 0 : family.contains(parent) else { throw invalid() }
         family.insert(identity)
-        let angle: Double?
+        let angle: Double?, calibrationPoint: PathPoint?
         if version == 203 {
           let degrees = try input.number()
           let selector: Int = try input.integer()
-          _ = try input.point()
+          calibrationPoint = try input.point()
           guard (0...2).contains(selector), (-180...180).contains(degrees) else { throw invalid() }
           angle = index == 0 ? nil : degrees
         } else {
           angle = nil
+          calibrationPoint = nil
         }
         var rays: [Int: Ray] = [:]
         for _ in 0..<4 {
@@ -126,13 +193,13 @@ enum PSDVanishingPoint {
         }
         guard rays[1]!.axis == rays[5]!.axis, rays[3]!.axis == rays[7]!.axis,
           rays[1]!.axis != rays[7]!.axis else { throw invalid() }
-        planes.append(.init(grid:grid,identity:identity,parent:parent,angle:angle,rays:rays))
+        planes.append(.init(grid:grid,identity:identity,parent:parent,angle:angle,calibrationPoint:calibrationPoint,rays:rays))
       }
     }
     let footer = input.words.dropFirst(input.offset).map(String.init)
     guard footer.isEmpty || (version == 203 && footer.count == 2 + 3*relations && footer.first == "201"
       && footer.dropFirst().allSatisfy({ Double($0)?.isFinite == true })) else { throw invalid() }
-    return Resource(planes:planes,footer:footer)
+    return Resource(planes:planes,footer:footer,relationGridIndices:relationGridIndices,footerIndex:input.offset)
   }
 
   private static func points(_ edge: VanishingPlane.Edge) -> (parentA: Int,parentB: Int,childA: Int,childB: Int) {
@@ -171,17 +238,23 @@ enum PSDVanishingPoint {
 
   private static func settings(_ resource: Resource, width: Int, height: Int) throws -> VanishingSettings {
     var result = VanishingSettings()
+    result.gridSize = resource.gridSize
     let center = PathPoint(Double(width)/2,Double(height)/2)
     result.center = center
-    let roots = try resource.planes.filter { $0.parent == 0 }.map { try $0.rootCorners() }
+    let parents = Set(resource.planes.map(\.parent))
+    let roots = try resource.planes.filter { $0.parent == 0 }.map {
+      try $0.rootCorners(restoreSquare: !parents.contains($0.identity))
+    }
     result.focalLength = roots.lazy.compactMap { VanishingScene.inferredFocal($0,center:center) }.first
       ?? Double(max(width,height))
     var indices: [UInt32:Int] = [:]
+    var rootIndex = 0
     for item in resource.planes {
       try Task.checkCancellation()
       let plane: VanishingPlane
       if item.parent == 0 {
-        plane = .init(corners:try item.rootCorners())
+        plane = .init(corners:roots[rootIndex])
+        rootIndex += 1
       } else {
         guard let parent = indices[item.parent] else { throw invalid() }
         let scene = try VanishingScene(result,width:width,height:height)
@@ -257,23 +330,60 @@ enum PSDVanishingPoint {
   }
 
   private static func encode(_ document: VanishingSettings, width: Int, height: Int, previous: Resource?) throws -> Data {
-    let scene = try VanishingScene(document,width:width,height:height)
+    let original = try VanishingScene(document,width:width,height:height)
     let roots = document.planes.indices.filter { document.planes[$0].parent == nil }
+    var projected = document
+    var squareMarkers: [Int:PathPoint] = [:]
+    for index in roots {
+      let q = original.frames[index].corners
+      let vanishing = axisDirections(q).map(vanishingPoint)
+      let parallelAcross = vanishing[0] == nil, parallelDown = vanishing[1] == nil
+      guard parallelAcross || parallelDown,
+        let across = direction(from:q[3],to:q[2]),
+        let down = direction(from:q[1],to:q[2]) else { continue }
+      if parallelAcross && parallelDown {
+        // A front-facing rectangle uses the same quarter-pixel convention as
+        // Photoshop's square-to-camera plane preset.
+        guard abs(across.x*down.x + across.y*down.y) < 1e-6 else { continue }
+        squareMarkers[index] = q[3]
+      }
+      if parallelAcross {
+        // Keep the known vanishing point on the unmodified pair of edges.
+        // The distant point must tend away from it relative to the camera.
+        if let finite = vanishing[1], signedDistance(finite,from:original.center,along:across) < 0,
+          let opposite = direction(from:q[0],to:q[3]) {
+          projected.planes[index].corners[0] = offset(q[0],by:opposite,distance:-parallelOffset)
+        } else {
+          projected.planes[index].corners[1] = offset(q[1],by:down,distance:-parallelOffset)
+        }
+      }
+      if parallelDown {
+        if let finite = vanishing[0], signedDistance(finite,from:original.center,along:down) < 0,
+          let opposite = direction(from:q[0],to:q[1]) {
+          projected.planes[index].corners[0] = offset(q[0],by:opposite,distance:-parallelOffset)
+        } else {
+          projected.planes[index].corners[3] = offset(q[3],by:across,distance:-parallelOffset)
+        }
+      }
+    }
+    projected.focalLength = original.focal
+    projected.center = original.center
+    let scene = projected.planes == document.planes ? original
+      : try VanishingScene(projected,width:width,height:height)
     let grids = previous?.planes.filter { $0.parent == 0 }.map(\.grid) ?? []
+    let size = document.effectiveGridSize
+    let gridChanged = previous.map { ($0.gridSize ?? VanishingSettings.defaultGridSize) != size } ?? true
+    let roundedSize = size.rounded(.towardZero)
     var tokens = ["tNaF203",String(roots.count)]
     var labels: [Int:[Int]] = [:]
     func visit(_ node: Int) -> [Int] {
       [node] + document.planes.indices.filter { document.planes[$0].parent == node }.flatMap(visit)
     }
-    func decimal(_ value: Double) -> String {
-      if value.isFinite, abs(value) < 1e15, value == value.rounded() { return String(Int64(value)) }
-      return String(format:"%.12g",locale:Locale(identifier:"en_US_POSIX"),value)
-    }
     // Photoshop's point reader consumes a blank line following each pair.
     func point(_ p: PathPoint) { tokens += [decimal(p.x),decimal(p.y),""] }
     for (ordinal,root) in roots.enumerated() {
       let family = visit(root)
-      tokens += [decimal(grids.indices.contains(ordinal) ? grids[ordinal] : 100),String(family.count)]
+      tokens += [decimal(!gridChanged && grids.indices.contains(ordinal) ? grids[ordinal] : roundedSize),String(family.count)]
       for index in family {
         try Task.checkCancellation()
         let plane=document.planes[index], q=scene.frames[index].corners
@@ -299,7 +409,7 @@ enum PSDVanishingPoint {
         } else {
           axes=[0,1]
           tokens += ["-1","0"]
-          point(vanishing[0] ?? q[1])
+          point(squareMarkers[index] ?? vanishing[0] ?? q[1])
         }
         labels[index]=axes
         let records = rays(q,axes:(0..<2).map{ Axis(vanisher:vanishing[$0],label:axes[$0]) })
@@ -310,11 +420,14 @@ enum PSDVanishingPoint {
         }
       }
     }
-    if let footer = previous?.footer, footer.count == 2 + 3*roots.count {
+    if var footer = previous?.footer, footer.count == 2 + 3*roots.count {
+      if gridChanged {
+        footer.replaceSubrange(1...roots.count,with:Array(repeating:decimal(size),count:roots.count))
+      }
       tokens += footer
     } else {
       // Version 201 workspace settings include a value and a pair per relation.
-      tokens += ["201"] + Array(repeating:"100",count:roots.count) + ["0"]
+      tokens += ["201"] + Array(repeating:decimal(size),count:roots.count) + ["0"]
       for _ in roots { tokens += ["100","0"] }
     }
     return Data((tokens.joined(separator:"\n")+"\n").utf8)
@@ -343,9 +456,15 @@ enum PSDVanishingPoint {
     } else {
       previous = nil
     }
-    if let previous,
-      try self.settings(previous,width:document.width,height:document.height) == settings {
-      return data
+    if let existing, let previous {
+      var original = try self.settings(previous,width:document.width,height:document.height)
+      if original == settings { return data }
+      original.gridSize = settings.gridSize
+      if original == settings, !previous.footer.isEmpty {
+        let payload = try updatingGrid(in:existing.data,resource:previous,size:settings.effectiveGridSize)
+        let block = try PSDImageResources.replacing(existing,id:id,payload:payload)
+        return blocks.reduce(into:Data()) { $0.append(isVanishingPoint($1) ? block : $1.raw) }
+      }
     }
     let payload = try encode(settings,width:document.width,height:document.height,previous:previous)
     let block = try PSDImageResources.replacing(existing,id:id,payload:payload)

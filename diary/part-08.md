@@ -1394,4 +1394,12 @@ All 392 selected tests passed in the three configurations. Large brushes still n
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-546) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_546.md).
 
+## 2026-11-17 — Step 545 — Faster composition under tone layers
+
+The renderer combines a raster and eligible tone layers in one pass through its tiles. On Apple Silicon, the 5,000 px first-dab software composition fell from 1,628 to 124 ms on the 24 MP test image. The hosted AppKit first draw took 896 ms in the paired runs.
+
+All 64 output comparisons were exact and all 390 selected tests passed in each configuration. Large-tip display cadence remains open.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-545) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_545.md).
+
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

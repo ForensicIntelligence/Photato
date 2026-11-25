@@ -24,13 +24,21 @@ public struct VanishingPlane:Codable,Equatable,Sendable {
   public init(parent:Int,edge:Edge,angle:Double=90,depth:Double=1) { self.parent=parent;self.edge=edge;self.angle=angle;self.depth=depth }
 }
 public struct VanishingSettings:Codable,Equatable,Sendable {
+  public static let defaultGridSize = 100.0
+  public static let gridSizeRange = 1.0...1000.0
   public var planes:[VanishingPlane]=[]
+  /// The document's grid spacing. Earlier archives omit the default value.
+  public var gridSize: Double?
+  public var effectiveGridSize: Double { gridSize ?? Self.defaultGridSize }
   /// Camera focal length in pixels. Zero infers it from the first plane or uses
   /// the longer canvas side. Scene construction validates the resulting projection.
   public var focalLength=0.0
   public var center:PathPoint?
   public init() {}
   public func validate() throws {
+    guard Self.gridSizeRange.contains(effectiveGridSize) else {
+      throw CraftError.invalid("Grid Size must be between 1 and 1,000.")
+    }
     guard planes.count<=32,focalLength.isFinite,focalLength>=0,center.map({Self.validPoint($0)}) ?? true else { throw CraftError.invalid("Invalid Vanishing Point camera or plane count.") }
     for (i,p) in planes.enumerated() {
       guard p.angle.isFinite, (0...180).contains(p.angle), p.depth.isFinite, p.depth > 0,

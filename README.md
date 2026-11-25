@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 733.** Photato opens supported Photoshop Vanishing Point grids as editable planes. A connected grid stays attached to its parent edge. PSD and PSB retain the original plane record byte for byte when an edit changes only the pixels. [Retouch guide](PhotoCraftSwift/docs/RETOUCH_SAMPLE_REUSE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_733.md).
+**Development alpha — source build 734.** Vanishing Point saves the Grid Size with the document. Use the number field or slider to set a shared spacing from 1 to 1,000. The overlay updates without repainting the image. Native documents, editable PSD and PSB and the authenticated Photato API retain fractional values. [Retouch guide](PhotoCraftSwift/docs/RETOUCH_SAMPLE_REUSE.md) · [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_734.md).
 
 ## Project layout
 

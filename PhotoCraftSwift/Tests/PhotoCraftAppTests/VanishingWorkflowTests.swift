@@ -371,6 +371,101 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  func testSquareToCameraUsesFiniteRaysAndPreservesFractionalGridSpacing() throws {
+    var document = try CraftDocument(width: 320, height: 240)
+    var settings = VanishingSettings()
+    settings.planes = [.init(corners: [.init(0,0),.init(320,0),.init(320,240),.init(0,240)])]
+    settings.gridSize = 43.75
+    document.vanishingPoint = settings
+    for format in [DocumentIO.Format.psd,.psb] {
+      let file = try DocumentIO.encode(document,format:format)
+      let reopened = try PSDCodec.read(file)
+      let saved = try XCTUnwrap(reopened.vanishingPoint)
+      XCTAssertEqual(saved.gridSize,43.75)
+      let resources = try XCTUnwrap(reopened.sourceMetadata?["psdResources"])
+      let start = try XCTUnwrap(resources.range(of:Data("tNaF203\n1\n43\n1\n".utf8)))
+      let end = try XCTUnwrap(resources.range(of:Data("201\n43.75\n0\n100\n0\n".utf8)))
+      let rays = try XCTUnwrap(String(data:resources[start.upperBound..<end.lowerBound],encoding:.ascii))
+      XCTAssertTrue(rays.contains("320\n-0.25\n\n-307200\n240\n\n0\n0\n5\n"))
+      XCTAssertTrue(rays.contains("-0.25\n240\n\n320\n-307200\n\n0\n1\n3\n"))
+      for (expected, actual) in zip(settings.planes[0].corners,saved.planes[0].corners) {
+        XCTAssertEqual(actual.x,expected.x,accuracy:1e-7)
+        XCTAssertEqual(actual.y,expected.y,accuracy:1e-7)
+      }
+      var resized = reopened
+      resized.vanishingPoint?.gridSize = 91.25
+      let changed = try PSDCodec.read(DocumentIO.encode(resized,format:format))
+      XCTAssertEqual(changed.vanishingPoint?.gridSize,91.25)
+      let changedResources = try XCTUnwrap(changed.sourceMetadata?["psdResources"])
+      let raySection = Data(rays.utf8)
+      XCTAssertNotNil(changedResources.range(of:raySection))
+      XCTAssertNotNil(changedResources.range(of:Data("201\n91.25\n0\n100\n0\n".utf8)))
+    }
+    for centerX in [135.0,185.0] {
+      let quad = [PathPoint(centerX-75,36),.init(centerX+75,36),
+                  .init(centerX+86,210),.init(centerX-86,210)]
+      document.vanishingPoint?.planes = [.init(corners:quad)]
+      let file = try DocumentIO.encode(document,format:.psd)
+      let plane = try XCTUnwrap(try PSDCodec.read(file).vanishingPoint?.planes.first)
+      XCTAssertNotNil(VanishingScene.inferredFocal(plane.corners,center:.init(160,120)))
+      for (expected,actual) in zip(quad,plane.corners) {
+        XCTAssertLessThan(hypot(expected.x-actual.x,expected.y-actual.y),0.251)
+      }
+    }
+  }
+
+  @MainActor func testGridSizeEditsReusePreviewAndPersistThroughNativeAndHTTP() async throws {
+    var source = try fixture()
+    source.vanishingPoint = program().settings
+    let layer = try XCTUnwrap(source.activeLayerID)
+    let workspace = VanishingWorkspace(document:source,layerID:layer)
+    defer { workspace.close() }
+    await workspace.prepare()
+    workspace.change(program())
+    await workspace.task?.value
+    let preview = try XCTUnwrap(workspace.image)
+    let painted = try XCTUnwrap(workspace.preparedEdit?.result.layers)
+    workspace.beginGesture()
+    workspace.gridSize = 73
+    workspace.gridSize = 73.5
+    workspace.endGesture()
+    XCTAssertTrue(workspace.ready)
+    XCTAssertTrue(workspace.image === preview)
+    XCTAssertEqual(workspace.preparedEdit?.result.layers,painted)
+    XCTAssertEqual(workspace.preparedEdit?.result.vanishingPoint?.gridSize,73.5)
+    workspace.undo()
+    XCTAssertEqual(workspace.gridSize,100)
+    workspace.redo()
+    XCTAssertEqual(workspace.gridSize,73.5)
+    let edited = try XCTUnwrap(workspace.preparedEdit?.result)
+    let native = try NativeArchive.decode(NativeArchive.encodeChunked(edited))
+    XCTAssertEqual(native.vanishingPoint?.gridSize,73.5)
+
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service, document in
+      document.store.session = EditorSession(document:source)
+      try service.share(document)
+      service.setDocumentTransfersEnabled(true)
+      let parameters: [String:Any] = ["layerID":layer.uuidString,"settings":workspace.program.settings.apiValue]
+      let status = try await helper.edit(service,document,"filter.vanishingPoint",parameters)
+      XCTAssertEqual(status,200)
+      XCTAssertEqual(document.store.document.vanishingPoint?.gridSize,73.5)
+      let share = try XCTUnwrap(service.shares.first?.id)
+      for suffix in ["psd","psb"] {
+        let response = try await helper.request(service,path:"/v1/documents/\(share)/file.\(suffix)")
+        XCTAssertEqual(response.0.statusCode,200)
+        XCTAssertEqual(try PSDCodec.read(response.1).vanishingPoint?.gridSize,73.5)
+      }
+      let invalid: [String:Any] = ["layerID":layer.uuidString,"settings":["gridSize":1001]]
+      let rejected = try await helper.edit(service,document,"filter.vanishingPoint",invalid)
+      XCTAssertEqual(rejected,400)
+      XCTAssertEqual(document.store.document.vanishingPoint?.gridSize,73.5)
+      let undone = try await helper.edit(service,document,"history.undo")
+      XCTAssertEqual(undone,200)
+      XCTAssertEqual(document.store.document,source)
+    }
+  }
+
   @MainActor func testNativeAndAPIGrowExistingPSDRepairLayerWithoutAddingLayer() async throws {
     let helper = AutomationTests()
     try await helper.withService(actions: ActionLibrary(), pressedMouseButtons: { 0 }) { service, document in

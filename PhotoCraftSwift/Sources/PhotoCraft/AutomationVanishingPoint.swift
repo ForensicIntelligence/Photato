@@ -18,6 +18,8 @@ extension VanishingSettings {
         "depth":["type":"number","exclusiveMinimum":0],"rotationSign":orientation]]
     return ["type":"object","additionalProperties":false,"properties":["focalLength":["type":"number","minimum":0,"default":0,
       "description":"Finite focal length in pixels. Zero infers the camera or uses the longer canvas side. The resulting projection must be valid."],"center":pointSchema,
+      "gridSize":["type":"number","minimum":gridSizeRange.lowerBound,"maximum":gridSizeRange.upperBound,
+                  "default":defaultGridSize,"description":"Grid spacing shared by all planes."],
       "planes":["type":"array","maxItems":32,"default":[],"items":["type":"object","additionalProperties":false,"properties":[
         "corners":["type":"array","minItems":0,"maxItems":4,"items":pointSchema,"default":[]],"parent":["type":"integer","minimum":0,"maximum":30],"edge":["type":"string","enum":VanishingPlane.Edge.allCases.map(\.rawValue),"default":"top"],"angle":["type":"number","minimum":0,"maximum":180,"default":90],"depth":["type":"number","exclusiveMinimum":0,"default":1],"rotationSign":orientation,"calibration":calibration],"description":"Four convex corners in document pixels, or an earlier parent index with empty corners. Related planes recompute when their parent changes."]]]]
   }
@@ -57,8 +59,10 @@ extension AutomationCommand {
     var p=VanishingProgram();p.settings=document.vanishingPoint ?? .init()
     if let value=parameters["newLayer"] { guard case .bool(let b)=value else { throw fail("newLayer must be boolean.") };p.newLayer=b }
     if let value=parameters["settings"] {
-      guard case .object(let fields)=value,Set(fields.keys).isSubset(of:["planes","focalLength","center"]) else { throw fail("Invalid plane settings.") }
-      var raw:[String:Any]=["planes":[],"focalLength":0];for (k,v) in fields { raw[k]=v.jsonValue }
+      guard case .object(let fields)=value,Set(fields.keys).isSubset(of:["planes","focalLength","center","gridSize"]) else { throw fail("Invalid plane settings.") }
+      var raw:[String:Any]=["planes":[],"focalLength":0]
+      if let size = p.settings.gridSize { raw["gridSize"] = size }
+      for (k,v) in fields { raw[k]=v.jsonValue }
       if let items=raw["planes"] {
         guard let items=items as? [[String:Any]],items.count<=32 else { throw fail("Invalid planes.") }
         raw["planes"]=try items.map { value -> [String:Any] in
@@ -74,7 +78,11 @@ extension AutomationCommand {
       }
       func pointsAreStrict(_ value:Any)->Bool { if let d=value as? [String:Any] { for (k,v) in d { if k == "center" { guard let q=v as? [String:Any],Set(q.keys)==["x","y"] else { return false } };if k == "corners" || k == "parentCorners" { guard let q=v as? [[String:Any]],q.allSatisfy({Set($0.keys)==["x","y"]}) else { return false } };if !pointsAreStrict(v) { return false } } };if let a=value as? [Any] { return a.allSatisfy(pointsAreStrict) };return true }
       guard pointsAreStrict(raw) else { throw fail("Invalid plane coordinates.") }
-      do { p.settings=try JSONDecoder().decode(VanishingSettings.self,from:JSONSerialization.data(withJSONObject:raw));try p.settings.validate() } catch { throw fail(error.localizedDescription) }
+      do {
+        p.settings = try JSONDecoder().decode(VanishingSettings.self,from:JSONSerialization.data(withJSONObject:raw))
+        try p.settings.validate()
+        if p.settings.gridSize == VanishingSettings.defaultGridSize { p.settings.gridSize = nil }
+      } catch { throw fail(error.localizedDescription) }
     }
     if let value=parameters["operations"] {
       guard case .array(let items)=value,items.count<=256 else { throw fail("Invalid operations.") }

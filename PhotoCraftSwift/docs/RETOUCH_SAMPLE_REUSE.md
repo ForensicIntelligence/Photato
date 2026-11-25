@@ -34,3 +34,5 @@ In Vanishing Point, choose **Heal** with Brush or Stamp, or select a pasted patc
 To repair on an existing cropped pixel layer, select it before opening Vanishing Point and leave **New Layer** off. The layer can expand into the repaired area while keeping the existing pixels and masks in place. [Build 732 validation](SOURCE_PUBLICATION_732.md).
 
 Open a supported PSD or PSB and choose **Filter → Vanishing Point** to work with its saved grids. Connected grids stay attached when their parent moves. Save as PSD or PSB to keep the supported grids editable. [File exchange checks](SOURCE_PUBLICATION_733.md).
+
+Use **Grid Size** in the Vanishing Point workspace to adjust all grid lines. The number field accepts fractional values from 1 to 1,000. The saved document keeps the spacing. [Grid and file exchange checks](SOURCE_PUBLICATION_734.md).

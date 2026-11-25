@@ -1,3 +1,7 @@
+### Vanishing Point grid size (checkpoint 734)
+
+Send `settings.gridSize` with `filter.vanishingPoint` to set the shared Vanishing Point grid spacing. It accepts a number from 1 to 1,000 and defaults to 100. The document state reports a nondefault value as part of its editable settings. Both PSD and PSB downloads keep the fractional spacing. [File and API checks](SOURCE_PUBLICATION_734.md).
+
 ### Vanishing Point plane exchange (checkpoint 733)
 
 Document state and `filter.vanishingPoint` accept measured connected-plane geometry. The optional `rotationSign` is `-1` or `1`. For imported planes, replay the returned `calibration` object alongside its parent, edge, angle and depth. The service validates the shared edge. With document transfers enabled, a PSD or PSB download can retain supported planes. An unchanged recognized plane record is preserved verbatim. [File and API checks](SOURCE_PUBLICATION_733.md).

@@ -752,7 +752,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 731 | 2026-11-23 | [Blend projected repairs with Vanishing Point Heal](#dev-step-731) |
 | 732 | 2026-11-23 | [Repair directly on cropped Vanishing Point layers](#dev-step-732) |
 | 733 | 2026-11-24 | [Keep Vanishing Point grids editable in PSD and PSB](#dev-step-733) |
+| 734 | 2026-11-25 | [Keep Vanishing Point grid spacing and export square planes](#dev-step-734) |
 <!-- history-index:end -->
+
+<a id="dev-step-734"></a>
+
+## 2026-11-25 — Keep Vanishing Point grid spacing and export square planes
+
+The square-to-camera format uses finite vanishing points with quarter-pixel offsets. The reader can recover the nominal corners of the independent square. For a single parallel direction, the writer chooses the direction of the distant vanishing point using the camera center and the existing finite point. Grid-only changes update the rounded relation fields and the fractional workspace fields in place.
+
+In Photoshop 27.2.0, the Photato square-to-camera export reopened as a blue calibrated grid with size 73. The companion PSB also reopened at 73. The square PSD and PSB match 41 numeric fields in Adobe’s saved grid. Each file has its own plane ID. The corrected single-parallel trapezoid displayed a blue grid too. The two-plane file reopened at 91.25 after changing only the spacing tokens in its original Photoshop resource.
+
+837 of 839 selected tests passed on each optimized architecture, including both new cases. The inherited color-profile and layer-effect failures repeated. Xcode built the Debug app, and all 19 focused Vanishing Point tests passed. Both optimized slices opened offscreen in the signed macOS 14+ preview.
+
+The desktop session timed out when launching the isolated Photato preview for direct input. Its native sheet was rendered offscreen in both appearances. Live keyboard and slider interaction, general projected grid placement, and the Photoshop measurement tools still need qualification.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_734.md).
 
 <a id="dev-step-733"></a>
 

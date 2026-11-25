@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **733** · The 10 most recent entries, newest first.
+Source build **734** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 734 — Keep Vanishing Point grid spacing and export square planes
+
+Vanishing Point saves the Grid Size with the document. Use the number field or slider to set a shared spacing from 1 to 1,000. The overlay updates without repainting the image. Native documents, editable PSD and PSB and the authenticated Photato API retain fractional values.
+
+In Photoshop 27.2.0, the Photato square-to-camera export reopened as a blue calibrated grid with size 73. The companion PSB also reopened at 73. The square PSD and PSB match 41 numeric fields in Adobe’s saved grid. Each file has its own plane ID. The corrected single-parallel trapezoid displayed a blue grid too. The two-plane file reopened at 91.25 after changing only the spacing tokens in its original Photoshop resource.
+
+The desktop session timed out when launching the isolated Photato preview for direct input. Its native sheet was rendered offscreen in both appearances. Live keyboard and slider interaction, general projected grid placement, and the Photoshop measurement tools still need qualification.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-734) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_734.md).
 
 ## 2026-11-24 — Step 733 — Keep Vanishing Point grids editable in PSD and PSB
 
@@ -105,15 +115,3 @@ The ordinary New Layer first preview took 117–125 ms on optimized Apple Silico
 The timings measure software preparation and the first complete preview on one test host. Physical pointer-to-display cadence and direct Photoshop comparison remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-725) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_725.md).
-
-## 2026-11-23 — Step 724 — Reuse the canvas composite for Clone Stamp and Healing Brush
-
-Clone Stamp and Healing Brush can reuse the prepared canvas composite for Current & Below and All Layers. The renderer checks that the cached document matches the requested source and layer cutoff. Source selection, previews and authenticated Photato edits share this sampling path.
-
-On the 2,096 × 2,592 portrait, the optimized Apple Silicon raw sampling step went from 190.2 ms to 0.17 ms with a ready exact composite. Under Rosetta it went from 352.4 ms to 0.22 ms. All source bytes matched. The six optimized portrait edits matched build 723 PNGs exactly. The editor preview, commit and authenticated API output matched. Each repair stayed on an editable correction layer after reopening and could be reversed with one Undo.
-
-With the ordinary New Layer action, Apple Silicon rendered the first preview in 183–192 ms. Using a compact 2 × 2 raster that had to expand, the first preview took 641–682 ms. The normal sparse New Layer raster can update a small region. Depth conversion still took most of its first-frame time. Both layer geometries produced the same tested PNGs.
-
-These tests compare Photato’s output across configurations and against a clean portrait reference. Live Photoshop comparison is still open. Raw sampling time measures a single preparation stage. Actual pointing-device feedback and physical frame cadence remain open. The Clone Stamp still requires the user to match both source texture and tone.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-724) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_724.md).

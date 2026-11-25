@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 545 — Faster composition under tone layers
-
-The renderer combines a raster and eligible tone layers in one pass through its tiles. On Apple Silicon, the 5,000 px first-dab software composition fell from 1,628 to 124 ms on the 24 MP test image. The hosted AppKit first draw took 896 ms in the paired runs.
-
-All 64 output comparisons were exact and all 390 selected tests passed in each configuration. Large-tip display cadence remains open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-545) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_545.md).
-
 ## 2026-11-17 — Step 544 — Faster wide brushes
 
 The renderer prepares the brush tip once per dab. Wide brushes now start their first canvas preview from the initial pointer sample. The 24 MP hosted test measured first draw at 2,343 ms for a 5,000 px soft brush, compared with 2,442 ms in build 543.
@@ -355,14 +347,16 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:733 -->
-## Current development status — 24 November 2026
+<!-- current-status-step:734 -->
+## Current development status — 25 November 2026
 
-Photato opens supported Photoshop Vanishing Point grids as editable planes. A connected grid stays attached when its parent moves. PSD and PSB keep the original record byte for byte when an edit changes only the pixels.
+Vanishing Point saves the Grid Size with the document. Use the number field or slider to set a shared spacing from 1 to 1,000. The overlay updates without repainting the image. Native documents, editable PSD and PSB and the authenticated Photato API retain fractional values.
 
-Photoshop displayed both grids in Photato’s new two-plane PSD and opened the matching PSB. It also displayed the moved grid from the connected-plane test. All 19 focused Debug tests passed. The optimized runs passed 835 of 837 selected tests on each architecture, including both new tests. The two inherited layer-effect and color-profile cases still fail.
+In Photoshop 27.2.0, the Photato square-to-camera export reopened as a blue calibrated grid with size 73. The companion PSB also reopened at 73. The square PSD and PSB match 41 numeric fields in Adobe’s saved grid. Each file has its own plane ID. The corrected single-parallel trapezoid displayed a blue grid too. The two-plane file reopened at 91.25 after changing only the spacing tokens in its original Photoshop resource.
 
-[Source checkpoint 733](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_733.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-733).
+837 of 839 selected tests passed on each optimized architecture, including both new cases. The inherited color-profile and layer-effect failures repeated. Xcode built the Debug app, and all 19 focused Vanishing Point tests passed. Both optimized slices opened offscreen in the signed macOS 14+ preview.
+
+[Source checkpoint 734](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_734.md) · [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-734).
 
 <!-- current-status:end -->
 
@@ -1302,5 +1296,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-23 | 731 | [Blend projected repairs with Vanishing Point Heal](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-731) |
 | 2026-11-23 | 732 | [Repair directly on cropped Vanishing Point layers](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-732) |
 | 2026-11-24 | 733 | [Keep Vanishing Point grids editable in PSD and PSB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-733) |
+| 2026-11-25 | 734 | [Keep Vanishing Point grid spacing and export square planes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-734) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

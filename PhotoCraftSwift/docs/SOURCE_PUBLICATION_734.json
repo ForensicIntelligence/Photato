@@ -1,0 +1,274 @@
+{
+  "build": 734,
+  "base": "419983dc87e505bcc4d9d99df6b52b2a5833df4a",
+  "buildInputs": 9424,
+  "candidateManifestSHA256": "3f543514a3b9dcde8297d7d0f901080891dbbaea1e5f1829c0434c5e82eb5cf3",
+  "sourceChanges": {
+    "Sources/PhotoCraft/AutomationVanishingPoint.swift": "f0ad17385fbd74bf66b99376524f0dfc04fe092fe2cbce34c3f68ee4e3e76a80",
+    "Sources/PhotoCraft/VanishingSheet.swift": "b5269673cee4a651158fd17c954b7aaaf6919d2d8240a49c9bbb5a8c9a91f0eb",
+    "Sources/PhotoCraft/VanishingWorkspace.swift": "8f9a83845e256d951e671f42af85f8077fbc0a24663fc2ce335190143e166f5a",
+    "Sources/PhotoCraftCore/VanishingEngine.swift": "09c5349578adba95f106b13afe7967c08f97b26dadf8c1ae316d5c99d4961fe7",
+    "Sources/PhotoCraftCore/VanishingPoint.swift": "7f5b08036a9cdd6d26dc202f139977256d117df25c6f5efce11fb5459431e449",
+    "Sources/PhotoCraftImaging/PSDVanishingPoint.swift": "e035df1f5d6d376acac8ea6c893680489c0005bf47ab2ae6ed8f4a9f6bc3c5b5",
+    "Tests/PhotoCraftAppTests/VanishingWorkflowTests.swift": "74bc165b7a35de60eae36fb3bc4859da9416dbb1d1024b072ec617ba1bba3134",
+    "scripts/Info.plist": "258a136336701b4453bdc99df07d9126b0faf23078c799efa2880fd1ebe65c4e"
+  },
+  "qualification": {
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 839,
+      "passed": 837,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "a45905ba5cd72f1b1c2ff2e2e4800f180b053405be9d6267740ca2bf5049a01c"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 839,
+      "passed": 837,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "e4a7dfd6b1bb78381897b0c0e4afabbd7d1119a48b00b14a69e64d95b731ad88"
+    }
+  },
+  "photoshopReference": {
+    "photoshopVersion": "27.2.0",
+    "blueCalibratedGrid": [
+      "square",
+      "singleParallel"
+    ],
+    "firstSingleParallelAttempt": "yellow",
+    "squarePSDSize": 73,
+    "squarePSBSize": 73,
+    "twoIndependentPlanesPSDSize": 91.25,
+    "referenceMeasuredRange": [
+      1,
+      1000
+    ],
+    "referenceFractionalSpacing": 43.75,
+    "ownedOutputSHA256": {
+      "734-photato-square-grid73.psd": "d164b567ad8cb18c14889d3ca216f5f9da54ac1d6480f0d38a397e9f02c5e9b4",
+      "734-photato-square-grid73.psb": "513f1cc4100d8d3f7c2cb74831b02830c5222f330bb622a5250b744d0e18ac64",
+      "734-photato-two-grid91.psd": "c3227f247abbce03a0a9d90bc6ae7d1779c6bd95da429e1536ab737ee2cf8968",
+      "734-photato-one-parallel.psd": "203150cc95170ceeb3c7257921d448a2b12c9cb695cf53c3b3746929b00707fb"
+    },
+    "referenceSHA256": {
+      "734-adobe-connected-grid67.dat": "d5eab66868853c3ed685a281821c81e1f02e3514924f94d77451de83f3e78e95",
+      "734-adobe-grid43-75.dat": "337aed68f6eff53706081b88f21dac6516822f10f19765704cebe9b38c7ddd1d",
+      "734-adobe-square-grid73.dat": "f8b6ebe72b5db83e5e1ebd7d03b36a2b84ed9aa769fae644cd4f98ca9da25771",
+      "734-adobe-two-grid43-91.dat": "1d9ac613f42a601dfeaccc109505582d428042681cfca6457dad3a48ec2654f2"
+    }
+  },
+  "fileFields": {
+    "square": {
+      "psd": {
+        "fileSHA256": "d164b567ad8cb18c14889d3ca216f5f9da54ac1d6480f0d38a397e9f02c5e9b4",
+        "resourceSHA256": "18f13a81e83fa488bb0b1dd477dcf4d9c95a719593efb77aeff1faf7984beb34",
+        "matchingNumericFields": 41,
+        "generatedField": "Plane ID"
+      },
+      "psb": {
+        "fileSHA256": "513f1cc4100d8d3f7c2cb74831b02830c5222f330bb622a5250b744d0e18ac64",
+        "resourceSHA256": "18f13a81e83fa488bb0b1dd477dcf4d9c95a719593efb77aeff1faf7984beb34",
+        "matchingNumericFields": 41,
+        "generatedField": "Plane ID"
+      }
+    },
+    "gridOnly": {
+      "originalResourceSHA256": "337aed68f6eff53706081b88f21dac6516822f10f19765704cebe9b38c7ddd1d",
+      "editedResourceSHA256": "e78ee3694cac561ac8dce0ef9d8263d5fb367c244b4051548e5cda7b0c5ef4cf",
+      "onlySpacingTokensChanged": true
+    }
+  },
+  "preview": {
+    "build": 734,
+    "archive": "Photato-Retouch-Preview-734-universal.zip",
+    "archiveSHA256": "da71978692da70166de1467e0b23ea8281a5f32deb332587b514d7f13f26a149",
+    "bundleID": "ca.forensicintelligence.photato.perspectiveretouchpreview734",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "046aa44152fc3a89d69b8805533966b3dd6958d1a842a684b66e4e4baad3f63c",
+    "architectureInputsSHA256": {
+      "arm64": "6e9f9b221817860b5d22eb59bfcc8498ca8e6320c848f9aa2febb8bc0984b835",
+      "x86_64": "ea135d6b0c90cf5a828bcf21f54b7b34823afd9c3333b3c23a0b53ff06b5028a"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    }
+  },
+  "previewStartup": {
+    "arm64": {
+      "pngSHA256": "c26608357d25297707ffaaf345cc06ceb6fd53de40217773436f1dd13956852f",
+      "size": [
+        1700,
+        1174
+      ]
+    },
+    "x86_64": {
+      "pngSHA256": "4e4ed507449166d427b57ca890ebd709f609a097271949001dfbe7388e8e2dc3",
+      "size": [
+        1700,
+        1174
+      ]
+    }
+  },
+  "gridLayout": {
+    "light": {
+      "width": 980,
+      "height": 740,
+      "gridValue": 43.75,
+      "interiorLinesAcross": 7,
+      "interiorLinesDown": 5,
+      "expectedProjectedInterval": 82.16796875,
+      "verticalLineCenters": [
+        33.5,
+        115.5,
+        197.5,
+        280.0,
+        362.5,
+        444.5,
+        526.5,
+        608.5,
+        634.5
+      ],
+      "horizontalLineCenters": [
+        144.5,
+        226.5,
+        309.0,
+        391.0,
+        473.5,
+        555.5,
+        595.5
+      ]
+    },
+    "dark": {
+      "width": 980,
+      "height": 740,
+      "gridValue": 43.75,
+      "interiorLinesAcross": 7,
+      "interiorLinesDown": 5,
+      "expectedProjectedInterval": 82.16796875,
+      "verticalLineCenters": [
+        33.5,
+        115.5,
+        197.5,
+        280.0,
+        362.5,
+        444.5,
+        526.5,
+        608.5,
+        634.5
+      ],
+      "horizontalLineCenters": [
+        144.5,
+        226.5,
+        309.0,
+        391.0,
+        473.5,
+        555.5,
+        595.5
+      ]
+    }
+  },
+  "fullOutputHashAgreement": {
+    "734-photato-one-parallel.psd": {
+      "sameCompleteFile": true,
+      "sha256": {
+        "debug": "203150cc95170ceeb3c7257921d448a2b12c9cb695cf53c3b3746929b00707fb",
+        "arm": "203150cc95170ceeb3c7257921d448a2b12c9cb695cf53c3b3746929b00707fb",
+        "intel": "203150cc95170ceeb3c7257921d448a2b12c9cb695cf53c3b3746929b00707fb"
+      }
+    },
+    "734-photato-square-grid73.psb": {
+      "sameCompleteFile": true,
+      "sha256": {
+        "debug": "513f1cc4100d8d3f7c2cb74831b02830c5222f330bb622a5250b744d0e18ac64",
+        "arm": "513f1cc4100d8d3f7c2cb74831b02830c5222f330bb622a5250b744d0e18ac64",
+        "intel": "513f1cc4100d8d3f7c2cb74831b02830c5222f330bb622a5250b744d0e18ac64"
+      }
+    },
+    "734-photato-square-grid73.psd": {
+      "sameCompleteFile": true,
+      "sha256": {
+        "debug": "d164b567ad8cb18c14889d3ca216f5f9da54ac1d6480f0d38a397e9f02c5e9b4",
+        "arm": "d164b567ad8cb18c14889d3ca216f5f9da54ac1d6480f0d38a397e9f02c5e9b4",
+        "intel": "d164b567ad8cb18c14889d3ca216f5f9da54ac1d6480f0d38a397e9f02c5e9b4"
+      }
+    },
+    "734-photato-two-grid91.psd": {
+      "sameCompleteFile": true,
+      "sha256": {
+        "debug": "c3227f247abbce03a0a9d90bc6ae7d1779c6bd95da429e1536ab737ee2cf8968",
+        "arm": "c3227f247abbce03a0a9d90bc6ae7d1779c6bd95da429e1536ab737ee2cf8968",
+        "intel": "c3227f247abbce03a0a9d90bc6ae7d1779c6bd95da429e1536ab737ee2cf8968"
+      }
+    }
+  },
+  "inheritedColorProfileFixture": {
+    "arm": {
+      "architecture": "arm64",
+      "assertions": 34,
+      "bytesPerOutput": 1984272,
+      "wordSHA256": {
+        "dense": "e6b8a62df2badf9d314c3ce7bbe8bd630535e211750da118db1a9887f8ff3efb",
+        "paged": "e6b8a62df2badf9d314c3ce7bbe8bd630535e211750da118db1a9887f8ff3efb"
+      },
+      "matchesArchivedPredecessor733": true
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "assertions": 294,
+      "bytesPerOutput": 1984272,
+      "wordSHA256": {
+        "dense": "c1340974a81be77cfa6e9af2347db37e0b2262e312d3a80d03e800bc7cc1c20e",
+        "paged": "c1340974a81be77cfa6e9af2347db37e0b2262e312d3a80d03e800bc7cc1c20e"
+      },
+      "matchesArchivedPredecessor733": true
+    }
+  },
+  "evidenceSHA256": {
+    "WORKLOG.md": "c4964af2b8d0bd784abae52150c64ba7f79a3cf0a8c6c62a9d35ad5032410488",
+    "xcode-debug02.log": "b1e5bdb4c84635ac3fa624136da81a7d5e9aaac141864d6a5253af22f08ed500",
+    "xcode-app02.log": "18504a0327ec837a7f652267441f334a29d5be1217af64ab31d36b90595fc027",
+    "xcode-core01.log": "6c60aa3707771849cd7554b353f1191221614f1369eb9200b97fd6e1c6df8e93",
+    "xcode-export02.log": "89bb376a02b708af6506c20e1ba76f2f20bd83712fb38f79022253e8b4804499",
+    "xcode-sheet02.log": "ef52e5a2c9842b1211237d6f776b5b1075c9676db84895b5a3c97f46aad0cbe1",
+    "grid-sheet-dark.png": "a0446585c2fc028ea45a1156e8a11b4000b63d43a2de4f8df5fd5420e8414472",
+    "grid-sheet-light.png": "3389d97801a9c39654ae85be4ca8692d78fe306d72d4b6e413474a855c009860"
+  }
+}

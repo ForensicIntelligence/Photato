@@ -3492,5 +3492,11 @@
     "photatoCommand": "filter.vanishingPoint",
     "publishedAdobeContractChanges": [],
     "evidence": "docs/SOURCE_PUBLICATION_733.json"
+  },
+  "vanishing_point_grid_size_build734": {
+    "status": "Native and authenticated Photato grid size and square plane file exchange",
+    "photatoCommand": "filter.vanishingPoint",
+    "publishedAdobeContractChanges": [],
+    "evidence": "docs/SOURCE_PUBLICATION_734.json"
   }
 }
