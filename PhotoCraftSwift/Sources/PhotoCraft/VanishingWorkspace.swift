@@ -4,7 +4,8 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 @MainActor @Observable final class VanishingWorkspace:Identifiable {
-  enum Tool:String,CaseIterable { case create="Create Plane",edit="Edit Plane",stamp="Stamp",brush="Brush",transform="Transform",measure="Measure",hand="Hand" }
+  enum Tool:String,CaseIterable { case create="Create Plane",edit="Edit Plane",marquee="Marquee",stamp="Stamp",brush="Brush",transform="Transform",measure="Measure",hand="Hand" }
+  enum MarqueeMoveMode: String, CaseIterable { case destination = "Destination", source = "Source" }
   let id=UUID()
   let original:CraftDocument
   let layerID:UUID
@@ -17,6 +18,12 @@ import PhotoCraftImaging
   var selectedPaste:Int?
   var selectedMeasurement: Int?
   var pendingMeasurement: (plane: Int, point: PathPoint)?
+  var marquee: VanishingMarquee?
+  var selectedMarqueePatch: Int?
+  var marqueeMoveMode: MarqueeMoveMode = .destination
+  var marqueeFeather = 1.0
+  var marqueeOpacity = 100.0
+  var marqueeHeal: VanishingOperation.Heal = .off
   /// Session choice. The preview remains editable until Apply.
   var renderMeasurements = false
   var showMeasurements = true
@@ -69,8 +76,16 @@ import PhotoCraftImaging
   var zoom=1.0
   var pan=CGSize.zero
   var error:String?
-  var undoStates=[VanishingProgram]()
-  var redoStates=[VanishingProgram]()
+  private struct EditState: Equatable {
+    var program: VanishingProgram
+    var marquee: VanishingMarquee?
+    var floating: Int?
+  }
+  private var undoStates=[EditState]()
+  private var redoStates=[EditState]()
+  var canUndo: Bool { !undoStates.isEmpty || !pending.isEmpty || pendingMeasurement != nil }
+  var canRedo: Bool { !redoStates.isEmpty }
+  private var editState: EditState { .init(program:program,marquee:marquee,floating:selectedMarqueePatch) }
   @ObservationIgnored var task:Task<Void,Never>?
   @ObservationIgnored private var seedSnapshot: RenderSnapshot?
   @ObservationIgnored private var seedDisplay: CanvasRasterPreview?
@@ -78,7 +93,7 @@ import PhotoCraftImaging
   private(set) var preparedEdit: VanishingEdit?
   private var generation=0
   private var closed=false
-  private var gestureStart:VanishingProgram?
+  private var gestureStart:EditState?
   private var cloneAnchor:PathPoint?
   private var clonePlane:Int?
   var size:CGSize { .init(width:original.width,height:original.height) }
@@ -102,16 +117,17 @@ import PhotoCraftImaging
     tool = program.settings.planes.isEmpty ? .create : .edit
   }
   func prepare() async { refresh();await task?.value }
-  func remember(_ p:VanishingProgram) { undoStates.append(p);if undoStates.count>40 { undoStates.removeFirst() };redoStates=[] }
+  private func remember(_ state: EditState) { undoStates.append(state);if undoStates.count>40 { undoStates.removeFirst() };redoStates=[] }
   func change(_ p:VanishingProgram,remember:Bool=true) {
     do { try p.validate();_ = try VanishingScene(p.settings,width:original.width,height:original.height) } catch { self.error=error.localizedDescription;return }
     guard p != program else { error=nil;return }
     var previous = program
     previous.settings = previous.settings.withDisplayMetadata(from:p.settings)
-    if remember && gestureStart == nil { self.remember(program) }
+    if remember && gestureStart == nil { self.remember(editState) }
     program = p
     selected = max(0,min(selected,p.settings.planes.count-1))
     if let i = selectedPaste, !p.operations.indices.contains(i) { selectedPaste = nil }
+    if let i = selectedMarqueePatch, !p.operations.indices.contains(i) || p.operations[i].marquee == nil { selectedMarqueePatch = nil }
     if let i = selectedMeasurement, !measurements.indices.contains(i) { selectedMeasurement = nil }
     if p == previous, let edit = preparedEdit, let updated = try? edit.updatingDisplayMetadata(p.settings) {
       preparedEdit = updated
@@ -120,10 +136,15 @@ import PhotoCraftImaging
       refresh()
     }
   }
-  func beginGesture() { if gestureStart==nil { gestureStart=program } }
-  func endGesture() { if let start=gestureStart,start != program { remember(start) };gestureStart=nil }
-  func undo() { if pendingMeasurement != nil { pendingMeasurement=nil;return };if !pending.isEmpty { pending.removeLast();return };endGesture();guard let p=undoStates.popLast() else { return };redoStates.append(program);change(p,remember:false) }
-  func redo() { endGesture();guard let p=redoStates.popLast() else { return };undoStates.append(program);change(p,remember:false) }
+  func beginGesture() { if gestureStart==nil { gestureStart=editState } }
+  func endGesture() { if let start=gestureStart,start != editState { remember(start) };gestureStart=nil }
+  private func restore(_ state: EditState) {
+    change(state.program,remember:false)
+    marquee = state.marquee
+    selectedMarqueePatch = state.floating
+  }
+  func undo() { if pendingMeasurement != nil { pendingMeasurement=nil;return };if !pending.isEmpty { pending.removeLast();return };endGesture();guard let state=undoStates.popLast() else { return };redoStates.append(editState);restore(state) }
+  func redo() { endGesture();guard let state=redoStates.popLast() else { return };undoStates.append(editState);restore(state) }
   func addPoint(_ p:PathPoint) {
     pending.append(p);guard pending.count==4 else { return };var next=program;next.settings.planes.append(.init(corners:pending))
     do { try next.validate();_ = try VanishingScene(next.settings,width:original.width,height:original.height);pending=[];selected=next.settings.planes.count-1;change(next);tool = .edit } catch { pending.removeLast();self.error=error.localizedDescription }
@@ -132,7 +153,7 @@ import PhotoCraftImaging
     guard program.settings.planes.indices.contains(plane),program.settings.planes[plane].parent==nil else { return };var next=program;next.settings.planes[plane].corners[corner]=p;selected=plane;selectedCorner=corner;change(next)
   }
   func movePlane(_ plane:Int,dx:Double,dy:Double) {
-    var next=gestureStart ?? program;guard next.settings.planes.indices.contains(plane),next.settings.planes[plane].parent==nil else { return };next.settings.planes[plane].corners=next.settings.planes[plane].corners.map{.init($0.x+dx,$0.y+dy)};change(next)
+    var next=gestureStart?.program ?? program;guard next.settings.planes.indices.contains(plane),next.settings.planes[plane].parent==nil else { return };next.settings.planes[plane].corners=next.settings.planes[plane].corners.map{.init($0.x+dx,$0.y+dy)};change(next)
   }
   func tear(_ edge:VanishingPlane.Edge) { guard program.settings.planes.indices.contains(selected) else { return };var p=program;p.settings.planes.append(.init(parent:selected,edge:edge));let count=p.settings.planes.count;change(p);if program.settings.planes.count==count { selected=count-1 } }
   func detach() { guard let scene,scene.frames.indices.contains(selected) else { return };var p=program;p.settings.planes[selected] = .init(corners:scene.frames[selected].corners);change(p) }
@@ -140,7 +161,19 @@ import PhotoCraftImaging
     guard program.settings.planes.indices.contains(selected) else { return };var removed:Set<Int>=[selected]
     for i in program.settings.planes.indices { if let parent=program.settings.planes[i].parent,removed.contains(parent) { removed.insert(i) } }
     let remaining=program.settings.planes.indices.filter{!removed.contains($0)},map=Dictionary(uniqueKeysWithValues:remaining.enumerated().map{($0.element,$0.offset)})
-    var p=program;p.settings.planes=remaining.map { i in var plane=program.settings.planes[i];plane.parent=plane.parent.flatMap{map[$0]};return plane };p.operations=p.operations.compactMap { op in guard let index=map[op.plane] else { return nil };var op=op;op.plane=index;return op }
+    var p=program;p.settings.planes=remaining.map { i in var plane=program.settings.planes[i];plane.parent=plane.parent.flatMap{map[$0]};return plane }
+    p.operations = p.operations.compactMap { operation in
+      guard let destination = map[operation.plane] else { return nil }
+      var operation = operation
+      operation.plane = destination
+      if var patch = operation.marquee {
+        guard let donor = map[patch.source.plane] else { return nil }
+        patch.source.plane = donor
+        patch.destination.plane = destination
+        operation.marquee = patch
+      }
+      return operation
+    }
     let lines = measurements.compactMap { line -> VanishingMeasurement? in
       guard let index = map[line.plane] else { return nil }
       return .init(plane:index,start:line.start,end:line.end)
@@ -151,10 +184,17 @@ import PhotoCraftImaging
     }
     p.settings.measurements = lines.isEmpty ? nil : lines
     p.settings.measurementScales = scales.isEmpty ? nil : scales
+    beginGesture()
     selectedPaste = nil
+    selectedMarqueePatch = nil
+    if var selection = marquee,let index = map[selection.plane] {
+      selection.plane = index
+      marquee = selection
+    } else { marquee = nil }
     selectedMeasurement = nil
     pendingMeasurement = nil
     change(p)
+    endGesture()
   }
   enum MeasurementTarget: Equatable {
     case start(Int), end(Int), body(Int)

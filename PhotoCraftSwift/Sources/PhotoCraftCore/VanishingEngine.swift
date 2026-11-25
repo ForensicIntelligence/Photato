@@ -331,6 +331,49 @@ public enum VanishingEngine {
             return sourceColor(clamped(u), clamped(v))
           }
         }
+      } else if let patch = op.marquee {
+        guard let corners = patch.destination.projectedCorners(in:scene,angle:op.angle),
+          patch.source.projectedCorners(in:scene) != nil else {
+          throw CraftError.invalid("The perspective marquee crosses a plane horizon.")
+        }
+        let sourceFrame = scene.frames[patch.source.plane], previous = output
+        let bounds = try region(corners)
+        let edges = corners.indices.map { index in
+          let a = corners[index], b = corners[(index+1)%4]
+          let dx = b.x-a.x, dy = b.y-a.y, length = hypot(dx,dy)
+          return (a,dx/length,dy/length)
+        }
+        func sourceColor(_ unit: PathPoint) -> Pixel {
+          let donor = sourceFrame.point(patch.source.point(.init(clamped(unit.x),clamped(unit.y))))
+          if op.clip && !sourceFrame.contains(donor) { return .clear }
+          return over(WarpRaster.sample(previous,donor,method:.bilinear,clampEdges:false),
+            WarpRaster.sample(sample,donor,method:.bilinear,clampEdges:false))
+        }
+        for y in bounds.y..<(bounds.y+bounds.height) {
+          try Task.checkCancellation()
+          for x in bounds.x..<(bounds.x+bounds.width) {
+            let point = PathPoint(Double(x)+0.5,Double(y)+0.5)
+            let unit = patch.destination.unitPoint(point,frame:frame,angle:op.angle)
+            guard (0...1).contains(unit.x),(0...1).contains(unit.y),!op.clip || frame.contains(point) else { continue }
+            var pixel = sourceColor(unit)
+            if patch.feather > 0 {
+              let edgeDistance = edges.reduce(Double.infinity) { closest,edge in
+                let (origin,dx,dy) = edge
+                return min(closest,abs(dx*(point.y-origin.y)-dy*(point.x-origin.x)))
+              }
+              let t = clamped(edgeDistance/patch.feather)
+              pixel.a *= Float(t*t*(3-2*t))
+            }
+            pixel.a *= opacity
+            try deposit(pixel,x:x,y:y)
+          }
+        }
+        if let coverage {
+          try VanishingHealing.apply(coverage,sample:sample,previous:previous,output:&output,charge:charge) { x,y in
+            let point = PathPoint(Double(x)+0.5,Double(y)+0.5)
+            return sourceColor(patch.destination.unitPoint(point,frame:frame,angle:op.angle))
+          }
+        }
       } else {
         let first=op.points[0],m0=frame.metric(first),probe=frame.metric(.init(first.x+op.diameter/2,first.y)),radius=hypot(probe.x-m0.x,probe.y-m0.y)
         guard radius.isFinite,radius>1e-9,frame.contains(first) else { throw CraftError.invalid("Start the stroke inside its perspective plane.") }

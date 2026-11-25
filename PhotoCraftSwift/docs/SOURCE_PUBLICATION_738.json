@@ -1,0 +1,810 @@
+{
+  "build": 738,
+  "base": "22288c18c05e4155171a83e4067f69ccb39926e4",
+  "inputCount": 9429,
+  "inputDigest": "0df9d86db3db4a83ee1bef30a59f896565c4650d45f4ed63190c100cfb040038",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraft/AutomationVanishingPoint.swift": "1e8f4588cdf79cdb84d6732dbb688205633a822c006f1f361b571ba6bf79690c",
+    "Sources/PhotoCraft/NativeHistoryMenus.swift": "10b72a082f9396b076a9f488aa0f3e49ac03f0de9720d9ab7316f49846df944d",
+    "Sources/PhotoCraft/VanishingMarqueeEditing.swift": "5162e2511f16604fc64de8acdebebfa8b50eb867ceea436f9e577d98475a6420",
+    "Sources/PhotoCraft/VanishingSheet.swift": "3b88c185bf88c202116dfebab77b1c45a4acf1f7eb7b23858ef5ea1fb7e0637c",
+    "Sources/PhotoCraft/VanishingWorkspace.swift": "0a5bdcc79a6696abe95f5f08c192a3728cd51fd0f9127af12305780fda967ded",
+    "Sources/PhotoCraftCore/VanishingEngine.swift": "96fa3d5828faac083709064d171f1ddfceb4a1d46fc569bed5a7d216205862f2",
+    "Sources/PhotoCraftCore/VanishingMarquee.swift": "622998463184c827389fc70dde3d742b14a4d9cdc0f520cf2d09db42dc77a14e",
+    "Sources/PhotoCraftCore/VanishingPoint.swift": "6014f67c8419ac8645ac29107f6433e0938fcc98c9462a74e01893e6aa112b96",
+    "Tests/PhotoCraftAppTests/VanishingWorkflowTests.swift": "313798d36dfbbfc6265b26d59124a8fc42e50b4a481c03cd57387a572a679a23",
+    "Tests/PhotoCraftCoreTests/VanishingTests.swift": "239a0fa914aceac27d7a5f50525549a9682ffe07586f04877d04efb9de46b2c4",
+    "scripts/Info.plist": "48b27dfc4cf3c6e27f4d673c65bcd631b84ea2cfb87099c27d8a51db945213b9"
+  },
+  "qualification": {
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 852,
+      "passed": 850,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "230a6b310cf0f39e77c4bbd038bb7b66a7be93173ab1febfcfa640c3f3f40518"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 852,
+      "passed": 850,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "5d4156fe6be6ae3e5f74b9d51d24a3cdc090cabb5ab977390801cfb76b441a92"
+    }
+  },
+  "predecessorFailureDiagnostics": {
+    "arm": {
+      "matches737": true,
+      "assertionLines": 152
+    },
+    "intel": {
+      "matches737": true,
+      "assertionLines": 412
+    }
+  },
+  "focusedDebug": {
+    "corePass": 23,
+    "appAndHTTPPass": 12
+  },
+  "outputHashesAcrossConfigurations": {
+    "debug01": {
+      "738-photato-adobe-plane-nudge-20x10.png": "c31f59801ec922e7a296562a148523e1d3aa1fe9d9bc18768ed9f9c18a1e17d5",
+      "738-photato-full-plane-nudge-20x10.png": "c31f59801ec922e7a296562a148523e1d3aa1fe9d9bc18768ed9f9c18a1e17d5"
+    },
+    "arm": {
+      "738-photato-adobe-plane-nudge-20x10.png": "c31f59801ec922e7a296562a148523e1d3aa1fe9d9bc18768ed9f9c18a1e17d5",
+      "738-photato-full-plane-nudge-20x10.png": "c31f59801ec922e7a296562a148523e1d3aa1fe9d9bc18768ed9f9c18a1e17d5"
+    },
+    "intel": {
+      "738-photato-adobe-plane-nudge-20x10.png": "c31f59801ec922e7a296562a148523e1d3aa1fe9d9bc18768ed9f9c18a1e17d5",
+      "738-photato-full-plane-nudge-20x10.png": "c31f59801ec922e7a296562a148523e1d3aa1fe9d9bc18768ed9f9c18a1e17d5"
+    }
+  },
+  "configurationOutputFilesIdentical": true,
+  "originalGeneratedPNGSHA256": "d8d086530be3b2f885d295601fd42a11efc460333363e3bdf63e512f66272787",
+  "adobePSDSHA256": "f5021cc1a39ffd52e8bf5cc624bc0c1dda8eb61e4834e2c9960dc7380e2092df",
+  "comparison": {
+    "offset": [
+      20,
+      10
+    ],
+    "adobeVsIntegerCopy": {
+      "whole": {
+        "width": 1200,
+        "height": 900,
+        "changedPixels": 846342,
+        "changedSamplesRGB": [
+          520606,
+          415110,
+          520377
+        ],
+        "maxDifferenceRGB": [
+          105,
+          84,
+          59
+        ]
+      },
+      "donorInterior": {
+        "width": 1178,
+        "height": 888,
+        "changedPixels": 842274,
+        "changedSamplesRGB": [
+          516538,
+          411042,
+          516309
+        ],
+        "maxDifferenceRGB": [
+          26,
+          22,
+          18
+        ]
+      },
+      "upperStrip": {
+        "width": 1200,
+        "height": 10,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "leftStrip": {
+        "width": 20,
+        "height": 890,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "firstTranslatedRow": {
+        "width": 1180,
+        "height": 1,
+        "changedPixels": 1162,
+        "changedSamplesRGB": [
+          1162,
+          1162,
+          1162
+        ],
+        "maxDifferenceRGB": [
+          105,
+          40,
+          56
+        ]
+      },
+      "firstTranslatedColumn": {
+        "width": 1,
+        "height": 889,
+        "changedPixels": 873,
+        "changedSamplesRGB": [
+          873,
+          873,
+          873
+        ],
+        "maxDifferenceRGB": [
+          55,
+          84,
+          57
+        ]
+      }
+    },
+    "full-plane-vs-Adobe": {
+      "whole": {
+        "width": 1200,
+        "height": 900,
+        "changedPixels": 846342,
+        "changedSamplesRGB": [
+          520606,
+          415110,
+          520377
+        ],
+        "maxDifferenceRGB": [
+          88,
+          70,
+          59
+        ]
+      },
+      "donorInterior": {
+        "width": 1178,
+        "height": 888,
+        "changedPixels": 842274,
+        "changedSamplesRGB": [
+          516538,
+          411042,
+          516309
+        ],
+        "maxDifferenceRGB": [
+          26,
+          22,
+          18
+        ]
+      },
+      "upperStrip": {
+        "width": 1200,
+        "height": 10,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "leftStrip": {
+        "width": 20,
+        "height": 890,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "firstTranslatedRow": {
+        "width": 1180,
+        "height": 1,
+        "changedPixels": 1162,
+        "changedSamplesRGB": [
+          1162,
+          1162,
+          1162
+        ],
+        "maxDifferenceRGB": [
+          34,
+          19,
+          26
+        ]
+      },
+      "firstTranslatedColumn": {
+        "width": 1,
+        "height": 889,
+        "changedPixels": 873,
+        "changedSamplesRGB": [
+          873,
+          873,
+          873
+        ],
+        "maxDifferenceRGB": [
+          26,
+          28,
+          27
+        ]
+      }
+    },
+    "full-plane-vs-integer-copy": {
+      "whole": {
+        "width": 1200,
+        "height": 900,
+        "changedPixels": 2035,
+        "changedSamplesRGB": [
+          2035,
+          2035,
+          2035
+        ],
+        "maxDifferenceRGB": [
+          71,
+          57,
+          37
+        ]
+      },
+      "donorInterior": {
+        "width": 1178,
+        "height": 888,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "upperStrip": {
+        "width": 1200,
+        "height": 10,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "leftStrip": {
+        "width": 20,
+        "height": 890,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "firstTranslatedRow": {
+        "width": 1180,
+        "height": 1,
+        "changedPixels": 1162,
+        "changedSamplesRGB": [
+          1162,
+          1162,
+          1162
+        ],
+        "maxDifferenceRGB": [
+          71,
+          21,
+          37
+        ]
+      },
+      "firstTranslatedColumn": {
+        "width": 1,
+        "height": 889,
+        "changedPixels": 873,
+        "changedSamplesRGB": [
+          873,
+          873,
+          873
+        ],
+        "maxDifferenceRGB": [
+          30,
+          57,
+          37
+        ]
+      }
+    },
+    "adobe-plane-vs-Adobe": {
+      "whole": {
+        "width": 1200,
+        "height": 900,
+        "changedPixels": 846342,
+        "changedSamplesRGB": [
+          520606,
+          415110,
+          520377
+        ],
+        "maxDifferenceRGB": [
+          88,
+          70,
+          59
+        ]
+      },
+      "donorInterior": {
+        "width": 1178,
+        "height": 888,
+        "changedPixels": 842274,
+        "changedSamplesRGB": [
+          516538,
+          411042,
+          516309
+        ],
+        "maxDifferenceRGB": [
+          26,
+          22,
+          18
+        ]
+      },
+      "upperStrip": {
+        "width": 1200,
+        "height": 10,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "leftStrip": {
+        "width": 20,
+        "height": 890,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "firstTranslatedRow": {
+        "width": 1180,
+        "height": 1,
+        "changedPixels": 1162,
+        "changedSamplesRGB": [
+          1162,
+          1162,
+          1162
+        ],
+        "maxDifferenceRGB": [
+          34,
+          19,
+          26
+        ]
+      },
+      "firstTranslatedColumn": {
+        "width": 1,
+        "height": 889,
+        "changedPixels": 873,
+        "changedSamplesRGB": [
+          873,
+          873,
+          873
+        ],
+        "maxDifferenceRGB": [
+          26,
+          28,
+          27
+        ]
+      }
+    },
+    "adobe-plane-vs-integer-copy": {
+      "whole": {
+        "width": 1200,
+        "height": 900,
+        "changedPixels": 2035,
+        "changedSamplesRGB": [
+          2035,
+          2035,
+          2035
+        ],
+        "maxDifferenceRGB": [
+          71,
+          57,
+          37
+        ]
+      },
+      "donorInterior": {
+        "width": 1178,
+        "height": 888,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "upperStrip": {
+        "width": 1200,
+        "height": 10,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "leftStrip": {
+        "width": 20,
+        "height": 890,
+        "changedPixels": 0,
+        "changedSamplesRGB": [
+          0,
+          0,
+          0
+        ],
+        "maxDifferenceRGB": [
+          0,
+          0,
+          0
+        ]
+      },
+      "firstTranslatedRow": {
+        "width": 1180,
+        "height": 1,
+        "changedPixels": 1162,
+        "changedSamplesRGB": [
+          1162,
+          1162,
+          1162
+        ],
+        "maxDifferenceRGB": [
+          71,
+          21,
+          37
+        ]
+      },
+      "firstTranslatedColumn": {
+        "width": 1,
+        "height": 889,
+        "changedPixels": 873,
+        "changedSamplesRGB": [
+          873,
+          873,
+          873
+        ],
+        "maxDifferenceRGB": [
+          30,
+          57,
+          37
+        ]
+      }
+    }
+  },
+  "interiorAndFringe": {
+    "cleanInterior": {
+      "origin": [
+        24,
+        14
+      ],
+      "size": [
+        1176,
+        886
+      ],
+      "AdobeVsShiftedDonor": {
+        "-1": 1437333,
+        "0": 1688475
+      },
+      "PhotatoVsShiftedDonor": {
+        "0": 3125808
+      }
+    },
+    "inferredEdgeCoverage": {
+      "Adobe": {
+        "top": [
+          {
+            "eligible": 3459,
+            "medianEffectiveCoverage": 0.27419354838709675,
+            "quartiles": [
+              0.265625,
+              0.27419354838709675,
+              0.27906976744186046
+            ]
+          },
+          {
+            "eligible": 3459,
+            "medianEffectiveCoverage": 0.3333333333333333,
+            "quartiles": [
+              0.30303030303030304,
+              0.3333333333333333,
+              0.36363636363636365
+            ]
+          },
+          {
+            "eligible": 108,
+            "medianEffectiveCoverage": 0.7875602700096431,
+            "quartiles": [
+              0.7532912293186266,
+              0.7875602700096431,
+              0.8132944915254238
+            ]
+          },
+          {
+            "eligible": 108,
+            "medianEffectiveCoverage": 1.0,
+            "quartiles": [
+              1.0,
+              1.0,
+              1.005859375
+            ]
+          }
+        ],
+        "left": [
+          {
+            "eligible": 2595,
+            "medianEffectiveCoverage": 0.2727272727272727,
+            "quartiles": [
+              0.26666666666666666,
+              0.2727272727272727,
+              0.2777777777777778
+            ]
+          },
+          {
+            "eligible": 2595,
+            "medianEffectiveCoverage": 0.3333333333333333,
+            "quartiles": [
+              0.3076923076923077,
+              0.3333333333333333,
+              0.36486486486486486
+            ]
+          },
+          {
+            "eligible": 96,
+            "medianEffectiveCoverage": 0.7857142857142857,
+            "quartiles": [
+              0.7558558558558559,
+              0.7857142857142857,
+              0.8092705167173253
+            ]
+          },
+          {
+            "eligible": 96,
+            "medianEffectiveCoverage": 1.0,
+            "quartiles": [
+              1.0,
+              1.0,
+              1.0070093457943925
+            ]
+          }
+        ]
+      },
+      "Photato": {
+        "top": [
+          {
+            "eligible": 3459,
+            "medianEffectiveCoverage": 0.5072463768115942,
+            "quartiles": [
+              0.5,
+              0.5072463768115942,
+              0.5116279069767442
+            ]
+          },
+          {
+            "eligible": 3459,
+            "medianEffectiveCoverage": 1.0,
+            "quartiles": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "eligible": 108,
+            "medianEffectiveCoverage": 1.0,
+            "quartiles": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "eligible": 108,
+            "medianEffectiveCoverage": 1.0,
+            "quartiles": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        ],
+        "left": [
+          {
+            "eligible": 2595,
+            "medianEffectiveCoverage": 0.504424778761062,
+            "quartiles": [
+              0.5,
+              0.504424778761062,
+              0.5084745762711864
+            ]
+          },
+          {
+            "eligible": 2595,
+            "medianEffectiveCoverage": 1.0,
+            "quartiles": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "eligible": 96,
+            "medianEffectiveCoverage": 1.0,
+            "quartiles": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "eligible": 96,
+            "medianEffectiveCoverage": 1.0,
+            "quartiles": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "desktopProof": {
+    "marquee-floating-dark.png": "5ed9d1d2160232807864a24f3eb00360dd96e7303b6a92ea219f43d21b79420d",
+    "marquee-selected-dark.png": "61a1e2f5d53c740f08e4ed94a68fda09cae10ece854587507bc0bbd6904a32f9",
+    "marquee-selected-light.png": "8bf29bf0f2b75dbbfd6fb805531e9285523f86d45d204a03ef014da6b0bcd14b"
+  },
+  "preview": {
+    "build": 738,
+    "archive": "Photato-Retouch-Preview-738-universal.zip",
+    "archiveSHA256": "51f9766720c15fd2a32e6f1b73ea73806c682d0ba99928b5b3e9f15c599664ba",
+    "bundleID": "ca.forensicintelligence.photato.perspectiveretouchpreview738",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "c96fdedb6eb8fc5afcb690d63b8aa8a6d16693523cf70feb78f93bd21f1b6067",
+    "architectureInputsSHA256": {
+      "arm64": "8add361e83b1db04f0f36244b53de22e69f1081f5867605216c185089ab593ba",
+      "x86_64": "08b7f942f97971299b26a8af2f1c171966287d6a90bc0a61f426fae6434dbc51"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    }
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "pngSHA256": "c26608357d25297707ffaaf345cc06ceb6fd53de40217773436f1dd13956852f",
+      "size": [
+        1700,
+        1174
+      ]
+    },
+    "x86_64": {
+      "pngSHA256": "4e4ed507449166d427b57ca890ebd709f609a097271949001dfbe7388e8e2dc3",
+      "size": [
+        1700,
+        1174
+      ]
+    }
+  },
+  "previewRuntime": "macOS 27.2.1 on Apple Silicon; x86_64 under Rosetta",
+  "probeLogsSHA256": {
+    "xcode-debug01.log": "f12d442c65bb7cfb21b35355cc69fb31c4838a352987670fc6090ceee9a5ad0b",
+    "xcode-debug02.log": "c218448119d5b0f55d06adaebc8a6bad90d1e8fa1e43d91f4fb1bcf885017df6",
+    "xcode-debug03.log": "74bae493df78f6c4f836342ad5f8b18f7b3ba0dc4302357766c68c31aa52e272",
+    "debug-core02.log": "349e3bdb9e8ecfa4805b48e36d2a3908417f6494c8a3bff349ce5dcb9fdcf768",
+    "debug-app02.log": "da16515d61389abc6899020bd1bfde9ab4fb5e3108c862a8689f2350e893f7ec",
+    "debug-sheet02.log": "b5ce65fbe30883b2cb6bd6883122a675c6b3149469154f027a8bbe2d1b3aee97",
+    "debug-raster01.log": "8dd9af8ed4b9a3ad578ff8667b06d042e6cde02a0e4242347695dfb2930604b5",
+    "optimized-marquee-arm01.log": "90146b84b8dcecf9f34862daa139165482b89a22c7a727374b3984cc7aa0e6a0",
+    "optimized-marquee-intel01.log": "1ab63c5390cab009447035f5a9ea9923e29ec6be023fdd5386d851c52a6b73a9",
+    "optimized-marquee-arm02.log": "8dd9af8ed4b9a3ad578ff8667b06d042e6cde02a0e4242347695dfb2930604b5",
+    "optimized-marquee-intel02.log": "8dd9af8ed4b9a3ad578ff8667b06d042e6cde02a0e4242347695dfb2930604b5",
+    "pixel-comparison01.json": "bf39f2a4ee719929602920e1b743bc5d7472f15b141b289a73e9761e66e3a345",
+    "signed-interior-and-edge02.json": "d8d5beb902352d71aff9a12ea421ff2f5641f45680c8c7915c70ec8fa68bc38b",
+    "adobe-rounding-hypotheses01.json": "7c2d3e89fce6a2a3ae84c4124adbbcda6328220e9aa183926dd704deaa76cbea",
+    "swiftpm-release-arm01.log": "5e6cb51a1e9e0028f18885a3820261cdb3ecadde3803e79af0b1686e04e98309",
+    "swiftpm-release-intel01.log": "ade73752d6380a83cd84bd99fc360fdc48c6480102bf60b5b0eb2ee5b2b3bb1b",
+    "preview-offscreen01.log": "56899c649bb1041f2091fc78f55969710656ba8953f862da71051187189e7c0a"
+  },
+  "limits": [
+    "Captured Photoshop full-plane keyboard float and nudge, not a general Source drag or linked-plane pixel reference.",
+    "Reference placement matches. Adobe sample rounding and feather coverage differ.",
+    "One rectangle may move from plane to plane. A selection spanning a connected hinge remains open.",
+    "The physical Photato viewport, transform handles, clipboard selection exchange, and HUD timing remain open.",
+    "Regression selection is scoped. No overall parity or software release claim."
+  ]
+}

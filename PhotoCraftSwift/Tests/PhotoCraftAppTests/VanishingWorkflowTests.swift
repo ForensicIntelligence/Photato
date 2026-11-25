@@ -624,6 +624,77 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testMarqueeDrawingMovementFloatingAndHTTPUseOneEdit() async throws {
+    var original = try fixture()
+    var settings = VanishingSettings()
+    settings.planes = [.init(corners:[.init(0,0),.init(64,0),.init(64,48),.init(0,48)])]
+    original.vanishingPoint = settings
+    let id = original.layers[0].id
+    let store = EditorStore(document:original,actions:ActionLibrary())
+    store.beginVanishingPoint()
+    let workspace = try XCTUnwrap(store.vanishingWorkspace)
+    defer { store.cancelVanishingPoint();store.renderTask?.cancel() }
+    await workspace.prepare()
+    workspace.tool = .marquee
+    let scene = try XCTUnwrap(workspace.scene)
+    workspace.beginGesture()
+    let draw = try XCTUnwrap(workspace.startMarqueeDrag(at:.init(8,8),flags:[],scene:scene))
+    let rect = try XCTUnwrap(workspace.projectedMarquee(for:draw,to:.init(16,16),constrained:false,scene:scene))
+    workspace.finishMarqueeDrag(draw,at:rect)
+    workspace.endGesture()
+    XCTAssertEqual(workspace.marquee,rect)
+    workspace.nudgeMarquee(dx:1,dy:0)
+    XCTAssertEqual(try XCTUnwrap(workspace.marquee?.lower.x),rect.lower.x+1.0/64,accuracy:1e-10)
+    workspace.undo()
+    XCTAssertEqual(workspace.marquee,rect)
+    workspace.redo()
+    XCTAssertTrue(workspace.canUndo)
+    workspace.undo()
+    XCTAssertTrue(workspace.program.operations.isEmpty)
+
+    workspace.marqueeMoveMode = .source
+    workspace.marqueeFeather = 0
+    workspace.beginGesture()
+    let fill = try XCTUnwrap(workspace.startMarqueeDrag(at:.init(12,12),flags:[],scene:scene))
+    XCTAssertEqual(fill.action,.fill)
+    let donor = try XCTUnwrap(workspace.projectedMarquee(for:fill,to:.init(34,26),constrained:false,scene:scene))
+    workspace.finishMarqueeDrag(fill,at:donor)
+    workspace.endGesture()
+    XCTAssertNil(workspace.marquee)
+    XCTAssertNotNil(workspace.floatingMarqueeOperation)
+    workspace.nudgeMarquee(dx:5,dy:3)
+    await workspace.task?.value
+    XCTAssertTrue(workspace.ready,workspace.error ?? "Missing preview")
+    XCTAssertEqual(store.document,original)
+    let patch = try XCTUnwrap(workspace.floatingMarqueeOperation?.marquee)
+    XCTAssertEqual(patch.source,donor)
+    XCTAssertNotEqual(patch.destination,rect)
+    store.commitVanishingPoint()
+    await store.geometryTask?.value
+    let native = store.document
+    XCTAssertNotEqual(native.layers[0].content,original.layers[0].content)
+    XCTAssertEqual(store.session.undoStack.count,1)
+
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:original)
+      try service.share(document)
+      let data = try JSONEncoder().encode(patch)
+      let encoded = try JSONSerialization.jsonObject(with:data)
+      let applied = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":id.uuidString,"operations":[["kind":"marquee","marquee":encoded]]])
+      XCTAssertEqual(applied,200)
+      XCTAssertEqual(document.store.document,native)
+      let undone = try await helper.edit(service,document,"history.undo")
+      XCTAssertEqual(undone,200)
+      XCTAssertEqual(document.store.document,original)
+      let invalid = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":id.uuidString,"operations":[["kind":"marquee","marquee":["source":"bad"]]]])
+      XCTAssertEqual(invalid,400)
+      XCTAssertEqual(document.store.document,original)
+    }
+  }
+
   @MainActor func testVanishingSceneExportFormatsTexturesAndHTTP() async throws {
     var model = try fixture()
     model.name = "Scene.psd"

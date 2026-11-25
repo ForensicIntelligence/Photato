@@ -145,5 +145,16 @@
     "independentChecks": "Blender 5.2 and its official 3DS extension 3.0.2 opened both Adobe and both Photato 3DS exports. A separate chunk and XML reader checked the 3DS and VPE geometry, camera and textures.",
     "outputDelivery": "The native Vanishing Point editor writes a new scene folder. The authenticated Photato command vanishingPoint.export returns a ZIP of saved planes and the visible composite.",
     "remaining": "DXF was absent in the two installed menus checked. Exact Adobe camera, world scale, texture pixels, physical save-panel interaction, and After Effects import remain unqualified."
+  },
+  "perspective_marquee_738": {
+    "reference": "Installed Photoshop 2026 on an owned 1200 × 900 RGB8 puzzle grid",
+    "inputSHA256": "d8d086530be3b2f885d295601fd42a11efc460333363e3bdf63e512f66272787",
+    "adobePSDSHA256": "f5021cc1a39ffd52e8bf5cc624bc0c1dda8eb61e4834e2c9960dc7380e2092df",
+    "observedOptions": {"feather":1,"opacity":100,"heal":"off","moveModes":["Destination","Source"]},
+    "recordedGesture": "Double-click Create Plane, M, double-click inside the plane, Option–Command–T, Shift–Right twice, Shift–Down once, Apply, Save As PSD.",
+    "nativeReplay": "The exact screen-aligned plane and the plane imported from Photoshop produced identical Photato PNGs.",
+    "pixelDifference": {"changedPixels":846342,"maximumRGBDifferences":[88,70,59],
+      "cleanInterior": "From document x=24 and y=14 through the right and lower image edges, the Photato samples matched the integer-shifted donor. The Adobe samples were equal or one 8-bit level lower. A larger mismatch remains along the feather fringe."},
+    "remaining": "Direct Adobe Source drag, per-feather and per-depth comparisons, moving across a connected hinge, multi-face marquee wrapping, pointer transform handles and exact final pixels."
   }
 }

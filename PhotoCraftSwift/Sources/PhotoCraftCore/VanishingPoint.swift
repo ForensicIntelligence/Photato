@@ -409,7 +409,7 @@ public struct VanishingScene:Sendable {
 }
 
 public struct VanishingOperation:Codable,Equatable,Sendable {
-  public enum Kind:String,Codable,CaseIterable,Sendable { case paste,clone,brush }
+  public enum Kind:String,Codable,CaseIterable,Sendable { case paste,clone,brush,marquee }
   public enum Heal: String, Codable, CaseIterable, Sendable { case off, luminance, on }
   public var kind:Kind
   public var plane=0
@@ -417,6 +417,7 @@ public struct VanishingOperation:Codable,Equatable,Sendable {
   public var width=0.5
   public var angle=0.0
   public var source:Surface?
+  public var marquee: VanishingMarqueeTransfer?
   public var sourcePoint:PathPoint?
   public var points:[PathPoint]=[]
   public var diameter=40.0
@@ -439,8 +440,18 @@ public struct VanishingProgram:Codable,Equatable,Sendable {
     try settings.validate();guard operations.count<=256,operations.reduce(0,{$0+$1.points.count})<=16384,operations.reduce(0,{$0+($1.source?.allocatedBytes ?? 0)})<=134_217_728 else { throw CraftError.unsupported("Vanishing Point exceeds the operation or source memory limit.") }
     for op in operations {
       guard settings.planes.indices.contains(op.plane),VanishingSettings.validPoint(op.at),op.width.isFinite,(0.001...20).contains(op.width),op.angle.isFinite,(-360...360).contains(op.angle),op.diameter.isFinite,(1...2000).contains(op.diameter),op.hardness.isFinite,(0...100).contains(op.hardness),op.opacity.isFinite,(0...100).contains(op.opacity),op.color.isFinite,(0...1).contains(op.color.a),op.points.count<=4096,op.points.allSatisfy({VanishingSettings.validPoint($0)}),op.sourcePoint.map({VanishingSettings.validPoint($0)}) ?? true else { throw CraftError.invalid("Invalid Vanishing Point operation.") }
-      if op.kind == .paste { guard let source=op.source,source.width<=WarpRaster.maximumPixels/source.height,op.points.isEmpty,op.sourcePoint==nil else { throw CraftError.invalid("Paste requires bounded source pixels.") };try source.validated() }
-      else { guard op.source==nil,!op.points.isEmpty,op.kind != .clone || op.sourcePoint != nil else { throw CraftError.invalid("Painting requires points; cloning also requires a source point.") } }
+      switch op.kind {
+      case .paste:
+        guard op.marquee == nil,let source=op.source,source.width<=WarpRaster.maximumPixels/source.height,
+          op.points.isEmpty,op.sourcePoint==nil else { throw CraftError.invalid("Paste requires bounded source pixels.") }
+        try source.validated()
+      case .marquee:
+        guard let patch = op.marquee,patch.destination.plane == op.plane,settings.planes.indices.contains(patch.source.plane),
+          patch.source.hasValidBounds,patch.destination.hasValidBounds,VanishingMarqueeTransfer.featherRange.contains(patch.feather),
+          op.source == nil,op.points.isEmpty,op.sourcePoint == nil else { throw CraftError.invalid("Invalid perspective marquee patch.") }
+      case .brush,.clone:
+        guard op.marquee == nil,op.source==nil,!op.points.isEmpty,op.kind != .clone || op.sourcePoint != nil else { throw CraftError.invalid("Painting requires points; cloning also requires a source point.") }
+      }
     }
   }
 }

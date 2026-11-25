@@ -756,7 +756,42 @@ For a readable account of the project from the beginning, see [Photato developme
 | 735 | 2026-11-25 | [Measure and calibrate Vanishing Point planes](#dev-step-735) |
 | 736 | 2026-11-25 | [Render Vanishing Point measurement annotations](#dev-step-736) |
 | 737 | 2026-11-25 | [Export textured Vanishing Point scenes](#dev-step-737) |
+| 738 | 2026-11-25 | [Add perspective Marquee and floating patches](#dev-step-738) |
 <!-- history-index:end -->
+
+<a id="dev-step-738"></a>
+
+## 2026-11-25 — Add perspective Marquee and floating patches
+
+The installed Photoshop Vanishing Point filter opened an owned 1,200 × 900 RGB8 texture grid. Double-clicking Create Plane made a blue front-facing plane. M selected Marquee. The observed options were Feather 1, Opacity 100%, Heal Off and Move Mode Destination. Double-clicking inside the plane enabled the Move Mode picker, which offered Destination and Source. A local drag did not produce a visible outline in the desktop automation attempt. The later popup, deselect and retry batch returned to the document. No Photoshop raster, live movement or cross-plane result was obtained. Adobe's published workflow and shortcut reference define source filling, copied selections, axis-constrained movement, one- and ten-pixel nudges and creating a floating selection. [Marquee workflow](https://helpx.adobe.com/my_ms/photoshop/using/vanishing-point.html) · [Photoshop keyboard shortcuts](https://helpx.adobe.com/content/dam/help/en/photoshop/using/default-keyboard-shortcuts/photoshop-keyboard-shortcuts.pdf)
+
+Added a session-only perspective rectangle to PhotoCraftCore and a native Marquee in the Vanishing Point sheet. Rectangles follow the plane's projection and use its metric when constrained to a square. Moving the frame in Destination mode keeps the image unchanged. Source and Command sample a donor rectangle into the selected area. Option copies the selected area into the destination as a float. A floating patch can move, resize and rotate in the existing native Transform tool. The overlay follows the pointer immediately. Source and destination sampling occurs on release. The viewport handles arrow key movement, and local Undo and Redo keep the perspective selection with the raster operation. The outer document selection stays separate and still protects output.
+
+The shared renderer gets the patch from the visible image and preceding operations, maps it through the source and destination perspective frames and uses the existing Heal solver and document transaction. The authenticated `filter.vanishingPoint` operation accepts a strict marquee record with source and destination rectangles and feather. Native and HTTP use the same prepared edit. Interior feathering uses projected edge distance. Photoshop pixel and feather equivalence are unqualified. The first implementation moves a patch between faces and does not yet split one marquee across a hinge. Pointer transform handles, flip/flop, copy/paste clipboard fidelity and physical test coverage remain open.
+
+Started the Xcode Debug build. Added focused cases for square constraints, cross-plane physical extent, feather and outer protection at all raster depths, and native versus HTTP output and Undo. Public build 737 remains the qualified release candidate.
+
+The first Xcode build exposed one remaining caller of the old history arrays. The native Edit menu now uses the same Vanishing Point Undo and Redo availability as the sheet and workspace state. Retained the failed build log before starting the corrected build.
+
+The corrected Xcode build succeeded. All 23 Core cases and 12 focused App and HTTP cases passed. Offscreen renders showed the marquee and a sampled floating patch, with one layout defect. The extra Marquee segment caused the text tool picker to extend over the inspector at the standard sheet width. Replaced the tool labels in the segments with accessible icons and kept the active tool's name visible beside the picker. The patch renderer also reuses the projected unit coordinates already computed per destination pixel instead of calculating them twice. A new build, test run and screenshot comparison follow.
+
+Xcode Debug attempt 03 and all 35 repeated focused tests passed. The Marquee and Transform controls fit the sheet in the light and dark captures. The sampled blue texture covered the selected area over the orange repair target. The offscreen harness called workspace actions directly. It did not test physical pointer timing or VoiceOver.
+
+In a second installed Photoshop session, the full-plane Marquee became a float with Option–Command–T. Two Shift–Right nudges and one Shift–Down nudge moved the visible image 20 pixels right and 10 down. Apply succeeded and saved a separate PSD, leaving the source PNG unchanged. Photato replayed this with its own full plane and the Photoshop plane read directly from the PSD. Both native PNGs matched exactly. Compared with Adobe, 846,342 RGB pixel positions differed across the two outputs. The upper and left untouched strips matched. Starting four pixels from each translated edge, Adobe's samples were exactly the same as the shifted donor or one eight-bit level lower. Photato matched the shifted donor there. Adobe's feather fringe extends farther and has different coverage. Preserve the PSD and the raw maximum differences of 88, 70 and 59; the float is not byte-equivalent.
+
+The next universal candidate uses build number 738 and the 849-case predecessor selection plus three new cases. The local source remains ahead of the last published feature while the two optimized suites run.
+
+The sampled interior contains 3,125,808 RGB values. Relative to the known donor, Adobe repeated 1,688,475 exactly and stored 1,437,333 one level lower. Photato matched all 3,125,808 donor values. Inferred coverage in the first four translated rows has medians near 0.27, 0.33, 0.79 and 1.0 in Adobe. The same Photato estimate reaches 1.0 on row two. The left edge showed the same pattern. These are coverage estimates from an opaque RGB composite. Capture additional feather values and unaligned or skewed placements before changing sampling or quantization.
+
+Prepared a separate 1,200 × 900 owned RGB8 guide with two perpendicular walls for the next Photoshop capture. Both faces have enough projected area to sample pixels while crossing their shared edge. The fixture preserves the camera and exact guide corners. Its test sequence keeps the geometry, Source-mode donor sampling, feather and the document's outer selection separately measurable.
+
+Wrote and reopened an owned PSD with two editable linked planes from the wall guide. All 3,240,000 decoded RGB samples match the generated input PNG. External Photoshop acceptance of this wider hinge is still pending. The per-level and shared subpixel truncation probes on the earlier Photoshop float did not identify its rounding rule.
+
+The universal package verified its ad-hoc signature after extraction, and both slices rendered an offscreen workspace on macOS 27.2.1 on Apple Silicon. The binaries have a macOS 14 deployment target. The first standalone optimized replay failed to link because the evidence script globbed dated backup objects alongside the current workspace objects. Retained those logs and retried with SwiftPM's application link list. No product source change was needed for the retry.
+
+The corrected standalone replays compiled and ran. All six Photato PNGs from the full-canvas and Adobe-plane replay across Debug, optimized Apple Silicon and optimized Intel under Rosetta have the same SHA-256. That agreement is limited to the two local replays. The Photoshop edge and rounding differences remain in the captured PSD.
+
+The optimized suites each passed 850 of 852 selected tests, including all three additions. The inherited paged color-profile and source-layer-effect failures produced the same diagnostic lines as build 737 on each architecture. Preserved the signed universal preview, test receipts and reference hashes. The scoped milestone does not change the repository's overall 50% estimate.
 
 <a id="dev-step-737"></a>
 

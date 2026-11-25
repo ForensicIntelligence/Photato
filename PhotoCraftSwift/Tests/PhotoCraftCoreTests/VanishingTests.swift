@@ -11,6 +11,59 @@ final class VanishingTests:XCTestCase {
     var s=VanishingSettings();s.planes=[.init(corners:corners)];return s
   }
   func plain()->VanishingProgram { var p=VanishingProgram();p.settings.planes=[.init(corners:[.init(4,4),.init(60,4),.init(60,44),.init(4,44)])];return p }
+  func testMarqueeRectifiesSquaresConstrainsMovesAndTransfersScale() throws {
+    var settings = cameraPlane()
+    settings.planes.append(.init(corners:[.init(520,320),.init(740,320),.init(740,510),.init(520,510)]))
+    let scene = try VanishingScene(settings,width:800,height:600)
+    let frame = scene.frames[0]
+    let start = frame.point(.init(0.2,0.3))
+    let end = frame.point(.init(0.4,0.6))
+    let square = try XCTUnwrap(scene.marquee(plane:0,from:start,to:end,square:true))
+    XCTAssertEqual(square.width*frame.width,square.height*frame.height,accuracy:1e-10)
+    XCTAssertTrue(square.contains(start.interpolated(to:end,at:0.5),in:scene))
+    let moved = try XCTUnwrap(square.moved(from:start,to:frame.point(.init(0.35,0.33)),plane:0,
+      scene:scene,constrained:true))
+    XCTAssertEqual(moved.lower.y,square.lower.y,accuracy:1e-10)
+    XCTAssertEqual(moved.lower.x-square.lower.x,0.15,accuracy:1e-10)
+    let target = scene.frames[1].point(.init(0.5,0.5))
+    let across = try XCTUnwrap(square.moved(from:start,to:target,plane:1,scene:scene))
+    XCTAssertEqual(across.lower.x,0.5,accuracy:1e-10)
+    XCTAssertEqual(across.width*scene.measurementMetric(for:1).x,
+      square.width*scene.measurementMetric(for:0).x,accuracy:1e-8)
+  }
+
+  func testMarqueePatchSamplesAlignedPixelsAndHonorsOuterSelection() throws {
+    for depth in PixelDepth.allCases {
+      var document = try CraftDocument(width:64,height:48,depth:depth)
+      var sample = try Surface(width:64,height:48,depth:depth,fill:Pixel(0.1,0.2,0.3))
+      for y in 8..<16 { for x in 8..<16 { sample.setPixel(x:x,y:y,Pixel(Float(x)/32,Float(y)/24,0.85)) } }
+      document.layers[0].content = .raster(sample)
+      document.selection = .init(x:35,y:25,width:5,height:8)
+      var program = VanishingProgram()
+      program.settings.planes = [.init(corners:[.init(0,0),.init(64,0),.init(64,48),.init(0,48)])]
+      let source = VanishingMarquee(plane:0,lower:.init(8.0/64,8.0/48),upper:.init(16.0/64,16.0/48))
+      let destination = VanishingMarquee(plane:0,lower:.init(32.0/64,24.0/48),upper:.init(40.0/64,32.0/48))
+      var operation = VanishingOperation(.marquee)
+      operation.marquee = .init(source:source,destination:destination,feather:0)
+      program.operations = [operation]
+      program.newLayer = true
+      let edit = try VanishingEdit.prepare(document,layerID:document.layers[0].id,program:program,sample:sample)
+      XCTAssertEqual(edit.result.layers[0],document.layers[0])
+      guard case .raster(let overlay) = edit.result.layers[1].content else { return XCTFail("Missing patch layer.") }
+      let expected = sample.pixel(x:12,y:11)
+      let actual = overlay.pixel(x:36,y:27)
+      XCTAssertEqual(actual.r,expected.r,accuracy:1e-5)
+      XCTAssertEqual(actual.g,expected.g,accuracy:1e-5)
+      XCTAssertEqual(actual.b,expected.b,accuracy:1e-5)
+      XCTAssertEqual(actual.a,1)
+      XCTAssertEqual(overlay.pixel(x:33,y:27).a,0)
+      XCTAssertEqual(overlay.pixel(x:12,y:11).a,0)
+      program.operations[0].marquee?.feather = 2
+      let feathered = try VanishingEngine.render(program,sample:sample)
+      XCTAssertLessThan(feathered.pixel(x:32,y:26).a,0.5)
+      XCTAssertEqual(feathered.pixel(x:35,y:27).a,1)
+    }
+  }
   func testIndependentCameraMetricAndConnectedPlane() throws {
     var settings=cameraPlane();let s=try VanishingScene(settings,width:800,height:600)
     XCTAssertEqual(s.focal,500,accuracy:1e-6);XCTAssertEqual(s.frames[0].width/s.frames[0].height,2,accuracy:1e-6)

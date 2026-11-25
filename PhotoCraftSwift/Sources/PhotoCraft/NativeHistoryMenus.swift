@@ -19,7 +19,7 @@ import AppKit
     }
     if let draft = store?.vanishingWorkspace {
       item.title = redo ? "Redo Vanishing Point" : "Undo Vanishing Point"
-      return redo ? !draft.redoStates.isEmpty : !draft.undoStates.isEmpty || !draft.pending.isEmpty
+      return redo ? draft.canRedo : draft.canUndo
     }
     if let draft = store?.wideAngleWorkspace {
       item.title = redo ? "Redo Adaptive Wide Angle" : "Undo Adaptive Wide Angle"

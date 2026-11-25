@@ -19,6 +19,54 @@ struct VanishingSheet:View {
     .pickerStyle(.menu)
     .help("Luminance blends surrounding light. On also blends surrounding color.")
   }
+  private func toolSymbol(_ tool: VanishingWorkspace.Tool) -> String {
+    switch tool {
+    case .create: return "plus.rectangle"
+    case .edit: return "square.and.pencil"
+    case .marquee: return "rectangle.dashed"
+    case .stamp: return "scope"
+    case .brush: return "paintbrush.pointed"
+    case .transform: return "arrow.up.left.and.arrow.down.right"
+    case .measure: return "ruler"
+    case .hand: return "hand.raised"
+    }
+  }
+  private var marqueeControls: some View {
+    let floating = model.floatingMarqueeOperation
+    return Group {
+      if model.tool == .marquee {
+        number("Feather (px)",Binding(get:{ model.floatingMarqueeOperation?.marquee?.feather ?? model.marqueeFeather },
+          set:{ value in
+            if model.floatingMarqueeOperation != nil { model.updateMarqueePatch { $0.marquee?.feather = value } }
+            else { model.marqueeFeather = value }
+          }),VanishingMarqueeTransfer.featherRange)
+        number("Opacity (%)",Binding(get:{ model.floatingMarqueeOperation?.opacity ?? model.marqueeOpacity },
+          set:{ value in
+            if model.floatingMarqueeOperation != nil { model.updateMarqueePatch { $0.opacity = value } }
+            else { model.marqueeOpacity = value }
+          }),0...100)
+        healPicker(Binding(get:{ model.floatingMarqueeOperation?.heal ?? (model.floatingMarqueeOperation == nil ? model.marqueeHeal : .off) },
+          set:{ value in
+            if model.floatingMarqueeOperation != nil { model.updateMarqueePatch { $0.heal = value == .off ? nil : value } }
+            else { model.marqueeHeal = value }
+          }))
+        Picker("Move Mode",selection:$model.marqueeMoveMode) {
+          ForEach(VanishingWorkspace.MarqueeMoveMode.allCases,id:\.self) { mode in Text(mode.rawValue).tag(mode) }
+        }.disabled(model.marquee == nil)
+          .help("Destination moves the outline. Source fills it from the dragged sampling area.")
+        Button("Float Selection") { model.floatMarquee() }.disabled(model.marquee == nil)
+          .keyboardShortcut("t",modifiers:[.command,.option])
+      }
+      if let floating, model.tool == .transform {
+        number("Scale (%)",Binding(get:{ model.floatingMarqueeScale ?? 100 },
+          set:{ model.resizeMarqueePatch(to:$0) }),1...400)
+        number("Rotation (°)",Binding(get:{ model.floatingMarqueeOperation?.angle ?? floating.angle },
+          set:{ angle in model.updateMarqueePatch { $0.angle = angle } }),-180...180)
+      }
+      Button("Deselect") { model.deselectMarquee() }.disabled(model.activeMarquee == nil)
+        .keyboardShortcut("d",modifiers:.command)
+    }
+  }
   var body:some View {
     VStack(spacing:12) {
       HStack {
@@ -38,7 +86,16 @@ struct VanishingSheet:View {
       }
       HStack(alignment:.top,spacing:16) {
         VStack {
-          Picker("Tool",selection:$model.tool) { ForEach(VanishingWorkspace.Tool.allCases,id:\.self) { Text($0.rawValue).tag($0) } }.pickerStyle(.segmented).labelsHidden()
+          HStack(spacing:10) {
+            Picker("Tool",selection:$model.tool) {
+              ForEach(VanishingWorkspace.Tool.allCases,id:\.self) { tool in
+                Image(systemName:toolSymbol(tool)).accessibilityLabel(Text(tool.rawValue))
+                  .help(tool.rawValue).tag(tool)
+              }
+            }.pickerStyle(.segmented).labelsHidden()
+            Text(model.tool.rawValue).font(.caption).foregroundStyle(.secondary)
+              .frame(width:96,alignment:.leading).accessibilityHidden(true)
+          }
           VanishingPreview(model:model)
           HStack(spacing: 8) {
             Toggle("Show Grid", isOn: $model.showGrid)
@@ -99,6 +156,9 @@ struct VanishingSheet:View {
             Text("Drag between two points or double-click a plane to measure both sides.")
               .font(.caption).foregroundStyle(.secondary)
           }
+          if model.tool == .marquee || (model.tool == .transform && model.floatingMarqueeOperation != nil) {
+            marqueeControls
+          }
           if model.tool == .brush || model.tool == .stamp {
             number("Diameter (px)",$model.diameter,1...500);number("Hardness (%)",$model.hardness,0...100);number("Opacity (%)",$model.opacity,0...100)
             healPicker($model.heal)
@@ -127,8 +187,8 @@ struct VanishingSheet:View {
       }
       HStack {
         Toggle("Preview",isOn:$model.preview);Button("−") { model.zoom=max(0.25,model.zoom/1.5) };Button("+") { model.zoom=min(8,model.zoom*1.5) };Button("Fit") { model.zoom=1;model.pan = .zero }
-        Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty && model.pending.isEmpty && model.pendingMeasurement == nil).keyboardShortcut("z",modifiers:.command)
-        Button("Redo") { model.redo() }.disabled(model.redoStates.isEmpty).keyboardShortcut("z",modifiers:[.command,.shift])
+        Button("Undo") { model.undo() }.disabled(!model.canUndo).keyboardShortcut("z",modifiers:.command)
+        Button("Redo") { model.redo() }.disabled(!model.canRedo).keyboardShortcut("z",modifiers:[.command,.shift])
         Spacer()
         Toggle("Render Measurements",isOn:$model.renderMeasurements)
           .disabled(model.measurements.isEmpty)
@@ -153,6 +213,8 @@ struct VanishingPreview:View {
   @State private var pointer: CGPoint?
   @State private var measurementDrag: MeasurementDrag?
   @State private var draftMeasurement: VanishingMeasurement?
+  @State private var marqueeDrag: VanishingWorkspace.MarqueeDrag?
+  @State private var marqueeOutline: VanishingMarquee?
 
   private enum MeasurementDrag {
     case draw(plane: Int, from: PathPoint, continuing: Bool)
@@ -241,6 +303,24 @@ struct VanishingPreview:View {
             context.fill(Path(ellipseIn:CGRect(x:anchor.x-3,y:anchor.y-3,width:6,height:6)),with:.color(.yellow))
           }
         }
+        if let scene {
+          func drawMarquee(_ rect: VanishingMarquee, angle: Double, sampling: Bool) {
+            guard let corners = rect.projectedCorners(in:scene,angle:angle) else { return }
+            var outline = Path()
+            outline.addLines(corners.map(screen))
+            outline.closeSubpath()
+            context.stroke(outline,with:.color(.black),lineWidth:2)
+            context.stroke(outline,with:.color(sampling ? .cyan : .white),
+              style:StrokeStyle(lineWidth:1,dash:[4,3]))
+          }
+          let samples = marqueeDrag.map { $0.action == .copy || $0.action == .fill || $0.action == .duplicateFloating } ?? false
+          if let selection = model.activeMarquee,marqueeOutline == nil || samples {
+            drawMarquee(selection,angle:model.floatingMarqueeOperation?.angle ?? 0,sampling:false)
+          }
+          if let marqueeOutline {
+            drawMarquee(marqueeOutline,angle:marqueeDrag?.angle ?? 0,sampling:samples)
+          }
+        }
         let points=model.pending.isEmpty ? stroke:model.pending
         var path=Path();for (i,p) in points.enumerated() { let q=screen(p);if i==0 { path.move(to:q) } else { path.addLine(to:q) };if !model.pending.isEmpty { context.fill(Path(ellipseIn:CGRect(x:q.x-3,y:q.y-3,width:6,height:6)),with:.color(.orange)) } };context.stroke(path,with:.color(.orange),lineWidth:2)
         if let source=model.cloneSource { let p=screen(source);var cross=Path();cross.move(to:.init(x:p.x-7,y:p.y));cross.addLine(to:.init(x:p.x+7,y:p.y));cross.move(to:.init(x:p.x,y:p.y-7));cross.addLine(to:.init(x:p.x,y:p.y+7));context.stroke(cross,with:.color(.yellow),lineWidth:1.5) }
@@ -249,7 +329,26 @@ struct VanishingPreview:View {
         case .hand: return pressed ? .closedHand:.openHand
         case .stamp: return .symbol((pressed ? sampled:flags.contains(.option)) ? "scope":"paintbrush.pointed")
         case .brush: return .symbol("paintbrush.pointed")
-        case .edit,.transform: return .symbol("arrow.up.and.down.and.arrow.left.and.right")
+        case .edit: return .symbol("arrow.up.and.down.and.arrow.left.and.right")
+        case .marquee,.transform:
+          if model.tool == .transform,model.floatingMarqueeOperation == nil {
+            return .symbol("arrow.up.and.down.and.arrow.left.and.right")
+          }
+          let action = marqueeDrag?.action ?? pointer.flatMap { pointer in
+            scene.flatMap { model.marqueeAction(at:point(pointer),flags:flags,scene:$0) }
+          }
+          switch action {
+          case .draw:
+            return .symbol("rectangle.dashed",flags.contains(.shift) ? .constrain : nil)
+          case .move,.moveFloating:
+            return marqueeDrag == nil ? .openHand : .closedHand
+          case .fill:
+            return .symbol("scope")
+          case .copy,.duplicateFloating:
+            return .selectedPixels(copy:true,constrained:flags.contains(.shift),unsnapped:false)
+          case nil:
+            return pointer == nil && model.tool == .marquee ? .symbol("rectangle.dashed") : .unavailable
+          }
         case .create: return .symbol("plus")
         case .measure:
           if case .edit(let target, _, let constraint) = measurementDrag {
@@ -275,25 +374,44 @@ struct VanishingPreview:View {
         model.tool = .measure
         return .handled
       }
+      .onKeyPress("m") {
+        guard !pressed else { return .ignored }
+        model.tool = .marquee
+        return .handled
+      }
+      .onKeyPress(keys:[.leftArrow,.rightArrow,.upArrow,.downArrow],phases:[.down,.repeat]) { press in
+        guard !pressed,model.activeMarquee != nil,
+          model.tool == .marquee || model.tool == .transform,
+          press.modifiers.intersection([.command,.control,.option]).isEmpty else { return .ignored }
+        let step = press.modifiers.contains(.shift) ? 10.0 : 1.0
+        let dx = press.key == .leftArrow ? -step : press.key == .rightArrow ? step : 0
+        let dy = press.key == .upArrow ? -step : press.key == .downArrow ? step : 0
+        model.nudgeMarquee(dx:dx,dy:dy)
+        return .handled
+      }
       .onKeyPress(.delete) {
         guard model.tool == .measure else { return .ignored }
         model.removeMeasurement()
         return .handled
       }
-      .onChange(of:model.tool) { _, tool in if tool != .measure { pointer = nil } }
+      .onChange(of:model.tool) { _, _ in pointer = nil }
       .onContinuousHover { phase in
-        guard model.tool == .measure else { return }
+        guard model.tool == .measure || model.tool == .marquee || model.tool == .transform else { return }
         switch phase { case .active(let position): pointer = position; case .ended: pointer = nil }
       }
       .simultaneousGesture(SpatialTapGesture(count:2).onEnded { value in
-        guard model.tool == .measure, let index = scene?.plane(at:point(value.location)) else { return }
-        model.measurePlaneDimensions(index)
+        guard let index = scene?.plane(at:point(value.location)) else { return }
+        if model.tool == .measure { model.measurePlaneDimensions(index) }
+        if model.tool == .marquee { model.selectMarqueePlane(index) }
       })
       .gesture(DragGesture(minimumDistance:0).onChanged { value in
         if !pressed {
           focused=true
           pressed=true;pan=model.pan;stroke=[];hit=nil;corner=nil;sampled=false;pasteOrigin=nil;model.beginGesture()
           let start=point(value.startLocation)
+          if let scene,model.tool == .marquee || (model.tool == .transform && model.floatingMarqueeOperation != nil) {
+            marqueeDrag = model.startMarqueeDrag(at:start,flags:NSEvent.modifierFlags,scene:scene)
+          }
           if model.tool == .measure, let scene {
             if let pending = model.pendingMeasurement {
               measurementDrag = .draw(plane:pending.plane,from:pending.point,continuing:true)
@@ -319,6 +437,11 @@ struct VanishingPreview:View {
           if model.tool == .transform,let index=model.selectedPaste,model.program.operations.indices.contains(index),let scene { let op=model.program.operations[index];pasteOrigin=scene.frames[op.plane].point(op.at) }
         }
         let p=point(value.location)
+        if let scene,let marqueeDrag {
+          marqueeOutline = model.projectedMarquee(for:marqueeDrag,to:p,
+            constrained:NSEvent.modifierFlags.contains(.shift),scene:scene)
+          return
+        }
         switch model.tool {
         case .hand:model.pan=CGSize(width:pan.width+value.translation.width,height:pan.height+value.translation.height)
         case .edit:if let hit { if let corner { model.moveCorner(hit,corner,to:p) } else { model.movePlane(hit,dx:value.translation.width/scale,dy:value.translation.height/scale) } }
@@ -335,9 +458,16 @@ struct VanishingPreview:View {
             case nil: break
             }
           }
-        case .create:break
+        case .create,.marquee:break
         }
       }.onEnded { value in
+        if let scene,let marqueeDrag,hypot(value.translation.width,value.translation.height) > 2,
+          let rect = model.projectedMarquee(for:marqueeDrag,to:point(value.location),
+            constrained:NSEvent.modifierFlags.contains(.shift),scene:scene) {
+          model.finishMarqueeDrag(marqueeDrag,at:rect)
+        }
+        marqueeDrag = nil
+        marqueeOutline = nil
         if model.tool == .create { model.addPoint(.init((value.location.x-offset.x)/scale,(value.location.y-offset.y)/scale)) }
         if (model.tool == .brush || model.tool == .stamp) && !sampled { model.stroke(stroke) }
         if model.tool == .measure, let measurementDrag {
@@ -361,7 +491,9 @@ struct VanishingPreview:View {
         }
         measurementDrag=nil;draftMeasurement=nil
         model.endGesture();pressed=false;stroke=[];hit=nil;corner=nil;pasteOrigin=nil
-      }).clipped().accessibilityLabel("Vanishing Point preview. Define four plane corners, paint or clone in perspective, measure lengths, or transform a pasted image.")
+      }).clipped().accessibilityLabel("Vanishing Point preview")
+        .accessibilityValue(model.activeMarquee == nil ? "No perspective selection" :
+          model.floatingMarqueeOperation == nil ? "Perspective selection" : "Floating perspective selection")
     }
   }
 }

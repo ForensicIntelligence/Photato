@@ -1,3 +1,13 @@
+## 2026-11-25 — Step 738 — Add perspective Marquee and floating patches
+
+Vanishing Point can create and move a rectangle in perspective. A floating selection can sample another part of the image, then move, scale or rotate as a patch. The existing document selection still protects pixels. The authenticated Photato API uses the same sampling and Undo path. All 35 focused tests passed.
+
+Photoshop and Photato moved the same full-plane patch 20 pixels right and 10 down. The untouched strips matched. The translated area still differs in eight-bit rounding and feather coverage. A marquee that wraps across a hinge and live Source-mode drag comparison remain open.
+
+Both optimized architectures passed 850 of 852 selected tests, with the same two failures as build 737. Photato produced identical replay files in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the locally signed preview opened offscreen.
+
+[Development record](DEVLOG.md#dev-step-738) · [Qualification](SOURCE_PUBLICATION_738.md).
+
 ## 2026-11-25 — Step 737 — Export Vanishing Point scenes
 
 Vanishing Point can export perspective planes as textured 3DS meshes or as a VPE scene, with one PNG per plane. Export to 3DS includes the VPE companion. The native filter writes a new folder. The authenticated Photato API downloads the exported files as a ZIP and leaves the document and Undo history intact.
@@ -1991,16 +2001,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:737 -->
+<!-- current-status-step:738 -->
 ## Current development status — 25 November 2026
 
-Vanishing Point exports perspective planes, a camera and rectified PNG textures to 3DS and VPE. Desktop export creates a folder, and the authenticated Photato API returns a ZIP. Both exports leave the original document intact.
+Vanishing Point supports Marquee selections and floating patches. The editor and authenticated Photato API share the same perspective sampling and document Undo. The captured Photoshop keyboard replay agreed with Photato's placement. Exact fringe coverage, RGB rounding and selections spanning a hinge remain open.
 
-Blender imported the two example scenes with their cameras and adjacent textures. The square and hinged Photoshop outputs establish the remaining differences in camera, scale, texture dimensions and sampling. Perspective Marquee editing is next in the product texture repair workflow.
+All 35 focused tests passed. Both optimized architectures passed 850 of 852 selected tests. The two inherited failures were unchanged.
 
-All 32 focused tests passed. Both optimized architectures passed 847 of 849 selected tests, with the same color-profile and layer-effect diagnostics as build 736. Both slices of the signed preview opened offscreen.
-
-[Development record](DEVLOG.md#dev-step-737) · [Qualification](SOURCE_PUBLICATION_737.md).
+[Development record](DEVLOG.md#dev-step-738) · [Qualification](SOURCE_PUBLICATION_738.md).
 
 <!-- current-status:end -->
 
@@ -2944,6 +2952,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 735 | [Measure and calibrate Vanishing Point planes](DEVLOG.md#dev-step-735) |
 | 2026-11-25 | 736 | [Render Vanishing Point measurement annotations](DEVLOG.md#dev-step-736) |
 | 2026-11-25 | 737 | [Export Vanishing Point scenes](DEVLOG.md#dev-step-737) |
+| 2026-11-25 | 738 | [Add perspective Marquee and floating patches](DEVLOG.md#dev-step-738) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

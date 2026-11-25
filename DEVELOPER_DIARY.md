@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **737** · The 10 most recent entries, newest first.
+Source build **738** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 738 — Add perspective Marquee and floating patches
+
+Vanishing Point can create and move a rectangle in perspective. A floating selection can sample another part of the image, then move, scale or rotate as a patch. The existing document selection still protects pixels. The authenticated Photato API uses the same sampling and Undo path. All 35 focused tests passed.
+
+Photoshop and Photato moved the same full-plane patch 20 pixels right and 10 down. The untouched strips matched. The translated area still differs in eight-bit rounding and feather coverage. A marquee that wraps across a hinge and live Source-mode drag comparison remain open.
+
+Both optimized architectures passed 850 of 852 selected tests, with the same two failures as build 737. Photato produced identical replay files in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the locally signed preview opened offscreen.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-738) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_738.md).
 
 ## 2026-11-25 — Step 737 — Export Vanishing Point scenes
 
@@ -97,15 +107,3 @@ The first edited 48-megapixel overview took 68 ms on optimized Apple Silicon and
 Photoshop 2026 opened Vanishing Point on the owned reference image. The UI exposed the dialog and its OK and Cancel controls. The process disappeared before a reference export, so Adobe pixel equivalence remains open. The default camera also reaches a separate save limit above 100,000 pixels on the longer canvas side. Healing modes and Photoshop plane interchange still need qualification.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-729) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_729.md).
-
-## 2026-11-23 — Step 728 — Reuse the editor composite for Vanishing Point previews
-
-Vanishing Point opens from the ready editor composite when it matches the current document. A local correction on a plain top pixel layer updates only its coverage. Apply commits the prepared preview as one editable history step.
-
-The 24-megapixel native canvas kept its full-resolution preview. The 48-megapixel case used a 2,048 × 1,536 overview. Both edited preview buffers matched their independent full renders. Local Undo restored the earlier preview. Apply kept the accepted layer ID, and the authenticated API produced the same selected crop. Protecting the source, native save and reopen, and document Undo also passed.
-
-The first 24-megapixel edit from a cold workspace took 1.49 s on Apple Silicon and 2.88 s under Rosetta. The adjacent build 727 measurements were 2.94 s and 5.26 s. With the editor composite ready, the first 24-megapixel stamp took 519 ms on Apple Silicon. The second edit preview took 1.2 ms. The first edit in the 48-megapixel overview took 64 ms.
-
-The 48-megapixel repair used the same explicit camera projection as the 24-megapixel control. A narrow stamp on the larger fixture with default camera inference produced no sampled correction in builds 727 and 728. Its projected footprint and direct Photoshop output still need qualification. The timings measure software preview publication on one host.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-728) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_728.md).

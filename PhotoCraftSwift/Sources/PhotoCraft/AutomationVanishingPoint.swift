@@ -60,8 +60,20 @@ extension VanishingSettings {
       "heal":["type":"string","enum":VanishingOperation.Heal.allCases.map(\.rawValue),"default":"off"]]
     let variants=VanishingOperation.Kind.allCases.map { kind -> [String:Any] in
       var properties=shared;properties["kind"]=["const":kind.rawValue];var required=["kind"]
-      if kind == .paste { properties["sourceLayerID"]=["type":"string","format":"uuid"];properties["at"]=pointSchema;properties["width"]=number(0.001,20,0.5);properties["angle"]=number(-360,360,0);required.append("sourceLayerID") }
-      else { properties["points"]=["type":"array","minItems":1,"maxItems":4096,"items":pointSchema];properties["diameter"]=number(1,2000,40);properties["hardness"]=number(0,100,50);required.append("points")
+      switch kind {
+      case .paste:
+        properties["sourceLayerID"]=["type":"string","format":"uuid"];properties["at"]=pointSchema;properties["width"]=number(0.001,20,0.5);properties["angle"]=number(-360,360,0);required.append("sourceLayerID")
+      case .marquee:
+        properties.removeValue(forKey:"plane")
+        let rect: [String:Any] = ["type":"object","additionalProperties":false,"required":["plane","lower","upper"],
+          "properties":["plane":shared["plane"]!,"lower":pointSchema,"upper":pointSchema]]
+        let range = VanishingMarqueeTransfer.featherRange
+        properties["marquee"] = ["type":"object","additionalProperties":false,"required":["source","destination"],
+          "properties":["source":rect,"destination":rect,"feather":number(range.lowerBound,range.upperBound,1)]]
+        properties["angle"] = number(-360,360,0)
+        required.append("marquee")
+      case .brush,.clone:
+        properties["points"]=["type":"array","minItems":1,"maxItems":4096,"items":pointSchema];properties["diameter"]=number(1,2000,40);properties["hardness"]=number(0,100,50);required.append("points")
         if kind == .clone { properties["sourcePoint"]=pointSchema;required.append("sourcePoint") } else { properties["color"]=color }
       }
       return ["type":"object","additionalProperties":false,"required":required,"properties":properties]
@@ -76,6 +88,7 @@ extension VanishingSettings {
      "renderMeasurements":"Set renderMeasurements:true to write raster annotations with calibrated distances and angles. The existing newLayer option controls destination. Editable lines remain with the document and each apply takes one undo step.",
      "measurement":"Desktop Measure and API settings keep editable lines in a plane, including visible points outside the plane. The command can calibrate a selected line to a known length. Connected planes share the root's calibration and optional grid link.",
      "operations":"Create/save/edit planes with no operations; brush, clone and perspective paste with sourceLayerID (raw raster layer pixels, resolved before mutation). Sequential operations sample the visible composite plus earlier draft operations; each clone stroke takes an immutable source snapshot.",
+     "marquee":"The marquee operation maps one rectified source rectangle to a destination rectangle on the same or a different plane. Its angle rotates around the destination center. Lower and upper coordinates are plane fractions. Feather is in destination image pixels. Each patch samples the visible composite and preceding operations.",
      "heal":"Brush, clone and paste accept off, luminance or on. Luminance adjusts lighting. On adjusts lighting and color. The gradient-domain solve includes a one-pixel boundary within the 4-megapixel local repair budget.",
      "output":"The current raster layer can expand to cover the repair while keeping existing samples and masks in place. Use newLayer:true for a separate layer. Selection and transparency/image locks are honored. Smart Objects must be rasterized for the target. One cancellable undo transaction for the entire program.",
      "limits":"32 planes,256 operations,16,384 supplied points,4,096 points per stroke,128MiB embedded paste sources with up to 8,388,608 pixels, up to \(Surface.maxDimension) pixels per canvas side, 134,217,728 raster visits per program. Large canvases use a bounded overview. Existing API sharing limits also apply.",
@@ -84,7 +97,7 @@ extension VanishingSettings {
        "mediaType":"application/zip","maximumBytes":VanishingSceneExport.maximumBytes,
        "files":"3DS includes its VPE companion. Both options include a rectified PNG for every plane.",
        "camera":"Connected planes share geometry along their hinge. Independent planes share the reconstructed camera."],
-     "unsupported":"Perspective marquee, DXF export, multi-surface stroke wrapping, and exact Adobe pixels and scene dimensions remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
+     "unsupported":"A single marquee wrapping multiple connected faces, DXF export, multi-surface stroke wrapping, and exact Adobe pixels and scene dimensions remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
      "adobe":"No dedicated pinned v2 Vanishing Point operation. No invented route or unqualified actionJSON support."]
   }
 }
@@ -157,7 +170,13 @@ extension AutomationCommand {
       guard case .array(let items)=value,items.count<=256 else { throw fail("Invalid operations.") }
       p.operations=try items.map { item in
         guard case .object(let fields)=item,case .string(let name)=fields["kind"],let kind=VanishingOperation.Kind(rawValue:name) else { throw fail("Invalid operation kind.") }
-        let allowed:Set<String>=kind == .paste ? ["kind","plane","at","width","angle","opacity","clip","sourceLayerID"]:kind == .clone ? ["kind","plane","points","sourcePoint","diameter","hardness","opacity","clip"]:["kind","plane","points","diameter","hardness","opacity","color","clip"]
+        let allowed: Set<String>
+        switch kind {
+        case .paste: allowed = ["kind","plane","at","width","angle","opacity","clip","sourceLayerID"]
+        case .clone: allowed = ["kind","plane","points","sourcePoint","diameter","hardness","opacity","clip"]
+        case .brush: allowed = ["kind","plane","points","diameter","hardness","opacity","color","clip"]
+        case .marquee: allowed = ["kind","marquee","angle","opacity","clip"]
+        }
         guard Set(fields.keys).isSubset(of:allowed.union(["heal"])) else { throw fail("Unknown or irrelevant operation field.") }
         if let heal = fields["heal"] {
           guard case .string(let mode) = heal, VanishingOperation.Heal(rawValue: mode) != nil else {
@@ -168,6 +187,20 @@ extension AutomationCommand {
         for (k,v) in fields where k != "sourceLayerID" { raw[k]=v.jsonValue }
         for key in ["at","sourcePoint"] { if let value=raw[key] { guard let point=value as? [String:Any],Set(point.keys)==["x","y"] else { throw fail("Invalid operation point.") } } }
         if let values=raw["points"] { guard let points=values as? [[String:Any]],points.allSatisfy({Set($0.keys)==["x","y"]}) else { throw fail("Invalid stroke points.") } }
+        if kind == .marquee {
+          guard var patch = raw["marquee"] as? [String:Any],
+            Set(patch.keys).isSubset(of:["source","destination","feather"]) else { throw fail("Invalid marquee patch.") }
+          for key in ["source","destination"] {
+            guard let rect = patch[key] as? [String:Any],Set(rect.keys) == ["plane","lower","upper"],
+              let lower = rect["lower"] as? [String:Any],Set(lower.keys) == ["x","y"],
+              let upper = rect["upper"] as? [String:Any],Set(upper.keys) == ["x","y"] else {
+              throw fail("Invalid marquee rectangle.")
+            }
+          }
+          if patch["feather"] == nil { patch["feather"] = 1 }
+          raw["marquee"] = patch
+          raw["plane"] = (patch["destination"] as? [String:Any])?["plane"]
+        }
         if let value=raw["color"] { guard let c=value as? [String:Any],Set(c.keys)==["r","g","b","a"] else { throw fail("Invalid paint color.") } }
         if case .object(let c)=fields["color"] { guard c.values.allSatisfy({ if case .number(let n)=$0 { return n.isFinite && (0...1).contains(n) };return false }) else { throw fail("Color channels must be numbers from0 to1.") } }
         var op:VanishingOperation
@@ -182,8 +215,14 @@ extension AutomationCommand {
   }
 }
 @MainActor extension VanishingWorkspace {
-  var apiState:[String:Any] { ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"canExportScene":canExportScene,"exportingScene":exportingScene,"renderMeasurements":renderMeasurements,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
-    "pendingMeasurement":pendingMeasurement != nil,"canUndo":!undoStates.isEmpty || !pending.isEmpty || pendingMeasurement != nil,"canRedo":!redoStates.isEmpty,"heal":heal.rawValue,"selectedPasteHeal":selectedPasteHeal?.rawValue as Any? ?? NSNull(),"error":error as Any? ?? NSNull()] }
+  var apiState:[String:Any] {
+    let bounds = activeMarquee.map { rect -> [String:Any] in
+      ["plane":rect.plane,"lower":["x":rect.lower.x,"y":rect.lower.y],"upper":["x":rect.upper.x,"y":rect.upper.y]]
+    }
+    return ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"canExportScene":canExportScene,"exportingScene":exportingScene,"renderMeasurements":renderMeasurements,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
+      "pendingMeasurement":pendingMeasurement != nil,"canUndo":canUndo,"canRedo":canRedo,"heal":heal.rawValue,"selectedPasteHeal":selectedPasteHeal?.rawValue as Any? ?? NSNull(),"error":error as Any? ?? NSNull(),
+      "marquee":bounds as Any? ?? NSNull(),"marqueeMoveMode":marqueeMoveMode.rawValue,"floatingMarquee":floatingMarqueeOperation != nil]
+  }
 }
 
 

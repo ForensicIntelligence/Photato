@@ -1,3 +1,21 @@
+### Vanishing Point Marquee patches
+Send a `marquee` operation to the authenticated `filter.vanishingPoint` command. The source and destination rectangles use their own plane index and rectified plane fractions. Rotation is in degrees about the destination center. Feather is in destination image pixels. The existing `opacity`, `clip` and `heal` options apply.
+
+```json
+{
+  "kind": "marquee",
+  "marquee": {
+    "source": {"plane": 0, "lower": {"x": 0.1, "y": 0.2}, "upper": {"x": 0.25, "y": 0.4}},
+    "destination": {"plane": 0, "lower": {"x": 0.6, "y": 0.5}, "upper": {"x": 0.75, "y": 0.7}},
+    "feather": 1
+  },
+  "opacity": 100,
+  "heal": "off"
+}
+```
+
+The patch samples the visible composite and preceding operations in the request. The outer document selection, layer protection, new-layer option and document Undo apply through the same transaction as the desktop. The desktop marquee outline is a workspace selection. Its movement alone does not write pixels.
+
 ### Vanishing Point scene export (checkpoint 737)
 
 Send `POST /v1/documents/{shareID}/commands` with the current shared document revision and one of the advertised `sceneExport.formats` values:
