@@ -1,3 +1,13 @@
+## 2026-11-25 — Step 736 — Render Vanishing Point measurement annotations
+
+Vanishing Point now shows angles alongside editable measurement lengths. Render Measurements writes the lines, endpoints and labels onto a pixel layer when applying the filter. The authenticated Photato API can request the same output. Both paths keep editable measurements and use the same selection and Undo rules.
+
+Photoshop 27.2.0 reopened the Photato PSD with a separate raster layer carrying the marks, and reopened the PSB with the linked grid and editable measurements still present. Two attempts to capture Photoshop’s own raster output ended with its document menus and Save unavailable. Adobe raster styling, further angle comparisons and CAD export remain open.
+
+Both optimized architectures passed 844 of 846 selected tests, including all three new cases. The two inherited color-profile and layer-effect failures repeated. Xcode built the Debug app and passed 29 focused core, app and HTTP tests. Each generated PSD and PSB matched byte for byte in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the signed macOS 14+ preview opened offscreen.
+
+[Development record](DEVLOG.md#dev-step-736) · [Qualification](SOURCE_PUBLICATION_736.md).
+
 ## 2026-11-25 — Step 735 — Measure and calibrate Vanishing Point planes
 
 Measure lines can be moved, resized and calibrated against a known length. Connected planes share the calibration and can link their grid spacing to it. Independent planes retain their own scale. The native workspace and the authenticated Photato API keep measurements editable in native documents, PSD and PSB.
@@ -1971,16 +1981,16 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:735 -->
+<!-- current-status-step:736 -->
 ## Current development status — 25 November 2026
 
-Measure lines can be moved, resized and calibrated against a known length. Connected planes share the calibration and can link their grid spacing to it. Independent planes retain their own scale. The native workspace and the authenticated Photato API keep measurements editable in native documents, PSD and PSB.
+Vanishing Point now shows angles alongside editable measurement lengths. Render Measurements writes the lines, endpoints and labels onto a pixel layer when applying the filter. The authenticated Photato API can request the same output. Both paths keep editable measurements and use the same selection and Undo rules.
 
-Photoshop 27.2.0 opened both Photato exports with the linked grid and two editable measures. It displayed 40.01 and 30.01 for Photato’s 40 and 30. On an Adobe-authored angled plane, the largest observed difference was about 0.23 units. Angle labels, raster annotation and CAD export remain open.
+Photoshop 27.2.0 reopened the Photato PSD with a separate raster layer carrying the marks, and reopened the PSB with the linked grid and editable measurements still present. Two attempts to capture Photoshop’s own raster output ended with its document menus and Save unavailable. Adobe raster styling, further angle comparisons and CAD export remain open.
 
-Both optimized architectures passed 841 of 843 selected tests, including all four new cases. The two inherited color-profile and layer-effect failures repeated. Xcode built the Debug app and passed the 26 focused core, app and HTTP tests. The generated PSD and PSB each matched byte for byte in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the locally signed macOS 14+ preview opened offscreen.
+Both optimized architectures passed 844 of 846 selected tests, including all three new cases. The two inherited color-profile and layer-effect failures repeated. Xcode built the Debug app and passed 29 focused core, app and HTTP tests. Each generated PSD and PSB matched byte for byte in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the signed macOS 14+ preview opened offscreen.
 
-[Development record](DEVLOG.md#dev-step-735) · [Qualification](SOURCE_PUBLICATION_735.md).
+[Development record](DEVLOG.md#dev-step-736) · [Qualification](SOURCE_PUBLICATION_736.md).
 
 <!-- current-status:end -->
 
@@ -2922,6 +2932,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-24 | 733 | [Keep Vanishing Point grids editable in PSD and PSB](DEVLOG.md#dev-step-733) |
 | 2026-11-25 | 734 | [Keep Vanishing Point grid spacing and export square planes](DEVLOG.md#dev-step-734) |
 | 2026-11-25 | 735 | [Measure and calibrate Vanishing Point planes](DEVLOG.md#dev-step-735) |
+| 2026-11-25 | 736 | [Render Vanishing Point measurement annotations](DEVLOG.md#dev-step-736) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

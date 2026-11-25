@@ -70,6 +70,69 @@ final class VanishingTests:XCTestCase {
     }
   }
 
+  func testMeasurementAnglesAndRasterSelectionAcrossDepths() throws {
+    for depth in PixelDepth.allCases {
+      var source = try CraftDocument(width:192,height:128,depth:depth)
+      source.selection = .init(x:0,y:42,width:94,height:34)
+      let empty = try Surface(width:192,height:128,depth:depth,fill:.clear)
+      source.layers[0].content = .raster(empty)
+      var program = VanishingProgram()
+      program.settings.planes = [.init(corners:[.init(0,0),.init(192,0),.init(192,128),.init(0,128)])]
+      let horizontal = VanishingMeasurement(plane:0,start:.init(0.125,0.5),end:.init(0.875,0.5))
+      let vertical = VanishingMeasurement(plane:0,start:horizontal.start,end:.init(0.125,0.25))
+      let diagonal = VanishingMeasurement(plane:0,start:.init(0.25,0.25),end:.init(0.5,0.625))
+      let reversed = VanishingMeasurement(plane:0,start:horizontal.end,end:horizontal.start)
+      program.settings.measurements = [horizontal,vertical]
+      let scene = try VanishingScene(program.settings,width:192,height:128)
+      XCTAssertEqual(try XCTUnwrap(scene.measurementAngle(horizontal,settings:program.settings)),90,accuracy:1e-8)
+      XCTAssertEqual(try XCTUnwrap(scene.measurementAngle(vertical,settings:program.settings)),90,accuracy:1e-8)
+      XCTAssertEqual(try XCTUnwrap(scene.measurementAngle(diagonal,settings:.init())),45,accuracy:1e-8)
+      XCTAssertEqual(try XCTUnwrap(scene.measurementAngle(reversed,settings:.init())),0,accuracy:1e-8)
+      let layerID = source.layers[0].id
+      let unrendered = try VanishingEdit.prepare(source,layerID:layerID,program:program,sample:empty)
+      XCTAssertEqual(unrendered.result.layers,source.layers)
+      program.renderMeasurements = true
+      let edit = try VanishingEdit.prepare(source,layerID:layerID,program:program,sample:empty)
+      XCTAssertEqual(edit.result.vanishingPoint?.measurements,[horizontal,vertical])
+      XCTAssertEqual(edit.result.layers[0].id,layerID)
+      guard case .raster(let marks) = edit.result.layers[0].content else { return XCTFail() }
+      XCTAssertGreaterThan(marks.pixel(x:65,y:63).a,0.8)
+      XCTAssertGreaterThan(marks.pixel(x:23,y:49).a,0.8)
+      XCTAssertEqual(marks.pixel(x:140,y:63).a,0)
+      XCTAssertEqual(marks.pixel(x:23,y:35).a,0)
+      XCTAssertEqual(marks.pixel(x:65,y:110).a,0)
+      XCTAssertThrowsError(try edit.updatingDisplayMetadata(program.settings))
+
+      var session = EditorSession(document:source)
+      try session.execute(.vanishingPoint(edit))
+      try session.undo()
+      XCTAssertEqual(session.document,source)
+
+      program.newLayer = true
+      let onNew = try VanishingEdit.prepare(source,layerID:layerID,program:program,sample:empty)
+      XCTAssertEqual(onNew.result.layers.count,2)
+      XCTAssertEqual(onNew.result.layers[0],source.layers[0])
+      guard case .raster(let placed) = onNew.result.layers[1].content else { return XCTFail() }
+      XCTAssertGreaterThan(placed.pixel(x:65,y:63).a,0.8)
+      XCTAssertEqual(placed.pixel(x:140,y:63).a,0)
+    }
+  }
+
+  func testRasterMeasurementsUseSparseDiagonalTiles() throws {
+    let side = 16_384
+    let input = try Surface(width:side,height:side,fill:.clear)
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners:[.init(0,0),.init(Double(side),0),
+      .init(Double(side),Double(side)),.init(0,Double(side))])]
+    program.settings.measurements = [.init(plane:0,start:.init(0.01,0.01),end:.init(0.99,0.99))]
+    program.renderMeasurements = true
+    let raster = try VanishingEngine.render(program,sample:input)
+    XCTAssertGreaterThan(raster.pixel(x:4096,y:4096).a,0.8)
+    XCTAssertGreaterThan(raster.pixel(x:8192,y:8192).a,0.8)
+    XCTAssertEqual(raster.pixel(x:2000,y:13000).a,0)
+    XCTAssertLessThan(raster.storedTileKeys.reduce(0) { count,_ in count+1 },800)
+  }
+
   func testPerspectivePasteBrushCloneAndClippingAtEveryDepth() throws {
     for depth in PixelDepth.allCases {
       var sample=try Surface(width:64,height:48,depth:depth,fill:Pixel(0.2,0.2,0.2)),program=plain(),paste=VanishingOperation(.paste)

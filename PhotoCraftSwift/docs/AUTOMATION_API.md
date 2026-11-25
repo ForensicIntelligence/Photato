@@ -2564,6 +2564,8 @@ Use `settings.measurements` for up to 512 lines. Each has a zero-based `plane` a
 
 Each entry in `settings.measurementScales` defines a `root`, positive `pixelsPerUnit`, and `linkedToGrid` boolean for that root and its connected planes. Independent roots have separate scales. Optional top-level `measurementCalibration:{"index":0,"length":60}` applies a known length to the indexed line and updates its family’s scale after the new settings are validated. Document and workspace responses return a `scene.measurements` array with projected document-space endpoints, the root index and calibrated length. Each resolved plane also has `gridIntervals` for its two rectified axes.
 
+Set top-level `renderMeasurements:true` to write lines, endpoint marks, calibrated lengths and angle labels to the target pixel layer on Apply. Set `newLayer:true` to retain that layer and write an independent raster above it. Selection and layer protection follow the same prepared Vanishing Point transaction as Brush, Stamp and Paste. Measurement pixels are optional and the underlying lines remain editable. The flag is a boolean and defaults to false. An empty measurement list adds no annotation pixels. Scene state reports `angleDegrees` separately from length, and workspace state exposes the transient render choice.
+
 Every operation has `kind`, optional `plane` (0), `opacity`0…100 (100) and `clip` (true). Additional fields are:
 
 - `paste`: required `sourceLayerID` referencing a raw raster layer in the original document; optional `at:{x,y}` in plane UV coordinates (0.25,0.25), `width`0.001…20 as a fraction of metric plane width (0.5), `angle`−360…360 clockwise about the paste origin (0). Source aspect is retained in plane metric space.

@@ -575,6 +575,55 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testRenderMeasurementsNativeAndAPIProduceTheSameLayerAndUndo() async throws {
+    var source = try fixture()
+    var settings = program().settings
+    settings.measurements = [.init(plane:0,start:.init(0.1,0.6),end:.init(0.9,0.6))]
+    source.vanishingPoint = settings
+    let id = source.layers[0].id
+    let store = EditorStore(document:source,actions:ActionLibrary())
+    defer { store.renderTask?.cancel();store.cancelVanishingPoint() }
+    store.beginVanishingPoint()
+    let model = try XCTUnwrap(store.vanishingWorkspace)
+    await model.prepare()
+    XCTAssertTrue(model.ready)
+    let preview = try XCTUnwrap(model.image)
+    model.renderMeasurements = true
+    XCTAssertTrue(model.image === preview)
+    XCTAssertEqual(store.document,source)
+    store.commitVanishingPoint()
+    await store.geometryTask?.value
+    XCTAssertNil(store.error)
+    let native = store.document
+    XCTAssertEqual(native.layers[0].id,id)
+    XCTAssertNotEqual(native.layers[0].content,source.layers[0].content)
+    _ = await store.requestHistory(redo:false).value
+    XCTAssertEqual(store.document,source)
+    store.beginVanishingPoint()
+    XCTAssertEqual(store.vanishingWorkspace?.renderMeasurements,false)
+    store.cancelVanishingPoint()
+
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:source)
+      try service.share(document)
+      let malformed = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":id.uuidString,"renderMeasurements":"true"])
+      XCTAssertEqual(malformed,400)
+      XCTAssertEqual(document.store.document,source)
+      let applied = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":id.uuidString,"renderMeasurements":true])
+      XCTAssertEqual(applied,200)
+      XCTAssertEqual(document.store.document,native)
+      let state = try VanishingScene(settings,width:source.width,height:source.height).apiValue(settings:settings)
+      let measures = try XCTUnwrap(state["measurements"] as? [[String:Any]])
+      XCTAssertEqual(measures.first?["angleDegrees"] as? Double,0)
+      let undone = try await helper.edit(service,document,"history.undo")
+      XCTAssertEqual(undone,200)
+      XCTAssertEqual(document.store.document,source)
+    }
+  }
+
   @MainActor func testNativeAndAPIGrowExistingPSDRepairLayerWithoutAddingLayer() async throws {
     let helper = AutomationTests()
     try await helper.withService(actions: ActionLibrary(), pressedMouseButtons: { 0 }) { service, document in

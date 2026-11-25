@@ -431,6 +431,9 @@ public struct VanishingProgram:Codable,Equatable,Sendable {
   public var settings=VanishingSettings()
   public var operations:[VanishingOperation]=[]
   public var newLayer=false
+  /// An opt-in write for this edit. Editable lines remain with the document.
+  public var renderMeasurements: Bool?
+  var drawsMeasurements: Bool { renderMeasurements == true && !(settings.measurements?.isEmpty ?? true) }
   public init() {}
   public func validate() throws {
     try settings.validate();guard operations.count<=256,operations.reduce(0,{$0+$1.points.count})<=16384,operations.reduce(0,{$0+($1.source?.allocatedBytes ?? 0)})<=134_217_728 else { throw CraftError.unsupported("Vanishing Point exceeds the operation or source memory limit.") }

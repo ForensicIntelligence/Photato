@@ -64,7 +64,7 @@
     "primary_shortcuts": 102,
     "alternate_shortcuts": 8,
     "paths": [
-      "Filter > Vanishing Point\u2026"
+      "Filter > Vanishing Point…"
     ],
     "shortcut": "Option+Command+V"
   },
@@ -109,5 +109,18 @@
     "editability": "Photato-generated PSD and PSB reopened in Photoshop at grid spacing 20 with editable lengths. Photoshop showed 40.01 and 30.01 for Photato's 40 and 30.",
     "angles": "Photoshop shows angle labels near the initial line endpoints. Photato exposes lengths and endpoint constraints. Angle display and annotation output remain open.",
     "remaining": "The angled Photoshop horizontal reading was 41.07 compared with 41.2970 in Photato. Complex calibration, raster annotation, DXF/3DS, physical Photato input and complete output fidelity remain open."
+  },
+  "measurement_annotations_736": {
+    "reference": "Photoshop 27.2.0 on the owned front-facing checkerboard and the existing two-plane comparison",
+    "referenceDoc": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/measure-in-vanishing-point.html",
+    "menu": [
+      "Show Measurements",
+      "Render Measurements to Photoshop"
+    ],
+    "verifiedUI": "Independent horizontal and vertical labels were 0° and 90°. Two perpendicular lines added together showed 90° at their shared corner.",
+    "rasterCapture": "The filter window disappeared on both activation attempts while the document menus and Save became unavailable. No Adobe raster was captured.",
+    "photato": "Apply can rasterize strokes, endpoints, length and angle labels in document space, keeping editable measurements. The native editor and authenticated API share one output path with selection and Undo.",
+    "remaining": "Exact glyphs, colors, raster pixel equivalence, more complex angular labels and CAD exchange remain unqualified.",
+    "photatoReopen": "Photoshop opened the Photato PSD with visible ruler marks on a separate raster, and showed the original linked editable measurements on the Photato PSB."
   }
 }

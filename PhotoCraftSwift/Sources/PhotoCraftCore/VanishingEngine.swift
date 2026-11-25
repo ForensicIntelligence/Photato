@@ -389,7 +389,11 @@ public enum VanishingEngine {
           }
         }
       }
-    };return output
+    }
+    if program.drawsMeasurements {
+      try VanishingAnnotationRaster.apply(program.settings,scene:scene,to:&output,charge:charge)
+    }
+    return output
   }
 
   private static func clamped(_ value: Double) -> Double {
@@ -401,6 +405,9 @@ public struct VanishingEdit:Sendable {
   public let layerID:UUID
   public let program:VanishingProgram
   public func updatingDisplayMetadata(_ settings: VanishingSettings) throws -> Self {
+    guard !program.drawsMeasurements else {
+      throw CraftError.invalid("Rendered measurement pixels must be prepared again when their settings change.")
+    }
     var program = program, result = result
     program.settings = program.settings.withDisplayMetadata(from: settings)
     _ = try VanishingScene(program.settings, width: source.width, height: source.height)
@@ -423,7 +430,7 @@ public struct VanishingEdit:Sendable {
     let scene = try VanishingScene(program.settings,width:d.width,height:d.height)
     var result=d,settings=program.settings;settings.center=scene.center;settings.focalLength=scene.focal
     result.vanishingPoint=settings.planes.isEmpty ? nil:settings
-    if !program.operations.isEmpty {
+    if !program.operations.isEmpty || program.drawsMeasurements {
       let overlay=try VanishingEngine.render(program,sample:sample.converted(to:d.depth))
       if program.newLayer {
         guard d.layers.count<LayerLimits.maximumLayers else { throw CraftError.invalid("Layer limit reached.") }

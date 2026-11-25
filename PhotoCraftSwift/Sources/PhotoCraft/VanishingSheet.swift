@@ -113,7 +113,11 @@ struct VanishingSheet:View {
         Toggle("Preview",isOn:$model.preview);Button("−") { model.zoom=max(0.25,model.zoom/1.5) };Button("+") { model.zoom=min(8,model.zoom*1.5) };Button("Fit") { model.zoom=1;model.pan = .zero }
         Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty && model.pending.isEmpty && model.pendingMeasurement == nil).keyboardShortcut("z",modifiers:.command)
         Button("Redo") { model.redo() }.disabled(model.redoStates.isEmpty).keyboardShortcut("z",modifiers:[.command,.shift])
-        Spacer();Button("Cancel") { store.cancelVanishingPoint() }.keyboardShortcut(.cancelAction);Button("OK") { model.endGesture();store.commitVanishingPoint() }.keyboardShortcut(.defaultAction).disabled(!model.ready)
+        Spacer()
+        Toggle("Render Measurements",isOn:$model.renderMeasurements)
+          .disabled(model.measurements.isEmpty)
+          .help("Write the measurement marks onto the target layer when you apply Vanishing Point.")
+        Button("Cancel") { store.cancelVanishingPoint() }.keyboardShortcut(.cancelAction);Button("OK") { model.endGesture();store.commitVanishingPoint() }.keyboardShortcut(.defaultAction).disabled(!model.ready)
       }.controlSize(.small)
     }.padding(18).frame(width:980,height:740)
     .task { if model.image==nil,!model.rendering { await model.prepare() } }
@@ -176,7 +180,15 @@ struct VanishingPreview:View {
           }
         }
         if model.showMeasurements, let scene {
-          func drawMeasurement(_ line: VanishingMeasurement, highlighted: Bool) {
+          func drawLabel(_ text: Text, at origin: CGPoint) {
+            let label = text.font(.system(size:11,weight:.semibold,design:.monospaced)).foregroundStyle(.white)
+            let resolved = context.resolve(label)
+            let extent = resolved.measure(in:size)
+            context.fill(Path(roundedRect:CGRect(x:origin.x-extent.width/2-3,y:origin.y-extent.height/2-2,
+              width:extent.width+6,height:extent.height+4),cornerRadius:3),with:.color(.black.opacity(0.8)))
+            context.draw(resolved,at:origin)
+          }
+          func drawMeasurement(_ line: VanishingMeasurement, highlighted: Bool, excluding index: Int?) {
             let frame = scene.frames[line.plane]
             let a = screen(frame.point(line.start)), b = screen(frame.point(line.end))
             var length = Path()
@@ -189,15 +201,15 @@ struct VanishingPreview:View {
               context.fill(handle,with:.color(color))
               context.stroke(handle,with:.color(.black),lineWidth:1)
             }
+            let format = FloatingPointFormatStyle<Double>.number.precision(.fractionLength(0...2))
             if let value = scene.measurementLength(line,settings:settings) {
-              let label = Text(value,format:.number.precision(.fractionLength(0...2)))
-                .font(.system(size:11,weight:.semibold,design:.monospaced)).foregroundStyle(.white)
-              let resolved = context.resolve(label)
-              let extent = resolved.measure(in:size)
-              let origin = CGPoint(x:(a.x+b.x)/2,y:(a.y+b.y)/2-13)
-              context.fill(Path(roundedRect:CGRect(x:origin.x-extent.width/2-3,y:origin.y-extent.height/2-2,
-                width:extent.width+6,height:extent.height+4),cornerRadius:3),with:.color(.black.opacity(0.8)))
-              context.draw(resolved,at:origin)
+              drawLabel(Text(value,format:format),at:CGPoint(x:(a.x+b.x)/2,y:(a.y+b.y)/2-13))
+            }
+            if let angle = scene.measurementAngle(line,settings:settings,excluding:index) {
+              let dx = b.x-a.x, dy = b.y-a.y
+              let along = min(25/hypot(dx,dy),0.4)
+              let origin = CGPoint(x:a.x+dx*along,y:a.y+dy*along+12)
+              drawLabel(Text("\(angle, format:format)°"),at:origin)
             }
           }
           let replaced: Int?
@@ -205,9 +217,9 @@ struct VanishingPreview:View {
             replaced = target.index
           } else { replaced = nil }
           for (index,line) in model.measurements.enumerated() where index != replaced {
-            drawMeasurement(line,highlighted:model.selectedMeasurement == index)
+            drawMeasurement(line,highlighted:model.selectedMeasurement == index,excluding:index)
           }
-          if let draftMeasurement { drawMeasurement(draftMeasurement,highlighted:true) }
+          if let draftMeasurement { drawMeasurement(draftMeasurement,highlighted:true,excluding:replaced) }
           if let pending = model.pendingMeasurement {
             let anchor = screen(pending.point)
             context.fill(Path(ellipseIn:CGRect(x:anchor.x-3,y:anchor.y-3,width:6,height:6)),with:.color(.yellow))

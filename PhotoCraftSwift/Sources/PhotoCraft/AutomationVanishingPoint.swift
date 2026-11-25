@@ -4,12 +4,13 @@ import PhotoCraftImaging
 
 extension VanishingScene {
   func apiValue(settings: VanishingSettings) -> [String:Any] {
-    let lines = (settings.measurements ?? []).map { line -> [String:Any] in
+    let lines = (settings.measurements ?? []).enumerated().map { index,line -> [String:Any] in
       let frame = frames[line.plane]
       func point(_ p: PathPoint) -> [String:Double] { ["x":p.x,"y":p.y] }
       return ["plane":line.plane,"root":measurementRoot(for:line.plane),
         "start":point(frame.point(line.start)),"end":point(frame.point(line.end)),
-        "length":measurementLength(line,settings:settings) as Any? ?? NSNull()]
+        "length":measurementLength(line,settings:settings) as Any? ?? NSNull(),
+        "angleDegrees":measurementAngle(line,settings:settings,excluding:index) as Any? ?? NSNull()]
     }
     return ["focalLength":focal,"center":["x":center.x,"y":center.y],
       "planes":frames.enumerated().map { index, frame in
@@ -71,14 +72,15 @@ extension VanishingSettings {
     ["command":"filter.vanishingPoint","settingsSchema":apiSchema,"operationsSchema":operationSchema,"measurementCalibrationSchema":measurementCalibrationSchema,"nativeArchiveVersion":32,
      "narrowStrokeCoverage":"Brush and clone footprints that project to about a pixel thick or less use area coverage and honor plane clipping. Coverage work shares the Vanishing Point rendering budget.",
      "coordinates":"Corners and stroke/source points are document pixels. Paste at is plane(u,v), width is a fraction of metric plane width, rotation clockwise about paste origin. Focal length is in pixels; zero infers from the first plane or falls back to the longer canvas side.",
-     "state":"Document and workspace state include resolved camera, plane corners and grid intervals, projected measurement endpoints, and calibrated lengths.",
+     "state":"Document and workspace state include resolved camera, plane corners and grid intervals, projected measurement endpoints, calibrated lengths, and angles in degrees.",
+     "renderMeasurements":"Set renderMeasurements:true to write raster annotations with calibrated distances and angles. The existing newLayer option controls destination. Editable lines remain with the document and each apply takes one undo step.",
      "measurement":"Desktop Measure and API settings keep editable lines in a plane, including visible points outside the plane. The command can calibrate a selected line to a known length. Connected planes share the root's calibration and optional grid link.",
      "operations":"Create/save/edit planes with no operations; brush, clone and perspective paste with sourceLayerID (raw raster layer pixels, resolved before mutation). Sequential operations sample the visible composite plus earlier draft operations; each clone stroke takes an immutable source snapshot.",
      "heal":"Brush, clone and paste accept off, luminance or on. Luminance adjusts lighting. On adjusts lighting and color. The gradient-domain solve includes a one-pixel boundary within the 4-megapixel local repair budget.",
      "output":"The current raster layer can expand to cover the repair while keeping existing samples and masks in place. Use newLayer:true for a separate layer. Selection and transparency/image locks are honored. Smart Objects must be rasterized for the target. One cancellable undo transaction for the entire program.",
      "limits":"32 planes,256 operations,16,384 supplied points,4,096 points per stroke,128MiB embedded paste sources with up to 8,388,608 pixels, up to \(Surface.maxDimension) pixels per canvas side, 134,217,728 raster visits per program. Large canvases use a bounded overview. Existing API sharing limits also apply.",
      "fileInterchange":"PSD and PSB open supported Photoshop perspective planes and editable measurements. Unchanged perspective data retains its original resource. New planes and measurements are written as Photoshop resource 4000.",
-     "unsupported":"Perspective marquee, rasterized measurement overlays, DXF/3DS export, multi-surface stroke wrapping, Adobe .vpe export and exact Adobe pixels remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
+     "unsupported":"Perspective marquee, DXF/3DS export, multi-surface stroke wrapping, Adobe .vpe export and exact Adobe pixels remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
      "adobe":"No dedicated pinned v2 Vanishing Point operation. No invented route or unqualified actionJSON support."]
   }
 }
@@ -88,6 +90,10 @@ extension AutomationCommand {
     guard let id=UUID(uuidString:try string("layerID")) else { throw fail("Invalid layerID.") }
     var p=VanishingProgram();p.settings=document.vanishingPoint ?? .init()
     if let value=parameters["newLayer"] { guard case .bool(let b)=value else { throw fail("newLayer must be boolean.") };p.newLayer=b }
+    if let value = parameters["renderMeasurements"] {
+      guard case .bool(let enabled) = value else { throw fail("renderMeasurements must be boolean.") }
+      if enabled { p.renderMeasurements = true }
+    }
     if let value=parameters["settings"] {
       guard case .object(let fields)=value,Set(fields.keys).isSubset(of:["planes","focalLength","center","gridSize","measurements","measurementScales"]) else { throw fail("Invalid plane settings.") }
       let established = p.settings
@@ -172,6 +178,6 @@ extension AutomationCommand {
   }
 }
 @MainActor extension VanishingWorkspace {
-  var apiState:[String:Any] { ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
+  var apiState:[String:Any] { ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"renderMeasurements":renderMeasurements,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
     "pendingMeasurement":pendingMeasurement != nil,"canUndo":!undoStates.isEmpty || !pending.isEmpty || pendingMeasurement != nil,"canRedo":!redoStates.isEmpty,"heal":heal.rawValue,"selectedPasteHeal":selectedPasteHeal?.rawValue as Any? ?? NSNull(),"error":error as Any? ?? NSNull()] }
 }

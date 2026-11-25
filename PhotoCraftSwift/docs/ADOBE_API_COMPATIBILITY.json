@@ -3504,5 +3504,11 @@
     "photatoCommand": "filter.vanishingPoint",
     "publishedAdobeContractChanges": [],
     "reference": "docs/VANISHING_POINT_REFERENCES.json"
+  },
+  "vanishing_point_annotations_736": {
+    "status": "The native workspace and authenticated Photato API can render Vanishing Point measurements as raster annotations.",
+    "photatoCommand": "filter.vanishingPoint",
+    "publishedAdobeContractChanges": [],
+    "reference": "docs/VANISHING_POINT_REFERENCES.json"
   }
 }

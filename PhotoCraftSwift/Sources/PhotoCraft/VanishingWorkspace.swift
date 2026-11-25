@@ -17,6 +17,8 @@ import PhotoCraftImaging
   var selectedPaste:Int?
   var selectedMeasurement: Int?
   var pendingMeasurement: (plane: Int, point: PathPoint)?
+  /// Session choice. The preview remains editable until Apply.
+  var renderMeasurements = false
   var showMeasurements = true
   var measurements: [VanishingMeasurement] { program.settings.measurements ?? [] }
   var selectedMeasurementLength: Double? {
@@ -378,6 +380,12 @@ import PhotoCraftImaging
       } catch { guard let self,!self.closed,self.generation==token else { return };self.rendering=false;if !Task.isCancelled { self.error=error.localizedDescription } }
     }
   }
+  func measurementRenderRequest() -> (program: VanishingProgram, sample: Surface)? {
+    guard renderMeasurements, !measurements.isEmpty, let sourcePreview else { return nil }
+    var output = program
+    output.renderMeasurements = true
+    return (output,sourcePreview.sample ?? sourcePreview.snapshot.surface)
+  }
   func close() {
     closed = true
     generation += 1
@@ -405,9 +413,16 @@ extension EditorStore {
   func cancelVanishingPoint() { vanishingWorkspace?.close();vanishingWorkspace=nil }
   func commitVanishingPoint() {
     guard let draft = vanishingWorkspace, draft.ready, let edit = draft.preparedEdit, document == edit.source else { return }
+    let request = draft.measurementRenderRequest()
     draft.close()
     vanishingWorkspace = nil
-    performGeometry(label: "Vanishing Point") { _ in .vanishingPoint(edit) }
+    performGeometry(label: "Vanishing Point") { source in
+      if let request {
+        return .vanishingPoint(try VanishingEdit.prepare(source,layerID:edit.layerID,
+          program:request.program,sample:request.sample))
+      }
+      return .vanishingPoint(edit)
+    }
   }
 }
 @MainActor extension AppDelegate { @objc func vanishingPoint() { store?.beginVanishingPoint() } }

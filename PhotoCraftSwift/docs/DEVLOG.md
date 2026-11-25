@@ -754,7 +754,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 733 | 2026-11-24 | [Keep Vanishing Point grids editable in PSD and PSB](#dev-step-733) |
 | 734 | 2026-11-25 | [Keep Vanishing Point grid spacing and export square planes](#dev-step-734) |
 | 735 | 2026-11-25 | [Measure and calibrate Vanishing Point planes](#dev-step-735) |
+| 736 | 2026-11-25 | [Render Vanishing Point measurement annotations](#dev-step-736) |
 <!-- history-index:end -->
+
+<a id="dev-step-736"></a>
+
+## 2026-11-25 — Render Vanishing Point measurement annotations
+
+The Vanishing Point menu in Photoshop 27.2.0 exposed Render Measurements to Photoshop and a separate Show Measurements item. The owned square fixture opened from the build 735 export. A disposable transparent layer was added before invoking the command. The filter surface then disappeared while Photoshop’s document menus and save shortcuts remained unavailable. The target layer thumbnail looked empty. No Photoshop raster output or comparison was established. Earlier owned measurements showed 0° and 90° on separate lines and 90° on each of two perpendicular lines with a shared origin.
+
+Added line and joined-edge angles to the shared scene, desktop overlay and authenticated API. A session-only Render Measurements control writes bounded raster marks on Apply while leaving the editable preview intact. Core Graphics and Core Text draw lines, endpoint marks, calibrated lengths and angle labels in document coordinates. A tile traversal follows the stroke rather than allocating the diagonal’s bounding rectangle. The output uses the existing selection, layer, protection and Undo path. The API accepts a strictly typed optional renderMeasurements flag. Focused tests cover angular geometry, source preservation, sparse output, selection across three depths, and desktop/HTTP equivalence. The raster appearance is a Photato implementation pending an Adobe reference capture.
+
+The native Debug project built on the first attempt. The first focused core runner failed to compile a new assertion because stored tile keys are a sequence. The test now counts the sequence explicitly. Nine focused app and HTTP tests passed on the compiled app, including the new desktop and HTTP output identity, apply-only mark rendering, strict parameter and Undo checks. The offscreen proof displayed annotations and the Render Measurements control in both appearances. The standalone proof exported the two marked document formats with editable measurements intact. Photato’s square still measures 40 and 30, at 0° and 90°.
+
+The second focused core run passed all 20 cases, including three channel depths and a sparse diagonal crossing a 16,384 × 16,384 canvas. The second Photoshop attempt used keyboard menu navigation after the coordinate activation failed. It verified that Render Measurements to Photoshop was selected, then again left the document menus and Save unavailable. The disposable source still matched its original hash before the retry. Pixel-level matching to an Adobe raster is unqualified. The local release candidate advances to build 736 and runs the previous 843 selectors plus three new annotation tests on each architecture.
+
+Photoshop 27.2.0 reopened the Photato PSD with a separate raster layer carrying the marks, and reopened the PSB with the linked grid and editable measurements still present. Two attempts to capture Photoshop’s own raster output ended with its document menus and Save unavailable. Adobe raster styling, further angle comparisons and CAD export remain open. The exported raster labels were also checked in the flattened composite with Apple’s image converter. Both optimized architectures passed 844 of 846 selected tests, including all three new cases. The two inherited color-profile and layer-effect failures repeated. Xcode built the Debug app and passed 29 focused core, app and HTTP tests. Each generated PSD and PSB matched byte for byte in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the signed macOS 14+ preview opened offscreen. This checkpoint did not move the overall parity estimate by a milestone. The README stays at 50%.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_736.md).
+
+The generated GitHub diary and index pass the local diary check. The current development-history inventory stays with the local qualification records so the published historical inventory retains its older evidence entries.
 
 <a id="dev-step-735"></a>
 
