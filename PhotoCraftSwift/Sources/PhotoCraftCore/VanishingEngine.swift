@@ -332,20 +332,49 @@ public enum VanishingEngine {
           }
         }
       } else if let patch = op.marquee {
-        guard let corners = patch.destination.projectedCorners(in:scene,angle:op.angle),
-          patch.source.projectedCorners(in:scene) != nil else {
+        let footprint: ProjectedVanishingMarquee?
+        let corners: [PathPoint]
+        if patch.destination.wrap == true {
+          guard let projection = ProjectedVanishingMarquee(rect:patch.destination,scene:scene,angle:op.angle,clip:op.clip) else {
+            throw CraftError.invalid("The perspective marquee crosses a plane horizon.")
+          }
+          footprint = projection
+          corners = projection.pieces.flatMap(\.corners)
+        } else {
+          guard let projected = patch.destination.projectedCorners(in:scene,angle:op.angle) else {
+            throw CraftError.invalid("The perspective marquee crosses a plane horizon.")
+          }
+          footprint = nil
+          corners = projected
+        }
+        guard patch.source.outlineSegments(in:scene,angle:0,clip:op.clip) != nil else {
           throw CraftError.invalid("The perspective marquee crosses a plane horizon.")
         }
-        let sourceFrame = scene.frames[patch.source.plane], previous = output
+        if corners.isEmpty { continue }
         let bounds = try region(corners)
-        let edges = corners.indices.map { index in
-          let a = corners[index], b = corners[(index+1)%4]
-          let dx = b.x-a.x, dy = b.y-a.y, length = hypot(dx,dy)
-          return (a,dx/length,dy/length)
+        let pieces = footprint?.pieces ?? []
+        let contour = footprint?.featherEdges ?? corners.indices.map { [corners[$0],corners[($0+1)%corners.count]] }
+        let edges = contour.compactMap { points -> (PathPoint,Double,Double,Double)? in
+          let a = points[0],b = points[1],dx = b.x-a.x,dy = b.y-a.y,distance = hypot(dx,dy)
+          return distance > 1e-8 ? (a,dx/distance,dy/distance,distance) : nil
         }
+        if footprint != nil {
+          let visits = max(1,pieces.count + (patch.feather > 0 ? edges.count : 0))
+          try charge((visits-1)*bounds.width*bounds.height)
+        }
+        let extent = footprint == nil ? (0.0...1.0) : (-1e-9...1+1e-9)
+        let sourceFrame = scene.frames[patch.source.plane],previous = output
         func sourceColor(_ unit: PathPoint) -> Pixel {
-          let donor = sourceFrame.point(patch.source.point(.init(clamped(unit.x),clamped(unit.y))))
-          if op.clip && !sourceFrame.contains(donor) { return .clear }
+          let uv = patch.source.point(.init(clamped(unit.x),clamped(unit.y)))
+          let donor: PathPoint
+          if patch.source.wrap == true {
+            guard let projected = patch.source.wrappedPoint(uv,in:scene,clip:op.clip) else { return .clear }
+            donor = projected
+          } else {
+            donor = sourceFrame.point(uv)
+            if op.clip && !sourceFrame.contains(donor) { return .clear }
+          }
+          guard VanishingSettings.validPoint(donor) else { return .clear }
           return over(WarpRaster.sample(previous,donor,method:.bilinear,clampEdges:false),
             WarpRaster.sample(sample,donor,method:.bilinear,clampEdges:false))
         }
@@ -353,15 +382,25 @@ public enum VanishingEngine {
           try Task.checkCancellation()
           for x in bounds.x..<(bounds.x+bounds.width) {
             let point = PathPoint(Double(x)+0.5,Double(y)+0.5)
-            let unit = patch.destination.unitPoint(point,frame:frame,angle:op.angle)
-            guard (0...1).contains(unit.x),(0...1).contains(unit.y),!op.clip || frame.contains(point) else { continue }
+            let unit: PathPoint
+            if footprint != nil {
+              guard let piece = pieces.first(where:{ $0.contains(point) }) else { continue }
+              unit = patch.destination.wrappedUnit(point,on:piece.plane,in:scene,angle:op.angle)
+            } else {
+              guard !op.clip || frame.contains(point) else { continue }
+              unit = patch.destination.unitPoint(point,frame:frame,angle:op.angle)
+            }
+            guard extent.contains(unit.x),extent.contains(unit.y) else { continue }
             var pixel = sourceColor(unit)
             if patch.feather > 0 {
-              let edgeDistance = edges.reduce(Double.infinity) { closest,edge in
-                let (origin,dx,dy) = edge
-                return min(closest,abs(dx*(point.y-origin.y)-dy*(point.x-origin.x)))
+              let distance = edges.reduce(Double.infinity) { closest,edge in
+                let (a,dx,dy,length) = edge
+                let px = point.x-a.x,py = point.y-a.y
+                if footprint == nil { return min(closest,abs(dx*py-dy*px)) }
+                let along = min(length,max(0,px*dx+py*dy))
+                return min(closest,hypot(px-along*dx,py-along*dy))
               }
-              let t = clamped(edgeDistance/patch.feather)
+              let t = clamped(distance/patch.feather)
               pixel.a *= Float(t*t*(3-2*t))
             }
             pixel.a *= opacity
@@ -371,6 +410,11 @@ public enum VanishingEngine {
         if let coverage {
           try VanishingHealing.apply(coverage,sample:sample,previous:previous,output:&output,charge:charge) { x,y in
             let point = PathPoint(Double(x)+0.5,Double(y)+0.5)
+            if footprint != nil {
+              let plane = pieces.first(where:{ $0.contains(point) })?.plane
+                ?? scene.marqueePlane(at:point,relativeTo:op.plane) ?? op.plane
+              return sourceColor(patch.destination.wrappedUnit(point,on:plane,in:scene,angle:op.angle))
+            }
             return sourceColor(patch.destination.unitPoint(point,frame:frame,angle:op.angle))
           }
         }

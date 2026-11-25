@@ -16,6 +16,8 @@ Send a `marquee` operation to the authenticated `filter.vanishingPoint` command.
 
 The patch samples the visible composite and preceding operations in the request. The outer document selection, layer protection, new-layer option and document Undo apply through the same transaction as the desktop. The desktop marquee outline is a workspace selection. Its movement alone does not write pixels.
 
+Set `"wrap": true` on either rectangle to continue it across linked surfaces. Coordinates stay relative to that rectangle's anchor plane. For example, with a plane linked to its right edge, a wrapped rectangle anchored on plane 0 can span `x: 0.8` to `x: 1.2`. Set both rectangles to wrap when both the donor and destination span a hinge. Keep `clip: true` to restrict coverage to the linked faces, or set it to false to allow the anchor plane's projection in uncovered areas. The workspace state reports `marquee.wrap`, `allowMultiSurfaceMarquee` and `clipOperationsToSurfaceEdges`. Omitted or false `wrap` retains single-plane behavior. This operation is part of the Photato API.
+
 ### Vanishing Point scene export (checkpoint 737)
 
 Send `POST /v1/documents/{shareID}/commands` with the current shared document revision and one of the advertised `sceneExport.formats` values:

@@ -77,6 +77,16 @@ struct VanishingSheet:View {
           ProgressView().controlSize(.small).accessibilityLabel("Exporting Vanishing Point scene")
           Button("Cancel Export") { model.cancelSceneExport() }
         }
+        Menu("Options") {
+          Toggle("Allow Multi-surface Operations",isOn:$model.allowMultiSurfaceMarquee)
+            .help("New Marquee selections and their floating patches can wrap across linked planes.")
+          Toggle("Clip Operations to Surface Edges",isOn:Binding(
+            get:{ model.floatingMarqueeOperation?.clip ?? model.clip },
+            set:{ value in
+              model.clip = value
+              if model.floatingMarqueeOperation != nil { model.updateMarqueePatch { $0.clip = value } }
+            }))
+        }
         Menu("Export") {
           Button("Export to 3DS…") { model.presentSceneExport(.studio) }
             .keyboardShortcut("e",modifiers:[.command,.shift])
@@ -304,21 +314,30 @@ struct VanishingPreview:View {
           }
         }
         if let scene {
-          func drawMarquee(_ rect: VanishingMarquee, angle: Double, sampling: Bool) {
-            guard let corners = rect.projectedCorners(in:scene,angle:angle) else { return }
+          func drawMarquee(_ rect: VanishingMarquee, angle: Double, sampling: Bool, clip: Bool) {
             var outline = Path()
-            outline.addLines(corners.map(screen))
-            outline.closeSubpath()
+            if rect.wrap == true {
+              guard let segments = rect.outlineSegments(in:scene,angle:angle,clip:clip) else { return }
+              for segment in segments {
+                outline.move(to:screen(segment[0]))
+                outline.addLine(to:screen(segment[1]))
+              }
+            } else {
+              guard let corners = rect.projectedCorners(in:scene,angle:angle) else { return }
+              outline.addLines(corners.map(screen))
+              outline.closeSubpath()
+            }
             context.stroke(outline,with:.color(.black),lineWidth:2)
             context.stroke(outline,with:.color(sampling ? .cyan : .white),
               style:StrokeStyle(lineWidth:1,dash:[4,3]))
           }
           let samples = marqueeDrag.map { $0.action == .copy || $0.action == .fill || $0.action == .duplicateFloating } ?? false
+          let clip = model.floatingMarqueeOperation?.clip ?? model.clip
           if let selection = model.activeMarquee,marqueeOutline == nil || samples {
-            drawMarquee(selection,angle:model.floatingMarqueeOperation?.angle ?? 0,sampling:false)
+            drawMarquee(selection,angle:model.floatingMarqueeOperation?.angle ?? 0,sampling:false,clip:clip)
           }
           if let marqueeOutline {
-            drawMarquee(marqueeOutline,angle:marqueeDrag?.angle ?? 0,sampling:samples)
+            drawMarquee(marqueeOutline,angle:marqueeDrag?.angle ?? 0,sampling:samples,clip:clip)
           }
         }
         let points=model.pending.isEmpty ? stroke:model.pending

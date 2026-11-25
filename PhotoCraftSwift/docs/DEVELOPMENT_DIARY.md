@@ -1,3 +1,13 @@
+## 2026-11-25 — Step 739 — Wrap Vanishing Point selections across linked planes
+
+Vanishing Point can draw and move a selection across a hinge. The outline follows both planes without an extra edge down the middle. Floating patches can sample and land across the hinge, and the Photato API uses the same edit and Undo rules as the desktop.
+
+All 38 focused Xcode Debug tests passed. The offscreen workspace check covered both appearances and all 16 modifier combinations on each face. On the same two-wall image in Photoshop, a floating patch crossed the hinge but reached 59 pixels less far into the right wall. Exact placement on that face and pixel agreement remain open. A second guide with unequal wall lengths is ready for comparison.
+
+Both optimized architectures passed 853 of 855 selected tests. The two failures repeated the build 738 diagnostics, and the Photato replays matched across the three build configurations. Both slices of the locally signed preview opened offscreen.
+
+[Development record](DEVLOG.md#dev-step-739) · [Qualification](SOURCE_PUBLICATION_739.md).
+
 ## 2026-11-25 — Step 738 — Add perspective Marquee and floating patches
 
 Vanishing Point can create and move a rectangle in perspective. A floating selection can sample another part of the image, then move, scale or rotate as a patch. The existing document selection still protects pixels. The authenticated Photato API uses the same sampling and Undo path. All 35 focused tests passed.
@@ -2001,14 +2011,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:738 -->
+<!-- current-status-step:739 -->
 ## Current development status — 25 November 2026
 
-Vanishing Point supports Marquee selections and floating patches. The editor and authenticated Photato API share the same perspective sampling and document Undo. The captured Photoshop keyboard replay agreed with Photato's placement. Exact fringe coverage, RGB rounding and selections spanning a hinge remain open.
+Vanishing Point selections and floating patches now span linked planes. The editor and authenticated Photato API use the same sampling and Undo. Photato carries the comparison patch farther across the hinge than Photoshop. Exact placement and pixel coverage remain open.
 
-All 35 focused tests passed. Both optimized architectures passed 850 of 852 selected tests. The two inherited failures were unchanged.
+All 38 focused tests and 853 of 855 selected optimized tests per architecture passed. The two inherited failures repeated their earlier diagnostics.
 
-[Development record](DEVLOG.md#dev-step-738) · [Qualification](SOURCE_PUBLICATION_738.md).
+[Development record](DEVLOG.md#dev-step-739) · [Qualification](SOURCE_PUBLICATION_739.md).
 
 <!-- current-status:end -->
 
@@ -2953,6 +2963,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 736 | [Render Vanishing Point measurement annotations](DEVLOG.md#dev-step-736) |
 | 2026-11-25 | 737 | [Export Vanishing Point scenes](DEVLOG.md#dev-step-737) |
 | 2026-11-25 | 738 | [Add perspective Marquee and floating patches](DEVLOG.md#dev-step-738) |
+| 2026-11-25 | 739 | [Wrap Vanishing Point selections across linked planes](DEVLOG.md#dev-step-739) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

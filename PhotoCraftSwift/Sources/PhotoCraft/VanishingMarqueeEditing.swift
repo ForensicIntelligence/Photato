@@ -12,6 +12,7 @@ extension VanishingWorkspace {
     let plane: Int
     let original: VanishingMarquee?
     let angle: Double
+    let wrap: Bool
   }
 
   var floatingMarqueeOperation: VanishingOperation? {
@@ -24,7 +25,7 @@ extension VanishingWorkspace {
 
   func marqueeAction(at point: PathPoint, flags: NSEvent.ModifierFlags, scene: VanishingScene) -> MarqueeAction? {
     let floating = floatingMarqueeOperation
-    if let rect = activeMarquee,rect.contains(point,in:scene,angle:floating?.angle ?? 0) {
+    if let rect = activeMarquee,rect.contains(point,in:scene,angle:floating?.angle ?? 0,clip:floating?.clip ?? clip) {
       if floating != nil { return flags.contains(.option) ? .duplicateFloating : .moveFloating }
       if flags.contains(.command) && flags.contains(.option) { return .copy }
       if flags.contains(.command) { return .fill }
@@ -45,17 +46,17 @@ extension VanishingWorkspace {
       selected = plane
       marquee = nil
       selectedMarqueePatch = nil
-      return .init(action:action,start:point,plane:plane,original:nil,angle:0)
+      return .init(action:action,start:point,plane:plane,original:nil,angle:0,wrap:allowMultiSurfaceMarquee)
     }
     guard let original else { return nil }
-    return .init(action:action,start:point,plane:original.plane,original:original,angle:angle)
+    return .init(action:action,start:point,plane:original.plane,original:original,angle:angle,wrap:original.wrap == true)
   }
 
   func projectedMarquee(for drag: MarqueeDrag, to point: PathPoint, constrained: Bool,
     scene: VanishingScene) -> VanishingMarquee?
   {
     if drag.action == .draw {
-      return scene.marquee(plane:drag.plane,from:drag.start,to:point,square:constrained)
+      return scene.marquee(plane:drag.plane,from:drag.start,to:point,square:constrained,wrap:drag.wrap)
     }
     return drag.original?.moved(from:drag.start,to:point,plane:scene.plane(at:point) ?? drag.plane,
       scene:scene,constrained:constrained,angle:drag.angle)
@@ -85,7 +86,8 @@ extension VanishingWorkspace {
     beginGesture()
     selectedMarqueePatch = nil
     selected = plane
-    marquee = .init(plane:plane,lower:.init(0,0),upper:.init(1,1))
+    let wraps = allowMultiSurfaceMarquee && scene?.hasMarqueeNeighbors(plane) == true
+    marquee = .init(plane:plane,lower:.init(0,0),upper:.init(1,1),wrap:wraps ? true : nil)
     endGesture()
   }
 
@@ -104,13 +106,14 @@ extension VanishingWorkspace {
   }
 
   func nudgeMarquee(dx: Double, dy: Double) {
-    guard let rect = activeMarquee,let scene else { return }
-    let center = scene.frames[rect.plane].point(rect.center)
-    guard let moved = rect.moved(from:center,to:.init(center.x+dx,center.y+dy),plane:rect.plane,
+    guard let rect = activeMarquee,let scene,let center = rect.imageCenter(in:scene) else { return }
+    let cursor = PathPoint(center.x+dx,center.y+dy)
+    let face = rect.wrap == true ? scene.marqueePlane(at:cursor,relativeTo:rect.plane) ?? rect.plane : rect.plane
+    guard let moved = rect.moved(from:center,to:cursor,plane:face,
       scene:scene,angle:floatingMarqueeOperation?.angle ?? 0) else { return }
     beginGesture()
     let action: MarqueeAction = floatingMarqueeOperation == nil ? .move : .moveFloating
-    finishMarqueeDrag(.init(action:action,start:center,plane:rect.plane,original:rect,angle:0),at:moved)
+    finishMarqueeDrag(.init(action:action,start:center,plane:rect.plane,original:rect,angle:0,wrap:rect.wrap == true),at:moved)
     endGesture()
   }
 
@@ -149,8 +152,8 @@ extension VanishingWorkspace {
 
   private func replaceMarqueePatch(_ operation: VanishingOperation, at index: Int?) {
     guard let scene,let patch = operation.marquee,
-      patch.destination.projectedCorners(in:scene,angle:operation.angle) != nil,
-      patch.source.projectedCorners(in:scene) != nil else { return }
+      patch.destination.outlineSegments(in:scene,angle:operation.angle,clip:operation.clip) != nil,
+      patch.source.outlineSegments(in:scene,angle:0,clip:operation.clip) != nil else { return }
     var draft = program
     let updated = index ?? draft.operations.count
     if let index { draft.operations[index] = operation } else { draft.operations.append(operation) }

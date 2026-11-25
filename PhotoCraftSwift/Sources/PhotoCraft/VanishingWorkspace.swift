@@ -21,6 +21,7 @@ import PhotoCraftImaging
   var marquee: VanishingMarquee?
   var selectedMarqueePatch: Int?
   var marqueeMoveMode: MarqueeMoveMode = .destination
+  var allowMultiSurfaceMarquee = true
   var marqueeFeather = 1.0
   var marqueeOpacity = 100.0
   var marqueeHeal: VanishingOperation.Heal = .off

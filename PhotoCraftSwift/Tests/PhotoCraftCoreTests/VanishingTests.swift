@@ -64,6 +64,78 @@ final class VanishingTests:XCTestCase {
       XCTAssertEqual(feathered.pixel(x:35,y:27).a,1)
     }
   }
+
+  func testLinkedMarqueeFollowsBothPlanesInEitherDragDirection() throws {
+    var settings = VanishingSettings()
+    settings.center = .init(60,45)
+    settings.focalLength = 90
+    let top = PathPoint(63.17647058823529,19.85294117647059),bottom = PathPoint(top.x,70.14705882352941)
+    settings.planes = [.init(corners:[.init(28.04081632653,27.55102040816),top,bottom,.init(28.04081632653,62.44897959184)])]
+    var scene = try VanishingScene(settings,width:120,height:90)
+    let child = try scene.calibratedPlane(parent:0,edge:.right,
+      corners:[top,.init(87.71863117871,28.74524714829),.init(87.71863117871,61.25475285171),bottom])
+    settings.planes.append(child)
+    scene = try VanishingScene(settings,width:120,height:90)
+    let start = scene.frames[0].point(.init(0.65,0.20)),end = scene.frames[1].point(.init(0.50,0.75))
+    let forward = try XCTUnwrap(scene.marquee(plane:0,from:start,to:end,square:false,wrap:true))
+    let reverse = try XCTUnwrap(scene.marquee(plane:1,from:end,to:start,square:false,wrap:true))
+    let layout = scene.marqueeLayout
+    XCTAssertEqual(layout[0].point(forward.lower).x,layout[1].point(reverse.lower).x,accuracy:1e-10)
+    XCTAssertEqual(layout[0].point(forward.upper).x,layout[1].point(reverse.upper).x,accuracy:1e-10)
+    for plane in 0...1 {
+      let local = scene.frames[plane].point(.init(plane == 0 ? 0.85 : 0.20,0.5))
+      XCTAssertTrue(forward.contains(local,in:scene,clip:true))
+      XCTAssertTrue(reverse.contains(local,in:scene,clip:true))
+    }
+    let outline = try XCTUnwrap(forward.outlineSegments(in:scene,angle:0,clip:true))
+    XCTAssertEqual(outline.count,6)
+    XCTAssertFalse(outline.contains { $0.allSatisfy { abs($0.x-top.x) < 1e-8 } })
+
+    let square = try XCTUnwrap(scene.marquee(plane:0,from:start,to:end,square:true,wrap:true))
+    XCTAssertEqual(square.width*layout[0].size.x,square.height*layout[0].size.y,accuracy:1e-10)
+    let moved = try XCTUnwrap(forward.moved(from:end,to:scene.frames[1].point(.init(0.65,0.77)),plane:1,
+      scene:scene,constrained:true))
+    XCTAssertEqual(moved.plane,0)
+    XCTAssertEqual(moved.lower.y,forward.lower.y,accuracy:1e-10)
+    XCTAssertGreaterThan(moved.lower.x,forward.lower.x)
+    XCTAssertEqual(moved.width,forward.width,accuracy:1e-10)
+  }
+
+  func testWrappedPatchCopiesAcrossHingeWithoutFeatheringOrCompositingTwice() throws {
+    var program = VanishingProgram()
+    program.settings.focalLength = 90
+    let top = PathPoint(63.17647058823529,19.85294117647059),bottom = PathPoint(top.x,70.14705882352941)
+    program.settings.planes = [.init(corners:[.init(28.04081632653,27.55102040816),top,bottom,.init(28.04081632653,62.44897959184)])]
+    let root = try VanishingScene(program.settings,width:120,height:90)
+    program.settings.planes.append(try root.calibratedPlane(parent:0,edge:.right,
+      corners:[top,.init(87.71863117871,28.74524714829),.init(87.71863117871,61.25475285171),bottom]))
+    let source = VanishingMarquee(plane:0,lower:.init(0.55,0.2),upper:.init(0.95,0.8))
+    let destination = VanishingMarquee(plane:0,lower:.init(0.72,0.2),upper:.init(1.30,0.8),wrap:true)
+    var operation = VanishingOperation(.marquee)
+    operation.marquee = .init(source:source,destination:destination,feather:3)
+    operation.opacity = 50
+    program.operations = [operation]
+    let sample = try Surface(width:120,height:90,depth:.f32,fill:Pixel(0.1,0.3,0.8))
+    let overlay = try VanishingEngine.render(program,sample:sample)
+    for x in 61...65 {
+      let ink = overlay.pixel(x:x,y:45)
+      XCTAssertEqual(ink.a,0.5,accuracy:1e-5,"Feather or overlap at the hinge, column \(x)")
+      XCTAssertEqual(ink.b,0.8,accuracy:1e-5)
+    }
+    XCTAssertEqual(overlay.pixel(x:80,y:45).a,0)
+    XCTAssertEqual(overlay.pixel(x:63,y:29).a,0)
+    program.operations[0].marquee?.destination.wrap = nil
+    let old = try VanishingEngine.render(program,sample:sample)
+    XCTAssertEqual(old.pixel(x:64,y:45).a,0)
+
+    // Outside both bounded faces, disabling Clip permits the anchor extension.
+    program.operations[0].marquee?.destination = .init(plane:0,lower:.init(0.72,-0.20),upper:.init(1.30,0.8),wrap:true)
+    let clipped = try VanishingEngine.render(program,sample:sample)
+    XCTAssertEqual(clipped.pixel(x:60,y:18).a,0)
+    program.operations[0].clip = false
+    let extended = try VanishingEngine.render(program,sample:sample)
+    XCTAssertGreaterThan(extended.pixel(x:60,y:18).a,0.1)
+  }
   func testIndependentCameraMetricAndConnectedPlane() throws {
     var settings=cameraPlane();let s=try VanishingScene(settings,width:800,height:600)
     XCTAssertEqual(s.focal,500,accuracy:1e-6);XCTAssertEqual(s.frames[0].width/s.frames[0].height,2,accuracy:1e-6)

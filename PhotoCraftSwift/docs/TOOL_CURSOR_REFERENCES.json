@@ -1831,6 +1831,11 @@
     "remaining": "Live Photoshop glyphs and physical mouse and tablet input remain open.",
     "reference": "docs/SOURCE_PUBLICATION_675.json"
   },
+  "vanishing_marquee_739": {
+    "native": "The existing Marquee cursor actions now use the wrapped selection's full projected footprint, including points across a hinge. The captured drag action keeps its previous modifier behavior.",
+    "api": "Photato capability and workspace state expose wrapped marquee rectangles and the current multi-surface and clip options.",
+    "remaining": "Physical held-drag cadence and direct Adobe cursor comparison across a hinge."
+  },
   "path_warp_switch_676": {
     "native": "The Warp cursor follows the mesh and Cylinder handles after a later projective placement.",
     "qualification": "AppKit input hits and drags a projected mesh control and preserves its local displacement.",

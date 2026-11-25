@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **738** · The 10 most recent entries, newest first.
+Source build **739** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 739 — Wrap Vanishing Point selections across linked planes
+
+Vanishing Point can draw and move a selection across a hinge. The outline follows both planes without an extra edge down the middle. Floating patches can sample and land across the hinge, and the Photato API uses the same edit and Undo rules as the desktop.
+
+All 38 focused Xcode Debug tests passed. The offscreen workspace check covered both appearances and all 16 modifier combinations on each face. On the same two-wall image in Photoshop, a floating patch crossed the hinge but reached 59 pixels less far into the right wall. Exact placement on that face and pixel agreement remain open. A second guide with unequal wall lengths is ready for comparison.
+
+Both optimized architectures passed 853 of 855 selected tests. The two failures repeated the build 738 diagnostics, and the Photato replays matched across the three build configurations. Both slices of the locally signed preview opened offscreen.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-739) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_739.md).
 
 ## 2026-11-25 — Step 738 — Add perspective Marquee and floating patches
 
@@ -95,15 +105,3 @@ The automatic-camera edit produced a 2,048 × 2,048 preview in 104 ms on optimiz
 The maximum-size fixture is sparse and the correction uses one tile. Editable archives with focal lengths above 100,000 pixels require build 730 or later. Photoshop 2026 opened the reference modal on the owned texture fixture. The app disappeared before a stamp could be applied, so Adobe pixel equivalence remains open. Adobe documents the PSB dimension limit separately from this native workflow.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-730) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_730.md).
-
-## 2026-11-23 — Step 729 — Keep narrow Vanishing Point strokes visible
-
-A narrow perspective stamp can partially cover a row of pixels even when the pixel centers lie outside it. Vanishing Point now renders that coverage for Clone Stamp and Brush, including pixels partly inside a clipped plane.
-
-The default camera projected the failing 48-megapixel fixture to about 0.81 pixels of vertical brush thickness. The repaired fixture paints 20 pixels across two rows, with about 39% opacity near the center. Independent integration matched 36 native depth, hardness and pixel-offset cases within 0.003 normalized opacity. Rotated-plane and plane-clipping checks passed. The native preview and full render agree, and the selected crop matches the authenticated API. The source layer, local Undo, accepted edit, editable archive and document Undo also match. The tested thicker 24-megapixel and fixed-camera 48-megapixel crops retain their previous bytes.
-
-The first edited 48-megapixel overview took 68 ms on optimized Apple Silicon and 109 ms under Rosetta once the source was ready. The overview retains 2,048 × 1,536 display pixels.
-
-Photoshop 2026 opened Vanishing Point on the owned reference image. The UI exposed the dialog and its OK and Cancel controls. The process disappeared before a reference export, so Adobe pixel equivalence remains open. The default camera also reaches a separate save limit above 100,000 pixels on the longer canvas side. Healing modes and Photoshop plane interchange still need qualification.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-729) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_729.md).

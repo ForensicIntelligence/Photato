@@ -173,6 +173,7 @@ public struct VanishingScene:Sendable {
   public let frames:[Frame]
   private let measurementRoots: [Int]
   private let measurementMetrics: [PathPoint]
+  let marqueeLayout: [VanishingMarqueeFace]
   static func dot(_ a:SIMD3<Double>,_ b:SIMD3<Double>)->Double { a.x*b.x+a.y*b.y+a.z*b.z }
   static func cross(_ a:SIMD3<Double>,_ b:SIMD3<Double>)->SIMD3<Double> { .init(a.y*b.z-a.z*b.y,a.z*b.x-a.x*b.z,a.x*b.y-a.y*b.x) }
   static func length(_ a:SIMD3<Double>)->Double { sqrt(dot(a,a)) }
@@ -340,6 +341,7 @@ public struct VanishingScene:Sendable {
       }
     }
     measurementMetrics = metrics
+    marqueeLayout = VanishingMarqueeFace.layout(planes:settings.planes,metrics:metrics)
     for measurement in settings.measurements ?? [] where measurementDistance(measurement) == nil {
       throw CraftError.invalid("A measurement collapses or crosses the camera horizon.")
     }
