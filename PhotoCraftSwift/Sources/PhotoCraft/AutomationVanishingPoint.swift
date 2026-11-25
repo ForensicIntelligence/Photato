@@ -80,7 +80,11 @@ extension VanishingSettings {
      "output":"The current raster layer can expand to cover the repair while keeping existing samples and masks in place. Use newLayer:true for a separate layer. Selection and transparency/image locks are honored. Smart Objects must be rasterized for the target. One cancellable undo transaction for the entire program.",
      "limits":"32 planes,256 operations,16,384 supplied points,4,096 points per stroke,128MiB embedded paste sources with up to 8,388,608 pixels, up to \(Surface.maxDimension) pixels per canvas side, 134,217,728 raster visits per program. Large canvases use a bounded overview. Existing API sharing limits also apply.",
      "fileInterchange":"PSD and PSB open supported Photoshop perspective planes and editable measurements. Unchanged perspective data retains its original resource. New planes and measurements are written as Photoshop resource 4000.",
-     "unsupported":"Perspective marquee, DXF/3DS export, multi-surface stroke wrapping, Adobe .vpe export and exact Adobe pixels remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
+     "sceneExport":["command":"vanishingPoint.export","formats":VanishingSceneExport.Format.allCases.map(\.rawValue),
+       "mediaType":"application/zip","maximumBytes":VanishingSceneExport.maximumBytes,
+       "files":"3DS includes its VPE companion. Both options include a rectified PNG for every plane.",
+       "camera":"Connected planes share geometry along their hinge. Independent planes share the reconstructed camera."],
+     "unsupported":"Perspective marquee, DXF export, multi-surface stroke wrapping, and exact Adobe pixels and scene dimensions remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
      "adobe":"No dedicated pinned v2 Vanishing Point operation. No invented route or unqualified actionJSON support."]
   }
 }
@@ -178,6 +182,42 @@ extension AutomationCommand {
   }
 }
 @MainActor extension VanishingWorkspace {
-  var apiState:[String:Any] { ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"renderMeasurements":renderMeasurements,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
+  var apiState:[String:Any] { ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"canExportScene":canExportScene,"exportingScene":exportingScene,"renderMeasurements":renderMeasurements,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
     "pendingMeasurement":pendingMeasurement != nil,"canUndo":!undoStates.isEmpty || !pending.isEmpty || pendingMeasurement != nil,"canRedo":!redoStates.isEmpty,"heal":heal.rawValue,"selectedPasteHeal":selectedPasteHeal?.rawValue as Any? ?? NSNull(),"error":error as Any? ?? NSNull()] }
+}
+
+
+extension AutomationService {
+  func exportVanishingScene(_ command: AutomationCommand, document: CraftNSDocument,
+    shareID: UUID) async throws -> AutomationResponse
+  {
+    guard documentTransfersEnabled else {
+      throw AutomationFailure(status:403,message:"Enable document transfers before exporting a Vanishing Point scene.")
+    }
+    guard !documentTransferBusy else {
+      throw AutomationFailure(status:429,message:"A document transfer is already in progress.")
+    }
+    try preflight(document)
+    guard let format = try VanishingSceneExport.Format(rawValue:command.string("format")) else {
+      throw AutomationFailure(status:400,message:"Choose 3ds or vpe for Vanishing Point export.")
+    }
+    let store = document.store, source = store.document
+    let expectedToken = token, expectedTransfer = documentTransferGeneration, expectedRevision = command.revision
+    documentTransferBusy = true
+    defer { documentTransferBusy = false }
+    let worker = Task.detached(priority:.userInitiated) {
+      let output = try VanishingSceneExport.render(source,format:format)
+      return (name:output.name,bytes:try output.zip())
+    }
+    let output = try await withTaskCancellationHandler { try await worker.value } onCancel:{worker.cancel()}
+    prune()
+    guard !Task.isCancelled, isRunning, documentTransfersEnabled, token == expectedToken,
+      documentTransferGeneration == expectedTransfer, document.closeWorkflowID == nil,
+      revision(store) == expectedRevision, store.document == source,
+      shares.contains(where:{$0.id == shareID && $0.document === document}) else {
+      throw AutomationFailure(status:409,message:"Vanishing Point export was revoked or its source changed.")
+    }
+    return .init(status:200,contentType:"application/zip",body:output.bytes,
+      headers:["Content-Disposition":"attachment; filename=\"\(output.name)-scene.zip\""])
+  }
 }

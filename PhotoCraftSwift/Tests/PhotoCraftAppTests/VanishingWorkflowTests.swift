@@ -624,6 +624,108 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testVanishingSceneExportFormatsTexturesAndHTTP() async throws {
+    var model = try fixture()
+    model.name = "Scene.psd"
+    var settings = VanishingSettings()
+    settings.planes = [.init(corners:[.init(0,0),.init(64,0),.init(64,48),.init(0,48)])]
+    model.vanishingPoint = settings
+    let studio = try VanishingSceneExport.render(model,format:.studio)
+    XCTAssertEqual(studio.files.map(\.name),["Scene.3ds","Scene.vpe","Scene0.png"])
+    let mesh = studio.files[0].data
+    XCTAssertEqual(Array(mesh.prefix(2)),[0x4D,0x4D])
+    let length = mesh[2..<6].enumerated().reduce(0) { $0+(Int($1.element) << (8*$1.offset)) }
+    XCTAssertEqual(length,mesh.count)
+    XCTAssertNotNil(mesh.range(of:Data("Scene0.png\0".utf8)))
+    let vpe = try XCTUnwrap(String(data:studio.files[1].data,encoding:.utf8))
+    XCTAssertTrue(vpe.contains("<canvas>64,48</canvas>"))
+    XCTAssertTrue(vpe.contains("<topLeft>-64,-48,0</topLeft>"))
+    XCTAssertTrue(vpe.contains("<texture>Scene0.png</texture>"))
+    let texture = try RasterIO.read(studio.files[2].data)
+    XCTAssertEqual(texture.width,64)
+    XCTAssertEqual(texture.height,48)
+    let pixels = try Renderer.composite(texture)
+    let input = try Renderer.composite(model)
+    let actual = pixels.pixel(x:32,y:16), source = input.pixel(x:32,y:16)
+    XCTAssertEqual(actual.r,source.r,accuracy:1.0/255)
+    XCTAssertEqual(actual.g,source.g,accuracy:1.0/255)
+    XCTAssertEqual(actual.a,source.a,accuracy:1.0/255)
+    let exchange = try VanishingSceneExport.render(model,format:.afterEffects)
+    XCTAssertEqual(exchange.files.map(\.name),["Scene.vpe","Scene0.png"])
+    XCTAssertEqual(exchange.files[0].data,studio.files[1].data)
+    XCTAssertEqual(exchange.files[1].data,studio.files[2].data)
+    XCTAssertThrowsError(try VanishingSceneExport.render(self.fixture(),format:.studio))
+
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:model)
+      try service.share(document)
+      let share = try XCTUnwrap(service.shares.first?.id)
+      let revision = service.revision(document.store)
+      let path = "/v1/documents/\(share)/commands"
+      let request: [String:Any] = ["command":"vanishingPoint.export","revision":revision,"parameters":["format":"3ds"]]
+      let disabled = try await helper.request(service,path:path,body:request)
+      XCTAssertEqual(disabled.0.statusCode,403)
+      service.setDocumentTransfersEnabled(true)
+      let response = try await helper.request(service,path:path,body:request)
+      XCTAssertEqual(response.0.statusCode,200,String(decoding:response.1.prefix(512),as:UTF8.self))
+      XCTAssertEqual(response.0.value(forHTTPHeaderField:"Content-Type"),"application/zip")
+      XCTAssertEqual(response.1,try studio.zip())
+      XCTAssertEqual(document.store.document,model)
+      XCTAssertEqual(service.revision(document.store),revision)
+      XCTAssertTrue(document.store.session.undoStack.isEmpty)
+      let stale = try await helper.edit(service,document,"vanishingPoint.export",["format":"3ds"],revision:"old")
+      XCTAssertEqual(stale,409)
+      let bad = try await helper.edit(service,document,"vanishingPoint.export",["format":"obj"])
+      XCTAssertEqual(bad,400)
+    }
+  }
+
+  @MainActor func testVanishingSceneFolderCollisionPreservesAnApplicableDraft() async throws {
+    var document = try fixture()
+    document.name = "Scene.psd"
+    var settings = VanishingSettings()
+    settings.planes = [.init(corners:[.init(0,0),.init(64,0),.init(64,48),.init(0,48)])]
+    document.vanishingPoint = settings
+    let store = EditorStore(document:document,actions:ActionLibrary())
+    store.beginVanishingPoint()
+    let workspace = try XCTUnwrap(store.vanishingWorkspace)
+    defer {
+      store.cancelVanishingPoint()
+      store.renderTask?.cancel()
+    }
+    workspace.gridSize = 73
+    await workspace.prepare()
+    XCTAssertTrue(workspace.ready)
+
+    let manager = FileManager.default
+    let parent = manager.temporaryDirectory.appendingPathComponent(UUID().uuidString,isDirectory:true)
+    let existing = parent.appendingPathComponent("Scene-scene",isDirectory:true)
+    try manager.createDirectory(at:existing,withIntermediateDirectories:true)
+    defer { try? manager.removeItem(at:parent) }
+    let existingFile = existing.appendingPathComponent("original.txt")
+    let originalBytes = Data("Existing export".utf8)
+    try originalBytes.write(to:existingFile)
+
+    workspace.exportScene(.studio,to:parent)
+    XCTAssertTrue(workspace.exportingScene)
+    let clock = ContinuousClock()
+    let deadline = clock.now.advanced(by:.seconds(5))
+    while workspace.exportingScene, clock.now < deadline { try await Task.sleep(for:.milliseconds(10)) }
+    XCTAssertFalse(workspace.exportingScene)
+    XCTAssertNotNil(workspace.sceneExportError)
+    XCTAssertNil(workspace.error)
+    XCTAssertTrue(workspace.ready)
+    XCTAssertEqual(try manager.contentsOfDirectory(atPath:parent.path),["Scene-scene"])
+    XCTAssertEqual(try Data(contentsOf:existingFile),originalBytes)
+    XCTAssertEqual(store.document,document)
+
+    store.commitVanishingPoint()
+    await store.geometryTask?.value
+    XCTAssertEqual(store.document.vanishingPoint?.gridSize,73)
+    XCTAssertEqual(store.session.undoStack.count,1)
+  }
+
   @MainActor func testNativeAndAPIGrowExistingPSDRepairLayerWithoutAddingLayer() async throws {
     let helper = AutomationTests()
     try await helper.withService(actions: ActionLibrary(), pressedMouseButtons: { 0 }) { service, document in

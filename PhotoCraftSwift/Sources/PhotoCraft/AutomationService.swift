@@ -504,7 +504,7 @@ import UniformTypeIdentifiers
       "contactSheet": ["operationID":contactSheetOperationID?.uuidString as Any? ?? NSNull(),"source":contactSheetSourceIDs.contains(share.id)],
       "imageStack": ["operationID":imageStackOperationID?.uuidString as Any? ?? NSNull(),"source":imageStackSourceIDs.contains(share.id)],
       "hdrMerge": ["operationID":hdrMergeOperationID?.uuidString as Any? ?? NSNull(),"source":hdrMergeSourceIDs.contains(share.id)],
-      "vanishingPoint": ["available":store.canBeginVanishingPoint,"settings":store.document.vanishingPoint?.apiValue ?? NSNull(),"scene":(try? VanishingScene(store.document.vanishingPoint ?? .init(),width:store.document.width,height:store.document.height).apiValue(settings:store.document.vanishingPoint ?? .init())) as Any? ?? NSNull(),"workspaceOpen":store.vanishingWorkspace != nil,"workspace":store.vanishingWorkspace?.apiState as Any? ?? NSNull()],
+      "vanishingPoint": ["available":store.canBeginVanishingPoint,"settings":store.document.vanishingPoint?.apiValue ?? NSNull(),"scene":(try? VanishingScene(store.document.vanishingPoint ?? .init(),width:store.document.width,height:store.document.height).apiValue(settings:store.document.vanishingPoint ?? .init())) as Any? ?? NSNull(),"workspaceOpen":store.vanishingWorkspace != nil,"exportAvailable":!(store.document.vanishingPoint?.planes.isEmpty ?? true),"workspace":store.vanishingWorkspace?.apiState as Any? ?? NSNull()],
       "adaptiveWideAngle": ["available":store.canBeginFilterKind(.adaptiveWideAngle),"workspaceOpen":store.filterDraft?.filter.kind == .adaptiveWideAngle,"previewBusy":store.wideAngleWorkspace?.rendering ?? false,"workspace":store.wideAngleWorkspace?.apiState as Any? ?? NSNull()],
       "lensCorrection": ["available":store.canBeginFilterKind(.lensCorrection),"workspaceOpen":store.filterDraft?.filter.kind == .lensCorrection,"previewBusy":store.lensCorrectionWorkspace?.rendering ?? false,"workspace":store.lensCorrectionWorkspace?.apiState as Any? ?? NSNull(),"defaults":LensDefaultsAPI.state(store)],
       "clipboard": store.clipboardAPIState,
@@ -1574,6 +1574,7 @@ import UniformTypeIdentifiers
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in .cropDocument(try prepare(request,original)) }
         return .json(state(share,document:document))
       }
+      if command.name == "vanishingPoint.export" { return try await exportVanishingScene(command,document:document,shareID:id) }
       if command.name == "filter.vanishingPoint" {
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in
           let (layerID,program)=try command.vanishingOptions(in:original)

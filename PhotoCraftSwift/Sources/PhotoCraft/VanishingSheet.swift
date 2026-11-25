@@ -21,7 +21,21 @@ struct VanishingSheet:View {
   }
   var body:some View {
     VStack(spacing:12) {
-      HStack { Text("Vanishing Point").font(.headline);Spacer();if model.rendering { ProgressView().controlSize(.small) };Toggle("New Layer",isOn:Binding(get:{model.program.newLayer},set:{v in var p=model.program;p.newLayer=v;model.change(p)})) }
+      HStack {
+        Text("Vanishing Point").font(.headline)
+        Spacer()
+        if model.rendering { ProgressView().controlSize(.small) }
+        if model.exportingScene {
+          ProgressView().controlSize(.small).accessibilityLabel("Exporting Vanishing Point scene")
+          Button("Cancel Export") { model.cancelSceneExport() }
+        }
+        Menu("Export") {
+          Button("Export to 3DS…") { model.presentSceneExport(.studio) }
+            .keyboardShortcut("e",modifiers:[.command,.shift])
+          Button("Export for After Effects (.vpe)…") { model.presentSceneExport(.afterEffects) }
+        }.disabled(!model.canExportScene)
+        Toggle("New Layer",isOn:Binding(get:{model.program.newLayer},set:{v in var p=model.program;p.newLayer=v;model.change(p)}))
+      }
       HStack(alignment:.top,spacing:16) {
         VStack {
           Picker("Tool",selection:$model.tool) { ForEach(VanishingWorkspace.Tool.allCases,id:\.self) { Text($0.rawValue).tag($0) } }.pickerStyle(.segmented).labelsHidden()
@@ -107,6 +121,8 @@ struct VanishingSheet:View {
             Button("Delete Pasted Item") { var p=model.program;p.operations.remove(at:index);model.selectedPaste=nil;model.change(p) }
           }
           if let error=model.error { Text(error).font(.caption).foregroundStyle(.red) }
+          if let error=model.sceneExportError { Text(error).font(.caption).foregroundStyle(.red) }
+          if let message=model.sceneExportMessage { Text(message).font(.caption).foregroundStyle(.secondary) }
         }.frame(width:280).padding(.trailing,5) }.frame(width:295)
       }
       HStack {

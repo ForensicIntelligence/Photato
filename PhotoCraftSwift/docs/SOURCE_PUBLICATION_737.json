@@ -1,0 +1,407 @@
+{
+  "build": 737,
+  "base": "7f56ef7bfc37cc0d1f68f7f5d92758512d25af1c",
+  "inputCount": 9427,
+  "inputDigest": "ca45d0af2236445a868188c2b378342f36d77da969c648486279f2f269bd8743",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraft/AutomationCommands.swift": "7721911d91ceeb8815bdbb3454164bf5a08ba822164a81b8a7d5611fd06ef466",
+    "Sources/PhotoCraft/AutomationService.swift": "1b4b351789f4acfb967e26b924112ff785931bf46e0193bc73488f7ea18364b0",
+    "Sources/PhotoCraft/AutomationVanishingPoint.swift": "d74b6fe94b6688ac75eb983e0946409f9b5a3c5b85d1db0df30b29cea58297ba",
+    "Sources/PhotoCraft/ImageSequenceExport.swift": "f3dad87554bac41967392b9060d3f628abf12b4b73bc07b91335a8fe36ed751a",
+    "Sources/PhotoCraft/VanishingSheet.swift": "2c332d3137ef43f7d8ee4619b2e85922ef1585743357cbc31aabd9afa5fc4a40",
+    "Sources/PhotoCraft/VanishingWorkspace.swift": "2e4af887a578c2251d185b7398e888083acbba1332b35dbecf6e61f4fef6490c",
+    "Sources/PhotoCraftCore/VanishingSceneGeometry.swift": "e3a53ace45c801f1fde3b3684f06ce01b50d59cadc7383d9881c1061cc372a4a",
+    "Sources/PhotoCraftImaging/VanishingSceneExport.swift": "2f44082f18bc82874720a3b6d0bc324e1cd7003c8a55396d8847a9643af4473d",
+    "Tests/PhotoCraftAppTests/AutomationTests.swift": "896f56f5a950573765267fcfaf4261a4c48ab2c142873efa781565386aaf0273",
+    "Tests/PhotoCraftAppTests/VanishingWorkflowTests.swift": "b0c4750b239058481a5899f954291ec84eb64f98bfc7a59b4cab4c4c2ccaa596",
+    "Tests/PhotoCraftCoreTests/VanishingTests.swift": "9925230dc130048ba52be92133429bf2df2025c2334f7c3225bd571243e60bd9",
+    "scripts/Info.plist": "f6de6b6cf85fa5fe2b8738a29f6ba36e08170865addaff24b96a76ea9b31c711"
+  },
+  "qualification": {
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 849,
+      "passed": 847,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "e9ef141ae1c65644497a67c3907f20215d170de2976007484e4929e0b3738b06"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 849,
+      "passed": 847,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "abef14e4f256277af86d64ef45063ff3712ada76cd60f6971d6bbc25346ca840"
+    }
+  },
+  "predecessorFailureDiagnostics": {
+    "arm": {
+      "diagnosticLinesEqualTo736": true,
+      "total": 152
+    },
+    "intel": {
+      "diagnosticLinesEqualTo736": true,
+      "total": 412
+    }
+  },
+  "focusedDebug": {
+    "corePass": 21,
+    "appAndHTTPPass": 11
+  },
+  "outputHashesAcrossConfigurations": {
+    "square": {
+      "debug02": {
+        "squar0.png": "75ee1cf127402ef8ba7efb4fb2471454ba5b61f20065545cc59ec555baa2716e",
+        "square-737.3ds": "3242074e527788b5f10ddd4c042b21604a57302cf1b676190059b996eb6f7d6a",
+        "square-737.vpe": "f6cbc5eaf783067d34a8ab0b01830a99c0d51469ef46704067776554c2fd4ff5",
+        "square-737.zip": "229ad1369f0db929403ff120af768bf83620207912489d30d00fdf3dba004dfd"
+      },
+      "arm": {
+        "squar0.png": "75ee1cf127402ef8ba7efb4fb2471454ba5b61f20065545cc59ec555baa2716e",
+        "square-737.3ds": "3242074e527788b5f10ddd4c042b21604a57302cf1b676190059b996eb6f7d6a",
+        "square-737.vpe": "f6cbc5eaf783067d34a8ab0b01830a99c0d51469ef46704067776554c2fd4ff5",
+        "square-737.zip": "229ad1369f0db929403ff120af768bf83620207912489d30d00fdf3dba004dfd"
+      },
+      "intel": {
+        "squar0.png": "75ee1cf127402ef8ba7efb4fb2471454ba5b61f20065545cc59ec555baa2716e",
+        "square-737.3ds": "3242074e527788b5f10ddd4c042b21604a57302cf1b676190059b996eb6f7d6a",
+        "square-737.vpe": "f6cbc5eaf783067d34a8ab0b01830a99c0d51469ef46704067776554c2fd4ff5",
+        "square-737.zip": "229ad1369f0db929403ff120af768bf83620207912489d30d00fdf3dba004dfd"
+      }
+    },
+    "hinge": {
+      "debug02": {
+        "hinge-737.3ds": "c0333b878f10825fe1398b99d3fc8ebefe77537d38189efda5d9446049be7abc",
+        "hinge-737.vpe": "f729ea8b4c0c30d355aa737e3b53da9ddec3384d66596d01e2b8263f95b26038",
+        "hinge-737.zip": "d8d5d8744aa48b9b22d91730ef10baaca4f677b00af7f35841d710309b7f2fec",
+        "hinge0.png": "d924dc3c076ac29d543b4825aa3e284fb894dc1cdc2e4bf831bba734c23801e7",
+        "hinge1.png": "c75938c9614a0e70fa0f74875079ecc70061be46e683c2690f2f42222b74630f"
+      },
+      "arm": {
+        "hinge-737.3ds": "c0333b878f10825fe1398b99d3fc8ebefe77537d38189efda5d9446049be7abc",
+        "hinge-737.vpe": "f729ea8b4c0c30d355aa737e3b53da9ddec3384d66596d01e2b8263f95b26038",
+        "hinge-737.zip": "d8d5d8744aa48b9b22d91730ef10baaca4f677b00af7f35841d710309b7f2fec",
+        "hinge0.png": "d924dc3c076ac29d543b4825aa3e284fb894dc1cdc2e4bf831bba734c23801e7",
+        "hinge1.png": "c75938c9614a0e70fa0f74875079ecc70061be46e683c2690f2f42222b74630f"
+      },
+      "intel": {
+        "hinge-737.3ds": "c0333b878f10825fe1398b99d3fc8ebefe77537d38189efda5d9446049be7abc",
+        "hinge-737.vpe": "f729ea8b4c0c30d355aa737e3b53da9ddec3384d66596d01e2b8263f95b26038",
+        "hinge-737.zip": "d8d5d8744aa48b9b22d91730ef10baaca4f677b00af7f35841d710309b7f2fec",
+        "hinge0.png": "d924dc3c076ac29d543b4825aa3e284fb894dc1cdc2e4bf831bba734c23801e7",
+        "hinge1.png": "c75938c9614a0e70fa0f74875079ecc70061be46e683c2690f2f42222b74630f"
+      }
+    }
+  },
+  "inputPSDSHA256": {
+    "square": "c2435556d6a210adb9839965b24a427b6c3dde8ea7616e41bc471275dc625955",
+    "hinge": "5aa7904c475f486f16be984e436e7a86235a379192e507363bccac0b77b74628"
+  },
+  "independentScene": {
+    "Photoshop": {
+      "square": {
+        "canvas": [
+          1600,
+          1200
+        ],
+        "camera": [
+          3291970.0,
+          342.991,
+          -38797.0,
+          -800.135,
+          -600.117,
+          0.0,
+          269.988,
+          86189.55957135059
+        ],
+        "planes": [
+          {
+            "size": [
+              1600,
+              1200
+            ],
+            "texture": "737-a0.png",
+            "mode": 6,
+            "edgeLengths": [
+              1600.56,
+              1200.45,
+              1600.56,
+              1200.45
+            ]
+          }
+        ],
+        "sha256": {
+          "737-adobe-square.vpe": "c905c28a32a63c3f46da34413f62fa11bfa360e9c44c90455782b0b313996ec3",
+          "737-adobe-square.3ds": "fe728e3022b0aacb83e3ace4daab84b1b1db4425185d445f5d099699b6cfb6ee",
+          "737-a0.png": "4b5c6640efd7a1ec6263a55fd57e97b5452b5456dcbc192e2d9cf4e9b0040f6a"
+        }
+      },
+      "hinge": {
+        "canvas": [
+          1600,
+          1200
+        ],
+        "camera": [
+          -61.4069,
+          3102.11,
+          -4720.19,
+          -720.776,
+          -496.186,
+          0.0,
+          187.786,
+          148.86398173935157
+        ],
+        "planes": [
+          {
+            "size": [
+              3,
+              794
+            ],
+            "texture": "hinge0.png",
+            "mode": 6,
+            "edgeLengths": [
+              3.7989311819247265,
+              1064.35,
+              3.7989311819247265,
+              1064.35
+            ]
+          },
+          {
+            "size": [
+              1118,
+              794
+            ],
+            "texture": "hinge1.png",
+            "mode": 6,
+            "edgeLengths": [
+              1499.51,
+              1064.36,
+              1499.51,
+              1064.36
+            ]
+          }
+        ],
+        "sha256": {
+          "hinge-737.vpe": "94afaa42d83c6dbeee21b8636f50bf41c6da776f837699eb1e08b921be17f611",
+          "hinge-737.3ds": "3838744bc91c2ea613ddb5fe4ffaff85e898109bf9d375b3cb49638238a6a128",
+          "hinge0.png": "ac203b90d56ff9471debc8e04fe0a81072d317bfe44b6318bcf94bf789d229db",
+          "hinge1.png": "37415504843e496c1ab593899365d592185ad024fed016ce3ecce45fe1124f2c"
+        }
+      }
+    },
+    "Photato": {
+      "square": {
+        "canvas": [
+          1600,
+          1200
+        ],
+        "camera": [
+          -800.0,
+          -600.0,
+          -1600.0,
+          -800.0,
+          -600.0,
+          0.0,
+          0.0,
+          45.172132061783564
+        ],
+        "planes": [
+          {
+            "size": [
+              1600,
+              1200
+            ],
+            "texture": "squar0.png",
+            "mode": 6,
+            "edgeLengths": [
+              1600.0,
+              1200.0,
+              1600.0,
+              1200.0
+            ]
+          }
+        ],
+        "sha256": {
+          "square-737.vpe": "f6cbc5eaf783067d34a8ab0b01830a99c0d51469ef46704067776554c2fd4ff5",
+          "square-737.3ds": "3242074e527788b5f10ddd4c042b21604a57302cf1b676190059b996eb6f7d6a",
+          "squar0.png": "75ee1cf127402ef8ba7efb4fb2471454ba5b61f20065545cc59ec555baa2716e",
+          "square-737.zip": "229ad1369f0db929403ff120af768bf83620207912489d30d00fdf3dba004dfd"
+        }
+      },
+      "hinge": {
+        "canvas": [
+          1600,
+          1200
+        ],
+        "camera": [
+          -57.5170148259,
+          2905.4704736,
+          -4420.9696273,
+          -677.661983991,
+          -478.764848077,
+          18.4349202479,
+          -5.2664507326,
+          147.42419540511483
+        ],
+        "planes": [
+          {
+            "size": [
+              4,
+              997
+            ],
+            "texture": "hinge0.png",
+            "mode": 6,
+            "edgeLengths": [
+              3.550000095871792,
+              996.89128054374,
+              3.550000095448436,
+              996.891280544
+            ]
+          },
+          {
+            "size": [
+              1404,
+              997
+            ],
+            "texture": "hinge1.png",
+            "mode": 6,
+            "edgeLengths": [
+              1404.45969409,
+              996.891280544,
+              1404.45969409,
+              996.891280544
+            ]
+          }
+        ],
+        "sha256": {
+          "hinge-737.vpe": "f729ea8b4c0c30d355aa737e3b53da9ddec3384d66596d01e2b8263f95b26038",
+          "hinge-737.3ds": "c0333b878f10825fe1398b99d3fc8ebefe77537d38189efda5d9446049be7abc",
+          "hinge0.png": "d924dc3c076ac29d543b4825aa3e284fb894dc1cdc2e4bf831bba734c23801e7",
+          "hinge1.png": "c75938c9614a0e70fa0f74875079ecc70061be46e683c2690f2f42222b74630f",
+          "hinge-737.zip": "d8d5d8744aa48b9b22d91730ef10baaca4f677b00af7f35841d710309b7f2fec"
+        }
+      }
+    }
+  },
+  "squareTextureRGBA": {
+    "changedSamplesRGBA": [
+      1160355,
+      1063389,
+      1072337,
+      0
+    ],
+    "meanAbsoluteDifferenceRGBA": [
+      2.1575234375,
+      2.0855671875,
+      2.0323151041666665,
+      0.0
+    ],
+    "maxDifferenceRGBA": [
+      229,
+      189,
+      207,
+      0
+    ]
+  },
+  "desktopProof": {
+    "scene-sheet-dark.png": "7010b45100a299327d705df0a935f571923092feca5c7e6e60a5ab7069ea6dcd",
+    "scene-sheet-light.png": "49f7f6be881be9360b5f7a0b7432944d55bac64e9ad602f3d1ff16649bb5f4e3"
+  },
+  "preview": {
+    "build": 737,
+    "archive": "Photato-Retouch-Preview-737-universal.zip",
+    "archiveSHA256": "a9b654c3001dad0209f7169b3975fac43e18f1dac5a1d18a572b1e92a81418bb",
+    "bundleID": "ca.forensicintelligence.photato.perspectiveretouchpreview737",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "9120f9a53b058b94b18c2a45963d2ad2ed9bead4d80c79710e301aff5a19e28f",
+    "architectureInputsSHA256": {
+      "arm64": "38e11b74f9aa3fdfaf8f0ede7499316bb3ccea8d05e86b889bdc7fda781a4f1f",
+      "x86_64": "ef91dc50ad4147eb99c7e786e5f7db5dc266f0edc75410cb4912965ce3099dc7"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    }
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "pngSHA256": "c26608357d25297707ffaaf345cc06ceb6fd53de40217773436f1dd13956852f",
+      "size": [
+        1700,
+        1174
+      ]
+    },
+    "x86_64": {
+      "pngSHA256": "fd2f9d52210f75889631cf9aa13536aa98973667d254c480dd861512c80907e6",
+      "size": [
+        1700,
+        1174
+      ]
+    }
+  },
+  "previewRuntime": "macOS 27.2.1 on Apple Silicon; x86_64 under Rosetta",
+  "probeLogsSHA256": {
+    "xcode-debug01.log": "5d0116422c298c1b8026c467479097414c0a36b4ab3323635081ddb608840f6f",
+    "xcode-debug02.log": "b35b165de570697191b82f464193786b4efc1a59f3c8eb6c5aa2aca921177e40",
+    "xcode-debug03.log": "e704790403c12838b2d7cad2fe4e57c58a61a78b837098eaded6abae4fc7c006",
+    "debug-core01.log": "6fea4a5b62a90682af5a2bbeacbc2990973f5e046e47afd298557f2523969c0a",
+    "debug-app01.log": "ef6ffd56804144d308f46d6a32af5d584f3e006fae3d76289788dff68ab34420",
+    "debug-app02.log": "3915a9710d3b6a2509dfcdc8d1e5b6eb1835bb8967b31c019614d0aaef54cf99",
+    "debug-app03.log": "741236021f2ca7ea42f088183fabdfbc11a48cc90e3ce1d9bfee9b75691ff3ee",
+    "debug-export02.log": "8a73a522e09dcb388bc3d126c37765f4e9d478d9c79e854a82140fb48e6aa956",
+    "debug-sheet01.log": "1920e7e9a1a5ab7bcf757d73eabb286a5de706643365efee98c9314aac099518",
+    "blender-inspect01.log": "7d74f480d2a46508bfa0c7cf70c9aec6906ccc2a187c52c3cdb3b40e754f5d03",
+    "blender-inspect02.log": "40f93a4f3c6958557b17e06f9c8dfaffb0aa55cd3649494041404b9991c58dce",
+    "blender-inspect03.log": "5c6d92ed58d550956ac596e3cfd501220fe93190ea85b8b4e576e275c3467277",
+    "independent-scene01.json": "a6a6095adfe7c7528c4bdcf2d48f85f9b2c4730eecac1bfde934a1cdac54a4ec",
+    "texture-diff01.json": "5481c39cacddb4c1dabe8f90cb979dddf72456eabd7a5944d7c60bb7290c8395",
+    "texture-square-offset01.json": "5ed830649c343bc1f1a9968ab49f5dd7d6718b5a46deccb2d072dbcf68030d5b",
+    "swiftpm-release-arm01.log": "47af1074803e42975a14c1a9392fca6966c181d2b05a6b5c6f822e40bc7c57c5",
+    "swiftpm-release-intel01.log": "112f98293c555f21f9ddc8194b8331f10cc203c6e2922d0ad63ae1994d0089a8",
+    "swiftpm-release-arm02.log": "e832d76586e340df766ae3a839788bd2330c171a494baffc9fd1457469354682",
+    "swiftpm-release-intel02.log": "7fd8c5c8876a72a29f5cf01806e9b66eaea5f107ed3889ebbe1da1a4e11116cb",
+    "preview-offscreen01.log": "f2e3607b2b01cec73ca0a58910a7afd80cfaa61d178ef5710cd16672293e6d43"
+  },
+  "limits": [
+    "Exact Adobe camera, scale, clip distances and texture pixels remain open.",
+    "The installed Photoshop menus inspected omitted DXF.",
+    "After Effects import and physical desktop save interaction remain unqualified.",
+    "Regression selection is scoped. No overall parity or software release claim."
+  ]
+}

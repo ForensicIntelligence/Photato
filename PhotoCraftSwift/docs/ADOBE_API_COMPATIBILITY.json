@@ -3510,5 +3510,11 @@
     "photatoCommand": "filter.vanishingPoint",
     "publishedAdobeContractChanges": [],
     "reference": "docs/VANISHING_POINT_REFERENCES.json"
+  },
+  "vanishing_point_export_737": {
+    "status": "The native workspace and authenticated Photato API can export 3DS or VPE scenes with PNG textures. Adobe's published Photoshop v2 contract has no corresponding route.",
+    "photatoCommand": "vanishingPoint.export",
+    "publishedAdobeContractChanges": [],
+    "reference": "docs/VANISHING_POINT_REFERENCES.json"
   }
 }

@@ -122,5 +122,28 @@
     "photato": "Apply can rasterize strokes, endpoints, length and angle labels in document space, keeping editable measurements. The native editor and authenticated API share one output path with selection and Undo.",
     "remaining": "Exact glyphs, colors, raster pixel equivalence, more complex angular labels and CAD exchange remain unqualified.",
     "photatoReopen": "Photoshop opened the Photato PSD with visible ruler marks on a separate raster, and showed the original linked editable measurements on the Photato PSB."
+  },
+  "textured_scene_export_737": {
+    "reference": "Live Photoshop 27.2.0 on two owned 1600 × 1200 PSDs",
+    "referenceDoc": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/vanishing-point-in-photoshop.html",
+    "VPEWorkflow": "https://helpx.adobe.com/uk/after-effects/desktop/import-files/import-and-add-3d-models/preparing-importing-3d-image-files.html",
+    "verifiedMenu": ["Export to 3DS…", "Export for After Effects (.vpe)…"],
+    "shortcut": "Shift–Command–E",
+    "referenceOutput": "Each Adobe 3DS file had a companion VPE, a camera, and a textured two-triangle mesh for each plane. Both outputs referenced the same PNGs.",
+    "inputPSDSHA256": {
+      "square": "c2435556d6a210adb9839965b24a427b6c3dde8ea7616e41bc471275dc625955",
+      "hinge": "5aa7904c475f486f16be984e436e7a86235a379192e507363bccac0b77b74628"
+    },
+    "AdobeTextureSizes": {"square": [[1600, 1200]], "hinge": [[3, 794], [1118, 794]]},
+    "PhotatoTextureSizes": {"square": [[1600, 1200]], "hinge": [[4, 997], [1404, 997]]},
+    "alignedSquareTextureComparison": {
+      "decoder": "FFmpeg raw RGBA",
+      "changedSamplesRGBA": [1160355, 1063389, 1072337, 0],
+      "maximumDifferenceRGBA": [229, 189, 207, 0],
+      "observation": "Adobe's sampled first row and column were opaque white. Tested interior rows showed a lower mean color error when compared one column to the left in Photato."
+    },
+    "independentChecks": "Blender 5.2 and its official 3DS extension 3.0.2 opened both Adobe and both Photato 3DS exports. A separate chunk and XML reader checked the 3DS and VPE geometry, camera and textures.",
+    "outputDelivery": "The native Vanishing Point editor writes a new scene folder. The authenticated Photato command vanishingPoint.export returns a ZIP of saved planes and the visible composite.",
+    "remaining": "DXF was absent in the two installed menus checked. Exact Adobe camera, world scale, texture pixels, physical save-panel interaction, and After Effects import remain unqualified."
   }
 }

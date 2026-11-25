@@ -1,3 +1,19 @@
+### Vanishing Point scene export (checkpoint 737)
+
+Send `POST /v1/documents/{shareID}/commands` with the current shared document revision and one of the advertised `sceneExport.formats` values:
+
+```json
+{
+  "command": "vanishingPoint.export",
+  "revision": "<current revision>",
+  "parameters": { "format": "3ds" }
+}
+```
+
+The response is an `application/zip` attachment. `3ds` includes a mesh, its companion VPE scene and their shared PNG textures. `vpe` includes the scene and textures. Export uses the saved planes and visible composite. It leaves document and Undo state intact. The desktop can also export a draft directly from the filter before applying it.
+
+Document transfers must be enabled. A disabled transfer returns 403, an already-running transfer returns 429, and a stale revision or a source changed during export returns 409. An unsupported format returns 400. The service discards the output if the share or transfer authorization is revoked while it renders. Exports have a 4,096-pixel texture side limit, a combined 16,777,216-pixel texture budget and a 128 MiB output limit. [Evidence](VANISHING_POINT_REFERENCES.json).
+
 ### Vanishing Point grid size (checkpoint 734)
 
 Send `settings.gridSize` with `filter.vanishingPoint` to set the shared Vanishing Point grid spacing. It accepts a number from 1 to 1,000 and defaults to 100. The document state reports a nondefault value as part of its editable settings. Both PSD and PSB downloads keep the fractional spacing. [File and API checks](SOURCE_PUBLICATION_734.md).

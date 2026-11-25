@@ -83,6 +83,14 @@ import PhotoCraftImaging
   private var clonePlane:Int?
   var size:CGSize { .init(width:original.width,height:original.height) }
   var scene:VanishingScene? { try? VanishingScene(program.settings,width:original.width,height:original.height) }
+  var exportingScene = false
+  var sceneExportMessage: String?
+  var sceneExportError: String?
+  @ObservationIgnored private var sceneExportTask: Task<Void,Never>?
+  @ObservationIgnored private var sceneExportPanel: NSOpenPanel?
+  var canExportScene: Bool {
+    !closed && !rendering && !exportingScene && preparedEdit != nil && !program.settings.planes.isEmpty
+  }
   var ready:Bool { preparedEdit != nil && image != nil && !rendering && error == nil && pending.isEmpty }
   init(document: CraftDocument, layerID: UUID, snapshot: RenderSnapshot? = nil,
     display: CanvasRasterPreview? = nil) {
@@ -386,8 +394,66 @@ import PhotoCraftImaging
     output.renderMeasurements = true
     return (output,sourcePreview.sample ?? sourcePreview.snapshot.surface)
   }
+  func presentSceneExport(_ format: VanishingSceneExport.Format) {
+    guard canExportScene, sceneExportPanel == nil else { return }
+    let revision = generation
+    let panel = NSOpenPanel()
+    sceneExportPanel = panel
+    panel.title = format == .studio ? "Export to 3DS" : "Export for After Effects"
+    panel.message = "Choose where to create a folder for the scene and its PNG textures."
+    panel.prompt = "Export"
+    panel.canChooseDirectories = true
+    panel.canChooseFiles = false
+    panel.canCreateDirectories = true
+    panel.begin { [weak self, weak panel] response in
+      guard let self, let panel, self.sceneExportPanel === panel else { return }
+      self.sceneExportPanel = nil
+      guard response == .OK, let parent = panel.url, !self.closed, self.generation == revision else { return }
+      self.exportScene(format,to:parent)
+    }
+  }
+
+  func exportScene(_ format: VanishingSceneExport.Format, to parent: URL) {
+    guard canExportScene, let source = preparedEdit?.result else { return }
+    let revision = generation
+    sceneExportMessage = nil
+    sceneExportError = nil
+    exportingScene = true
+    sceneExportTask = Task { @MainActor [weak self] in
+      guard let self else { return }
+      let scoped = parent.startAccessingSecurityScopedResource()
+      defer {
+        if scoped { parent.stopAccessingSecurityScopedResource() }
+        self.sceneExportTask = nil
+        self.exportingScene = false
+      }
+      do {
+        let worker = Task.detached(priority:.userInitiated) {
+          let output = try VanishingSceneExport.render(source,format:format)
+          let destination = parent.appendingPathComponent(output.name+"-scene",isDirectory:true)
+          return try PreparedSequenceFolder.prepare(files:output.files,destination:destination,
+            maximumBytes:VanishingSceneExport.maximumBytes)
+        }
+        let prepared = try await withTaskCancellationHandler { try await worker.value } onCancel:{worker.cancel()}
+        defer { prepared.discard() }
+        try Task.checkCancellation()
+        guard !self.closed, self.generation == revision else { throw CancellationError() }
+        try prepared.commit()
+        self.sceneExportMessage = "Exported "+prepared.destination.lastPathComponent
+      } catch is CancellationError {
+        if !self.closed { self.sceneExportMessage = "Scene export cancelled" }
+      } catch {
+        if !self.closed { self.sceneExportError = error.localizedDescription }
+      }
+    }
+  }
+
+  func cancelSceneExport() { sceneExportTask?.cancel() }
   func close() {
     closed = true
+    sceneExportPanel?.cancel(nil)
+    sceneExportPanel = nil
+    cancelSceneExport()
     generation += 1
     task?.cancel()
     task = nil

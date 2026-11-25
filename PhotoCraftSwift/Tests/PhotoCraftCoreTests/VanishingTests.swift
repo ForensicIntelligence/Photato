@@ -133,6 +133,36 @@ final class VanishingTests:XCTestCase {
     XCTAssertLessThan(raster.storedTileKeys.reduce(0) { count,_ in count+1 },800)
   }
 
+  func testSceneExportWeldsHingeAndReprojectsAllCorners() throws {
+    var settings = cameraPlane()
+    settings.planes.append(.init(parent:0,edge:.top,angle:90,depth:0.25))
+    let scene = try VanishingScene(settings,width:800,height:600)
+    let asset = try scene.exportGeometry(settings:settings,canvasWidth:800)
+    XCTAssertEqual(asset.planes.count,2)
+    XCTAssertEqual(asset.planes[0][0],asset.planes[1][3])
+    XCTAssertEqual(asset.planes[0][1],asset.planes[1][2])
+    let view = VanishingScene.unit(asset.target-asset.camera)
+    let vertical = SIMD3<Double>(0,-1,0)
+    let up0 = VanishingScene.unit(vertical-view*VanishingScene.dot(vertical,view))
+    let radians = asset.rollDegrees * .pi / 180
+    let up = up0*cos(radians)+VanishingScene.cross(view,up0)*sin(radians)
+    let right = VanishingScene.cross(view,up)
+    let focal = 400/tan(asset.horizontalAngleOfView * .pi / 360)
+    for (mesh,frame) in zip(asset.planes,scene.frames) {
+      for (point,source) in zip(mesh,frame.corners) {
+        let ray = point-asset.camera, depth = VanishingScene.dot(ray,view)
+        XCTAssertGreaterThan(depth,0)
+        XCTAssertEqual(400+focal*VanishingScene.dot(ray,right)/depth,source.x,accuracy:1e-7)
+        XCTAssertEqual(300-focal*VanishingScene.dot(ray,up)/depth,source.y,accuracy:1e-7)
+      }
+    }
+    let firstNormal = VanishingScene.unit(VanishingScene.cross(asset.planes[0][1]-asset.planes[0][0],
+      asset.planes[0][3]-asset.planes[0][0]))
+    let secondNormal = VanishingScene.unit(VanishingScene.cross(asset.planes[1][1]-asset.planes[1][0],
+      asset.planes[1][3]-asset.planes[1][0]))
+    XCTAssertEqual(VanishingScene.dot(firstNormal,secondNormal),0,accuracy:0.02)
+  }
+
   func testPerspectivePasteBrushCloneAndClippingAtEveryDepth() throws {
     for depth in PixelDepth.allCases {
       var sample=try Surface(width:64,height:48,depth:depth,fill:Pixel(0.2,0.2,0.2)),program=plain(),paste=VanishingOperation(.paste)

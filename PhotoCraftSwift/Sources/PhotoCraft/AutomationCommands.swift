@@ -135,6 +135,10 @@ struct AutomationCommand: Sendable {
         if SkyAPI.commands.contains(name) {properties[key]=SkyAPI.schema(key,command:name);continue}
         if SelectionToolAPI.commands.contains(name) {properties[key]=SelectionToolAPI.schema(key);continue}
         if name.hasPrefix("actions.") { properties[key] = AutomationCommand.actionSchema(key); continue }
+        if name == "vanishingPoint.export", key == "format" {
+          properties[key]=["type":"string","enum":VanishingSceneExport.Format.allCases.map(\.rawValue)]
+          continue
+        }
         if name == "filter.vanishingPoint" {
           if key == "settings" { properties[key]=VanishingSettings.apiSchema;continue }
           if key == "operations" { properties[key]=VanishingSettings.operationSchema;continue }
@@ -323,6 +327,7 @@ struct AutomationCommand: Sendable {
     .init(name:"smartObject.stackMode",parameters:["layerID":"Smart Object UUID","mode":"Statistical mode or none"],description:"Change one Smart Object instance stack mode; retain its sources, filters and transforms."),
     .init(name:"document.hdrMerge.cancel",parameters:["operationID":"Current HDR image operation UUID"],description:"Cancel an active HDR image creation operation from a participating shared source."),
     .init(name:"document.hdrMerge",parameters:["sources":"Shared source document IDs and current revisions","settings":"Optional HDR merge settings","name":"Optional new document name"],description:"Create a new shared HDR image from multiple shared photographs; preserve all source documents.",optionalParameters:["settings","name"]),
+    .init(name:"vanishingPoint.export",parameters:["format":"3ds or vpe"],description:"Export saved perspective planes and PNG textures in a ZIP download. Requires document transfers. Document and Undo history stay intact."),
     .init(name:"filter.vanishingPoint",parameters:["layerID":"Target raster layer UUID","settings":"Perspective planes and measurements; omitted uses saved settings","operations":"Perspective paste/clone/brush operations","measurementCalibration":"Assign a known length to a measurement index","renderMeasurements":"Write a raster copy of measurement lines and labels","newLayer":"Apply pixels on a new layer"],description:"Define perspective planes, calibrate and render measurements, and apply perspective editing in one native transaction.",optionalParameters:["settings","operations","measurementCalibration","renderMeasurements","newLayer"]),
     .init(name:"layer.warp",parameters:["layerID":"Pixel layer or Smart Object UUID","settings":"Warp preset or custom mesh"],description:"Warp a pixel layer or retain editable source-space Warp on a Smart Object, in one undoable transaction."),
     .init(name:"photo.autoAlign",parameters:["layerIDs":"Two to sixteen unique pixel-layer UUIDs","settings":"Optional projection, reference and focal length"],description:"Register overlapping layers by image content and warp their pixels and masks in one undoable transaction.",optionalParameters:["settings"]),

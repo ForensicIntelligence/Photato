@@ -57,14 +57,17 @@ struct PreparedSequenceFolder: Sendable {
   let staging: URL
   let destination: URL
   static func prepare(_ output: ImageSequenceOutput, destination: URL) throws -> Self {
+    try prepare(files:output.files,destination:destination,maximumBytes:ImageSequenceExport.maximumBytes)
+  }
+  static func prepare(files: [StoredZIP.File],destination: URL,maximumBytes: Int) throws -> Self {
     guard destination.isFileURL else { throw CraftError.invalid("Choose a local export folder.") }
     try Task.checkCancellation()
     let staging = destination.deletingLastPathComponent().appendingPathComponent(".photato-sequence-"+UUID().uuidString,isDirectory:true)
     try FileManager.default.createDirectory(at:staging,withIntermediateDirectories:false)
     do {
-      for file in output.files {
+      for file in files {
         try Task.checkCancellation()
-        let writer = try AtomicFileWriter(to:staging.appendingPathComponent(file.name),maximumBytes:ImageSequenceExport.maximumBytes)
+        let writer = try AtomicFileWriter(to:staging.appendingPathComponent(file.name),maximumBytes:maximumBytes)
         try writer.append(file.data);try writer.commit()
       }
       try Task.checkCancellation();return Self(staging:staging,destination:destination)
@@ -73,7 +76,7 @@ struct PreparedSequenceFolder: Sendable {
   func commit() throws {
     try Task.checkCancellation()
     let result = staging.withUnsafeFileSystemRepresentation { from in destination.withUnsafeFileSystemRepresentation { to in Darwin.renamex_np(from,to,UInt32(RENAME_EXCL)) } }
-    guard result == 0 else { throw NSError(domain:NSPOSIXErrorDomain,code:Int(errno),userInfo:[NSLocalizedDescriptionKey:"Could not publish the sequence folder. Choose a new folder name; existing destinations are never replaced."]) }
+    guard result == 0 else { throw NSError(domain:NSPOSIXErrorDomain,code:Int(errno),userInfo:[NSLocalizedDescriptionKey:"Could not publish the export folder. Choose a new folder name; existing destinations are never replaced."]) }
   }
   func discard() { try? FileManager.default.removeItem(at:staging) }
 }

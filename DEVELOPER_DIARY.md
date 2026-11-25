@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **736** · The 10 most recent entries, newest first.
+Source build **737** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 737 — Export Vanishing Point scenes
+
+Vanishing Point can export perspective planes as textured 3DS meshes or as a VPE scene, with one PNG per plane. Export to 3DS includes the VPE companion. The native filter writes a new folder. The authenticated Photato API downloads the exported files as a ZIP and leaves the document and Undo history intact.
+
+Blender opened the camera, meshes and PNG textures from both Photato reference scenes. An independent reader checked the VPE scene and its companion images. All 21 focused Core cases and 11 corrected Xcode Debug app and HTTP cases passed. Photoshop produced different camera values, hinged texture sizes and square texture pixels. After Effects import and DXF remain open.
+
+Both optimized architectures passed 847 of 849 selected tests. The same two cases failed as in build 736. All nine fixture outputs matched byte for byte across Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the signed preview opened offscreen.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-737) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_737.md).
 
 ## 2026-11-25 — Step 736 — Render Vanishing Point measurement annotations
 
@@ -99,15 +109,3 @@ The first 24-megapixel edit from a cold workspace took 1.49 s on Apple Silicon a
 The 48-megapixel repair used the same explicit camera projection as the 24-megapixel control. A narrow stamp on the larger fixture with default camera inference produced no sampled correction in builds 727 and 728. Its projected footprint and direct Photoshop output still need qualification. The timings measure software preview publication on one host.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-728) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_728.md).
-
-## 2026-11-23 — Step 727 — Extend perspective texture repair to large canvases
-
-Vanishing Point can repair a selected texture on a full-resolution product image and keep the correction on an editable layer. The plane solver now accepts an off-axis plane whose corner rays all point in front of the camera. The desktop workspace and Photato API share the same edit.
-
-The editable 6,000 × 4,000 repair used two correction tiles. The selected texture matched the 2,048 × 1,536 reference byte for byte. The same selected crop matched in the 48-megapixel overview control and on a sparse 300,000 × 300,000 canvas. The tested native and authenticated API repairs preserved the original layer, editable archive and exact Undo. Their selected composite matched across optimized architectures.
-
-The first 24-megapixel workspace preview took 2.94 s on optimized Apple Silicon and 5.26 s under Rosetta. The Xcode Debug preview took 65.1 s. The separate 48-megapixel control produced a 2,048 × 1,536 overview.
-
-The 300,000 × 300,000 control uses a sparse canvas and a local selected repair. The Photoshop comparison, durable PSD perspective-plane metadata and Stamp healing modes remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-727) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_727.md).
