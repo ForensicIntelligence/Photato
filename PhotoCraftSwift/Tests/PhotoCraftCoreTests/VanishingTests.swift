@@ -20,6 +20,56 @@ final class VanishingTests:XCTestCase {
     XCTAssertLessThan(abs(VanishingScene.dot(n1,n2)),0.02)
     let p=PathPoint(0.3,0.8),back=a.uv(a.point(p));XCTAssertEqual(back.x,p.x,accuracy:1e-9);XCTAssertEqual(back.y,p.y,accuracy:1e-9)
   }
+  func testMeasurementCalibrationAcrossHingeAndIndependentRoot() throws {
+    var settings = cameraPlane()
+    settings.planes.append(.init(parent:0,edge:.top))
+    settings.planes.append(.init(corners:[.init(10,10),.init(210,10),.init(210,110),.init(10,110)]))
+    let scene = try VanishingScene(settings,width:800,height:600)
+    let hingeOnParent = VanishingMeasurement(plane:0,start:.init(0,0),end:.init(1,0))
+    let hingeOnChild = VanishingMeasurement(plane:1,start:.init(0,1),end:.init(1,1))
+    let independent = VanishingMeasurement(plane:2,start:.init(0,0),end:.init(1,0))
+    settings.measurements = [hingeOnParent,hingeOnChild,independent]
+    let calibration = try scene.measurementScale(calibrating:0,to:6,settings:settings)
+    settings.setMeasurementScale(calibration)
+    XCTAssertEqual(try XCTUnwrap(scene.measurementLength(hingeOnChild,settings:settings)),6,accuracy:1e-8)
+    XCTAssertEqual(try XCTUnwrap(scene.measurementLength(independent,settings:settings)),2,accuracy:1e-8)
+    XCTAssertEqual(scene.measurementRoot(for:1),0)
+    XCTAssertEqual(scene.measurementRoot(for:2),2)
+
+    var linked = calibration
+    linked.linkedToGrid = true
+    settings.setMeasurementScale(linked)
+    for line in [hingeOnParent,hingeOnChild] {
+      XCTAssertEqual(scene.frames[line.plane].width/scene.gridIntervals(for:line.plane,settings:settings).x,6,accuracy:1e-8)
+    }
+    let frame = scene.frames[0]
+    let outside = try XCTUnwrap(scene.measurement(plane:0,from:frame.point(.init(0,0)),to:frame.point(.init(-0.25,0))))
+    XCTAssertEqual(try XCTUnwrap(scene.measurementLength(outside,settings:settings)),1.5,accuracy:1e-8)
+    XCTAssertThrowsError(try scene.measurementScale(calibrating:0,to:0,settings:settings))
+    settings.measurementScales?.append(.init(root:1,pixelsPerUnit:100))
+    XCTAssertThrowsError(try settings.validate())
+  }
+
+  func testIndependentPhotoshopPlaneDoesNotInheritAnExtremeCamera() throws {
+    // Corners and lengths come from the owned Photoshop two-plane reference.
+    var settings = VanishingSettings()
+    settings.planes = [
+      .init(corners:[.init(160.000054,200.028665),.init(1480,199.75),.init(1480,1000),.init(160,1000)]),
+      .init(corners:[.init(329,46),.init(1228.999999,46),.init(1229.249999,153.999722),.init(329,155)])]
+    settings.setMeasurementScale(.init(root:1,pixelsPerUnit:21.8189))
+    let scene = try VanishingScene(settings,width:1600,height:1200)
+    XCTAssertGreaterThan(scene.focal,2_000_000)
+    let probes: [(Int,PathPoint,PathPoint,Double,Double)] = [
+      (0,.init(1480,1000),.init(1480,199.75),8,0.02),
+      (0,.init(1480,1000),.init(160,1000),16.4,0.02),
+      (1,.init(329,155),.init(329,46),5,0.02),
+      (1,.init(329,155),.init(1229.25,154),41.07,0.30)]
+    for (index,start,end,reference,tolerance) in probes {
+      let line = try XCTUnwrap(scene.measurement(plane:index,from:start,to:end))
+      XCTAssertEqual(try XCTUnwrap(scene.measurementLength(line,settings:settings)),reference,accuracy:tolerance)
+    }
+  }
+
   func testPerspectivePasteBrushCloneAndClippingAtEveryDepth() throws {
     for depth in PixelDepth.allCases {
       var sample=try Surface(width:64,height:48,depth:depth,fill:Pixel(0.2,0.2,0.2)),program=plain(),paste=VanishingOperation(.paste)

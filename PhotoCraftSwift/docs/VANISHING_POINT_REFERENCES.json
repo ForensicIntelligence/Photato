@@ -98,5 +98,16 @@
     "Latest desktop evidence remains locked. No re-probe/bypass. Live UI, physical Intel and macOS14/26 validation remain open; current-host tests and universal builds do not prove these gates."
   ],
   "next": "B01 major painting workflow: native Brush Settings, custom tips/dynamics and reusable presets with canvas/API/history integration. Defer exact kernels and cosmetic refinement.",
-  "qualification": "All117 focused Debug and1816 full optimized tests pass. The universal macOS14+ package verifies."
+  "qualification": "All117 focused Debug and1816 full optimized tests pass. The universal macOS14+ package verifies.",
+  "measurement_reference_735": {
+    "reference": "Photoshop 27.2.0 on three owned checkerboard PSDs using front-facing and independent angled planes",
+    "referenceDoc": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/measure-in-vanishing-point.html",
+    "read": "2026-11-25",
+    "shortcut": "R",
+    "geometry": "Double-click adds plane dimensions. An independent root retains its scale when a different root is calibrated.",
+    "exactPreservation": "The original measurement resource payloads survived three unchanged Adobe PSD re-exports.",
+    "editability": "Photato-generated PSD and PSB reopened in Photoshop at grid spacing 20 with editable lengths. Photoshop showed 40.01 and 30.01 for Photato's 40 and 30.",
+    "angles": "Photoshop shows angle labels near the initial line endpoints. Photato exposes lengths and endpoint constraints. Angle display and annotation output remain open.",
+    "remaining": "The angled Photoshop horizontal reading was 41.07 compared with 41.2970 in Photato. Complex calibration, raster annotation, DXF/3DS, physical Photato input and complete output fidelity remain open."
+  }
 }

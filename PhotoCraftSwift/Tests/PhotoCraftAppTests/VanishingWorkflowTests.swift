@@ -466,6 +466,115 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  func testOwnedPhotoshopMeasurementsPreserveAndUpdateEditableResource() throws {
+    // Numeric record from the owned 1600×1200 Photoshop 27.2.0 square reference.
+    let header = """
+    tNaF203
+    1
+    20
+    1
+    925623040 0 -1 0 0 1200
+    1600 1200 -7.68e+06 1200 0 0 1
+    1600 -0.25 -7.68e+06 1200 0 0 5
+    1600 1200 1600 -7.68e+06 0 1 7
+    -0.25 1200 1600 -7.68e+06 0 1 3
+    """
+    let footer = "201\n20.0076\n2\n925623040\n1600\n1200\n1600\n-0.25\n925623040\n1600\n1200\n-0.25\n1200\n20.0076\n1\n"
+    let record = Data((header+"\n"+footer).utf8)
+    var resource = Data([56,66,73,77,15,160,0,0,0,0,UInt8(record.count>>8),UInt8(record.count&255)])
+    resource.append(record)
+    if record.count%2 != 0 { resource.append(0) }
+    var source = try CraftDocument(width:1600,height:1200)
+    source.sourceMetadata = ["psdResources":resource]
+    let opened = try PSDCodec.read(DocumentIO.encode(source,format:.psd))
+    let settings = try XCTUnwrap(opened.vanishingPoint)
+    let lines = try XCTUnwrap(settings.measurements)
+    let scene = try VanishingScene(settings,width:1600,height:1200)
+    XCTAssertEqual(lines.count,2)
+    XCTAssertEqual(settings.measurementScale(for:0),.init(root:0,pixelsPerUnit:20.0076,linkedToGrid:true))
+    XCTAssertEqual(try XCTUnwrap(scene.measurementLength(lines[0],settings:settings)),60,accuracy:0.02)
+    XCTAssertEqual(try XCTUnwrap(scene.measurementLength(lines[1],settings:settings)),80,accuracy:0.03)
+    let archive = try NativeArchive.decode(NativeArchive.encodeChunked(opened))
+    XCTAssertEqual(archive.vanishingPoint,settings)
+    for format in [DocumentIO.Format.psd,.psb] {
+      XCTAssertNotNil(try DocumentIO.encode(archive,format:format).range(of:resource))
+      var edited = archive
+      edited.vanishingPoint?.measurements?.removeLast()
+      edited.vanishingPoint?.setMeasurementScale(.init(root:0,pixelsPerUnit:25,linkedToGrid:true))
+      let bytes = try DocumentIO.encode(edited,format:format)
+      XCTAssertNotNil(bytes.range(of:Data("925623040 0 -1".utf8)))
+      let read = try XCTUnwrap(try PSDCodec.read(bytes).vanishingPoint)
+      XCTAssertEqual(read.measurements?.count,1)
+      XCTAssertEqual(read.measurementScale(for:0),.init(root:0,pixelsPerUnit:25,linkedToGrid:true))
+      XCTAssertEqual(read.effectiveGridSize,25)
+    }
+  }
+
+  @MainActor func testMeasureModifiersAndNativeHTTPHistory() async throws {
+    var source = try fixture()
+    source.vanishingPoint = program().settings
+    let layer = try XCTUnwrap(source.activeLayerID)
+    let workspace = VanishingWorkspace(document:source,layerID:layer)
+    defer { workspace.close() }
+    await workspace.prepare()
+    let image = try XCTUnwrap(workspace.image)
+    workspace.tool = .measure
+    workspace.measurePlaneDimensions(0)
+    XCTAssertEqual(workspace.measurements.count,2)
+    workspace.measurementsLinked = true
+    workspace.calibrateMeasurement(length:5)
+    XCTAssertTrue(workspace.image === image)
+    XCTAssertEqual(try XCTUnwrap(workspace.selectedMeasurementLength),5,accuracy:1e-8)
+    let calibrated = workspace.program.settings
+    workspace.undo()
+    XCTAssertNotEqual(workspace.program.settings,calibrated)
+    workspace.redo()
+    XCTAssertEqual(workspace.program.settings,calibrated)
+
+    let scene = try XCTUnwrap(workspace.scene)
+    let line = workspace.measurements[0]
+    let frame = scene.frames[0]
+    let start = frame.point(line.end), end = frame.point(.init(0.5,0.2))
+    let keys: [NSEvent.ModifierFlags] = [.control,.command,.option,.shift]
+    let target = VanishingWorkspace.MeasurementTarget.end(0)
+    for mask in 0..<16 {
+      let flags = keys.enumerated().reduce(into:NSEvent.ModifierFlags()) { flags, key in
+        if mask & (1 << key.offset) != 0 { flags.insert(key.element) }
+      }
+      let constraint = ToolCursor.MeasurementConstraint(flags)
+      let cursor = constraint.cursor
+      XCTAssertEqual(cursor,ToolCursor.MeasurementConstraint(flags.subtracting(.control)).cursor)
+      XCTAssertEqual(ToolCursor.vanishingMeasurement(endpoint:constraint,moving:false,available:true,active:true),cursor)
+      let resized = try XCTUnwrap(workspace.editedMeasurement(line,target:target,from:start,to:end,
+        constraint:constraint,scene:scene))
+      let delta = PathPoint((resized.end.x-resized.start.x)*frame.width,(resized.end.y-resized.start.y)*frame.height)
+      if flags.contains(.shift) { XCTAssertEqual(hypot(delta.x,delta.y),frame.height,accuracy:1e-8) }
+      if flags.contains(.option) { XCTAssertEqual(delta.x,0,accuracy:1e-8) }
+      if flags.contains(.command) && !flags.contains(.option) {
+        let steps = atan2(delta.y,delta.x)/(.pi/12)
+        XCTAssertEqual(steps,steps.rounded(),accuracy:1e-8)
+      }
+    }
+    XCTAssertEqual(ToolCursor.vanishingMeasurement(endpoint:nil,moving:false,available:true,active:false),.symbol("ruler"))
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:source)
+      try service.share(document)
+      let parameters: [String:Any] = ["layerID":layer.uuidString,"settings":calibrated.apiValue,
+        "measurementCalibration":["index":0,"length":5]]
+      let status = try await helper.edit(service,document,"filter.vanishingPoint",parameters)
+      XCTAssertEqual(status,200)
+      XCTAssertEqual(document.store.document.vanishingPoint,workspace.preparedEdit?.result.vanishingPoint)
+      XCTAssertEqual(document.store.document.layers,source.layers)
+      let invalid: [String:Any] = ["layerID":layer.uuidString,"measurementCalibration":["index":3,"length":5]]
+      let rejected = try await helper.edit(service,document,"filter.vanishingPoint",invalid)
+      XCTAssertEqual(rejected,400)
+      let undone = try await helper.edit(service,document,"history.undo")
+      XCTAssertEqual(undone,200)
+      XCTAssertEqual(document.store.document,source)
+    }
+  }
+
   @MainActor func testNativeAndAPIGrowExistingPSDRepairLayerWithoutAddingLayer() async throws {
     let helper = AutomationTests()
     try await helper.withService(actions: ActionLibrary(), pressedMouseButtons: { 0 }) { service, document in

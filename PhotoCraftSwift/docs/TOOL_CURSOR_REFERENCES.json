@@ -1,4 +1,11 @@
 {
+  "vanishing_point_measure_735": {
+    "source": "Photoshop 27.2.0 Measure tool observed with R; Adobe documents endpoint modifiers.",
+    "endpoint": "Command snaps to 15 degrees, Option retains direction, Shift retains length. Control has no alternate on macOS.",
+    "body": "Open Hand becomes Closed Hand for a captured drag of a measurement line.",
+    "capture": "Modifier mode is captured on mouse-down. Native policy restores the live cursor after release.",
+    "qualification": "All sixteen modifier combinations checked in focused native tests. Physical held-modifier appearance and combined-modifier equivalence remain open."
+  },
   "PSB_tagged_blocks_375": {
     "API": "Existing encoding capabilities describe corrected framing; no new command or route.",
     "impact": "Shared file serializer repair; no menu, shortcut, tool or modifier action changes. Existing all-combination ToolCursor tests retained.",

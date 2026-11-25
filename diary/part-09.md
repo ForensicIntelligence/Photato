@@ -1,5 +1,15 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-25 — Step 735 — Measure and calibrate Vanishing Point planes
+
+Measure lines can be moved, resized and calibrated against a known length. Connected planes share the calibration and can link their grid spacing to it. Independent planes retain their own scale. The native workspace and the authenticated Photato API keep measurements editable in native documents, PSD and PSB.
+
+Photoshop 27.2.0 opened both Photato exports with the linked grid and two editable measures. It displayed 40.01 and 30.01 for Photato’s 40 and 30. On an Adobe-authored angled plane, the largest observed difference was about 0.23 units. Angle labels, raster annotation and CAD export remain open.
+
+Both optimized architectures passed 841 of 843 selected tests, including all four new cases. The two inherited color-profile and layer-effect failures repeated. Xcode built the Debug app and passed the 26 focused core, app and HTTP tests. The generated PSD and PSB each matched byte for byte in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the locally signed macOS 14+ preview opened offscreen.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-735) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_735.md).
+
 ## 2026-11-25 — Step 734 — Keep Vanishing Point grid spacing and export square planes
 
 Vanishing Point saves the Grid Size with the document. Use the number field or slider to set a shared spacing from 1 to 1,000. The overlay updates without repainting the image. Native documents, editable PSD and PSB and the authenticated Photato API retain fractional values.

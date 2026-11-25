@@ -22,6 +22,42 @@ enum ToolCursor: Hashable {
   static func connectsBrushStroke(_ flags: NSEvent.ModifierFlags) -> Bool {
     flags.contains(.shift) && !flags.contains(.option)
   }
+  struct MeasurementConstraint: Equatable {
+    let keepAngle: Bool
+    let keepLength: Bool
+    let snapAngle: Bool
+
+    init(_ flags: NSEvent.ModifierFlags) {
+      keepAngle = flags.contains(.option)
+      keepLength = flags.contains(.shift)
+      snapAngle = flags.contains(.command) && !keepAngle
+    }
+
+    var cursor: ToolCursor {
+      if keepAngle && keepLength { return .symbol("lock") }
+      if keepAngle { return .symbol("arrow.left.and.right") }
+      if snapAngle { return .symbol("angle", .constrain) }
+      if keepLength { return .symbol("rotate.right") }
+      return .symbol("ruler", .add)
+    }
+
+    func vector(from original: PathPoint, proposed: PathPoint) -> PathPoint {
+      var angle = keepAngle ? atan2(original.y,original.x) : atan2(proposed.y,proposed.x)
+      if snapAngle {
+        let increment = Double.pi / 12
+        angle = (angle / increment).rounded() * increment
+      }
+      let length = keepLength ? hypot(original.x,original.y) : hypot(proposed.x,proposed.y)
+      return .init(cos(angle)*length,sin(angle)*length)
+    }
+  }
+  static func vanishingMeasurement(endpoint: MeasurementConstraint?, moving: Bool,
+    available: Bool, active: Bool) -> Self
+  {
+    if let endpoint { return endpoint.cursor }
+    if moving { return active ? .closedHand : .openHand }
+    return available ? .symbol("ruler") : .unavailable
+  }
   @MainActor private static var cache: [Self: NSCursor] = [:]
   @MainActor var native: NSCursor {
     switch self {

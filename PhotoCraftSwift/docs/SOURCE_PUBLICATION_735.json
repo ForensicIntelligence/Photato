@@ -1,0 +1,170 @@
+{
+  "build": 735,
+  "base": "ab9071a2157c3f81e499451995556da1000a3a18",
+  "inputCount": 9424,
+  "inputDigest": "b56a4bf0140892fe1f851d7be2d9f11c2762c61108d94d122ff1029ab3d4ca34",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraft/AutomationCommands.swift": "9cd1299aa7d87c28bead474778c0dca609cf75a16f05ad88aca6cb8b3b8e0a19",
+    "Sources/PhotoCraft/AutomationService.swift": "3bed25608b379a9ae3f8c9b2f41f460971fb0f803eefb53018525a09d9737232",
+    "Sources/PhotoCraft/AutomationVanishingPoint.swift": "4cd7b6b3ab218eba7d601e7ee12f0a34e1b95c4651d297fcab10a4361a5ddd9a",
+    "Sources/PhotoCraft/ToolCursor.swift": "9c6d6b9786f8867d2b5820939e051390d2964781c325bebe37d095ea05d864b1",
+    "Sources/PhotoCraft/ToolCursorAPI.swift": "76e345bdb53cd70b2fefece35b22abe2f3f82b26c7f166408afc1e99a3f425b3",
+    "Sources/PhotoCraft/VanishingSheet.swift": "08a4c53ac7ba469e48481b0c336268460c845f2c48f719af77c2e066e9a4363d",
+    "Sources/PhotoCraft/VanishingWorkspace.swift": "860a18dfe9fcbb39d71992892e583650d5736f90e87724513151e50b9931d0fd",
+    "Sources/PhotoCraftCore/VanishingEngine.swift": "3833de7d996825e143f8982f2ceb71864edf330f48d9bb11d3afe6b6a42cbe0f",
+    "Sources/PhotoCraftCore/VanishingPoint.swift": "8f5d342a7dbdfdd25d1eae25a3637230ef9c0c30ae613e2632c71f80530bc456",
+    "Sources/PhotoCraftImaging/PSDVanishingPoint.swift": "bf4af4224b47b84ec6f434191120951272c829d440600ed5f9a69dcaaa0425da",
+    "Tests/PhotoCraftAppTests/VanishingWorkflowTests.swift": "df53f4676320634c35a62771f98d225f024e682ae2754cac3f0199b24a4c482f",
+    "Tests/PhotoCraftCoreTests/VanishingTests.swift": "2640a1e03c6811f0c6f64c22dc4657e8c7518d2abcf83c21855d99138f591807",
+    "scripts/Info.plist": "ee1fd28aeea630e322e17fd4e5a82edcbea16a73644b14f178bba62016cf9d8f"
+  },
+  "qualification": {
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 843,
+      "passed": 841,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "927edb59a3fddecff8eeea8f85cffd1b04c81f8762f421434d01cdd77534b122"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 843,
+      "passed": 841,
+      "newCasesExpected": 4,
+      "newCasesPassed": 4,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "f862c1ee6c5a68706e9a0ff1f7f36272e85de2ef56b45303a3d8b48c42df9b0c"
+    }
+  },
+  "outputHashesAcrossConfigurations": {
+    "psd": {
+      "debug03": "c2435556d6a210adb9839965b24a427b6c3dde8ea7616e41bc471275dc625955",
+      "arm": "c2435556d6a210adb9839965b24a427b6c3dde8ea7616e41bc471275dc625955",
+      "intel": "c2435556d6a210adb9839965b24a427b6c3dde8ea7616e41bc471275dc625955"
+    },
+    "psb": {
+      "debug03": "734f7735dbf90a94b39701ec02a8310a271a12ffdbb53e4e6ebb3adc2f7942d4",
+      "arm": "734f7735dbf90a94b39701ec02a8310a271a12ffdbb53e4e6ebb3adc2f7942d4",
+      "intel": "734f7735dbf90a94b39701ec02a8310a271a12ffdbb53e4e6ebb3adc2f7942d4"
+    }
+  },
+  "AdobeResourceHashes": {
+    "735-adobe-square-measures": "422ffafce1d28d4bd392ea5864abaf89491e3f2693b12cd2faa92b853889b82c",
+    "735-adobe-square-linked": "6f3408e96266d8b2d89a234d93a983b25b864cd81200615b4f759717975c7c10",
+    "735-adobe-two-measured": "665f13f4d2032286fa45149ce9f6d97c67bc0a5751405f04563a65532757e543"
+  },
+  "AdobeReopen": {
+    "version": "27.2.0",
+    "formats": [
+      "PSD",
+      "PSB"
+    ],
+    "gridSize": 20,
+    "editable": true,
+    "PhotatoLengths": [
+      40,
+      30
+    ],
+    "PhotoshopLengths": [
+      40.01,
+      30.01
+    ],
+    "canceledEditedField": 50,
+    "dualPlanePhotoshopLengths": [
+      8,
+      16.4,
+      5,
+      41.07
+    ],
+    "dualPlanePhotatoLengths": [
+      8.001064452843803,
+      16.39702888967832,
+      4.984544528958698,
+      41.29702238184336
+    ]
+  },
+  "preview": {
+    "build": 735,
+    "archive": "Photato-Retouch-Preview-735-universal.zip",
+    "archiveSHA256": "51d726168ff8da0179cdef416d6e2ddcdcdbbcfee98467ab2ccc524e451760a7",
+    "bundleID": "ca.forensicintelligence.photato.perspectiveretouchpreview735",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "25e286f6259a61c2737a80a2fb3dac8ec596ebb3f4d13edb5e8392a6c817f0af",
+    "architectureInputsSHA256": {
+      "arm64": "a0b1696a7878c3a485183d7ab413ea3eefc8d8a271a9189e8a114ae7eda28cca",
+      "x86_64": "b9186c3ddf1b37e879821458687a68ed5e6b09a1930e9a2416322170626f570f"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    }
+  },
+  "startup": {
+    "arm64": {
+      "pngSHA256": "c26608357d25297707ffaaf345cc06ceb6fd53de40217773436f1dd13956852f",
+      "size": [
+        1700,
+        1174
+      ]
+    },
+    "x86_64": {
+      "pngSHA256": "4e4ed507449166d427b57ca890ebd709f609a097271949001dfbe7388e8e2dc3",
+      "size": [
+        1700,
+        1174
+      ]
+    }
+  },
+  "evidenceSHA256": {
+    "xcode-debug01.log": "95081e3f6324ac9186c58b24448936f3cc0d2364c47d700bb8cb8dd8bc02f5e1",
+    "xcode-debug02.log": "166cf690f692009605fcad2d9d70cba0fed796ec86224a065f895f770c8e6a2f",
+    "xcode-debug03.log": "52c49985f5a739bb6de75dd9651ac0a5d23eeb4d5b94c7844ded8d134e165e34",
+    "xcode-debug04.log": "74609733336f91c1c09c82ced300e36fdd1393fe7c6abd409b5cf66d0401d0fb",
+    "xcode-debug05.log": "4a86f0a8ad44277b0aa7fbad9516450be20b0f40e742453a7b853932183980b8",
+    "debug-core02.log": "5d63d865fb5d3feaa8de9e746ad657786ab4ad48385fff8b371a2e8fe7094fb5",
+    "debug-app02.log": "1ac0327d6660b6f7b947569130183afca0675dac68d131b67fcf22deddc603cf",
+    "debug-sheet02.log": "593051562904efcc927a85d27380373a1c37dc30acf3db5016406f1c3f4f4a93",
+    "debug-export01.log": "226d578695036164c83177224ddfa18dc4117a00c47d2ba5846eaf4cc64b481a",
+    "debug-export02.log": "8e1c7b62ec2525b8d8067dd918056e9f49d02f463dddd23e6a621dae663e0746",
+    "debug-export03.log": "76f33ec4a3f2fc384aa5d85a82d13235c189636528a604347a6e7a4e43cc5f51",
+    "optimized-measure-arm01.log": "76f33ec4a3f2fc384aa5d85a82d13235c189636528a604347a6e7a4e43cc5f51",
+    "optimized-measure-intel01.log": "76f33ec4a3f2fc384aa5d85a82d13235c189636528a604347a6e7a4e43cc5f51",
+    "sheet-proof-debug02/measurement-sheet-light.png": "dd7ba9cc1423ce8c1280af00f23714f3dee8f7d92856990cd4ba853933179f2a",
+    "sheet-proof-debug02/measurement-sheet-dark.png": "8c8fe2695c3095fa75b33e295498b718c47e3ed161354040f841e19f7c2b44a8"
+  }
+}

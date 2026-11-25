@@ -3498,5 +3498,11 @@
     "photatoCommand": "filter.vanishingPoint",
     "publishedAdobeContractChanges": [],
     "evidence": "docs/SOURCE_PUBLICATION_734.json"
+  },
+  "vanishing_point_measurements_735": {
+    "status": "Calibrated Vanishing Point measurements and grid linking use the native editor and authenticated Photato API.",
+    "photatoCommand": "filter.vanishingPoint",
+    "publishedAdobeContractChanges": [],
+    "reference": "docs/VANISHING_POINT_REFERENCES.json"
   }
 }

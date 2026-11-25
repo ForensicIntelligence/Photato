@@ -3,7 +3,21 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 extension VanishingScene {
-  var apiValue:[String:Any] { ["focalLength":focal,"center":["x":center.x,"y":center.y],"planes":frames.map{["corners":$0.corners.map{["x":$0.x,"y":$0.y]},"metricWidth":$0.width,"metricHeight":$0.height] as [String:Any]}] }
+  func apiValue(settings: VanishingSettings) -> [String:Any] {
+    let lines = (settings.measurements ?? []).map { line -> [String:Any] in
+      let frame = frames[line.plane]
+      func point(_ p: PathPoint) -> [String:Double] { ["x":p.x,"y":p.y] }
+      return ["plane":line.plane,"root":measurementRoot(for:line.plane),
+        "start":point(frame.point(line.start)),"end":point(frame.point(line.end)),
+        "length":measurementLength(line,settings:settings) as Any? ?? NSNull()]
+    }
+    return ["focalLength":focal,"center":["x":center.x,"y":center.y],
+      "planes":frames.enumerated().map { index, frame in
+        let grid = gridIntervals(for:index,settings:settings)
+        return ["corners":frame.corners.map{["x":$0.x,"y":$0.y]},"metricWidth":frame.width,"metricHeight":frame.height,
+          "measurementRoot":measurementRoot(for:index),"gridIntervals":["x":grid.x,"y":grid.y]]
+      },"measurements":lines]
+  }
 }
 extension VanishingSettings {
   var apiValue:Any { (try? JSONSerialization.jsonObject(with:JSONEncoder().encode(self))) ?? NSNull() }
@@ -16,12 +30,27 @@ extension VanishingSettings {
         "corners":corners,"parentCorners":corners,
         "angle":["type":"number","minimum":0,"maximum":180],
         "depth":["type":"number","exclusiveMinimum":0],"rotationSign":orientation]]
+    let planeIndex: [String:Any] = ["type":"integer","minimum":0,"maximum":31]
+    let measurement: [String:Any] = ["type":"object","additionalProperties":false,
+      "required":["plane","start","end"],"properties":["plane":planeIndex,"start":pointSchema,"end":pointSchema]]
+    let scale: [String:Any] = ["type":"object","additionalProperties":false,
+      "required":["root","pixelsPerUnit","linkedToGrid"],"properties":["root":planeIndex,"linkedToGrid":["type":"boolean"],
+        "pixelsPerUnit":["type":"number","minimum":measurementScaleRange.lowerBound,"maximum":measurementScaleRange.upperBound]]]
     return ["type":"object","additionalProperties":false,"properties":["focalLength":["type":"number","minimum":0,"default":0,
       "description":"Finite focal length in pixels. Zero infers the camera or uses the longer canvas side. The resulting projection must be valid."],"center":pointSchema,
       "gridSize":["type":"number","minimum":gridSizeRange.lowerBound,"maximum":gridSizeRange.upperBound,
                   "default":defaultGridSize,"description":"Grid spacing shared by all planes."],
+      "measurements":["type":"array","maxItems":maximumMeasurements,"items":measurement,
+        "description":"Measurements use rectified plane coordinates for start and end. An empty array clears the list."],
+      "measurementScales":["type":"array","maxItems":32,"items":scale,
+        "description":"Each root plane may define a shared scale and grid link for all connected planes."],
       "planes":["type":"array","maxItems":32,"default":[],"items":["type":"object","additionalProperties":false,"properties":[
         "corners":["type":"array","minItems":0,"maxItems":4,"items":pointSchema,"default":[]],"parent":["type":"integer","minimum":0,"maximum":30],"edge":["type":"string","enum":VanishingPlane.Edge.allCases.map(\.rawValue),"default":"top"],"angle":["type":"number","minimum":0,"maximum":180,"default":90],"depth":["type":"number","exclusiveMinimum":0,"default":1],"rotationSign":orientation,"calibration":calibration],"description":"Four convex corners in document pixels, or an earlier parent index with empty corners. Related planes recompute when their parent changes."]]]]
+  }
+  static var measurementCalibrationSchema: [String:Any] {
+    ["type":"object","additionalProperties":false,"required":["index","length"],"properties":[
+      "index":["type":"integer","minimum":0,"maximum":maximumMeasurements-1],
+      "length":["type":"number","exclusiveMinimum":0]]]
   }
   static var operationSchema:[String:Any] {
     let number:(Double,Double,Double)->[String:Any] = { ["type":"number","minimum":$0,"maximum":$1,"default":$2] }
@@ -39,16 +68,17 @@ extension VanishingSettings {
     return ["type":"array","maxItems":256,"items":["oneOf":variants],"default":[]]
   }
   static var apiCapabilities:[String:Any] {
-    ["command":"filter.vanishingPoint","settingsSchema":apiSchema,"operationsSchema":operationSchema,"nativeArchiveVersion":32,
+    ["command":"filter.vanishingPoint","settingsSchema":apiSchema,"operationsSchema":operationSchema,"measurementCalibrationSchema":measurementCalibrationSchema,"nativeArchiveVersion":32,
      "narrowStrokeCoverage":"Brush and clone footprints that project to about a pixel thick or less use area coverage and honor plane clipping. Coverage work shares the Vanishing Point rendering budget.",
      "coordinates":"Corners and stroke/source points are document pixels. Paste at is plane(u,v), width is a fraction of metric plane width, rotation clockwise about paste origin. Focal length is in pixels; zero infers from the first plane or falls back to the longer canvas side.",
-     "state":"Document and workspace state include resolved camera/plane corners and metric dimensions so clients can draw derived planes without reimplementing the solver.",
+     "state":"Document and workspace state include resolved camera, plane corners and grid intervals, projected measurement endpoints, and calibrated lengths.",
+     "measurement":"Desktop Measure and API settings keep editable lines in a plane, including visible points outside the plane. The command can calibrate a selected line to a known length. Connected planes share the root's calibration and optional grid link.",
      "operations":"Create/save/edit planes with no operations; brush, clone and perspective paste with sourceLayerID (raw raster layer pixels, resolved before mutation). Sequential operations sample the visible composite plus earlier draft operations; each clone stroke takes an immutable source snapshot.",
      "heal":"Brush, clone and paste accept off, luminance or on. Luminance adjusts lighting. On adjusts lighting and color. The gradient-domain solve includes a one-pixel boundary within the 4-megapixel local repair budget.",
      "output":"The current raster layer can expand to cover the repair while keeping existing samples and masks in place. Use newLayer:true for a separate layer. Selection and transparency/image locks are honored. Smart Objects must be rasterized for the target. One cancellable undo transaction for the entire program.",
      "limits":"32 planes,256 operations,16,384 supplied points,4,096 points per stroke,128MiB embedded paste sources with up to 8,388,608 pixels, up to \(Surface.maxDimension) pixels per canvas side, 134,217,728 raster visits per program. Large canvases use a bounded overview. Existing API sharing limits also apply.",
-     "fileInterchange":"PSD and PSB open supported Photoshop perspective planes and retain the original resource when geometry is unchanged. Edited and newly created planes are written as Photoshop resource 4000.",
-     "unsupported":"Perspective marquee/measurement, multi-surface stroke wrapping, Adobe .vpe export and exact Adobe pixels remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
+     "fileInterchange":"PSD and PSB open supported Photoshop perspective planes and editable measurements. Unchanged perspective data retains its original resource. New planes and measurements are written as Photoshop resource 4000.",
+     "unsupported":"Perspective marquee, rasterized measurement overlays, DXF/3DS export, multi-surface stroke wrapping, Adobe .vpe export and exact Adobe pixels remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
      "adobe":"No dedicated pinned v2 Vanishing Point operation. No invented route or unqualified actionJSON support."]
   }
 }
@@ -59,8 +89,10 @@ extension AutomationCommand {
     var p=VanishingProgram();p.settings=document.vanishingPoint ?? .init()
     if let value=parameters["newLayer"] { guard case .bool(let b)=value else { throw fail("newLayer must be boolean.") };p.newLayer=b }
     if let value=parameters["settings"] {
-      guard case .object(let fields)=value,Set(fields.keys).isSubset(of:["planes","focalLength","center","gridSize"]) else { throw fail("Invalid plane settings.") }
-      var raw:[String:Any]=["planes":[],"focalLength":0]
+      guard case .object(let fields)=value,Set(fields.keys).isSubset(of:["planes","focalLength","center","gridSize","measurements","measurementScales"]) else { throw fail("Invalid plane settings.") }
+      let established = p.settings
+      let geometrySupplied = fields["planes"] != nil || fields["focalLength"] != nil || fields["center"] != nil
+      var raw = geometrySupplied ? ["planes":[],"focalLength":0] : established.apiValue as? [String:Any] ?? [:]
       if let size = p.settings.gridSize { raw["gridSize"] = size }
       for (k,v) in fields { raw[k]=v.jsonValue }
       if let items=raw["planes"] {
@@ -76,12 +108,39 @@ extension AutomationCommand {
           var d:[String:Any]=["corners":[],"edge":"top","angle":90,"depth":1];d.merge(value){_,new in new};return d
         }
       }
-      func pointsAreStrict(_ value:Any)->Bool { if let d=value as? [String:Any] { for (k,v) in d { if k == "center" { guard let q=v as? [String:Any],Set(q.keys)==["x","y"] else { return false } };if k == "corners" || k == "parentCorners" { guard let q=v as? [[String:Any]],q.allSatisfy({Set($0.keys)==["x","y"]}) else { return false } };if !pointsAreStrict(v) { return false } } };if let a=value as? [Any] { return a.allSatisfy(pointsAreStrict) };return true }
+      if let value = raw["measurements"] {
+        guard let lines = value as? [[String:Any]],lines.count <= VanishingSettings.maximumMeasurements,
+          lines.allSatisfy({ Set($0.keys) == ["plane","start","end"] }) else { throw fail("Invalid measurements.") }
+      }
+      if let value = raw["measurementScales"] {
+        guard let scales = value as? [[String:Any]],scales.count <= 32,
+          scales.allSatisfy({ Set($0.keys) == ["root","pixelsPerUnit","linkedToGrid"] }) else {
+          throw fail("Invalid measurement scales.")
+        }
+      }
+      func pointsAreStrict(_ value:Any)->Bool { if let d=value as? [String:Any] { for (k,v) in d { if ["center","start","end"].contains(k) { guard let q=v as? [String:Any],Set(q.keys)==["x","y"] else { return false } };if k == "corners" || k == "parentCorners" { guard let q=v as? [[String:Any]],q.allSatisfy({Set($0.keys)==["x","y"]}) else { return false } };if !pointsAreStrict(v) { return false } } };if let a=value as? [Any] { return a.allSatisfy(pointsAreStrict) };return true }
       guard pointsAreStrict(raw) else { throw fail("Invalid plane coordinates.") }
       do {
         p.settings = try JSONDecoder().decode(VanishingSettings.self,from:JSONSerialization.data(withJSONObject:raw))
+        if p.settings.planes == established.planes {
+          if fields["measurements"] == nil { p.settings.measurements = established.measurements }
+          if fields["measurementScales"] == nil { p.settings.measurementScales = established.measurementScales }
+        }
+        if p.settings.measurements?.isEmpty == true { p.settings.measurements = nil }
+        if p.settings.measurementScales?.isEmpty == true { p.settings.measurementScales = nil }
         try p.settings.validate()
         if p.settings.gridSize == VanishingSettings.defaultGridSize { p.settings.gridSize = nil }
+      } catch { throw fail(error.localizedDescription) }
+    }
+    if let calibration = parameters["measurementCalibration"] {
+      guard case .object(let fields) = calibration, Set(fields.keys) == ["index","length"],
+        case .number(let ordinal) = fields["index"],
+        let index = Int(exactly:ordinal),
+        case .number(let length) = fields["length"] else { throw fail("Invalid measurementCalibration.") }
+      do {
+        let scene = try VanishingScene(p.settings,width:document.width,height:document.height)
+        let scale = try scene.measurementScale(calibrating:index,to:length,settings:p.settings)
+        p.settings.setMeasurementScale(scale)
       } catch { throw fail(error.localizedDescription) }
     }
     if let value=parameters["operations"] {
@@ -113,5 +172,6 @@ extension AutomationCommand {
   }
 }
 @MainActor extension VanishingWorkspace {
-  var apiState:[String:Any] { ["settings":program.settings.apiValue,"scene":scene?.apiValue as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"canUndo":!undoStates.isEmpty || !pending.isEmpty,"canRedo":!redoStates.isEmpty,"heal":heal.rawValue,"selectedPasteHeal":selectedPasteHeal?.rawValue as Any? ?? NSNull(),"error":error as Any? ?? NSNull()] }
+  var apiState:[String:Any] { ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
+    "pendingMeasurement":pendingMeasurement != nil,"canUndo":!undoStates.isEmpty || !pending.isEmpty || pendingMeasurement != nil,"canRedo":!redoStates.isEmpty,"heal":heal.rawValue,"selectedPasteHeal":selectedPasteHeal?.rawValue as Any? ?? NSNull(),"error":error as Any? ?? NSNull()] }
 }

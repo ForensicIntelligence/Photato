@@ -29,7 +29,12 @@ struct VanishingSheet:View {
           HStack(spacing: 8) {
             Toggle("Show Grid", isOn: $model.showGrid)
             Spacer()
-            if model.tool == .create || model.tool == .edit {
+            if (model.tool == .create || model.tool == .edit) && model.measurementsLinked, let scene = model.scene {
+              let root = scene.measurementRoot(for:model.selected)
+              let size = model.program.settings.measurementScale(for:root).pixelsPerUnit
+              Text("Grid Size: \(size, format: .number.precision(.fractionLength(0...4)))")
+                .foregroundStyle(.secondary)
+            } else if model.tool == .create || model.tool == .edit {
               LabeledContent("Grid Size") {
                 TextField("Grid Size", value: $model.gridSize, format: .number.precision(.fractionLength(0...4)))
                   .labelsHidden().frame(width: 72)
@@ -57,6 +62,29 @@ struct VanishingSheet:View {
               Button("Delete Plane & Edits") { model.removePlane() }
             }
           }
+          if model.tool == .measure {
+            Toggle("Show Measurements", isOn:$model.showMeasurements)
+            Toggle("Link Measurements to Grid", isOn:$model.measurementsLinked)
+              .disabled(model.program.settings.planes.isEmpty)
+            Picker("Measurement", selection:Binding(get:{ model.selectedMeasurement },set:{ model.selectMeasurement($0) })) {
+              Text("None").tag(nil as Int?)
+              ForEach(model.measurements.indices,id:\.self) { index in
+                Text("Measurement \(index+1)").tag(Optional(index))
+              }
+            }
+            if model.selectedMeasurementLength != nil {
+              LabeledContent("Length") {
+                TextField("Length",value:Binding(get:{ model.selectedMeasurementLength ?? 0 },
+                  set:{ model.calibrateMeasurement(length:$0) }),format:.number.precision(.fractionLength(0...4)))
+                  .labelsHidden().frame(width:80).id(model.selectedMeasurement)
+              }
+              Button("Delete Measurement",role:.destructive) { model.removeMeasurement() }
+            }
+            Button("Measure Plane Dimensions") { model.measurePlaneDimensions(model.selected) }
+              .disabled(model.program.settings.planes.isEmpty)
+            Text("Drag between two points or double-click a plane to measure both sides.")
+              .font(.caption).foregroundStyle(.secondary)
+          }
           if model.tool == .brush || model.tool == .stamp {
             number("Diameter (px)",$model.diameter,1...500);number("Hardness (%)",$model.hardness,0...100);number("Opacity (%)",$model.opacity,0...100)
             healPicker($model.heal)
@@ -83,7 +111,7 @@ struct VanishingSheet:View {
       }
       HStack {
         Toggle("Preview",isOn:$model.preview);Button("−") { model.zoom=max(0.25,model.zoom/1.5) };Button("+") { model.zoom=min(8,model.zoom*1.5) };Button("Fit") { model.zoom=1;model.pan = .zero }
-        Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty && model.pending.isEmpty).keyboardShortcut("z",modifiers:.command)
+        Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty && model.pending.isEmpty && model.pendingMeasurement == nil).keyboardShortcut("z",modifiers:.command)
         Button("Redo") { model.redo() }.disabled(model.redoStates.isEmpty).keyboardShortcut("z",modifiers:[.command,.shift])
         Spacer();Button("Cancel") { store.cancelVanishingPoint() }.keyboardShortcut(.cancelAction);Button("OK") { model.endGesture();store.commitVanishingPoint() }.keyboardShortcut(.defaultAction).disabled(!model.ready)
       }.controlSize(.small)
@@ -101,11 +129,22 @@ struct VanishingPreview:View {
   @State private var stroke=[PathPoint]()
   @State private var sampled=false
   @State private var pasteOrigin:PathPoint?
+  @FocusState private var focused: Bool
+  @State private var pointer: CGPoint?
+  @State private var measurementDrag: MeasurementDrag?
+  @State private var draftMeasurement: VanishingMeasurement?
+
+  private enum MeasurementDrag {
+    case draw(plane: Int, from: PathPoint, continuing: Bool)
+    case edit(VanishingWorkspace.MeasurementTarget, VanishingMeasurement, ToolCursor.MeasurementConstraint)
+  }
   var body:some View {
     GeometryReader { geometry in
       let scale=max(0.001,min((geometry.size.width-32)/model.size.width,(geometry.size.height-32)/model.size.height)*model.zoom)
       let offset=CGPoint(x:(geometry.size.width-model.size.width*scale)/2+model.pan.width,y:(geometry.size.height-model.size.height*scale)/2+model.pan.height)
       let scene=model.scene
+      let settings=model.program.settings
+      let point: (CGPoint) -> PathPoint = { p in .init((p.x-offset.x)/scale,(p.y-offset.y)/scale) }
       Canvas { context,size in
         func screen(_ p:PathPoint)->CGPoint { .init(x:offset.x+p.x*scale,y:offset.y+p.y*scale) }
         context.fill(Path(CGRect(origin:.zero,size:size)),with:.color(Color(white:0.13)))
@@ -115,9 +154,9 @@ struct VanishingPreview:View {
             var grid = Path()
             grid.addLines(frame.corners.map(screen))
             grid.closeSubpath()
-            let interval = model.gridSize / scene.focal
+            let intervals = scene.gridIntervals(for:i,settings:settings)
             func drawLines(length: Double, horizontal: Bool) {
-              let count = length / interval
+              let count = length / (horizontal ? intervals.y : intervals.x)
               guard count.isFinite, count > 1 else { return }
               // Thin out small projected intervals to bound preview work.
               let stride = max(1, (count / 384).rounded(.up))
@@ -136,6 +175,44 @@ struct VanishingPreview:View {
             for p in frame.corners { let q=screen(p);context.fill(Path(ellipseIn:CGRect(x:q.x-4,y:q.y-4,width:8,height:8)),with:.color(i==model.selected ? .cyan:.blue)) }
           }
         }
+        if model.showMeasurements, let scene {
+          func drawMeasurement(_ line: VanishingMeasurement, highlighted: Bool) {
+            let frame = scene.frames[line.plane]
+            let a = screen(frame.point(line.start)), b = screen(frame.point(line.end))
+            var length = Path()
+            length.move(to:a); length.addLine(to:b)
+            let color: Color = highlighted ? .yellow : .white
+            context.stroke(length,with:.color(.black.opacity(0.8)),lineWidth:4)
+            context.stroke(length,with:.color(color),lineWidth:1.5)
+            for p in [a,b] {
+              let handle = Path(ellipseIn:CGRect(x:p.x-3,y:p.y-3,width:6,height:6))
+              context.fill(handle,with:.color(color))
+              context.stroke(handle,with:.color(.black),lineWidth:1)
+            }
+            if let value = scene.measurementLength(line,settings:settings) {
+              let label = Text(value,format:.number.precision(.fractionLength(0...2)))
+                .font(.system(size:11,weight:.semibold,design:.monospaced)).foregroundStyle(.white)
+              let resolved = context.resolve(label)
+              let extent = resolved.measure(in:size)
+              let origin = CGPoint(x:(a.x+b.x)/2,y:(a.y+b.y)/2-13)
+              context.fill(Path(roundedRect:CGRect(x:origin.x-extent.width/2-3,y:origin.y-extent.height/2-2,
+                width:extent.width+6,height:extent.height+4),cornerRadius:3),with:.color(.black.opacity(0.8)))
+              context.draw(resolved,at:origin)
+            }
+          }
+          let replaced: Int?
+          if draftMeasurement != nil, case .edit(let target, _, _) = measurementDrag {
+            replaced = target.index
+          } else { replaced = nil }
+          for (index,line) in model.measurements.enumerated() where index != replaced {
+            drawMeasurement(line,highlighted:model.selectedMeasurement == index)
+          }
+          if let draftMeasurement { drawMeasurement(draftMeasurement,highlighted:true) }
+          if let pending = model.pendingMeasurement {
+            let anchor = screen(pending.point)
+            context.fill(Path(ellipseIn:CGRect(x:anchor.x-3,y:anchor.y-3,width:6,height:6)),with:.color(.yellow))
+          }
+        }
         let points=model.pending.isEmpty ? stroke:model.pending
         var path=Path();for (i,p) in points.enumerated() { let q=screen(p);if i==0 { path.move(to:q) } else { path.addLine(to:q) };if !model.pending.isEmpty { context.fill(Path(ellipseIn:CGRect(x:q.x-3,y:q.y-3,width:6,height:6)),with:.color(.orange)) } };context.stroke(path,with:.color(.orange),lineWidth:2)
         if let source=model.cloneSource { let p=screen(source);var cross=Path();cross.move(to:.init(x:p.x-7,y:p.y));cross.addLine(to:.init(x:p.x+7,y:p.y));cross.move(to:.init(x:p.x,y:p.y-7));cross.addLine(to:.init(x:p.x,y:p.y+7));context.stroke(cross,with:.color(.yellow),lineWidth:1.5) }
@@ -146,12 +223,65 @@ struct VanishingPreview:View {
         case .brush: return .symbol("paintbrush.pointed")
         case .edit,.transform: return .symbol("arrow.up.and.down.and.arrow.left.and.right")
         case .create: return .symbol("plus")
+        case .measure:
+          if case .edit(let target, _, let constraint) = measurementDrag {
+            let moving = target == .body(target.index)
+            return .vanishingMeasurement(endpoint:moving ? nil : constraint,moving:moving,available:true,active:true)
+          }
+          if case .draw = measurementDrag {
+            return .vanishingMeasurement(endpoint:nil,moving:false,available:true,active:true)
+          }
+          guard let scene, let pointer else { return .symbol("ruler") }
+          let location = point(pointer)
+          let target = model.pendingMeasurement == nil
+            ? model.measurementTarget(at:location,radius:7/scale,scene:scene) : nil
+          let moving = target.map { $0 == .body($0.index) } ?? false
+          let endpoint = target != nil && !moving ? ToolCursor.MeasurementConstraint(flags) : nil
+          return .vanishingMeasurement(endpoint:endpoint,moving:moving,
+            available:model.pendingMeasurement != nil || scene.plane(at:location) != nil,active:false)
         }
-      }.contentShape(Rectangle()).gesture(DragGesture(minimumDistance:0).onChanged { value in
-        func point(_ p:CGPoint)->PathPoint { .init((p.x-offset.x)/scale,(p.y-offset.y)/scale) }
+      }.contentShape(Rectangle()).focusable().focused($focused)
+      .defaultFocus($focused,true)
+      .onKeyPress("r") {
+        guard !pressed else { return .ignored }
+        model.tool = .measure
+        return .handled
+      }
+      .onKeyPress(.delete) {
+        guard model.tool == .measure else { return .ignored }
+        model.removeMeasurement()
+        return .handled
+      }
+      .onChange(of:model.tool) { _, tool in if tool != .measure { pointer = nil } }
+      .onContinuousHover { phase in
+        guard model.tool == .measure else { return }
+        switch phase { case .active(let position): pointer = position; case .ended: pointer = nil }
+      }
+      .simultaneousGesture(SpatialTapGesture(count:2).onEnded { value in
+        guard model.tool == .measure, let index = scene?.plane(at:point(value.location)) else { return }
+        model.measurePlaneDimensions(index)
+      })
+      .gesture(DragGesture(minimumDistance:0).onChanged { value in
         if !pressed {
+          focused=true
           pressed=true;pan=model.pan;stroke=[];hit=nil;corner=nil;sampled=false;pasteOrigin=nil;model.beginGesture()
           let start=point(value.startLocation)
+          if model.tool == .measure, let scene {
+            if let pending = model.pendingMeasurement {
+              measurementDrag = .draw(plane:pending.plane,from:pending.point,continuing:true)
+            } else if let target = model.measurementTarget(at:start,radius:7/scale,scene:scene) {
+              model.selectMeasurement(target.index)
+              measurementDrag = .edit(target,model.measurements[target.index],
+                ToolCursor.MeasurementConstraint(NSEvent.modifierFlags))
+            } else if let plane = scene.plane(at:start) {
+              model.selected = plane
+              model.showMeasurements = true
+              model.selectMeasurement(nil)
+              measurementDrag = .draw(plane:plane,from:start,continuing:false)
+            } else {
+              model.selectMeasurement(nil)
+            }
+          }
           if model.tool == .edit,let scene {
             var best=10.0/scale
             for (i,f) in scene.frames.enumerated() where model.program.settings.planes[i].parent==nil { for (j,p) in f.corners.enumerated() { let distance=hypot(p.x-start.x,p.y-start.y);if distance<best { best=distance;hit=i;corner=j } } }
@@ -166,13 +296,44 @@ struct VanishingPreview:View {
         case .edit:if let hit { if let corner { model.moveCorner(hit,corner,to:p) } else { model.movePlane(hit,dx:value.translation.width/scale,dy:value.translation.height/scale) } }
         case .brush,.stamp:if !sampled,stroke.last.map({hypot($0.x-p.x,$0.y-p.y)>1}) ?? true { if stroke.count<4096 { stroke.append(p) } }
         case .transform:if let pasteOrigin { model.movePaste(to:.init(pasteOrigin.x+value.translation.width/scale,pasteOrigin.y+value.translation.height/scale)) }
+        case .measure:
+          if let scene {
+            switch measurementDrag {
+            case .draw(let plane, let start, _):
+              draftMeasurement = scene.measurement(plane:plane,from:start,to:p)
+            case .edit(let target, let original, let constraint):
+              draftMeasurement = model.editedMeasurement(original,target:target,
+                from:point(value.startLocation),to:p,constraint:constraint,scene:scene)
+            case nil: break
+            }
+          }
         case .create:break
         }
       }.onEnded { value in
         if model.tool == .create { model.addPoint(.init((value.location.x-offset.x)/scale,(value.location.y-offset.y)/scale)) }
         if (model.tool == .brush || model.tool == .stamp) && !sampled { model.stroke(stroke) }
+        if model.tool == .measure, let measurementDrag {
+          let end = point(value.location)
+          switch measurementDrag {
+          case .draw(let plane, let start, let continuing):
+            if hypot(end.x-start.x,end.y-start.y) * scale > 2,
+              let measurement = scene?.measurement(plane:plane,from:start,to:end) {
+              model.updateMeasurement(measurement)
+              model.pendingMeasurement = nil
+            } else if !continuing && abs(value.translation.width)+abs(value.translation.height) <= 2 {
+              model.pendingMeasurement = (plane,start)
+            }
+          case .edit(let target, let original, let constraint):
+            if abs(value.translation.width)+abs(value.translation.height) > 0, let scene,
+              let measurement = model.editedMeasurement(original,target:target,
+                from:point(value.startLocation),to:end,constraint:constraint,scene:scene) {
+              model.updateMeasurement(measurement,at:target.index)
+            }
+          }
+        }
+        measurementDrag=nil;draftMeasurement=nil
         model.endGesture();pressed=false;stroke=[];hit=nil;corner=nil;pasteOrigin=nil
-      }).clipped().accessibilityLabel("Vanishing Point preview. Define four plane corners, paint or clone in perspective, or transform a pasted image.")
+      }).clipped().accessibilityLabel("Vanishing Point preview. Define four plane corners, paint or clone in perspective, measure lengths, or transform a pasted image.")
     }
   }
 }

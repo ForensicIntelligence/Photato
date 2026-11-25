@@ -4,15 +4,41 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 @MainActor @Observable final class VanishingWorkspace:Identifiable {
-  enum Tool:String,CaseIterable { case create="Create Plane",edit="Edit Plane",stamp="Stamp",brush="Brush",transform="Transform",hand="Hand" }
+  enum Tool:String,CaseIterable { case create="Create Plane",edit="Edit Plane",stamp="Stamp",brush="Brush",transform="Transform",measure="Measure",hand="Hand" }
   let id=UUID()
   let original:CraftDocument
   let layerID:UUID
   private(set) var program=VanishingProgram()
-  var tool:Tool = .create
+  var tool:Tool = .create {
+    didSet { if tool != .measure { pendingMeasurement = nil } }
+  }
   var selected=0
   var selectedCorner=0
   var selectedPaste:Int?
+  var selectedMeasurement: Int?
+  var pendingMeasurement: (plane: Int, point: PathPoint)?
+  var showMeasurements = true
+  var measurements: [VanishingMeasurement] { program.settings.measurements ?? [] }
+  var selectedMeasurementLength: Double? {
+    guard let index = selectedMeasurement, measurements.indices.contains(index) else { return nil }
+    return scene?.measurementLength(measurements[index],settings:program.settings)
+  }
+  var measurementsLinked: Bool {
+    get {
+      guard let scene, scene.frames.indices.contains(selected) else { return false }
+      return program.settings.measurementScale(for:scene.measurementRoot(for:selected)).linkedToGrid
+    }
+    set {
+      guard let scene, scene.frames.indices.contains(selected) else { return }
+      var settings = program.settings
+      var scale = settings.measurementScale(for:scene.measurementRoot(for:selected))
+      scale.linkedToGrid = newValue
+      settings.setMeasurementScale(scale)
+      var draft = program
+      draft.settings = settings
+      change(draft)
+    }
+  }
   var pending=[PathPoint]()
   var cloneSource:PathPoint?
   var diameter=40.0
@@ -71,12 +97,13 @@ import PhotoCraftImaging
     do { try p.validate();_ = try VanishingScene(p.settings,width:original.width,height:original.height) } catch { self.error=error.localizedDescription;return }
     guard p != program else { error=nil;return }
     var previous = program
-    previous.settings.gridSize = p.settings.gridSize
+    previous.settings = previous.settings.withDisplayMetadata(from:p.settings)
     if remember && gestureStart == nil { self.remember(program) }
     program = p
     selected = max(0,min(selected,p.settings.planes.count-1))
     if let i = selectedPaste, !p.operations.indices.contains(i) { selectedPaste = nil }
-    if p == previous, let edit = preparedEdit, let updated = try? edit.updatingGridSize(p.settings.gridSize) {
+    if let i = selectedMeasurement, !measurements.indices.contains(i) { selectedMeasurement = nil }
+    if p == previous, let edit = preparedEdit, let updated = try? edit.updatingDisplayMetadata(p.settings) {
       preparedEdit = updated
       error = nil
     } else {
@@ -85,7 +112,7 @@ import PhotoCraftImaging
   }
   func beginGesture() { if gestureStart==nil { gestureStart=program } }
   func endGesture() { if let start=gestureStart,start != program { remember(start) };gestureStart=nil }
-  func undo() { if !pending.isEmpty { pending.removeLast();return };endGesture();guard let p=undoStates.popLast() else { return };redoStates.append(program);change(p,remember:false) }
+  func undo() { if pendingMeasurement != nil { pendingMeasurement=nil;return };if !pending.isEmpty { pending.removeLast();return };endGesture();guard let p=undoStates.popLast() else { return };redoStates.append(program);change(p,remember:false) }
   func redo() { endGesture();guard let p=redoStates.popLast() else { return };undoStates.append(program);change(p,remember:false) }
   func addPoint(_ p:PathPoint) {
     pending.append(p);guard pending.count==4 else { return };var next=program;next.settings.planes.append(.init(corners:pending))
@@ -103,7 +130,133 @@ import PhotoCraftImaging
     guard program.settings.planes.indices.contains(selected) else { return };var removed:Set<Int>=[selected]
     for i in program.settings.planes.indices { if let parent=program.settings.planes[i].parent,removed.contains(parent) { removed.insert(i) } }
     let remaining=program.settings.planes.indices.filter{!removed.contains($0)},map=Dictionary(uniqueKeysWithValues:remaining.enumerated().map{($0.element,$0.offset)})
-    var p=program;p.settings.planes=remaining.map { i in var plane=program.settings.planes[i];plane.parent=plane.parent.flatMap{map[$0]};return plane };p.operations=p.operations.compactMap { op in guard let index=map[op.plane] else { return nil };var op=op;op.plane=index;return op };selectedPaste=nil;change(p)
+    var p=program;p.settings.planes=remaining.map { i in var plane=program.settings.planes[i];plane.parent=plane.parent.flatMap{map[$0]};return plane };p.operations=p.operations.compactMap { op in guard let index=map[op.plane] else { return nil };var op=op;op.plane=index;return op }
+    let lines = measurements.compactMap { line -> VanishingMeasurement? in
+      guard let index = map[line.plane] else { return nil }
+      return .init(plane:index,start:line.start,end:line.end)
+    }
+    let scales = (p.settings.measurementScales ?? []).compactMap { scale -> VanishingMeasurementScale? in
+      guard let root = map[scale.root] else { return nil }
+      return .init(root:root,pixelsPerUnit:scale.pixelsPerUnit,linkedToGrid:scale.linkedToGrid)
+    }
+    p.settings.measurements = lines.isEmpty ? nil : lines
+    p.settings.measurementScales = scales.isEmpty ? nil : scales
+    selectedPaste = nil
+    selectedMeasurement = nil
+    pendingMeasurement = nil
+    change(p)
+  }
+  enum MeasurementTarget: Equatable {
+    case start(Int), end(Int), body(Int)
+
+    var index: Int {
+      switch self { case .start(let index), .end(let index), .body(let index): index }
+    }
+  }
+
+  func measurementTarget(at point: PathPoint, radius: Double, scene: VanishingScene) -> MeasurementTarget? {
+    guard showMeasurements else { return nil }
+    var best: (hit: MeasurementTarget, distance: Double)?
+    for index in measurements.indices.reversed() {
+      let line = measurements[index], frame = scene.frames[line.plane]
+      let a = frame.point(line.start), b = frame.point(line.end)
+      let da = hypot(point.x-a.x,point.y-a.y), db = hypot(point.x-b.x,point.y-b.y)
+      let endpoint: MeasurementTarget = da < db ? .start(index) : .end(index)
+      let endpointDistance = min(da,db)
+      if endpointDistance <= radius {
+        if best.map({ endpointDistance < $0.distance || $0.hit == .body($0.hit.index) }) ?? true {
+          best = (endpoint,endpointDistance)
+        }
+        continue
+      }
+      let dx = b.x-a.x, dy = b.y-a.y
+      let t = ((point.x-a.x)*dx+(point.y-a.y)*dy)/(dx*dx+dy*dy)
+      guard t > 0, t < 1 else { continue }
+      let distance = hypot(point.x-a.x-t*dx,point.y-a.y-t*dy)
+      if distance <= radius/2, best.map({ $0.hit == .body($0.hit.index) && distance < $0.distance }) ?? true {
+        best = (.body(index),distance)
+      }
+    }
+    return best?.hit
+  }
+
+  func editedMeasurement(_ line: VanishingMeasurement, target: MeasurementTarget,
+    from: PathPoint, to: PathPoint, constraint: ToolCursor.MeasurementConstraint, scene: VanishingScene) -> VanishingMeasurement?
+  {
+    let frame = scene.frames[line.plane]
+    let start = frame.uv(from), end = frame.uv(to)
+    let dx = end.x-start.x, dy = end.y-start.y
+    var result = line
+    switch target {
+    case .body:
+      result.start = .init(line.start.x+dx,line.start.y+dy)
+      result.end = .init(line.end.x+dx,line.end.y+dy)
+    case .start, .end:
+      if constraint.keepAngle && constraint.keepLength { return line }
+      let isStart = target == .start(target.index)
+      let fixed = isStart ? line.end : line.start
+      let moving = isStart ? line.start : line.end
+      let metric = scene.measurementMetric(for:line.plane)
+      let original = PathPoint((moving.x-fixed.x)*metric.x,(moving.y-fixed.y)*metric.y)
+      let proposed = PathPoint(original.x+dx*metric.x,original.y+dy*metric.y)
+      let vector = constraint.vector(from:original,proposed:proposed)
+      let point = PathPoint(fixed.x+vector.x/metric.x,fixed.y+vector.y/metric.y)
+      if isStart { result.start = point } else { result.end = point }
+    }
+    return scene.measurementDistance(result) == nil ? nil : result
+  }
+
+  func selectMeasurement(_ index: Int?) {
+    selectedMeasurement = index
+    if let index, measurements.indices.contains(index) { selected = measurements[index].plane }
+  }
+
+  func updateMeasurement(_ line: VanishingMeasurement, at index: Int? = nil) {
+    var lines = measurements
+    if let index {
+      guard lines.indices.contains(index) else { return }
+      lines[index] = line
+    } else {
+      lines.append(line)
+    }
+    setMeasurements(lines)
+    if measurements == lines { selectMeasurement(index ?? lines.count-1) }
+  }
+
+  func measurePlaneDimensions(_ index: Int) {
+    let lines = measurements + [
+      VanishingMeasurement(plane:index,start:.init(1,1),end:.init(1,0)),
+      VanishingMeasurement(plane:index,start:.init(1,1),end:.init(0,1))]
+    pendingMeasurement = nil
+    setMeasurements(lines)
+    if measurements == lines { selectMeasurement(lines.count-2) }
+  }
+
+  func removeMeasurement() {
+    if pendingMeasurement != nil { pendingMeasurement = nil; return }
+    guard let index = selectedMeasurement, measurements.indices.contains(index) else { return }
+    var lines = measurements
+    lines.remove(at:index)
+    setMeasurements(lines)
+    selectedMeasurement = nil
+  }
+
+  private func setMeasurements(_ lines: [VanishingMeasurement]) {
+    var draft = program
+    draft.settings.measurements = lines.isEmpty ? nil : lines
+    change(draft)
+  }
+
+  func calibrateMeasurement(length: Double) {
+    guard let index = selectedMeasurement, let scene else { return }
+    var draft = program
+    do {
+      let scale = try scene.measurementScale(calibrating:index,to:length,settings:draft.settings)
+      draft.settings.setMeasurementScale(scale)
+      change(draft)
+    } catch {
+      self.error = error.localizedDescription
+    }
   }
   func setSource(_ p:PathPoint) { guard scene?.plane(at:p) != nil else { error="Choose a source inside a plane.";return };cloneSource=p;cloneAnchor=nil;clonePlane=nil;error=nil }
   func stroke(_ points:[PathPoint]) {

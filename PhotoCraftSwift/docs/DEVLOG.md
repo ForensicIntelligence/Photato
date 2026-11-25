@@ -753,7 +753,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 732 | 2026-11-23 | [Repair directly on cropped Vanishing Point layers](#dev-step-732) |
 | 733 | 2026-11-24 | [Keep Vanishing Point grids editable in PSD and PSB](#dev-step-733) |
 | 734 | 2026-11-25 | [Keep Vanishing Point grid spacing and export square planes](#dev-step-734) |
+| 735 | 2026-11-25 | [Measure and calibrate Vanishing Point planes](#dev-step-735) |
 <!-- history-index:end -->
+
+<a id="dev-step-735"></a>
+
+## 2026-11-25 — Measure and calibrate Vanishing Point planes
+
+On a 1600 × 1200 owned reference, Photoshop 27.2.0 entered Measure with R. Double-clicking the plane added both dimensions and selected the 12-unit edge. Entering 60 changed the saved scale to 20.0076. The original 73 grid spacing persisted with the link off. With the link enabled, Photoshop saved precise spacing of 20.0076 and rounded relation spacing of 20. In a second owned file, calibrating a plane from 1.09 to 5 kept an independent plane at 8. The file stored four lines with plane IDs and separate scale/link pairs. Manual test drags through the desktop automation tool did not produce an independently verified line. The three Photoshop saves are preserved outside the repository with their extracted resource contents.
+
+Added rectified endpoints and per-connected-family scales to `VanishingPoint.swift`. `VanishingEngine.swift` can update small display metadata without rerendering prepared pixels. `PSDVanishingPoint.swift` reads the measured footer, preserves unchanged records and updates measurements in mutable PSD/PSB resources. `VanishingWorkspace.swift`, `VanishingSheet.swift` and `ToolCursor.swift` add editable and movable measures, the calibration and grid controls, and captured endpoint constraints. The authenticated API adds measurement settings, calibrated scene state and a known-length request through the same calculation. Core hinge checks, a numeric Photoshop reference and native/API history and modifier checks were added. Native build and focused verification follow before publication.
+
+The initial Xcode build could not write the pre-existing SwiftPM caches under the default sandbox. The first approved retry compiled the core and the PSD reader, then rejected a local function declaration inside the preview’s SwiftUI view builder. The preview now declares a typed coordinate-conversion closure there. Pointer tracking also stays inactive for other tools. A second approved build caught an actor-isolation error in the Canvas label helper. The view now captures immutable geometry settings before drawing. The build logs are retained as separate attempts.
+
+The fourth Xcode attempt built successfully. The 17 focused core tests and eight focused app/HTTP tests passed. The native sheet rendered offscreen in macOS Light and Dark appearance. The first standalone export proof omitted its app module import. After correcting the helper, the owned Photoshop samples exposed a more important measurement error. The front-plane lengths imported near 60 and 80, but Photato reported about 9.94, 20.37, 1,064.29 and 34,845.19 for a file that shows 8, 16.4, 5 and 41.07 in Photoshop. The workspace had applied the first plane’s long focal distance to both independent planes. A numerical projection check confirmed that normalizing depth and solving independent measurement families separately is much closer. Connected planes still need a common unit along their hinge. The native repair frame is kept separate from the measurement metric so Brush, Stamp and Paste retain their geometry. Measure endpoint constraints and linked grid axes now use the same metric as the displayed length.
+
+The corrected Xcode Debug build passed 18 focused core and eight focused app and HTTP tests. The focused recheck kept the original limits for the previously failing values and added comparisons with both remaining Adobe labels. Photato measured 8.0011, 16.3970, 4.9845 and 41.2970 in the two-plane sample. The two square inputs reported 59.9897 and 79.9821. All three original resource payloads survived the Photato writes byte for byte. Photato’s new PSD and PSB reopened in Photoshop with the two editable measures and linked grid size 20. Photoshop showed 40.01 and 30.01 where Photato showed 40 and 30. The test change to the length field was canceled. The reference also showed an angle label per line. Angle presentation, rendered annotations, DXF and 3DS export, the remaining scale differences and physical interaction in Photato still need work.
+
+The release candidate advances the local preview bundle to 735. Qualification uses the prior 839 optimized test selectors and four new measurement cases. No claim of broader Photoshop parity or a completed Vanishing Point package follows from these checks.
+
+Both optimized architectures passed 841 of 843 selected tests, including all four new cases. The two inherited color-profile and layer-effect failures repeated. Xcode built the Debug app and passed the 26 focused core, app and HTTP tests. The generated PSD and PSB each matched byte for byte in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the locally signed macOS 14+ preview opened offscreen. Angle labels, pixel rendering of measurements, DXF and 3DS export, exact measured values, and physical input in Photato are still open. This checkpoint did not move the overall parity estimate by a milestone. The README stays at 50%.
+
+[Qualification and evidence hashes](SOURCE_PUBLICATION_735.md).
+
+A refreshed development-history inventory is retained with the local qualification records. The published historical inventory keeps its archived evidence entries. Its strict check reports the same 701 missing historical file references as the published base when both logs are evaluated in this checkout. Step 735 adds no missing reference. The generated GitHub diary and its chronological index pass the release diary check.
 
 <a id="dev-step-734"></a>
 

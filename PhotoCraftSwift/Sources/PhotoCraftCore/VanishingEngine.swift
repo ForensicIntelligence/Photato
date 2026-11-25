@@ -400,13 +400,13 @@ public struct VanishingEdit:Sendable {
   public let source:CraftDocument,result:CraftDocument
   public let layerID:UUID
   public let program:VanishingProgram
-  public func updatingGridSize(_ value: Double?) throws -> Self {
-    guard VanishingSettings.gridSizeRange.contains(value ?? VanishingSettings.defaultGridSize) else {
-      throw CraftError.invalid("Grid Size must be between 1 and 1,000.")
-    }
+  public func updatingDisplayMetadata(_ settings: VanishingSettings) throws -> Self {
     var program = program, result = result
-    program.settings.gridSize = value
-    result.vanishingPoint?.gridSize = value
+    program.settings = program.settings.withDisplayMetadata(from: settings)
+    _ = try VanishingScene(program.settings, width: source.width, height: source.height)
+    if let stored = result.vanishingPoint {
+      result.vanishingPoint = stored.withDisplayMetadata(from: settings)
+    }
     return Self(source: source, result: result, layerID: layerID, program: program)
   }
   public static func target(_ d:CraftDocument,layerID:UUID,newLayer:Bool=false) throws -> Layer {

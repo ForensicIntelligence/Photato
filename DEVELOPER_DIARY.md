@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **734** · The 10 most recent entries, newest first.
+Source build **735** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 735 — Measure and calibrate Vanishing Point planes
+
+Measure lines can be moved, resized and calibrated against a known length. Connected planes share the calibration and can link their grid spacing to it. Independent planes retain their own scale. The native workspace and the authenticated Photato API keep measurements editable in native documents, PSD and PSB.
+
+Photoshop 27.2.0 opened both Photato exports with the linked grid and two editable measures. It displayed 40.01 and 30.01 for Photato’s 40 and 30. On an Adobe-authored angled plane, the largest observed difference was about 0.23 units. Angle labels, raster annotation and CAD export remain open.
+
+Both optimized architectures passed 841 of 843 selected tests, including all four new cases. The two inherited color-profile and layer-effect failures repeated. Xcode built the Debug app and passed the 26 focused core, app and HTTP tests. The generated PSD and PSB each matched byte for byte in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the locally signed macOS 14+ preview opened offscreen.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-735) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_735.md).
 
 ## 2026-11-25 — Step 734 — Keep Vanishing Point grid spacing and export square planes
 
@@ -103,15 +113,3 @@ The cropped correction layer's first preview took 115–124 ms on optimized Appl
 These measurements cover software rendering and publication of previews. Physical pointer-to-display cadence and direct comparison with Photoshop 2026 remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-726) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_726.md).
-
-## 2026-11-23 — Step 725 — Speed up RGB8 and RGB16 retouch sample conversion
-
-Photato converts allocated tiles when a bounded sRGB raster changes to 8 or 16 bits per channel. Clone Stamp and Healing Brush use the faster conversion when preparing samples for a stroke. The desktop and authenticated Photato API share that conversion.
-
-On the 2,096 × 2,592 portrait, the Apple Silicon depth conversion took 119 ms for RGB8 and 117 ms for RGB16. The former scalar loop took 194 and 193 ms. Every raw sample word matched at both depths on both optimized architectures. Each architecture matched all 12 build 724 PNGs across ordinary and cropped correction layers. Preview, commit, editable reopen and authenticated API pixels matched, with one Undo per stroke.
-
-The ordinary New Layer first preview took 117–125 ms on optimized Apple Silicon after source selection. In the adjacent build 724 run it took 181–192 ms. A scripted 48-sample gesture produced 42 Clone Stamp and 41 Healing Brush software previews on an ordinary new layer. The cropped control produced 3 and 3, respectively.
-
-The timings measure software preparation and the first complete preview on one test host. Physical pointer-to-display cadence and direct Photoshop comparison remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-725) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_725.md).

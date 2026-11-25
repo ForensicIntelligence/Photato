@@ -2560,6 +2560,10 @@ Document state exposes active workspace settings, preview/rendering, tool, zoom,
 
 Settings contain `planes` (up to32), `focalLength`0…100000 pixels (0 infers from the first plane, otherwise the longer canvas axis), and optional `{x,y}` `center`. A root plane has four convex `corners` in document pixels. A related plane has an earlier `parent` index, empty corners, `edge` top/right/bottom/left, `angle`0…180 (default90) and `depth`0.05…20 (default1). Resolved scene corners and metric dimensions are exposed in document and workspace state. Invalid geometry rejects before mutation.
 
+Use `settings.measurements` for up to 512 lines. Each has a zero-based `plane` and two rectified `start` and `end` points with numeric `x` and `y`. The plane corners are at (0,0), (1,0), (1,1), and (0,1). Visible endpoints can extend past a corner or plane edge. Lines that cross the horizon or collapse reject. Pass an empty array to clear the lines. A metadata request can omit geometry and reuse the saved planes.
+
+Each entry in `settings.measurementScales` defines a `root`, positive `pixelsPerUnit`, and `linkedToGrid` boolean for that root and its connected planes. Independent roots have separate scales. Optional top-level `measurementCalibration:{"index":0,"length":60}` applies a known length to the indexed line and updates its family’s scale after the new settings are validated. Document and workspace responses return a `scene.measurements` array with projected document-space endpoints, the root index and calibrated length. Each resolved plane also has `gridIntervals` for its two rectified axes.
+
 Every operation has `kind`, optional `plane` (0), `opacity`0…100 (100) and `clip` (true). Additional fields are:
 
 - `paste`: required `sourceLayerID` referencing a raw raster layer in the original document; optional `at:{x,y}` in plane UV coordinates (0.25,0.25), `width`0.001…20 as a fraction of metric plane width (0.5), `angle`−360…360 clockwise about the paste origin (0). Source aspect is retained in plane metric space.

@@ -84,11 +84,19 @@ enum PSDVanishingPoint {
     }
   }
 
+  private struct Measurement {
+    let plane: UInt32
+    let start: PathPoint
+    let end: PathPoint
+  }
+
   private struct Resource {
     let planes: [Plane]
     let footer: [String]
     let relationGridIndices: [Int]
     let footerIndex: Int
+    let measurements: [Measurement]
+    let scales: [VanishingMeasurementScale]
     var gridSize: Double? {
       let precise = footer.dropFirst().first.flatMap(Double.init)
       let size = precise ?? planes.first?.grid ?? VanishingSettings.defaultGridSize
@@ -122,14 +130,15 @@ enum PSDVanishingPoint {
     return String(format:"%.12g",locale:Locale(identifier:"en_US_POSIX"),value)
   }
 
-  private static func updatingGrid(in data: Data, resource: Resource, size: Double) throws -> Data {
+  private static func updatingFooter(in data: Data, resource: Resource, sizes: [Double],
+    measurementFooter: [String]? = nil) throws -> Data
+  {
     guard let source = String(data:data,encoding:.ascii) else { throw invalid() }
     let words = source.split(whereSeparator: \.isWhitespace)
-    let rounded = decimal(size.rounded(.towardZero))
-    let precise = decimal(size)
-    var replacements = resource.relationGridIndices.map { ($0,rounded) }
-    if !resource.footer.isEmpty {
-      replacements += resource.relationGridIndices.indices.map { (resource.footerIndex+1+$0,precise) }
+    let legacy = sizes.map { decimal(max(1,$0.rounded(.towardZero))) }
+    var replacements = Array(zip(resource.relationGridIndices,legacy))
+    if measurementFooter == nil {
+      replacements += sizes.enumerated().map { (resource.footerIndex+1+$0.offset,decimal($0.element)) }
     }
     var text = "", last = source.startIndex
     for (index, value) in replacements {
@@ -137,8 +146,46 @@ enum PSDVanishingPoint {
       text += source[last..<token.startIndex] + value
       last = token.endIndex
     }
-    text += source[last...]
+    if let measurementFooter {
+      text += source[last..<words[resource.footerIndex].startIndex]
+      text += measurementFooter.joined(separator:"\n") + "\n"
+    } else {
+      text += source[last...]
+    }
     return Data(text.utf8)
+  }
+
+  private static func gridSizes(for settings: VanishingSettings, previous: Resource?) -> [Double] {
+    let roots = settings.planes.indices.filter { settings.planes[$0].parent == nil }
+    let oldSizes = previous?.footer.dropFirst().prefix(roots.count).compactMap(Double.init) ?? []
+    return roots.enumerated().map { ordinal, root in
+      let scale = settings.measurementScale(for:root)
+      if scale.linkedToGrid { return scale.pixelsPerUnit }
+      if previous?.gridSize == settings.gridSize, oldSizes.indices.contains(ordinal) {
+        return oldSizes[ordinal]
+      }
+      return settings.effectiveGridSize
+    }
+  }
+
+  private static func measurementFooter(_ settings: VanishingSettings, scene: VanishingScene,
+    sizes: [Double], label: (Int) -> UInt32) -> [String]
+  {
+    let roots = settings.planes.indices.filter { settings.planes[$0].parent == nil }
+    let lines = settings.measurements ?? []
+    var tokens = ["201"] + sizes.map(decimal) + [String(lines.count)]
+    for root in roots {
+      for line in lines where scene.measurementRoot(for:line.plane) == root {
+        let frame = scene.frames[line.plane]
+        let a = frame.point(line.start), b = frame.point(line.end)
+        tokens += [String(label(line.plane)),decimal(a.x),decimal(a.y),decimal(b.x),decimal(b.y)]
+      }
+    }
+    for root in roots {
+      let scale = settings.measurementScale(for:root)
+      tokens += [decimal(scale.pixelsPerUnit),scale.linkedToGrid ? "1" : "0"]
+    }
+    return tokens
   }
 
   private static func isVanishingPoint(_ block: PSDImageResources.Block) -> Bool {
@@ -196,10 +243,33 @@ enum PSDVanishingPoint {
         planes.append(.init(grid:grid,identity:identity,parent:parent,angle:angle,calibrationPoint:calibrationPoint,rays:rays))
       }
     }
-    let footer = input.words.dropFirst(input.offset).map(String.init)
-    guard footer.isEmpty || (version == 203 && footer.count == 2 + 3*relations && footer.first == "201"
-      && footer.dropFirst().allSatisfy({ Double($0)?.isFinite == true })) else { throw invalid() }
-    return Resource(planes:planes,footer:footer,relationGridIndices:relationGridIndices,footerIndex:input.offset)
+    let footerIndex = input.offset
+    let footer = input.words.dropFirst(footerIndex).map(String.init)
+    var measurements: [Measurement] = [], scales: [VanishingMeasurementScale] = []
+    if !footer.isEmpty {
+      guard version == 203, try input.next() == "201" else { throw invalid() }
+      for _ in 0..<relations { guard try input.number() > 0 else { throw invalid() } }
+      let count: Int = try input.integer()
+      guard (0...VanishingSettings.maximumMeasurements).contains(count) else { throw invalid() }
+      for _ in 0..<count {
+        let owner = try input.integer(UInt32.self)
+        guard identities.contains(owner) else { throw invalid() }
+        measurements.append(try .init(plane:owner,start:input.point(),end:input.point()))
+      }
+      for index in planes.indices where planes[index].parent == 0 {
+        let scale = try input.number()
+        let linked: Int = try input.integer()
+        guard VanishingSettings.measurementScaleRange.contains(scale), (0...1).contains(linked) else {
+          throw invalid()
+        }
+        if linked == 1 || scale != VanishingSettings.defaultMeasurementScale {
+          scales.append(.init(root:index,pixelsPerUnit:scale,linkedToGrid:linked == 1))
+        }
+      }
+      guard input.offset == input.words.count else { throw invalid() }
+    }
+    return Resource(planes:planes,footer:footer,relationGridIndices:relationGridIndices,
+      footerIndex:footerIndex,measurements:measurements,scales:scales)
   }
 
   private static func points(_ edge: VanishingPlane.Edge) -> (parentA: Int,parentB: Int,childA: Int,childB: Int) {
@@ -264,7 +334,16 @@ enum PSDVanishingPoint {
       indices[item.identity]=result.planes.count
       result.planes.append(plane)
     }
-    _ = try VanishingScene(result,width:width,height:height)
+    let scene = try VanishingScene(result,width:width,height:height)
+    if !resource.measurements.isEmpty {
+      result.measurements = try resource.measurements.map { line in
+        guard let plane = indices[line.plane],
+          let measurement = scene.measurement(plane:plane,from:line.start,to:line.end) else { throw invalid() }
+        return measurement
+      }
+    }
+    result.measurementScales = resource.scales.isEmpty ? nil : resource.scales
+    try result.validate()
     return result
   }
 
@@ -370,10 +449,9 @@ enum PSDVanishingPoint {
     projected.center = original.center
     let scene = projected.planes == document.planes ? original
       : try VanishingScene(projected,width:width,height:height)
-    let grids = previous?.planes.filter { $0.parent == 0 }.map(\.grid) ?? []
-    let size = document.effectiveGridSize
-    let gridChanged = previous.map { ($0.gridSize ?? VanishingSettings.defaultGridSize) != size } ?? true
-    let roundedSize = size.rounded(.towardZero)
+    let sizes = gridSizes(for:document,previous:previous)
+    let legacy = previous?.planes.filter { $0.parent == 0 }.map(\.grid) ?? []
+    let gridChanged = previous?.gridSize != document.gridSize
     var tokens = ["tNaF203",String(roots.count)]
     var labels: [Int:[Int]] = [:]
     func visit(_ node: Int) -> [Int] {
@@ -383,7 +461,9 @@ enum PSDVanishingPoint {
     func point(_ p: PathPoint) { tokens += [decimal(p.x),decimal(p.y),""] }
     for (ordinal,root) in roots.enumerated() {
       let family = visit(root)
-      tokens += [decimal(!gridChanged && grids.indices.contains(ordinal) ? grids[ordinal] : roundedSize),String(family.count)]
+      tokens += [decimal(!gridChanged && legacy.indices.contains(ordinal)
+        && !document.measurementScale(for:root).linkedToGrid
+        ? legacy[ordinal] : max(1,sizes[ordinal].rounded(.towardZero))),String(family.count)]
       for index in family {
         try Task.checkCancellation()
         let plane=document.planes[index], q=scene.frames[index].corners
@@ -420,16 +500,7 @@ enum PSDVanishingPoint {
         }
       }
     }
-    if var footer = previous?.footer, footer.count == 2 + 3*roots.count {
-      if gridChanged {
-        footer.replaceSubrange(1...roots.count,with:Array(repeating:decimal(size),count:roots.count))
-      }
-      tokens += footer
-    } else {
-      // Version 201 workspace settings include a value and a pair per relation.
-      tokens += ["201"] + Array(repeating:decimal(size),count:roots.count) + ["0"]
-      for _ in roots { tokens += ["100","0"] }
-    }
+    tokens += measurementFooter(document,scene:original,sizes:sizes) { UInt32($0+1) }
     return Data((tokens.joined(separator:"\n")+"\n").utf8)
   }
 
@@ -457,11 +528,20 @@ enum PSDVanishingPoint {
       previous = nil
     }
     if let existing, let previous {
-      var original = try self.settings(previous,width:document.width,height:document.height)
+      let original = try self.settings(previous,width:document.width,height:document.height)
       if original == settings { return data }
-      original.gridSize = settings.gridSize
-      if original == settings, !previous.footer.isEmpty {
-        let payload = try updatingGrid(in:existing.data,resource:previous,size:settings.effectiveGridSize)
+      if original.withDisplayMetadata(from:settings) == settings, !previous.footer.isEmpty {
+        let sizes = gridSizes(for:settings,previous:previous)
+        let metadataChanged = original.measurements != settings.measurements
+          || original.measurementScales != settings.measurementScales
+        let footer: [String]?
+        if metadataChanged {
+          let scene = try VanishingScene(settings,width:document.width,height:document.height)
+          footer = measurementFooter(settings,scene:scene,sizes:sizes) { previous.planes[$0].identity }
+        } else {
+          footer = nil
+        }
+        let payload = try updatingFooter(in:existing.data,resource:previous,sizes:sizes,measurementFooter:footer)
         let block = try PSDImageResources.replacing(existing,id:id,payload:payload)
         return blocks.reduce(into:Data()) { $0.append(isVanishingPoint($1) ? block : $1.raw) }
       }

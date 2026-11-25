@@ -23,6 +23,32 @@ public struct VanishingPlane:Codable,Equatable,Sendable {
   public init(corners:[PathPoint]) { self.corners=corners }
   public init(parent:Int,edge:Edge,angle:Double=90,depth:Double=1) { self.parent=parent;self.edge=edge;self.angle=angle;self.depth=depth }
 }
+/// Endpoints use the plane's rectified coordinates, with (0,0) at its first corner.
+public struct VanishingMeasurement: Codable, Equatable, Sendable {
+  public var plane: Int
+  public var start: PathPoint
+  public var end: PathPoint
+
+  public init(plane: Int, start: PathPoint, end: PathPoint) {
+    self.plane = plane
+    self.start = start
+    self.end = end
+  }
+}
+
+/// A connected set of planes shares one scale. Independent roots can be calibrated separately.
+public struct VanishingMeasurementScale: Codable, Equatable, Sendable {
+  public var root: Int
+  public var pixelsPerUnit: Double
+  public var linkedToGrid: Bool
+
+  public init(root: Int, pixelsPerUnit: Double, linkedToGrid: Bool = false) {
+    self.root = root
+    self.pixelsPerUnit = pixelsPerUnit
+    self.linkedToGrid = linkedToGrid
+  }
+}
+
 public struct VanishingSettings:Codable,Equatable,Sendable {
   public static let defaultGridSize = 100.0
   public static let gridSizeRange = 1.0...1000.0
@@ -30,6 +56,31 @@ public struct VanishingSettings:Codable,Equatable,Sendable {
   /// The document's grid spacing. Earlier archives omit the default value.
   public var gridSize: Double?
   public var effectiveGridSize: Double { gridSize ?? Self.defaultGridSize }
+  public static let maximumMeasurements = 512
+  public static let measurementScaleRange = 1e-9...1e12
+  public static let defaultMeasurementScale = 100.0
+  /// Optional fields keep legacy archive and command payloads readable.
+  public var measurements: [VanishingMeasurement]?
+  public var measurementScales: [VanishingMeasurementScale]?
+
+  public func measurementScale(for root: Int) -> VanishingMeasurementScale {
+    measurementScales?.first { $0.root == root }
+      ?? .init(root: root, pixelsPerUnit: Self.defaultMeasurementScale)
+  }
+
+  public mutating func setMeasurementScale(_ scale: VanishingMeasurementScale) {
+    var scales = (measurementScales ?? []).filter { $0.root != scale.root }
+    if scale.linkedToGrid || scale.pixelsPerUnit != Self.defaultMeasurementScale { scales.append(scale) }
+    measurementScales = scales.isEmpty ? nil : scales.sorted { $0.root < $1.root }
+  }
+
+  public func withDisplayMetadata(from other: Self) -> Self {
+    var result = self
+    result.gridSize = other.gridSize
+    result.measurements = other.measurements
+    result.measurementScales = other.measurementScales
+    return result
+  }
   /// Camera focal length in pixels. Zero infers it from the first plane or uses
   /// the longer canvas side. Scene construction validates the resulting projection.
   public var focalLength=0.0
@@ -69,10 +120,25 @@ public struct VanishingSettings:Codable,Equatable,Sendable {
         _ = try PerspectiveMap.homography(p.corners)
       }
     }
+    try validateMeasurements()
   }
+  private func validateMeasurements() throws {
+    let measurements = measurements ?? []
+    guard measurements.count <= Self.maximumMeasurements, measurements.allSatisfy({
+      planes.indices.contains($0.plane) && Self.validPoint($0.start) && Self.validPoint($0.end) && $0.start != $0.end
+    }) else { throw CraftError.invalid("Invalid Vanishing Point measurement endpoints.") }
+    let scales = measurementScales ?? []
+    guard scales.count <= planes.count, Set(scales.map(\.root)).count == scales.count,
+      scales.allSatisfy({ planes.indices.contains($0.root) && planes[$0.root].parent == nil
+        && Self.measurementScaleRange.contains($0.pixelsPerUnit) }) else {
+      throw CraftError.invalid("Invalid Vanishing Point measurement scale.")
+    }
+  }
+
   static func validPoint(_ p:PathPoint)->Bool { p.x.isFinite && p.y.isFinite && abs(p.x)<=1_000_000 && abs(p.y)<=1_000_000 }
   public var estimatedBytes: Int {
     planes.reduce(128) { $0 + ($1.calibration == nil ? 192 : 320) }
+      + (measurements?.count ?? 0) * 48 + (measurementScales?.count ?? 0) * 32
   }
   public func transformed(_ t:Transform2D)->Self {
     var s = self
@@ -105,6 +171,8 @@ public struct VanishingScene:Sendable {
   public let focal:Double
   public let center:PathPoint
   public let frames:[Frame]
+  private let measurementRoots: [Int]
+  private let measurementMetrics: [PathPoint]
   static func dot(_ a:SIMD3<Double>,_ b:SIMD3<Double>)->Double { a.x*b.x+a.y*b.y+a.z*b.z }
   static func cross(_ a:SIMD3<Double>,_ b:SIMD3<Double>)->SIMD3<Double> { .init(a.y*b.z-a.z*b.y,a.z*b.x-a.x*b.z,a.x*b.y-a.y*b.x) }
   static func length(_ a:SIMD3<Double>)->Double { sqrt(dot(a,a)) }
@@ -224,10 +292,120 @@ public struct VanishingScene:Sendable {
     let cameraCenter=settings.center ?? PathPoint(Double(width)/2,Double(height)/2)
     let cameraFocal=settings.focalLength>0 ? settings.focalLength:(settings.planes.first.flatMap{Self.inferredFocal($0.corners,center:cameraCenter)} ?? Double(max(width,height)))
     center=cameraCenter;focal=cameraFocal
-    var resolved=[Frame]()
-    for p in settings.planes { let q=try p.parent.map { try Self.related(p,from:resolved[$0],focal:cameraFocal,center:cameraCenter) } ?? p.corners;resolved.append(try Self.frame(q,focal:cameraFocal,center:cameraCenter)) };frames=resolved
+    var resolved: [Frame] = [], roots: [Int] = []
+    for (index, plane) in settings.planes.enumerated() {
+      let corners = try plane.parent.map {
+        try Self.related(plane, from: resolved[$0], focal: cameraFocal, center: cameraCenter)
+      } ?? plane.corners
+      resolved.append(try Self.frame(corners, focal: cameraFocal, center: cameraCenter))
+      roots.append(plane.parent.map { roots[$0] } ?? index)
+    }
+    frames = resolved
+    measurementRoots = roots
+    var metrics = Array(repeating:PathPoint(0,0),count:resolved.count)
+    var factors = Array(repeating:0.0,count:resolved.count)
+    var measurementFrames = resolved
+    for root in settings.planes.indices where roots[root] == root {
+      let members = settings.planes.indices.filter { roots[$0] == root }
+      let inferred = Self.inferredFocal(resolved[root].corners,center:cameraCenter)
+      let preferred = inferred ?? (root == 0 ? cameraFocal : Double(max(width,height)))
+      let focal: Double
+      if preferred != cameraFocal, let local = try? members.map({
+        try Self.frame(resolved[$0].corners,focal:preferred,center:cameraCenter)
+      }) {
+        focal = preferred
+        for (index,frame) in zip(members,local) { measurementFrames[index] = frame }
+      } else {
+        focal = cameraFocal
+      }
+      let origin = measurementFrames[root].points
+      let normal = Self.unit(Self.cross(origin[1]-origin[0],origin[3]-origin[0]))
+      // Normalize the scale on the optical axis. For edge-on planes, use
+      // the depth of a visible corner instead.
+      let normalization = abs(normal.z) > 1e-9 ? abs(normal.z) : 1/origin[0].z
+      for index in members {
+        let plane = settings.planes[index], frame = measurementFrames[index]
+        let factor: Double
+        if let parent = plane.parent {
+          let (parentA, _, _) = Self.edgeIndices(plane.edge)
+          let (outsideA, _) = Self.outsideIndices(plane.edge)
+          // Reconcile the depths of two independently normalized camera
+          // intersections along their shared hinge.
+          factor = factors[parent] * measurementFrames[parent].points[parentA].z / frame.points[(outsideA+3)%4].z
+        } else {
+          factor = focal * normalization
+        }
+        factors[index] = factor
+        metrics[index] = .init(frame.width*factor,frame.height*factor)
+      }
+    }
+    measurementMetrics = metrics
+    for measurement in settings.measurements ?? [] where measurementDistance(measurement) == nil {
+      throw CraftError.invalid("A measurement collapses or crosses the camera horizon.")
+    }
   }
   public func plane(at point:PathPoint)->Int? { frames.indices.reversed().first{frames[$0].contains(point)} }
+
+  public func measurementRoot(for plane: Int) -> Int { measurementRoots[plane] }
+
+  public func measurementMetric(for plane: Int) -> PathPoint { measurementMetrics[plane] }
+
+  public func gridIntervals(for plane: Int, settings: VanishingSettings) -> PathPoint {
+    let scale = settings.measurementScale(for: measurementRoots[plane])
+    if scale.linkedToGrid {
+      let metric = measurementMetrics[plane]
+      return .init(scale.pixelsPerUnit*frames[plane].width/metric.x,
+        scale.pixelsPerUnit*frames[plane].height/metric.y)
+    }
+    let interval = settings.effectiveGridSize / focal
+    return .init(interval,interval)
+  }
+
+  public func measurement(plane: Int, from start: PathPoint, to end: PathPoint) -> VanishingMeasurement? {
+    guard frames.indices.contains(plane) else { return nil }
+    let frame = frames[plane]
+    let line = VanishingMeasurement(plane: plane, start: frame.uv(start), end: frame.uv(end))
+    return measurementDistance(line) == nil ? nil : line
+  }
+
+  public func measurementDistance(_ line: VanishingMeasurement) -> Double? {
+    guard frames.indices.contains(line.plane) else { return nil }
+    let frame = frames[line.plane]
+    let m = frame.map.m
+    let visibleSide = (m[6] * 0.5 + m[7] * 0.5 + m[8]).sign
+    for point in [line.start, line.end] {
+      let w = m[6] * point.x + m[7] * point.y + m[8]
+      guard VanishingSettings.validPoint(point), abs(w) > 1e-10, w.sign == visibleSide,
+        VanishingSettings.validPoint(frame.point(point)) else { return nil }
+    }
+    let metric = measurementMetrics[line.plane]
+    let distance = hypot((line.end.x-line.start.x)*metric.x,(line.end.y-line.start.y)*metric.y)
+    return distance.isFinite && distance > 1e-8 ? distance : nil
+  }
+
+  public func measurementScale(calibrating index: Int, to length: Double,
+    settings: VanishingSettings) throws -> VanishingMeasurementScale
+  {
+    let lines = settings.measurements ?? []
+    guard lines.indices.contains(index), length.isFinite, length > 0,
+      let distance = measurementDistance(lines[index]) else {
+      throw CraftError.invalid("Select an existing measurement and enter a positive length.")
+    }
+    let root = measurementRoot(for:lines[index].plane)
+    var scale = settings.measurementScale(for:root)
+    scale.pixelsPerUnit = distance / length
+    guard VanishingSettings.measurementScaleRange.contains(scale.pixelsPerUnit) else {
+      throw CraftError.invalid("Vanishing Point measurement scale is out of range.")
+    }
+    return scale
+  }
+
+  public func measurementLength(_ line: VanishingMeasurement, settings: VanishingSettings) -> Double? {
+    guard let distance = measurementDistance(line) else { return nil }
+    let scale = settings.measurementScale(for: measurementRoots[line.plane])
+    let length = distance / scale.pixelsPerUnit
+    return length.isFinite ? length : nil
+  }
 }
 
 public struct VanishingOperation:Codable,Equatable,Sendable {
