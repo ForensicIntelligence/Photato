@@ -331,11 +331,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:750 -->
+<!-- current-status-step:751 -->
 
-Floating Vanishing Point pastes now have side handles for changing width or height independently. The arrow keys move a selected paste by one pixel. Shift and an arrow move it by ten. The current handle and modifiers are reflected in the pointer.
+Vanishing Point adds a Zoom tool with point-anchored zoom, Option to zoom out and a rectangle to zoom in on a region. Space temporarily pans and X temporarily magnifies the preview. Command–plus and Command–minus zoom. Command–0 fits the preview. Preview navigation leaves the edit program and document undo history intact.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-750) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_750.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-751) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_751.md).
 
 <!-- current-status:end -->
 
@@ -1292,5 +1292,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 748 | [Transform clipboard and layer pastes in Vanishing Point](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-748) |
 | 2026-11-25 | 749 | [Paste clipboard pixels before choosing a perspective plane](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-749) |
 | 2026-11-25 | 750 | [Resize and nudge floating Vanishing Point pastes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-750) |
+| 2026-11-26 | 751 | [Navigate the Vanishing Point preview](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-751) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

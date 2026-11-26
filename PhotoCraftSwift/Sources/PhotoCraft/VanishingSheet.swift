@@ -30,6 +30,7 @@ struct VanishingSheet:View {
     case .eyedropper: return "eyedropper"
     case .measure: return "ruler"
     case .hand: return "hand.raised"
+    case .zoom: return "magnifyingglass"
     }
   }
   private var marqueeControls: some View {
@@ -242,7 +243,12 @@ struct VanishingSheet:View {
         }.frame(width:280).padding(.trailing,5) }.frame(width:295)
       }
       HStack {
-        Toggle("Preview",isOn:$model.preview);Button("−") { model.zoom=max(0.25,model.zoom/1.5) };Button("+") { model.zoom=min(8,model.zoom*1.5) };Button("Fit") { model.zoom=1;model.pan = .zero }
+        Toggle("Preview",isOn:$model.preview)
+        Button { model.changePreviewZoom(by:1/1.5) } label: { Label("Zoom Out",systemImage:"minus").labelStyle(.iconOnly) }
+          .keyboardShortcut("-",modifiers:.command).help("Zoom Out")
+        Button { model.changePreviewZoom(by:1.5) } label: { Label("Zoom In",systemImage:"plus").labelStyle(.iconOnly) }
+          .keyboardShortcut("+",modifiers:.command).help("Zoom In")
+        Button("Fit") { model.fitPreview() }.keyboardShortcut("0",modifiers:.command).help("Fit in View")
         Button("Undo") { model.undo() }.disabled(!model.canUndo).keyboardShortcut("z",modifiers:.command)
         Button("Redo") { model.redo() }.disabled(!model.canRedo).keyboardShortcut("z",modifiers:[.command,.shift])
         Spacer()
@@ -299,6 +305,10 @@ struct VanishingPreview:View {
   @State private var marqueeTransformDrag: VanishingWorkspace.MarqueeTransformDrag?
   @State private var marqueeTransformDraft: VanishingOperation?
   @State private var marqueeTransformConstrained = false
+  @State private var temporaryHand = false
+  @State private var temporaryMagnification = false
+  @State private var navigationDrag: VanishingWorkspace.NavigationAction?
+  @State private var zoomSelection: CGRect?
 
   private enum MeasurementDrag {
     case draw(plane: Int, from: PathPoint, continuing: Bool)
@@ -306,7 +316,7 @@ struct VanishingPreview:View {
   }
   var body:some View {
     GeometryReader { geometry in
-      let scale=max(0.001,min((geometry.size.width-32)/model.size.width,(geometry.size.height-32)/model.size.height)*model.zoom)
+      let scale=model.previewScale(in:geometry.size,temporary:temporaryMagnification)
       let offset=CGPoint(x:(geometry.size.width-model.size.width*scale)/2+model.pan.width,y:(geometry.size.height-model.size.height*scale)/2+model.pan.height)
       let scene=model.scene
       let settings=model.program.settings
@@ -446,9 +456,19 @@ struct VanishingPreview:View {
         let points=model.pending.isEmpty ? stroke:model.pending
         var path=Path();for (i,p) in points.enumerated() { let q=screen(p);if i==0 { path.move(to:q) } else { path.addLine(to:q) };if !model.pending.isEmpty { context.fill(Path(ellipseIn:CGRect(x:q.x-3,y:q.y-3,width:6,height:6)),with:.color(.orange)) } };context.stroke(path,with:.color(.orange),lineWidth:2)
         if let source=model.cloneSource { let p=screen(source);var cross=Path();cross.move(to:.init(x:p.x-7,y:p.y));cross.addLine(to:.init(x:p.x+7,y:p.y));cross.move(to:.init(x:p.x,y:p.y-7));cross.addLine(to:.init(x:p.x,y:p.y+7));context.stroke(cross,with:.color(.yellow),lineWidth:1.5) }
+        if let zoomSelection {
+          let outline = Path(zoomSelection)
+          context.stroke(outline,with:.color(.black),lineWidth:2)
+          context.stroke(outline,with:.color(.white),style:StrokeStyle(lineWidth:1,dash:[4,3]))
+        }
       }.toolCursor { flags in
+        if let navigation = navigationDrag ?? (!pressed
+          ? VanishingWorkspace.NavigationAction(tool:model.tool,temporaryHand:temporaryHand,modifiers:flags)
+          : nil) {
+          return navigation.cursor(dragging:navigationDrag != nil)
+        }
         switch model.tool {
-        case .hand: return pressed ? .closedHand:.openHand
+        case .hand,.zoom: return .arrow
         case .eyedropper:
           let available = pointer.map { model.canSampleBrushColor(at:point($0)) } ?? true
           return .colorSample(target:.foreground,available:available)
@@ -504,6 +524,28 @@ struct VanishingPreview:View {
         }
       }.contentShape(Rectangle()).focusable().focused($focused)
       .defaultFocus($focused,true)
+      .onKeyPress(keys:[.space,"x"],phases:[.down,.up]) { press in
+        let active = press.phase == .down
+        if active && (pressed || !press.modifiers.intersection([.command,.control,.option]).isEmpty) { return .ignored }
+        if press.key == .space {
+          guard active || temporaryHand else { return .ignored }
+          temporaryHand = active
+        } else {
+          guard active || temporaryMagnification else { return .ignored }
+          temporaryMagnification = active
+        }
+        return .handled
+      }
+      .onKeyPress(keys:["z"]) { press in
+        guard !pressed, press.modifiers.isEmpty else { return .ignored }
+        model.tool = .zoom
+        return .handled
+      }
+      .onKeyPress(keys:["h"]) { press in
+        guard !pressed, press.modifiers.isEmpty else { return .ignored }
+        model.tool = .hand
+        return .handled
+      }
       .onKeyPress("r") {
         guard !pressed else { return .ignored }
         model.tool = .measure
@@ -547,6 +589,15 @@ struct VanishingPreview:View {
       }
       .onChange(of:model.tool) { _, _ in pointer = nil }
       .onChange(of:focused) { _, active in
+        if !active {
+          temporaryHand = false
+          temporaryMagnification = false
+          if navigationDrag != nil {
+            navigationDrag = nil
+            zoomSelection = nil
+            pressed = false
+          }
+        }
         if !active && pressed && (model.tool == .brush || model.tool == .stamp || marqueeTransformDrag != nil || pasteDrag != nil) {
           stroke = []
           strokeMode = .paint
@@ -564,6 +615,7 @@ struct VanishingPreview:View {
         switch phase { case .active(let position): pointer = position; case .ended: pointer = nil }
       }
       .simultaneousGesture(SpatialTapGesture(count:2).onEnded { value in
+        guard !temporaryHand,navigationDrag == nil else { return }
         guard let index = scene?.plane(at:point(value.location)) else { return }
         if model.tool == .measure { model.measurePlaneDimensions(index) }
         if model.tool == .marquee && model.selectedPasteOperation == nil { model.selectMarqueePlane(index) }
@@ -571,7 +623,10 @@ struct VanishingPreview:View {
       .gesture(DragGesture(minimumDistance:0).onChanged { value in
         if !pressed {
           focused=true
-          pressed=true;pan=model.pan;stroke=[];hit=nil;corner=nil;strokeMode = .paint;strokeMoved=false;model.beginGesture()
+          pressed=true;pan=model.pan
+          navigationDrag = .init(tool:model.tool,temporaryHand:temporaryHand,modifiers:NSEvent.modifierFlags)
+          if navigationDrag != nil { return }
+          stroke=[];hit=nil;corner=nil;strokeMode = .paint;strokeMoved=false;model.beginGesture()
           let start=point(value.startLocation)
           if let scene, model.tool == .marquee || model.tool == .transform {
             if model.selectedPasteOperation != nil {
@@ -613,6 +668,16 @@ struct VanishingPreview:View {
             else { stroke = [start] }
           }
         }
+        if let navigationDrag {
+          switch navigationDrag {
+          case .pan:
+            model.pan = .init(width:pan.width+value.translation.width,height:pan.height+value.translation.height)
+          case .zoom:
+            zoomSelection = CGRect(x:value.startLocation.x,y:value.startLocation.y,
+              width:value.translation.width,height:value.translation.height).standardized
+          }
+          return
+        }
         let p=point(value.location)
         if let scene,let pasteDrag {
           pasteDraft = model.projectedPaste(pasteDrag,to:p,scene:scene)
@@ -629,7 +694,6 @@ struct VanishingPreview:View {
           return
         }
         switch model.tool {
-        case .hand:model.pan=CGSize(width:pan.width+value.translation.width,height:pan.height+value.translation.height)
         case .edit:if let hit { if let corner { model.moveCorner(hit,corner,to:p) } else { model.movePlane(hit,dx:value.translation.width/scale,dy:value.translation.height/scale) } }
         case .brush,.stamp:
           guard strokeMode != .sample else { break }
@@ -650,9 +714,30 @@ struct VanishingPreview:View {
             case nil: break
             }
           }
-        case .create,.marquee,.eyedropper,.transform:break
+        case .create,.marquee,.eyedropper,.transform,.hand,.zoom:break
         }
       }.onEnded { value in
+        guard pressed else { return }
+        if let navigationDrag {
+          switch navigationDrag {
+          case .pan:
+            model.pan = .init(width:pan.width+value.translation.width,height:pan.height+value.translation.height)
+          case .zoom(let outward):
+            let region = CGRect(x:value.startLocation.x,y:value.startLocation.y,
+              width:value.translation.width,height:value.translation.height).standardized
+            if region.width > 4,region.height > 4 {
+              let factor = max(1,min(geometry.size.width/region.width,geometry.size.height/region.height))
+              model.changePreviewZoom(by:outward ? 1/factor : factor,about:.init(x:region.midX,y:region.midY),
+                in:geometry.size,centerAnchor:true)
+            } else {
+              model.changePreviewZoom(by:outward ? 1/1.5 : 1.5,about:value.location,in:geometry.size)
+            }
+          }
+          self.navigationDrag = nil
+          zoomSelection = nil
+          pressed = false
+          return
+        }
         if let scene,let pasteDrag,hypot(value.translation.width,value.translation.height) > 2,
           let result = model.projectedPaste(pasteDrag,to:point(value.location),scene:scene) {
           model.finishPasteDrag(pasteDrag,at:result)

@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **750** · The 10 most recent entries, newest first.
+Source build **751** · The 10 most recent entries, newest first.
+
+## 2026-11-26 — Step 751 — Navigate the Vanishing Point preview
+
+Vanishing Point adds a Zoom tool with point-anchored zoom, Option to zoom out and a rectangle to zoom in on a region. Space temporarily pans and X temporarily magnifies the preview. Command–plus and Command–minus zoom. Command–0 fits the preview. Preview navigation leaves the edit program and document undo history intact.
+
+All 64 focused Debug tests passed, including anchor preservation and navigation cursors across all 16 modifier combinations. Both optimized architectures passed 878 of 880 selected tests, including the two new navigation cases. Intel ran under Rosetta. The two inherited failures repeated their earlier diagnostics.
+
+Offscreen Xcode captures confirm the fitted, zoomed and panned sheet in light and dark appearances. Live pointer input and exact Photoshop rectangle zoom and double-click behavior remain unqualified. Exact Photoshop paste raster output remains open. [Adobe’s Vanishing Point reference](https://helpx.adobe.com/uk/photoshop/using/vanishing-point.html).
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-751) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_751.md).
 
 ## 2026-11-25 — Step 750 — Resize and nudge floating Vanishing Point pastes
 
@@ -93,13 +103,3 @@ All 44 focused Xcode tests passed. The desktop editor and authenticated Photato 
 Both optimized builds passed 858 of 860 selected tests. The two inherited failures repeated their diagnostics. All five replay PNGs agree across Debug, Apple Silicon and Intel.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-742) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_742.md).
-
-## 2026-11-25 — Step 741 — Preserve Vanishing Point fold angles in Photoshop files
-
-PSD and PSB guides can keep their editable fold angles when moving between Photato and Photoshop. Photoshop reopened newly written guides at 45°, 90° and 135°. The reader also recovered the same off-centre camera from the three Photoshop saves. Untouched guide records and merged RGB samples survived both file formats.
-
-A new Marquee comparison used the corrected 90° guide. On the centre row, Photato matched Photoshop's patch extent in one direction and was one pixel wider in the other. The colors differ, even with Feather set to 0.
-
-All 43 focused checks passed. Both optimized builds passed 857 of 859 selected tests and repeated the same two existing failures. The twenty test PSD and PSB files match across the three builds.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-741) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_741.md).

@@ -857,6 +857,48 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testVanishingZoomPreservesThePointerAnchorAndEditHistory() throws {
+    let original = try fixture()
+    let model = VanishingWorkspace(document:original,layerID:original.layers[0].id)
+    defer { model.close() }
+    model.tool = .zoom
+    model.pan = .init(width:13,height:-7)
+    let viewport = CGSize(width:832,height:632)
+    let anchor = CGPoint(x:287,y:191)
+    let originalProgram = model.program
+    func imagePoint(at screen: CGPoint) -> CGPoint {
+      let scale = model.previewScale(in:viewport)
+      let dx = (viewport.width-model.size.width*scale)/2+model.pan.width
+      let dy = (viewport.height-model.size.height*scale)/2+model.pan.height
+      return .init(x:(screen.x-dx)/scale,y:(screen.y-dy)/scale)
+    }
+    let originalPoint = imagePoint(at:anchor)
+    model.changePreviewZoom(by:1.5,about:anchor,in:viewport)
+    let zoomedPoint = imagePoint(at:anchor)
+    XCTAssertEqual(zoomedPoint.x,originalPoint.x,accuracy:1e-10)
+    XCTAssertEqual(zoomedPoint.y,originalPoint.y,accuracy:1e-10)
+    XCTAssertEqual(model.previewScale(in:viewport,temporary:true),model.previewScale(in:viewport)*2,accuracy:1e-10)
+    XCTAssertEqual(model.zoom,1.5)
+    model.changePreviewZoom(by:4,about:anchor,in:viewport,centerAnchor:true)
+    let centeredPoint = imagePoint(at:.init(x:viewport.width/2,y:viewport.height/2))
+    XCTAssertEqual(centeredPoint.x,originalPoint.x,accuracy:1e-10)
+    XCTAssertEqual(centeredPoint.y,originalPoint.y,accuracy:1e-10)
+    let state = try XCTUnwrap(JSONSerialization.jsonObject(with:JSONSerialization.data(withJSONObject:model.apiState)) as? [String:Any])
+    XCTAssertEqual(state["tool"] as? String,"Zoom")
+    XCTAssertEqual(state["zoom"] as? Double,6)
+    XCTAssertEqual(state["pan"] as? [String:Double],["x":model.pan.width,"y":model.pan.height])
+    model.changePreviewZoom(by:1e12,about:anchor,in:viewport)
+    XCTAssertEqual(model.zoom,8)
+    let clampedPan = model.pan
+    model.changePreviewZoom(by:2,about:anchor,in:viewport)
+    XCTAssertEqual(model.pan,clampedPan)
+    model.fitPreview()
+    XCTAssertEqual(model.zoom,1)
+    XCTAssertEqual(model.pan,.zero)
+    XCTAssertEqual(model.program,originalProgram)
+    XCTAssertFalse(model.canUndo)
+  }
+
   @MainActor func testClipboardPasteStartsInCanvasAndConformsAroundTheGrabPoint() async throws {
     let original = try fixture()
     let store = EditorStore(document:original,actions:ActionLibrary())

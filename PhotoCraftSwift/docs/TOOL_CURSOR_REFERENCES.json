@@ -1766,7 +1766,8 @@
       "sampling_step": 747,
       "paste_transform_step": 748,
       "paste_transform_cursor": "Shift constrains movement and scale or snaps rotation. Option duplicates movement or centers scale. All 16 standard modifier combinations are tested. Photoshop’s exact rotation modifier remains unqualified.",
-      "paste_side_cursor": "Use the horizontal or vertical resize pointer at side handles. Shift and Option badges follow the adopted gesture."
+      "paste_side_cursor": "Use the horizontal or vertical resize pointer at side handles. Shift and Option badges follow the adopted gesture.",
+      "preview_navigation": "Zoom and Option zoom-out, open and closed Hand, and temporary Space panning use the active preview gesture. All sixteen modifier combinations are covered in native cursor tests."
     },
     {
       "cursor_behavior": "Option Path control-point addition; native SwiftUI cursor region.",

@@ -4,7 +4,24 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 @MainActor @Observable final class VanishingWorkspace:Identifiable {
-  enum Tool:String,CaseIterable { case create="Create Plane",edit="Edit Plane",marquee="Marquee",stamp="Stamp",brush="Brush",transform="Transform",eyedropper="Eyedropper",measure="Measure",hand="Hand" }
+  enum Tool:String,CaseIterable { case create="Create Plane",edit="Edit Plane",marquee="Marquee",stamp="Stamp",brush="Brush",transform="Transform",eyedropper="Eyedropper",measure="Measure",hand="Hand",zoom="Zoom" }
+  enum NavigationAction: Equatable {
+    case pan
+    case zoom(outward: Bool)
+
+    init?(tool: Tool, temporaryHand: Bool, modifiers: NSEvent.ModifierFlags) {
+      if temporaryHand || tool == .hand { self = .pan }
+      else if tool == .zoom { self = .zoom(outward:modifiers.contains(.option)) }
+      else { return nil }
+    }
+
+    func cursor(dragging: Bool) -> ToolCursor {
+      switch self {
+      case .pan: return dragging ? .closedHand : .openHand
+      case .zoom(let outward): return .symbol(outward ? "minus.magnifyingglass" : "plus.magnifyingglass")
+      }
+    }
+  }
   enum MarqueeMoveMode: String, CaseIterable { case destination = "Destination", source = "Source" }
   let id=UUID()
   let original:CraftDocument
@@ -76,6 +93,35 @@ import PhotoCraftImaging
   var rendering=false
   var zoom=1.0
   var pan=CGSize.zero
+  private static let previewZoomRange = 0.25...8.0
+
+  func previewScale(in viewport: CGSize, temporary: Bool = false) -> CGFloat {
+    let fit = min((viewport.width-32)/size.width,(viewport.height-32)/size.height)
+    return max(0.001,fit*zoom*(temporary ? 2 : 1))
+  }
+
+  func changePreviewZoom(by factor: Double, about anchor: CGPoint? = nil,
+    in viewport: CGSize = .zero, centerAnchor: Bool = false)
+  {
+    guard factor.isFinite, factor > 0 else { return }
+    let previous = zoom
+    let scale = previewScale(in:viewport)
+    let range = Self.previewZoomRange
+    zoom = min(range.upperBound,max(range.lowerBound,zoom*factor))
+    guard let anchor, anchor.x.isFinite, anchor.y.isFinite, viewport.width > 0, viewport.height > 0,
+      zoom != previous || centerAnchor else { return }
+    let ratio = previewScale(in:viewport)/scale
+    let dx = anchor.x-viewport.width/2, dy = anchor.y-viewport.height/2
+    let targetX = centerAnchor ? 0 : dx
+    let targetY = centerAnchor ? 0 : dy
+    pan = .init(width:targetX+(pan.width-dx)*ratio,height:targetY+(pan.height-dy)*ratio)
+  }
+
+  func fitPreview() {
+    zoom = 1
+    pan = .zero
+  }
+
   var error:String?
   private(set) var brushColorError: String?
   private struct StampAnchor: Equatable {

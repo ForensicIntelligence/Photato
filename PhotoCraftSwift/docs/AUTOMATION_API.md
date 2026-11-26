@@ -1,3 +1,7 @@
+### Vanishing Point preview navigation
+
+The open desktop workspace publishes its current `zoom` and `pan` in the authenticated workspace state. Pan uses preview offsets in view points. These fields are read-only observations of the desktop view. The desktop Zoom and Hand tools share the same workspace state and never create an undo step. [Qualification](SOURCE_PUBLICATION_751.md).
+
 ### Vanishing Point clipboard placement
 
 Send a `paste` operation to `filter.vanishingPoint` with a `sourceLayerID` and a `canvasPaste` object containing `origin` (an object with `x` and `y`), `width` and `height` in document pixels. A separate plane may be created later. The alternative plane placement takes `plane`, `at`, `width` and optional `pasteHeight` on the operation itself.

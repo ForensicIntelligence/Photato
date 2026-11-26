@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 751.** Navigate the Vanishing Point preview. [Qualification](docs/SOURCE_PUBLICATION_751.md).
+
 **Source checkpoint 750.** Resize and move a floating Vanishing Point paste. [Qualification](docs/SOURCE_PUBLICATION_750.md).
 
 **Source checkpoint 749.** Place clipboard pixels before choosing a plane. [Qualification](docs/SOURCE_PUBLICATION_749.md).

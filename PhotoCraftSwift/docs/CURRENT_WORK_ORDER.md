@@ -1,4 +1,4 @@
-**Vanishing Point.** Add the Photoshop Zoom tool and temporary navigation shortcuts. Keep the position-dependent reflection differences open under raster fidelity. [Development record](DEVLOG.md#dev-step-750) · [Qualification](SOURCE_PUBLICATION_750.md).
+**Vanishing Point.** Reuse resolved plane geometry during preview navigation. Keep exact Photoshop raster and scene comparisons open. [Development record](DEVLOG.md#dev-step-751) · [Qualification](SOURCE_PUBLICATION_751.md).
 
 **Source checkpoint 738.** The native Marquee creates perspective rectangles and turns them into sampled floating patches. The authenticated Photato API shares the edit and document history. The captured Photoshop 20 × 10 pixel move matched Photato's placement. Edge coverage and eight-bit rounding still differ. [Qualification](SOURCE_PUBLICATION_738.md).
 

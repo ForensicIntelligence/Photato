@@ -76,6 +76,23 @@ final class ToolCursorTests: XCTestCase {
     }
   }
 
+  @MainActor func testVanishingNavigationCursorTracksOptionAndTemporaryHand() {
+    let modifiers: [NSEvent.ModifierFlags] = [.control,.command,.option,.shift]
+    for bits in 0..<16 {
+      let flags = modifiers.enumerated().reduce(NSEvent.ModifierFlags()) { result,item in
+        bits & (1 << item.offset) == 0 ? result : result.union(item.element)
+      }
+      let zoom = VanishingWorkspace.NavigationAction(tool:.zoom,temporaryHand:false,modifiers:flags)
+      let icon = flags.contains(.option) ? "minus.magnifyingglass" : "plus.magnifyingglass"
+      XCTAssertEqual(zoom?.cursor(dragging:false),.symbol(icon))
+      XCTAssertEqual(zoom?.cursor(dragging:true),.symbol(icon))
+      let hand = VanishingWorkspace.NavigationAction(tool:.zoom,temporaryHand:true,modifiers:flags)
+      XCTAssertEqual(hand?.cursor(dragging:false),.openHand)
+      XCTAssertEqual(hand?.cursor(dragging:true),.closedHand)
+      XCTAssertNil(VanishingWorkspace.NavigationAction(tool:.brush,temporaryHand:false,modifiers:flags))
+    }
+  }
+
   @MainActor func testVanishingBrushAndStampCursorsFollowSixteenModifierCombinations() {
     let modifiers: [NSEvent.ModifierFlags] = [.control,.command,.option,.shift]
     for bits in 0..<16 {
