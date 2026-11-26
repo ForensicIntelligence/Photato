@@ -1,3 +1,9 @@
+### Vanishing Point Eyedropper
+
+Send `vanishingPoint.sampleColor` to the authenticated document command endpoint with the current revision. Supply the target `layerID` and point coordinates `x` and `y` in document pixels. Optional `settings` and `operations` use the same format as `filter.vanishingPoint`. Pass `newLayer: true` to sample the preview that would result from applying the draft to a separate layer.
+
+The response returns `revision`, `color` (RGB with alpha set to 1) and `coverage` from the point sample. Omit `operations` to read the original composite. The command leaves the source document and its Undo history unchanged. [Qualification](SOURCE_PUBLICATION_747.md).
+
 ### Vanishing Point Marquee patches
 Send a `marquee` operation to the authenticated `filter.vanishingPoint` command. The source and destination rectangles use their own plane index and rectified plane fractions. Rotation is in degrees about the destination center. Feather is in destination image pixels. The existing `opacity`, `clip` and `heal` options apply.
 

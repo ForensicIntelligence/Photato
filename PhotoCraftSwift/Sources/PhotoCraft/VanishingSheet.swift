@@ -27,6 +27,7 @@ struct VanishingSheet:View {
     case .stamp: return "scope"
     case .brush: return "paintbrush.pointed"
     case .transform: return "arrow.up.left.and.arrow.down.right"
+    case .eyedropper: return "eyedropper"
     case .measure: return "ruler"
     case .hand: return "hand.raised"
     }
@@ -182,7 +183,15 @@ struct VanishingSheet:View {
             healPicker($model.heal)
             Toggle("Clip to Surface",isOn:$model.clip)
             if model.tool == .stamp { Toggle("Aligned",isOn:$model.aligned);Text("Option-click a plane to sample, then drag to clone in perspective.").font(.caption).foregroundStyle(.secondary) }
-            else { ColorPicker("Brush Color",selection:Binding(get:{Color(.sRGB,red:Double(model.color.r),green:Double(model.color.g),blue:Double(model.color.b),opacity:Double(model.color.a))},set:{c in if let c=NSColor(c).usingColorSpace(.sRGB) { model.color=Pixel(Float(c.redComponent),Float(c.greenComponent),Float(c.blueComponent),Float(c.alphaComponent)) } })) }
+          }
+          if model.tool == .brush || model.tool == .eyedropper {
+            ColorPicker("Brush Color",selection:Binding(get:{
+              Color(.sRGB,red:Double(model.color.r),green:Double(model.color.g),blue:Double(model.color.b),opacity:Double(model.color.a))
+            },set:{ value in
+              if let color = NSColor(value).usingColorSpace(.sRGB) {
+                model.color = Pixel(Float(color.redComponent),Float(color.greenComponent),Float(color.blueComponent),Float(color.alphaComponent))
+              }
+            }))
           }
           Divider();Text("Paste into Perspective").font(.subheadline.bold())
           Button("Paste Clipboard") { do { let input=try store.clipboard.read();Task { await model.pasteClipboard(input) } } catch { model.error=error.localizedDescription } }.disabled(model.program.settings.planes.isEmpty).keyboardShortcut("v",modifiers:.command)
@@ -198,7 +207,9 @@ struct VanishingSheet:View {
             healPicker(Binding(get: { model.selectedPasteHeal ?? .off }, set: { model.setSelectedPasteHeal($0) }))
             Button("Delete Pasted Item") { var p=model.program;p.operations.remove(at:index);model.selectedPaste=nil;model.change(p) }
           }
-          if let error=model.error { Text(error).font(.caption).foregroundStyle(.red) }
+          if let error=model.error ?? (model.tool == .eyedropper ? model.brushColorError : nil) {
+            Text(error).font(.caption).foregroundStyle(.red)
+          }
           if let error=model.sceneExportError { Text(error).font(.caption).foregroundStyle(.red) }
           if let message=model.sceneExportMessage { Text(message).font(.caption).foregroundStyle(.secondary) }
         }.frame(width:280).padding(.trailing,5) }.frame(width:295)
@@ -368,6 +379,9 @@ struct VanishingPreview:View {
       }.toolCursor { flags in
         switch model.tool {
         case .hand: return pressed ? .closedHand:.openHand
+        case .eyedropper:
+          let available = pointer.map { model.canSampleBrushColor(at:point($0)) } ?? true
+          return .colorSample(target:.foreground,available:available)
         case .brush,.stamp:
           let mode = pressed ? strokeMode : .init(stamp:model.tool == .stamp,modifiers:flags)
           return mode.cursor
@@ -426,6 +440,16 @@ struct VanishingPreview:View {
         model.tool = .marquee
         return .handled
       }
+      .onKeyPress("i") {
+        guard !pressed else { return .ignored }
+        model.tool = .eyedropper
+        return .handled
+      }
+      .onKeyPress("b") {
+        guard !pressed else { return .ignored }
+        model.tool = .brush
+        return .handled
+      }
       .onKeyPress(keys:[.leftArrow,.rightArrow,.upArrow,.downArrow],phases:[.down,.repeat]) { press in
         guard !pressed,model.activeMarquee != nil,
           model.tool == .marquee || model.tool == .transform,
@@ -454,7 +478,7 @@ struct VanishingPreview:View {
         }
       }
       .onContinuousHover { phase in
-        guard model.tool == .measure || model.tool == .marquee || model.tool == .transform else { return }
+        guard model.tool == .measure || model.tool == .marquee || model.tool == .transform || model.tool == .eyedropper else { return }
         switch phase { case .active(let position): pointer = position; case .ended: pointer = nil }
       }
       .simultaneousGesture(SpatialTapGesture(count:2).onEnded { value in
@@ -536,7 +560,7 @@ struct VanishingPreview:View {
             case nil: break
             }
           }
-        case .create,.marquee:break
+        case .create,.marquee,.eyedropper:break
         }
       }.onEnded { value in
         if let scene,let marqueeTransformDrag,
@@ -554,6 +578,7 @@ struct VanishingPreview:View {
         marqueeDrag = nil
         marqueeOutline = nil
         if model.tool == .create { model.addPoint(.init((value.location.x-offset.x)/scale,(value.location.y-offset.y)/scale)) }
+        if model.tool == .eyedropper && pressed { model.sampleBrushColor(at:point(value.location)) }
         if (model.tool == .brush || model.tool == .stamp) && pressed && strokeMode != .sample {
           let end = point(value.location)
           if stroke.count < 4096,stroke.last != end { stroke.append(end) }

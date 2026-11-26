@@ -214,5 +214,11 @@
     "pixelDifference": {"changedPixels":846342,"maximumRGBDifferences":[88,70,59],
       "cleanInterior": "From document x=24 and y=14 through the right and lower image edges, the Photato samples matched the integer-shifted donor. The Adobe samples were equal or one 8-bit level lower. A larger mismatch remains along the feather fringe."},
     "remaining": "Direct Adobe Source drag, per-feather and per-depth comparisons, moving across a connected hinge, multi-face marquee wrapping, pointer transform handles and exact final pixels."
+  },
+  "eyedropper_747": {
+    "behavior_reference": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/vanishing-point-in-photoshop.html",
+    "native_and_http_passed": true,
+    "photoshop_pixel_comparison": "pending",
+    "public_receipt": "SOURCE_PUBLICATION_747.json"
   }
 }

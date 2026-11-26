@@ -857,6 +857,56 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testPerspectiveEyedropperSamplesDraftAndReadOnlyHTTPPreview() async throws {
+    var original = try fixture()
+    original.vanishingPoint = program().settings
+    let store = EditorStore(document:original,actions:ActionLibrary())
+    store.beginVanishingPoint()
+    let workspace = try XCTUnwrap(store.vanishingWorkspace)
+    defer { store.cancelVanishingPoint();store.renderTask?.cancel() }
+    await workspace.prepare()
+    let point = PathPoint(24.5,24.5)
+    workspace.tool = .brush
+    workspace.diameter = 8
+    workspace.hardness = 100
+    workspace.color = Pixel(1,0,0)
+    workspace.stroke([point])
+    await workspace.task?.value
+    workspace.tool = .eyedropper
+    let sourceColor = try ColorSampling.sample(original,x:point.x,y:point.y,settings:.init()).color
+    workspace.preview = false
+    workspace.sampleBrushColor(at:point)
+    await workspace.brushColorTask?.value
+    XCTAssertEqual(workspace.color,sourceColor)
+    workspace.preview = true
+    workspace.sampleBrushColor(at:point)
+    await workspace.brushColorTask?.value
+    XCTAssertEqual(workspace.color,Pixel(1,0,0))
+    XCTAssertFalse(workspace.canSampleBrushColor(at:.init(64,24)))
+    XCTAssertEqual(workspace.program.operations.count,1)
+    XCTAssertEqual(store.document,original)
+    XCTAssertTrue(store.session.undoStack.isEmpty)
+
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:original)
+      try service.share(document)
+      let shareID = try XCTUnwrap(service.shares.first?.id)
+      let revision = service.revision(document.store)
+      let operations: [[String:Any]] = [["kind":"brush","plane":0,"diameter":8,"hardness":100,
+        "color":["r":1,"g":0,"b":0,"a":1],"points":[["x":point.x,"y":point.y]]]]
+      let (response,data) = try await helper.request(service,path:"/v1/documents/\(shareID)/commands",body:[
+        "command":"vanishingPoint.sampleColor","revision":revision,
+        "parameters":["layerID":original.layers[0].id.uuidString,"x":point.x,"y":point.y,"operations":operations]])
+      XCTAssertEqual(response.statusCode,200)
+      let payload = try XCTUnwrap(try JSONSerialization.jsonObject(with:data) as? [String:Any])
+      XCTAssertEqual(payload["color"] as? [String:Float],["r":1,"g":0,"b":0,"a":1])
+      XCTAssertEqual(payload["revision"] as? String,revision)
+      XCTAssertEqual(document.store.document,original)
+      XCTAssertTrue(document.store.session.undoStack.isEmpty)
+    }
+  }
+
   @MainActor func testFloatingMarqueeHandlesShareNumericTransformUndoAndHTTPOutput() async throws {
     var original = try fixture()
     original.vanishingPoint = program().settings

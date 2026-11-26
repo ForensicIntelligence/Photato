@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **746** · The 10 most recent entries, newest first.
+Source build **747** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 747 — Sample the Vanishing Point preview with Eyedropper
+
+Vanishing Point’s Eyedropper samples the composite at the pointer. With Preview on, it sees the active draft. With Preview off, it sees the original. The sampled color becomes the workspace Brush color. Press I for Eyedropper and B to return to Brush.
+
+The authenticated Photato command `vanishingPoint.sampleColor` accepts an image point and optional preview operations and returns the visible color and coverage without changing the shared document revision or Undo history.
+
+All 57 focused tests passed in Debug. Both optimized builds passed 871 of 873 selected tests. The new desktop and HTTP Eyedropper check passed on Apple Silicon and Intel under Rosetta. The two inherited color-profile and layer-effect failures repeated their previous diagnostics.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-747) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_747.md).
 
 ## 2026-11-25 — Step 746 — Scale and rotate floating perspective selections with handles
 
@@ -93,13 +103,3 @@ Photoshop and Photato moved the same full-plane patch 20 pixels right and 10 dow
 Both optimized architectures passed 850 of 852 selected tests, with the same two failures as build 737. Photato produced identical replay files in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the locally signed preview opened offscreen.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-738) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_738.md).
-
-## 2026-11-25 — Step 737 — Export Vanishing Point scenes
-
-Vanishing Point can export perspective planes as textured 3DS meshes or as a VPE scene, with one PNG per plane. Export to 3DS includes the VPE companion. The native filter writes a new folder. The authenticated Photato API downloads the exported files as a ZIP and leaves the document and Undo history intact.
-
-Blender opened the camera, meshes and PNG textures from both Photato reference scenes. An independent reader checked the VPE scene and its companion images. All 21 focused Core cases and 11 corrected Xcode Debug app and HTTP cases passed. Photoshop produced different camera values, hinged texture sizes and square texture pixels. After Effects import and DXF remain open.
-
-Both optimized architectures passed 847 of 849 selected tests. The same two cases failed as in build 736. All nine fixture outputs matched byte for byte across Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the signed preview opened offscreen.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-737) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_737.md).

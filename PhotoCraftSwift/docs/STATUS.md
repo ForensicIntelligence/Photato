@@ -1,3 +1,5 @@
+> **Source checkpoint 747.** Vanishing Point’s Eyedropper samples the composite at the pointer. With Preview on, it sees the active draft. With Preview off, it sees the original. The sampled color becomes the workspace Brush color. Press I for Eyedropper and B to return to Brush. All 57 focused tests passed in Debug. Both optimized builds passed 871 of 873 selected tests. The new desktop and HTTP Eyedropper check passed on Apple Silicon and Intel under Rosetta. The two inherited color-profile and layer-effect failures repeated their previous diagnostics. [Qualification](SOURCE_PUBLICATION_747.md).
+
 > **Source checkpoint 746.** Vanishing Point floating Marquee selections have scale and rotation handles with Shift snapping and one Undo. Both optimized builds passed 870 of 872 selected tests, and all six native replays matched. [Qualification](SOURCE_PUBLICATION_746.md).
 
 > **Source checkpoint 745.** Vanishing Point Brush and Stamp support straight Shift strokes. The cursor changes with the modifier, and the editor and authenticated Photato API share the path and Undo. All 53 focused tests passed. [Qualification](SOURCE_PUBLICATION_745.md).

@@ -139,11 +139,12 @@ struct AutomationCommand: Sendable {
           properties[key]=["type":"string","enum":VanishingSceneExport.Format.allCases.map(\.rawValue)]
           continue
         }
-        if name == "filter.vanishingPoint" {
+        if name == "filter.vanishingPoint" || name == "vanishingPoint.sampleColor" {
           if key == "settings" { properties[key]=VanishingSettings.apiSchema;continue }
           if key == "operations" { properties[key]=VanishingSettings.operationSchema;continue }
           if key == "measurementCalibration" { properties[key]=VanishingSettings.measurementCalibrationSchema;continue }
           if key == "newLayer" || key == "renderMeasurements" { properties[key]=["type":"boolean","default":false];continue }
+          if key == "x" || key == "y" { properties[key]=["type":"number","minimum":0,"exclusiveMaximum":300000];continue }
         }
         if name == "layer.warp",key == "settings" { properties[key] = WarpDefinition.apiSchema;continue }
         if name == "document.contactSheet",key == "settings" || key == "sources" { properties[key] = key == "settings" ? ContactSheetSettings.apiSchema:ContactSheetSettings.sourcesSchema;continue }
@@ -328,6 +329,7 @@ struct AutomationCommand: Sendable {
     .init(name:"document.hdrMerge.cancel",parameters:["operationID":"Current HDR image operation UUID"],description:"Cancel an active HDR image creation operation from a participating shared source."),
     .init(name:"document.hdrMerge",parameters:["sources":"Shared source document IDs and current revisions","settings":"Optional HDR merge settings","name":"Optional new document name"],description:"Create a new shared HDR image from multiple shared photographs; preserve all source documents.",optionalParameters:["settings","name"]),
     .init(name:"vanishingPoint.export",parameters:["format":"3ds or vpe"],description:"Export saved perspective planes and PNG textures in a ZIP download. Requires document transfers. Document and Undo history stay intact."),
+    .init(name:"vanishingPoint.sampleColor",parameters:["layerID":"Target raster layer UUID","settings":"Perspective planes; omitted uses saved settings","operations":"Optional preview operations","newLayer":"Preview onto a separate layer","x":"Document x","y":"Document y"],description:"Sample the visible Vanishing Point color after the supplied preview operations without applying them.",optionalParameters:["settings","operations","newLayer"]),
     .init(name:"filter.vanishingPoint",parameters:["layerID":"Target raster layer UUID","settings":"Perspective planes and measurements; omitted uses saved settings","operations":"Perspective paste/clone/brush operations","measurementCalibration":"Assign a known length to a measurement index","renderMeasurements":"Write a raster copy of measurement lines and labels","newLayer":"Apply pixels on a new layer"],description:"Define perspective planes, calibrate and render measurements, and apply perspective editing in one native transaction.",optionalParameters:["settings","operations","measurementCalibration","renderMeasurements","newLayer"]),
     .init(name:"layer.warp",parameters:["layerID":"Pixel layer or Smart Object UUID","settings":"Warp preset or custom mesh"],description:"Warp a pixel layer or retain editable source-space Warp on a Smart Object, in one undoable transaction."),
     .init(name:"photo.autoAlign",parameters:["layerIDs":"Two to sixteen unique pixel-layer UUIDs","settings":"Optional projection, reference and focal length"],description:"Register overlapping layers by image content and warp their pixels and masks in one undoable transaction.",optionalParameters:["settings"]),

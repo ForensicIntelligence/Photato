@@ -339,12 +339,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:746 -->
-## Current development status — 25 November 2026
+<!-- current-status-step:747 -->
 
-Vanishing Point floating Marquee selections have corner scale handles and a rotation handle. The desktop and Photato API share destination geometry and Undo, and all six checked replays matched across Debug and optimized builds. Exact Adobe transform pixels remain open.
+Vanishing Point’s Eyedropper samples the composite at the pointer. With Preview on, it sees the active draft. With Preview off, it sees the original. The sampled color becomes the workspace Brush color. Press I for Eyedropper and B to return to Brush.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-746) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_746.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-747) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_747.md).
 
 <!-- current-status:end -->
 
@@ -1297,5 +1296,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 744 | [Constrain perspective retouching to a Marquee](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-744) |
 | 2026-11-25 | 745 | [Paint straight perspective strokes with Shift](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-745) |
 | 2026-11-25 | 746 | [Scale and rotate floating perspective selections with handles](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-746) |
+| 2026-11-25 | 747 | [Sample the Vanishing Point preview with Eyedropper](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-747) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

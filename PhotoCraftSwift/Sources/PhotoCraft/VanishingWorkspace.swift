@@ -4,7 +4,7 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 @MainActor @Observable final class VanishingWorkspace:Identifiable {
-  enum Tool:String,CaseIterable { case create="Create Plane",edit="Edit Plane",marquee="Marquee",stamp="Stamp",brush="Brush",transform="Transform",measure="Measure",hand="Hand" }
+  enum Tool:String,CaseIterable { case create="Create Plane",edit="Edit Plane",marquee="Marquee",stamp="Stamp",brush="Brush",transform="Transform",eyedropper="Eyedropper",measure="Measure",hand="Hand" }
   enum MarqueeMoveMode: String, CaseIterable { case destination = "Destination", source = "Source" }
   let id=UUID()
   let original:CraftDocument
@@ -77,6 +77,7 @@ import PhotoCraftImaging
   var zoom=1.0
   var pan=CGSize.zero
   var error:String?
+  private(set) var brushColorError: String?
   private struct StampAnchor: Equatable {
     let source: PathPoint
     let start: PathPoint
@@ -99,6 +100,7 @@ import PhotoCraftImaging
   var canRedo: Bool { !redoStates.isEmpty }
   private var editState: EditState { .init(program:program,marquee:marquee,floating:selectedMarqueePatch,stampAnchor:cloneAnchor) }
   @ObservationIgnored var task:Task<Void,Never>?
+  @ObservationIgnored private(set) var brushColorTask: Task<Void,Never>?
   @ObservationIgnored private var seedSnapshot: RenderSnapshot?
   @ObservationIgnored private var seedDisplay: CanvasRasterPreview?
   @ObservationIgnored private var sourcePreview: SourcePreview?
@@ -321,6 +323,35 @@ import PhotoCraftImaging
     }
   }
   func setSource(_ p:PathPoint) { guard scene?.plane(at:p) != nil else { error="Choose a source inside a plane.";return };cloneSource=p;cloneAnchor=nil;error=nil }
+
+  func canSampleBrushColor(at point: PathPoint) -> Bool {
+    !closed && (!preview || preparedEdit != nil) && point.x >= 0 && point.y >= 0
+      && point.x < Double(original.width) && point.y < Double(original.height)
+  }
+
+  func sampleBrushColor(at point: PathPoint) {
+    guard canSampleBrushColor(at:point) else { return }
+    let document = preview ? preparedEdit?.result ?? original : original
+    let samplingPreview = preview, token = generation, previousColor = color
+    brushColorError = nil
+    brushColorTask?.cancel()
+    brushColorTask = Task { [weak self] in
+      let worker = Task.detached(priority:.userInitiated) {
+        try ColorSampling.sample(document,x:point.x,y:point.y,settings:.init())
+      }
+      do {
+        let sample = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+        guard let self, !Task.isCancelled, !self.closed, self.color == previousColor,
+          self.preview == samplingPreview, self.generation == token else { return }
+        self.color = sample.color
+      } catch {
+        guard let self, !Task.isCancelled, !self.closed, self.tool == .eyedropper,
+          self.preview == samplingPreview, self.generation == token else { return }
+        self.brushColorError = error.localizedDescription
+      }
+    }
+  }
+
   func stroke(_ points:[PathPoint], straight: Bool = false, connect: Bool = false) {
     guard let eventStart=points.first,let scene,let eventPlane=scene.plane(at:eventStart) else { error="Start inside a perspective plane.";return }
     let kind: VanishingOperation.Kind = tool == .stamp ? .clone : .brush
@@ -540,6 +571,8 @@ import PhotoCraftImaging
     generation += 1
     task?.cancel()
     task = nil
+    brushColorTask?.cancel()
+    brushColorTask = nil
     seedSnapshot = nil
     seedDisplay = nil
     sourcePreview = nil

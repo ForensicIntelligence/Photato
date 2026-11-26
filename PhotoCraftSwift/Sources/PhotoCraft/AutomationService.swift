@@ -1575,6 +1575,7 @@ import UniformTypeIdentifiers
         return .json(state(share,document:document))
       }
       if command.name == "vanishingPoint.export" { return try await exportVanishingScene(command,document:document,shareID:id) }
+      if command.name == "vanishingPoint.sampleColor" { return try await sampleVanishingColor(command,document:document,shareID:id) }
       if command.name == "filter.vanishingPoint" {
         try await executePreparedOperation(document:document,shareID:id,revision:command.revision) { original in
           let (layerID,program)=try command.vanishingOptions(in:original)

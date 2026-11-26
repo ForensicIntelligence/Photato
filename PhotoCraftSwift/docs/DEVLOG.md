@@ -765,7 +765,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 744 | 2026-11-25 | [Constrain perspective retouching to a Marquee](#dev-step-744) |
 | 745 | 2026-11-25 | [Paint straight perspective strokes with Shift](#dev-step-745) |
 | 746 | 2026-11-25 | [Scale and rotate floating perspective selections with handles](#dev-step-746) |
+| 747 | 2026-11-25 | [Sample the Vanishing Point preview with Eyedropper](#dev-step-747) |
 <!-- history-index:end -->
+
+<a id="dev-step-747"></a>
+
+## 2026-11-25 — Step 747 — Sample the Vanishing Point preview with Eyedropper
+
+Vanishing Point’s Eyedropper samples the composite at the pointer. With Preview on, it sees the active draft. With Preview off, it sees the original. The sampled color becomes the workspace Brush color. Press I for Eyedropper and B to return to Brush. The authenticated Photato command `vanishingPoint.sampleColor` accepts an image point and optional preview operations and returns the visible color and coverage without changing the shared document revision or Undo history.
+
+The implementation reuses the editor’s point sampler for both routes. The workspace discards a sample when the preview generation, source display or chosen Brush color has moved on. The read-only endpoint checks authorization, revision and share state around preview rendering. Changes are in AutomationCommands, AutomationService, AutomationVanishingPoint, VanishingSheet, VanishingWorkspace, VanishingWorkflowTests, AutomationTests and the build Info.plist.
+
+The first Xcode build reached the icon-generation phase before a local sandbox setting blocked it. The retry used the required target build setting and succeeded. The focused app test samples an original pixel and a red painted draft, then checks the same red through authenticated HTTP with no document or history change. The first optimized runs exposed ten tests that still expected 293 commands. Those tests shared one expected count. Updating it to 294 fixed the catalogue expectations. The final qualification reran both complete optimized selections, and the app executable hashes stayed identical.
+
+All 57 focused tests passed in Debug. Both optimized builds passed 871 of 873 selected tests. The new desktop and HTTP Eyedropper check passed on Apple Silicon and Intel under Rosetta. The two inherited color-profile and layer-effect failures repeated their previous diagnostics. Both extracted Universal slices launched offscreen. The app is ad-hoc signed and targets macOS 14.0. The 77,742,674-byte ZIP has SHA-256 `e7753790ae242b3d8ff65b9cc20e7ce184a1b18411a16e55c9aeae61d4ce4b87`.
+
+The paired Photoshop sample values remain unmeasured. The desktop’s point sample updates its workspace Brush color. The published Adobe v2 contract has no dedicated Vanishing Point route. [Adobe’s workspace documentation](https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/vanishing-point-in-photoshop.html) · [Qualification](SOURCE_PUBLICATION_747.md).
+
+The README estimate stays at 50%. This checkpoint completes preview sampling for the scoped workflow. Clipboard placement and exact Photoshop raster comparisons still affect Vanishing Point acceptance.
 
 <a id="dev-step-746"></a>
 

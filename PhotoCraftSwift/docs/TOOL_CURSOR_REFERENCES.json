@@ -1760,8 +1760,10 @@
       "name": "Sky Replacement"
     },
     {
-      "cursor_behavior": "Option Stamp source sampling; gesture-latched sampling flag; native SwiftUI cursor region.",
-      "name": "Vanishing Point"
+      "cursor_behavior": "Option picks a Stamp source, Shift guides straight Brush and Stamp strokes, and Shift snaps floating Marquee rotation. The Eyedropper shows its sampling cursor when the displayed image point is available.",
+      "name": "Vanishing Point",
+      "sampling_reference": "VANISHING_POINT_REFERENCES.json",
+      "sampling_step": 747
     },
     {
       "cursor_behavior": "Option Path control-point addition; native SwiftUI cursor region.",
