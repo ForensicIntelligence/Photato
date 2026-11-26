@@ -510,6 +510,80 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testPhotoshopEditedRightAngleHingeUsesItsVanishingDirections() async throws {
+    // Photoshop 2026 saved these guides after changing the selected plane's Angle to 90°.
+    let body = """
+    tNaF203
+    1
+    100
+    2
+    29860384 0 -1 0 -1409.3 450
+    580.4 185.4 -1409.3 450 0 0 1
+    580.4 714.6 -1409.3 450 0 0 5
+    580.4 185.4 580.4 515810 0 1 7
+    299.245 222.789 580.4 515810 0 1 3
+    29861952 29860384 180 2 1077.98 448.155
+    580.4 185.4 580.4 515810 0 1 1
+    780.244 290.931 580.4 515810 0 1 5
+    580.4 185.4 1077.98 448.155 0 2 7
+    580.4 714.6 1077.98 448.155 0 2 3
+    201 100 0 100 0
+    """
+    func fixture(_ body: String) throws -> (CraftDocument, Data) {
+      let record = Data((body+"\n").utf8)
+      let length = UInt32(record.count)
+      var resource = Data([56,66,73,77,15,160,0,0,UInt8(truncatingIfNeeded:length>>24),
+        UInt8(truncatingIfNeeded:length>>16),UInt8(truncatingIfNeeded:length>>8),UInt8(truncatingIfNeeded:length)])
+      resource.append(record)
+      if record.count % 2 != 0 { resource.append(0) }
+      var document = try CraftDocument(width:1200,height:900)
+      document.sourceMetadata = ["psdResources":resource]
+      return try (PSDCodec.read(DocumentIO.encode(document,format:.psd)),record)
+    }
+    let (document,record) = try fixture(body)
+    let settings = try XCTUnwrap(document.vanishingPoint)
+    let link = try XCTUnwrap(settings.planes.last)
+    XCTAssertEqual(settings.planes.count,2)
+    let center = try XCTUnwrap(settings.center)
+    XCTAssertEqual(center.x,198.1204,accuracy:0.01)
+    XCTAssertEqual(center.y,451.5520,accuracy:0.01)
+    XCTAssertEqual(settings.focalLength,1189.2430,accuracy:0.01)
+    XCTAssertEqual(link.parent,0)
+    XCTAssertEqual(link.edge,.right)
+    XCTAssertEqual(link.angle,90)
+    let scene = try VanishingScene(settings,width:1200,height:900)
+    XCTAssertEqual(scene.frames[1].corners[0],scene.frames[0].corners[1])
+    XCTAssertEqual(scene.frames[1].corners[3],scene.frames[0].corners[2])
+    let a = scene.measurementMetric(for:0), b = scene.measurementMetric(for:1)
+    XCTAssertEqual(b.x/a.x,3.0177395,accuracy:0.0001)
+    XCTAssertEqual((scene.apiValue(settings:settings)["focalLength"] as? Double),settings.focalLength)
+    for format in [DocumentIO.Format.psd,.psb] {
+      let output = try DocumentIO.encode(document,format:format)
+      XCTAssertNotNil(output.range(of:record))
+      XCTAssertEqual(try PSDCodec.read(output).vanishingPoint,settings)
+    }
+    let (withoutGuide,_) = try fixture(body.replacingOccurrences(
+      of:"180 2 1077.98 448.155",with:"180 2 1377.98 448.155"))
+    XCTAssertNotEqual(withoutGuide.vanishingPoint?.planes.last?.angle,90)
+
+    var autoCamera = settings
+    autoCamera.focalLength = 0
+    let layerID = try XCTUnwrap(document.activeLayerID)
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,client in
+      client.store.session = EditorSession(document:document)
+      try service.share(client)
+      let status = try await helper.edit(service,client,"filter.vanishingPoint",
+        ["layerID":layerID.uuidString,"settings":autoCamera.apiValue])
+      XCTAssertEqual(status,200)
+      let replay = try XCTUnwrap(client.store.document.vanishingPoint)
+      XCTAssertEqual(replay.planes,settings.planes)
+      XCTAssertEqual(replay.center,settings.center)
+      XCTAssertEqual(replay.focalLength,settings.focalLength,accuracy:0.1)
+      XCTAssertEqual(client.store.document.layers,document.layers)
+    }
+  }
+
   @MainActor func testMeasureModifiersAndNativeHTTPHistory() async throws {
     var source = try fixture()
     source.vanishingPoint = program().settings

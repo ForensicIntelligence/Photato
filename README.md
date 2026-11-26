@@ -19,7 +19,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 739.** Vanishing Point selections and floating patches can span linked planes. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_739.md).
+**Development alpha — source build 740.** Vanishing Point recovers the editable 90° hinge and off-centre camera in a captured Photoshop PSD. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_740.md).
 
 ## Project layout
 

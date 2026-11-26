@@ -46,8 +46,53 @@ enum PSDVanishingPoint {
     let identity: UInt32
     let parent: UInt32
     let angle: Double?
+    let calibrationAxis: Int?
     let calibrationPoint: PathPoint?
     let rays: [Int: Ray]
+
+    func hasRightAngleGuide(relativeTo parent: Plane) -> Bool {
+      guard let angle, let axis = calibrationAxis, let guide = calibrationPoint,
+        abs(angle) == 90 || abs(angle) == 180,
+        !parent.rays.values.contains(where: { $0.axis == axis }) else { return false }
+      let across = rays.values.filter { $0.axis == axis }
+      // A saved 90° hinge can carry a value of 180 in tNaF203. In that case
+      // require both transverse rays to identify the calibration point exactly.
+      let tolerance = abs(angle) == 180 ? 0.0 : 2.0
+      return across.count == 2 && across.allSatisfy {
+        !$0.endpoint && PSDVanishingPoint.distance($0.vanisher,guide) <= tolerance
+      }
+    }
+
+    func vanishingPoint(axis: Int) -> PathPoint? {
+      let directions = rays.values.filter { $0.axis == axis && !$0.endpoint }
+      guard directions.count == 2, directions[0].vanisher == directions[1].vanisher else { return nil }
+      return directions[0].vanisher
+    }
+
+    /// The principal point is the orthocenter of three finite orthogonal
+    /// vanishing points. Use the camera recorded by the guide even when the
+    /// principal point is off-center in the document.
+    func rightAngleCamera(relativeTo parent: Plane) -> (center: PathPoint, focal: Double)? {
+      guard let childAxis = calibrationAxis, let guide = calibrationPoint,
+        vanishingPoint(axis:childAxis) == guide else { return nil }
+      let parentAxes = Set(parent.rays.values.map(\.axis))
+      let sharedAxes = parentAxes.intersection(rays.values.map(\.axis))
+      guard sharedAxes.count == 1, let commonAxis = sharedAxes.first,
+        let parentAxis = parentAxes.subtracting(sharedAxes).first,
+        let a = parent.vanishingPoint(axis:parentAxis),
+        let c = parent.vanishingPoint(axis:commonAxis),
+        vanishingPoint(axis:commonAxis) == c else { return nil }
+
+      // Take the first altitude from a as the origin for the intersection.
+      let sx = guide.x-c.x, sy = guide.y-c.y, tx = a.x-c.x, ty = a.y-c.y
+      let determinant = sx*ty-sy*tx
+      guard abs(determinant) > 1e-8 * hypot(sx,sy) * hypot(tx,ty) else { return nil }
+      let altitude = ((guide.x-a.x)*tx+(guide.y-a.y)*ty)/determinant
+      let center = PathPoint(a.x-sy*altitude,a.y+sx*altitude)
+      let square = -((a.x-center.x)*(guide.x-center.x)+(a.y-center.y)*(guide.y-center.y))
+      guard max(abs(center.x),abs(center.y)) <= 1_000_000, square.isFinite, square > 1 else { return nil }
+      return (center,sqrt(square))
+    }
 
     func corners() throws -> [PathPoint] {
       try [(3,5),(5,7),(7,1),(1,3)].map { a,b in
@@ -217,15 +262,17 @@ enum PSDVanishingPoint {
         guard identity != 0, identities.insert(identity).inserted,
           index == 0 ? parent == 0 : family.contains(parent) else { throw invalid() }
         family.insert(identity)
-        let angle: Double?, calibrationPoint: PathPoint?
+        let angle: Double?, calibrationAxis: Int?, calibrationPoint: PathPoint?
         if version == 203 {
           let degrees = try input.number()
           let selector: Int = try input.integer()
           calibrationPoint = try input.point()
           guard (0...2).contains(selector), (-180...180).contains(degrees) else { throw invalid() }
           angle = index == 0 ? nil : degrees
+          calibrationAxis = index == 0 ? nil : selector
         } else {
           angle = nil
+          calibrationAxis = nil
           calibrationPoint = nil
         }
         var rays: [Int: Ray] = [:]
@@ -240,7 +287,8 @@ enum PSDVanishingPoint {
         }
         guard rays[1]!.axis == rays[5]!.axis, rays[3]!.axis == rays[7]!.axis,
           rays[1]!.axis != rays[7]!.axis else { throw invalid() }
-        planes.append(.init(grid:grid,identity:identity,parent:parent,angle:angle,calibrationPoint:calibrationPoint,rays:rays))
+        planes.append(.init(grid:grid,identity:identity,parent:parent,angle:angle,
+          calibrationAxis:calibrationAxis,calibrationPoint:calibrationPoint,rays:rays))
       }
     }
     let footerIndex = input.offset
@@ -309,15 +357,37 @@ enum PSDVanishingPoint {
   private static func settings(_ resource: Resource, width: Int, height: Int) throws -> VanishingSettings {
     var result = VanishingSettings()
     result.gridSize = resource.gridSize
-    let center = PathPoint(Double(width)/2,Double(height)/2)
-    result.center = center
+    let canvasCenter = PathPoint(Double(width)/2,Double(height)/2)
     let parents = Set(resource.planes.map(\.parent))
-    let roots = try resource.planes.filter { $0.parent == 0 }.map {
+    let rootRecords = resource.planes.filter { $0.parent == 0 }
+    let roots = try rootRecords.map {
       try $0.rootCorners(restoreSquare: !parents.contains($0.identity))
     }
-    result.focalLength = roots.lazy.compactMap { VanishingScene.inferredFocal($0,center:center) }.first
-      ?? Double(max(width,height))
+    let canvasSide = max(width,height)
+    func hingeFocal(_ link: (VanishingPlane.Edge,[PathPoint]), parent: [PathPoint], center: PathPoint) -> Double? {
+      VanishingScene.inferredOrthogonalHingeFocal(parent:parent,child:link.1,edge:link.0,
+        center:center,canvasSide:canvasSide)
+    }
+    let cameraFromHinge = rootRecords.first.flatMap { first in
+      resource.planes.lazy.compactMap { item -> (center: PathPoint, focal: Double)? in
+        guard item.parent == first.identity, item.hasRightAngleGuide(relativeTo:first),
+          let ring = try? item.corners(),
+          let link = try? linkedCorners(ring,parent:roots[0]) else { return nil }
+        if let recorded = item.rightAngleCamera(relativeTo:first),
+          let checked = hingeFocal(link,parent:roots[0],center:recorded.center),
+          abs(checked-recorded.focal) < 0.01*recorded.focal {
+          return recorded
+        }
+        return hingeFocal(link,parent:roots[0],center:canvasCenter).map { (canvasCenter,$0) }
+      }.first
+    }
+    let center = cameraFromHinge?.center ?? canvasCenter
+    result.center = center
+    result.focalLength = cameraFromHinge?.focal
+      ?? roots.lazy.compactMap { VanishingScene.inferredFocal($0,center:center) }.first
+      ?? Double(canvasSide)
     var indices: [UInt32:Int] = [:]
+    let records = Dictionary(uniqueKeysWithValues: resource.planes.map { ($0.identity,$0) })
     var rootIndex = 0
     for item in resource.planes {
       try Task.checkCancellation()
@@ -326,10 +396,14 @@ enum PSDVanishingPoint {
         plane = .init(corners:roots[rootIndex])
         rootIndex += 1
       } else {
-        guard let parent = indices[item.parent] else { throw invalid() }
+        guard let parent = indices[item.parent], let parentRecord = records[item.parent] else { throw invalid() }
         let scene = try VanishingScene(result,width:width,height:height)
-        let (edge,corners)=try linkedCorners(item.corners(),parent:scene.frames[parent].corners)
-        plane = try scene.calibratedPlane(parent:parent,edge:edge,corners:corners,angleFromCoplanar:item.angle)
+        let parentCorners = scene.frames[parent].corners
+        let link = try linkedCorners(item.corners(),parent:parentCorners)
+        let orthogonal = item.hasRightAngleGuide(relativeTo:parentRecord)
+          && hingeFocal(link,parent:parentCorners,center:center) != nil
+        plane = try scene.calibratedPlane(parent:parent,edge:link.0,corners:link.1,
+          angleFromCoplanar:orthogonal ? 90 : item.angle)
       }
       indices[item.identity]=result.planes.count
       result.planes.append(plane)

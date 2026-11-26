@@ -1,3 +1,13 @@
+## 2026-11-25 — Step 740 — Recover editable right-angle Photoshop hinges
+
+Photato can open both planes in an owned PSD saved after its hinge angle was edited to 90° in Photoshop. The previous build dropped the guides. The three stored vanishing directions reveal an off-centre camera that would be missed by assuming the centre of the image. Using that camera brings the native scene width ratio within 0.00001 of Photoshop's export.
+
+Both PSD and PSB round trips preserve the perspective record and every merged RGB sample. All 40 focused tests passed, including the authenticated Photato API replay. Newly authored hinge angles and exact color and edge coverage of the Marquee edit still need comparison.
+
+Each optimized architecture passed 855 of 857 selected tests. The same two failures repeated their build 739 diagnostics. All six native reference files matched across Debug, Apple Silicon and Intel. Both locally signed preview slices opened offscreen.
+
+[Development record](DEVLOG.md#dev-step-740) · [Qualification](SOURCE_PUBLICATION_740.md).
+
 ## 2026-11-25 — Step 739 — Wrap Vanishing Point selections across linked planes
 
 Vanishing Point can draw and move a selection across a hinge. The outline follows both planes without an extra edge down the middle. Floating patches can sample and land across the hinge, and the Photato API uses the same edit and Undo rules as the desktop.
@@ -2011,14 +2021,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:739 -->
+<!-- current-status-step:740 -->
 ## Current development status — 25 November 2026
 
-Vanishing Point selections and floating patches now span linked planes. The editor and authenticated Photato API use the same sampling and Undo. Photato carries the comparison patch farther across the hinge than Photoshop. Exact placement and pixel coverage remain open.
+Vanishing Point opens both editable planes in a captured right-angle Photoshop PSD. The native export recovers the off-centre projection and closely matches the width ratio of Photoshop's scene. PSD and PSB round trips preserve the file's perspective record and merged RGB samples. Newly authored PSD angles and exact Marquee sampling remain open.
 
-All 38 focused tests and 853 of 855 selected optimized tests per architecture passed. The two inherited failures repeated their earlier diagnostics.
+All 40 focused tests and 855 of 857 selected optimized tests per architecture passed. The two inherited failures repeated their earlier diagnostics.
 
-[Development record](DEVLOG.md#dev-step-739) · [Qualification](SOURCE_PUBLICATION_739.md).
+[Development record](DEVLOG.md#dev-step-740) · [Qualification](SOURCE_PUBLICATION_740.md).
 
 <!-- current-status:end -->
 
@@ -2964,6 +2974,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 737 | [Export Vanishing Point scenes](DEVLOG.md#dev-step-737) |
 | 2026-11-25 | 738 | [Add perspective Marquee and floating patches](DEVLOG.md#dev-step-738) |
 | 2026-11-25 | 739 | [Wrap Vanishing Point selections across linked planes](DEVLOG.md#dev-step-739) |
+| 2026-11-25 | 740 | [Recover editable right-angle Photoshop hinges](DEVLOG.md#dev-step-740) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

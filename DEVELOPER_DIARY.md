@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **739** · The 10 most recent entries, newest first.
+Source build **740** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 740 — Recover editable right-angle Photoshop hinges
+
+Photato can open both planes in an owned PSD saved after its hinge angle was edited to 90° in Photoshop. The previous build dropped the guides. The three stored vanishing directions reveal an off-centre camera that would be missed by assuming the centre of the image. Using that camera brings the native scene width ratio within 0.00001 of Photoshop's export.
+
+Both PSD and PSB round trips preserve the perspective record and every merged RGB sample. All 40 focused tests passed, including the authenticated Photato API replay. Newly authored hinge angles and exact color and edge coverage of the Marquee edit still need comparison.
+
+Each optimized architecture passed 855 of 857 selected tests. The same two failures repeated their build 739 diagnostics. All six native reference files matched across Debug, Apple Silicon and Intel. Both locally signed preview slices opened offscreen.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-740) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_740.md).
 
 ## 2026-11-25 — Step 739 — Wrap Vanishing Point selections across linked planes
 
@@ -93,15 +103,3 @@ On the 1,600 × 1,200 owned texture, Luminance lowered the mean lighting error o
 The solver bounds each local repair region, including its one-pixel boundary, to 4,194,304 pixels. Applying into an imported 1 × 1 transparent repair layer leaves an out-of-bounds defect unchanged. The New Layer option handled the same repair. Photoshop 2026 pixel comparison and full product retouch acceptance remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-731) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_731.md).
-
-## 2026-11-23 — Step 730 — Preserve Vanishing Point cameras at the canvas size limit
-
-Vanishing Point can now apply a local correction with the default camera on a sparse 300,000 × 300,000 document. The editable archive and authenticated Photato API retain and replay the resolved focal length.
-
-A 300,000 × 300,000 sparse document passed the native preview, Apply, archive reopen, HTTP archive download, and Undo. The API accepted the default camera and replayed the resolved 300,000-pixel focal length. The automatic and explicit camera controls produced the same local composite crop on both optimized slices and in Xcode Debug. Separate core tests cross the 100,000-pixel boundary in both document orientations and retain a calibrated 500,000-pixel focal length.
-
-The automatic-camera edit produced a 2,048 × 2,048 preview in 104 ms on optimized Apple Silicon and 185 ms under Rosetta on this sparse fixture.
-
-The maximum-size fixture is sparse and the correction uses one tile. Editable archives with focal lengths above 100,000 pixels require build 730 or later. Photoshop 2026 opened the reference modal on the owned texture fixture. The app disappeared before a stamp could be applied, so Adobe pixel equivalence remains open. Adobe documents the PSB dimension limit separately from this native workflow.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-730) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_730.md).

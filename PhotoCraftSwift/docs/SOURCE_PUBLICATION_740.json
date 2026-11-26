@@ -1,0 +1,345 @@
+{
+  "build": 740,
+  "base": "34a3ce9057fea5a5c94e7807f032e6c18ed3560b",
+  "inputCount": 9429,
+  "inputDigest": "3b8bbc2f17b94900cef7bc0f126728206140c6959bac25f0f973bbba1a32e6ba",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraft/AutomationVanishingPoint.swift": "c548b1418650b1ddc95c2d8a2f6c8873568c641c647d625e648812f929d878a6",
+    "Sources/PhotoCraftCore/VanishingPoint.swift": "6ac6e63e58df10d5792c4eacf767ac5a296e4525b7b1c2aacf85749df9d5fd99",
+    "Sources/PhotoCraftImaging/PSDVanishingPoint.swift": "de115c72d2dcc4fd5efa9bcea625074cf056639026c40ca32e7bb96d33cdf958",
+    "Tests/PhotoCraftAppTests/VanishingWorkflowTests.swift": "15bed9cbc3aa55225e751965895ee626d14f84a950ad3476283752fa3a80de1a",
+    "Tests/PhotoCraftCoreTests/VanishingTests.swift": "602c43bfe244f127e232552e4d41722dff23092a5ba37f7368770642a8e99587",
+    "scripts/Info.plist": "2b047b4109d066812cebf90fc93b643e2735d4a4f58bc73186736bfc901cd51e"
+  },
+  "focusedDebug": {
+    "corePass": 26,
+    "appAndHTTPPass": 14
+  },
+  "qualification": {
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 857,
+      "passed": 855,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "afce4b2d5401b0d378c6c2be5d045e706cb14a42d8a33ed34f658c8b9516f9e9"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 857,
+      "passed": 855,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "c7003940fb0b5d2b89deb0d1ffca00c92e2c132a806eff25d2a1a7244822154d"
+    }
+  },
+  "predecessorFailureDiagnostics": {
+    "arm": {
+      "matches739": true,
+      "assertionLines": 152
+    },
+    "intel": {
+      "matches739": true,
+      "assertionLines": 412
+    }
+  },
+  "adobeSceneEvidence": {
+    "exports": {
+      "740-adobe-asymmetric.vpe": {
+        "leftWidth": 329.03,
+        "rightWidth": 1103.9,
+        "rightToLeftWidth": 3.355013220678966,
+        "angleBetweenOutwardAxes": 0.0,
+        "sceneSHA256": "0d3a63530ea880b20619470ede68dfa43e49f5b368aa00700ccf65fb097f4b4e"
+      },
+      "740-adobe-asymmetric-angle90.vpe": {
+        "leftWidth": 329.039,
+        "rightWidth": 992.954000016459,
+        "rightToLeftWidth": 3.017739538524184,
+        "angleBetweenOutwardAxes": 90.0003298941459,
+        "sceneSHA256": "2a4b3e9a07198513b874bf484d0b8af2b7eb2f4e484c61a1615d2019474998a3"
+      }
+    },
+    "originalAndEditedGuideRGBChangedPixels": 0,
+    "editedGuidePSDSHA256": "d185f27a5ceb7cd45ecf8735eadfd9a3ca9753b4e99cde58453e69d14ca85e4c",
+    "textureNotes": "Both Adobe exports used the same truncated PNG names. Early dimensions were measured before the second export. The raw VPE and 3DS files use different file names and remain available."
+  },
+  "adobeInferredCamera": {
+    "740-owned-asymmetric-walls01-existing-resource4000.txt": {
+      "rootAxis": [
+        -1409.29776475,
+        450.0
+      ],
+      "seamAxis": [
+        580.4,
+        515809.853049
+      ],
+      "calibrationPoint": [
+        1077.97793679,
+        448.15462608
+      ],
+      "childAxis": [
+        1077.97885033,
+        447.208436471
+      ],
+      "orthocenterFromCalibration": {
+        "center": [
+          198.04239973359648,
+          451.5518751300512
+        ],
+        "focal": 1189.2646714507625
+      },
+      "orthocenterFromChildAxis": {
+        "center": [
+          1.993900091921602,
+          451.3625917427529
+        ],
+        "focal": 1232.283624555921
+      }
+    },
+    "740-adobe-asymmetric-angle90-existing-resource4000.txt": {
+      "rootAxis": [
+        -1409.3,
+        450.0
+      ],
+      "seamAxis": [
+        580.4,
+        515810.0
+      ],
+      "calibrationPoint": [
+        1077.98,
+        448.155
+      ],
+      "childAxis": [
+        1077.98,
+        448.155
+      ],
+      "orthocenterFromCalibration": {
+        "center": [
+          198.1204268774065,
+          451.5519586165825
+        ],
+        "focal": 1189.2430275943166
+      },
+      "orthocenterFromChildAxis": {
+        "center": [
+          198.1204268774065,
+          451.5519586165825
+        ],
+        "focal": 1189.2430275943166
+      }
+    },
+    "739-owned-hinged-walls01.psd": {
+      "rootAxis": [
+        -516.0,
+        450.0
+      ],
+      "seamAxis": [
+        631.764705882,
+        -501746.485478
+      ],
+      "calibrationPoint": [
+        1325.80645161,
+        451.658822896
+      ],
+      "childAxis": [
+        1325.80817058,
+        452.902639202
+      ],
+      "orthocenterFromCalibration": {
+        "center": [
+          179.46232996093897,
+          449.03886564486197
+        ],
+        "focal": 892.8810870704782
+      },
+      "orthocenterFromChildAxis": {
+        "center": [
+          -159.68241645254105,
+          449.5075663251099
+        ],
+        "focal": 727.5333287937523
+      }
+    }
+  },
+  "vpeCameraReprojection": {
+    "740-adobe-asymmetric.vpe": {
+      "rootRMSError": 0.09095127041017387,
+      "childRMSError": 641.9482224587391,
+      "focalCalibratedFromVPECorners": 1189.1651609989547,
+      "centerCalibratedFromVPECorners": [
+        198.12490424168004,
+        451.497671899082
+      ]
+    },
+    "740-adobe-asymmetric-angle90.vpe": {
+      "rootRMSError": 0.09117760848348787,
+      "childRMSError": 0.6375945603628187,
+      "focalCalibratedFromVPECorners": 1189.1432901318371,
+      "centerCalibratedFromVPECorners": [
+        198.2029509609656,
+        451.49775113941257
+      ]
+    },
+    "native-angle90-debug02/Photato-angle90.vpe": {
+      "rootRMSError": 0.0909867436526635,
+      "childRMSError": 0.6388510105836992,
+      "focalCalibratedFromVPECorners": 979.9191177341273,
+      "centerCalibratedFromVPECorners": [
+        600.0485179322986,
+        450.0220409564154
+      ]
+    }
+  },
+  "nativeCapturedGuideRoundTrips": {
+    "psd": {
+      "resourceBytesUnchanged": 378,
+      "rgbBytesUnchanged": 3240000,
+      "sha256": "5a35211ab22e0632c994dbac19dcef81bfeea10b86ef33df5e54abc33b850aa6"
+    },
+    "psb": {
+      "resourceBytesUnchanged": 378,
+      "rgbBytesUnchanged": 3240000,
+      "sha256": "1b0748a103d00cb78a2e7e92da71c010ae8343556c173a4406df93405249c6f5"
+    },
+    "nativeVPE": {
+      "sha256": "f3f41bea2f2d104029c847d65c7f1a1cfe6e91f903492cc6e4f7f806cd11a664",
+      "angleBetweenWidthAxes": 90.0,
+      "widthRatio": 3.0177488508750736
+    }
+  },
+  "fixtureOutputHashesAcrossConfigurations": {
+    "debug": {
+      "Phota0.png": "be61f24f6bbc02bae0bc145c3aaaf2f3d54b7f7e4032238775534801e4fe243c",
+      "Phota1.png": "5400241439b702767cb4137a86bf9b5faa5ddc4dbbe8092715fe0d3d2b8b510c",
+      "Photato-angle90.3ds": "7b35475a93a07c6a849df67472253a6a1c5564736ab13a76220bf8cf9c3326b6",
+      "Photato-angle90.vpe": "f3f41bea2f2d104029c847d65c7f1a1cfe6e91f903492cc6e4f7f806cd11a664",
+      "roundtrip.psb": "1b0748a103d00cb78a2e7e92da71c010ae8343556c173a4406df93405249c6f5",
+      "roundtrip.psd": "5a35211ab22e0632c994dbac19dcef81bfeea10b86ef33df5e54abc33b850aa6"
+    },
+    "arm": {
+      "Phota0.png": "be61f24f6bbc02bae0bc145c3aaaf2f3d54b7f7e4032238775534801e4fe243c",
+      "Phota1.png": "5400241439b702767cb4137a86bf9b5faa5ddc4dbbe8092715fe0d3d2b8b510c",
+      "Photato-angle90.3ds": "7b35475a93a07c6a849df67472253a6a1c5564736ab13a76220bf8cf9c3326b6",
+      "Photato-angle90.vpe": "f3f41bea2f2d104029c847d65c7f1a1cfe6e91f903492cc6e4f7f806cd11a664",
+      "roundtrip.psb": "1b0748a103d00cb78a2e7e92da71c010ae8343556c173a4406df93405249c6f5",
+      "roundtrip.psd": "5a35211ab22e0632c994dbac19dcef81bfeea10b86ef33df5e54abc33b850aa6"
+    },
+    "intel": {
+      "Phota0.png": "be61f24f6bbc02bae0bc145c3aaaf2f3d54b7f7e4032238775534801e4fe243c",
+      "Phota1.png": "5400241439b702767cb4137a86bf9b5faa5ddc4dbbe8092715fe0d3d2b8b510c",
+      "Photato-angle90.3ds": "7b35475a93a07c6a849df67472253a6a1c5564736ab13a76220bf8cf9c3326b6",
+      "Photato-angle90.vpe": "f3f41bea2f2d104029c847d65c7f1a1cfe6e91f903492cc6e4f7f806cd11a664",
+      "roundtrip.psb": "1b0748a103d00cb78a2e7e92da71c010ae8343556c173a4406df93405249c6f5",
+      "roundtrip.psd": "5a35211ab22e0632c994dbac19dcef81bfeea10b86ef33df5e54abc33b850aa6"
+    }
+  },
+  "fixtureOutputsExactlyMatchingAllConfigurations": [
+    "Phota0.png",
+    "Phota1.png",
+    "Photato-angle90.3ds",
+    "Photato-angle90.vpe",
+    "roundtrip.psb",
+    "roundtrip.psd"
+  ],
+  "preview": {
+    "build": 740,
+    "archive": "Photato-Retouch-Preview-740-universal.zip",
+    "archiveSHA256": "9696d7b4d2716f62fdc3630b4d4bdc6ea6b0e6cb5a28db38f2573c80ba1497fd",
+    "bundleID": "ca.forensicintelligence.photato.perspectiveretouchpreview740",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "a8f143fed14cee9d4fb91e638d89f4b01daa8f468c3d19efb1f48b20a44ab59c",
+    "architectureInputsSHA256": {
+      "arm64": "82ed1da8bf0d88b7a61b052cd4c20f20f204da14ec7fab4dbc67ac3316b4ee22",
+      "x86_64": "7f6b125b20447040a4588b16d4037caddf4dfa7f50fcca40d489866140a9f0a9"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    }
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "pngSHA256": "c26608357d25297707ffaaf345cc06ceb6fd53de40217773436f1dd13956852f",
+      "size": [
+        1700,
+        1174
+      ]
+    },
+    "x86_64": {
+      "pngSHA256": "4e4ed507449166d427b57ca890ebd709f609a097271949001dfbe7388e8e2dc3",
+      "size": [
+        1700,
+        1174
+      ]
+    }
+  },
+  "probeLogsSHA256": {
+    "xcode-debug01.log": "eb30582ed5d5f7ce08a4cf5276b488b265f78b4082a58f868e28e11c9b893bc2",
+    "xcode-debug02.log": "28d6e29a4a378f4a791e23b1ebc49fad339310819d131c162f7ce50e49520e3e",
+    "debug-core01.log": "831eec496cbea5d568648f24c6195be689a4c4c90f5284825edd03d039056d95",
+    "debug-core02.log": "55b6022896e1df37d391d47a16d759dec3bf5238f786540b1a1ffd099c7d7b70",
+    "debug-app01.log": "57bc05b72861f4d7a8e35f6b8aa5812f9a1e95f0e71b5c16b25a4c1fcbb86184",
+    "debug-app02.log": "e2e9d1a367a974c87592d8d4ed947a707875c2902d2dbdf8f5529351410090c6",
+    "debug-app03.log": "1f88f27aa75839a0f5424203ffd966e738382dc6577f3742a7abc1c3c180f74f",
+    "read-angle-baseline01.log": "e88695779245fa471ec774083f6bf331ad321c899e622f8740c58c4b9783eafc",
+    "read-angle-candidate01.log": "5a39e66aceb8313725b0c0b789c83c54cc74b796901ff32ead658a8f2e06e98d",
+    "read-angle-final01.log": "7a64cf4b44f63b9113e7295cf6aae2d98fad380ce2f8558d055a9d61d0aadc5b",
+    "debug-native-export03.log": "8ac110f0a3ba9c9be870a450e9623cf1a0f3e4f11b4e2bccb5bd10d0c961f8a9",
+    "native-angle90-export-check03.log": "15a273c5e30198eca8b7a3b8fcf894de4fa8c0dbddd3cb71ba22badb035a581d",
+    "adobe-edited-angle-evidence01.json": "54d9c10003c6eec4943e5e283a9b8c7e18efa841d6897658ba86568dba4b0b0b",
+    "adobe-hinge-sampling-fit01.json": "c1d26c9577646adf13c2fe2e6dde1c92ae0545d0dd40c77ed6972832ca92dc5e",
+    "psd-orthocenter01.json": "cb64830e2ea86d388d10be16e38f6603c969b45edb8d96e5982d3ef1070833ca",
+    "vpe-camera-projection01.json": "3c91d96e60daf968db9a067c058cf76c14f413a45dc2d23c634b21f32c7e3223",
+    "orthocenter-probe01.log": "4c101947c9ab34ba15a6e8f5115f9cec5a2a60381195f40ee2cf3def1ffd5f4c",
+    "non-right-angle-camera-crosscheck01.json": "fd39fac411343e101f894a975d4fb4fb3b1fe44563f94f1a1464ae86365ec648",
+    "swiftpm-release-arm01.log": "979d4cff48fe7a1753caa34f97ded015f2374bb5466e2cce2c74db443b983a88",
+    "swiftpm-release-intel01.log": "979d4cff48fe7a1753caa34f97ded015f2374bb5466e2cce2c74db443b983a88",
+    "swiftpm-release-arm02.log": "3be45a69fb1305c442a706d0064adc533e41f2fe32ff23d7384e6ae237bc3d2b",
+    "swiftpm-release-intel02.log": "82300d629644e200b95b72642f100c36554c3be81638b560790bcba5317378a0",
+    "native-export-arm01.log": "8ac110f0a3ba9c9be870a450e9623cf1a0f3e4f11b4e2bccb5bd10d0c961f8a9",
+    "native-export-intel01.log": "8ac110f0a3ba9c9be870a450e9623cf1a0f3e4f11b4e2bccb5bd10d0c961f8a9",
+    "package-preview01.log": "a8c0a790929bbf6daf6d09ed4bbcb005c247e5d3bdf62f88de65bfb925a6ba92",
+    "preview-offscreen01.log": "56899c649bb1041f2091fc78f55969710656ba8953f862da71051187189e7c0a"
+  },
+  "limits": [
+    "The editable camera and width agreement covers one Photoshop-edited right-angle guide.",
+    "The source guide's unadjusted Adobe export describes a coplanar family. Its raster nudges are a separate reference.",
+    "Writing new folds that Photoshop edits identically, exact Marquee color and edge coverage, and multi-surface Brush and Stamp remain open."
+  ]
+}

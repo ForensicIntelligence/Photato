@@ -347,14 +347,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:739 -->
+<!-- current-status-step:740 -->
 ## Current development status — 25 November 2026
 
-Vanishing Point selections and floating patches now span linked planes. The editor and authenticated Photato API use the same sampling and Undo. Photato carries the comparison patch farther across the hinge than Photoshop. Exact placement and pixel coverage remain open.
+Vanishing Point opens both editable planes in a captured right-angle Photoshop PSD. The native export recovers the off-centre projection and closely matches the width ratio of Photoshop's scene. PSD and PSB round trips preserve the file's perspective record and merged RGB samples. Newly authored PSD angles and exact Marquee sampling remain open.
 
-All 38 focused tests and 853 of 855 selected optimized tests per architecture passed. The two inherited failures repeated their earlier diagnostics.
+All 40 focused tests and 855 of 857 selected optimized tests per architecture passed. The two inherited failures repeated their earlier diagnostics.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-739) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_739.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-740) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_740.md).
 
 <!-- current-status:end -->
 
@@ -1300,5 +1300,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 737 | [Export Vanishing Point scenes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-737) |
 | 2026-11-25 | 738 | [Add perspective Marquee and floating patches](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-738) |
 | 2026-11-25 | 739 | [Wrap Vanishing Point selections across linked planes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-739) |
+| 2026-11-25 | 740 | [Recover editable right-angle Photoshop hinges](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-740) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

@@ -52,7 +52,7 @@ Send an optional `heal` string on a Brush, Clone Stamp or Paste operation in `fi
 
 ### Vanishing Point maximum-size cameras (checkpoint 730)
 
-The existing authenticated `filter.vanishingPoint` command accepts finite, non-negative focal lengths. A requested zero infers the camera from the first plane or uses the longer canvas side. The resulting projection must be valid. The document state returns the resolved focal length for replay. [Archive and replay checks](SOURCE_PUBLICATION_730.md).
+The existing authenticated `filter.vanishingPoint` command accepts finite, non-negative focal lengths. A requested zero can recover the camera from measured orthogonal axes across a linked hinge. If that calibration is unavailable, the command uses the first plane or the longer canvas side. The resulting projection must be valid. The document state returns the resolved focal length for replay. [Archive and replay checks](SOURCE_PUBLICATION_730.md).
 
 ### Narrow Vanishing Point strokes (checkpoint 729)
 

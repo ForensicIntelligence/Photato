@@ -84,7 +84,7 @@ extension VanishingSettings {
   static var apiCapabilities:[String:Any] {
     ["command":"filter.vanishingPoint","settingsSchema":apiSchema,"operationsSchema":operationSchema,"measurementCalibrationSchema":measurementCalibrationSchema,"nativeArchiveVersion":32,
      "narrowStrokeCoverage":"Brush and clone footprints that project to about a pixel thick or less use area coverage and honor plane clipping. Coverage work shares the Vanishing Point rendering budget.",
-     "coordinates":"Corners and stroke/source points are document pixels. Paste at is plane(u,v), width is a fraction of metric plane width, rotation clockwise about paste origin. Focal length is in pixels; zero infers from the first plane or falls back to the longer canvas side.",
+     "coordinates":"Corners and stroke/source points are document pixels. Paste at is plane(u,v), width is a fraction of metric plane width, rotation clockwise about paste origin. Zero focal length first uses measured orthogonal axes across a usable linked hinge, then infers from the first plane or uses the longer canvas side.",
      "state":"Document and workspace state include resolved camera, plane corners and grid intervals, projected measurement endpoints, calibrated lengths, and angles in degrees.",
      "renderMeasurements":"Set renderMeasurements:true to write raster annotations with calibrated distances and angles. The existing newLayer option controls destination. Editable lines remain with the document and each apply takes one undo step.",
      "measurement":"Desktop Measure and API settings keep editable lines in a plane, including visible points outside the plane. The command can calibrate a selected line to a known length. Connected planes share the root's calibration and optional grid link.",

@@ -81,8 +81,8 @@ public struct VanishingSettings:Codable,Equatable,Sendable {
     result.measurementScales = other.measurementScales
     return result
   }
-  /// Camera focal length in pixels. Zero infers it from the first plane or uses
-  /// the longer canvas side. Scene construction validates the resulting projection.
+  /// Camera focal length in pixels. Zero infers it from the first plane and any
+  /// usable right-angle hinge, or uses the longer canvas side.
   public var focalLength=0.0
   public var center:PathPoint?
   public init() {}
@@ -183,6 +183,46 @@ public struct VanishingScene:Sendable {
     guard q.count==4 else { return nil };let a=meet(q[0],q[1],q[3],q[2]),b=meet(q[0],q[3],q[1],q[2]);guard abs(a.z)>1e-9,abs(b.z)>1e-9 else { return nil }
     let f2 = -((a.x/a.z-center.x)*(b.x/b.z-center.x)+(a.y/a.z-center.y)*(b.y/b.z-center.y));return f2.isFinite && f2>1 ? sqrt(f2):nil
   }
+
+  /// Orthogonal directions on either side of a nearly parallel hinge supply a
+  /// better camera constraint than that hinge's very distant vanishing point.
+  public static func inferredOrthogonalHingeFocal(parent: [PathPoint], child: [PathPoint],
+    edge: VanishingPlane.Edge, center: PathPoint, canvasSide: Int) -> Double?
+  {
+    guard parent.count == 4, child.count == 4, canvasSide > 0 else { return nil }
+    let alongWidth = edge == .top || edge == .bottom
+    func directions(_ q: [PathPoint]) -> (along: SIMD3<Double>, across: SIMD3<Double>) {
+      let horizontal = meet(q[0],q[1],q[3],q[2])
+      let vertical = meet(q[0],q[3],q[1],q[2])
+      return alongWidth ? (horizontal,vertical) : (vertical,horizontal)
+    }
+    let a = directions(parent), b = directions(child)
+    let horizon = 64 * Double(canvasSide)
+    func distant(_ p: SIMD3<Double>) -> Bool {
+      let distance = hypot(p.x-center.x*p.z,p.y-center.y*p.z)
+      return distance.isFinite && distance > horizon * abs(p.z)
+    }
+    guard distant(a.along), distant(b.along),
+      a.across.z != 0, b.across.z != 0,
+      !distant(a.across), !distant(b.across) else { return nil }
+    let ax = a.across.x/a.across.z-center.x, ay = a.across.y/a.across.z-center.y
+    let bx = b.across.x/b.across.z-center.x, by = b.across.y/b.across.z-center.y
+    let square = -(ax*bx+ay*by)
+    guard square.isFinite, square > 1 else { return nil }
+    let focal = sqrt(square)
+    func cameraDirection(_ point: SIMD3<Double>) -> SIMD3<Double> {
+      unit(.init((point.x-center.x*point.z)/focal,(point.y-center.y*point.z)/focal,point.z))
+    }
+    // A right-angle constraint is usable only if both transverse axes are
+    // consistent with the projected hinge direction at that camera.
+    let firstAlong = cameraDirection(a.along), secondAlong = cameraDirection(b.along)
+    let firstAcross = unit(.init(ax/focal,ay/focal,1))
+    let secondAcross = unit(.init(bx/focal,by/focal,1))
+    guard abs(dot(firstAlong,firstAcross)) < 0.01, abs(dot(firstAlong,secondAcross)) < 0.01,
+      abs(dot(secondAlong,firstAcross)) < 0.01, abs(dot(secondAlong,secondAcross)) < 0.01 else { return nil }
+    return focal
+  }
+
   static func frame(_ q:[PathPoint],focal:Double,center:PathPoint) throws -> Frame {
     guard PerspectiveSettings.validQuad(q) else { throw CraftError.invalid("Related plane is degenerate.") }
     let h=try PerspectiveMap.homography(q);guard let inverse=h.inverse() else { throw CraftError.invalid("Singular perspective plane.") }
@@ -291,7 +331,18 @@ public struct VanishingScene:Sendable {
   public init(_ settings:VanishingSettings,width:Int,height:Int) throws {
     try settings.validate();guard width>0,height>0 else { throw CraftError.invalid("Invalid Vanishing Point canvas.") }
     let cameraCenter=settings.center ?? PathPoint(Double(width)/2,Double(height)/2)
-    let cameraFocal=settings.focalLength>0 ? settings.focalLength:(settings.planes.first.flatMap{Self.inferredFocal($0.corners,center:cameraCenter)} ?? Double(max(width,height)))
+    let canvasSide = max(width,height)
+    let calibratedHingeFocal = settings.planes.lazy.compactMap { plane -> Double? in
+      guard settings.focalLength == 0, plane.parent == 0, plane.angle == 90,
+        let calibration = plane.calibration, calibration.angle == plane.angle,
+        calibration.depth == plane.depth, calibration.rotationSign == plane.rotationSign,
+        calibration.parentCorners == settings.planes[0].corners else { return nil }
+      return Self.inferredOrthogonalHingeFocal(parent:calibration.parentCorners,child:calibration.corners,
+        edge:plane.edge,center:cameraCenter,canvasSide:canvasSide)
+    }.first
+    let cameraFocal = settings.focalLength > 0 ? settings.focalLength :
+      (calibratedHingeFocal ?? settings.planes.first.flatMap { Self.inferredFocal($0.corners,center:cameraCenter) }
+        ?? Double(canvasSide))
     center=cameraCenter;focal=cameraFocal
     var resolved: [Frame] = [], roots: [Int] = []
     for (index, plane) in settings.planes.enumerated() {
@@ -309,7 +360,14 @@ public struct VanishingScene:Sendable {
     for root in settings.planes.indices where roots[root] == root {
       let members = settings.planes.indices.filter { roots[$0] == root }
       let inferred = Self.inferredFocal(resolved[root].corners,center:cameraCenter)
-      let preferred = inferred ?? (root == 0 ? cameraFocal : Double(max(width,height)))
+      let fromHinge = members.lazy.compactMap { index -> Double? in
+        let plane = settings.planes[index]
+        guard let parent = plane.parent, plane.angle == 90 else { return nil }
+        return Self.inferredOrthogonalHingeFocal(parent:resolved[parent].corners,child:resolved[index].corners,
+          edge:plane.edge,center:cameraCenter,canvasSide:canvasSide)
+      }.first
+      let preferred = root == 0 && settings.focalLength > 0 && fromHinge != nil ? cameraFocal :
+        (fromHinge ?? inferred ?? (root == 0 ? cameraFocal : Double(canvasSide)))
       let focal: Double
       if preferred != cameraFocal, let local = try? members.map({
         try Self.frame(resolved[$0].corners,focal:preferred,center:cameraCenter)

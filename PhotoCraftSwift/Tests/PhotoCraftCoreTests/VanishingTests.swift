@@ -145,6 +145,30 @@ final class VanishingTests:XCTestCase {
     XCTAssertLessThan(abs(VanishingScene.dot(n1,n2)),0.02)
     let p=PathPoint(0.3,0.8),back=a.uv(a.point(p));XCTAssertEqual(back.x,p.x,accuracy:1e-9);XCTAssertEqual(back.y,p.y,accuracy:1e-9)
   }
+
+  func testRightAngleHingeRecoversCameraWhenItsSharedAxisIsParallel() throws {
+    var settings = VanishingSettings()
+    settings.focalLength = 980
+    let hingeTop = PathPoint(580.4,185.4), hingeBottom = PathPoint(580.4,714.6)
+    settings.planes = [.init(corners:[.init(299.493246750069,222.756390617123),
+      hingeTop,hingeBottom,.init(299.493246750069,677.243609382877)])]
+    let parent = try VanishingScene(settings,width:1200,height:900)
+    let child = try parent.calibratedPlane(parent:0,edge:.right,corners:[hingeTop,
+      .init(780.755988301344,291.944504055102),.init(780.755988301344,608.055495944898),hingeBottom],
+      angleFromCoplanar:90)
+    settings.planes.append(child)
+    settings.focalLength = 0
+    let inferred = try VanishingScene(settings,width:1200,height:900)
+    XCTAssertEqual(inferred.focal,980,accuracy:1e-7)
+    let a = inferred.measurementMetric(for:0), b = inferred.measurementMetric(for:1)
+    XCTAssertEqual(b.x/a.x,2,accuracy:1e-8)
+    XCTAssertEqual(b.y,a.y,accuracy:1e-8)
+
+    settings.focalLength = 1100
+    let pinned = try VanishingScene(settings,width:1200,height:900)
+    XCTAssertEqual(pinned.focal,1100)
+    XCTAssertNotEqual(pinned.measurementMetric(for:1),b)
+  }
   func testMeasurementCalibrationAcrossHingeAndIndependentRoot() throws {
     var settings = cameraPlane()
     settings.planes.append(.init(parent:0,edge:.top))
