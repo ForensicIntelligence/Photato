@@ -530,13 +530,14 @@ struct VanishingPreview:View {
         return .handled
       }
       .onKeyPress(keys:[.leftArrow,.rightArrow,.upArrow,.downArrow],phases:[.down,.repeat]) { press in
-        guard !pressed,model.activeMarquee != nil,
+        guard !pressed,model.activeMarquee != nil || model.selectedPasteOperation != nil,
           model.tool == .marquee || model.tool == .transform,
           press.modifiers.intersection([.command,.control,.option]).isEmpty else { return .ignored }
         let step = press.modifiers.contains(.shift) ? 10.0 : 1.0
         let dx = press.key == .leftArrow ? -step : press.key == .rightArrow ? step : 0
         let dy = press.key == .upArrow ? -step : press.key == .downArrow ? step : 0
-        model.nudgeMarquee(dx:dx,dy:dy)
+        if model.selectedPasteOperation != nil { model.nudgePaste(dx:dx,dy:dy) }
+        else { model.nudgeMarquee(dx:dx,dy:dy) }
         return .handled
       }
       .onKeyPress(.delete) {

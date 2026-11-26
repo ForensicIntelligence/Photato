@@ -891,6 +891,14 @@ final class VanishingWorkflowTests:XCTestCase {
     XCTAssertEqual(model.selectedPasteOperation?.canvasPaste?.origin,.init(0,0))
     model.redo()
     XCTAssertEqual(model.selectedPasteOperation,seated)
+    let center = geometry.imagePoint(.init(0.5,0.5))
+    model.nudgePaste(dx:1,dy:0)
+    let nudged = try XCTUnwrap(model.selectedPasteOperation)
+    let nudgedGeometry = try XCTUnwrap(VanishingPasteGeometry(nudged,frame:scene.frames[0]))
+    XCTAssertEqual(nudgedGeometry.imagePoint(.init(0.5,0.5)).x,center.x+1,accuracy:1e-8)
+    XCTAssertEqual(nudgedGeometry.imagePoint(.init(0.5,0.5)).y,center.y,accuracy:1e-8)
+    model.undo()
+    XCTAssertEqual(model.selectedPasteOperation,seated)
 
     try await AutomationTests().withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
       document.store.session = EditorSession(document:original)
@@ -926,7 +934,15 @@ final class VanishingWorkflowTests:XCTestCase {
     let scene = try XCTUnwrap(workspace.scene), frame = scene.frames[0]
     let initial = try XCTUnwrap(workspace.selectedPasteOperation)
     let initialGeometry = try XCTUnwrap(VanishingPasteGeometry(initial,frame:frame))
-    XCTAssertEqual(workspace.pasteTransformHandles(for:initial,scene:scene,scale:2).count,5)
+    XCTAssertEqual(workspace.pasteTransformHandles(for:initial,scene:scene,scale:2).count,9)
+    let side = initialGeometry.imagePoint(.init(1,0.5))
+    let stretch = try XCTUnwrap(workspace.pasteDrag(at:side,flags:[],scene:scene,scale:2))
+    let stretched = try XCTUnwrap(workspace.projectedPaste(stretch,
+      to:initialGeometry.imagePoint(.init(1.25,0.85)),scene:scene))
+    let stretchedGeometry = try XCTUnwrap(VanishingPasteGeometry(stretched,frame:frame))
+    XCTAssertEqual(stretched.width,0.625,accuracy:1e-9)
+    XCTAssertEqual(stretchedGeometry.height,initialGeometry.height,accuracy:1e-9)
+    XCTAssertEqual(stretched.at,initial.at)
     let corner = frame.projected(initialGeometry.point(.init(1,1)))
     let scale = try XCTUnwrap(workspace.pasteDrag(at:corner,flags:[],scene:scene,scale:2))
     let end = frame.projected(initialGeometry.point(.init(1.25,0.8)))

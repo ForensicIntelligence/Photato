@@ -1400,4 +1400,12 @@ All 64 output comparisons were exact and 388 selected tests passed in each of th
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-544) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_544.md).
 
+## 2026-11-17 — Step 543: reuse gradient samples
+
+Large gradients reuse identical colour samples, and fill rendering writes a tile at a time. On Apple Silicon the 2,048 × 2,048 Perceptual raster fell from 351 to 49 ms. All 84 test images matched build 542 byte for byte.
+
+All 372 selected tests passed in Debug and both optimized builds. The three saved Photoshop Gradient Map differences remain.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-543) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_543.md).
+
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

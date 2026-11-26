@@ -1,4 +1,4 @@
-**Vanishing Point.** Add side handles and keyboard nudging to the floating paste. Use controlled RGB impulses to separate reflection geometry from interpolation. [Development record](DEVLOG.md#dev-step-749) · [Qualification](SOURCE_PUBLICATION_749.md).
+**Vanishing Point.** Add the Photoshop Zoom tool and temporary navigation shortcuts. Keep the position-dependent reflection differences open under raster fidelity. [Development record](DEVLOG.md#dev-step-750) · [Qualification](SOURCE_PUBLICATION_750.md).
 
 **Source checkpoint 738.** The native Marquee creates perspective rectangles and turns them into sampled floating patches. The authenticated Photato API shares the edit and document history. The captured Photoshop 20 × 10 pixel move matched Photato's placement. Edge coverage and eight-bit rounding still differ. [Qualification](SOURCE_PUBLICATION_738.md).
 

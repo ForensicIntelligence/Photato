@@ -768,7 +768,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 747 | 2026-11-25 | [Sample the Vanishing Point preview with Eyedropper](#dev-step-747) |
 | 748 | 2026-11-25 | [Transform clipboard and layer pastes in Vanishing Point](#dev-step-748) |
 | 749 | 2026-11-25 | [Paste clipboard pixels before choosing a perspective plane](#dev-step-749) |
+| 750 | 2026-11-25 | [Resize and nudge floating Vanishing Point pastes](#dev-step-750) |
 <!-- history-index:end -->
+
+<a id="dev-step-750"></a>
+
+## 2026-11-25 — Step 750 — Resize and nudge floating Vanishing Point pastes
+
+Floating Vanishing Point pastes now have side handles for changing width or height independently. The arrow keys move a selected paste by one pixel. Shift and an arrow move it by ten. The current handle and modifiers are reflected in the pointer. The authenticated Photato API exposes the resulting position and dimensions through the existing paste operation and workspace state.
+
+VanishingMarqueeEditing resolves side handles and keyboard movement through the existing non-destructive transform and history path. VanishingSheet dispatches the arrows to the active paste and preserves the Marquee shortcut when no paste is selected. ToolCursorTests adds direction checks for the side handles across all sixteen modifier combinations. VanishingWorkflowTests verifies independent height preservation and nudge undo. The separately compiled replay covers the applied output.
+
+All 62 focused Debug tests passed. Each optimized architecture passed 876 of 878 selected tests, including the updated side-handle and nudge assertions. Intel ran under Rosetta. The two inherited failures repeated their earlier diagnostics. The replay image of a side stretch, nudge and undo/redo matched across Debug and both optimized builds. The extracted Universal app passed signature verification and offscreen launches on both architectures. The macOS 14+ ZIP is 77,808,062 bytes with SHA-256 `5612900a5d4df1cd9d427fb6aa2b2df8b5e28488e01b9efc98fc2c4dcf5033ff`.
+
+An independent nine-impulse RGB8 donor showed that Photoshop’s plain, Flip and Flop results differ from exact donor mapping at 112, 2,432 and 2,436 pixels. All three preserved every pixel outside the patch. The reflected responses moved different distances at different locations and had fractional spill. Exact Photoshop raster parity remains open. The 50% estimate remains current. [Adobe’s Vanishing Point reference](https://helpx.adobe.com/uk/photoshop/using/vanishing-point.html) · [Qualification](SOURCE_PUBLICATION_750.md).
 
 <a id="dev-step-749"></a>
 

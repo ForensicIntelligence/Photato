@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 543: reuse gradient samples
-
-Large gradients reuse identical colour samples, and fill rendering writes a tile at a time. On Apple Silicon the 2,048 × 2,048 Perceptual raster fell from 351 to 49 ms. All 84 test images matched build 542 byte for byte.
-
-All 372 selected tests passed in Debug and both optimized builds. The three saved Photoshop Gradient Map differences remain.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-543) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_543.md).
-
 ## 2026-11-17 — Step 542: get the same gradient pixels on Apple Silicon and Intel
 
 Linear and Perceptual gradients now round the nonlinear part of sRGB the same way across the two builds. All 18 Gradient Map buffers that differed in build 541 now match, and the 32 tested Brush buffers are byte-identical to the prior build.
@@ -339,11 +331,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:749 -->
+<!-- current-status-step:750 -->
 
-Clipboard images pasted into Vanishing Point now start at the upper-left of the document at their original pixel size. They can be placed before any plane exists. Dragging the paste onto a fitted face preserves the grabbed point as the image adopts perspective.
+Floating Vanishing Point pastes now have side handles for changing width or height independently. The arrow keys move a selected paste by one pixel. Shift and an arrow move it by ten. The current handle and modifiers are reflected in the pointer.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-749) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_749.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-750) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_750.md).
 
 <!-- current-status:end -->
 
@@ -1299,5 +1291,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 747 | [Sample the Vanishing Point preview with Eyedropper](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-747) |
 | 2026-11-25 | 748 | [Transform clipboard and layer pastes in Vanishing Point](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-748) |
 | 2026-11-25 | 749 | [Paste clipboard pixels before choosing a perspective plane](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-749) |
+| 2026-11-25 | 750 | [Resize and nudge floating Vanishing Point pastes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-750) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

@@ -236,5 +236,15 @@
     "differentPatchRGBPixels": 2819,
     "exactRasterQualified": false,
     "public_receipt": "SOURCE_PUBLICATION_749.json"
+  },
+  "impulse_reflections_750": {
+    "reference": "https://helpx.adobe.com/uk/photoshop/using/vanishing-point.html",
+    "modeDifferentPixels": {
+      "plain": 112,
+      "flip": 2432,
+      "flop": 2436
+    },
+    "exactRasterQualified": false,
+    "public_receipt": "SOURCE_PUBLICATION_750.json"
   }
 }

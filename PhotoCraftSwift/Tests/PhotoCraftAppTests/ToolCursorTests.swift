@@ -52,6 +52,10 @@ final class ToolCursorTests: XCTestCase {
       let resizeBadge: ToolCursor.Badge? = shift ? (option ? .constrainCenter : .constrain) : (option ? .center : nil)
       XCTAssertEqual(VanishingWorkspace.PasteDragAction.scale(.init(1,1)).cursor(flags),
         .symbol("arrow.up.left.and.arrow.down.right",resizeBadge))
+      XCTAssertEqual(VanishingWorkspace.PasteDragAction.scale(.init(1,0.5)).cursor(flags),
+        .symbol("arrow.left.and.right",resizeBadge))
+      XCTAssertEqual(VanishingWorkspace.PasteDragAction.scale(.init(0.5,1)).cursor(flags),
+        .symbol("arrow.up.and.down",resizeBadge))
       XCTAssertEqual(VanishingWorkspace.PasteDragAction.rotate.cursor(flags),.symbol("rotate.right",shift ? .constrain : nil))
       XCTAssertEqual(VanishingWorkspace.PasteDragAction.move.cursor(flags,dragging:true),
         option || shift ? .selectedPixels(copy:option,constrained:shift,unsnapped:false) : .closedHand)

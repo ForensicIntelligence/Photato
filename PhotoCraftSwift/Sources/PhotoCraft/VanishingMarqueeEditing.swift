@@ -12,8 +12,12 @@ extension VanishingWorkspace {
           return .selectedPixels(copy:flags.contains(.option),constrained:flags.contains(.shift),unsnapped:false)
         }
         return dragging ? .closedHand : .openHand
-      case .scale:
-        return .symbol("arrow.up.left.and.arrow.down.right",ToolCursor.geometry(flags))
+      case .scale(let handle):
+        let symbol: String
+        if handle.x == 0.5 { symbol = "arrow.up.and.down" }
+        else if handle.y == 0.5 { symbol = "arrow.left.and.right" }
+        else { symbol = "arrow.up.left.and.arrow.down.right" }
+        return .symbol(symbol,ToolCursor.geometry(flags))
       case .rotate:
         return .symbol("rotate.right",flags.contains(.shift) ? .constrain : nil)
       }
@@ -44,9 +48,10 @@ extension VanishingWorkspace {
   {
     guard scale.isFinite,scale > 0,
       let geometry = VanishingPasteGeometry(operation,frame:pasteFrame(for:operation,scene:scene)),
-      let corners = geometry.projectedCorners() else { return [] }
-    let units = [PathPoint(0,0),.init(1,0),.init(1,1),.init(0,1)]
-    var handles = zip(units,corners).map { (PasteDragAction.scale($0.0),$0.1) }
+      geometry.projectedCorners() != nil else { return [] }
+    let units = [PathPoint(0,0),.init(0.5,0),.init(1,0),.init(1,0.5),
+      .init(1,1),.init(0.5,1),.init(0,1),.init(0,0.5)]
+    var handles = units.map { (PasteDragAction.scale($0),geometry.imagePoint($0)) }
     let top = geometry.imagePoint(.init(0.5,0))
     let center = geometry.imagePoint(.init(0.5,0.5))
     let dx = top.x-center.x, dy = top.y-center.y, length = hypot(dx,dy)
@@ -111,10 +116,11 @@ extension VanishingWorkspace {
       guard let moved = VanishingPasteGeometry(result,frame:destinationFrame),
         moved.projectedCorners() != nil else { return nil }
       return result
-    case .scale(let corner):
-      anchor = drag.flags.contains(.option) ? .init(0.5,0.5) : .init(1-corner.x,1-corner.y)
+    case .scale(let handle):
+      anchor = drag.flags.contains(.option) ? .init(0.5,0.5) : .init(1-handle.x,1-handle.y)
       let start = geometry.unit(at:geometry.metric(drag.start)), end = geometry.unit(at:geometry.metric(point))
-      let x = 1+(end.x-start.x)/(corner.x-anchor.x), y = 1+(end.y-start.y)/(corner.y-anchor.y)
+      let x = handle.x == 0.5 ? 1 : 1+(end.x-start.x)/(handle.x-anchor.x)
+      let y = handle.y == 0.5 ? 1 : 1+(end.y-start.y)/(handle.y-anchor.y)
       if let free = original.canvasPaste {
         let range = VanishingOperation.CanvasPaste.sizeRange
         let sx: Double, sy: Double
@@ -196,6 +202,16 @@ extension VanishingWorkspace {
     }
     change(draft)
     if program == draft { selectPaste(index) }
+  }
+
+  func nudgePaste(dx: Double, dy: Double) {
+    guard let index = selectedPaste,let operation = selectedPasteOperation,let scene,
+      let geometry = VanishingPasteGeometry(operation,frame:pasteFrame(for:operation,scene:scene)) else { return }
+    let start = geometry.imagePoint(.init(0.5,0.5))
+    let drag = PasteDrag(index:index,original:operation,action:.move,start:start,flags:[])
+    if let moved = projectedPaste(drag,to:.init(start.x+dx,start.y+dy),scene:scene) {
+      finishPasteDrag(drag,at:moved)
+    }
   }
 
   enum MarqueeAction: Equatable {

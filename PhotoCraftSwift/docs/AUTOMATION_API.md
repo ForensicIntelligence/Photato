@@ -2,7 +2,7 @@
 
 Send a `paste` operation to `filter.vanishingPoint` with a `sourceLayerID` and a `canvasPaste` object containing `origin` (an object with `x` and `y`), `width` and `height` in document pixels. A separate plane may be created later. The alternative plane placement takes `plane`, `at`, `width` and optional `pasteHeight` on the operation itself.
 
-The workspace reports which placement is active in `selectedPaste`. Free canvas paste uses the same renderer and document history as a perspective paste. [Qualification](SOURCE_PUBLICATION_749.md).
+The workspace reports which placement is active in `selectedPaste`. Free canvas paste uses the same renderer and document history as a perspective paste. [Qualification](SOURCE_PUBLICATION_749.md). The side handles and arrow keys update the same placement, without adding a command. [Side handle and nudge tests](SOURCE_PUBLICATION_750.md).
 
 ### Vanishing Point paste transforms
 
