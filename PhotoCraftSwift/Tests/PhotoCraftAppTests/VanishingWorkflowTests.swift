@@ -857,6 +857,79 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testFloatingMarqueeHandlesShareNumericTransformUndoAndHTTPOutput() async throws {
+    var original = try fixture()
+    original.vanishingPoint = program().settings
+    let store = EditorStore(document:original,actions:ActionLibrary())
+    store.beginVanishingPoint()
+    let workspace = try XCTUnwrap(store.vanishingWorkspace)
+    defer { store.cancelVanishingPoint();store.renderTask?.cancel() }
+    await workspace.prepare()
+    let scene = try XCTUnwrap(workspace.scene)
+    workspace.tool = .marquee
+    workspace.marquee = .init(plane:0,lower:.init(0.35,0.34),upper:.init(0.62,0.59))
+    workspace.floatMarquee()
+    workspace.tool = .transform
+    let originalPatch = try XCTUnwrap(workspace.floatingMarqueeOperation)
+    let originalRect = try XCTUnwrap(originalPatch.marquee?.destination)
+    let handles = workspace.marqueeTransformHandles(for:originalPatch,scene:scene,scale:2)
+    XCTAssertEqual(handles.filter { $0.handle == .scale }.count,4)
+    XCTAssertEqual(handles.filter { $0.handle == .rotate }.count,1)
+    let corner = try XCTUnwrap(handles.first { $0.handle == .scale }).point
+    let scale = try XCTUnwrap(workspace.marqueeTransform(at:corner,scene:scene,scale:2))
+    let expandedCorner = try XCTUnwrap(originalRect.imagePoint(at:.init(-0.2,-0.2),in:scene,angle:0,clip:false))
+    let expanded = try XCTUnwrap(workspace.projectedMarqueeTransform(scale,to:expandedCorner,constrained:false,scene:scene))
+    workspace.beginGesture()
+    workspace.finishMarqueeTransform(scale,at:expanded)
+    workspace.endGesture()
+    XCTAssertEqual(try XCTUnwrap(workspace.floatingMarqueeScale),140,accuracy:1e-5)
+    workspace.undo()
+    XCTAssertEqual(workspace.floatingMarqueeOperation,originalPatch)
+    workspace.redo()
+    XCTAssertEqual(workspace.floatingMarqueeOperation,expanded)
+
+    let rotatePoint = try XCTUnwrap(workspace.marqueeTransformHandles(for:expanded,scene:scene,scale:2)
+      .first { $0.handle == .rotate }).point
+    let rotate = try XCTUnwrap(workspace.marqueeTransform(at:rotatePoint,scene:scene,scale:2))
+    let expandedRect = try XCTUnwrap(expanded.marquee?.destination)
+    let center = try XCTUnwrap(expandedRect.imageCenter(in:scene))
+    let frame = scene.frames[0]
+    let c = frame.metric(center), old = frame.metric(rotatePoint)
+    let dx = old.x-c.x, dy = old.y-c.y
+    let radians = 22.0 * Double.pi/180
+    let newPoint = frame.projected(.init(c.x+dx*cos(radians)-dy*sin(radians),c.y+dx*sin(radians)+dy*cos(radians)))
+    let freeRotation = try XCTUnwrap(workspace.projectedMarqueeTransform(rotate,to:newPoint,constrained:false,scene:scene))
+    XCTAssertEqual(freeRotation.angle,22,accuracy:1e-5)
+    let rotated = try XCTUnwrap(workspace.projectedMarqueeTransform(rotate,to:newPoint,constrained:true,scene:scene))
+    XCTAssertEqual(rotated.angle,15,accuracy:1e-5)
+    workspace.beginGesture()
+    workspace.finishMarqueeTransform(rotate,at:rotated)
+    workspace.endGesture()
+    await workspace.task?.value
+    XCTAssertTrue(workspace.ready,workspace.error ?? "Missing transform preview")
+    let patch = try XCTUnwrap(rotated.marquee)
+    let marshalled = try JSONSerialization.jsonObject(with:JSONEncoder().encode(patch))
+    store.commitVanishingPoint()
+    await store.geometryTask?.value
+    let native = store.document
+    XCTAssertNotEqual(native.layers,original.layers)
+    XCTAssertEqual(store.session.undoStack.count,1)
+
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:original)
+      try service.share(document)
+      let applied = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":original.layers[0].id.uuidString,
+         "operations":[["kind":"marquee","marquee":marshalled,"angle":rotated.angle]]])
+      XCTAssertEqual(applied,200)
+      XCTAssertEqual(document.store.document,native)
+      let undone = try await helper.edit(service,document,"history.undo")
+      XCTAssertEqual(undone,200)
+      XCTAssertEqual(document.store.document,original)
+    }
+  }
+
   @MainActor func testStraightBrushAndStampConnectDesktopEndpointsAndShareHTTPOutput() async throws {
     var original = try fixture()
     original.vanishingPoint = program().settings

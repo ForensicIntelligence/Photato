@@ -764,7 +764,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 743 | 2026-11-25 | [Paint and clone across linked Vanishing Point planes](#dev-step-743) |
 | 744 | 2026-11-25 | [Constrain perspective retouching to a Marquee](#dev-step-744) |
 | 745 | 2026-11-25 | [Paint straight perspective strokes with Shift](#dev-step-745) |
+| 746 | 2026-11-25 | [Scale and rotate floating perspective selections with handles](#dev-step-746) |
 <!-- history-index:end -->
+
+<a id="dev-step-746"></a>
+
+## 2026-11-25 — Scale and rotate floating perspective selections with handles
+
+Transform now shows corner scale handles and a round rotation handle for a floating Marquee. Dragging shows the projected outline. Release applies the edit as one workspace Undo. Shift snaps rotation in 15-degree steps. The existing numeric Scale and Rotation controls use the same geometry. [Adobe’s Vanishing Point tools](https://helpx.adobe.com/lv/photoshop/using/vanishing-point.html#vanishing_point_tools)
+
+`VanishingMarquee.swift` projects the handles through the related planes and converts pointer vectors back to rectified space. `VanishingMarqueeEditing.swift` bounds the scale and applies the rotated or resized rectangle. `VanishingSheet.swift` handles pointer capture, cursor feedback, focus cleanup and the preview overlay. `AutomationVanishingPoint.swift` describes how the same destination bounds and angle can be sent through the existing Marquee request.
+
+Xcode built and all 33 focused Core and 23 App/HTTP tests passed. Tests cover linked geometry, cursor feedback for all 16 modifier combinations, 140% scaling, free and snapped rotation, Undo, and matching native/HTTP output. The first offscreen capture pointed to a nonexistent fixture link. The corrected rerun showed the controls in Light and Dark on an owned linked guide. The two optimized suites started from source digest `0a9dcd12e05e3dea0266ae75712cafaa883ee6edd0c5090048346b9fabb4c442`. Clipboard paste handles, independent side scaling, flip and exact Adobe transform output remain open.
+
+Both optimized builds passed 870 of 872 selected tests. The three new tests passed on Apple Silicon and Intel under Rosetta. The two inherited color-profile and layer-effect failures repeated their previous diagnostics. All six transform replays matched byte for byte across Debug and both optimized builds. The extracted Universal preview passed signature verification, both macOS 14.0 deployment checks and offscreen launches. The 77,706,031-byte download has SHA-256 `870a59e1192f37c1a822ce86e1360bc6b7ab67fdf5ee5aac44ef6fc4c03ab716`. [Qualification](SOURCE_PUBLICATION_746.md)
 
 <a id="dev-step-745"></a>
 

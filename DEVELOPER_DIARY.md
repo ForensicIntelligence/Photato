@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **745** · The 10 most recent entries, newest first.
+Source build **746** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 746 — Scale and rotate floating perspective selections with handles
+
+Floating Marquee selections now have corner scale controls and a rotation handle. Hold Shift when rotating to snap in 15-degree steps. The editor and API use the same perspective transform, and the drag takes one Undo.
+
+All 56 focused tests passed. They cover a linked hinge, cursor feedback, resizing, rotation and matching desktop/API output. Light and Dark captures show the new handles and the existing numeric controls.
+
+Both optimized builds passed 870 of 872 selected tests. The three new tests passed on Apple Silicon and Intel under Rosetta. The two inherited color-profile and layer-effect failures repeated their previous diagnostics. All six transform replays matched byte for byte across Debug and both optimized builds.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-746) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_746.md).
 
 ## 2026-11-25 — Step 745 — Paint straight perspective strokes with Shift
 
@@ -93,13 +103,3 @@ Blender opened the camera, meshes and PNG textures from both Photato reference s
 Both optimized architectures passed 847 of 849 selected tests. The same two cases failed as in build 736. All nine fixture outputs matched byte for byte across Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the signed preview opened offscreen.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-737) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_737.md).
-
-## 2026-11-25 — Step 736 — Render Vanishing Point measurement annotations
-
-Vanishing Point now shows angles alongside editable measurement lengths. Render Measurements writes the lines, endpoints and labels onto a pixel layer when applying the filter. The authenticated Photato API can request the same output. Both paths keep editable measurements and use the same selection and Undo rules.
-
-Photoshop 27.2.0 reopened the Photato PSD with a separate raster layer carrying the marks, and reopened the PSB with the linked grid and editable measurements still present. Two attempts to capture Photoshop’s own raster output ended with its document menus and Save unavailable. Adobe raster styling, further angle comparisons and CAD export remain open.
-
-Both optimized architectures passed 844 of 846 selected tests, including all three new cases. The two inherited color-profile and layer-effect failures repeated. Xcode built the Debug app and passed 29 focused core, app and HTTP tests. Each generated PSD and PSB matched byte for byte in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the signed macOS 14+ preview opened offscreen.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-736) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_736.md).

@@ -1,0 +1,174 @@
+{
+  "build": 746,
+  "base": "b98ace4c8c3d4e4d40c3d91f6c1c2f1da37eac3d",
+  "inputCount": 9429,
+  "inputDigest": "0a9dcd12e05e3dea0266ae75712cafaa883ee6edd0c5090048346b9fabb4c442",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraft/AutomationVanishingPoint.swift": "8b97b819aedf1d2b8af96567256b12590f3e7230dfa93cf48299ab99cf2ba7ec",
+    "Sources/PhotoCraft/VanishingMarqueeEditing.swift": "ab1a2e5fd1d2c355316e4ba8a0005ce26dc46a11f0008ffbab2ce4d42a75045e",
+    "Sources/PhotoCraft/VanishingSheet.swift": "033ffbd978f1adf35e8c7ae7934ed7124502f84b62b22a5fddf889cc36dceb11",
+    "Sources/PhotoCraftCore/VanishingMarquee.swift": "a4ab4ffe6f523017a3db76fadb50037fc3fa3d622fcb31d39b17dcb47fbb7a1f",
+    "Tests/PhotoCraftAppTests/ToolCursorTests.swift": "43e124c76f3c4e0b11c8665899fb3ff643f0b674e053a9389c50dbd18c05a439",
+    "Tests/PhotoCraftAppTests/VanishingWorkflowTests.swift": "391a9927aa3c1d37cbbc310321204fd35920079285b72f300dbd2613b5182616",
+    "Tests/PhotoCraftCoreTests/VanishingTests.swift": "fa57898adc613439e35fc50ceaed503f242e7ee209a2455ea1259dedc17bff5d",
+    "scripts/Info.plist": "786907570cd07ba7980be4065ca3e1693f1f9d995866645c9822a28616f18d9d"
+  },
+  "focusedDebug": {
+    "corePass": 33,
+    "appAndHTTPPass": 23
+  },
+  "qualification": {
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 872,
+      "passed": 870,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "059ac897f3ef02c78d52a6e7fdae0f769f6f225c86a86b6163a35ab713fc2121"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 872,
+      "passed": 870,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "73b47f934497c19ab2d4137f560d3abfb2020d81ba17b1c7e9f88e81a808b99f"
+    }
+  },
+  "predecessorFailureDiagnostics": {
+    "arm": 152,
+    "intel": 412
+  },
+  "rotationCursorModifierCombinations": 16,
+  "fixtureOutputHashesAcrossConfigurations": {
+    "debug": {
+      "tilted-rotate.png": "e20059d93c54e594af0b307208ee5d62b62d7ed7aa24bc9c218ea446f3241679",
+      "tilted-scale.png": "8ebe57dc51b23e8083a102804fdc6fc2ba96e7a4b5d9043db5a66a968a345f34",
+      "tilted-snap.png": "133d48deed30954c88cead318f3a4a9d28a887a363b7404bbf0557d39edc9307",
+      "walls-rotate.png": "43de21aaec13390e96b42a567a1a312ed6c390e942794843f05dc2c2728325ab",
+      "walls-scale.png": "04794740b8546b190f4fef0b77ef1871a96d91526acd5b1fa427020e094858c3",
+      "walls-snap.png": "cd626bffe27ffb024e227678ee8fd0f64f664d3d7cc30e0f48c33dfc24816f5d"
+    },
+    "arm": {
+      "tilted-rotate.png": "e20059d93c54e594af0b307208ee5d62b62d7ed7aa24bc9c218ea446f3241679",
+      "tilted-scale.png": "8ebe57dc51b23e8083a102804fdc6fc2ba96e7a4b5d9043db5a66a968a345f34",
+      "tilted-snap.png": "133d48deed30954c88cead318f3a4a9d28a887a363b7404bbf0557d39edc9307",
+      "walls-rotate.png": "43de21aaec13390e96b42a567a1a312ed6c390e942794843f05dc2c2728325ab",
+      "walls-scale.png": "04794740b8546b190f4fef0b77ef1871a96d91526acd5b1fa427020e094858c3",
+      "walls-snap.png": "cd626bffe27ffb024e227678ee8fd0f64f664d3d7cc30e0f48c33dfc24816f5d"
+    },
+    "intel": {
+      "tilted-rotate.png": "e20059d93c54e594af0b307208ee5d62b62d7ed7aa24bc9c218ea446f3241679",
+      "tilted-scale.png": "8ebe57dc51b23e8083a102804fdc6fc2ba96e7a4b5d9043db5a66a968a345f34",
+      "tilted-snap.png": "133d48deed30954c88cead318f3a4a9d28a887a363b7404bbf0557d39edc9307",
+      "walls-rotate.png": "43de21aaec13390e96b42a567a1a312ed6c390e942794843f05dc2c2728325ab",
+      "walls-scale.png": "04794740b8546b190f4fef0b77ef1871a96d91526acd5b1fa427020e094858c3",
+      "walls-snap.png": "cd626bffe27ffb024e227678ee8fd0f64f664d3d7cc30e0f48c33dfc24816f5d"
+    }
+  },
+  "offscreenTransformSheet": {
+    "marquee-handles-dark.png": {
+      "sha256": "f00695243157b56611b53ad485b3e5edee92f355d2cf36860665de91390df89d",
+      "size": [
+        980,
+        740
+      ]
+    },
+    "marquee-handles-light.png": {
+      "sha256": "b6d805c2ac4757f6ab110722468edc450dee1c2a6cf836822c1782eead3dd263",
+      "size": [
+        980,
+        740
+      ]
+    }
+  },
+  "photoshopReference": {
+    "transformBehavior": "Adobe's Vanishing Point guidance describes scaling, rotating and moving floating selections.",
+    "transformRasterCaptured": false
+  },
+  "preview": {
+    "build": 746,
+    "archive": "Photato-universal.zip",
+    "archiveSHA256": "870a59e1192f37c1a822ce86e1360bc6b7ab67fdf5ee5aac44ef6fc4c03ab716",
+    "archiveBytes": 77706031,
+    "gitPath": "downloads/Photato-universal.zip",
+    "bundleID": "ca.forensicintelligence.photato.preview",
+    "signing": "ad-hoc",
+    "localSymbolsStripped": true,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "049efb571608f427af49a9e3b06759a3dffacfdad34d93aeb72f1ff9e416be59",
+    "architectureInputsSHA256": {
+      "arm64": "75f6371ad5fa6345efe4f1818fefcc8c8190655ff21ccfc3942847b69171bd74",
+      "x86_64": "ed5ec9394ce9781399f2abeb33b6ef101653242bd5c85d757cdd492d68899077"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    }
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "pngSHA256": "c26608357d25297707ffaaf345cc06ceb6fd53de40217773436f1dd13956852f",
+      "size": [
+        1700,
+        1174
+      ]
+    },
+    "x86_64": {
+      "pngSHA256": "70b36ff2bc8f1d8b462a1fd2aa4feba01ac14c6317a622f27ab841eacbfb66d2",
+      "size": [
+        1700,
+        1174
+      ]
+    }
+  },
+  "probeLogsSHA256": {
+    "xcode-debug-746-01.log": "06ebfd78f16d2e0998e871654ac0be55031e590821219bbcc335c74737737c39",
+    "xcode-focused-core-746-01.log": "3e6363ec1d5df5afb2886dddd8b4740e9b442c5162bf9a65b5582440c6c2699f",
+    "xcode-focused-app-746-01.log": "c949b9515eab66f16e2aba21a5fa9bd61d25b48309f1c7f7cf94521c118d80cf",
+    "swiftpm-release-arm01.log": "6d3be4d3dc83d0a9c3e1fcafe153c611746f4d4dc237f67a4389ffb1d1fe81f9",
+    "swiftpm-release-intel01.log": "d395f3323c8ab99a2046e42a35ff21001042739fd3e28ae1dbed02283d45d01b",
+    "native-transform-proof-debug01.log": "f3ba7dd0183d7dff6fcf1e21a70c107a875fdfd70794825c4e211d7f50354607",
+    "native-transform-sheet01.log": "eeb8246de464afd432aabbb13dcecb4a22a60e04b8f873d3f819baf2440c7fdb",
+    "native-transform-sheet02.log": "424a40858d5e5767f075a0f8633738a2291580648fc87c58e070460f93d32c34",
+    "optimized-transform-arm01.log": "f3ba7dd0183d7dff6fcf1e21a70c107a875fdfd70794825c4e211d7f50354607",
+    "optimized-transform-intel01.log": "f3ba7dd0183d7dff6fcf1e21a70c107a875fdfd70794825c4e211d7f50354607",
+    "package-preview01.log": "2fe12ebebc98de051b167fa09ac3ccb4e2305ab3346b9f4490d8042592e59100",
+    "preview-offscreen01.log": "44be5ecdcf96572b489585a309a0de5e6f537c253bc7830766d48606f6faad98"
+  }
+}

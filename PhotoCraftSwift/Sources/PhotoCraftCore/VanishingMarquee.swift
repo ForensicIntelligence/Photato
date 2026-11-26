@@ -500,6 +500,36 @@ extension VanishingMarquee {
     return wrap == true ? wrappedPoint(center,in:scene,clip:false) : scene.frames[plane].point(center)
   }
 
+  public func imagePoint(at offset: PathPoint, in scene: VanishingScene, angle: Double, clip: Bool) -> PathPoint? {
+    guard hasValidBounds,scene.frames.indices.contains(plane),angle.isFinite else { return nil }
+    let point = self.point(offset)
+    if wrap == true {
+      let size = scene.marqueeLayout[plane].size
+      return wrappedPoint(rotate(point,size:size,angle:angle),in:scene,clip:clip)
+    }
+    guard projectedCorners(in:scene,angle:angle) != nil else { return nil }
+    let frame = scene.frames[plane]
+    return frame.point(rotated(point,frame:frame,angle:angle))
+  }
+
+  public func transformVector(at image: PathPoint, in scene: VanishingScene) -> PathPoint? {
+    guard scene.frames.indices.contains(plane) else { return nil }
+    let frame = scene.frames[plane]
+    let uv: PathPoint
+    let size: PathPoint
+    if wrap == true {
+      let face = scene.marqueePlane(at:image,relativeTo:plane) ?? plane
+      let anchor = scene.marqueeLayout[plane]
+      uv = anchor.uv(scene.marqueeLayout[face].point(scene.frames[face].uv(image)))
+      size = anchor.size
+    } else {
+      uv = frame.uv(image)
+      size = .init(frame.width,frame.height)
+    }
+    let vector = PathPoint((uv.x-center.x)*size.x,(uv.y-center.y)*size.y)
+    return VanishingSettings.validPoint(vector) ? vector : nil
+  }
+
   public func outlineSegments(in scene: VanishingScene, angle: Double, clip: Bool) -> [[PathPoint]]? {
     if wrap == true { return ProjectedVanishingMarquee(rect:self,scene:scene,angle:angle,clip:clip)?.outline }
     return projectedCorners(in:scene,angle:angle).map { corners in

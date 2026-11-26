@@ -42,6 +42,20 @@ final class ToolCursorTests: XCTestCase {
     canvas.drawingEvents.end(); store.cancelBrush(); store.cancelClone(); store.renderTask?.cancel()
     window.contentView = nil; window.close()
   }
+  @MainActor func testVanishingMarqueeHandlesShowRotationSnapAcrossSixteenModifierCombinations() {
+    let modifiers: [NSEvent.ModifierFlags] = [.control,.command,.option,.shift]
+    for bits in 0..<16 {
+      let flags = modifiers.enumerated().reduce(NSEvent.ModifierFlags()) { result,item in
+        bits & (1 << item.offset) == 0 ? result : result.union(item.element)
+      }
+      let snapped = flags.contains(.shift)
+      XCTAssertEqual(VanishingWorkspace.MarqueeTransformHandle.rotate.cursor(constrained:snapped),
+        .symbol("rotate.right", snapped ? .constrain : nil))
+      XCTAssertEqual(VanishingWorkspace.MarqueeTransformHandle.scale.cursor(constrained:snapped),
+        .symbol("arrow.up.left.and.arrow.down.right"))
+    }
+  }
+
   @MainActor func testVanishingBrushAndStampCursorsFollowSixteenModifierCombinations() {
     let modifiers: [NSEvent.ModifierFlags] = [.control,.command,.option,.shift]
     for bits in 0..<16 {

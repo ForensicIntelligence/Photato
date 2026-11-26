@@ -18,6 +18,8 @@ The patch uses bicubic interpolation to sample the visible composite and precedi
 
 Set `"wrap": true` on either rectangle to continue it across linked surfaces. Coordinates stay relative to that rectangle's anchor plane. For example, with a plane linked to its right edge, a wrapped rectangle anchored on plane 0 can span `x: 0.8` to `x: 1.2`. Set both rectangles to wrap when both the donor and destination span a hinge. Keep `clip: true` to restrict coverage to the linked faces, or set it to false to allow the anchor plane's projection in uncovered areas. The workspace state reports `marquee.wrap`, `allowMultiSurfaceMarquee` and `clipOperationsToSurfaceEdges`. Omitted or false `wrap` retains single-plane behavior. This operation is part of the Photato API.
 
+The floating Marquee’s desktop scale and rotation handles use the same `destination` rectangle and `angle`. Scale around the rectangle center by changing the bounds equally on opposing sides. `angle` is clockwise in plane degrees.
+
 ### Linked Brush and Stamp strokes
 
 Set `straightStroke: true` on a `brush` or `clone` operation to connect the first and last document-pixel points. Desktop Shift-drag and Shift-click use the same renderer. For a Shift-click replay, send the previous endpoint and the clicked point. A one-point request still applies a single dab.

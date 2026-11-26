@@ -234,6 +234,9 @@ struct VanishingPreview:View {
   @State private var draftMeasurement: VanishingMeasurement?
   @State private var marqueeDrag: VanishingWorkspace.MarqueeDrag?
   @State private var marqueeOutline: VanishingMarquee?
+  @State private var marqueeTransformDrag: VanishingWorkspace.MarqueeTransformDrag?
+  @State private var marqueeTransformDraft: VanishingOperation?
+  @State private var marqueeTransformConstrained = false
 
   private enum MeasurementDrag {
     case draw(plane: Int, from: PathPoint, continuing: Bool)
@@ -341,12 +344,22 @@ struct VanishingPreview:View {
               style:StrokeStyle(lineWidth:1,dash:[4,3]))
           }
           let samples = marqueeDrag.map { $0.action == .copy || $0.action == .fill || $0.action == .duplicateFloating } ?? false
-          let clip = model.floatingMarqueeOperation?.clip ?? model.clip
-          if let selection = model.activeMarquee,marqueeOutline == nil || samples {
-            drawMarquee(selection,angle:model.floatingMarqueeOperation?.angle ?? 0,sampling:false,clip:clip)
+          let floating = marqueeTransformDraft ?? model.floatingMarqueeOperation
+          let clip = floating?.clip ?? model.clip
+          if let selection = floating?.marquee?.destination ?? model.activeMarquee,marqueeOutline == nil || samples {
+            drawMarquee(selection,angle:floating?.angle ?? 0,sampling:false,clip:clip)
           }
           if let marqueeOutline {
             drawMarquee(marqueeOutline,angle:marqueeDrag?.angle ?? 0,sampling:samples,clip:clip)
+          }
+          if model.tool == .transform, let floating, marqueeOutline == nil {
+            for (handle, point) in model.marqueeTransformHandles(for:floating,scene:scene,scale:scale) {
+              let position = screen(point)
+              let bounds = CGRect(x:position.x-4,y:position.y-4,width:8,height:8)
+              let shape = handle == .rotate ? Path(ellipseIn:bounds) : Path(bounds)
+              context.fill(shape,with:.color(handle == .rotate ? .accentColor : .white))
+              context.stroke(shape,with:.color(.black),lineWidth:1)
+            }
           }
         }
         let points=model.pending.isEmpty ? stroke:model.pending
@@ -362,6 +375,11 @@ struct VanishingPreview:View {
         case .marquee,.transform:
           if model.tool == .transform,model.floatingMarqueeOperation == nil {
             return .symbol("arrow.up.and.down.and.arrow.left.and.right")
+          }
+          if let marqueeTransformDrag { return marqueeTransformDrag.handle.cursor(constrained:marqueeTransformConstrained) }
+          if model.tool == .transform, let scene, let pointer,
+            let target = model.marqueeTransform(at:point(pointer),scene:scene,scale:scale) {
+            return target.handle.cursor(constrained:flags.contains(.shift))
           }
           let action = marqueeDrag?.action ?? pointer.flatMap { pointer in
             scene.flatMap { model.marqueeAction(at:point(pointer),flags:flags,scene:$0) }
@@ -425,10 +443,12 @@ struct VanishingPreview:View {
       }
       .onChange(of:model.tool) { _, _ in pointer = nil }
       .onChange(of:focused) { _, active in
-        if !active && pressed && (model.tool == .brush || model.tool == .stamp) {
+        if !active && pressed && (model.tool == .brush || model.tool == .stamp || marqueeTransformDrag != nil) {
           stroke = []
           strokeMode = .paint
           strokeMoved = false
+          marqueeTransformDrag = nil
+          marqueeTransformDraft = nil
           pressed = false
           model.endGesture()
         }
@@ -448,7 +468,11 @@ struct VanishingPreview:View {
           pressed=true;pan=model.pan;stroke=[];hit=nil;corner=nil;strokeMode = .paint;strokeMoved=false;pasteOrigin=nil;model.beginGesture()
           let start=point(value.startLocation)
           if let scene,model.tool == .marquee || (model.tool == .transform && model.floatingMarqueeOperation != nil) {
-            marqueeDrag = model.startMarqueeDrag(at:start,flags:NSEvent.modifierFlags,scene:scene)
+            marqueeTransformDrag = model.marqueeTransform(at:start,scene:scene,scale:scale)
+            marqueeTransformConstrained = NSEvent.modifierFlags.contains(.shift)
+            if marqueeTransformDrag == nil {
+              marqueeDrag = model.startMarqueeDrag(at:start,flags:NSEvent.modifierFlags,scene:scene)
+            }
           }
           if model.tool == .measure, let scene {
             if let pending = model.pendingMeasurement {
@@ -479,6 +503,11 @@ struct VanishingPreview:View {
           if model.tool == .transform,let index=model.selectedPaste,model.program.operations.indices.contains(index),let scene { let op=model.program.operations[index];pasteOrigin=scene.frames[op.plane].point(op.at) }
         }
         let p=point(value.location)
+        if let scene,let marqueeTransformDrag {
+          marqueeTransformDraft = model.projectedMarqueeTransform(marqueeTransformDrag,to:p,
+            constrained:marqueeTransformConstrained,scene:scene)
+          return
+        }
         if let scene,let marqueeDrag {
           marqueeOutline = model.projectedMarquee(for:marqueeDrag,to:p,
             constrained:NSEvent.modifierFlags.contains(.shift),scene:scene)
@@ -510,6 +539,13 @@ struct VanishingPreview:View {
         case .create,.marquee:break
         }
       }.onEnded { value in
+        if let scene,let marqueeTransformDrag,
+          let result = model.projectedMarqueeTransform(marqueeTransformDrag,to:point(value.location),
+            constrained:marqueeTransformConstrained,scene:scene) {
+          model.finishMarqueeTransform(marqueeTransformDrag,at:result)
+        }
+        marqueeTransformDrag = nil
+        marqueeTransformDraft = nil
         if let scene,let marqueeDrag,hypot(value.translation.width,value.translation.height) > 2,
           let rect = model.projectedMarquee(for:marqueeDrag,to:point(value.location),
             constrained:NSEvent.modifierFlags.contains(.shift),scene:scene) {

@@ -15,6 +15,81 @@ extension VanishingWorkspace {
     let wrap: Bool
   }
 
+  enum MarqueeTransformHandle: Equatable {
+    case scale, rotate
+
+    func cursor(constrained: Bool) -> ToolCursor {
+      .symbol(self == .rotate ? "rotate.right" : "arrow.up.left.and.arrow.down.right",
+        self == .rotate && constrained ? .constrain : nil)
+    }
+  }
+
+  struct MarqueeTransformDrag {
+    let handle: MarqueeTransformHandle
+    let previous: VanishingOperation
+    let start: PathPoint
+    let scale: Double
+  }
+
+  func marqueeTransformHandles(for operation: VanishingOperation, scene: VanishingScene, scale: Double)
+    -> [(handle: MarqueeTransformHandle, point: PathPoint)]
+  {
+    guard let rect = operation.marquee?.destination,scale.isFinite,scale > 0 else { return [] }
+    let corners = [PathPoint(0,0),.init(1,0),.init(1,1),.init(0,1)]
+    var result = corners.compactMap { offset -> (MarqueeTransformHandle,PathPoint)? in
+      guard let point = rect.imagePoint(at:offset,in:scene,angle:operation.angle,clip:operation.clip) else { return nil }
+      return (.scale,point)
+    }
+    if let top = rect.imagePoint(at:.init(0.5,0),in:scene,angle:operation.angle,clip:operation.clip),
+      let center = rect.imageCenter(in:scene) {
+      let dx = top.x-center.x, dy = top.y-center.y
+      let distance = hypot(dx,dy)
+      if distance > 1e-8 {
+        let offset = 18/(scale*distance)
+        result.append((.rotate,.init(top.x+dx*offset,top.y+dy*offset)))
+      }
+    }
+    return result
+  }
+
+  func marqueeTransform(at point: PathPoint, scene: VanishingScene, scale: Double) -> MarqueeTransformDrag? {
+    guard tool == .transform,let operation = floatingMarqueeOperation,let currentScale = floatingMarqueeScale,
+      let candidate = marqueeTransformHandles(for:operation,scene:scene,scale:scale).map({
+        ($0.handle,hypot(point.x-$0.point.x,point.y-$0.point.y))
+      }).min(by:{ $0.1 < $1.1 }),candidate.1 <= 8/scale else { return nil }
+    return .init(handle:candidate.0,previous:operation,start:point,scale:currentScale)
+  }
+
+  func projectedMarqueeTransform(_ drag: MarqueeTransformDrag, to point: PathPoint,
+    constrained: Bool, scene: VanishingScene) -> VanishingOperation?
+  {
+    if point == drag.start { return drag.previous }
+    var result = drag.previous
+    guard var patch = result.marquee,
+      let start = patch.destination.transformVector(at:drag.start,in:scene),
+      let end = patch.destination.transformVector(at:point,in:scene) else { return nil }
+    let length = hypot(start.x,start.y)
+    guard length > 1e-8 else { return nil }
+    switch drag.handle {
+    case .scale:
+      let scale = min(500,max(1,drag.scale*hypot(end.x,end.y)/length))
+      patch.destination = patch.destination.scaled(by:scale/drag.scale)
+      result.marquee = patch
+    case .rotate:
+      guard hypot(end.x,end.y) > 1e-8 else { return nil }
+      let rotation = (atan2(end.y,end.x)-atan2(start.y,start.x))*180/Double.pi
+      let angle = result.angle + rotation
+      result.angle = (constrained ? (angle/15).rounded()*15 : angle).remainder(dividingBy:360)
+    }
+    guard patch.destination.outlineSegments(in:scene,angle:result.angle,clip:result.clip) != nil else { return nil }
+    return result
+  }
+
+  func finishMarqueeTransform(_ drag: MarqueeTransformDrag, at operation: VanishingOperation) {
+    guard let index = selectedMarqueePatch, floatingMarqueeOperation == drag.previous else { return }
+    replaceMarqueePatch(operation,at:index)
+  }
+
   var floatingMarqueeOperation: VanishingOperation? {
     guard let index = selectedMarqueePatch,program.operations.indices.contains(index),
       program.operations[index].kind == .marquee else { return nil }

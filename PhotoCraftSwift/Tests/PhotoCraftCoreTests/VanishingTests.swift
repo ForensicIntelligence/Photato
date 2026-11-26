@@ -232,6 +232,24 @@ final class VanishingTests:XCTestCase {
     }
   }
 
+  func testWrappedMarqueeTransformHandlesKeepRectifiedRotationAcrossTheHinge() throws {
+    var settings = VanishingSettings()
+    settings.planes = [.init(corners:[.init(10,10),.init(36.5,10),.init(36.5,50),.init(10,50)]),
+      .init(parent:0,edge:.right,angle:180)]
+    let scene = try VanishingScene(settings,width:80,height:64)
+    let rect = VanishingMarquee(plane:0,lower:.init(0.72,0.28),upper:.init(1.42,0.62),wrap:true)
+    let offset = PathPoint(0.8,0.5)
+    let unrotated = try XCTUnwrap(rect.imagePoint(at:offset,in:scene,angle:0,clip:true))
+    let rotated = try XCTUnwrap(rect.imagePoint(at:offset,in:scene,angle:30,clip:true))
+    XCTAssertEqual(scene.plane(at:unrotated),1)
+    XCTAssertEqual(scene.plane(at:rotated),1)
+    let before = try XCTUnwrap(rect.transformVector(at:unrotated,in:scene))
+    let after = try XCTUnwrap(rect.transformVector(at:rotated,in:scene))
+    XCTAssertEqual(before.y,0,accuracy:1e-6)
+    XCTAssertEqual(hypot(after.x,after.y),hypot(before.x,before.y),accuracy:1e-6)
+    XCTAssertEqual(atan2(after.y,after.x)*180/Double.pi,30,accuracy:1e-6)
+  }
+
   func testStraightPerspectiveStrokesUseOnlyTheirEndpoints() throws {
     var program = VanishingProgram()
     program.settings.planes = [.init(corners:[.init(8,10),.init(69,4),.init(64,56),.init(13,49)])]

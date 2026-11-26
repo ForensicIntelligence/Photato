@@ -23,7 +23,7 @@ We replay the same operations in Photato and Photoshop 2026 with matching docume
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 745.** Vanishing Point Brush and Stamp support Shift-drag and Shift-click straight strokes through the desktop and Photato API. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_745.md).
+**Development alpha — source build 746.** Floating Vanishing Point selections have pointer scale and rotation handles. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_746.md).
 
 ## Project layout
 

@@ -1,3 +1,5 @@
+> **Source checkpoint 746.** Vanishing Point floating Marquee selections have scale and rotation handles with Shift snapping and one Undo. Both optimized builds passed 870 of 872 selected tests, and all six native replays matched. [Qualification](SOURCE_PUBLICATION_746.md).
+
 > **Source checkpoint 745.** Vanishing Point Brush and Stamp support straight Shift strokes. The cursor changes with the modifier, and the editor and authenticated Photato API share the path and Undo. All 53 focused tests passed. [Qualification](SOURCE_PUBLICATION_745.md).
 
 > **Source checkpoint 744.** A perspective Marquee confines Brush and Stamp output through the desktop and Photato API. The selection can span linked faces, and Stamp can read an outside donor. All 50 focused tests passed. [Qualification](SOURCE_PUBLICATION_744.md).
