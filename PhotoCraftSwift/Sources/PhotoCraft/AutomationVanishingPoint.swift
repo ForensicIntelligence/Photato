@@ -76,6 +76,7 @@ extension VanishingSettings {
       case .brush,.clone:
         properties["points"]=["type":"array","minItems":1,"maxItems":4096,"items":pointSchema];properties["diameter"]=number(1,2000,40);properties["hardness"]=number(0,100,50);required.append("points")
         properties["wrap"]=["type":"boolean","default":false]
+        properties["straightStroke"]=["type":"boolean","default":false]
         properties["strokeSelection"] = rect
         if kind == .clone {
           properties["sourcePoint"]=pointSchema
@@ -102,6 +103,7 @@ extension VanishingSettings {
      "marquee":"Lower and upper are rectified fractions of each rectangle's anchor plane. Set wrap:true individually on source and destination to continue that rectangle across linked surfaces. The destination angle rotates around its center in rectified space. Feather uses the projected selection boundary without feathering internal hinges. Each patch samples the visible composite and preceding operations using bicubic interpolation.",
      "strokeWrapping":"Set wrap:true on Brush or Stamp to continue through linked faces. Clip bounds the destination independently. Wrapped Stamp can use sourcePlane to identify an extrapolated donor and samples the visible image and earlier operations from an immutable snapshot. Omitting wrap preserves single-plane API edits.",
      "strokeSelection":"Supply a strokeSelection rectangle to constrain Brush or Stamp output. Its lower and upper coordinates are rectified fractions of its anchor plane. The rectangle’s wrap flag follows linked faces independently of stroke wrapping. Stamp can sample outside the selection.",
+     "straightStroke":"Set straightStroke:true to connect the first and last points of a Brush or Stamp stroke. The desktop uses the same operation for Shift-drag and Shift-click.",
      "heal":"Brush, clone and paste accept off, luminance or on. Luminance adjusts lighting. On adjusts lighting and color. The gradient-domain solve includes a one-pixel boundary within the 4-megapixel local repair budget.",
      "output":"The current raster layer can expand to cover the repair while keeping existing samples and masks in place. Use newLayer:true for a separate layer. Selection and transparency/image locks are honored. Smart Objects must be rasterized for the target. One cancellable undo transaction for the entire program.",
      "limits":"32 planes,256 operations,16,384 supplied points,4,096 points per stroke,128MiB embedded paste sources with up to 8,388,608 pixels, up to \(Surface.maxDimension) pixels per canvas side, 134,217,728 raster visits per program. Large canvases use a bounded overview. Existing API sharing limits also apply.",
@@ -193,13 +195,16 @@ extension AutomationCommand {
         let allowed: Set<String>
         switch kind {
         case .paste: allowed = ["kind","plane","at","width","angle","opacity","clip","sourceLayerID"]
-        case .clone: allowed = ["kind","plane","points","sourcePoint","sourcePlane","diameter","hardness","opacity","clip","wrap","strokeSelection"]
-        case .brush: allowed = ["kind","plane","points","diameter","hardness","opacity","color","clip","wrap","strokeSelection"]
+        case .clone: allowed = ["kind","plane","points","sourcePoint","sourcePlane","diameter","hardness","opacity","clip","wrap","strokeSelection","straightStroke"]
+        case .brush: allowed = ["kind","plane","points","diameter","hardness","opacity","color","clip","wrap","strokeSelection","straightStroke"]
         case .marquee: allowed = ["kind","marquee","angle","opacity","clip"]
         }
         guard Set(fields.keys).isSubset(of:allowed.union(["heal"])) else { throw fail("Unknown or irrelevant operation field.") }
         if let wrap = fields["wrap"] {
           guard case .bool = wrap else { throw fail("Stroke wrap must be a boolean.") }
+        }
+        if let straight = fields["straightStroke"] {
+          guard case .bool = straight else { throw fail("Straight stroke must be a boolean.") }
         }
         if let plane = fields["sourcePlane"] {
           guard case .number(let value) = plane,Int(exactly:value) != nil else { throw fail("Invalid linked Stamp source plane.") }

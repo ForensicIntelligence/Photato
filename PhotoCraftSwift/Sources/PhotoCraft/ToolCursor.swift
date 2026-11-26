@@ -22,6 +22,19 @@ enum ToolCursor: Hashable {
   static func connectsBrushStroke(_ flags: NSEvent.ModifierFlags) -> Bool {
     flags.contains(.shift) && !flags.contains(.option)
   }
+  enum VanishingStrokeMode: Equatable {
+    case paint, straight, sample
+
+    init(stamp: Bool, modifiers: NSEvent.ModifierFlags) {
+      if stamp && modifiers.contains(.option) { self = .sample }
+      else { self = ToolCursor.connectsBrushStroke(modifiers) ? .straight : .paint }
+    }
+
+    var cursor: ToolCursor {
+      if self == .sample { return .symbol("scope") }
+      return .symbol("paintbrush.pointed", self == .straight ? .constrain : nil)
+    }
+  }
   struct MeasurementConstraint: Equatable {
     let keepAngle: Bool
     let keepLength: Bool

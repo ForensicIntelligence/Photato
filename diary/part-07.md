@@ -339,12 +339,12 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:744 -->
+<!-- current-status-step:745 -->
 ## Current development status — 25 November 2026
 
-Vanishing Point Brush and Stamp can follow linked faces and respect a perspective Marquee in the desktop and Photato API. The tests cover clipped output, an outside donor and one Undo for the edit. Exact Photoshop stroke output and modifier-constrained painting remain open.
+Vanishing Point Brush and Stamp can follow linked faces, respect a perspective Marquee and draw straight strokes with Shift. The desktop and Photato API share rendering and Undo. Native tests verify cursor feedback and the straight-stroke path. Exact Photoshop stroke pixels remain open.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-744) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_744.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-745) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_745.md).
 
 <!-- current-status:end -->
 
@@ -1295,5 +1295,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 742 | [Improve floating selection sampling in Vanishing Point](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-742) |
 | 2026-11-25 | 743 | [Paint and clone across linked Vanishing Point planes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-743) |
 | 2026-11-25 | 744 | [Constrain perspective retouching to a Marquee](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-744) |
+| 2026-11-25 | 745 | [Paint straight perspective strokes with Shift](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-745) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

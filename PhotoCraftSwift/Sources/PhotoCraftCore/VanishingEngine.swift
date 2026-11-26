@@ -534,8 +534,9 @@ public enum VanishingEngine {
         let offset = PathPoint(sourceOrigin.x-m0.x,sourceOrigin.y-m0.y)
         // A stroke samples an immutable pre-stroke image, including earlier operations.
         let previous=output
-        let path = try layout?.strokePath(op.points,charge:charge)
-          ?? op.points.map { Optional(VanishingSurfaceChart.StrokePoint(point:frame.metric($0),plane:op.plane)) }
+        let points = op.strokePoints
+        let path = try layout?.strokePath(points,charge:charge)
+          ?? points.map { Optional(VanishingSurfaceChart.StrokePoint(point:frame.metric($0),plane:op.plane)) }
         var centers: [VanishingSurfaceChart.StrokePoint] = []
         var continues = false
         for target in path {

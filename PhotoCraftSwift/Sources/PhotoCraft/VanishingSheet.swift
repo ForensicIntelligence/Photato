@@ -173,7 +173,8 @@ struct VanishingSheet:View {
             Text("Drag between two points or double-click a plane to measure both sides.")
               .font(.caption).foregroundStyle(.secondary)
           }
-          if model.tool == .marquee || (model.tool == .transform && model.floatingMarqueeOperation != nil) {
+          if model.tool == .marquee || (model.tool == .transform && model.floatingMarqueeOperation != nil)
+            || ((model.tool == .brush || model.tool == .stamp) && model.marquee != nil) {
             marqueeControls
           }
           if model.tool == .brush || model.tool == .stamp {
@@ -224,7 +225,8 @@ struct VanishingPreview:View {
   @State private var hit:Int?
   @State private var corner:Int?
   @State private var stroke=[PathPoint]()
-  @State private var sampled=false
+  @State private var strokeMode: ToolCursor.VanishingStrokeMode = .paint
+  @State private var strokeMoved=false
   @State private var pasteOrigin:PathPoint?
   @FocusState private var focused: Bool
   @State private var pointer: CGPoint?
@@ -353,8 +355,9 @@ struct VanishingPreview:View {
       }.toolCursor { flags in
         switch model.tool {
         case .hand: return pressed ? .closedHand:.openHand
-        case .stamp: return .symbol((pressed ? sampled:flags.contains(.option)) ? "scope":"paintbrush.pointed")
-        case .brush: return .symbol("paintbrush.pointed")
+        case .brush,.stamp:
+          let mode = pressed ? strokeMode : .init(stamp:model.tool == .stamp,modifiers:flags)
+          return mode.cursor
         case .edit: return .symbol("arrow.up.and.down.and.arrow.left.and.right")
         case .marquee,.transform:
           if model.tool == .transform,model.floatingMarqueeOperation == nil {
@@ -421,6 +424,15 @@ struct VanishingPreview:View {
         return .handled
       }
       .onChange(of:model.tool) { _, _ in pointer = nil }
+      .onChange(of:focused) { _, active in
+        if !active && pressed && (model.tool == .brush || model.tool == .stamp) {
+          stroke = []
+          strokeMode = .paint
+          strokeMoved = false
+          pressed = false
+          model.endGesture()
+        }
+      }
       .onContinuousHover { phase in
         guard model.tool == .measure || model.tool == .marquee || model.tool == .transform else { return }
         switch phase { case .active(let position): pointer = position; case .ended: pointer = nil }
@@ -433,7 +445,7 @@ struct VanishingPreview:View {
       .gesture(DragGesture(minimumDistance:0).onChanged { value in
         if !pressed {
           focused=true
-          pressed=true;pan=model.pan;stroke=[];hit=nil;corner=nil;sampled=false;pasteOrigin=nil;model.beginGesture()
+          pressed=true;pan=model.pan;stroke=[];hit=nil;corner=nil;strokeMode = .paint;strokeMoved=false;pasteOrigin=nil;model.beginGesture()
           let start=point(value.startLocation)
           if let scene,model.tool == .marquee || (model.tool == .transform && model.floatingMarqueeOperation != nil) {
             marqueeDrag = model.startMarqueeDrag(at:start,flags:NSEvent.modifierFlags,scene:scene)
@@ -459,8 +471,11 @@ struct VanishingPreview:View {
             for (i,f) in scene.frames.enumerated() where model.program.settings.planes[i].parent==nil { for (j,p) in f.corners.enumerated() { let distance=hypot(p.x-start.x,p.y-start.y);if distance<best { best=distance;hit=i;corner=j } } }
             if hit==nil { hit=scene.plane(at:start) };if let hit { model.selected=hit }
           }
-          if model.tool == .stamp && NSEvent.modifierFlags.contains(.option) { model.setSource(start);sampled=true }
-          if (model.tool == .brush || model.tool == .stamp) && !sampled { stroke = [start] }
+          if model.tool == .brush || model.tool == .stamp {
+            strokeMode = .init(stamp:model.tool == .stamp,modifiers:NSEvent.modifierFlags)
+            if strokeMode == .sample { model.setSource(start) }
+            else { stroke = [start] }
+          }
           if model.tool == .transform,let index=model.selectedPaste,model.program.operations.indices.contains(index),let scene { let op=model.program.operations[index];pasteOrigin=scene.frames[op.plane].point(op.at) }
         }
         let p=point(value.location)
@@ -472,7 +487,14 @@ struct VanishingPreview:View {
         switch model.tool {
         case .hand:model.pan=CGSize(width:pan.width+value.translation.width,height:pan.height+value.translation.height)
         case .edit:if let hit { if let corner { model.moveCorner(hit,corner,to:p) } else { model.movePlane(hit,dx:value.translation.width/scale,dy:value.translation.height/scale) } }
-        case .brush,.stamp:if !sampled,stroke.last.map({hypot($0.x-p.x,$0.y-p.y)>1}) ?? true { if stroke.count<4096 { stroke.append(p) } }
+        case .brush,.stamp:
+          guard strokeMode != .sample else { break }
+          if strokeMode == .straight, let first = stroke.first {
+            strokeMoved = strokeMoved || hypot(value.translation.width,value.translation.height) >= 3
+            stroke = [first,p]
+          } else if stroke.count < 4096, stroke.last.map({hypot($0.x-p.x,$0.y-p.y)>1}) ?? true {
+            stroke.append(p)
+          }
         case .transform:if let pasteOrigin { model.movePaste(to:.init(pasteOrigin.x+value.translation.width/scale,pasteOrigin.y+value.translation.height/scale)) }
         case .measure:
           if let scene {
@@ -496,10 +518,11 @@ struct VanishingPreview:View {
         marqueeDrag = nil
         marqueeOutline = nil
         if model.tool == .create { model.addPoint(.init((value.location.x-offset.x)/scale,(value.location.y-offset.y)/scale)) }
-        if (model.tool == .brush || model.tool == .stamp) && !sampled {
+        if (model.tool == .brush || model.tool == .stamp) && pressed && strokeMode != .sample {
           let end = point(value.location)
           if stroke.count < 4096,stroke.last != end { stroke.append(end) }
-          model.stroke(stroke)
+          let clicked = !strokeMoved && hypot(value.translation.width,value.translation.height) < 3
+          model.stroke(stroke,straight:strokeMode == .straight,connect:clicked)
         }
         if model.tool == .measure, let measurementDrag {
           let end = point(value.location)
@@ -521,7 +544,7 @@ struct VanishingPreview:View {
           }
         }
         measurementDrag=nil;draftMeasurement=nil
-        model.endGesture();pressed=false;stroke=[];hit=nil;corner=nil;pasteOrigin=nil
+        model.endGesture();pressed=false;stroke=[];strokeMode = .paint;strokeMoved=false;hit=nil;corner=nil;pasteOrigin=nil
       }).clipped().accessibilityLabel("Vanishing Point preview")
         .accessibilityValue(model.activeMarquee == nil ? "No perspective selection" :
           model.floatingMarqueeOperation == nil ? "Perspective selection" : "Floating perspective selection")

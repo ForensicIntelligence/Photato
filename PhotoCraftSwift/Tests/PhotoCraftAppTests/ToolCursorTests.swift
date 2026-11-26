@@ -42,6 +42,28 @@ final class ToolCursorTests: XCTestCase {
     canvas.drawingEvents.end(); store.cancelBrush(); store.cancelClone(); store.renderTask?.cancel()
     window.contentView = nil; window.close()
   }
+  @MainActor func testVanishingBrushAndStampCursorsFollowSixteenModifierCombinations() {
+    let modifiers: [NSEvent.ModifierFlags] = [.control,.command,.option,.shift]
+    for bits in 0..<16 {
+      let flags = modifiers.enumerated().reduce(NSEvent.ModifierFlags()) { result,item in
+        bits & (1 << item.offset) == 0 ? result : result.union(item.element)
+      }
+      for stamp in [false,true] {
+        let mode = ToolCursor.VanishingStrokeMode(stamp:stamp,modifiers:flags)
+        if stamp && flags.contains(.option) {
+          XCTAssertEqual(mode,.sample)
+          XCTAssertEqual(mode.cursor,.symbol("scope"))
+        } else if flags.contains(.shift) && !flags.contains(.option) {
+          XCTAssertEqual(mode,.straight)
+          XCTAssertEqual(mode.cursor,.symbol("paintbrush.pointed",.constrain))
+        } else {
+          XCTAssertEqual(mode,.paint)
+          XCTAssertEqual(mode.cursor,.symbol("paintbrush.pointed"))
+        }
+      }
+    }
+  }
+
   @MainActor func testAllToolsAndSixteenModifierCombinationsHaveRenderableCachedCursors() throws {
     let modifiers: [NSEvent.ModifierFlags] = [.control,.command,.option,.shift]
     var rows = [[String:Any]]()

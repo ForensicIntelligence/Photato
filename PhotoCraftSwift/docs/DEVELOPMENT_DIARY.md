@@ -1,3 +1,13 @@
+## 2026-11-25 — Step 745 — Paint straight perspective strokes with Shift
+
+Shift-drag draws a straight path with Vanishing Point Brush and Stamp. Shift-click connects to the previous endpoint when it belongs to the same tool on an eligible face. The pointer changes for straight strokes and Stamp source sampling. A Marquee can be cleared while painting.
+
+The 53 focused tests passed. They cover the renderer, cursor modifier combinations, and matching desktop and API edits with Undo. Exact Photoshop stroke pixels remain open.
+
+Both optimized builds passed all three new cases and 867 of 869 overall. The two inherited failures repeated. All eight owned replays matched across Debug, Apple Silicon and Intel. The matching Universal preview ships with this checkpoint.
+
+[Development record](DEVLOG.md#dev-step-745) · [Qualification](SOURCE_PUBLICATION_745.md).
+
 ## 2026-11-25 — Step 744 — Constrain perspective retouching to a Marquee
 
 Vanishing Point Brush and Stamp now stay inside the drawn Marquee when applying marks. A selection can extend across a hinge. Stamp can still sample from outside the rectangle, and the Photato API accepts the same selection per stroke.
@@ -2061,12 +2071,12 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:744 -->
+<!-- current-status-step:745 -->
 ## Current development status — 25 November 2026
 
-Vanishing Point Brush and Stamp can follow linked faces and respect a perspective Marquee in the desktop and Photato API. The tests cover clipped output, an outside donor and one Undo for the edit. Exact Photoshop stroke output and modifier-constrained painting remain open.
+Vanishing Point Brush and Stamp can follow linked faces, respect a perspective Marquee and draw straight strokes with Shift. The desktop and Photato API share rendering and Undo. Native tests verify cursor feedback and the straight-stroke path. Exact Photoshop stroke pixels remain open.
 
-[Development record](DEVLOG.md#dev-step-744) · [Qualification](SOURCE_PUBLICATION_744.md).
+[Development record](DEVLOG.md#dev-step-745) · [Qualification](SOURCE_PUBLICATION_745.md).
 
 <!-- current-status:end -->
 
@@ -3017,6 +3027,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 742 | [Improve floating selection sampling in Vanishing Point](DEVLOG.md#dev-step-742) |
 | 2026-11-25 | 743 | [Paint and clone across linked Vanishing Point planes](DEVLOG.md#dev-step-743) |
 | 2026-11-25 | 744 | [Constrain perspective retouching to a Marquee](DEVLOG.md#dev-step-744) |
+| 2026-11-25 | 745 | [Paint straight perspective strokes with Shift](DEVLOG.md#dev-step-745) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

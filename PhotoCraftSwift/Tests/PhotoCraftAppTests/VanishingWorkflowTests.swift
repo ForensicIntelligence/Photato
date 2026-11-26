@@ -857,6 +857,70 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testStraightBrushAndStampConnectDesktopEndpointsAndShareHTTPOutput() async throws {
+    var original = try fixture()
+    original.vanishingPoint = program().settings
+    let store = EditorStore(document:original,actions:ActionLibrary())
+    store.beginVanishingPoint()
+    let workspace = try XCTUnwrap(store.vanishingWorkspace)
+    defer { store.cancelVanishingPoint();store.renderTask?.cancel() }
+    await workspace.prepare()
+    workspace.diameter = 4
+    workspace.hardness = 100
+    workspace.tool = .brush
+    workspace.stroke([.init(12.5,15.5)])
+    workspace.stroke([.init(44.5,26.5)],straight:true,connect:true)
+    XCTAssertEqual(workspace.program.operations.last?.points,[.init(12.5,15.5),.init(44.5,26.5)])
+    workspace.undo()
+    XCTAssertEqual(workspace.program.operations.count,1)
+    workspace.redo()
+    workspace.tool = .stamp
+    workspace.setSource(.init(14.5,13.5))
+    workspace.stroke([.init(14.5,32.5)],straight:true,connect:true)
+    XCTAssertEqual(workspace.program.operations.last?.points,[.init(14.5,32.5)])
+    workspace.stroke([.init(45.5,35.5)],straight:true,connect:true)
+    XCTAssertEqual(workspace.program.operations.last?.points,[.init(14.5,32.5),.init(45.5,35.5)])
+    await workspace.task?.value
+    XCTAssertTrue(workspace.ready,workspace.error ?? "Missing straight-stroke preview")
+
+    let operations = workspace.program.operations.map { op -> [String:Any] in
+      var fields: [String:Any] = ["kind":op.kind.rawValue,"plane":op.plane,
+        "points":op.points.map { ["x":$0.x,"y":$0.y] },
+        "diameter":op.diameter,"hardness":op.hardness,"straightStroke":op.straightStroke == true]
+      if let source = op.sourcePoint {
+        fields["sourcePoint"] = ["x":source.x,"y":source.y]
+      } else {
+        fields["color"] = ["r":op.color.r,"g":op.color.g,"b":op.color.b,"a":op.color.a]
+      }
+      return fields
+    }
+    store.commitVanishingPoint()
+    await store.geometryTask?.value
+    let native = store.document
+    XCTAssertNotEqual(native.layers,original.layers)
+    XCTAssertEqual(store.session.undoStack.count,1)
+
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:original)
+      try service.share(document)
+      let layerID = original.layers[0].id.uuidString
+      let applied = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":layerID,"operations":operations])
+      XCTAssertEqual(applied,200)
+      XCTAssertEqual(document.store.document,native)
+      let undone = try await helper.edit(service,document,"history.undo")
+      XCTAssertEqual(undone,200)
+      XCTAssertEqual(document.store.document,original)
+      var invalid = operations
+      invalid[1]["straightStroke"] = NSNull()
+      let rejected = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":layerID,"operations":invalid])
+      XCTAssertEqual(rejected,400)
+      XCTAssertEqual(document.store.document,original)
+    }
+  }
+
   @MainActor func testLinkedStrokeMarqueeSharesDesktopAndHTTPOutputAndUndo() async throws {
     var original = try fixture()
     var settings = VanishingSettings()

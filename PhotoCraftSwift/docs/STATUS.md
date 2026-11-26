@@ -1,3 +1,5 @@
+> **Source checkpoint 745.** Vanishing Point Brush and Stamp support straight Shift strokes. The cursor changes with the modifier, and the editor and authenticated Photato API share the path and Undo. All 53 focused tests passed. [Qualification](SOURCE_PUBLICATION_745.md).
+
 > **Source checkpoint 744.** A perspective Marquee confines Brush and Stamp output through the desktop and Photato API. The selection can span linked faces, and Stamp can read an outside donor. All 50 focused tests passed. [Qualification](SOURCE_PUBLICATION_744.md).
 
 > **Source checkpoint 743.** Brush and Stamp follow linked Vanishing Point faces. Destination clipping is independent, and aligned Stamp retains its donor displacement across the hinge. The desktop and authenticated Photato API share the renderer and Undo. Exact Photoshop raster output and modifier-constrained painting remain open. [Development record](DEVLOG.md#dev-step-743) · [Qualification](SOURCE_PUBLICATION_743.md).

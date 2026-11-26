@@ -232,6 +232,33 @@ final class VanishingTests:XCTestCase {
     }
   }
 
+  func testStraightPerspectiveStrokesUseOnlyTheirEndpoints() throws {
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners:[.init(8,10),.init(69,4),.init(64,56),.init(13,49)])]
+    let sample = try Surface(width:80,height:64,depth:.f32,fill:Pixel(0.3,0.6,0.9))
+    let start = PathPoint(22.5,25.5), end = PathPoint(55.5,25.5)
+    let corner = PathPoint(40.5,42.5)
+    for kind: VanishingOperation.Kind in [.brush,.clone] {
+      var stroke = VanishingOperation(kind)
+      stroke.sourcePoint = kind == .clone ? .init(22.5,17.5) : nil
+      stroke.diameter = 3
+      stroke.hardness = 100
+      stroke.points = [start,corner,end]
+      program.operations = [stroke]
+      XCTAssertGreaterThan(try VanishingEngine.render(program,sample:sample).linearPixel(x:40,y:42).a,0.95)
+
+      stroke.straightStroke = true
+      program.operations = [stroke]
+      let straight = try VanishingEngine.render(program,sample:sample)
+      XCTAssertGreaterThan(straight.linearPixel(x:40,y:25).a,0.95)
+      XCTAssertEqual(straight.linearPixel(x:40,y:42).a,0)
+      stroke.points = [start,end]
+      stroke.straightStroke = nil
+      program.operations = [stroke]
+      XCTAssertEqual(straight,try VanishingEngine.render(program,sample:sample))
+    }
+  }
+
   func testMarqueeConstrainsBrushAndStampAcrossTheHinge() throws {
     var program = VanishingProgram()
     program.settings.planes = [.init(corners:[.init(10,10),.init(36.5,10),.init(36.5,50),.init(10,50)]),

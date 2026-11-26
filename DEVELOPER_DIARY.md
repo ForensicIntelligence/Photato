@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **744** · The 10 most recent entries, newest first.
+Source build **745** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 745 — Paint straight perspective strokes with Shift
+
+Shift-drag draws a straight path with Vanishing Point Brush and Stamp. Shift-click connects to the previous endpoint when it belongs to the same tool on an eligible face. The pointer changes for straight strokes and Stamp source sampling. A Marquee can be cleared while painting.
+
+The 53 focused tests passed. They cover the renderer, cursor modifier combinations, and matching desktop and API edits with Undo. Exact Photoshop stroke pixels remain open.
+
+Both optimized builds passed all three new cases and 867 of 869 overall. The two inherited failures repeated. All eight owned replays matched across Debug, Apple Silicon and Intel. The matching Universal preview ships with this checkpoint.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-745) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_745.md).
 
 ## 2026-11-25 — Step 744 — Constrain perspective retouching to a Marquee
 
@@ -93,13 +103,3 @@ Photoshop 27.2.0 reopened the Photato PSD with a separate raster layer carrying 
 Both optimized architectures passed 844 of 846 selected tests, including all three new cases. The two inherited color-profile and layer-effect failures repeated. Xcode built the Debug app and passed 29 focused core, app and HTTP tests. Each generated PSD and PSB matched byte for byte in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the signed macOS 14+ preview opened offscreen.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-736) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_736.md).
-
-## 2026-11-25 — Step 735 — Measure and calibrate Vanishing Point planes
-
-Measure lines can be moved, resized and calibrated against a known length. Connected planes share the calibration and can link their grid spacing to it. Independent planes retain their own scale. The native workspace and the authenticated Photato API keep measurements editable in native documents, PSD and PSB.
-
-Photoshop 27.2.0 opened both Photato exports with the linked grid and two editable measures. It displayed 40.01 and 30.01 for Photato’s 40 and 30. On an Adobe-authored angled plane, the largest observed difference was about 0.23 units. Angle labels, raster annotation and CAD export remain open.
-
-Both optimized architectures passed 841 of 843 selected tests, including all four new cases. The two inherited color-profile and layer-effect failures repeated. Xcode built the Debug app and passed the 26 focused core, app and HTTP tests. The generated PSD and PSB each matched byte for byte in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the locally signed macOS 14+ preview opened offscreen.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-735) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_735.md).

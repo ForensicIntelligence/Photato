@@ -20,6 +20,8 @@ Set `"wrap": true` on either rectangle to continue it across linked surfaces. Co
 
 ### Linked Brush and Stamp strokes
 
+Set `straightStroke: true` on a `brush` or `clone` operation to connect the first and last document-pixel points. Desktop Shift-drag and Shift-click use the same renderer. For a Shift-click replay, send the previous endpoint and the clicked point. A one-point request still applies a single dab.
+
 To confine a `brush` or `clone` operation to a perspective Marquee, include `strokeSelection` with `plane`, `lower`, `upper` and optional `wrap`, using the same rectified coordinates as a Marquee patch. The selection and stroke each have their own wrapping flag. Stamp can sample from outside the selection. Omit `strokeSelection` to use the entire eligible destination.
 
 Set `wrap: true` on a `brush` or `clone` operation to continue the stroke through the linked faces. Keep `clip: true` to confine the destination to those faces. With clipping disabled, marks outside the group extend the perspective of the last face the stroke crossed. Point coordinates are document pixels. A wrapped Stamp can supply `sourcePlane` to identify the projection of an aligned donor beyond a visible edge. It samples an immutable view of the composite and earlier operations.

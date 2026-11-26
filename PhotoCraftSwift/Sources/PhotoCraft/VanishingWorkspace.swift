@@ -321,9 +321,22 @@ import PhotoCraftImaging
     }
   }
   func setSource(_ p:PathPoint) { guard scene?.plane(at:p) != nil else { error="Choose a source inside a plane.";return };cloneSource=p;cloneAnchor=nil;error=nil }
-  func stroke(_ points:[PathPoint]) {
-    guard let first=points.first,let scene,let plane=scene.plane(at:first) else { error="Start inside a perspective plane.";return }
-    var op=VanishingOperation(tool == .stamp ? .clone:.brush);op.plane=plane;op.points=points;op.diameter=diameter;op.hardness=hardness;op.opacity=opacity;op.color=color;op.clip=clip
+  func stroke(_ points:[PathPoint], straight: Bool = false, connect: Bool = false) {
+    guard let eventStart=points.first,let scene,let eventPlane=scene.plane(at:eventStart) else { error="Start inside a perspective plane.";return }
+    let kind: VanishingOperation.Kind = tool == .stamp ? .clone : .brush
+    var first = eventStart
+    var plane = eventPlane
+    var samples = points
+    if straight && connect, kind != .clone || cloneAnchor != nil,
+      let previous = program.operations.last, previous.kind == kind,
+      let end = previous.points.last, let endpoint = points.last, let previousPlane = scene.plane(at:end),
+      previousPlane == eventPlane || (allowMultiSurfaceOperations && scene.measurementRoot(for:previousPlane) == scene.measurementRoot(for:eventPlane)) {
+      first = end
+      plane = previousPlane
+      samples = [end,endpoint]
+    }
+    var op=VanishingOperation(kind);op.plane=plane;op.points=samples;op.diameter=diameter;op.hardness=hardness;op.opacity=opacity;op.color=color;op.clip=clip
+    op.straightStroke = straight ? true : nil
     op.heal = heal == .off ? nil : heal
     op.strokeSelection = marquee
     let canWrap = allowMultiSurfaceOperations && scene.hasMarqueeNeighbors(plane)

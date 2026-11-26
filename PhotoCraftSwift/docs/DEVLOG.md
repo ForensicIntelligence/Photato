@@ -763,7 +763,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 742 | 2026-11-25 | [Improve floating selection sampling in Vanishing Point](#dev-step-742) |
 | 743 | 2026-11-25 | [Paint and clone across linked Vanishing Point planes](#dev-step-743) |
 | 744 | 2026-11-25 | [Constrain perspective retouching to a Marquee](#dev-step-744) |
+| 745 | 2026-11-25 | [Paint straight perspective strokes with Shift](#dev-step-745) |
 <!-- history-index:end -->
+
+<a id="dev-step-745"></a>
+
+## 2026-11-25 — Paint straight perspective strokes with Shift
+
+Shift-drag now uses the gesture’s start and end points for Vanishing Point Brush and Stamp. Shift-click starts at the previous mark’s endpoint when it belongs to the same paint tool on an eligible face. Stamp’s Option-click samples a new donor and resets the connection. The cursor shows straight mode or source sampling. The selection’s Deselect button and Command-D work while either paint tool is active. [Adobe’s Brush and Stamp controls](https://helpx.adobe.com/lv/photoshop/using/vanishing-point.html)
+
+`ToolCursor.swift` and `VanishingSheet.swift` capture the modifier mode and share cursor feedback. `VanishingWorkspace.swift` resolves the previous endpoint. `VanishingPoint.swift` and `VanishingEngine.swift` reduce a straight stroke to its endpoints, then project the path through the existing renderer. `AutomationVanishingPoint.swift` exposes `straightStroke` as an optional Boolean through capability discovery and validation. Existing requests keep all points when the field is omitted.
+
+Xcode built successfully. All 32 Core and 21 App/HTTP tests passed, including the curved-versus-straight comparison, 16 modifier combinations for each tool, workspace Undo and matching authenticated API output. Both optimized suites began with source digest `ad95626fca9cb4e5979530e0f6af70ef10392a2d0a64b12233eef99573e2da75`. The prior Adobe attempts returned no reference raster. Exact coverage and path shape across a hinge still need independent measurement.
+
+Both optimized suites passed 867 of 869 selected cases and all three new cases. Color-profile and layer-effect diagnostics repeated unchanged. All eight native replays matched across Debug and both optimized builds. On the two owned guides, straight Brush matched the explicit endpoint control. The Universal ZIP verified its extracted signature, macOS 14 deployment targets and offscreen launches on both slices. [Qualification](SOURCE_PUBLICATION_745.md)
 
 <a id="dev-step-744"></a>
 
