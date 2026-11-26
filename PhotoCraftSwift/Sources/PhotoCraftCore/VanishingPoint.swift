@@ -475,6 +475,10 @@ public struct VanishingOperation:Codable,Equatable,Sendable {
   public var plane=0
   public var at=PathPoint(0.25,0.25)
   public var width=0.5
+  /// An independent paste height in units of plane width. Omission preserves source aspect ratio.
+  public var pasteHeight: Double?
+  public var flip: Bool?
+  public var flop: Bool?
   public var angle=0.0
   public var source:Surface?
   public var marquee: VanishingMarqueeTransfer?
@@ -500,6 +504,41 @@ public struct VanishingOperation:Codable,Equatable,Sendable {
   public var heal: Heal?
   public init(_ kind:Kind) { self.kind=kind }
 }
+
+public struct VanishingPasteGeometry: Sendable {
+  public let origin: PathPoint
+  public let width: Double
+  public let height: Double
+  private let cosine: Double
+  private let sine: Double
+
+  public init?(_ operation: VanishingOperation, frame: VanishingScene.Frame) {
+    guard operation.kind == .paste, let source = operation.source else { return nil }
+    origin = .init(operation.at.x * frame.width, operation.at.y * frame.height)
+    width = operation.width * frame.width
+    height = operation.pasteHeight.map { $0 * frame.width } ?? width * Double(source.height) / Double(source.width)
+    guard width.isFinite, height.isFinite, width > 0, height > 0 else { return nil }
+    let radians = operation.angle * .pi / 180
+    cosine = cos(radians)
+    sine = sin(radians)
+  }
+
+  public func point(_ unit: PathPoint) -> PathPoint {
+    let x = unit.x * width, y = unit.y * height
+    return .init(origin.x+x*cosine-y*sine,origin.y+x*sine+y*cosine)
+  }
+
+  public func unit(at point: PathPoint) -> PathPoint {
+    let dx = point.x-origin.x, dy = point.y-origin.y
+    return .init((dx*cosine+dy*sine)/width,(-dx*sine+dy*cosine)/height)
+  }
+
+  public func projectedCorners(in frame: VanishingScene.Frame) -> [PathPoint]? {
+    let corners = [PathPoint(0,0),.init(1,0),.init(1,1),.init(0,1)].map { frame.projected(point($0)) }
+    return PerspectiveSettings.validQuad(corners) ? corners : nil
+  }
+}
+
 public struct VanishingProgram:Codable,Equatable,Sendable {
   public var settings=VanishingSettings()
   public var operations:[VanishingOperation]=[]
@@ -512,10 +551,15 @@ public struct VanishingProgram:Codable,Equatable,Sendable {
     try settings.validate();guard operations.count<=256,operations.reduce(0,{$0+$1.points.count})<=16384,operations.reduce(0,{$0+($1.source?.allocatedBytes ?? 0)})<=134_217_728 else { throw CraftError.unsupported("Vanishing Point exceeds the operation or source memory limit.") }
     for op in operations {
       guard settings.planes.indices.contains(op.plane),VanishingSettings.validPoint(op.at),op.width.isFinite,(0.001...20).contains(op.width),op.angle.isFinite,(-360...360).contains(op.angle),op.diameter.isFinite,(1...2000).contains(op.diameter),op.hardness.isFinite,(0...100).contains(op.hardness),op.opacity.isFinite,(0...100).contains(op.opacity),op.color.isFinite,(0...1).contains(op.color.a),op.points.count<=4096,op.points.allSatisfy({VanishingSettings.validPoint($0)}),op.sourcePoint.map({VanishingSettings.validPoint($0)}) ?? true else { throw CraftError.invalid("Invalid Vanishing Point operation.") }
+      if op.kind != .paste, op.pasteHeight != nil || op.flip != nil || op.flop != nil {
+        throw CraftError.invalid("Paste transforms require a pasted source.")
+      }
       switch op.kind {
       case .paste:
         guard op.wrap == nil,op.sourcePlane == nil,op.strokeSelection == nil,op.straightStroke == nil,op.marquee == nil,let source=op.source,source.width<=WarpRaster.maximumPixels/source.height,
-          op.points.isEmpty,op.sourcePoint==nil else { throw CraftError.invalid("Paste requires bounded source pixels.") }
+          op.points.isEmpty,op.sourcePoint==nil,op.pasteHeight.map({ (0.001...20).contains($0) }) ?? true else {
+          throw CraftError.invalid("Paste requires bounded source pixels and dimensions.")
+        }
         try source.validated()
       case .marquee:
         guard op.wrap == nil,op.sourcePlane == nil,op.strokeSelection == nil,op.straightStroke == nil,let patch = op.marquee,patch.destination.plane == op.plane,settings.planes.indices.contains(patch.source.plane),

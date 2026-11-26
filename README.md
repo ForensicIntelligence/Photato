@@ -23,7 +23,7 @@ We replay the same operations in Photato and Photoshop 2026 with matching docume
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 747.** Vanishing Point Eyedropper can sample the original or the active preview. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_747.md).
+**Development alpha — source build 748.** Vanishing Point can scale, rotate and reflect floating pasted content. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_748.md).
 
 ## Project layout
 

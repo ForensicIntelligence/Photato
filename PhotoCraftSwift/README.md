@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 748.** Transform and reflect a floating Vanishing Point paste. [Qualification](docs/SOURCE_PUBLICATION_748.md).
+
 **Source checkpoint 747.** Vanishing Point Eyedropper samples the original or the active preview. [Qualification](docs/SOURCE_PUBLICATION_747.md).
 
 **Source checkpoint 732.** Vanishing Point can now apply Brush, Stamp and pasted repairs to an existing cropped pixel layer. The layer grows where needed and keeps its identity, original pixels and mask position. The native editor and authenticated Photato API use the same edit. 833 of 835 selected tests passed on each optimized architecture, with Intel tested under Rosetta. All three new cases passed on both. The existing layer-effect and color-profile fixtures repeated their earlier differences. The paired color-profile outputs matched build 731 byte for byte. Xcode built the project. All 16 focused core cases and the cropped-layer application test passed in Debug. The signed macOS 14+ preview opened both architectures offscreen. [Qualification](docs/SOURCE_PUBLICATION_732.md).

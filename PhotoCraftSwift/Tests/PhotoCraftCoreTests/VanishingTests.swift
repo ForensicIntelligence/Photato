@@ -11,6 +11,38 @@ final class VanishingTests:XCTestCase {
     var s=VanishingSettings();s.planes=[.init(corners:corners)];return s
   }
   func plain()->VanishingProgram { var p=VanishingProgram();p.settings.planes=[.init(corners:[.init(4,4),.init(60,4),.init(60,44),.init(4,44)])];return p }
+  func testPasteReflectionAndIndependentHeightPreserveLegacyAspectRatio() throws {
+    let sample = try Surface(width:64,height:64,fill:Pixel(0.25,0.25,0.25))
+    var source = try Surface(width:4,height:2)
+    for y in 0..<2 { for x in 0..<4 { source.setPixel(x:x,y:y,Pixel(Float(x)/4,Float(y),0.5)) } }
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners:[.init(0,0),.init(64,0),.init(64,64),.init(0,64)])]
+    var operation = VanishingOperation(.paste)
+    operation.source = source
+    operation.width = 4.0/64
+    program.operations = [operation]
+    let legacy = try VanishingEngine.render(program,sample:sample)
+    operation.pasteHeight = 2.0/64
+    program.operations = [operation]
+    XCTAssertEqual(try VanishingEngine.render(program,sample:sample),legacy)
+
+    operation.pasteHeight = 4.0/64
+    program.operations = [operation]
+    let tall = try VanishingEngine.render(program,sample:sample)
+    XCTAssertEqual(legacy.pixel(x:17,y:19).a,0)
+    XCTAssertEqual(tall.pixel(x:17,y:19).a,1)
+    operation.flip = true
+    operation.flop = true
+    program.operations = [operation]
+    let reflected = try VanishingEngine.render(program,sample:sample)
+    for y in 16..<20 { for x in 16..<20 {
+      let expected = tall.pixel(x:35-x,y:35-y), actual = reflected.pixel(x:x,y:y)
+      XCTAssertEqual(actual.r,expected.r,accuracy:1.0/255)
+      XCTAssertEqual(actual.g,expected.g,accuracy:1.0/255)
+      XCTAssertEqual(actual.a,1)
+    } }
+  }
+
   func testMarqueeRectifiesSquaresConstrainsMovesAndTransfersScale() throws {
     var settings = cameraPlane()
     settings.planes.append(.init(corners:[.init(520,320),.init(740,320),.init(740,510),.init(520,510)]))

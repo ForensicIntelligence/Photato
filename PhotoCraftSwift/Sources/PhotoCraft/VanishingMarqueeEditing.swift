@@ -2,6 +2,151 @@ import AppKit
 import PhotoCraftCore
 
 extension VanishingWorkspace {
+  enum PasteDragAction {
+    case move, scale(PathPoint), rotate
+
+    func cursor(_ flags: NSEvent.ModifierFlags, dragging: Bool = false) -> ToolCursor {
+      switch self {
+      case .move:
+        if flags.contains(.option) || flags.contains(.shift) {
+          return .selectedPixels(copy:flags.contains(.option),constrained:flags.contains(.shift),unsnapped:false)
+        }
+        return dragging ? .closedHand : .openHand
+      case .scale:
+        return .symbol("arrow.up.left.and.arrow.down.right",ToolCursor.geometry(flags))
+      case .rotate:
+        return .symbol("rotate.right",flags.contains(.shift) ? .constrain : nil)
+      }
+    }
+  }
+
+  struct PasteDrag {
+    let index: Int
+    let original: VanishingOperation
+    let action: PasteDragAction
+    let start: PathPoint
+    let flags: NSEvent.ModifierFlags
+  }
+
+  var selectedPasteOperation: VanishingOperation? {
+    guard let index = selectedPaste, program.operations.indices.contains(index),
+      program.operations[index].kind == .paste else { return nil }
+    return program.operations[index]
+  }
+
+  func pasteTransformHandles(for operation: VanishingOperation, scene: VanishingScene, scale: Double)
+    -> [(action: PasteDragAction, point: PathPoint)]
+  {
+    guard scene.frames.indices.contains(operation.plane), scale.isFinite, scale > 0 else { return [] }
+    let frame = scene.frames[operation.plane]
+    guard let geometry = VanishingPasteGeometry(operation,frame:frame),
+      let corners = geometry.projectedCorners(in:frame) else { return [] }
+    let units = [PathPoint(0,0),.init(1,0),.init(1,1),.init(0,1)]
+    var handles = zip(units,corners).map { (PasteDragAction.scale($0.0),$0.1) }
+    let top = frame.projected(geometry.point(.init(0.5,0)))
+    let center = frame.projected(geometry.point(.init(0.5,0.5)))
+    let dx = top.x-center.x, dy = top.y-center.y, length = hypot(dx,dy)
+    if length > 1e-8 {
+      let offset = 18/(scale*length)
+      handles.append((.rotate,.init(top.x+dx*offset,top.y+dy*offset)))
+    }
+    return handles
+  }
+
+  func pasteDrag(at point: PathPoint, flags: NSEvent.ModifierFlags, scene: VanishingScene, scale: Double) -> PasteDrag? {
+    guard tool == .transform || tool == .marquee,
+      let index = selectedPaste,let operation = selectedPasteOperation,scene.frames.indices.contains(operation.plane) else { return nil }
+    let action: PasteDragAction
+    if tool == .transform, let closest = pasteTransformHandles(for:operation,scene:scene,scale:scale).map({
+      ($0.action,hypot($0.point.x-point.x,$0.point.y-point.y))
+    }).min(by:{ $0.1 < $1.1 }),closest.1 <= 8/scale {
+      action = closest.0
+    } else {
+      let frame = scene.frames[operation.plane]
+      guard let geometry = VanishingPasteGeometry(operation,frame:frame), !operation.clip || frame.contains(point) else { return nil }
+      let unit = geometry.unit(at:frame.metric(point))
+      guard (0...1).contains(unit.x), (0...1).contains(unit.y) else { return nil }
+      action = .move
+    }
+    return .init(index:index,original:operation,action:action,start:point,flags:flags)
+  }
+
+  func projectedPaste(_ drag: PasteDrag, to point: PathPoint, scene: VanishingScene) -> VanishingOperation? {
+    let original = drag.original
+    guard scene.frames.indices.contains(original.plane) else { return nil }
+    let frame = scene.frames[original.plane]
+    guard let geometry = VanishingPasteGeometry(original,frame:frame) else { return nil }
+    if point == drag.start { return original }
+    var result = original
+    let anchor: PathPoint
+    switch drag.action {
+    case .move:
+      var target = point
+      if drag.flags.contains(.shift) {
+        let start = frame.metric(drag.start), end = frame.metric(point)
+        let aligned = abs(end.x-start.x) >= abs(end.y-start.y) ? PathPoint(end.x,start.y) : .init(start.x,end.y)
+        target = frame.projected(aligned)
+      }
+      guard let plane = scene.plane(at:target) else { return nil }
+      result.plane = plane
+      let destinationFrame = scene.frames[plane]
+      let originalOrigin = frame.point(original.at)
+      if plane == original.plane {
+        let start = frame.uv(drag.start), end = frame.uv(target)
+        result.at = .init(original.at.x+end.x-start.x,original.at.y+end.y-start.y)
+      } else {
+        result.at = destinationFrame.uv(.init(target.x+originalOrigin.x-drag.start.x,target.y+originalOrigin.y-drag.start.y))
+      }
+      guard let moved = VanishingPasteGeometry(result,frame:destinationFrame),
+        moved.projectedCorners(in:destinationFrame) != nil else { return nil }
+      return result
+    case .scale(let corner):
+      anchor = drag.flags.contains(.option) ? .init(0.5,0.5) : .init(1-corner.x,1-corner.y)
+      let start = geometry.unit(at:frame.metric(drag.start)), end = geometry.unit(at:frame.metric(point))
+      let x = 1+(end.x-start.x)/(corner.x-anchor.x), y = 1+(end.y-start.y)/(corner.y-anchor.y)
+      let height = geometry.height/frame.width
+      if drag.flags.contains(.shift) {
+        let factor = abs(x-1) >= abs(y-1) ? x : y
+        let lower = max(0.001/original.width,original.pasteHeight.map { 0.001/$0 } ?? 0)
+        let upper = min(20/original.width,original.pasteHeight.map { 20/$0 } ?? .infinity)
+        let ratio = min(upper,max(lower,factor))
+        result.width = min(20,max(0.001,original.width*ratio))
+        result.pasteHeight = original.pasteHeight.map { min(20,max(0.001,$0*ratio)) }
+      } else {
+        result.width = min(20,max(0.001,original.width*x))
+        result.pasteHeight = min(20,max(0.001,height*y))
+      }
+    case .rotate:
+      anchor = .init(0.5,0.5)
+      let center = geometry.point(anchor), start = frame.metric(drag.start), end = frame.metric(point)
+      guard hypot(start.x-center.x,start.y-center.y) > 1e-8,
+        hypot(end.x-center.x,end.y-center.y) > 1e-8 else { return nil }
+      let rotation = (atan2(end.y-center.y,end.x-center.x)-atan2(start.y-center.y,start.x-center.x))*180/Double.pi
+      let angle = result.angle+rotation
+      result.angle = (drag.flags.contains(.shift) ? (angle/15).rounded()*15 : angle).remainder(dividingBy:360)
+    }
+    guard let resized = VanishingPasteGeometry(result,frame:frame) else { return nil }
+    let before = geometry.point(anchor), after = resized.point(anchor)
+    result.at = .init(original.at.x+(before.x-after.x)/frame.width,original.at.y+(before.y-after.y)/frame.height)
+    guard let projected = VanishingPasteGeometry(result,frame:frame),projected.projectedCorners(in:frame) != nil else { return nil }
+    return result
+  }
+
+  func finishPasteDrag(_ drag: PasteDrag, at operation: VanishingOperation) {
+    guard selectedPaste == drag.index,selectedPasteOperation == drag.original,operation != drag.original else { return }
+    var draft = program
+    let index: Int
+    if case .move = drag.action,drag.flags.contains(.option) {
+      index = draft.operations.count
+      draft.operations.append(operation)
+    } else {
+      index = drag.index
+      draft.operations[index] = operation
+    }
+    change(draft)
+    if program == draft { selectPaste(index) }
+  }
+
   enum MarqueeAction: Equatable {
     case draw, move, fill, copy, duplicateFloating, moveFloating
   }

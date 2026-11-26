@@ -1,4 +1,4 @@
-**Vanishing Point.** Qualify clipboard paste placement, scaling, rotation, Flip and Flop. Capture owned Photoshop output for a paired transform comparison. The README estimate stays at 50%. This checkpoint completes preview sampling for the scoped workflow. Clipboard placement and exact Photoshop raster comparisons still affect Vanishing Point acceptance. [Development record](DEVLOG.md#dev-step-747) · [Qualification](SOURCE_PUBLICATION_747.md).
+**Vanishing Point.** Place clipboard content at its original size in the image before a plane is selected. Verify the transition onto a fitted face, and compare controlled Photoshop and Photato paste outputs. [Development record](DEVLOG.md#dev-step-748) · [Qualification](SOURCE_PUBLICATION_748.md).
 
 **Source checkpoint 738.** The native Marquee creates perspective rectangles and turns them into sampled floating patches. The authenticated Photato API shares the edit and document history. The captured Photoshop 20 × 10 pixel move matched Photato's placement. Edge coverage and eight-bit rounding still differ. [Qualification](SOURCE_PUBLICATION_738.md).
 

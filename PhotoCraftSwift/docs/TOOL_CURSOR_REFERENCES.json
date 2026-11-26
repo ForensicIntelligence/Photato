@@ -1763,7 +1763,9 @@
       "cursor_behavior": "Option picks a Stamp source, Shift guides straight Brush and Stamp strokes, and Shift snaps floating Marquee rotation. The Eyedropper shows its sampling cursor when the displayed image point is available.",
       "name": "Vanishing Point",
       "sampling_reference": "VANISHING_POINT_REFERENCES.json",
-      "sampling_step": 747
+      "sampling_step": 747,
+      "paste_transform_step": 748,
+      "paste_transform_cursor": "Shift constrains movement and scale or snaps rotation. Option duplicates movement or centers scale. All 16 standard modifier combinations are tested. Photoshop’s exact rotation modifier remains unqualified."
     },
     {
       "cursor_behavior": "Option Path control-point addition; native SwiftUI cursor region.",

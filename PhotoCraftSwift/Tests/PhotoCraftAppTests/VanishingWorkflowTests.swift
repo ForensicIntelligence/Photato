@@ -857,6 +857,106 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testPastedItemHandlesTransformDuplicateUndoAndHTTP() async throws {
+    var original = try fixture()
+    original.vanishingPoint = program().settings
+    guard case .raster(let source) = original.layers[0].content else { return XCTFail("Missing source pixels.") }
+    let store = EditorStore(document:original,actions:ActionLibrary())
+    store.beginVanishingPoint()
+    let workspace = try XCTUnwrap(store.vanishingWorkspace)
+    defer { store.cancelVanishingPoint();store.renderTask?.cancel() }
+    await workspace.prepare()
+    workspace.paste(source,tool:.marquee)
+    XCTAssertEqual(workspace.tool,.marquee)
+    workspace.tool = .transform
+    let scene = try XCTUnwrap(workspace.scene), frame = scene.frames[0]
+    let initial = try XCTUnwrap(workspace.selectedPasteOperation)
+    let initialGeometry = try XCTUnwrap(VanishingPasteGeometry(initial,frame:frame))
+    XCTAssertEqual(workspace.pasteTransformHandles(for:initial,scene:scene,scale:2).count,5)
+    let corner = frame.projected(initialGeometry.point(.init(1,1)))
+    let scale = try XCTUnwrap(workspace.pasteDrag(at:corner,flags:[],scene:scene,scale:2))
+    let end = frame.projected(initialGeometry.point(.init(1.25,0.8)))
+    let resized = try XCTUnwrap(workspace.projectedPaste(scale,to:end,scene:scene))
+    XCTAssertEqual(resized.width,0.625,accuracy:1e-9)
+    XCTAssertEqual(try XCTUnwrap(resized.pasteHeight),0.3,accuracy:1e-9)
+    XCTAssertEqual(resized.at.x,initial.at.x,accuracy:1e-9)
+    XCTAssertEqual(resized.at.y,initial.at.y,accuracy:1e-9)
+    let centered = try XCTUnwrap(workspace.pasteDrag(at:corner,flags:[.shift,.option],scene:scene,scale:2))
+    let centerEnd = frame.projected(initialGeometry.point(.init(1.15,1.04)))
+    let scaled = try XCTUnwrap(workspace.projectedPaste(centered,to:centerEnd,scene:scene))
+    let centeredGeometry = try XCTUnwrap(VanishingPasteGeometry(scaled,frame:frame))
+    XCTAssertEqual(centeredGeometry.width/centeredGeometry.height,initialGeometry.width/initialGeometry.height,accuracy:1e-9)
+    let center = initialGeometry.point(.init(0.5,0.5))
+    XCTAssertEqual(centeredGeometry.point(.init(0.5,0.5)).x,center.x,accuracy:1e-9)
+    XCTAssertEqual(centeredGeometry.point(.init(0.5,0.5)).y,center.y,accuracy:1e-9)
+
+    workspace.beginGesture()
+    workspace.finishPasteDrag(scale,at:resized)
+    workspace.endGesture()
+    workspace.undo()
+    XCTAssertEqual(workspace.selectedPasteOperation,initial)
+    workspace.redo()
+    XCTAssertEqual(workspace.selectedPasteOperation,resized)
+
+    let resizedGeometry = try XCTUnwrap(VanishingPasteGeometry(resized,frame:frame))
+    let rotationHandle = try XCTUnwrap(workspace.pasteTransformHandles(for:resized,scene:scene,scale:2)
+      .first { entry in if case .rotate = entry.action { return true }; return false }).point
+    let rotate = try XCTUnwrap(workspace.pasteDrag(at:rotationHandle,flags:[.shift],scene:scene,scale:2))
+    let pivot = resizedGeometry.point(.init(0.5,0.5)), rotationStart = frame.metric(rotationHandle)
+    let angle = 22.0 * Double.pi/180, dx = rotationStart.x-pivot.x, dy = rotationStart.y-pivot.y
+    let rotationEnd = frame.projected(.init(pivot.x+dx*cos(angle)-dy*sin(angle),pivot.y+dx*sin(angle)+dy*cos(angle)))
+    let rotated = try XCTUnwrap(workspace.projectedPaste(rotate,to:rotationEnd,scene:scene))
+    XCTAssertEqual(rotated.angle,15,accuracy:1e-9)
+    workspace.beginGesture()
+    workspace.finishPasteDrag(rotate,at:rotated)
+    workspace.endGesture()
+    let rotatedGeometry = try XCTUnwrap(VanishingPasteGeometry(rotated,frame:frame))
+    let rotatedCenter = rotatedGeometry.point(.init(0.5,0.5))
+    XCTAssertEqual(rotatedCenter.x,pivot.x,accuracy:1e-9)
+    XCTAssertEqual(rotatedCenter.y,pivot.y,accuracy:1e-9)
+
+    workspace.tool = .marquee
+    let copyStart = frame.projected(rotatedCenter)
+    let copy = try XCTUnwrap(workspace.pasteDrag(at:copyStart,flags:[.option],scene:scene,scale:2))
+    let copied = try XCTUnwrap(workspace.projectedPaste(copy,to:.init(copyStart.x+6,copyStart.y),scene:scene))
+    workspace.beginGesture()
+    workspace.finishPasteDrag(copy,at:copied)
+    workspace.endGesture()
+    XCTAssertEqual(workspace.program.operations.count,2)
+    XCTAssertEqual(workspace.selectedPasteOperation,copied)
+    workspace.undo()
+    XCTAssertEqual(workspace.program.operations.count,1)
+    XCTAssertEqual(workspace.selectedPasteOperation,rotated)
+
+    var reflected = workspace.program
+    reflected.operations[0].flip = true
+    reflected.operations[0].flop = true
+    workspace.change(reflected)
+    await workspace.task?.value
+    XCTAssertTrue(workspace.ready,workspace.error ?? "Missing paste preview")
+    let active = try XCTUnwrap(workspace.apiState["selectedPaste"] as? [String:Any])
+    XCTAssertEqual(active["flip"] as? Bool,true)
+    store.commitVanishingPoint()
+    await store.geometryTask?.value
+    let native = store.document
+    XCTAssertEqual(store.session.undoStack.count,1)
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:original)
+      try service.share(document)
+      let id = original.layers[0].id.uuidString
+      let layer: [String:Any] = ["kind":"paste","sourceLayerID":id,"plane":0,
+        "at":["x":rotated.at.x,"y":rotated.at.y],"width":rotated.width,
+        "pasteHeight":try XCTUnwrap(rotated.pasteHeight),"angle":rotated.angle,"flip":true,"flop":true]
+      let applied = try await helper.edit(service,document,"filter.vanishingPoint",["layerID":id,"operations":[layer]])
+      XCTAssertEqual(applied,200)
+      XCTAssertEqual(document.store.document,native)
+      let undone = try await helper.edit(service,document,"history.undo")
+      XCTAssertEqual(undone,200)
+      XCTAssertEqual(document.store.document,original)
+    }
+  }
+
   @MainActor func testPerspectiveEyedropperSamplesDraftAndReadOnlyHTTPPreview() async throws {
     var original = try fixture()
     original.vanishingPoint = program().settings

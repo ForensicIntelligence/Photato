@@ -87,6 +87,7 @@ import PhotoCraftImaging
     var program: VanishingProgram
     var marquee: VanishingMarquee?
     var floating: Int?
+    var paste: Int?
     var stampAnchor: StampAnchor?
 
     static func == (lhs: Self, rhs: Self) -> Bool {
@@ -98,7 +99,7 @@ import PhotoCraftImaging
   private var redoStates=[EditState]()
   var canUndo: Bool { !undoStates.isEmpty || !pending.isEmpty || pendingMeasurement != nil }
   var canRedo: Bool { !redoStates.isEmpty }
-  private var editState: EditState { .init(program:program,marquee:marquee,floating:selectedMarqueePatch,stampAnchor:cloneAnchor) }
+  private var editState: EditState { .init(program:program,marquee:marquee,floating:selectedMarqueePatch,paste:selectedPaste,stampAnchor:cloneAnchor) }
   @ObservationIgnored var task:Task<Void,Never>?
   @ObservationIgnored private(set) var brushColorTask: Task<Void,Never>?
   @ObservationIgnored private var seedSnapshot: RenderSnapshot?
@@ -139,7 +140,7 @@ import PhotoCraftImaging
     if remember && gestureStart == nil { self.remember(editState) }
     program = p
     selected = max(0,min(selected,p.settings.planes.count-1))
-    if let i = selectedPaste, !p.operations.indices.contains(i) { selectedPaste = nil }
+    if let i = selectedPaste, !p.operations.indices.contains(i) || p.operations[i].kind != .paste { selectedPaste = nil }
     if let i = selectedMarqueePatch, !p.operations.indices.contains(i) || p.operations[i].marquee == nil { selectedMarqueePatch = nil }
     if let i = selectedMeasurement, !measurements.indices.contains(i) { selectedMeasurement = nil }
     if p == previous, let edit = preparedEdit, let updated = try? edit.updatingDisplayMetadata(p.settings) {
@@ -155,6 +156,8 @@ import PhotoCraftImaging
     change(state.program,remember:false)
     marquee = state.marquee
     selectedMarqueePatch = state.floating
+    selectedPaste = state.paste
+    if let index = selectedPaste { selected = program.operations[index].plane }
     cloneAnchor = state.stampAnchor?.source == cloneSource ? state.stampAnchor : nil
   }
   func undo() { if pendingMeasurement != nil { pendingMeasurement=nil;return };if !pending.isEmpty { pending.removeLast();return };endGesture();guard let state=undoStates.popLast() else { return };redoStates.append(editState);restore(state) }
@@ -396,9 +399,26 @@ import PhotoCraftImaging
     var p=program;p.operations.append(op);selected=plane;change(p)
     if program == p { cloneAnchor = nextAnchor }
   }
-  func paste(_ source:Surface) {
+  func paste(_ source:Surface, tool selectionTool: Tool = .transform) {
     guard scene?.frames.indices.contains(selected)==true else { error="Create or select a plane before pasting.";return }
-    var p=program,op=VanishingOperation(.paste);op.plane=selected;op.source=source;op.opacity=opacity;op.clip=clip;p.operations.append(op);selectedPaste=p.operations.count-1;change(p);tool = .transform
+    var draft = program, operation = VanishingOperation(.paste)
+    operation.plane = selected
+    operation.source = source
+    operation.opacity = opacity
+    operation.clip = clip
+    draft.operations.append(operation)
+    change(draft)
+    guard draft == program else { return }
+    selectPaste(draft.operations.count-1)
+    tool = selectionTool
+  }
+  func selectPaste(_ index: Int?) {
+    guard let index else { selectedPaste = nil; return }
+    guard program.operations.indices.contains(index), program.operations[index].kind == .paste else { return }
+    selectedPaste = index
+    selected = program.operations[index].plane
+    selectedMarqueePatch = nil
+    marquee = nil
   }
   var selectedPasteHeal: VanishingOperation.Heal? {
     guard let i = selectedPaste, program.operations.indices.contains(i),
@@ -419,7 +439,7 @@ import PhotoCraftImaging
     do {
       let original=original
       let worker=Task.detached { let content=try ColorManagement.converted(input.decoded(),to:original);return try ClipboardRenderer.preview(content) }
-      let pixels=try await worker.value;guard !closed else { return };paste(pixels)
+      let pixels=try await worker.value;guard !closed else { return };paste(pixels,tool:.marquee)
     } catch { if !closed { self.error=error.localizedDescription } }
   }
   private struct SourcePreview: Sendable {

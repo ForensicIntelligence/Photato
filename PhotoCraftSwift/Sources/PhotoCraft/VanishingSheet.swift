@@ -199,11 +199,34 @@ struct VanishingSheet:View {
           Button("Paste Layer Pixels") { if let sourceID { model.pasteLayer(sourceID) } }.disabled(sourceID==nil || model.program.settings.planes.isEmpty)
           let pastes=model.program.operations.indices.filter{model.program.operations[$0].kind == .paste}
           if !pastes.isEmpty {
-            Picker("Pasted Item",selection:$model.selectedPaste) { Text("None").tag(nil as Int?);ForEach(pastes,id:\.self) { Text("Item \($0+1)").tag(Optional($0)) } }
+            Picker("Pasted Item",selection:Binding(get:{model.selectedPaste},set:{model.selectPaste($0)})) {
+              Text("None").tag(nil as Int?)
+              ForEach(pastes,id:\.self) { Text("Item \($0+1)").tag(Optional($0)) }
+            }
           }
           if let index=model.selectedPaste,pastes.contains(index) {
-            Text("Use Transform to drag this item across a plane.").font(.caption).foregroundStyle(.secondary)
-            number("Width (plane fraction)",pasteNumber(index,\.width),0.01...2);number("Rotation (°)",pasteNumber(index,\.angle),-180...180);number("Opacity (%)",pasteNumber(index,\.opacity),0...100)
+            number("Width (plane fraction)",pasteNumber(index,\.width),0.001...20)
+            if let operation = model.selectedPasteOperation,let scene = model.scene,
+              scene.frames.indices.contains(operation.plane),
+              let geometry = VanishingPasteGeometry(operation,frame:scene.frames[operation.plane]) {
+              let defaultHeight = geometry.height/scene.frames[operation.plane].width
+              number("Height (plane fraction)",Binding(get:{
+                model.selectedPaste == index ? model.selectedPasteOperation?.pasteHeight ?? defaultHeight : defaultHeight
+              },set:{ height in
+                guard model.selectedPaste == index,model.selectedPasteOperation != nil else { return }
+                var draft = model.program
+                draft.operations[index].pasteHeight = height
+                model.change(draft)
+              }),0.001...20)
+            }
+            number("Rotation (°)",pasteNumber(index,\.angle),-180...180)
+            number("Opacity (%)",pasteNumber(index,\.opacity),0...100)
+            if model.tool == .transform {
+              HStack {
+                Toggle("Flip",isOn:pasteReflection(index,\.flip)).help("Reflect across the vertical axis of the paste.")
+                Toggle("Flop",isOn:pasteReflection(index,\.flop)).help("Reflect across the horizontal axis of the paste.")
+              }
+            }
             healPicker(Binding(get: { model.selectedPasteHeal ?? .off }, set: { model.setSelectedPasteHeal($0) }))
             Button("Delete Pasted Item") { var p=model.program;p.operations.remove(at:index);model.selectedPaste=nil;model.change(p) }
           }
@@ -228,6 +251,15 @@ struct VanishingSheet:View {
     .task { if model.image==nil,!model.rendering { await model.prepare() } }
     .onDisappear { model.close();if store.vanishingWorkspace === model { store.vanishingWorkspace=nil } }
   }
+
+  private func pasteReflection(_ index: Int, _ key: WritableKeyPath<VanishingOperation,Bool?>) -> Binding<Bool> {
+    Binding(get:{ model.selectedPaste == index && model.selectedPasteOperation?[keyPath:key] == true },set:{ value in
+      guard model.selectedPaste == index,model.selectedPasteOperation != nil else { return }
+      var draft = model.program
+      draft.operations[index][keyPath:key] = value ? true : nil
+      model.change(draft)
+    })
+  }
 }
 struct VanishingPreview:View {
   @Bindable var model:VanishingWorkspace
@@ -238,7 +270,8 @@ struct VanishingPreview:View {
   @State private var stroke=[PathPoint]()
   @State private var strokeMode: ToolCursor.VanishingStrokeMode = .paint
   @State private var strokeMoved=false
-  @State private var pasteOrigin:PathPoint?
+  @State private var pasteDrag: VanishingWorkspace.PasteDrag?
+  @State private var pasteDraft: VanishingOperation?
   @FocusState private var focused: Bool
   @State private var pointer: CGPoint?
   @State private var measurementDrag: MeasurementDrag?
@@ -337,6 +370,13 @@ struct VanishingPreview:View {
           }
         }
         if let scene {
+          func drawTransformHandle(at point: PathPoint, rotation: Bool) {
+            let position = screen(point)
+            let bounds = CGRect(x:position.x-4,y:position.y-4,width:8,height:8)
+            let shape = rotation ? Path(ellipseIn:bounds) : Path(bounds)
+            context.fill(shape,with:.color(rotation ? .accentColor : .white))
+            context.stroke(shape,with:.color(.black),lineWidth:1)
+          }
           func drawMarquee(_ rect: VanishingMarquee, angle: Double, sampling: Bool, clip: Bool) {
             var outline = Path()
             if rect.wrap == true {
@@ -365,11 +405,24 @@ struct VanishingPreview:View {
           }
           if model.tool == .transform, let floating, marqueeOutline == nil {
             for (handle, point) in model.marqueeTransformHandles(for:floating,scene:scene,scale:scale) {
-              let position = screen(point)
-              let bounds = CGRect(x:position.x-4,y:position.y-4,width:8,height:8)
-              let shape = handle == .rotate ? Path(ellipseIn:bounds) : Path(bounds)
-              context.fill(shape,with:.color(handle == .rotate ? .accentColor : .white))
-              context.stroke(shape,with:.color(.black),lineWidth:1)
+              drawTransformHandle(at:point,rotation:handle == .rotate)
+            }
+          }
+          if model.tool == .transform || model.tool == .marquee,let paste = pasteDraft ?? model.selectedPasteOperation,
+            scene.frames.indices.contains(paste.plane) {
+            let frame = scene.frames[paste.plane]
+            if let geometry = VanishingPasteGeometry(paste,frame:frame),let corners = geometry.projectedCorners(in:frame) {
+              var outline = Path()
+              outline.addLines(corners.map(screen))
+              outline.closeSubpath()
+              context.stroke(outline,with:.color(.black),lineWidth:2)
+              context.stroke(outline,with:.color(.white),style:StrokeStyle(lineWidth:1,dash:[4,3]))
+              if model.tool == .transform {
+                for (action, point) in model.pasteTransformHandles(for:paste,scene:scene,scale:scale) {
+                  if case .rotate = action { drawTransformHandle(at:point,rotation:true) }
+                  else { drawTransformHandle(at:point,rotation:false) }
+                }
+              }
             }
           }
         }
@@ -387,8 +440,12 @@ struct VanishingPreview:View {
           return mode.cursor
         case .edit: return .symbol("arrow.up.and.down.and.arrow.left.and.right")
         case .marquee,.transform:
+          if let pasteDrag { return pasteDrag.action.cursor(pasteDrag.flags,dragging:true) }
+          if let scene,let pointer,let target = model.pasteDrag(at:point(pointer),flags:flags,scene:scene,scale:scale) {
+            return target.action.cursor(flags)
+          }
           if model.tool == .transform,model.floatingMarqueeOperation == nil {
-            return .symbol("arrow.up.and.down.and.arrow.left.and.right")
+            return .unavailable
           }
           if let marqueeTransformDrag { return marqueeTransformDrag.handle.cursor(constrained:marqueeTransformConstrained) }
           if model.tool == .transform, let scene, let pointer,
@@ -450,6 +507,11 @@ struct VanishingPreview:View {
         model.tool = .brush
         return .handled
       }
+      .onKeyPress("t") {
+        guard !pressed else { return .ignored }
+        model.tool = .transform
+        return .handled
+      }
       .onKeyPress(keys:[.leftArrow,.rightArrow,.upArrow,.downArrow],phases:[.down,.repeat]) { press in
         guard !pressed,model.activeMarquee != nil,
           model.tool == .marquee || model.tool == .transform,
@@ -467,12 +529,14 @@ struct VanishingPreview:View {
       }
       .onChange(of:model.tool) { _, _ in pointer = nil }
       .onChange(of:focused) { _, active in
-        if !active && pressed && (model.tool == .brush || model.tool == .stamp || marqueeTransformDrag != nil) {
+        if !active && pressed && (model.tool == .brush || model.tool == .stamp || marqueeTransformDrag != nil || pasteDrag != nil) {
           stroke = []
           strokeMode = .paint
           strokeMoved = false
           marqueeTransformDrag = nil
           marqueeTransformDraft = nil
+          pasteDrag = nil
+          pasteDraft = nil
           pressed = false
           model.endGesture()
         }
@@ -484,14 +548,20 @@ struct VanishingPreview:View {
       .simultaneousGesture(SpatialTapGesture(count:2).onEnded { value in
         guard let index = scene?.plane(at:point(value.location)) else { return }
         if model.tool == .measure { model.measurePlaneDimensions(index) }
-        if model.tool == .marquee { model.selectMarqueePlane(index) }
+        if model.tool == .marquee && model.selectedPasteOperation == nil { model.selectMarqueePlane(index) }
       })
       .gesture(DragGesture(minimumDistance:0).onChanged { value in
         if !pressed {
           focused=true
-          pressed=true;pan=model.pan;stroke=[];hit=nil;corner=nil;strokeMode = .paint;strokeMoved=false;pasteOrigin=nil;model.beginGesture()
+          pressed=true;pan=model.pan;stroke=[];hit=nil;corner=nil;strokeMode = .paint;strokeMoved=false;model.beginGesture()
           let start=point(value.startLocation)
-          if let scene,model.tool == .marquee || (model.tool == .transform && model.floatingMarqueeOperation != nil) {
+          if let scene, model.tool == .marquee || model.tool == .transform {
+            if model.selectedPasteOperation != nil {
+              pasteDrag = model.pasteDrag(at:start,flags:NSEvent.modifierFlags,scene:scene,scale:scale)
+              if pasteDrag == nil { model.selectPaste(nil) }
+            }
+          }
+          if let scene,pasteDrag == nil,model.tool == .marquee || (model.tool == .transform && model.floatingMarqueeOperation != nil) {
             marqueeTransformDrag = model.marqueeTransform(at:start,scene:scene,scale:scale)
             marqueeTransformConstrained = NSEvent.modifierFlags.contains(.shift)
             if marqueeTransformDrag == nil {
@@ -524,9 +594,12 @@ struct VanishingPreview:View {
             if strokeMode == .sample { model.setSource(start) }
             else { stroke = [start] }
           }
-          if model.tool == .transform,let index=model.selectedPaste,model.program.operations.indices.contains(index),let scene { let op=model.program.operations[index];pasteOrigin=scene.frames[op.plane].point(op.at) }
         }
         let p=point(value.location)
+        if let scene,let pasteDrag {
+          pasteDraft = model.projectedPaste(pasteDrag,to:p,scene:scene)
+          return
+        }
         if let scene,let marqueeTransformDrag {
           marqueeTransformDraft = model.projectedMarqueeTransform(marqueeTransformDrag,to:p,
             constrained:marqueeTransformConstrained,scene:scene)
@@ -548,7 +621,6 @@ struct VanishingPreview:View {
           } else if stroke.count < 4096, stroke.last.map({hypot($0.x-p.x,$0.y-p.y)>1}) ?? true {
             stroke.append(p)
           }
-        case .transform:if let pasteOrigin { model.movePaste(to:.init(pasteOrigin.x+value.translation.width/scale,pasteOrigin.y+value.translation.height/scale)) }
         case .measure:
           if let scene {
             switch measurementDrag {
@@ -560,9 +632,15 @@ struct VanishingPreview:View {
             case nil: break
             }
           }
-        case .create,.marquee,.eyedropper:break
+        case .create,.marquee,.eyedropper,.transform:break
         }
       }.onEnded { value in
+        if let scene,let pasteDrag,hypot(value.translation.width,value.translation.height) > 2,
+          let result = model.projectedPaste(pasteDrag,to:point(value.location),scene:scene) {
+          model.finishPasteDrag(pasteDrag,at:result)
+        }
+        pasteDrag = nil
+        pasteDraft = nil
         if let scene,let marqueeTransformDrag,
           let result = model.projectedMarqueeTransform(marqueeTransformDrag,to:point(value.location),
             constrained:marqueeTransformConstrained,scene:scene) {
@@ -605,9 +683,9 @@ struct VanishingPreview:View {
           }
         }
         measurementDrag=nil;draftMeasurement=nil
-        model.endGesture();pressed=false;stroke=[];strokeMode = .paint;strokeMoved=false;hit=nil;corner=nil;pasteOrigin=nil
+        model.endGesture();pressed=false;stroke=[];strokeMode = .paint;strokeMoved=false;hit=nil;corner=nil
       }).clipped().accessibilityLabel("Vanishing Point preview")
-        .accessibilityValue(model.activeMarquee == nil ? "No perspective selection" :
+        .accessibilityValue(model.selectedPasteOperation != nil ? "Floating pasted image" : model.activeMarquee == nil ? "No perspective selection" :
           model.floatingMarqueeOperation == nil ? "Perspective selection" : "Floating perspective selection")
     }
   }

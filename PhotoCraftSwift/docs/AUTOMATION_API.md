@@ -1,3 +1,9 @@
+### Vanishing Point paste transforms
+
+Send a `paste` operation to `filter.vanishingPoint` with a `sourceLayerID` and the destination `plane`. Supply `at` in normalized plane coordinates. Both `width` and optional `pasteHeight` use fractions of the metric plane width. Omit `pasteHeight` to keep the donor's aspect ratio. Supply `angle` in degrees. Set `flip` for left-to-right reflection and `flop` for top-to-bottom reflection in the pasted rectangle's own coordinates.
+
+The native editor and Photato API share the same renderer and document history. The workspace state exposes the current transform in `selectedPaste`. [Qualification](SOURCE_PUBLICATION_748.md).
+
 ### Vanishing Point Eyedropper
 
 Send `vanishingPoint.sampleColor` to the authenticated document command endpoint with the current revision. Supply the target `layerID` and point coordinates `x` and `y` in document pixels. Optional `settings` and `operations` use the same format as `filter.vanishingPoint`. Pass `newLayer: true` to sample the preview that would result from applying the draft to a separate layer.

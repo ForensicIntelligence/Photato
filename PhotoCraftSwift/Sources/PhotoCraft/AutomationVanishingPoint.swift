@@ -66,6 +66,10 @@ extension VanishingSettings {
       switch kind {
       case .paste:
         properties["sourceLayerID"]=["type":"string","format":"uuid"];properties["at"]=pointSchema;properties["width"]=number(0.001,20,0.5);properties["angle"]=number(-360,360,0);required.append("sourceLayerID")
+        properties["pasteHeight"]=["type":"number","minimum":0.001,"maximum":20,
+          "description":"Height as a fraction of metric plane width. Omit it to use the source aspect ratio."]
+        properties["flip"]=["type":"boolean","default":false]
+        properties["flop"]=["type":"boolean","default":false]
       case .marquee:
         properties.removeValue(forKey:"plane")
         let range = VanishingMarqueeTransfer.featherRange
@@ -102,6 +106,7 @@ extension VanishingSettings {
      "operations":"Create/save/edit planes with no operations; brush, clone and perspective paste with sourceLayerID (raw raster layer pixels, resolved before mutation). Sequential operations sample the visible composite plus earlier draft operations; each clone stroke takes an immutable source snapshot.",
      "marquee":"Lower and upper are rectified fractions of each rectangle's anchor plane. Set wrap:true individually on source and destination to continue that rectangle across linked surfaces. The destination angle rotates around its center in rectified space. Feather uses the projected selection boundary without feathering internal hinges. Each patch samples the visible composite and preceding operations using bicubic interpolation.",
      "marqueeTransform":"The desktop Transform handles use the same destination rectangle and angle as a marquee operation. To scale a patch, change the destination bounds around its center. To rotate, set angle in degrees.",
+     "pasteTransform":"Paste handles edit at, width, pasteHeight and angle. Set flip to reflect left to right and flop to reflect top to bottom. The current paste transform is visible as selectedPaste in workspace state.",
      "strokeWrapping":"Set wrap:true on Brush or Stamp to continue through linked faces. Clip bounds the destination independently. Wrapped Stamp can use sourcePlane to identify an extrapolated donor and samples the visible image and earlier operations from an immutable snapshot. Omitting wrap preserves single-plane API edits.",
      "strokeSelection":"Supply a strokeSelection rectangle to constrain Brush or Stamp output. Its lower and upper coordinates are rectified fractions of its anchor plane. The rectangle’s wrap flag follows linked faces independently of stroke wrapping. Stamp can sample outside the selection.",
      "straightStroke":"Set straightStroke:true to connect the first and last points of a Brush or Stamp stroke. The desktop uses the same operation for Shift-drag and Shift-click.",
@@ -200,7 +205,7 @@ extension AutomationCommand {
         guard case .object(let fields)=item,case .string(let name)=fields["kind"],let kind=VanishingOperation.Kind(rawValue:name) else { throw fail("Invalid operation kind.") }
         let allowed: Set<String>
         switch kind {
-        case .paste: allowed = ["kind","plane","at","width","angle","opacity","clip","sourceLayerID"]
+        case .paste: allowed = ["kind","plane","at","width","pasteHeight","angle","flip","flop","opacity","clip","sourceLayerID"]
         case .clone: allowed = ["kind","plane","points","sourcePoint","sourcePlane","diameter","hardness","opacity","clip","wrap","strokeSelection","straightStroke"]
         case .brush: allowed = ["kind","plane","points","diameter","hardness","opacity","color","clip","wrap","strokeSelection","straightStroke"]
         case .marquee: allowed = ["kind","marquee","angle","opacity","clip"]
@@ -211,6 +216,14 @@ extension AutomationCommand {
         }
         if let straight = fields["straightStroke"] {
           guard case .bool = straight else { throw fail("Straight stroke must be a boolean.") }
+        }
+        for key in ["flip","flop"] {
+          if let value = fields[key] {
+            guard case .bool = value else { throw fail("Paste reflection must be a boolean.") }
+          }
+        }
+        if let height = fields["pasteHeight"] {
+          guard case .number = height else { throw fail("Paste height must be a number.") }
         }
         if let plane = fields["sourcePlane"] {
           guard case .number(let value) = plane,Int(exactly:value) != nil else { throw fail("Invalid linked Stamp source plane.") }
@@ -254,9 +267,15 @@ extension AutomationCommand {
       ["plane":rect.plane,"lower":["x":rect.lower.x,"y":rect.lower.y],"upper":["x":rect.upper.x,"y":rect.upper.y],
         "wrap":rect.wrap == true]
     }
+    let paste = selectedPasteOperation.map { operation -> [String:Any] in
+      ["plane":operation.plane,"at":["x":operation.at.x,"y":operation.at.y],"width":operation.width,
+        "pasteHeight":operation.pasteHeight as Any? ?? NSNull(),"angle":operation.angle,
+        "flip":operation.flip == true,"flop":operation.flop == true]
+    }
     return ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"canExportScene":canExportScene,"exportingScene":exportingScene,"renderMeasurements":renderMeasurements,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
       "pendingMeasurement":pendingMeasurement != nil,"canUndo":canUndo,"canRedo":canRedo,"heal":heal.rawValue,"selectedPasteHeal":selectedPasteHeal?.rawValue as Any? ?? NSNull(),"error":error as Any? ?? NSNull(),
       "marquee":bounds as Any? ?? NSNull(),"marqueeMoveMode":marqueeMoveMode.rawValue,"floatingMarquee":floatingMarqueeOperation != nil,
+      "selectedPaste":paste as Any? ?? NSNull(),
       "brushColor":["r":color.r,"g":color.g,"b":color.b,"a":color.a],
       "allowMultiSurfaceOperations":allowMultiSurfaceOperations,"allowMultiSurfaceMarquee":allowMultiSurfaceOperations,
       "clipOperationsToSurfaceEdges":clip]

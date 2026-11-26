@@ -220,5 +220,13 @@
     "native_and_http_passed": true,
     "photoshop_pixel_comparison": "pending",
     "public_receipt": "SOURCE_PUBLICATION_747.json"
+  },
+  "paste_transform_748": {
+    "reference": "https://helpx.adobe.com/uk/photoshop/using/vanishing-point.html",
+    "result": "left-to-right Flip",
+    "matchingPatchRGBPixels": 1789,
+    "differentPatchRGBPixels": 2819,
+    "exactRasterQualified": false,
+    "public_receipt": "SOURCE_PUBLICATION_748.json"
   }
 }

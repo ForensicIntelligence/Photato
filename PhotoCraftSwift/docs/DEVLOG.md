@@ -766,7 +766,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 745 | 2026-11-25 | [Paint straight perspective strokes with Shift](#dev-step-745) |
 | 746 | 2026-11-25 | [Scale and rotate floating perspective selections with handles](#dev-step-746) |
 | 747 | 2026-11-25 | [Sample the Vanishing Point preview with Eyedropper](#dev-step-747) |
+| 748 | 2026-11-25 | [Transform clipboard and layer pastes in Vanishing Point](#dev-step-748) |
 <!-- history-index:end -->
+
+<a id="dev-step-748"></a>
+
+## 2026-11-25 — Step 748 — Transform clipboard and layer pastes in Vanishing Point
+
+Vanishing Point selects Marquee after clipboard paste. Press T to show scale and rotation handles and the Flip and Flop controls. Shift constrains scale or movement and snaps rotation. Option centers the resize or duplicates a moved paste. Finishing a gesture adds one workspace Undo. The authenticated Photato API exposes the same rotation and Flip and Flop. Set `pasteHeight` to size a pasted image independently of its width. Omitting height preserves the source aspect ratio and older request behavior.
+
+VanishingPoint and VanishingEngine share paste geometry and keep the original aspect-ratio fallback, including the Heal path. VanishingWorkspace, VanishingMarqueeEditing, and VanishingSheet bind the active item, hit areas and gesture commit to the same operation. AutomationVanishingPoint publishes the optional parameters and selection state. Core, tool cursor, and desktop/HTTP regressions check reflection, stable pivots, duplicate selection, and undo. Info.plist identifies build 748. The first focused Debug pass was followed by a Shift-only move cursor fix and guards around a stale selection or removed plane. One build retry needed access to Xcode’s existing caches.
+
+All 60 focused Debug tests passed. Each optimized build passed 874 of 876 selected tests, including the three new cases. Intel ran under Rosetta. The same two inherited failures repeated their diagnostics. Four replay PNGs matched byte for byte across Debug and both optimized builds. The extracted Universal app passed signature verification and offscreen launches on both architectures. The macOS 14+ ZIP is 77,781,956 bytes with SHA-256 `254a4e5c16a058ce0bce65094a2555fe96b05568ec749760a2e3c4d4935f71f0`.
+
+The comparison used a 96 × 48 Photoshop Flip and a Photato replay aligned to the same pixel origin and size on a synthetic front-facing plane. Of 4,608 pixels in the patch, 1,789 matched and 2,819 differed. Photato preserved every pixel outside the patch. The Photoshop capture stayed at its upper-left paste origin. A second Flip reproduced the same Adobe RGB raster. Opening Transform with both reflection controls off kept the ordinary Adobe paste unchanged. Free canvas placement, side handles, and Photoshop’s on-plane raster and rotation behavior need separate checks. The 50% estimate remains current. [Adobe’s Vanishing Point reference](https://helpx.adobe.com/uk/photoshop/using/vanishing-point.html) · [Qualification](SOURCE_PUBLICATION_748.md).
 
 <a id="dev-step-747"></a>
 

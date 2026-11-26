@@ -42,6 +42,22 @@ final class ToolCursorTests: XCTestCase {
     canvas.drawingEvents.end(); store.cancelBrush(); store.cancelClone(); store.renderTask?.cancel()
     window.contentView = nil; window.close()
   }
+  @MainActor func testVanishingPasteHandlesShowCurrentModifiers() {
+    let modifiers: [NSEvent.ModifierFlags] = [.control,.command,.option,.shift]
+    for bits in 0..<16 {
+      let flags = modifiers.enumerated().reduce(NSEvent.ModifierFlags()) { result,item in
+        bits & (1 << item.offset) == 0 ? result : result.union(item.element)
+      }
+      let shift = flags.contains(.shift), option = flags.contains(.option)
+      let resizeBadge: ToolCursor.Badge? = shift ? (option ? .constrainCenter : .constrain) : (option ? .center : nil)
+      XCTAssertEqual(VanishingWorkspace.PasteDragAction.scale(.init(1,1)).cursor(flags),
+        .symbol("arrow.up.left.and.arrow.down.right",resizeBadge))
+      XCTAssertEqual(VanishingWorkspace.PasteDragAction.rotate.cursor(flags),.symbol("rotate.right",shift ? .constrain : nil))
+      XCTAssertEqual(VanishingWorkspace.PasteDragAction.move.cursor(flags,dragging:true),
+        option || shift ? .selectedPixels(copy:option,constrained:shift,unsnapped:false) : .closedHand)
+    }
+  }
+
   @MainActor func testVanishingMarqueeHandlesShowRotationSnapAcrossSixteenModifierCombinations() {
     let modifiers: [NSEvent.ModifierFlags] = [.control,.command,.option,.shift]
     for bits in 0..<16 {

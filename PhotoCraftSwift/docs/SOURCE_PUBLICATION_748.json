@@ -1,0 +1,404 @@
+{
+  "build": 748,
+  "base": "d028ee8bd9602ea631e49dcce4f56533c55bcc24",
+  "inputCount": 9429,
+  "inputDigest": "78a7e2b0cb519dc27722e0d4ebb49d4842c1ed0097f10ddd3bb869fff47db3bc",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraft/AutomationVanishingPoint.swift": "e82665ccbbf0a156d3f5f85353474b1306b6b516670dd52bfb4c8ead61131c7e",
+    "Sources/PhotoCraft/VanishingMarqueeEditing.swift": "72d60bbfe11daa5c5b8689aba9c0bacdd4081694853ab2fde693aabee09e3b7d",
+    "Sources/PhotoCraft/VanishingSheet.swift": "2d8413f22525d01b7f3f8c285b98f589e4c8c9eddbbd2f96c9c033046565ae0d",
+    "Sources/PhotoCraft/VanishingWorkspace.swift": "bcdf2f88dbea3432569b44f794ad46ad98929ae2166f8bd75e8a2c0f505df409",
+    "Sources/PhotoCraftCore/VanishingEngine.swift": "d048606f290d24e165d9e677824f5a59dc6fd203de1df91ee6485c7fea193b6b",
+    "Sources/PhotoCraftCore/VanishingPoint.swift": "f12d38195684212ad31e27a6aa93653d9b54a14db8bdadb91f05078c229afea2",
+    "Tests/PhotoCraftAppTests/ToolCursorTests.swift": "53d540383ef82425677b422f42b314aa8bcd948f09a59e3336428647addb922e",
+    "Tests/PhotoCraftAppTests/VanishingWorkflowTests.swift": "402fcecf5ae4c4f2dd871f6b1f4b59b50e53faaa32e902202357375a123a3466",
+    "Tests/PhotoCraftCoreTests/VanishingTests.swift": "1adc70a39d97e5bc0ce144d113e4332ba5a16ea547bf27769b87584baf514d2c",
+    "scripts/Info.plist": "cec5ab02aaf7ae719957aa90b67f7bc5ff2d71c506be606178b736a88e9c4b29"
+  },
+  "focusedDebug": {
+    "corePass": 34,
+    "appAndHTTPPass": 26
+  },
+  "qualification": {
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 876,
+      "passed": 874,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "1ed705d6c973885687476a942507aa37ddcd003255bf8b674c5163d215fa35e3"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 876,
+      "passed": 874,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "f65009532ad190a8ced0ded46786b8a5dd2b40094abe83ec46d889bfb7b7765a"
+    }
+  },
+  "predecessorFailureDiagnostics": {
+    "arm": 152,
+    "intel": 412
+  },
+  "cursorModifierCombinations": 16,
+  "fixtureOutputHashesAcrossConfigurations": {
+    "debug": {
+      "748-native-paste-both.png": "39afee83656ba640148eecf84e6e814ec8472199268fd70c64dbd4b947bef9ff",
+      "748-native-paste-flip.png": "e9da951cfbb3f7cdbfdf74457d275995ea215cc8ebe24b697cce8d32e9a552f6",
+      "748-native-paste-flop.png": "df2239927cb3980f87b083b9c9cdcdf55c3930f993056c480fcac334803c492d",
+      "748-native-paste-tilted.png": "f4f205746fcb5b0ce44c04b7c7f77424edc0f4153e54b646bbc776f4d847930c"
+    },
+    "arm": {
+      "748-native-paste-both.png": "39afee83656ba640148eecf84e6e814ec8472199268fd70c64dbd4b947bef9ff",
+      "748-native-paste-flip.png": "e9da951cfbb3f7cdbfdf74457d275995ea215cc8ebe24b697cce8d32e9a552f6",
+      "748-native-paste-flop.png": "df2239927cb3980f87b083b9c9cdcdf55c3930f993056c480fcac334803c492d",
+      "748-native-paste-tilted.png": "f4f205746fcb5b0ce44c04b7c7f77424edc0f4153e54b646bbc776f4d847930c"
+    },
+    "intel": {
+      "748-native-paste-both.png": "39afee83656ba640148eecf84e6e814ec8472199268fd70c64dbd4b947bef9ff",
+      "748-native-paste-flip.png": "e9da951cfbb3f7cdbfdf74457d275995ea215cc8ebe24b697cce8d32e9a552f6",
+      "748-native-paste-flop.png": "df2239927cb3980f87b083b9c9cdcdf55c3930f993056c480fcac334803c492d",
+      "748-native-paste-tilted.png": "f4f205746fcb5b0ce44c04b7c7f77424edc0f4153e54b646bbc776f4d847930c"
+    }
+  },
+  "photoshopReference": {
+    "documentation": "https://helpx.adobe.com/uk/photoshop/using/vanishing-point.html",
+    "measurement": {
+      "sourceSHA256": "7b472863007d8dc23c27665f4567073068827c6c4550dd48f226d861f0419731",
+      "adobeSHA256": "c041a1ff11c270a89e03543ebf7b873505b8b4b4ceb7c64e632f129414af09ac",
+      "donorSHA256": "933463b4502d0bc30095c6a84b40fcf4737bf48b7531dcf2fcdd3b218fbf01ca",
+      "rectangleXYXYInclusive": [
+        0,
+        0,
+        95,
+        47
+      ],
+      "changedPixels": 4560,
+      "selectedControls": {
+        "flip": true,
+        "flop": false
+      },
+      "expectedSamplePixels": 4608,
+      "exactRawReferencePixelMatchesByDirectDonorMapping": {
+        "as-is": 0,
+        "horizontal": 1789,
+        "vertical": 0
+      },
+      "channelsAtMost1FromExactHorizontalDonor": 9568,
+      "pixelsAtMost1FromExactHorizontalDonor": 2769,
+      "matchingSamples": {
+        "8,15": [
+          42,
+          227,
+          75
+        ],
+        "80,15": [
+          245,
+          31,
+          31
+        ],
+        "15,35": [
+          233,
+          199,
+          25
+        ],
+        "83,35": [
+          19,
+          84,
+          245
+        ]
+      },
+      "qualification": "Adobe kept the paste at the upper-left canvas position. The requested drag did not relocate it. Flip is horizontal. The direct mirrored donor and saved Photoshop composite differ. This capture does not qualify on-plane perspective interpolation or exact Photoshop output."
+    },
+    "alignedPhotatoComparison": {
+      "scope": "Same origin and pixel size. Photoshop uses its free paste. Photato uses an explicitly aligned full-canvas synthetic plane and the real Swift paste renderer.",
+      "nativePNGHash": {
+        "flip": "e9da951cfbb3f7cdbfdf74457d275995ea215cc8ebe24b697cce8d32e9a552f6",
+        "flop": "df2239927cb3980f87b083b9c9cdcdf55c3930f993056c480fcac334803c492d",
+        "both": "39afee83656ba640148eecf84e6e814ec8472199268fd70c64dbd4b947bef9ff",
+        "tilted": "f4f205746fcb5b0ce44c04b7c7f77424edc0f4153e54b646bbc776f4d847930c"
+      },
+      "patchPixels": 4608,
+      "identicalRGBPixelsInside": 1789,
+      "differingRGBPixelsInside": 2819,
+      "originalVersusPhotatoRGBDifferencesOutside": 0,
+      "matchIsByteIdentical": false,
+      "channelDifferenceHistogramInside": {
+        "-195": 4,
+        "-193": 2,
+        "-192": 2,
+        "-191": 4,
+        "-189": 2,
+        "-161": 2,
+        "-160": 1,
+        "-159": 1,
+        "-158": 1,
+        "-156": 1,
+        "-155": 1,
+        "-153": 1,
+        "-152": 2,
+        "-151": 2,
+        "-150": 1,
+        "-148": 1,
+        "-147": 1,
+        "-145": 1,
+        "-144": 2,
+        "-143": 3,
+        "-141": 2,
+        "-140": 2,
+        "-138": 1,
+        "-137": 13,
+        "-136": 20,
+        "-134": 1,
+        "-133": 1,
+        "-131": 2,
+        "-128": 2,
+        "-126": 1,
+        "-124": 1,
+        "-123": 1,
+        "-121": 1,
+        "-120": 1,
+        "-118": 1,
+        "-117": 1,
+        "-116": 1,
+        "-115": 7,
+        "-114": 14,
+        "-112": 1,
+        "-111": 1,
+        "-29": 1,
+        "-25": 4,
+        "-24": 6,
+        "-23": 2,
+        "-22": 2,
+        "-21": 6,
+        "-20": 1,
+        "-18": 3,
+        "-17": 9,
+        "-16": 35,
+        "-15": 28,
+        "-14": 18,
+        "-13": 22,
+        "-12": 26,
+        "-11": 27,
+        "-10": 27,
+        "-9": 37,
+        "-8": 29,
+        "-7": 21,
+        "-6": 22,
+        "-5": 33,
+        "-4": 42,
+        "-3": 1228,
+        "-2": 2057,
+        "-1": 2679,
+        "0": 6785,
+        "1": 104,
+        "2": 52,
+        "3": 32,
+        "4": 12,
+        "5": 20,
+        "6": 26,
+        "7": 22,
+        "8": 46,
+        "9": 15,
+        "10": 33,
+        "11": 7,
+        "12": 5,
+        "13": 3,
+        "14": 1,
+        "15": 4,
+        "16": 3,
+        "23": 4,
+        "25": 4,
+        "26": 3,
+        "27": 2,
+        "28": 5,
+        "29": 4,
+        "30": 4,
+        "31": 6,
+        "32": 2,
+        "33": 6,
+        "34": 3,
+        "35": 2,
+        "58": 2,
+        "59": 1,
+        "61": 1,
+        "62": 2,
+        "63": 1,
+        "64": 1,
+        "65": 16,
+        "66": 7,
+        "67": 10,
+        "68": 1,
+        "69": 1,
+        "70": 2,
+        "71": 1,
+        "72": 2,
+        "73": 2,
+        "75": 1,
+        "76": 1,
+        "86": 5,
+        "87": 3,
+        "88": 12,
+        "108": 1,
+        "109": 1,
+        "110": 1,
+        "113": 1,
+        "114": 1,
+        "116": 1,
+        "117": 1,
+        "119": 1,
+        "120": 1,
+        "121": 1,
+        "122": 1,
+        "123": 1,
+        "125": 1,
+        "126": 1,
+        "127": 1,
+        "128": 1,
+        "130": 2,
+        "131": 4,
+        "133": 1,
+        "134": 3,
+        "135": 2,
+        "137": 2,
+        "138": 2,
+        "139": 1,
+        "140": 1,
+        "141": 3,
+        "144": 1,
+        "146": 3,
+        "147": 1,
+        "148": 1,
+        "149": 1,
+        "150": 1,
+        "151": 1,
+        "153": 1,
+        "155": 1,
+        "178": 2,
+        "203": 2,
+        "204": 4,
+        "206": 2,
+        "207": 2,
+        "222": 2
+      }
+    },
+    "independentAdobeFlipRepeat": {
+      "fileSHA256": {
+        "748-adobe-paste-reflected.psd": "c041a1ff11c270a89e03543ebf7b873505b8b4b4ceb7c64e632f129414af09ac",
+        "750-adobe-paste-flip-repeat.psd": "ec9f687c8ac4aa80a4f5a6feea1b710fec4dd05109abd573e07c495322706fa8",
+        "750-adobe-paste-unreflected.psd": "031094e3d7ae4be0f79346d6f3f02242db6498d67e217b8cedf4602accb7b9c2",
+        "native-free-paste-flipped.png": "e9da951cfbb3f7cdbfdf74457d275995ea215cc8ebe24b697cce8d32e9a552f6"
+      },
+      "repeatVersusPriorFlip": {
+        "patchPixels": 0,
+        "outsidePixels": 0
+      },
+      "repeatVersusPhotato": {
+        "patchPixels": 2819,
+        "outsidePixels": 0
+      }
+    },
+    "adobeTransformOnlyControl": {
+      "referenceSHA256": {
+        "plain": "031094e3d7ae4be0f79346d6f3f02242db6498d67e217b8cedf4602accb7b9c2",
+        "transform": "5a2106ee9f642b840265eccfefed43468a3ac24dd39e2b13cb7ae91ccde3aaca"
+      },
+      "settings": {
+        "sameClipboardDonor": true,
+        "invokeTransform": true,
+        "transformParametersChanged": false
+      },
+      "changedCompositePixels": 0,
+      "changedPatchPixels": 0,
+      "matchesRenderedRGBByteForByte": true
+    }
+  },
+  "preview": {
+    "build": 748,
+    "archive": "Photato-universal.zip",
+    "archiveSHA256": "254a4e5c16a058ce0bce65094a2555fe96b05568ec749760a2e3c4d4935f71f0",
+    "archiveBytes": 77781956,
+    "gitPath": "downloads/Photato-universal.zip",
+    "bundleID": "ca.forensicintelligence.photato.preview",
+    "signing": "ad-hoc",
+    "localSymbolsStripped": true,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "f5a22eea9e0fe83fbef00b0c30156542e8b23345ff2a838570ee9e551f6997f4",
+    "architectureInputsSHA256": {
+      "arm64": "49ac6d6bac706130ca8918004676a680f4ba49dfd77173fe553f678a1c8faf02",
+      "x86_64": "2231ce5a32e0da8a1191f70b3f11b5a02af839cf2f11aeaa8601643f48d350e9"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    }
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "pngSHA256": "c26608357d25297707ffaaf345cc06ceb6fd53de40217773436f1dd13956852f",
+      "size": [
+        1700,
+        1174
+      ]
+    },
+    "x86_64": {
+      "pngSHA256": "4e4ed507449166d427b57ca890ebd709f609a097271949001dfbe7388e8e2dc3",
+      "size": [
+        1700,
+        1174
+      ]
+    }
+  },
+  "probeLogsSHA256": {
+    "xcode-debug-748-01.log": "6ff6757926a4b1172469f086c019f8e0a1440d89f5523150496ccfd94a31e0dc",
+    "xcode-debug-748-02.log": "9945e21f544a683a498a3e8fb6b1d63b7071e77e41cf0b6aee5ff03107f77153",
+    "xcode-debug-748-03.log": "6ef1d9563de971eff1c90e7df2fe5354d19f4a3b5a6afc244af1be743eaa80bb",
+    "xcode-focused-core-748-01.log": "45bf9fbf3e4ef482668c06f355d76026c2a6973aa6ce934fd53010d58657e79f",
+    "xcode-focused-core-748-03.log": "7a73a4efdc5f84af9301d4bf07d65a781d9ddbfcfc655c24c916ea3e6d222a9d",
+    "xcode-focused-app-748-01.log": "6c5ffbe588c0540aa9416e39a22c47a8d82316f71e9342ef9eea73f5eeecf0c6",
+    "xcode-focused-app-748-03.log": "0adffc0f9571ead5059fc8f7903bda4685c4789831eaade1f740b6b5ffc042fc",
+    "swiftpm-release-arm01.log": "621e08606c9994309bc88b148918614db931a9b6057405f8d75050b13ec6d6b2",
+    "swiftpm-release-intel01.log": "0541c937e64464872fbc448294733ee46125e2cbf5fd1ba31ae144f15d9bee7e",
+    "optimized-transform-arm01.log": "3f5fbb3437c71266c18a6c64772378130c569de087fe62c037f38c37df5afab8",
+    "optimized-transform-intel01.log": "3f5fbb3437c71266c18a6c64772378130c569de087fe62c037f38c37df5afab8",
+    "native-paste-proof-debug04.log": "3f5fbb3437c71266c18a6c64772378130c569de087fe62c037f38c37df5afab8",
+    "package-preview01.log": "de237305b92ff7ee5c57d28a085868def0295b95820c2090a2c03a35d4b98a89",
+    "preview-offscreen01.log": "56899c649bb1041f2091fc78f55969710656ba8953f862da71051187189e7c0a"
+  }
+}
