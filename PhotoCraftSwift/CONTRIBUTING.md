@@ -18,7 +18,7 @@ New tools and modifier actions must use the shared native cursor policy/lifecycl
 
 For pull requests, describe the editing problem, resulting behavior, tests, and remaining limitations. Update the status and command checklist when measurable functionality changes. Keep unrelated work and upstream Rust changes separate. Existing licenses and attribution notices must remain. Contributions are offered under MIT OR Apache-2.0, matching the fork, unless explicitly agreed otherwise. Identify the source and license of any borrowed code, fixtures or assets.
 
-Do not include private documents, downloaded model weights, credentials, build caches, app bundles or downloaded reference corpora in a source PR. Bundled small test fixtures need provenance and redistribution terms. Keep user projects out of bug reports; prefer a minimal reproducible fixture that can be shared.
+Keep private documents, unlicensed model weights, credentials, build caches, and downloaded reference corpora out of source contributions. Bundled test fixtures and preview resources need provenance and redistribution terms. Use a minimal shareable fixture in bug reports.
 
 Photato will be released as free and open-source software under MIT OR Apache-2.0. Contributions of code, bug reports, tests, documentation and accessibility improvements are welcome. The app contains no tipping or purchase system.
 
@@ -29,6 +29,8 @@ The maintainer requires documentation of every development step, starting with t
 [The development diary](docs/DEVELOPMENT_DIARY.md) provides the readable chronological account and links every recorded milestone to DEVLOG. Keep its index and material narrative current at completed checkpoints. Detailed notes must still be saved as work proceeds, including failed attempts and work that is later removed.
 
 From the repository root, run `python3 scripts/check-diary.py --write` to refresh the [public diary](../DEVELOPER_DIARY.md) and [archive](../diary/README.md). Run `python3 scripts/check-diary.py` before publishing. Commit the source entries, generated pages, and updated README build number with the same source checkpoint. The Development diary check runs on pushes and pull requests to `main`.
+
+Include the matching Release-configured Universal preview at `downloads/Photato-universal.zip` in each source checkpoint commit. Verify the extracted app’s signature, `arm64` and `x86_64` slices, and macOS 14.0 deployment target. Record the ZIP SHA-256 under `preview.archiveSHA256` in the checkpoint’s `SOURCE_PUBLICATION_<build>.json` and run `python3 scripts/check-universal-download.py` from the repository root before committing. Keep the README download beside the Photoshop output verification note. App Store releases require separate manual approval.
 
 For every meaningful investigation, design decision, implementation change, experiment and validation step, record:
 

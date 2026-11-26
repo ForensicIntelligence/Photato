@@ -75,7 +75,16 @@ extension VanishingSettings {
         required.append("marquee")
       case .brush,.clone:
         properties["points"]=["type":"array","minItems":1,"maxItems":4096,"items":pointSchema];properties["diameter"]=number(1,2000,40);properties["hardness"]=number(0,100,50);required.append("points")
-        if kind == .clone { properties["sourcePoint"]=pointSchema;required.append("sourcePoint") } else { properties["color"]=color }
+        properties["wrap"]=["type":"boolean","default":false]
+        if kind == .clone {
+          properties["sourcePoint"]=pointSchema
+          properties["sourcePlane"]=["type":"integer","minimum":0,"maximum":31,
+            "description":"Donor plane for a wrapped Stamp source that extends beyond the visible plane."]
+          required.append("sourcePoint")
+          return ["type":"object","additionalProperties":false,"required":required,"properties":properties,
+            "if":["required":["sourcePlane"]],"then":["required":["wrap"],"properties":["wrap":["const":true]]]]
+        }
+        properties["color"]=color
       }
       return ["type":"object","additionalProperties":false,"required":required,"properties":properties]
     }
@@ -90,6 +99,7 @@ extension VanishingSettings {
      "measurement":"Desktop Measure and API settings keep editable lines in a plane, including visible points outside the plane. The command can calibrate a selected line to a known length. Connected planes share the root's calibration and optional grid link.",
      "operations":"Create/save/edit planes with no operations; brush, clone and perspective paste with sourceLayerID (raw raster layer pixels, resolved before mutation). Sequential operations sample the visible composite plus earlier draft operations; each clone stroke takes an immutable source snapshot.",
      "marquee":"Lower and upper are rectified fractions of each rectangle's anchor plane. Set wrap:true individually on source and destination to continue that rectangle across linked surfaces. The destination angle rotates around its center in rectified space. Feather uses the projected selection boundary without feathering internal hinges. Each patch samples the visible composite and preceding operations using bicubic interpolation.",
+     "strokeWrapping":"Set wrap:true on Brush or Stamp to continue through linked faces. Clip bounds the destination independently. Wrapped Stamp can use sourcePlane to identify an extrapolated donor and samples the visible image and earlier operations from an immutable snapshot. Omitting wrap preserves single-plane API edits.",
      "heal":"Brush, clone and paste accept off, luminance or on. Luminance adjusts lighting. On adjusts lighting and color. The gradient-domain solve includes a one-pixel boundary within the 4-megapixel local repair budget.",
      "output":"The current raster layer can expand to cover the repair while keeping existing samples and masks in place. Use newLayer:true for a separate layer. Selection and transparency/image locks are honored. Smart Objects must be rasterized for the target. One cancellable undo transaction for the entire program.",
      "limits":"32 planes,256 operations,16,384 supplied points,4,096 points per stroke,128MiB embedded paste sources with up to 8,388,608 pixels, up to \(Surface.maxDimension) pixels per canvas side, 134,217,728 raster visits per program. Large canvases use a bounded overview. Existing API sharing limits also apply.",
@@ -98,7 +108,7 @@ extension VanishingSettings {
        "mediaType":"application/zip","maximumBytes":VanishingSceneExport.maximumBytes,
        "files":"3DS includes its VPE companion. Both options include a rectified PNG for every plane.",
        "camera":"Connected planes share geometry along their hinge. Independent planes share the reconstructed camera."],
-     "unsupported":"DXF export, multi-surface brush and stamp wrapping, and exact Adobe pixels and scene dimensions remain unqualified or absent. Recorded Actions currently report Vanishing Point as unsupported; direct API and desktop are available.",
+     "unsupported":"DXF export and exact Adobe pixels, stroke coverage and scene dimensions remain open. Recorded Actions currently report Vanishing Point as unsupported.",
      "adobe":"No dedicated pinned v2 Vanishing Point operation. No invented route or unqualified actionJSON support."]
   }
 }
@@ -174,11 +184,17 @@ extension AutomationCommand {
         let allowed: Set<String>
         switch kind {
         case .paste: allowed = ["kind","plane","at","width","angle","opacity","clip","sourceLayerID"]
-        case .clone: allowed = ["kind","plane","points","sourcePoint","diameter","hardness","opacity","clip"]
-        case .brush: allowed = ["kind","plane","points","diameter","hardness","opacity","color","clip"]
+        case .clone: allowed = ["kind","plane","points","sourcePoint","sourcePlane","diameter","hardness","opacity","clip","wrap"]
+        case .brush: allowed = ["kind","plane","points","diameter","hardness","opacity","color","clip","wrap"]
         case .marquee: allowed = ["kind","marquee","angle","opacity","clip"]
         }
         guard Set(fields.keys).isSubset(of:allowed.union(["heal"])) else { throw fail("Unknown or irrelevant operation field.") }
+        if let wrap = fields["wrap"] {
+          guard case .bool = wrap else { throw fail("Stroke wrap must be a boolean.") }
+        }
+        if let plane = fields["sourcePlane"] {
+          guard case .number(let value) = plane,Int(exactly:value) != nil else { throw fail("Invalid linked Stamp source plane.") }
+        }
         if let heal = fields["heal"] {
           guard case .string(let mode) = heal, VanishingOperation.Heal(rawValue: mode) != nil else {
             throw fail("Heal must be off, luminance or on.")
@@ -225,7 +241,8 @@ extension AutomationCommand {
     return ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"canExportScene":canExportScene,"exportingScene":exportingScene,"renderMeasurements":renderMeasurements,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
       "pendingMeasurement":pendingMeasurement != nil,"canUndo":canUndo,"canRedo":canRedo,"heal":heal.rawValue,"selectedPasteHeal":selectedPasteHeal?.rawValue as Any? ?? NSNull(),"error":error as Any? ?? NSNull(),
       "marquee":bounds as Any? ?? NSNull(),"marqueeMoveMode":marqueeMoveMode.rawValue,"floatingMarquee":floatingMarqueeOperation != nil,
-      "allowMultiSurfaceMarquee":allowMultiSurfaceMarquee,"clipOperationsToSurfaceEdges":clip]
+      "allowMultiSurfaceOperations":allowMultiSurfaceOperations,"allowMultiSurfaceMarquee":allowMultiSurfaceOperations,
+      "clipOperationsToSurfaceEdges":clip]
   }
 }
 

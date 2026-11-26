@@ -6,6 +6,10 @@
 
 Photato is a native Swift image editor for macOS 14 and later. It is an independent port of [PhotoCraft](https://github.com/storytold/photocraft), with Photoshop 2026 workflow compatibility as a development goal.
 
+We replay the same operations in Photato and Photoshop 2026 with matching documents and settings, then compare the relevant pixel or file bytes. We report byte-for-byte matches only for cases that pass and record differences and untested cases in the [Developer Diary](DEVELOPER_DIARY.md).
+
+**[Download Photato for macOS (Universal)](downloads/Photato-universal.zip?raw=1)** · Ad-hoc signed development alpha · macOS 14+ · Apple Silicon and Intel
+
 ## What Photato adds
 
 - **A desktop editor with two local automation APIs.** Enable Photato’s optional HTTP server to edit shared documents and run jobs from scripts or a browser on the same Mac. The Photato `/v1` API publishes the available commands and their schemas at `GET /v1/capabilities`. Both interfaces use the native Swift editing engine. [Automation API](PhotoCraftSwift/docs/AUTOMATION_API.md)
@@ -19,7 +23,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 742.** Vanishing Point floating selections use bicubic sampling through the desktop and Photato API. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_742.md).
+**Development alpha — source build 743.** Vanishing Point Brush and Stamp follow linked perspective planes through the desktop and Photato API. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_743.md).
 
 ## Project layout
 
@@ -38,11 +42,11 @@ The Rust source was supplied as an extracted snapshot without Git history. This 
 
 PhotoCraft-derived source retains **MIT OR Apache-2.0** licensing: [MIT](PhotoCraftSwift/LICENSE-MIT), [Apache-2.0](PhotoCraftSwift/LICENSE-APACHE), [NOTICE](PhotoCraftSwift/NOTICE), and [attribution](PhotoCraftSwift/ATTRIBUTION.md). Third-party fixtures and assets retain their individual terms. This is an independent project, not an Adobe or official upstream release.
 
-Local build products, downloaded corpora, development artifacts, logs, and machine-specific settings are excluded from Git. Documentation may refer to evidence kept locally; the repository is not a backup of that excluded material.
+Each published source checkpoint includes its verified Universal development ZIP. Intermediate builds, downloaded corpora, logs, and machine-specific settings stay local. The checkpoint’s validation record includes the ZIP’s SHA-256.
 
 The source repository is public. Application releases still require manual approval.
 
-The source snapshot includes all native app/test code and the Xcode project. Generated models, caches, local runtime evidence, signing material and user documents are excluded. One external PSD is not redistributed because its upstream license excludes image assets; see the [optional reference instructions](PhotoCraftSwift/Tests/PhotoCraftImagingTests/Fixtures/layer-comps/README.md). Source availability does not install or distribute a new binary and does not approve a software release.
+The source snapshot includes all native app/test code and the Xcode project. Caches, local runtime evidence, private signing material and user documents stay local. The Universal preview includes the redistributable models described in the app’s bundled license notices. One external PSD is excluded under its upstream terms. [Optional reference instructions](PhotoCraftSwift/Tests/PhotoCraftImagingTests/Fixtures/layer-comps/README.md)
 
 
 Build448 source is verified at [77b14d5eedf8](https://github.com/ForensicIntelligence/Photato/commit/77b14d5eedf88f5b70dab96b9d8140d1fbc121c3). The four unpublished draft build assets were downloaded and hash-verified, including the extracted app signature and contents. No software release was published. See [delivery verification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_449.json).

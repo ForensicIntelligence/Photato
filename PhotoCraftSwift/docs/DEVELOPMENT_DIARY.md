@@ -1,3 +1,13 @@
+## 2026-11-25 — Step 743 — Paint and clone across linked Vanishing Point planes
+
+Brush and Stamp now follow the perspective around a hinge with Allow Multi-surface Operations enabled. Destination clipping is a separate control. An aligned Stamp keeps the same donor displacement as the stroke moves to the linked face. The desktop and API use the same renderer and Undo.
+
+On two owned guides, Brush, Stamp and the healed Brush reached both faces. Turning wrapping off kept the Brush on the starting face. A Photoshop stroke raster for direct comparison is still missing.
+
+All 48 focused Xcode tests passed. Both optimized builds passed all four new tests and 862 of 864 selected tests overall. The two inherited failures repeated their previous results. All eight owned replay PNGs match across Debug and both optimized builds. The matching Universal preview now ships with the source checkpoint on GitHub.
+
+[Development record](DEVLOG.md#dev-step-743) · [Qualification](SOURCE_PUBLICATION_743.md).
+
 ## 2026-11-25 — Step 742 — Improve floating selection sampling in Vanishing Point
 
 Vanishing Point now uses bicubic sampling when a floating selection lands between pixels. Photoshop references on a synthetic pattern of stripes and dots showed the small overshoots produced by cubic interpolation. On the left-to-right two-wall image, the average donor interior error fell from 2.14 to 0.81 RGB levels. All five full patches improved. The narrow receiving area in one synthetic capture got slightly worse.
@@ -2041,14 +2051,12 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:742 -->
+<!-- current-status-step:743 -->
 ## Current development status — 25 November 2026
 
-Bicubic donor sampling brings Vanishing Point floating selections closer to the measured Photoshop output. All five whole patches improved, and one narrow receiving area regressed. Exact placement, RGB rounding and feathered edge coverage remain open. The desktop and Photato API share the renderer.
+Vanishing Point Brush and Stamp can continue across connected faces in the desktop and Photato API. Native tests cover clipping and aligned Stamp offsets across the hinge, with one Undo for the edit. Exact Photoshop stroke output and modifier-constrained painting remain open.
 
-Both optimized architectures passed 858 of 860 selected tests. The two previous failures reproduced.
-
-[Development record](DEVLOG.md#dev-step-742) · [Qualification](SOURCE_PUBLICATION_742.md).
+[Development record](DEVLOG.md#dev-step-743) · [Qualification](SOURCE_PUBLICATION_743.md).
 
 <!-- current-status:end -->
 
@@ -2997,6 +3005,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 740 | [Recover editable right-angle Photoshop hinges](DEVLOG.md#dev-step-740) |
 | 2026-11-25 | 741 | [Preserve Vanishing Point fold angles in Photoshop files](DEVLOG.md#dev-step-741) |
 | 2026-11-25 | 742 | [Improve floating selection sampling in Vanishing Point](DEVLOG.md#dev-step-742) |
+| 2026-11-25 | 743 | [Paint and clone across linked Vanishing Point planes](DEVLOG.md#dev-step-743) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

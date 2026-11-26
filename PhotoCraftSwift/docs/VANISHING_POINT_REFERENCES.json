@@ -168,6 +168,14 @@
     "roundTrips": "Each measured PSD and PSB retained 3,240,000 merged RGB bytes. Unedited copies retain the original perspective record.",
     "remaining": "Additional seam orientations, exact calibration for guides with parallel rays, the full range of scene geometry and raster sampling across linked planes."
   },
+  "linked_brush_stamp_743": {
+    "reference": "Photoshop 2026 on the owned 1200 × 900 tilted-camera guide. This checkpoint also uses the earlier two-wall guide.",
+    "sourceSHA256": "fe3dbfaf8a802842bda934f6be8a950ad5ff7b38e2428ed4b8abc2de5f9d3d5a",
+    "verifiedMenu": "Allow Multi-surface Operations and Clip Operations to Surface Edges were both checked in the Photoshop Vanishing Point menu.",
+    "behaviorReference": "https://helpx.adobe.com/lv/photoshop/using/vanishing-point.html",
+    "photato": "The controls share linked Brush, Stamp and Marquee geometry. Brush and Stamp keep coverage and aligned sampling across the hinge. The API opts into wrapping per stroke.",
+    "remaining": "The Photoshop Filter menu went unavailable before the stroke capture. Exact color, dab spacing, edge coverage, keyboard-modified strokes and physical Photoshop comparisons remain open."
+  },
   "marquee_donor_interpolation_742": {
     "reference": "Photoshop 2026 27.2.0 on independent synthetic stripe and dot channels under the corrected 90-degree guide, plus the prior two-wall captures.",
     "impulseSourceSHA256": "ab343090ba8d346e9adaca1f37bca92a525d66d553ac78a0453bd82735356846",

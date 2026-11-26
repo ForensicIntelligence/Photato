@@ -151,6 +151,19 @@ extension VanishingScene {
     guard frames.indices.contains(plane) else { return nil }
     return frames.indices.reversed().first { measurementRoot(for:$0) == measurementRoot(for:plane) && frames[$0].contains(point) }
   }
+
+  /// Advance an aligned donor by the same displacement in the unfolded layout.
+  public func linkedStampSource(_ source: PathPoint, plane sourcePlane: Int,
+    from start: PathPoint, on startPlane: Int, to end: PathPoint, on endPlane: Int
+  ) -> (point: PathPoint, plane: Int)? {
+    guard frames.indices.contains(sourcePlane),frames.indices.contains(startPlane),frames.indices.contains(endPlane),
+      measurementRoot(for:startPlane) == measurementRoot(for:endPlane) else { return nil }
+    let destination = VanishingSurfaceChart(scene:self,anchor:startPlane)
+    let donor = VanishingSurfaceChart(scene:self,anchor:sourcePlane)
+    let a = destination.coordinates(start,on:startPlane), b = destination.coordinates(end,on:endPlane)
+    let sample = donor.coordinates(source,on:sourcePlane)
+    return donor.image(.init(sample.x+b.x-a.x,sample.y+b.y-a.y))
+  }
 }
 
 /// A rectified face in a shared layout. Linked planes use the same axis directions,
@@ -233,7 +246,7 @@ struct VanishingMarqueeFace: Sendable {
   }
 }
 
-struct ProjectedVanishingMarquee {
+struct VanishingSurfaceChart {
   struct Piece {
     let plane: Int
     let chart: [PathPoint]
@@ -261,38 +274,167 @@ struct ProjectedVanishingMarquee {
       }
       return true
     }
+
+    func distance(_ point: PathPoint) -> Double {
+      contains(point) ? 0 : VanishingSurfaceChart.boundaryDistance(point,corners:corners)
+    }
   }
 
-  let pieces: [Piece]
+  struct StrokePoint {
+    let point: PathPoint
+    let plane: Int
+  }
+
+  let scene: VanishingScene
+  let anchor: Int
+  let faces: [Int]
+
+  init(scene: VanishingScene, anchor: Int) {
+    self.scene = scene
+    self.anchor = anchor
+    let root = scene.measurementRoot(for:anchor)
+    faces = scene.frames.indices.filter { scene.measurementRoot(for:$0) == root }
+  }
+
+  private static func boundaryDistance(_ point: PathPoint, corners: [PathPoint]) -> Double {
+    corners.indices.reduce(Double.infinity) { nearest,i in
+      let a = corners[i], b = corners[(i+1)%corners.count]
+      let dx = b.x-a.x,dy = b.y-a.y,square = dx*dx+dy*dy
+      guard square > 0 else { return min(nearest,hypot(point.x-a.x,point.y-a.y)) }
+      let fraction = min(1,max(0,((point.x-a.x)*dx+(point.y-a.y)*dy)/square))
+      return min(nearest,hypot(point.x-a.x-fraction*dx,point.y-a.y-fraction*dy))
+    }
+  }
+
+  private func visibleFace(at point: PathPoint) -> Int? {
+    faces.reversed().first { scene.frames[$0].contains(point) }
+  }
+
+  func face(at point: PathPoint) -> Int {
+    if let visible = visibleFace(at:point) { return visible }
+    return faces.reversed().min { a,b in
+      Self.boundaryDistance(point,corners:scene.frames[a].corners)
+        < Self.boundaryDistance(point,corners:scene.frames[b].corners)
+    } ?? anchor
+  }
+
+  func coordinates(_ image: PathPoint, on plane: Int) -> PathPoint {
+    scene.marqueeLayout[plane].point(scene.frames[plane].uv(image))
+  }
+
+  /// Invert each screen segment on the face it traverses. Linked edges share
+  /// a chart coordinate, while a projected overlap can require a pen-up break.
+  func strokePath(_ points: [PathPoint], charge: (Int) throws -> Void) throws -> [StrokePoint?] {
+    guard let first = points.first else { return [] }
+    var last = coordinates(first,on:anchor)
+    var plane = anchor
+    var rectified: [StrokePoint?] = [.init(point:last,plane:plane)]
+    for (start,end) in zip(points,points.dropFirst()) {
+      try Task.checkCancellation()
+      try charge(faces.count * 8)
+      let dx = end.x-start.x, dy = end.y-start.y
+      var changes = [0.0,1.0]
+      for plane in faces {
+        let corners = scene.frames[plane].corners
+        for i in corners.indices {
+          let a = corners[i], b = corners[(i+1)%corners.count]
+          let ex = b.x-a.x, ey = b.y-a.y, determinant = dx*ey-dy*ex
+          guard abs(determinant) > 1e-12 else { continue }
+          let t = ((a.x-start.x)*ey-(a.y-start.y)*ex)/determinant
+          let u = ((a.x-start.x)*dy-(a.y-start.y)*dx)/determinant
+          if t > 0 && t < 1 && (0...1).contains(u) { changes.append(t) }
+        }
+      }
+      changes.sort()
+      for (a,b) in zip(changes,changes.dropFirst()) where b-a > 1e-10 {
+        // Outside the group, keep extending the last face that the cursor left.
+        plane = visibleFace(at:start.interpolated(to:end,at:(a+b)/2)) ?? plane
+        let begin = coordinates(start.interpolated(to:end,at:a),on:plane)
+        let tolerance = 1e-8 * max(1,abs(begin.x),abs(begin.y),abs(last.x),abs(last.y))
+        if hypot(last.x-begin.x,last.y-begin.y) > tolerance {
+          rectified.append(nil)
+          rectified.append(.init(point:begin,plane:plane))
+        }
+        last = coordinates(start.interpolated(to:end,at:b),on:plane)
+        rectified.append(.init(point:last,plane:plane))
+        guard rectified.count <= 32768 else { throw CraftError.unsupported("Perspective stroke crosses too many surface boundaries.") }
+      }
+    }
+    return rectified
+  }
+
+  func image(_ point: PathPoint) -> (point: PathPoint, plane: Int)? {
+    func distance(to plane: Int) -> Double {
+      let face = scene.marqueeLayout[plane]
+      let dx = max(face.origin.x-point.x,0,point.x-face.end.x)
+      let dy = max(face.origin.y-point.y,0,point.y-face.end.y)
+      return hypot(dx,dy)
+    }
+    // A donor beyond an outside edge continues the adjacent face's perspective.
+    let plane = faces.reversed().first { scene.marqueeLayout[$0].contains(point) }
+      ?? faces.min { distance(to:$0) < distance(to:$1) }
+      ?? anchor
+    let uv = scene.marqueeLayout[plane].uv(point)
+    return project(uv,on:plane).map { ($0,plane) }
+  }
+
+  func projectedPieces(_ polygon: [PathPoint], clip: Bool, extending extensionPlane: Int? = nil,
+    charge: (Int) throws -> Void = { _ in }
+  ) throws -> [Piece] {
+    guard polygon.allSatisfy({ $0.x.isFinite && $0.y.isFinite }),
+      faces.allSatisfy({ scene.marqueeLayout[$0].isValid }) else {
+      throw CraftError.invalid("Invalid linked-surface projection.")
+    }
+    func piece(_ part: [PathPoint], on plane: Int) throws -> Piece {
+      let face = scene.marqueeLayout[plane]
+      let corners = try part.map { point in
+        guard let image = project(face.uv(point),on:plane) else {
+          throw CraftError.invalid("Operation crosses a projective horizon.")
+        }
+        return image
+      }
+      return Piece(plane:plane,chart:part,corners:corners)
+    }
+    var pieces: [Piece] = []
+    for plane in faces.reversed() {
+      try charge(polygon.count * 4)
+      let part = scene.marqueeLayout[plane].split(polygon).interior
+      if !part.isEmpty { pieces.append(try piece(part,on:plane)) }
+    }
+    if !clip {
+      var uncovered = [polygon]
+      for plane in faces {
+        try charge(4 * uncovered.reduce(0) { $0+$1.count })
+        uncovered = uncovered.flatMap { scene.marqueeLayout[plane].split($0).exterior }
+      }
+      for part in uncovered { pieces.append(try piece(part,on:extensionPlane ?? anchor)) }
+    }
+    return pieces
+  }
+
+  private func project(_ uv: PathPoint, on plane: Int) -> PathPoint? {
+    let frame = scene.frames[plane],m = frame.map.m
+    let side = (m[6]*0.5+m[7]*0.5+m[8]).sign
+    let w = m[6]*uv.x+m[7]*uv.y+m[8]
+    guard abs(w) > 1e-10,w.sign == side else { return nil }
+    let point = frame.point(uv)
+    return VanishingSettings.validPoint(point) ? point : nil
+  }
+}
+
+struct ProjectedVanishingMarquee {
+  let pieces: [VanishingSurfaceChart.Piece]
   let featherEdges: [[PathPoint]]
   let outline: [[PathPoint]]
 
   init?(rect: VanishingMarquee, scene: VanishingScene, angle: Double, clip: Bool) {
     guard rect.hasValidBounds,angle.isFinite,scene.frames.indices.contains(rect.plane) else { return nil }
     let anchor = scene.marqueeLayout[rect.plane]
-    let root = scene.measurementRoot(for:rect.plane)
-    let faces = scene.frames.indices.filter { scene.measurementRoot(for:$0) == root }
-    guard faces.allSatisfy({ scene.marqueeLayout[$0].isValid }) else { return nil }
+    let layout = VanishingSurfaceChart(scene:scene,anchor:rect.plane)
+    let faces = layout.faces
     let polygon = [rect.lower,.init(rect.upper.x,rect.lower.y),rect.upper,.init(rect.lower.x,rect.upper.y)]
       .map { anchor.point(rect.rotate($0,size:anchor.size,angle:angle)) }
-    guard polygon.allSatisfy({ $0.x.isFinite && $0.y.isFinite }) else { return nil }
-    var pieces: [Piece] = []
-    for plane in faces.reversed() {
-      let part = scene.marqueeLayout[plane].split(polygon).interior
-      guard !part.isEmpty else { continue }
-      guard let corners = Self.project(part,on:plane,scene:scene) else { return nil }
-      pieces.append(.init(plane:plane,chart:part,corners:corners))
-    }
-    if !clip {
-      var uncovered = [polygon]
-      for plane in faces {
-        uncovered = uncovered.flatMap { scene.marqueeLayout[plane].split($0).exterior }
-      }
-      for part in uncovered {
-        guard let corners = Self.project(part,on:rect.plane,scene:scene) else { return nil }
-        pieces.append(.init(plane:rect.plane,chart:part,corners:corners))
-      }
-    }
+    guard let pieces = try? layout.projectedPieces(polygon,clip:clip) else { return nil }
     self.pieces = pieces
     var featherEdges: [[PathPoint]] = []
     var outline: [[PathPoint]] = []
@@ -323,20 +465,6 @@ struct ProjectedVanishingMarquee {
     self.featherEdges = featherEdges
   }
 
-  private static func project(_ polygon: [PathPoint], on plane: Int, scene: VanishingScene) -> [PathPoint]? {
-    let frame = scene.frames[plane],chart = scene.marqueeLayout[plane],m = frame.map.m
-    let side = (m[6]*0.5+m[7]*0.5+m[8]).sign
-    var corners: [PathPoint] = []
-    for point in polygon {
-      let uv = chart.uv(point)
-      let w = m[6]*uv.x+m[7]*uv.y+m[8]
-      guard abs(w) > 1e-10,w.sign == side else { return nil }
-      let corner = frame.point(uv)
-      guard VanishingSettings.validPoint(corner) else { return nil }
-      corners.append(corner)
-    }
-    return corners
-  }
 }
 
 extension VanishingMarquee {

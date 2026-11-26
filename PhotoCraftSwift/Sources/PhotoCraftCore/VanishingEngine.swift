@@ -54,11 +54,46 @@ private struct ProjectedDabCoverage {
     }
   }
 
+  init(center: PathPoint, radius: Double, hardness: Double, layout: VanishingSurfaceChart,
+    clip: Bool, extensionPlane: Int, charge: (Int) throws -> Void
+  ) throws {
+    contours = try Self.falloff.flatMap { falloff in
+      let level = radius * (1 - (1 - hardness) * falloff)
+      let polygon = Self.circle.map { PathPoint(center.x+level*$0.x,center.y+level*$0.y) }
+      let pieces = try layout.projectedPieces(polygon,clip:clip,extending:extensionPlane,charge:charge)
+      return try pieces.enumerated().flatMap { index,piece -> [[PathPoint]] in
+        var visible = [piece.corners]
+        for front in pieces.prefix(index) where piece.xExtent.overlaps(front.xExtent) && piece.yExtent.overlaps(front.yExtent) {
+          guard !visible.isEmpty else { break }
+          let orientation = Self.signedArea(front.corners) >= 0 ? 1.0 : -1.0
+          var exposed: [[PathPoint]] = []
+          for polygon in visible {
+            var remainder = polygon
+            for i in front.corners.indices {
+              guard !remainder.isEmpty else { break }
+              try charge(remainder.count*2)
+              let a = front.corners[i], b = front.corners[(i+1)%front.corners.count]
+              func side(_ p: PathPoint) -> Double {
+                orientation*((b.x-a.x)*(p.y-a.y)-(b.y-a.y)*(p.x-a.x))
+              }
+              let outside = Self.cut(remainder) { -side($0) }
+              if !outside.isEmpty { exposed.append(outside) }
+              remainder = Self.cut(remainder,distance:side)
+            }
+          }
+          visible = exposed
+        }
+        return visible
+      }
+    }
+  }
+
   func forEachPixel(in region: IntRect, charge: (Int) throws -> Void,
     paint: (Int, Int, Double) throws -> Void) throws {
-    guard let outer = contours.first, region.width > 0, region.height > 0 else { return }
-    let firstRow = max(region.y, Int(floor(outer.map(\.y).min()!)))
-    let lastRow = min(region.y + region.height, Int(ceil(outer.map(\.y).max()!)))
+    guard !contours.isEmpty, region.width > 0, region.height > 0 else { return }
+    let vertical = contours.flatMap { $0.map(\.y) }
+    let firstRow = max(region.y, Int(floor(vertical.min()!)))
+    let lastRow = min(region.y + region.height, Int(ceil(vertical.max()!)))
     guard firstRow < lastRow else { return }
     let edges = contours.reduce(0) { $0 + $1.count }
     for y in firstRow..<lastRow {
@@ -421,29 +456,61 @@ public enum VanishingEngine {
           }
         }
       } else {
-        let first=op.points[0],m0=frame.metric(first),probe=frame.metric(.init(first.x+op.diameter/2,first.y)),radius=hypot(probe.x-m0.x,probe.y-m0.y)
+        let first = op.points[0]
+        let sourcePlane = op.sourcePlane ?? op.sourcePoint.flatMap { scene.plane(at:$0) }
+        let wraps = op.wrap == true && (scene.hasMarqueeNeighbors(op.plane)
+          || sourcePlane.map(scene.hasMarqueeNeighbors) == true)
+        let layout = wraps ? VanishingSurfaceChart(scene:scene,anchor:op.plane) : nil
+        func destinationCoordinate(_ image: PathPoint) -> PathPoint {
+          guard let layout else { return frame.metric(image) }
+          return layout.coordinates(image,on:layout.face(at:image))
+        }
+        let m0 = layout?.coordinates(first,on:op.plane) ?? frame.metric(first)
+        let diameterProbe = PathPoint(first.x+op.diameter/2,first.y)
+        let probe = layout?.coordinates(diameterProbe,on:op.plane) ?? frame.metric(diameterProbe)
+        let radius = hypot(probe.x-m0.x,probe.y-m0.y)
         guard radius.isFinite,radius>1e-9,frame.contains(first) else { throw CraftError.invalid("Start the stroke inside its perspective plane.") }
-        let sourceFrame:VanishingScene.Frame?,offset:PathPoint
-        if op.kind == .clone {
-          guard let sourcePoint=op.sourcePoint,let sourcePlane=scene.plane(at:sourcePoint) else { throw CraftError.invalid("Clone source must lie on a perspective plane.") }
-          sourceFrame=scene.frames[sourcePlane];let m=sourceFrame!.metric(sourcePoint);offset = .init(m.x-m0.x,m.y-m0.y)
-        } else { sourceFrame=nil;offset = .init(0,0) }
+        if op.kind == .clone && sourcePlane == nil {
+          throw CraftError.invalid("Clone source must lie on a perspective plane.")
+        }
+        let sourceFrame = op.kind == .clone ? sourcePlane.map { scene.frames[$0] } : nil
+        let donorLayout = wraps && op.kind == .clone ? sourcePlane.map { VanishingSurfaceChart(scene:scene,anchor:$0) } : nil
+        let sourceOrigin = op.sourcePoint.flatMap { point in
+          donorLayout.map { $0.coordinates(point,on:$0.anchor) } ?? sourceFrame?.metric(point)
+        } ?? m0
+        let offset = PathPoint(sourceOrigin.x-m0.x,sourceOrigin.y-m0.y)
         // A stroke samples an immutable pre-stroke image, including earlier operations.
         let previous=output
-        var centers=[m0]
-        for p in op.points.dropFirst() {
-          let m=frame.metric(p),last=centers.last!,distance=hypot(m.x-last.x,m.y-last.y)
+        let path = try layout?.strokePath(op.points,charge:charge)
+          ?? op.points.map { Optional(VanishingSurfaceChart.StrokePoint(point:frame.metric($0),plane:op.plane)) }
+        var centers: [VanishingSurfaceChart.StrokePoint] = []
+        var continues = false
+        for target in path {
+          defer { continues = target != nil }
+          guard let target else { continue }
+          let m = target.point
+          guard m.x.isFinite,m.y.isFinite else { throw CraftError.invalid("Stroke crosses a projective horizon.") }
+          guard continues,let last = centers.last?.point else {
+            guard centers.count < 16384 else { throw CraftError.unsupported("Perspective stroke has too many dabs.") }
+            centers.append(target)
+            continue
+          }
+          let distance = hypot(m.x-last.x,m.y-last.y)
           guard distance.isFinite,distance/radius<16384 else { throw CraftError.invalid("Stroke crosses a projective horizon.") }
           let steps=max(1,Int(ceil(distance/max(1e-9,radius*0.2))))
           guard centers.count+steps<=16384 else { throw CraftError.unsupported("Perspective stroke has too many dabs.") }
-          for i in 1...steps { let t=Double(i)/Double(steps);centers.append(.init(last.x+(m.x-last.x)*t,last.y+(m.y-last.y)*t)) }
+          for i in 1...steps {
+            let t = Double(i)/Double(steps)
+            centers.append(.init(point:.init(last.x+(m.x-last.x)*t,last.y+(m.y-last.y)*t),plane:target.plane))
+          }
         }
         let hard = min(0.99, op.hardness / 100)
         let brush = linear ? SRGBTransfer.linear(op.color) : op.color
         func sourceColor(_ metric: PathPoint) -> Pixel? {
           guard let sourceFrame else { return brush }
-          let q = sourceFrame.projected(.init(metric.x + offset.x, metric.y + offset.y))
-          guard VanishingSettings.validPoint(q) else { return nil }
+          let donor = PathPoint(metric.x+offset.x,metric.y+offset.y)
+          let mapped = donorLayout == nil ? sourceFrame.projected(donor) : donorLayout?.image(donor)?.point
+          guard let q = mapped,VanishingSettings.validPoint(q) else { return nil }
           return over(WarpRaster.sample(previous, q, method: .bilinear, clampEdges: false),
             WarpRaster.sample(sample, q, method: .bilinear, clampEdges: false))
         }
@@ -452,7 +519,51 @@ public enum VanishingEngine {
           color.a *= Float(fraction) * opacity
           try deposit(color, x: x, y: y)
         }
-        for center in centers {
+        for dab in centers {
+          let center = dab.point
+          if let layout {
+            let extent = radius/cos(.pi/32)
+            let outline = (0..<32).map { k in
+              let angle = Double(k)*2 * .pi/32
+              return PathPoint(center.x+extent*cos(angle),center.y+extent*sin(angle))
+            }
+            let pieces = try layout.projectedPieces(outline,clip:op.clip,extending:dab.plane,charge:charge)
+            guard !pieces.isEmpty else { continue }
+            if pieces.allSatisfy({ ProjectedDabCoverage.isNarrow($0.corners) }) {
+              try charge(ProjectedDabCoverage.projectionWork)
+              let footprint = try ProjectedDabCoverage(center:center,radius:radius,hardness:hard,
+                layout:layout,clip:op.clip,extensionPlane:dab.plane,charge:charge)
+              try footprint.forEachPixel(in:.init(x:0,y:0,width:sample.width,height:sample.height),charge:charge) { x,y,fraction in
+                let point = PathPoint(Double(x)+0.5,Double(y)+0.5)
+                try charge(pieces.count+(donorLayout?.faces.count ?? 0))
+                let face = pieces.min { $0.distance(point) < $1.distance(point) }?.plane ?? layout.anchor
+                try paint(x,y,layout.coordinates(point,on:face),fraction)
+              }
+            } else {
+              for (index,piece) in pieces.enumerated() {
+                let r = try region(piece.corners)
+                let earlier = pieces.prefix(index)
+                try charge((index+(donorLayout?.faces.count ?? 0))*r.width*r.height)
+                for y in r.y..<(r.y+r.height) {
+                  try Task.checkCancellation()
+                  for x in r.x..<(r.x+r.width) {
+                    let p = PathPoint(Double(x)+0.5,Double(y)+0.5)
+                    guard piece.contains(p) else { continue }
+                    let m = layout.coordinates(p,on:piece.plane)
+                    let d = hypot(m.x-center.x,m.y-center.y)/radius
+                    guard d < 1,!earlier.contains(where:{ earlierPiece in
+                      guard earlierPiece.contains(p) else { return false }
+                      let at = layout.coordinates(p,on:earlierPiece.plane)
+                      return hypot(at.x-center.x,at.y-center.y) < radius
+                    }) else { continue }
+                    let fall = d <= hard ? 1 : 1-(d-hard)/(1-hard)
+                    try paint(x,y,m,fall*fall*(3-2*fall))
+                  }
+                }
+              }
+            }
+            continue
+          }
           let ring=(0..<32).map { k in let a=Double(k)/32*2 * .pi;return frame.projected(.init(center.x+radius*cos(a),center.y+radius*sin(a))) },r=try region(ring)
           if ProjectedDabCoverage.isNarrow(ring) {
             try charge(ProjectedDabCoverage.projectionWork)
@@ -474,7 +585,7 @@ public enum VanishingEngine {
         if let coverage {
           try VanishingHealing.apply(coverage, sample: sample, previous: previous, output: &output, charge: charge) { x, y in
             let p = PathPoint(Double(x) + 0.5, Double(y) + 0.5)
-            return sourceColor(frame.metric(p)) ?? .clear
+            return sourceColor(destinationCoordinate(p)) ?? .clear
           }
         }
       }

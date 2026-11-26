@@ -46,7 +46,7 @@ extension VanishingWorkspace {
       selected = plane
       marquee = nil
       selectedMarqueePatch = nil
-      return .init(action:action,start:point,plane:plane,original:nil,angle:0,wrap:allowMultiSurfaceMarquee)
+      return .init(action:action,start:point,plane:plane,original:nil,angle:0,wrap:allowMultiSurfaceOperations)
     }
     guard let original else { return nil }
     return .init(action:action,start:point,plane:original.plane,original:original,angle:angle,wrap:original.wrap == true)
@@ -86,7 +86,7 @@ extension VanishingWorkspace {
     beginGesture()
     selectedMarqueePatch = nil
     selected = plane
-    let wraps = allowMultiSurfaceMarquee && scene?.hasMarqueeNeighbors(plane) == true
+    let wraps = allowMultiSurfaceOperations && scene?.hasMarqueeNeighbors(plane) == true
     marquee = .init(plane:plane,lower:.init(0,0),upper:.init(1,1),wrap:wraps ? true : nil)
     endGesture()
   }

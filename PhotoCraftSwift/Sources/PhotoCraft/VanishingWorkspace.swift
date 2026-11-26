@@ -21,7 +21,7 @@ import PhotoCraftImaging
   var marquee: VanishingMarquee?
   var selectedMarqueePatch: Int?
   var marqueeMoveMode: MarqueeMoveMode = .destination
-  var allowMultiSurfaceMarquee = true
+  var allowMultiSurfaceOperations = true
   var marqueeFeather = 1.0
   var marqueeOpacity = 100.0
   var marqueeHeal: VanishingOperation.Heal = .off
@@ -77,16 +77,27 @@ import PhotoCraftImaging
   var zoom=1.0
   var pan=CGSize.zero
   var error:String?
+  private struct StampAnchor: Equatable {
+    let source: PathPoint
+    let start: PathPoint
+    let plane: Int
+  }
   private struct EditState: Equatable {
     var program: VanishingProgram
     var marquee: VanishingMarquee?
     var floating: Int?
+    var stampAnchor: StampAnchor?
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+      // A source pick alone does not add a workspace undo step.
+      lhs.program == rhs.program && lhs.marquee == rhs.marquee && lhs.floating == rhs.floating
+    }
   }
   private var undoStates=[EditState]()
   private var redoStates=[EditState]()
   var canUndo: Bool { !undoStates.isEmpty || !pending.isEmpty || pendingMeasurement != nil }
   var canRedo: Bool { !redoStates.isEmpty }
-  private var editState: EditState { .init(program:program,marquee:marquee,floating:selectedMarqueePatch) }
+  private var editState: EditState { .init(program:program,marquee:marquee,floating:selectedMarqueePatch,stampAnchor:cloneAnchor) }
   @ObservationIgnored var task:Task<Void,Never>?
   @ObservationIgnored private var seedSnapshot: RenderSnapshot?
   @ObservationIgnored private var seedDisplay: CanvasRasterPreview?
@@ -95,8 +106,7 @@ import PhotoCraftImaging
   private var generation=0
   private var closed=false
   private var gestureStart:EditState?
-  private var cloneAnchor:PathPoint?
-  private var clonePlane:Int?
+  private var cloneAnchor: StampAnchor?
   var size:CGSize { .init(width:original.width,height:original.height) }
   var scene:VanishingScene? { try? VanishingScene(program.settings,width:original.width,height:original.height) }
   var exportingScene = false
@@ -143,6 +153,7 @@ import PhotoCraftImaging
     change(state.program,remember:false)
     marquee = state.marquee
     selectedMarqueePatch = state.floating
+    cloneAnchor = state.stampAnchor?.source == cloneSource ? state.stampAnchor : nil
   }
   func undo() { if pendingMeasurement != nil { pendingMeasurement=nil;return };if !pending.isEmpty { pending.removeLast();return };endGesture();guard let state=undoStates.popLast() else { return };redoStates.append(editState);restore(state) }
   func redo() { endGesture();guard let state=redoStates.popLast() else { return };undoStates.append(editState);restore(state) }
@@ -309,19 +320,36 @@ import PhotoCraftImaging
       self.error = error.localizedDescription
     }
   }
-  func setSource(_ p:PathPoint) { guard scene?.plane(at:p) != nil else { error="Choose a source inside a plane.";return };cloneSource=p;cloneAnchor=nil;clonePlane=nil;error=nil }
+  func setSource(_ p:PathPoint) { guard scene?.plane(at:p) != nil else { error="Choose a source inside a plane.";return };cloneSource=p;cloneAnchor=nil;error=nil }
   func stroke(_ points:[PathPoint]) {
     guard let first=points.first,let scene,let plane=scene.plane(at:first) else { error="Start inside a perspective plane.";return }
     var op=VanishingOperation(tool == .stamp ? .clone:.brush);op.plane=plane;op.points=points;op.diameter=diameter;op.hardness=hardness;op.opacity=opacity;op.color=color;op.clip=clip
     op.heal = heal == .off ? nil : heal
+    let canWrap = allowMultiSurfaceOperations && scene.hasMarqueeNeighbors(plane)
+    op.wrap = canWrap ? true : nil
+    var nextAnchor = cloneAnchor
     if op.kind == .clone {
       guard let source=cloneSource,let sourcePlane=scene.plane(at:source) else { error="Option-click inside a plane to choose a clone source.";return }
-      if aligned,let anchor=cloneAnchor,clonePlane==plane {
-        let a=scene.frames[plane].metric(anchor),b=scene.frames[plane].metric(first),s=scene.frames[sourcePlane].metric(source)
-        op.sourcePoint=scene.frames[sourcePlane].projected(.init(s.x+b.x-a.x,s.y+b.y-a.y))
-      } else { op.sourcePoint=source;cloneAnchor=first;clonePlane=plane }
+      let wraps = canWrap || (allowMultiSurfaceOperations && scene.hasMarqueeNeighbors(sourcePlane))
+      op.wrap = wraps ? true : nil
+      if aligned,let anchor=cloneAnchor,scene.frames.indices.contains(anchor.plane),
+        anchor.plane == plane || (wraps && scene.measurementRoot(for:anchor.plane) == scene.measurementRoot(for:plane)) {
+        if wraps {
+          guard let donor = scene.linkedStampSource(source,plane:sourcePlane,from:anchor.start,on:anchor.plane,
+            to:first,on:plane) else { error = "The aligned Stamp source crosses the perspective horizon."; return }
+          op.sourcePoint = donor.point
+          op.sourcePlane = donor.plane
+        } else {
+          let a=scene.frames[plane].metric(anchor.start),b=scene.frames[plane].metric(first),s=scene.frames[sourcePlane].metric(source)
+          op.sourcePoint=scene.frames[sourcePlane].projected(.init(s.x+b.x-a.x,s.y+b.y-a.y))
+        }
+      } else {
+        op.sourcePoint=source
+        nextAnchor = .init(source:source,start:first,plane:plane)
+      }
     }
     var p=program;p.operations.append(op);selected=plane;change(p)
+    if program == p { cloneAnchor = nextAnchor }
   }
   func paste(_ source:Surface) {
     guard scene?.frames.indices.contains(selected)==true else { error="Create or select a plane before pasting.";return }

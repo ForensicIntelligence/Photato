@@ -155,6 +155,114 @@ final class VanishingTests:XCTestCase {
     let extended = try VanishingEngine.render(program,sample:sample)
     XCTAssertGreaterThan(extended.pixel(x:60,y:18).a,0.1)
   }
+  func testLinkedBrushCoversBothFacesAndDepositsOnceAtTheHinge() throws {
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners:[.init(10,10),.init(36.5,10),.init(36.5,50),.init(10,50)]),
+      .init(parent:0,edge:.right,angle:180)]
+    var dab = VanishingOperation(.brush)
+    dab.color = Pixel(1,0,0)
+    dab.diameter = 6
+    dab.opacity = 50
+    dab.hardness = 100
+    dab.points = [.init(36.5,27.5)]
+    dab.wrap = true
+    program.operations = [dab]
+    let canvas = try Surface(width:80,height:64,depth:.f32)
+    let hinge = try VanishingEngine.render(program,sample:canvas)
+    for x in 35...37 { XCTAssertEqual(hinge.linearPixel(x:x,y:27).a,0.5,accuracy:1e-5) }
+    program.operations[0].diameter = 1
+    let narrow = try VanishingEngine.render(program,sample:canvas)
+    let coverage = narrow.linearPixel(x:36,y:27).a
+    XCTAssertGreaterThan(coverage,0.37)
+    XCTAssertLessThan(coverage,0.40)
+    program.operations[0].diameter = dab.diameter
+
+    program.operations[0].points = [.init(20.5,27.5),.init(69.5,27.5)]
+    let clipped = try VanishingEngine.render(program,sample:canvas)
+    XCTAssertGreaterThan(clipped.linearPixel(x:48,y:27).a,0.5)
+    XCTAssertEqual(clipped.linearPixel(x:67,y:27).a,0)
+    program.operations[0].clip = false
+    let extended = try VanishingEngine.render(program,sample:canvas)
+    XCTAssertGreaterThan(extended.linearPixel(x:67,y:27).a,0.5)
+    program.operations[0].wrap = nil
+    program.operations[0].clip = true
+    let legacy = try VanishingEngine.render(program,sample:canvas)
+    XCTAssertEqual(legacy.linearPixel(x:48,y:27).a,0)
+  }
+
+  func testLinkedStrokesExtendTheLastFaceWithClippingDisabled() throws {
+    var program = VanishingProgram()
+    program.settings.center = .init(561,437)
+    program.settings.focalLength = 850
+    program.settings.planes = [.init(corners:[
+      .init(318.10643163755816,273.3813946169246),.init(542.4545454545455,243.8181818181818),
+      .init(575.7802140457254,611.6086432104469),.init(359.2816629989663,586.3958041384441)
+    ]),.init(parent:0,edge:.right,depth:1.6)]
+    program.settings.planes[1].rotationSign = -1
+    let canvas = try Surface(width:1200,height:900,depth:.f32)
+    var source = canvas
+    for y in 320..<490 { for x in 230..<850 {
+      source.setLinearPixel(x:x,y:y,Pixel(Float(x)/1000,0.2,0.4))
+    } }
+    let scene = try VanishingScene(program.settings,width:canvas.width,height:canvas.height)
+    for plane in [0,1] {
+      var stroke = VanishingOperation(.brush)
+      let end = scene.frames[1-plane].point(.init(plane == 0 ? 1.24 : -0.24,0.48))
+      XCTAssertNil(scene.plane(at:end))
+      stroke.plane = plane
+      stroke.points = [scene.frames[plane].point(.init(0.58,0.48)),end]
+      stroke.wrap = true
+      stroke.diameter = 14
+      stroke.hardness = 100
+      program.operations = [stroke]
+      let pixel = (x:Int(end.x),y:Int(end.y))
+      let clipped = try VanishingEngine.render(program,sample:canvas)
+      XCTAssertEqual(clipped.linearPixel(x:pixel.x,y:pixel.y).a,0)
+      program.operations[0].clip = false
+      let extended = try VanishingEngine.render(program,sample:canvas)
+      XCTAssertGreaterThan(extended.linearPixel(x:pixel.x,y:pixel.y).a,0.9)
+
+      // A zero-displacement Stamp reads the same position in the extension.
+      program.operations[0].kind = .clone
+      program.operations[0].sourcePoint = stroke.points.first
+      let sampled = try VanishingEngine.render(program,sample:source).linearPixel(x:pixel.x,y:pixel.y)
+      let expected = source.linearPixel(x:pixel.x,y:pixel.y)
+      XCTAssertEqual(sampled.a,1,accuracy:1e-5)
+      XCTAssertEqual(sampled.r,expected.r,accuracy:1e-5)
+    }
+  }
+
+  func testLinkedStampSamplesEarlierMarksAcrossTheDonorHinge() throws {
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners:[.init(10,10),.init(36.5,10),.init(36.5,50),.init(10,50)]),
+      .init(parent:0,edge:.right,angle:180)]
+    var source = try Surface(width:80,height:64,depth:.f32,fill:Pixel(0,0,1))
+    for y in 0..<64 { for x in 37..<80 { source.setLinearPixel(x:x,y:y,Pixel(1,0,0)) } }
+    var mark = VanishingOperation(.brush)
+    mark.plane = 1
+    mark.points = [.init(52.5,19.5)]
+    mark.diameter = 8
+    mark.hardness = 100
+    mark.color = Pixel(0,1,0)
+    var stamp = VanishingOperation(.clone)
+    stamp.sourcePoint = .init(21.5,19.5)
+    stamp.points = [.init(21.5,34.5),.init(59.5,34.5)]
+    stamp.diameter = 4
+    stamp.hardness = 100
+    stamp.wrap = true
+    program.operations = [mark,stamp]
+    let output = try VanishingEngine.render(program,sample:source)
+    XCTAssertEqual(output.linearPixel(x:29,y:34).b,1,accuracy:1e-5)
+    XCTAssertEqual(output.linearPixel(x:52,y:34).g,1,accuracy:1e-5)
+    XCTAssertEqual(output.linearPixel(x:59,y:34).r,1,accuracy:1e-5)
+    XCTAssertEqual(output.linearPixel(x:65,y:34).a,0)
+    let persisted = try JSONDecoder().decode(VanishingProgram.self,from:JSONEncoder().encode(program))
+    XCTAssertEqual(persisted,program)
+    var legacy = program
+    legacy.operations[1].wrap = nil
+    XCTAssertNil(try JSONDecoder().decode(VanishingProgram.self,from:JSONEncoder().encode(legacy)).operations[1].wrap)
+  }
+
   func testIndependentCameraMetricAndConnectedPlane() throws {
     var settings=cameraPlane();let s=try VanishingScene(settings,width:800,height:600)
     XCTAssertEqual(s.focal,500,accuracy:1e-6);XCTAssertEqual(s.frames[0].width/s.frames[0].height,2,accuracy:1e-6)

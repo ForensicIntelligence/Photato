@@ -78,13 +78,20 @@ struct VanishingSheet:View {
           Button("Cancel Export") { model.cancelSceneExport() }
         }
         Menu("Options") {
-          Toggle("Allow Multi-surface Operations",isOn:$model.allowMultiSurfaceMarquee)
-            .help("New Marquee selections and their floating patches can wrap across linked planes.")
+          Toggle("Allow Multi-surface Operations",isOn:$model.allowMultiSurfaceOperations)
+            .help("Continue Brush and Stamp strokes and wrap Marquee selections across linked planes.")
           Toggle("Clip Operations to Surface Edges",isOn:Binding(
-            get:{ model.floatingMarqueeOperation?.clip ?? model.clip },
+            get:{
+              if model.tool == .marquee || model.tool == .transform {
+                return model.floatingMarqueeOperation?.clip ?? model.clip
+              }
+              return model.clip
+            },
             set:{ value in
               model.clip = value
-              if model.floatingMarqueeOperation != nil { model.updateMarqueePatch { $0.clip = value } }
+              if model.tool == .marquee || model.tool == .transform {
+                model.updateMarqueePatch { $0.clip = value }
+              }
             }))
         }
         Menu("Export") {
@@ -453,6 +460,7 @@ struct VanishingPreview:View {
             if hit==nil { hit=scene.plane(at:start) };if let hit { model.selected=hit }
           }
           if model.tool == .stamp && NSEvent.modifierFlags.contains(.option) { model.setSource(start);sampled=true }
+          if (model.tool == .brush || model.tool == .stamp) && !sampled { stroke = [start] }
           if model.tool == .transform,let index=model.selectedPaste,model.program.operations.indices.contains(index),let scene { let op=model.program.operations[index];pasteOrigin=scene.frames[op.plane].point(op.at) }
         }
         let p=point(value.location)
@@ -488,7 +496,11 @@ struct VanishingPreview:View {
         marqueeDrag = nil
         marqueeOutline = nil
         if model.tool == .create { model.addPoint(.init((value.location.x-offset.x)/scale,(value.location.y-offset.y)/scale)) }
-        if (model.tool == .brush || model.tool == .stamp) && !sampled { model.stroke(stroke) }
+        if (model.tool == .brush || model.tool == .stamp) && !sampled {
+          let end = point(value.location)
+          if stroke.count < 4096,stroke.last != end { stroke.append(end) }
+          model.stroke(stroke)
+        }
         if model.tool == .measure, let measurementDrag {
           let end = point(value.location)
           switch measurementDrag {

@@ -857,6 +857,87 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testLinkedBrushAndAlignedStampShareDesktopAndHTTPUndo() async throws {
+    var original = try fixture()
+    var settings = VanishingSettings()
+    settings.planes = [.init(corners:[.init(4,4),.init(30,4),.init(30,44),.init(4,44)]),
+      .init(parent:0,edge:.right,angle:180)]
+    original.vanishingPoint = settings
+    let layerID = original.layers[0].id
+    let store = EditorStore(document:original,actions:ActionLibrary())
+    store.beginVanishingPoint()
+    let workspace = try XCTUnwrap(store.vanishingWorkspace)
+    defer { store.cancelVanishingPoint();store.renderTask?.cancel() }
+    await workspace.prepare()
+    workspace.tool = .brush
+    workspace.diameter = 4
+    workspace.hardness = 100
+    workspace.color = Pixel(0.2,0.8,0.1)
+    let brushPoints = [PathPoint(18.5,24.5),.init(42.5,24.5)]
+    workspace.allowMultiSurfaceOperations = false
+    workspace.stroke(brushPoints)
+    XCTAssertNil(workspace.program.operations.last?.wrap)
+    workspace.undo()
+    workspace.allowMultiSurfaceOperations = true
+    workspace.stroke(brushPoints)
+    XCTAssertEqual(workspace.program.operations.last?.wrap,true)
+    XCTAssertEqual(workspace.apiState["allowMultiSurfaceOperations"] as? Bool,true)
+
+    workspace.tool = .stamp
+    workspace.aligned = true
+    workspace.setSource(.init(15.5,12.5))
+    workspace.stroke([.init(13.5,32.5),.init(36.5,32.5)])
+    workspace.stroke([.init(39.5,32.5),.init(49.5,32.5)])
+    let aligned = try XCTUnwrap(workspace.program.operations.last)
+    let donor = try XCTUnwrap(aligned.sourcePoint)
+    XCTAssertEqual(aligned.sourcePlane,1)
+    XCTAssertEqual(donor.x,41.5,accuracy:1e-6)
+    XCTAssertEqual(donor.y,12.5,accuracy:1e-6)
+    workspace.undo()
+    XCTAssertEqual(workspace.program.operations.count,2)
+    workspace.redo()
+    XCTAssertEqual(workspace.program.operations.last,aligned)
+    await workspace.task?.value
+    XCTAssertTrue(workspace.ready,workspace.error ?? "Missing linked stroke preview")
+
+    func requestOperation(_ op: VanishingOperation) -> [String:Any] {
+      var fields: [String:Any] = ["kind":op.kind.rawValue,"plane":op.plane,
+        "points":op.points.map { ["x":$0.x,"y":$0.y] },
+        "diameter":op.diameter,"hardness":op.hardness,"wrap":op.wrap == true]
+      if let origin = op.sourcePoint {
+        fields["sourcePoint"] = ["x":origin.x,"y":origin.y]
+        if let plane = op.sourcePlane { fields["sourcePlane"] = plane }
+      } else {
+        fields["color"] = ["r":op.color.r,"g":op.color.g,"b":op.color.b,"a":op.color.a]
+      }
+      return fields
+    }
+    let operations = workspace.program.operations.map(requestOperation)
+    store.commitVanishingPoint()
+    await store.geometryTask?.value
+    XCTAssertEqual(store.session.undoStack.count,1)
+    XCTAssertNotEqual(store.document.layers,original.layers)
+    let native = store.document
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:original)
+      try service.share(document)
+      let applied = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":layerID.uuidString,"operations":operations])
+      XCTAssertEqual(applied,200)
+      XCTAssertEqual(document.store.document,native)
+      let undone = try await helper.edit(service,document,"history.undo")
+      XCTAssertEqual(undone,200)
+      XCTAssertEqual(document.store.document,original)
+      var invalid = operations
+      invalid[0]["wrap"] = NSNull()
+      let rejected = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":layerID.uuidString,"operations":invalid])
+      XCTAssertEqual(rejected,400)
+      XCTAssertEqual(document.store.document,original)
+    }
+  }
+
   @MainActor func testMarqueeWrapNudgeAndUndoThroughDesktopAndHTTP() async throws {
     var original = try fixture()
     var settings = VanishingSettings()

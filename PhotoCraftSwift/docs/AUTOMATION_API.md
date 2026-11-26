@@ -18,6 +18,12 @@ The patch uses bicubic interpolation to sample the visible composite and precedi
 
 Set `"wrap": true` on either rectangle to continue it across linked surfaces. Coordinates stay relative to that rectangle's anchor plane. For example, with a plane linked to its right edge, a wrapped rectangle anchored on plane 0 can span `x: 0.8` to `x: 1.2`. Set both rectangles to wrap when both the donor and destination span a hinge. Keep `clip: true` to restrict coverage to the linked faces, or set it to false to allow the anchor plane's projection in uncovered areas. The workspace state reports `marquee.wrap`, `allowMultiSurfaceMarquee` and `clipOperationsToSurfaceEdges`. Omitted or false `wrap` retains single-plane behavior. This operation is part of the Photato API.
 
+### Linked Brush and Stamp strokes
+
+Set `wrap: true` on a `brush` or `clone` operation to continue the stroke through the linked faces. Keep `clip: true` to confine the destination to those faces. With clipping disabled, marks outside the group extend the perspective of the last face the stroke crossed. Point coordinates are document pixels. A wrapped Stamp can supply `sourcePlane` to identify the projection of an aligned donor beyond a visible edge. It samples an immutable view of the composite and earlier operations.
+
+The desktop's Allow Multi-surface Operations menu item enables wrapping. API clients opt in per stroke, so previously saved commands still use their single-plane projection. The workspace reports `allowMultiSurfaceOperations` and the existing `allowMultiSurfaceMarquee` flag. Linked strokes, including healed ones, share the document transaction and Undo.
+
 ### Vanishing Point scene export (checkpoint 737)
 
 Send `POST /v1/documents/{shareID}/commands` with the current shared document revision and one of the advertised `sceneExport.formats` values:

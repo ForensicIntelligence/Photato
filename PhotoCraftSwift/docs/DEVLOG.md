@@ -761,7 +761,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 740 | 2026-11-25 | [Recover editable right-angle Photoshop hinges](#dev-step-740) |
 | 741 | 2026-11-25 | [Preserve Vanishing Point fold angles in Photoshop files](#dev-step-741) |
 | 742 | 2026-11-25 | [Improve floating selection sampling in Vanishing Point](#dev-step-742) |
+| 743 | 2026-11-25 | [Paint and clone across linked Vanishing Point planes](#dev-step-743) |
 <!-- history-index:end -->
+
+<a id="dev-step-743"></a>
+
+## 2026-11-25 — Paint and clone across linked Vanishing Point planes
+
+The previous desktop toggle wrapped Marquee selections. The raster engine interpreted all Brush and Stamp positions through the first face. Adobe documents continuous strokes with the multi-surface setting, independent destination clipping and aligned donor positions across repeated Stamp strokes. The macOS GUI checklist guided the use of the existing native menu control. The change keeps the Brush and Stamp activation and the same workspace Undo path. [Adobe’s Vanishing Point controls](https://helpx.adobe.com/lv/photoshop/using/vanishing-point.html)
+
+`VanishingMarquee.swift` shares the existing unfolded face geometry with the renderer. Wrapped strokes split screen segments where they cross faces and project dabs in that shared space. `VanishingEngine.swift` paints each projected dab once per pixel and samples an immutable donor image that includes earlier marks. The existing per-pixel and narrow-footprint modes still handle coverage. `VanishingPoint.swift` adds optional stroke wrapping and an explicit donor plane for an extrapolated aligned source.
+
+`VanishingWorkspace.swift` and `VanishingSheet.swift` enable the new behavior from the existing menu. Native strokes capture their first and last screen points. Aligned Stamp keeps its displacement across related faces. Workspace Undo restores its anchor. `AutomationVanishingPoint.swift` exposes the same stroke options and retains the existing workspace state key. The API defaults to its earlier single-plane behavior when wrapping is omitted. The new Core and App tests exercise the hinge, clipping, donor marks, aligned offset, malformed inputs and native/API Undo. Xcode build 743 qualification is in progress.
+
+In Photoshop 2026, the actual menu showed Allow Multi-surface Operations and Clip Operations to Surface Edges checked on the owned tilted guide. The preserved native label follows that menu's capitalization. Photoshop no longer exposed the Filter menu after dismissing the options menu, and the same document stayed open when asked to close. No Photoshop stroke raster was captured in this attempt. The guide stayed unchanged.
+
+The first debug build passed all 29 focused Core tests and 18 App and HTTP tests. The narrow-dab follow-up clips obscured pieces before integrating subpixel coverage, then deposits once. The one-pixel test checks the combined disc coverage through a shared edge. The second checked-in Xcode build succeeded and the focused rerun is separate. The optimized suites started from source digest `9f88883d66658049c287b63f4bcfb1b0d97a06bbfd348096718f72e28bba1c69`.
+
+The first inclined-face extension probe showed a defect. Both clip settings returned zero coverage at the cursor after it left the child. Stopped both in-progress optimized builds and kept their logs. The stroke now retains the latest face when the cursor passes beyond the group and uses its projection for the uncovered part of each dab. A zero-displacement Stamp probe then showed a transparent sample from the extended donor. Donors beyond the group now extend the nearest rectified face. The new tilted-geometry regression checks both directions, the clip switch and exact linear Stamp samples on the extension. Marquee keeps the same projected layout behavior.
+
+The maintainer requested a Universal app in each source commit and an output-verification note directly above its download in the README. The final Release slices were combined, local symbols stripped, and the sandboxed preview signed ad hoc. The ZIP keeps the app’s bundled model notices, and `codesign`, `lipo` and `vtool` verified the extracted signature, both architectures and macOS 14 deployment targets. The first launch probe aborted under the tool sandbox. The permitted rerun used the same extracted bytes and rendered a 1700 × 1174 workspace on each slice. The package is tracked at `downloads/Photato-universal.zip`. The contributor instructions describe the recurring publication step, and the GitHub check compares the ZIP digest, app build number and architecture header against the source checkpoint.
+
+The final digest `2eccd0685aee04bac01547168d356df191eb41d7a922238958ac7a22f1b5a3e1` covers 9,429 build inputs. All 30 Core and 18 App/HTTP focused tests passed. Both optimized suites passed 862 of 864 selected tests and all four new cases. Intel’s test discovery helper first used the wrong architecture. Launching the confirmed `x86_64` XCTest bundle through Rosetta ran every selected case. Color-profile and layer-effect diagnostics repeated build 742 on both architectures. All eight owned stroke replay PNGs agreed byte for byte across Debug and both optimized builds. The local history audit repeated the same 701 older offline evidence paths. [Qualification and download SHA-256](SOURCE_PUBLICATION_743.md)
 
 <a id="dev-step-742"></a>
 
