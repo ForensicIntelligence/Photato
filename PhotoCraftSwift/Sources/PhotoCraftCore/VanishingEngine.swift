@@ -383,7 +383,7 @@ public enum VanishingEngine {
       return r
     }
     for (index, op) in program.operations.enumerated() {
-      try Task.checkCancellation();let frame=scene.frames[op.plane],opacity=Float(op.opacity/100)
+      try Task.checkCancellation();let opacity=Float(op.opacity/100)
       if opacity==0 { continue }
       let mode = op.heal ?? .off
       var coverage = mode == .off ? nil : try VanishingHealing.Coverage(mode: mode, canvas: sample)
@@ -392,12 +392,13 @@ public enum VanishingEngine {
         else { write(&output, x, y, over(color, read(output, x, y))) }
       }
       if op.kind == .paste {
+        let frame = op.canvasPaste == nil ? scene.frames[op.plane] : nil
         guard let geometry = VanishingPasteGeometry(op,frame:frame),let pixels = op.source else {
           throw CraftError.invalid("Invalid perspective paste dimensions.")
         }
         let source = try pixels.converted(to:sample.depth)
         // Requiring a convex projected quad also detects a rectangle crossing the horizon.
-        guard let corners = geometry.projectedCorners(in:frame) else { throw CraftError.invalid("Paste crosses the plane horizon.") }
+        guard let corners = geometry.projectedCorners() else { throw CraftError.invalid("Paste crosses the plane horizon.") }
         let r = try region(corners)
         let previous = mode == .off ? nil : output
         func sourceColor(_ u: Double, _ v: Double) -> Pixel {
@@ -405,19 +406,20 @@ public enum VanishingEngine {
           return WarpRaster.sample(source, .init(x * Double(source.width), y * Double(source.height)), method: .bicubic)
         }
         for y in r.y..<(r.y+r.height) { try Task.checkCancellation();for x in r.x..<(r.x+r.width) {
-          let p=PathPoint(Double(x)+0.5,Double(y)+0.5);if op.clip && !frame.contains(p) { continue }
-          let unit = geometry.unit(at:frame.metric(p))
+          let p=PathPoint(Double(x)+0.5,Double(y)+0.5);if op.clip && !geometry.isInsidePlane(p) { continue }
+          let unit = geometry.unit(at:geometry.metric(p))
           guard (0...1).contains(unit.x),(0...1).contains(unit.y) else { continue }
           var pixel = sourceColor(unit.x, unit.y); pixel.a *= opacity
           try deposit(pixel, x: x, y: y)
         } }
         if let coverage, let previous {
           try VanishingHealing.apply(coverage, sample: sample, previous: previous, output: &output, charge: charge) { x, y in
-            let unit = geometry.unit(at:frame.metric(.init(Double(x) + 0.5, Double(y) + 0.5)))
+            let unit = geometry.unit(at:geometry.metric(.init(Double(x) + 0.5, Double(y) + 0.5)))
             return sourceColor(clamped(unit.x), clamped(unit.y))
           }
         }
       } else if let patch = op.marquee {
+        let frame = scene.frames[op.plane]
         let footprint: ProjectedVanishingMarquee?
         let corners: [PathPoint]
         if patch.destination.wrap == true {
@@ -507,6 +509,7 @@ public enum VanishingEngine {
           }
         }
       } else {
+        let frame = scene.frames[op.plane]
         let first = op.points[0]
         let selection = try op.strokeSelection.map { try VanishingStrokeSelection(rectangle:$0,scene:scene,clip:op.clip) }
         let sourcePlane = op.sourcePlane ?? op.sourcePoint.flatMap { scene.plane(at:$0) }

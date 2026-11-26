@@ -23,7 +23,7 @@ We replay the same operations in Photato and Photoshop 2026 with matching docume
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 748.** Vanishing Point can scale, rotate and reflect floating pasted content. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_748.md).
+**Development alpha — source build 749.** Vanishing Point can place pasted pixels at their original size before a plane exists. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_749.md).
 
 ## Project layout
 

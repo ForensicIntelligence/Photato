@@ -11,6 +11,27 @@ final class VanishingTests:XCTestCase {
     var s=VanishingSettings();s.planes=[.init(corners:corners)];return s
   }
   func plain()->VanishingProgram { var p=VanishingProgram();p.settings.planes=[.init(corners:[.init(4,4),.init(60,4),.init(60,44),.init(4,44)])];return p }
+  func testFreePasteKeepsPixelDimensionsWithoutAPlaneOnMaximumCanvas() throws {
+    let side = Surface.maxDimension
+    let sample = try Surface(width:side,height:side)
+    var donor = try Surface(width:2,height:1)
+    donor.setPixel(x:0,y:0,Pixel(1,0,0))
+    donor.setPixel(x:1,y:0,Pixel(0,0,1))
+    var operation = VanishingOperation(.paste)
+    operation.source = donor
+    operation.flip = true
+    operation.canvasPaste = .init(origin:.init(Double(side-3),Double(side-2)),width:2,height:1)
+    var program = VanishingProgram()
+    program.operations = [operation]
+    let output = try VanishingEngine.render(program,sample:sample)
+    XCTAssertEqual(output.pixel(x:side-3,y:side-2),Pixel(0,0,1))
+    XCTAssertEqual(output.pixel(x:side-2,y:side-2),Pixel(1,0,0))
+    XCTAssertEqual(output.pixel(x:side-1,y:side-2).a,0)
+    XCTAssertLessThan(output.allocatedBytes,500_000)
+    program.operations[0].canvasPaste?.width = 0
+    XCTAssertThrowsError(try program.validate())
+  }
+
   func testPasteReflectionAndIndependentHeightPreserveLegacyAspectRatio() throws {
     let sample = try Surface(width:64,height:64,fill:Pixel(0.25,0.25,0.25))
     var source = try Surface(width:4,height:2)

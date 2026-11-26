@@ -194,7 +194,7 @@ struct VanishingSheet:View {
             }))
           }
           Divider();Text("Paste into Perspective").font(.subheadline.bold())
-          Button("Paste Clipboard") { do { let input=try store.clipboard.read();Task { await model.pasteClipboard(input) } } catch { model.error=error.localizedDescription } }.disabled(model.program.settings.planes.isEmpty).keyboardShortcut("v",modifiers:.command)
+          Button("Paste Clipboard") { do { let input=try store.clipboard.read();Task { await model.pasteClipboard(input) } } catch { model.error=error.localizedDescription } }.keyboardShortcut("v",modifiers:.command)
           Picker("Source Layer",selection:$sourceID) { Text("Choose…").tag(nil as UUID?);ForEach(model.original.layers.filter{if case .raster=$0.content { return true };return false}) { Text($0.name).tag(Optional($0.id)) } }
           Button("Paste Layer Pixels") { if let sourceID { model.pasteLayer(sourceID) } }.disabled(sourceID==nil || model.program.settings.planes.isEmpty)
           let pastes=model.program.operations.indices.filter{model.program.operations[$0].kind == .paste}
@@ -205,11 +205,15 @@ struct VanishingSheet:View {
             }
           }
           if let index=model.selectedPaste,pastes.contains(index) {
-            number("Width (plane fraction)",pasteNumber(index,\.width),0.001...20)
-            if let operation = model.selectedPasteOperation,let scene = model.scene,
-              scene.frames.indices.contains(operation.plane),
-              let geometry = VanishingPasteGeometry(operation,frame:scene.frames[operation.plane]) {
-              let defaultHeight = geometry.height/scene.frames[operation.plane].width
+            if let placement = model.selectedPasteOperation?.canvasPaste {
+              let range = VanishingOperation.CanvasPaste.sizeRange
+              number("Width (px)",canvasPasteSize(index,\.width,fallback:placement.width),range)
+              number("Height (px)",canvasPasteSize(index,\.height,fallback:placement.height),range)
+            } else if let operation = model.selectedPasteOperation,let scene = model.scene,
+              let frame = model.pasteFrame(for:operation,scene:scene),
+              let geometry = VanishingPasteGeometry(operation,frame:frame) {
+              number("Width (plane fraction)",pasteNumber(index,\.width),0.001...20)
+              let defaultHeight = geometry.height/frame.width
               number("Height (plane fraction)",Binding(get:{
                 model.selectedPaste == index ? model.selectedPasteOperation?.pasteHeight ?? defaultHeight : defaultHeight
               },set:{ height in
@@ -257,6 +261,20 @@ struct VanishingSheet:View {
       guard model.selectedPaste == index,model.selectedPasteOperation != nil else { return }
       var draft = model.program
       draft.operations[index][keyPath:key] = value ? true : nil
+      model.change(draft)
+    })
+  }
+
+  private func canvasPasteSize(_ index: Int, _ key: WritableKeyPath<VanishingOperation.CanvasPaste,Double>,
+    fallback: Double) -> Binding<Double>
+  {
+    Binding(get:{
+      guard model.selectedPaste == index else { return fallback }
+      return model.selectedPasteOperation?.canvasPaste?[keyPath:key] ?? fallback
+    },set:{ value in
+      guard model.selectedPaste == index,model.selectedPasteOperation?.canvasPaste != nil else { return }
+      var draft = model.program
+      draft.operations[index].canvasPaste?[keyPath:key] = value
       model.change(draft)
     })
   }
@@ -408,10 +426,9 @@ struct VanishingPreview:View {
               drawTransformHandle(at:point,rotation:handle == .rotate)
             }
           }
-          if model.tool == .transform || model.tool == .marquee,let paste = pasteDraft ?? model.selectedPasteOperation,
-            scene.frames.indices.contains(paste.plane) {
-            let frame = scene.frames[paste.plane]
-            if let geometry = VanishingPasteGeometry(paste,frame:frame),let corners = geometry.projectedCorners(in:frame) {
+          if model.tool == .transform || model.tool == .marquee,let paste = pasteDraft ?? model.selectedPasteOperation {
+            let frame = model.pasteFrame(for:paste,scene:scene)
+            if let geometry = VanishingPasteGeometry(paste,frame:frame),let corners = geometry.projectedCorners() {
               var outline = Path()
               outline.addLines(corners.map(screen))
               outline.closeSubpath()

@@ -157,7 +157,7 @@ import PhotoCraftImaging
     marquee = state.marquee
     selectedMarqueePatch = state.floating
     selectedPaste = state.paste
-    if let index = selectedPaste { selected = program.operations[index].plane }
+    if let operation = selectedPasteOperation,operation.canvasPaste == nil { selected = operation.plane }
     cloneAnchor = state.stampAnchor?.source == cloneSource ? state.stampAnchor : nil
   }
   func undo() { if pendingMeasurement != nil { pendingMeasurement=nil;return };if !pending.isEmpty { pending.removeLast();return };endGesture();guard let state=undoStates.popLast() else { return };redoStates.append(editState);restore(state) }
@@ -180,6 +180,7 @@ import PhotoCraftImaging
     let remaining=program.settings.planes.indices.filter{!removed.contains($0)},map=Dictionary(uniqueKeysWithValues:remaining.enumerated().map{($0.element,$0.offset)})
     var p=program;p.settings.planes=remaining.map { i in var plane=program.settings.planes[i];plane.parent=plane.parent.flatMap{map[$0]};return plane }
     p.operations = p.operations.compactMap { operation in
+      if operation.canvasPaste != nil { return operation }
       guard let destination = map[operation.plane] else { return nil }
       var operation = operation
       operation.plane = destination
@@ -399,13 +400,16 @@ import PhotoCraftImaging
     var p=program;p.operations.append(op);selected=plane;change(p)
     if program == p { cloneAnchor = nextAnchor }
   }
-  func paste(_ source:Surface, tool selectionTool: Tool = .transform) {
-    guard scene?.frames.indices.contains(selected)==true else { error="Create or select a plane before pasting.";return }
+  func paste(_ source:Surface, tool selectionTool: Tool = .transform, onCanvas: Bool = false) {
+    guard onCanvas || scene?.frames.indices.contains(selected)==true else { error="Create or select a plane before pasting.";return }
     var draft = program, operation = VanishingOperation(.paste)
     operation.plane = selected
     operation.source = source
     operation.opacity = opacity
     operation.clip = clip
+    if onCanvas {
+      operation.canvasPaste = .init(origin:.init(0,0),width:Double(source.width),height:Double(source.height))
+    }
     draft.operations.append(operation)
     change(draft)
     guard draft == program else { return }
@@ -416,7 +420,7 @@ import PhotoCraftImaging
     guard let index else { selectedPaste = nil; return }
     guard program.operations.indices.contains(index), program.operations[index].kind == .paste else { return }
     selectedPaste = index
-    selected = program.operations[index].plane
+    if program.operations[index].canvasPaste == nil { selected = program.operations[index].plane }
     selectedMarqueePatch = nil
     marquee = nil
   }
@@ -439,7 +443,7 @@ import PhotoCraftImaging
     do {
       let original=original
       let worker=Task.detached { let content=try ColorManagement.converted(input.decoded(),to:original);return try ClipboardRenderer.preview(content) }
-      let pixels=try await worker.value;guard !closed else { return };paste(pixels,tool:.marquee)
+      let pixels=try await worker.value;guard !closed else { return };paste(pixels,tool:.marquee,onCanvas:true)
     } catch { if !closed { self.error=error.localizedDescription } }
   }
   private struct SourcePreview: Sendable {

@@ -857,6 +857,60 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testClipboardPasteStartsInCanvasAndConformsAroundTheGrabPoint() async throws {
+    let original = try fixture()
+    let store = EditorStore(document:original,actions:ActionLibrary())
+    store.beginVanishingPoint()
+    let model = try XCTUnwrap(store.vanishingWorkspace)
+    defer { store.cancelVanishingPoint();store.renderTask?.cancel() }
+    await model.prepare()
+    let donor = try Surface(width:6,height:4,fill:Pixel(0,1,0))
+    await model.pasteClipboard(.native(try ClipboardContent.pixels(donor).encoded()))
+    await model.task?.value
+    XCTAssertEqual(model.tool,.marquee)
+    XCTAssertEqual(model.selectedPasteOperation?.canvasPaste,.init(origin:.init(0,0),width:6,height:4))
+    XCTAssertEqual(model.preparedEdit?.result.vanishingPoint,nil)
+    let before = try XCTUnwrap(model.preparedEdit?.result)
+    XCTAssertEqual(try Renderer.composite(before).pixel(x:2,y:2),Pixel(0,1,0))
+
+    for point in program().settings.planes[0].corners { model.addPoint(point) }
+    model.tool = .marquee
+    let scene = try XCTUnwrap(model.scene)
+    let start = PathPoint(2,1), destination = PathPoint(24,20)
+    let drag = try XCTUnwrap(model.pasteDrag(at:start,flags:[],scene:scene,scale:1))
+    let seated = try XCTUnwrap(model.projectedPaste(drag,to:destination,scene:scene))
+    XCTAssertNil(seated.canvasPaste)
+    let geometry = try XCTUnwrap(VanishingPasteGeometry(seated,frame:scene.frames[0]))
+    let grip = geometry.imagePoint(.init(2.0/6,0.25))
+    XCTAssertEqual(grip.x,destination.x,accuracy:1e-8)
+    XCTAssertEqual(grip.y,destination.y,accuracy:1e-8)
+    model.beginGesture()
+    model.finishPasteDrag(drag,at:seated)
+    model.endGesture()
+    model.undo()
+    XCTAssertEqual(model.selectedPasteOperation?.canvasPaste?.origin,.init(0,0))
+    model.redo()
+    XCTAssertEqual(model.selectedPasteOperation,seated)
+
+    try await AutomationTests().withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:original)
+      try service.share(document)
+      let layerID = original.layers[0].id.uuidString
+      let source: [String:Any] = ["kind":"paste","sourceLayerID":layerID,
+        "canvasPaste":["origin":["x":15,"y":10],"width":8,"height":6]]
+      let api = AutomationTests()
+      let result = try await api.edit(service,document,"filter.vanishingPoint",["layerID":layerID,"operations":[source]])
+      XCTAssertEqual(result,200)
+      XCTAssertNil(document.store.document.vanishingPoint)
+      XCTAssertEqual(document.store.session.undoStack.count,1)
+      var ambiguous = source
+      ambiguous["plane"] = 0
+      let status = try await api.edit(service,document,"filter.vanishingPoint",["layerID":layerID,"operations":[ambiguous]])
+      XCTAssertEqual(status,400)
+      XCTAssertEqual(document.store.session.undoStack.count,1)
+    }
+  }
+
   @MainActor func testPastedItemHandlesTransformDuplicateUndoAndHTTP() async throws {
     var original = try fixture()
     original.vanishingPoint = program().settings

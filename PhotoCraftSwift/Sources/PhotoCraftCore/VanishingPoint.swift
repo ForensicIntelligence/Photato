@@ -471,12 +471,30 @@ public struct VanishingScene:Sendable {
 public struct VanishingOperation:Codable,Equatable,Sendable {
   public enum Kind:String,Codable,CaseIterable,Sendable { case paste,clone,brush,marquee }
   public enum Heal: String, Codable, CaseIterable, Sendable { case off, luminance, on }
+  public struct CanvasPaste: Codable, Equatable, Sendable {
+    public static let sizeRange = 0.001...Double(Surface.maxDimension)
+    public var origin: PathPoint
+    public var width: Double
+    public var height: Double
+
+    public init(origin: PathPoint, width: Double, height: Double) {
+      self.origin = origin
+      self.width = width
+      self.height = height
+    }
+
+    var isValid: Bool {
+      VanishingSettings.validPoint(origin) && Self.sizeRange.contains(width) && Self.sizeRange.contains(height)
+    }
+  }
   public var kind:Kind
   public var plane=0
   public var at=PathPoint(0.25,0.25)
   public var width=0.5
   /// An independent paste height in units of plane width. Omission preserves source aspect ratio.
   public var pasteHeight: Double?
+  /// A paste in document pixels before it is moved onto a perspective plane.
+  public var canvasPaste: CanvasPaste?
   public var flip: Bool?
   public var flop: Bool?
   public var angle=0.0
@@ -511,12 +529,22 @@ public struct VanishingPasteGeometry: Sendable {
   public let height: Double
   private let cosine: Double
   private let sine: Double
+  private let frame: VanishingScene.Frame?
 
-  public init?(_ operation: VanishingOperation, frame: VanishingScene.Frame) {
+  public init?(_ operation: VanishingOperation, frame: VanishingScene.Frame?) {
     guard operation.kind == .paste, let source = operation.source else { return nil }
-    origin = .init(operation.at.x * frame.width, operation.at.y * frame.height)
-    width = operation.width * frame.width
-    height = operation.pasteHeight.map { $0 * frame.width } ?? width * Double(source.height) / Double(source.width)
+    if let placement = operation.canvasPaste {
+      origin = placement.origin
+      width = placement.width
+      height = placement.height
+      self.frame = nil
+    } else {
+      guard let frame else { return nil }
+      origin = .init(operation.at.x * frame.width, operation.at.y * frame.height)
+      width = operation.width * frame.width
+      height = operation.pasteHeight.map { $0 * frame.width } ?? width * Double(source.height) / Double(source.width)
+      self.frame = frame
+    }
     guard width.isFinite, height.isFinite, width > 0, height > 0 else { return nil }
     let radians = operation.angle * .pi / 180
     cosine = cos(radians)
@@ -533,8 +561,17 @@ public struct VanishingPasteGeometry: Sendable {
     return .init((dx*cosine+dy*sine)/width,(-dx*sine+dy*cosine)/height)
   }
 
-  public func projectedCorners(in frame: VanishingScene.Frame) -> [PathPoint]? {
-    let corners = [PathPoint(0,0),.init(1,0),.init(1,1),.init(0,1)].map { frame.projected(point($0)) }
+  public func metric(_ imagePoint: PathPoint) -> PathPoint { frame?.metric(imagePoint) ?? imagePoint }
+
+  public func imagePoint(_ unit: PathPoint) -> PathPoint {
+    let metricPoint = point(unit)
+    return frame?.projected(metricPoint) ?? metricPoint
+  }
+
+  func isInsidePlane(_ imagePoint: PathPoint) -> Bool { frame?.contains(imagePoint) ?? true }
+
+  public func projectedCorners() -> [PathPoint]? {
+    let corners = [PathPoint(0,0),.init(1,0),.init(1,1),.init(0,1)].map(imagePoint)
     return PerspectiveSettings.validQuad(corners) ? corners : nil
   }
 }
@@ -550,8 +587,9 @@ public struct VanishingProgram:Codable,Equatable,Sendable {
   public func validate() throws {
     try settings.validate();guard operations.count<=256,operations.reduce(0,{$0+$1.points.count})<=16384,operations.reduce(0,{$0+($1.source?.allocatedBytes ?? 0)})<=134_217_728 else { throw CraftError.unsupported("Vanishing Point exceeds the operation or source memory limit.") }
     for op in operations {
-      guard settings.planes.indices.contains(op.plane),VanishingSettings.validPoint(op.at),op.width.isFinite,(0.001...20).contains(op.width),op.angle.isFinite,(-360...360).contains(op.angle),op.diameter.isFinite,(1...2000).contains(op.diameter),op.hardness.isFinite,(0...100).contains(op.hardness),op.opacity.isFinite,(0...100).contains(op.opacity),op.color.isFinite,(0...1).contains(op.color.a),op.points.count<=4096,op.points.allSatisfy({VanishingSettings.validPoint($0)}),op.sourcePoint.map({VanishingSettings.validPoint($0)}) ?? true else { throw CraftError.invalid("Invalid Vanishing Point operation.") }
-      if op.kind != .paste, op.pasteHeight != nil || op.flip != nil || op.flop != nil {
+      let placementIsValid = op.canvasPaste?.isValid ?? settings.planes.indices.contains(op.plane)
+      guard placementIsValid,VanishingSettings.validPoint(op.at),op.width.isFinite,(0.001...20).contains(op.width),op.angle.isFinite,(-360...360).contains(op.angle),op.diameter.isFinite,(1...2000).contains(op.diameter),op.hardness.isFinite,(0...100).contains(op.hardness),op.opacity.isFinite,(0...100).contains(op.opacity),op.color.isFinite,(0...1).contains(op.color.a),op.points.count<=4096,op.points.allSatisfy({VanishingSettings.validPoint($0)}),op.sourcePoint.map({VanishingSettings.validPoint($0)}) ?? true else { throw CraftError.invalid("Invalid Vanishing Point operation.") }
+      if op.kind != .paste, op.canvasPaste != nil || op.pasteHeight != nil || op.flip != nil || op.flop != nil {
         throw CraftError.invalid("Paste transforms require a pasted source.")
       }
       switch op.kind {

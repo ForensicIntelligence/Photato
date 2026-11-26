@@ -767,7 +767,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 746 | 2026-11-25 | [Scale and rotate floating perspective selections with handles](#dev-step-746) |
 | 747 | 2026-11-25 | [Sample the Vanishing Point preview with Eyedropper](#dev-step-747) |
 | 748 | 2026-11-25 | [Transform clipboard and layer pastes in Vanishing Point](#dev-step-748) |
+| 749 | 2026-11-25 | [Paste clipboard pixels before choosing a perspective plane](#dev-step-749) |
 <!-- history-index:end -->
+
+<a id="dev-step-749"></a>
+
+## 2026-11-25 — Step 749 — Paste clipboard pixels before choosing a perspective plane
+
+Clipboard images pasted into Vanishing Point now start at the upper-left of the document at their original pixel size. They can be placed before any plane exists. Dragging the paste onto a fitted face preserves the grabbed point as the image adopts perspective. The authenticated Photato API accepts a `canvasPaste` object as an alternative to plane coordinates. It uses the same renderer and document undo as the clipboard workflow.
+
+VanishingPoint and VanishingEngine represent canvas placement separately from plane-relative geometry. VanishingWorkspace starts clipboard paste in Marquee and VanishingMarqueeEditing attaches the paste when moved onto a plane. VanishingSheet labels canvas dimensions in pixels. AutomationVanishingPoint rejects simultaneous canvas and plane placement. The Core and desktop/HTTP regressions cover a precise sparse 300,000 × 300,000 paste, the grab point, and undo on the two paths. An offscreen AppKit sheet showed both the free paste in Light and the fitted-plane result in Dark. The first Intel qualification stopped on a generated test-runner error before running XCTest. The source and compiled binary stayed fixed for the rerun. Eight untracked files that matched sealed builds 737 and 738 were preserved outside the publishing checkout.
+
+All 62 focused Debug tests passed. Each optimized build passed 876 of 878 selected tests, including both new cases. Intel ran under Rosetta. The two inherited failures repeated their earlier diagnostics. The replay PNG matched byte for byte across Debug and both optimized builds. The extracted Universal app passed signature verification and offscreen launches on both architectures. The macOS 14+ ZIP is 77,804,243 bytes with SHA-256 `50f00a58c7998ca7d8513e793dc7dfabcde021b9e5a2db7b47dbdd15d4e9bc5c`.
+
+The direct 96 × 48 Flip comparison matched Photoshop at 1,789 pixels and differed at 2,819. All pixels outside the patch were preserved. Paste origin and dimensions now match the Photoshop control. Photoshop’s resampling still needs separate qualification. The 50% estimate remains current. [Adobe’s Vanishing Point reference](https://helpx.adobe.com/uk/photoshop/using/vanishing-point.html) · [Qualification](SOURCE_PUBLICATION_749.md).
 
 <a id="dev-step-748"></a>
 

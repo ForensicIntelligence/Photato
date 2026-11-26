@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **748** · The 10 most recent entries, newest first.
+Source build **749** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 749 — Paste clipboard pixels before choosing a perspective plane
+
+Clipboard images pasted into Vanishing Point now start at the upper-left of the document at their original pixel size. They can be placed before any plane exists. Dragging the paste onto a fitted face preserves the grabbed point as the image adopts perspective.
+
+All 62 focused Debug tests passed. Each optimized build passed 876 of 878 selected tests, including both new cases. Intel ran under Rosetta. The two inherited failures repeated their earlier diagnostics. The replay PNG matched byte for byte across Debug and both optimized builds.
+
+The direct 96 × 48 Flip comparison matched Photoshop at 1,789 pixels and differed at 2,819. All pixels outside the patch were preserved. Paste origin and dimensions now match the Photoshop control. Photoshop’s resampling still needs separate qualification.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-749) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_749.md).
 
 ## 2026-11-25 — Step 748 — Transform clipboard and layer pastes in Vanishing Point
 
@@ -93,13 +103,3 @@ Both PSD and PSB round trips preserve the perspective record and every merged RG
 Each optimized architecture passed 855 of 857 selected tests. The same two failures repeated their build 739 diagnostics. All six native reference files matched across Debug, Apple Silicon and Intel. Both locally signed preview slices opened offscreen.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-740) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_740.md).
-
-## 2026-11-25 — Step 739 — Wrap Vanishing Point selections across linked planes
-
-Vanishing Point can draw and move a selection across a hinge. The outline follows both planes without an extra edge down the middle. Floating patches can sample and land across the hinge, and the Photato API uses the same edit and Undo rules as the desktop.
-
-All 38 focused Xcode Debug tests passed. The offscreen workspace check covered both appearances and all 16 modifier combinations on each face. On the same two-wall image in Photoshop, a floating patch crossed the hinge but reached 59 pixels less far into the right wall. Exact placement on that face and pixel agreement remain open. A second guide with unequal wall lengths is ready for comparison.
-
-Both optimized architectures passed 853 of 855 selected tests. The two failures repeated the build 738 diagnostics, and the Photato replays matched across the three build configurations. Both slices of the locally signed preview opened offscreen.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-739) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_739.md).

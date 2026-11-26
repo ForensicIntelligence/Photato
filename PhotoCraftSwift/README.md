@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 749.** Place clipboard pixels before choosing a plane. [Qualification](docs/SOURCE_PUBLICATION_749.md).
+
 **Source checkpoint 748.** Transform and reflect a floating Vanishing Point paste. [Qualification](docs/SOURCE_PUBLICATION_748.md).
 
 **Source checkpoint 747.** Vanishing Point Eyedropper samples the original or the active preview. [Qualification](docs/SOURCE_PUBLICATION_747.md).

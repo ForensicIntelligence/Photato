@@ -1,3 +1,9 @@
+### Vanishing Point clipboard placement
+
+Send a `paste` operation to `filter.vanishingPoint` with a `sourceLayerID` and a `canvasPaste` object containing `origin` (an object with `x` and `y`), `width` and `height` in document pixels. A separate plane may be created later. The alternative plane placement takes `plane`, `at`, `width` and optional `pasteHeight` on the operation itself.
+
+The workspace reports which placement is active in `selectedPaste`. Free canvas paste uses the same renderer and document history as a perspective paste. [Qualification](SOURCE_PUBLICATION_749.md).
+
 ### Vanishing Point paste transforms
 
 Send a `paste` operation to `filter.vanishingPoint` with a `sourceLayerID` and the destination `plane`. Supply `at` in normalized plane coordinates. Both `width` and optional `pasteHeight` use fractions of the metric plane width. Omit `pasteHeight` to keep the donor's aspect ratio. Supply `angle` in degrees. Set `flip` for left-to-right reflection and `flop` for top-to-bottom reflection in the pasted rectangle's own coordinates.

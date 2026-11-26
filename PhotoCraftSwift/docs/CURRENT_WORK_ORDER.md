@@ -1,4 +1,4 @@
-**Vanishing Point.** Place clipboard content at its original size in the image before a plane is selected. Verify the transition onto a fitted face, and compare controlled Photoshop and Photato paste outputs. [Development record](DEVLOG.md#dev-step-748) · [Qualification](SOURCE_PUBLICATION_748.md).
+**Vanishing Point.** Add side handles and keyboard nudging to the floating paste. Use controlled RGB impulses to separate reflection geometry from interpolation. [Development record](DEVLOG.md#dev-step-749) · [Qualification](SOURCE_PUBLICATION_749.md).
 
 **Source checkpoint 738.** The native Marquee creates perspective rectangles and turns them into sampled floating patches. The authenticated Photato API shares the edit and document history. The captured Photoshop 20 × 10 pixel move matched Photato's placement. Edge coverage and eight-bit rounding still differ. [Qualification](SOURCE_PUBLICATION_738.md).
 

@@ -228,5 +228,13 @@
     "differentPatchRGBPixels": 2819,
     "exactRasterQualified": false,
     "public_receipt": "SOURCE_PUBLICATION_748.json"
+  },
+  "free_clipboard_749": {
+    "reference": "https://helpx.adobe.com/uk/photoshop/using/vanishing-point.html",
+    "placement": "upper-left, donor pixel dimensions",
+    "matchingPatchRGBPixels": 1789,
+    "differentPatchRGBPixels": 2819,
+    "exactRasterQualified": false,
+    "public_receipt": "SOURCE_PUBLICATION_749.json"
   }
 }
