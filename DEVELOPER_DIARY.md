@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **740** · The 10 most recent entries, newest first.
+Source build **741** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 741 — Preserve Vanishing Point fold angles in Photoshop files
+
+PSD and PSB guides can keep their editable fold angles when moving between Photato and Photoshop. Photoshop reopened newly written guides at 45°, 90° and 135°. The reader also recovered the same off-centre camera from the three Photoshop saves. Untouched guide records and merged RGB samples survived both file formats.
+
+A new Marquee comparison used the corrected 90° guide. On the centre row, Photato matched Photoshop's patch extent in one direction and was one pixel wider in the other. The colors differ, even with Feather set to 0.
+
+All 43 focused checks passed. Both optimized builds passed 857 of 859 selected tests and repeated the same two existing failures. The twenty test PSD and PSB files match across the three builds.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-741) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_741.md).
 
 ## 2026-11-25 — Step 740 — Recover editable right-angle Photoshop hinges
 
@@ -93,13 +103,3 @@ On the 1,600 × 1,200 owned layered PSD, Heal On extends the 1 × 1 Repair raste
 The saved Photoshop Off-mode fixture preserves the repaired layer and its perspective data. The corresponding Photato crop still differs at 455 of 901 pixels, by a mean 0.71 RGB8 levels per channel. Both outputs preserve the protected swatch. Photato preserved the imported Photoshop plane record byte for byte through a native archive and PSD re-export. Editable PSD exchange of the perspective planes remains open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-732) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_732.md).
-
-## 2026-11-23 — Step 731 — Blend projected repairs with Vanishing Point Heal
-
-Vanishing Point adds Heal Off, Luminance and On for the Brush, Stamp and pasted patches. Luminance matches the surrounding light while keeping the source color differences. On blends both light and color. The native workspace and authenticated Photato API share the renderer.
-
-On the 1,600 × 1,200 owned texture, Luminance lowered the mean lighting error on 901 defect pixels from 0.06803 to 0.00137. On lowered the mean RGB error from 0.15817 to 0.00000. The tested crop hashes agree in Xcode Debug and both optimized slices. The native and authenticated HTTP paths agree on each mode’s preview, editable archive, source and Undo. The core checks cover RGB8, RGB16, RGB32, a translucent pasted patch and an active selection.
-
-The solver bounds each local repair region, including its one-pixel boundary, to 4,194,304 pixels. Applying into an imported 1 × 1 transparent repair layer leaves an out-of-bounds defect unchanged. The New Layer option handled the same repair. Photoshop 2026 pixel comparison and full product retouch acceptance remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-731) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_731.md).

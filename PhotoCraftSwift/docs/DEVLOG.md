@@ -759,7 +759,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 738 | 2026-11-25 | [Add perspective Marquee and floating patches](#dev-step-738) |
 | 739 | 2026-11-25 | [Wrap Vanishing Point selections across linked planes](#dev-step-739) |
 | 740 | 2026-11-25 | [Recover editable right-angle Photoshop hinges](#dev-step-740) |
+| 741 | 2026-11-25 | [Preserve Vanishing Point fold angles in Photoshop files](#dev-step-741) |
 <!-- history-index:end -->
+
+<a id="dev-step-741"></a>
+
+## 2026-11-25 — Preserve Vanishing Point fold angles in Photoshop files
+
+The comparison started from published build 740. In Photoshop, the owned asymmetric guide displayed 360° with the original link value −90. Copies with only that number changed displayed 180° for a value of 90 and 90° for a value of 180. This isolated the saved orientation from the four saved rays. Separate 45° and 135° edits were saved from the same Photoshop guide. Photoshop stored 225 and 135 respectively. The 45° grid overlaps the parent. Command-click cycled to it and showed 45° on reopening. The original guide files were closed without changes. [Adobe's Edit Plane controls](https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/define-perspective-planes-in-vanishing-point.html)
+
+`PSDVanishingPoint.swift` now writes the measured orientation with the quarter-turn offset and accepts the observed values above 180. Three finite directions in the parent axes and recorded normal recover the camera for either oblique fold. The reader checks the resulting angle against the child geometry before using the camera. The native model and API retain their existing angle convention. Desktop and authenticated API saves continue using the shared PSD/PSB codec. `VanishingWorkflowTests.swift` checks the measured 45° and 135° records and the independent build 737 camera. `scripts/Info.plist` advances the bundle build.
+
+The first candidate built using the checked-in Xcode project and passed 16 focused App and HTTP checks. The independent fixture writer first failed to compile with an internal app name and then failed to link without the native dependency objects. It subsequently wrote ten authored files and ten original-record round trips. Photoshop reopened the new 45° PSD, 135° PSB and 90° PSD with editable angles. Photato reopened the three captured Adobe geometries at the same angles and recovered the same 1189.243-pixel focal length. A new 90° PSB generated from Photato's original synthetic guide also opened in Photoshop. The first candidate did not reopen that last synthetic pair in Photato. The finite-ray approximation from the old writer puts its two child rays slightly away from the saved normal. The reader now allows a tightly bounded mismatch only for the existing canvas-centred hinge fallback. Added a native regression for both newly authored formats and the same nearly parallel seam.
+
+The second checked-in Xcode project build passed. Its 26 focused Core checks and both new PSD/PSB cases passed. The rerun opened all ten authored test files. On the legacy asymmetric fixture, both formats now recover the editable 90° child and a focal length of 980.00094 pixels. The earlier native-open failure remains in the local evidence. An independent RGB comparison confirmed that the untouched Adobe perspective records and all three merged channels matched in both native formats. The optimized suites started with source digest `72ea6f8abee0f1dae28146c2489ae8b19ed25d5b07ecdea92169e4da466be979`.
+
+The next Marquee comparison used the corrected 90° guide. Photoshop saved six Shift-arrow moves in both directions after floating each face at Feather 1 and Heal Off. It accepted Feather 0 and saved a third right-to-left copy. At scanline 449 Photoshop changed x352–601 for the left source and x341–742 for the right source. The native workspace replay changed x351–601 and x341–742, respectively. With the right source, 126,630 positions still differ at Feather 1 and 125,980 at Feather 0. Fit the donor resampling in the interiors and measure edge coverage separately. The same test on the older coplanar guide reached different extents.
+
+Both optimized architectures passed 857 of 859 selected tests. The two inherited color-profile and layer-effect tests repeated the same diagnostics as build 740. All twenty tested PSD and PSB outputs match byte for byte across Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed preview target macOS 14 and opened offscreen on macOS 27.2.1. The GitHub diary generator passed. The full history audit repeated the same 701 missing older local evidence references as build 740. The rebuilt local inventory, check output and comparison are saved. The project-wide parity estimate stays at 50%. [Qualification](SOURCE_PUBLICATION_741.md)
 
 <a id="dev-step-740"></a>
 

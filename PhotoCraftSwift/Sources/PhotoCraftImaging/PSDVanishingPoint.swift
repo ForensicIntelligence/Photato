@@ -50,16 +50,22 @@ enum PSDVanishingPoint {
     let calibrationPoint: PathPoint?
     let rays: [Int: Ray]
 
+    var recordedFold: Double? {
+      guard let angle else { return nil }
+      // The stored orientation starts a quarter turn away from coplanar.
+      let difference = abs(90-angle).truncatingRemainder(dividingBy:360)
+      return min(difference,360-difference)
+    }
+
     func hasRightAngleGuide(relativeTo parent: Plane) -> Bool {
       guard let angle, let axis = calibrationAxis, let guide = calibrationPoint,
-        abs(angle) == 90 || abs(angle) == 180,
+        abs(angle) == 90 || recordedFold == 90,
         !parent.rays.values.contains(where: { $0.axis == axis }) else { return false }
       let across = rays.values.filter { $0.axis == axis }
-      // A saved 90° hinge can carry a value of 180 in tNaF203. In that case
-      // require both transverse rays to identify the calibration point exactly.
-      let tolerance = abs(angle) == 180 ? 0.0 : 2.0
+      // Older Photato exports regularize parallel directions with a small
+      // corner offset. Their transverse rays can miss the normal slightly.
       return across.count == 2 && across.allSatisfy {
-        !$0.endpoint && PSDVanishingPoint.distance($0.vanisher,guide) <= tolerance
+        !$0.endpoint && PSDVanishingPoint.distance($0.vanisher,guide) <= 2
       }
     }
 
@@ -72,12 +78,14 @@ enum PSDVanishingPoint {
     /// The principal point is the orthocenter of three finite orthogonal
     /// vanishing points. Use the camera recorded by the guide even when the
     /// principal point is off-center in the document.
-    func rightAngleCamera(relativeTo parent: Plane) -> (center: PathPoint, focal: Double)? {
+    func recordedCamera(relativeTo parent: Plane) -> (center: PathPoint, focal: Double)? {
       guard let childAxis = calibrationAxis, let guide = calibrationPoint,
-        vanishingPoint(axis:childAxis) == guide else { return nil }
+        let across = vanishingPoint(axis:childAxis),
+        recordedFold != 90 || across == guide else { return nil }
       let parentAxes = Set(parent.rays.values.map(\.axis))
       let sharedAxes = parentAxes.intersection(rays.values.map(\.axis))
       guard sharedAxes.count == 1, let commonAxis = sharedAxes.first,
+        childAxis != commonAxis, !parentAxes.contains(childAxis),
         let parentAxis = parentAxes.subtracting(sharedAxes).first,
         let a = parent.vanishingPoint(axis:parentAxis),
         let c = parent.vanishingPoint(axis:commonAxis),
@@ -267,7 +275,7 @@ enum PSDVanishingPoint {
           let degrees = try input.number()
           let selector: Int = try input.integer()
           calibrationPoint = try input.point()
-          guard (0...2).contains(selector), (-180...180).contains(degrees) else { throw invalid() }
+          guard (0...2).contains(selector), (-180...360).contains(degrees) else { throw invalid() }
           angle = index == 0 ? nil : degrees
           calibrationAxis = index == 0 ? nil : selector
         } else {
@@ -369,15 +377,23 @@ enum PSDVanishingPoint {
         center:center,canvasSide:canvasSide)
     }
     let cameraFromHinge = rootRecords.first.flatMap { first in
-      resource.planes.lazy.compactMap { item -> (center: PathPoint, focal: Double)? in
-        guard item.parent == first.identity, item.hasRightAngleGuide(relativeTo:first),
+      var single = VanishingSettings()
+      single.planes = [.init(corners:roots[0])]
+      return resource.planes.lazy.compactMap { item -> (center: PathPoint, focal: Double)? in
+        guard item.parent == first.identity,
           let ring = try? item.corners(),
           let link = try? linkedCorners(ring,parent:roots[0]) else { return nil }
-        if let recorded = item.rightAngleCamera(relativeTo:first),
-          let checked = hingeFocal(link,parent:roots[0],center:recorded.center),
-          abs(checked-recorded.focal) < 0.01*recorded.focal {
-          return recorded
+        if let recorded = item.recordedCamera(relativeTo:first), let fold = item.recordedFold {
+          var trial = single
+          trial.center = recorded.center
+          trial.focalLength = recorded.focal
+          if let scene = try? VanishingScene(trial,width:width,height:height),
+            let measured = try? scene.calibratedPlane(parent:0,edge:link.0,corners:link.1),
+            abs(180-measured.angle-fold) < 0.25 {
+            return recorded
+          }
         }
+        guard item.hasRightAngleGuide(relativeTo:first) else { return nil }
         return hingeFocal(link,parent:roots[0],center:canvasCenter).map { (canvasCenter,$0) }
       }.first
     }
@@ -402,8 +418,14 @@ enum PSDVanishingPoint {
         let link = try linkedCorners(item.corners(),parent:parentCorners)
         let orthogonal = item.hasRightAngleGuide(relativeTo:parentRecord)
           && hingeFocal(link,parent:parentCorners,center:center) != nil
+        let measured = try? scene.calibratedPlane(parent:parent,edge:link.0,corners:link.1)
+        let recordedFold: Double? = item.recordedFold.flatMap { fold in
+          guard let measured, abs(180-measured.angle-fold) < 0.25 else { return nil }
+          return fold
+        }
+        let legacyAngle = item.angle.flatMap { abs($0) <= 180 ? $0 : nil }
         plane = try scene.calibratedPlane(parent:parent,edge:link.0,corners:link.1,
-          angleFromCoplanar:orthogonal ? 90 : item.angle)
+          angleFromCoplanar:recordedFold ?? (orthogonal ? 90 : legacyAngle))
       }
       indices[item.identity]=result.planes.count
       result.planes.append(plane)
@@ -555,10 +577,11 @@ enum PSDVanishingPoint {
           let measured = try scene.calibratedPlane(parent:parent,edge:plane.edge,corners:q,
             angleFromCoplanar:180-plane.angle)
           let signed=(180-plane.angle)*(plane.rotationSign ?? measured.rotationSign ?? 1)
+          let orientation = 90-signed
           let p=scene.frames[parent].points
           let h=p[1]-p[0], v=p[3]-p[0]
           let normal=SIMD3(h.y*v.z-h.z*v.y,h.z*v.x-h.x*v.z,h.x*v.y-h.y*v.x)
-          tokens += [decimal(signed),String(next)]
+          tokens += [decimal(orientation < 0 ? orientation+360 : orientation),String(next)]
           point(projectedDirection(normal,scene:scene) ?? vanishing[1-seam] ?? q[(seam+1)%4])
         } else {
           axes=[0,1]

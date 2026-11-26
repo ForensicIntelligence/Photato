@@ -290,6 +290,10 @@ final class VanishingWorkflowTests:XCTestCase {
     let pose = try PSDCodec.read(DocumentIO.encode(document,format:.psd))
     let settings = try XCTUnwrap(pose.vanishingPoint)
     XCTAssertEqual(settings.planes.count,2)
+    let center = try XCTUnwrap(settings.center)
+    XCTAssertEqual(center.x,800.001233,accuracy:0.01)
+    XCTAssertEqual(center.y,599.982005,accuracy:0.01)
+    XCTAssertEqual(settings.focalLength,5593.261186,accuracy:0.01)
     XCTAssertEqual(settings.planes[1].parent,0)
     XCTAssertEqual(settings.planes[1].edge,.right)
     XCTAssertLessThan(settings.planes[1].depth,0.01)
@@ -581,6 +585,90 @@ final class VanishingWorkflowTests:XCTestCase {
       XCTAssertEqual(replay.center,settings.center)
       XCTAssertEqual(replay.focalLength,settings.focalLength,accuracy:0.1)
       XCTAssertEqual(client.store.document.layers,document.layers)
+    }
+  }
+
+  func testPhotoshopObliqueHingesRetainTheSavedCameraAndFold() throws {
+    // Photoshop saved the same owned synthetic artwork at 45° and 135°.
+    let root = """
+    tNaF203
+    1 100 2
+    1 0 -1 0 -1409.3 450
+    580.4 185.4 -1409.3 450 0 0 1
+    580.4 714.6 -1409.3 450 0 0 5
+    580.4 185.4 580.4 515810 0 1 7
+    299.245 222.789 580.4 515810 0 1 3
+    """
+    let variants: [(angle: Double, token: Int, outerCorner: PathPoint, vanishing: PathPoint)] = [
+      (45,225,.init(327.07,304.595),.init(20.2888,448.94)),
+      (135,135,.init(1412.49,213.702),.init(8151.27,442.908))
+    ]
+    for (angle,token,corner,across) in variants {
+      let record = Data("""
+      \(root)
+      2 1 \(token) 2 1077.98 448.155
+      580.4 185.4 580.4 515810 0 1 1
+      \(corner.x) \(corner.y) 580.4 515810 0 1 5
+      580.4 185.4 \(across.x) \(across.y) 0 2 7
+      580.4 714.6 \(across.x) \(across.y) 0 2 3
+      201 100 0 100 0
+      """.utf8)
+      var resource = Data([56,66,73,77,15,160,0,0,0,0,UInt8(record.count>>8),UInt8(record.count&255)])
+      resource.append(record)
+      if record.count % 2 != 0 { resource.append(0) }
+      var document = try CraftDocument(width:1200,height:900)
+      document.sourceMetadata = ["psdResources":resource]
+      let opened = try PSDCodec.read(DocumentIO.encode(document,format:.psd))
+      let settings = try XCTUnwrap(opened.vanishingPoint)
+      let center = try XCTUnwrap(settings.center)
+      XCTAssertEqual(center.x,198.1204,accuracy:0.01)
+      XCTAssertEqual(center.y,451.5520,accuracy:0.01)
+      XCTAssertEqual(settings.focalLength,1189.2430,accuracy:0.01)
+      XCTAssertEqual(settings.planes.count,2)
+      XCTAssertEqual(settings.planes[1].angle,angle)
+      XCTAssertEqual(settings.planes[1].rotationSign,-1)
+      let scene = try VanishingScene(settings,width:1200,height:900)
+      XCTAssertEqual(scene.frames[1].corners[0],scene.frames[0].corners[1])
+      XCTAssertEqual(scene.frames[1].corners[3],scene.frames[0].corners[2])
+      XCTAssertEqual(scene.frames[1].corners[1].x,corner.x,accuracy:0.002)
+      XCTAssertEqual(scene.frames[1].corners[1].y,corner.y,accuracy:0.002)
+      for format in [DocumentIO.Format.psd,.psb] {
+        let unchanged = try DocumentIO.encode(opened,format:format)
+        XCTAssertNotNil(unchanged.range(of:record))
+        var authored = opened
+        authored.sourceMetadata = nil
+        let encoded = try DocumentIO.encode(authored,format:format)
+        XCTAssertNotNil(encoded.range(of:Data("2\n1\n\(token)\n2\n".utf8)))
+        let reopened = try XCTUnwrap(try PSDCodec.read(encoded).vanishingPoint)
+        XCTAssertEqual(reopened.planes[1].angle,angle)
+        XCTAssertEqual(reopened.planes[1].rotationSign,-1)
+        XCTAssertEqual(reopened.focalLength,settings.focalLength,accuracy:0.05)
+      }
+    }
+  }
+
+  func testNewRightAngleHingeWithParallelSeamReopensInBothFormats() throws {
+    var document = try CraftDocument(width:1200,height:900)
+    var settings = VanishingSettings()
+    settings.focalLength = 980
+    settings.planes = [
+      .init(corners:[.init(299.49324675,222.75639062),.init(580.4,185.4),
+        .init(580.4,714.6),.init(299.49324675,677.24360938)]),
+      .init(parent:0,edge:.right,depth:2)
+    ]
+    settings.planes[1].rotationSign = -1
+    document.vanishingPoint = settings
+    for format in [DocumentIO.Format.psd,.psb] {
+      let encoded = try DocumentIO.encode(document,format:format)
+      XCTAssertNotNil(encoded.range(of:Data("2\n1\n180\n2\n".utf8)))
+      let reopened = try XCTUnwrap(try PSDCodec.read(encoded).vanishingPoint)
+      let scene = try VanishingScene(reopened,width:1200,height:900)
+      XCTAssertEqual(reopened.planes.count,2)
+      XCTAssertEqual(reopened.planes[1].angle,90)
+      XCTAssertEqual(reopened.planes[1].depth,2,accuracy:0.003)
+      XCTAssertEqual(scene.focal,980,accuracy:0.1)
+      XCTAssertEqual(scene.frames[1].corners[0],scene.frames[0].corners[1])
+      XCTAssertEqual(scene.frames[1].corners[3],scene.frames[0].corners[2])
     }
   }
 

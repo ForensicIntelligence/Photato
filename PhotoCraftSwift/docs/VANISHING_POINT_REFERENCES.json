@@ -158,6 +158,16 @@
     "roundTrip": {"unchangedPerspectiveRecordBytes": 378, "unchangedMergedRGBBytesPerFormat": 3240000},
     "remaining": "Canonical encoding of newly authored angles, exact Marquee placement and sampling on the corrected guide, other camera configurations and multi-surface strokes."
   },
+  "editable_hinge_angles_741": {
+    "reference": "Photoshop 2026 27.2.0 on the same owned 1200 × 900 RGB8 two-wall artwork as checkpoint 740.",
+    "adobeSaved45SHA256": "7da001a24757c67b33c2cbb640f63f5138817ffcdb7c848509e55484376c2eb4",
+    "adobeSaved135SHA256": "51187f8d120ce686f3cf20057cd336a5453dc4c230c73eb2f2fdcf7452505a05",
+    "storedAngleByDisplayedAngle": {"45":225,"90":180,"135":135},
+    "nativeCamera": {"centerX":198.12042687740518,"centerY":451.5519586165826,"focalLength":1189.243027594317},
+    "livePhotatoExportsInPhotoshop": {"45":"PSD","90":"PSD and PSB","135":"PSB"},
+    "roundTrips": "Each measured PSD and PSB retained 3,240,000 merged RGB bytes. Unedited copies retain the original perspective record.",
+    "remaining": "Additional seam orientations, exact calibration for guides with parallel rays, the full range of scene geometry and raster sampling across linked planes."
+  },
   "connected_marquee_739": {
     "reference": "Installed Photoshop 2026 and the owned 1,200 × 900 two-wall RGB8 fixture.",
     "guidePNGSHA256": "2058ef58bf946cc2b37b6a0602ce0a1aaecb7b51256ca86746a270d60fc20b3b",

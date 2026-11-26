@@ -1,0 +1,430 @@
+{
+  "build": 741,
+  "base": "f11dc35f3301bfa04af949fa51b53c6233136e58",
+  "inputCount": 9429,
+  "inputDigest": "72ea6f8abee0f1dae28146c2489ae8b19ed25d5b07ecdea92169e4da466be979",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraftImaging/PSDVanishingPoint.swift": "8e543f67b49dffa9ba996276898ddb44b83419b7132bc5d8472cb658f624ad35",
+    "Tests/PhotoCraftAppTests/VanishingWorkflowTests.swift": "b416e3294fadf52910fe9958c22c81c13dee61e5e197179a3c662853a4020060",
+    "scripts/Info.plist": "877fe6f927e7f834cb49f60fc1d572c5c5a8e608c8f8efaba75f3923e822f560"
+  },
+  "focusedDebug": {
+    "corePass": 26,
+    "appAndHTTPPass": 17
+  },
+  "qualification": {
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 859,
+      "passed": 857,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "0ef2e66dbba54c7d9563688fd044ca9c6b25133298b7297bfd6e08dbed09128d"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 859,
+      "passed": 857,
+      "newCasesExpected": 2,
+      "newCasesPassed": 2,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "b7a95b34f97c23bbbd8d80fc70e5d763582e3ddfb85a8c8849be7de2afc8722d"
+    }
+  },
+  "predecessorFailureDiagnostics": {
+    "arm": {
+      "matches740": true,
+      "assertionLines": 152
+    },
+    "intel": {
+      "matches740": true,
+      "assertionLines": 412
+    }
+  },
+  "photoshopFixtureRoundTrips": {
+    "741-adobe-asymmetric-angle45.psd": {
+      "sourceSHA256": "7da001a24757c67b33c2cbb640f63f5138817ffcdb7c848509e55484376c2eb4",
+      "savedOrientation": 225,
+      "retained-psd": {
+        "resourceBytes": 381,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "5282da1d0440853ae8d4a970bb56bf027a6225c5c38e98e2366698acbb1c5cbb"
+      },
+      "retained-psb": {
+        "resourceBytes": 381,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "b9626c013bae5f505a7f35c91a85c8250ddc62d6af43b9d52ec06070b68b8e10"
+      },
+      "authored-psd": {
+        "resourceBytes": 379,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "170b9aca3accbc591d79d74916b4e7b3226c5a07acd09771af663ffccffb3ea4"
+      },
+      "authored-psb": {
+        "resourceBytes": 379,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "dfa6782c16d65b6c62d9cc4e3596726c7d131aee9aef93ef17928e4a1194d4dc"
+      }
+    },
+    "740-adobe-asymmetric-angle90.psd": {
+      "sourceSHA256": "d185f27a5ceb7cd45ecf8735eadfd9a3ca9753b4e99cde58453e69d14ca85e4c",
+      "savedOrientation": 180,
+      "retained-psd": {
+        "resourceBytes": 378,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "5a35211ab22e0632c994dbac19dcef81bfeea10b86ef33df5e54abc33b850aa6"
+      },
+      "retained-psb": {
+        "resourceBytes": 378,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "1b0748a103d00cb78a2e7e92da71c010ae8343556c173a4406df93405249c6f5"
+      },
+      "authored-psd": {
+        "resourceBytes": 381,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "c06c2cd2c28fb291f8dfbceb1d40695b02019b5609dacbb928cd54117d4e03f4"
+      },
+      "authored-psb": {
+        "resourceBytes": 381,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "1ad5d9713042a105a168763925bfdf9a33e0f50d70bdec1da74d7daaa3e2b0cc"
+      }
+    },
+    "741-adobe-asymmetric-angle135.psd": {
+      "sourceSHA256": "51187f8d120ce686f3cf20057cd336a5453dc4c230c73eb2f2fdcf7452505a05",
+      "savedOrientation": 135,
+      "retained-psd": {
+        "resourceBytes": 384,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "dec6d568ac9df899878cddeead8882753a4c2e89973881ae3a4a1b75721ae409"
+      },
+      "retained-psb": {
+        "resourceBytes": 384,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "6a281eadd1369b4cd6e243d4f32ab592bda343d8fdf1d9d931aa7d636fed5992"
+      },
+      "authored-psd": {
+        "resourceBytes": 380,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "d35c879cbe905f9865106f620d1c7a67212485fb926639a5b3d8b8db7ae845ca"
+      },
+      "authored-psb": {
+        "resourceBytes": 380,
+        "rgbBytesUnchanged": 3240000,
+        "sha256": "ef4f84d0574f5bca3f6f903a199294742b4053509e72d9c040f6a20a28d20f23"
+      }
+    },
+    "737-owned-hinge.psd": {
+      "sourceSHA256": "5aa7904c475f486f16be984e436e7a86235a379192e507363bccac0b77b74628",
+      "savedOrientation": 45,
+      "retained-psd": {
+        "resourceBytes": 378,
+        "rgbBytesUnchanged": 5760000,
+        "sha256": "3ab786383156efad3e554fd188873c4c134cb4714e813cf9ffd9f6d7118487d7"
+      },
+      "retained-psb": {
+        "resourceBytes": 378,
+        "rgbBytesUnchanged": 5760000,
+        "sha256": "1c7f9b6c21078fc68f10f44c0394a5a2f2e5314d8d98d4d11d11eaa770ce2c49"
+      },
+      "authored-psd": {
+        "resourceBytes": 421,
+        "rgbBytesUnchanged": 5760000,
+        "sha256": "0d6cbeb77afadab7cd0ce603c855ab3ece6a4d79f532469e37d948d66e176b04"
+      },
+      "authored-psb": {
+        "resourceBytes": 421,
+        "rgbBytesUnchanged": 5760000,
+        "sha256": "71ac72cdcda3b65633e0b7dbbebc42bf6f72691168fbb272e2f557018b7ac3dc"
+      }
+    }
+  },
+  "fixtureOutputHashesAcrossConfigurations": {
+    "debug": {
+      "741-authored-737-owned-hinge.psb": "71ac72cdcda3b65633e0b7dbbebc42bf6f72691168fbb272e2f557018b7ac3dc",
+      "741-authored-737-owned-hinge.psd": "0d6cbeb77afadab7cd0ce603c855ab3ece6a4d79f532469e37d948d66e176b04",
+      "741-authored-740-adobe-asymmetric-angle90.psb": "1ad5d9713042a105a168763925bfdf9a33e0f50d70bdec1da74d7daaa3e2b0cc",
+      "741-authored-740-adobe-asymmetric-angle90.psd": "c06c2cd2c28fb291f8dfbceb1d40695b02019b5609dacbb928cd54117d4e03f4",
+      "741-authored-740-owned-asymmetric-walls01.psb": "2625d56bb05bf89f5080879b98b45c407e058eb85420c4bff9a90f9f8a1d06c6",
+      "741-authored-740-owned-asymmetric-walls01.psd": "22a31885d6dc7d444820f3c9161d0a03fe741830ed5217bfd758f0e63026d474",
+      "741-authored-741-adobe-asymmetric-angle135.psb": "ef4f84d0574f5bca3f6f903a199294742b4053509e72d9c040f6a20a28d20f23",
+      "741-authored-741-adobe-asymmetric-angle135.psd": "d35c879cbe905f9865106f620d1c7a67212485fb926639a5b3d8b8db7ae845ca",
+      "741-authored-741-adobe-asymmetric-angle45.psb": "dfa6782c16d65b6c62d9cc4e3596726c7d131aee9aef93ef17928e4a1194d4dc",
+      "741-authored-741-adobe-asymmetric-angle45.psd": "170b9aca3accbc591d79d74916b4e7b3226c5a07acd09771af663ffccffb3ea4",
+      "741-retained-737-owned-hinge.psb": "1c7f9b6c21078fc68f10f44c0394a5a2f2e5314d8d98d4d11d11eaa770ce2c49",
+      "741-retained-737-owned-hinge.psd": "3ab786383156efad3e554fd188873c4c134cb4714e813cf9ffd9f6d7118487d7",
+      "741-retained-740-adobe-asymmetric-angle90.psb": "1b0748a103d00cb78a2e7e92da71c010ae8343556c173a4406df93405249c6f5",
+      "741-retained-740-adobe-asymmetric-angle90.psd": "5a35211ab22e0632c994dbac19dcef81bfeea10b86ef33df5e54abc33b850aa6",
+      "741-retained-740-owned-asymmetric-walls01.psb": "850bc8bf6b6fd2f57aaaf9978ccee3e6876e1f3fd0e2088ae6dac9af070174f8",
+      "741-retained-740-owned-asymmetric-walls01.psd": "f1d68d70a15ff8392cab3798d2fed1d4fd23584196a3a01649fa113ac4be7cec",
+      "741-retained-741-adobe-asymmetric-angle135.psb": "6a281eadd1369b4cd6e243d4f32ab592bda343d8fdf1d9d931aa7d636fed5992",
+      "741-retained-741-adobe-asymmetric-angle135.psd": "dec6d568ac9df899878cddeead8882753a4c2e89973881ae3a4a1b75721ae409",
+      "741-retained-741-adobe-asymmetric-angle45.psb": "b9626c013bae5f505a7f35c91a85c8250ddc62d6af43b9d52ec06070b68b8e10",
+      "741-retained-741-adobe-asymmetric-angle45.psd": "5282da1d0440853ae8d4a970bb56bf027a6225c5c38e98e2366698acbb1c5cbb"
+    },
+    "arm": {
+      "741-authored-737-owned-hinge.psb": "71ac72cdcda3b65633e0b7dbbebc42bf6f72691168fbb272e2f557018b7ac3dc",
+      "741-authored-737-owned-hinge.psd": "0d6cbeb77afadab7cd0ce603c855ab3ece6a4d79f532469e37d948d66e176b04",
+      "741-authored-740-adobe-asymmetric-angle90.psb": "1ad5d9713042a105a168763925bfdf9a33e0f50d70bdec1da74d7daaa3e2b0cc",
+      "741-authored-740-adobe-asymmetric-angle90.psd": "c06c2cd2c28fb291f8dfbceb1d40695b02019b5609dacbb928cd54117d4e03f4",
+      "741-authored-740-owned-asymmetric-walls01.psb": "2625d56bb05bf89f5080879b98b45c407e058eb85420c4bff9a90f9f8a1d06c6",
+      "741-authored-740-owned-asymmetric-walls01.psd": "22a31885d6dc7d444820f3c9161d0a03fe741830ed5217bfd758f0e63026d474",
+      "741-authored-741-adobe-asymmetric-angle135.psb": "ef4f84d0574f5bca3f6f903a199294742b4053509e72d9c040f6a20a28d20f23",
+      "741-authored-741-adobe-asymmetric-angle135.psd": "d35c879cbe905f9865106f620d1c7a67212485fb926639a5b3d8b8db7ae845ca",
+      "741-authored-741-adobe-asymmetric-angle45.psb": "dfa6782c16d65b6c62d9cc4e3596726c7d131aee9aef93ef17928e4a1194d4dc",
+      "741-authored-741-adobe-asymmetric-angle45.psd": "170b9aca3accbc591d79d74916b4e7b3226c5a07acd09771af663ffccffb3ea4",
+      "741-retained-737-owned-hinge.psb": "1c7f9b6c21078fc68f10f44c0394a5a2f2e5314d8d98d4d11d11eaa770ce2c49",
+      "741-retained-737-owned-hinge.psd": "3ab786383156efad3e554fd188873c4c134cb4714e813cf9ffd9f6d7118487d7",
+      "741-retained-740-adobe-asymmetric-angle90.psb": "1b0748a103d00cb78a2e7e92da71c010ae8343556c173a4406df93405249c6f5",
+      "741-retained-740-adobe-asymmetric-angle90.psd": "5a35211ab22e0632c994dbac19dcef81bfeea10b86ef33df5e54abc33b850aa6",
+      "741-retained-740-owned-asymmetric-walls01.psb": "850bc8bf6b6fd2f57aaaf9978ccee3e6876e1f3fd0e2088ae6dac9af070174f8",
+      "741-retained-740-owned-asymmetric-walls01.psd": "f1d68d70a15ff8392cab3798d2fed1d4fd23584196a3a01649fa113ac4be7cec",
+      "741-retained-741-adobe-asymmetric-angle135.psb": "6a281eadd1369b4cd6e243d4f32ab592bda343d8fdf1d9d931aa7d636fed5992",
+      "741-retained-741-adobe-asymmetric-angle135.psd": "dec6d568ac9df899878cddeead8882753a4c2e89973881ae3a4a1b75721ae409",
+      "741-retained-741-adobe-asymmetric-angle45.psb": "b9626c013bae5f505a7f35c91a85c8250ddc62d6af43b9d52ec06070b68b8e10",
+      "741-retained-741-adobe-asymmetric-angle45.psd": "5282da1d0440853ae8d4a970bb56bf027a6225c5c38e98e2366698acbb1c5cbb"
+    },
+    "intel": {
+      "741-authored-737-owned-hinge.psb": "71ac72cdcda3b65633e0b7dbbebc42bf6f72691168fbb272e2f557018b7ac3dc",
+      "741-authored-737-owned-hinge.psd": "0d6cbeb77afadab7cd0ce603c855ab3ece6a4d79f532469e37d948d66e176b04",
+      "741-authored-740-adobe-asymmetric-angle90.psb": "1ad5d9713042a105a168763925bfdf9a33e0f50d70bdec1da74d7daaa3e2b0cc",
+      "741-authored-740-adobe-asymmetric-angle90.psd": "c06c2cd2c28fb291f8dfbceb1d40695b02019b5609dacbb928cd54117d4e03f4",
+      "741-authored-740-owned-asymmetric-walls01.psb": "2625d56bb05bf89f5080879b98b45c407e058eb85420c4bff9a90f9f8a1d06c6",
+      "741-authored-740-owned-asymmetric-walls01.psd": "22a31885d6dc7d444820f3c9161d0a03fe741830ed5217bfd758f0e63026d474",
+      "741-authored-741-adobe-asymmetric-angle135.psb": "ef4f84d0574f5bca3f6f903a199294742b4053509e72d9c040f6a20a28d20f23",
+      "741-authored-741-adobe-asymmetric-angle135.psd": "d35c879cbe905f9865106f620d1c7a67212485fb926639a5b3d8b8db7ae845ca",
+      "741-authored-741-adobe-asymmetric-angle45.psb": "dfa6782c16d65b6c62d9cc4e3596726c7d131aee9aef93ef17928e4a1194d4dc",
+      "741-authored-741-adobe-asymmetric-angle45.psd": "170b9aca3accbc591d79d74916b4e7b3226c5a07acd09771af663ffccffb3ea4",
+      "741-retained-737-owned-hinge.psb": "1c7f9b6c21078fc68f10f44c0394a5a2f2e5314d8d98d4d11d11eaa770ce2c49",
+      "741-retained-737-owned-hinge.psd": "3ab786383156efad3e554fd188873c4c134cb4714e813cf9ffd9f6d7118487d7",
+      "741-retained-740-adobe-asymmetric-angle90.psb": "1b0748a103d00cb78a2e7e92da71c010ae8343556c173a4406df93405249c6f5",
+      "741-retained-740-adobe-asymmetric-angle90.psd": "5a35211ab22e0632c994dbac19dcef81bfeea10b86ef33df5e54abc33b850aa6",
+      "741-retained-740-owned-asymmetric-walls01.psb": "850bc8bf6b6fd2f57aaaf9978ccee3e6876e1f3fd0e2088ae6dac9af070174f8",
+      "741-retained-740-owned-asymmetric-walls01.psd": "f1d68d70a15ff8392cab3798d2fed1d4fd23584196a3a01649fa113ac4be7cec",
+      "741-retained-741-adobe-asymmetric-angle135.psb": "6a281eadd1369b4cd6e243d4f32ab592bda343d8fdf1d9d931aa7d636fed5992",
+      "741-retained-741-adobe-asymmetric-angle135.psd": "dec6d568ac9df899878cddeead8882753a4c2e89973881ae3a4a1b75721ae409",
+      "741-retained-741-adobe-asymmetric-angle45.psb": "b9626c013bae5f505a7f35c91a85c8250ddc62d6af43b9d52ec06070b68b8e10",
+      "741-retained-741-adobe-asymmetric-angle45.psd": "5282da1d0440853ae8d4a970bb56bf027a6225c5c38e98e2366698acbb1c5cbb"
+    }
+  },
+  "fixtureOutputsExactlyMatchingAllConfigurations": [
+    "741-authored-737-owned-hinge.psb",
+    "741-authored-737-owned-hinge.psd",
+    "741-authored-740-adobe-asymmetric-angle90.psb",
+    "741-authored-740-adobe-asymmetric-angle90.psd",
+    "741-authored-740-owned-asymmetric-walls01.psb",
+    "741-authored-740-owned-asymmetric-walls01.psd",
+    "741-authored-741-adobe-asymmetric-angle135.psb",
+    "741-authored-741-adobe-asymmetric-angle135.psd",
+    "741-authored-741-adobe-asymmetric-angle45.psb",
+    "741-authored-741-adobe-asymmetric-angle45.psd",
+    "741-retained-737-owned-hinge.psb",
+    "741-retained-737-owned-hinge.psd",
+    "741-retained-740-adobe-asymmetric-angle90.psb",
+    "741-retained-740-adobe-asymmetric-angle90.psd",
+    "741-retained-740-owned-asymmetric-walls01.psb",
+    "741-retained-740-owned-asymmetric-walls01.psd",
+    "741-retained-741-adobe-asymmetric-angle135.psb",
+    "741-retained-741-adobe-asymmetric-angle135.psd",
+    "741-retained-741-adobe-asymmetric-angle45.psb",
+    "741-retained-741-adobe-asymmetric-angle45.psd"
+  ],
+  "preview": {
+    "build": 741,
+    "archive": "Photato-Retouch-Preview-741-universal.zip",
+    "archiveSHA256": "ee5d67b81dc63d7a6ff0165545c8e1d9332ac1d17baec4ac8906948f1afc8bb4",
+    "bundleID": "ca.forensicintelligence.photato.perspectiveretouchpreview741",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "2c21f6bc13d1e262592a65d08bcbf6ea87a60862f31f808db3d762eccdafbcbc",
+    "architectureInputsSHA256": {
+      "arm64": "7f300263077fd34e3ceba5b391831bfd2f9ec089154e27d78377d6182079d020",
+      "x86_64": "616526d55525265b17ebfad51ffbc0a9042939a10d3e4025164044f3789a6164"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    }
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "pngSHA256": "c26608357d25297707ffaaf345cc06ceb6fd53de40217773436f1dd13956852f",
+      "size": [
+        1700,
+        1174
+      ]
+    },
+    "x86_64": {
+      "pngSHA256": "4e4ed507449166d427b57ca890ebd709f609a097271949001dfbe7388e8e2dc3",
+      "size": [
+        1700,
+        1174
+      ]
+    }
+  },
+  "probeLogsSHA256": {
+    "xcode-debug01.log": "50ddae64e059b762ab5f69ed418fc66a61096ff1e3f5bd1198854efa0945ff26",
+    "xcode-debug02.log": "4853ac8cf24b99684d8d5886227a6f24b84e70856bfaa227fadeb049514ce8d5",
+    "xcode-focused-app01.log": "0906fa7cb2662610ffcacfe219a7f568ee1febeeeb85a9dbe88fbcdea21a7eae",
+    "xcode-focused-app02.log": "ef0fb58168754b88a263b1fe71880a6daf15ca566c0b12c597cc483d795a0363",
+    "xcode-focused-app03.log": "4bc9f1a9b86febf8093dc6663c4175605f86b5894206ed4a825166ffcbe8abdb",
+    "xcode-focused-core02.log": "c19f9757c806467ae94610558bb5726be147c148375a4e985798fe361a3e2b51",
+    "debug-compare-fold-build01.log": "1cfe302a0826b61249fc79bbf9a9dee742d8a4acb27313ff6c397e62ceed56df",
+    "debug-compare-fold-build02.log": "d4a268e3326b621822067c248489799b3e26137a7d8e15525d08f2f892550363",
+    "debug-compare-fold03.log": "0b1febe9862c8e163453136177025499d513c0d474cea2513ac42826d62d05e1",
+    "debug-inspect-fold01.log": "1a54bf4564d1759013948791b719fa06b14cf8731c8b8716068d82cd0a8e0e2d",
+    "debug-inspect-fold02.log": "93c960a97399178d69dfafc775ce6b2bf35bb5227f383d508e50f25d55e613d9",
+    "verify-fold-roundtrips01.log": "73858aa930a8148847467631b19c14f2a057fedca8a9283c01df1ece238d6332",
+    "swiftpm-release-arm01.log": "e522b7c8faa5b25d23b29ced6a283b8644d55929af5d4d70daa9e88567106ba6",
+    "swiftpm-release-intel01.log": "5c7d37d2f0d491394b4c8070de9ab9b9f7ee0ba4ed9968665a6c989719d49663",
+    "optimized-fold-arm01.log": "0b1febe9862c8e163453136177025499d513c0d474cea2513ac42826d62d05e1",
+    "optimized-fold-intel01.log": "0b1febe9862c8e163453136177025499d513c0d474cea2513ac42826d62d05e1",
+    "package-preview01.log": "80380a11d869a9f65bcfad87ebcd7e7a15d46d68976fe4a4fa906ea0de3e7896",
+    "preview-offscreen01.log": "56899c649bb1041f2091fc78f55969710656ba8953f862da71051187189e7c0a"
+  },
+  "correctedMarqueePlacement": {
+    "left-float-right60": {
+      "photoshopSHA256": "4319c5276abcb0b283e8aef8659a7a5f32f5801dea7839cc2d4e4d3509057a83",
+      "photatoPNGSHA256": "2919e9419f86a2bf2880d7f4a1e15140eb7454cabde1001e5251bd690d012353",
+      "pixelCounts": {
+        "outside": {
+          "adobe": 102,
+          "differing": 102
+        },
+        "left": {
+          "photato": 110198,
+          "differing": 77349,
+          "adobe": 109947
+        },
+        "right": {
+          "photato": 11392,
+          "differing": 10607,
+          "adobe": 11388
+        }
+      },
+      "changedExtentOnRow449": {
+        "adobe": [
+          352,
+          601
+        ],
+        "photato": [
+          351,
+          601
+        ]
+      },
+      "maximumRGBDifference": [
+        127,
+        121,
+        161
+      ]
+    },
+    "right-float-left60": {
+      "photoshopSHA256": "00ff89ca34504a4b7639db731dbbfae73eef593eb836def06c2fad931e513189",
+      "photatoPNGSHA256": "33022e1664bd922a8c5fce79cbe14c9a8c6ddf965cd6734c874dc8a51cb8c72d",
+      "pixelCounts": {
+        "outside": {
+          "adobe": 123,
+          "differing": 123
+        },
+        "left": {
+          "photato": 118787,
+          "differing": 78729,
+          "adobe": 118783
+        },
+        "right": {
+          "photato": 70271,
+          "differing": 47778,
+          "adobe": 70472
+        }
+      },
+      "changedExtentOnRow449": {
+        "adobe": [
+          341,
+          742
+        ],
+        "photato": [
+          341,
+          742
+        ]
+      },
+      "maximumRGBDifference": [
+        173,
+        108,
+        175
+      ]
+    },
+    "right-float-left60-no-feather": {
+      "photoshopSHA256": "1370ef0bd5b67d82ca22c1f59023b3aa4baff75f5f72654f560f05feed638dac",
+      "photatoPNGSHA256": "4be5acf4c5ba3271c18fc6bd166d6e235fd4887ac6be9a3b922809107ded30d9",
+      "pixelCounts": {
+        "outside": {
+          "adobe": 129,
+          "differing": 129
+        },
+        "left": {
+          "photato": 118809,
+          "differing": 78261,
+          "adobe": 118783
+        },
+        "right": {
+          "photato": 70299,
+          "differing": 47590,
+          "adobe": 70629
+        }
+      },
+      "changedExtentOnRow449": {
+        "adobe": [
+          341,
+          742
+        ],
+        "photato": [
+          341,
+          742
+        ]
+      },
+      "maximumRGBDifference": [
+        173,
+        133,
+        197
+      ]
+    }
+  },
+  "limits": [
+    "The measured fold exchange covers three angles on the primary right-edge hinge, plus an independent oblique import.",
+    "Additional plane edge orientations and the calibrated camera on nearly parallel newly authored guides remain open.",
+    "The compared linked marquee geometry matches to within one pixel on the measured row. Exact pixel values remain open."
+  ]
+}
