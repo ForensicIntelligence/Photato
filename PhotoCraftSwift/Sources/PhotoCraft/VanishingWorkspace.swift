@@ -325,6 +325,7 @@ import PhotoCraftImaging
     guard let first=points.first,let scene,let plane=scene.plane(at:first) else { error="Start inside a perspective plane.";return }
     var op=VanishingOperation(tool == .stamp ? .clone:.brush);op.plane=plane;op.points=points;op.diameter=diameter;op.hardness=hardness;op.opacity=opacity;op.color=color;op.clip=clip
     op.heal = heal == .off ? nil : heal
+    op.strokeSelection = marquee
     let canWrap = allowMultiSurfaceOperations && scene.hasMarqueeNeighbors(plane)
     op.wrap = canWrap ? true : nil
     var nextAnchor = cloneAnchor

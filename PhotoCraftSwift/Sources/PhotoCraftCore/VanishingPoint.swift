@@ -478,6 +478,8 @@ public struct VanishingOperation:Codable,Equatable,Sendable {
   public var angle=0.0
   public var source:Surface?
   public var marquee: VanishingMarqueeTransfer?
+  /// An optional perspective selection limiting a Brush or Stamp destination.
+  public var strokeSelection: VanishingMarquee?
   public var sourcePoint:PathPoint?
   /// Keep the donor's projection when an aligned source moves outside its face.
   public var sourcePlane: Int?
@@ -506,15 +508,20 @@ public struct VanishingProgram:Codable,Equatable,Sendable {
       guard settings.planes.indices.contains(op.plane),VanishingSettings.validPoint(op.at),op.width.isFinite,(0.001...20).contains(op.width),op.angle.isFinite,(-360...360).contains(op.angle),op.diameter.isFinite,(1...2000).contains(op.diameter),op.hardness.isFinite,(0...100).contains(op.hardness),op.opacity.isFinite,(0...100).contains(op.opacity),op.color.isFinite,(0...1).contains(op.color.a),op.points.count<=4096,op.points.allSatisfy({VanishingSettings.validPoint($0)}),op.sourcePoint.map({VanishingSettings.validPoint($0)}) ?? true else { throw CraftError.invalid("Invalid Vanishing Point operation.") }
       switch op.kind {
       case .paste:
-        guard op.wrap == nil,op.sourcePlane == nil,op.marquee == nil,let source=op.source,source.width<=WarpRaster.maximumPixels/source.height,
+        guard op.wrap == nil,op.sourcePlane == nil,op.strokeSelection == nil,op.marquee == nil,let source=op.source,source.width<=WarpRaster.maximumPixels/source.height,
           op.points.isEmpty,op.sourcePoint==nil else { throw CraftError.invalid("Paste requires bounded source pixels.") }
         try source.validated()
       case .marquee:
-        guard op.wrap == nil,op.sourcePlane == nil,let patch = op.marquee,patch.destination.plane == op.plane,settings.planes.indices.contains(patch.source.plane),
+        guard op.wrap == nil,op.sourcePlane == nil,op.strokeSelection == nil,let patch = op.marquee,patch.destination.plane == op.plane,settings.planes.indices.contains(patch.source.plane),
           patch.source.hasValidBounds,patch.destination.hasValidBounds,VanishingMarqueeTransfer.featherRange.contains(patch.feather),
           op.source == nil,op.points.isEmpty,op.sourcePoint == nil else { throw CraftError.invalid("Invalid perspective marquee patch.") }
       case .brush,.clone:
         guard op.marquee == nil,op.source==nil,!op.points.isEmpty,op.kind != .clone || op.sourcePoint != nil else { throw CraftError.invalid("Painting requires points; cloning also requires a source point.") }
+        if let selection = op.strokeSelection {
+          guard settings.planes.indices.contains(selection.plane),selection.hasValidBounds else {
+            throw CraftError.invalid("Invalid perspective stroke selection.")
+          }
+        }
         if let plane = op.sourcePlane {
           guard op.kind == .clone,op.wrap == true,settings.planes.indices.contains(plane) else {
             throw CraftError.invalid("Invalid linked Stamp source plane.")

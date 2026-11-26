@@ -762,7 +762,24 @@ For a readable account of the project from the beginning, see [Photato developme
 | 741 | 2026-11-25 | [Preserve Vanishing Point fold angles in Photoshop files](#dev-step-741) |
 | 742 | 2026-11-25 | [Improve floating selection sampling in Vanishing Point](#dev-step-742) |
 | 743 | 2026-11-25 | [Paint and clone across linked Vanishing Point planes](#dev-step-743) |
+| 744 | 2026-11-25 | [Constrain perspective retouching to a Marquee](#dev-step-744) |
 <!-- history-index:end -->
+
+<a id="dev-step-744"></a>
+
+## 2026-11-25 — Constrain perspective retouching to a Marquee
+
+The Vanishing Point canvas showed a perspective selection after switching tools, but Brush and Stamp did not use it. The workspace now captures the rectangle with each stroke. The renderer intersects the destination with the selection, including on linked faces. Thin projected marks integrate the intersection area without double-counting overlapping face pieces. Sampling for Stamp can come from outside the rectangle. [Adobe’s Brush workflow](https://helpx.adobe.com/lv/photoshop/using/vanishing-point.html#paint_with_a_color_in_vanishing_point)
+
+`VanishingWorkspace.swift`, `VanishingPoint.swift` and `VanishingEngine.swift` share the projected destination restriction with the optional `strokeSelection` field in `AutomationVanishingPoint.swift`. The API publishes the rectangle schema and rejects malformed selections before editing. Old requests have the same behavior when the field is omitted. Core tests cover both faces, outside donors and the exact half-disc at a selection edge. The workspace and HTTP tests cover output and one Undo transaction.
+
+The first Xcode attempt stopped when it could not write Apple’s development caches. The permitted rerun built successfully. The first Core test compared normalized sRGB fixture input with a linear sample. The isolated rerun fills a distinct donor row with explicit linear values and passed all 31 Core tests. All 19 App and HTTP tests passed. The optimized suites started with source digest `1096e3b82d2fa449ec98ad59e4c6ddbbde2b7c48f959c936987f578897041ceb` over 9,429 inputs.
+
+At 19:23 local time, Photoshop 2026 27.2.0 opened the owned tilted guide. A double-click in Marquee selected the left face, then Brush displayed Diameter 100, Hardness 50, Opacity 100 and Heal Off. Photoshop exited as the cross-face drag began. Its process report records `EXC_BAD_ACCESS` on the main thread. The owned input retained its SHA-256, and this attempt produced no Adobe raster. Shift strokes and the direct Photoshop pixel comparison remain open.
+
+A separate Adobe-authored rectangle control returned to Home on the first unmasked Brush dab. The native replay rendered Brush, Stamp and Luminance Heal through the actual workspace on both owned guides. All eight captures stayed inside the displayed selection outline, and the wrapped strokes reached both faces. Turning off stroke wrapping kept the Brush on the starting face. The two Release architectures and Debug produced identical PNGs and projected selection outlines.
+
+Both optimized architectures passed 864 of 866 selected cases and both new tests. The color-profile and layer-effect diagnostics matched build 743 exactly. The refreshed tracked ZIP verified its extracted signature with both architectures targeting macOS 14.0. Each slice launched offscreen and produced its workspace capture. [Qualification](SOURCE_PUBLICATION_744.md)
 
 <a id="dev-step-743"></a>
 

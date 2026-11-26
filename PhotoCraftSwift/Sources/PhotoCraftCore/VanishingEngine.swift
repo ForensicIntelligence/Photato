@@ -1,5 +1,47 @@
 import Foundation
 
+private struct VanishingStrokeSelection {
+  let pieces: [VanishingSurfaceChart.Piece]
+
+  init(rectangle: VanishingMarquee, scene: VanishingScene, clip: Bool) throws {
+    if rectangle.wrap == true {
+      guard let projected = ProjectedVanishingMarquee(rect:rectangle,scene:scene,angle:0,clip:clip) else {
+        throw CraftError.invalid("Stroke selection crosses the perspective horizon.")
+      }
+      pieces = projected.pieces
+    } else {
+      guard let corners = rectangle.projectedCorners(in:scene) else {
+        throw CraftError.invalid("Stroke selection crosses the perspective horizon.")
+      }
+      pieces = [.init(plane:rectangle.plane,chart:[],corners:corners)]
+    }
+  }
+
+  func contains(_ point: PathPoint) -> Bool {
+    pieces.contains { $0.contains(point) }
+  }
+
+  /// Split the contours against the union of the selected faces. A pixel in
+  /// an overlap receives the same coverage it would have in one selection.
+  func intersect(_ contours: [[PathPoint]], charge: (Int) throws -> Void) throws -> [[PathPoint]] {
+    var result: [[PathPoint]] = []
+    for contour in contours {
+      var uncovered = [contour]
+      for piece in pieces {
+        guard !uncovered.isEmpty else { break }
+        var remaining: [[PathPoint]] = []
+        for polygon in uncovered {
+          let split = try ProjectedDabCoverage.partition(polygon,by:piece.corners,charge:charge)
+          if !split.inside.isEmpty { result.append(split.inside) }
+          remaining.append(contentsOf:split.outside)
+        }
+        uncovered = remaining
+      }
+    }
+    return result
+  }
+}
+
 private struct ProjectedDabCoverage {
   private static let circle = (0..<64).map { i in
     let angle = Double(i) * (2 * .pi / 64)
@@ -28,7 +70,9 @@ private struct ProjectedDabCoverage {
     return major > 0 && 4 * abs(signedArea(outline)) <= .pi * major
   }
 
-  init(center: PathPoint, radius: Double, hardness: Double, frame: VanishingScene.Frame, clip: Bool) throws {
+  init(center: PathPoint, radius: Double, hardness: Double, frame: VanishingScene.Frame,
+    clip: Bool, selection: VanishingStrokeSelection?, charge: (Int) throws -> Void
+  ) throws {
     let matrix = frame.map.m
     let u = matrix[6] / frame.width, v = matrix[7] / frame.height
     let denominator = u * center.x + v * center.y + matrix[8]
@@ -36,7 +80,7 @@ private struct ProjectedDabCoverage {
       throw CraftError.invalid("Operation crosses a projective horizon.")
     }
     let orientation = Self.signedArea(frame.corners) >= 0 ? 1.0 : -1.0
-    contours = try Self.falloff.compactMap { falloff in
+    let projected = try Self.falloff.compactMap { falloff in
       let level = radius * (1 - (1 - hardness) * falloff)
       var polygon = Self.circle.map { frame.projected(.init(center.x + level * $0.x, center.y + level * $0.y)) }
       guard polygon.allSatisfy(VanishingSettings.validPoint) else {
@@ -52,12 +96,13 @@ private struct ProjectedDabCoverage {
       }
       return polygon.count >= 3 ? polygon : nil
     }
+    contours = try selection?.intersect(projected,charge:charge) ?? projected
   }
 
   init(center: PathPoint, radius: Double, hardness: Double, layout: VanishingSurfaceChart,
-    clip: Bool, extensionPlane: Int, charge: (Int) throws -> Void
+    clip: Bool, extensionPlane: Int, selection: VanishingStrokeSelection?, charge: (Int) throws -> Void
   ) throws {
-    contours = try Self.falloff.flatMap { falloff in
+    let projected = try Self.falloff.flatMap { falloff in
       let level = radius * (1 - (1 - hardness) * falloff)
       let polygon = Self.circle.map { PathPoint(center.x+level*$0.x,center.y+level*$0.y) }
       let pieces = try layout.projectedPieces(polygon,clip:clip,extending:extensionPlane,charge:charge)
@@ -65,27 +110,34 @@ private struct ProjectedDabCoverage {
         var visible = [piece.corners]
         for front in pieces.prefix(index) where piece.xExtent.overlaps(front.xExtent) && piece.yExtent.overlaps(front.yExtent) {
           guard !visible.isEmpty else { break }
-          let orientation = Self.signedArea(front.corners) >= 0 ? 1.0 : -1.0
-          var exposed: [[PathPoint]] = []
-          for polygon in visible {
-            var remainder = polygon
-            for i in front.corners.indices {
-              guard !remainder.isEmpty else { break }
-              try charge(remainder.count*2)
-              let a = front.corners[i], b = front.corners[(i+1)%front.corners.count]
-              func side(_ p: PathPoint) -> Double {
-                orientation*((b.x-a.x)*(p.y-a.y)-(b.y-a.y)*(p.x-a.x))
-              }
-              let outside = Self.cut(remainder) { -side($0) }
-              if !outside.isEmpty { exposed.append(outside) }
-              remainder = Self.cut(remainder,distance:side)
-            }
+          visible = try visible.flatMap { polygon in
+            try Self.partition(polygon,by:front.corners,charge:charge).outside
           }
-          visible = exposed
         }
         return visible
       }
     }
+    contours = try selection?.intersect(projected,charge:charge) ?? projected
+  }
+
+  static func partition(_ polygon: [PathPoint], by clipper: [PathPoint], charge: (Int) throws -> Void)
+    throws -> (inside: [PathPoint], outside: [[PathPoint]])
+  {
+    let orientation = signedArea(clipper) >= 0 ? 1.0 : -1.0
+    var remainder = polygon
+    var outside: [[PathPoint]] = []
+    for i in clipper.indices {
+      guard !remainder.isEmpty else { break }
+      try charge(remainder.count*2)
+      let a = clipper[i], b = clipper[(i+1)%clipper.count]
+      func side(_ p: PathPoint) -> Double {
+        orientation*((b.x-a.x)*(p.y-a.y)-(b.y-a.y)*(p.x-a.x))
+      }
+      let exterior = cut(remainder) { -side($0) }
+      if !exterior.isEmpty { outside.append(exterior) }
+      remainder = cut(remainder,distance:side)
+    }
+    return (remainder,outside)
   }
 
   func forEachPixel(in region: IntRect, charge: (Int) throws -> Void,
@@ -457,6 +509,7 @@ public enum VanishingEngine {
         }
       } else {
         let first = op.points[0]
+        let selection = try op.strokeSelection.map { try VanishingStrokeSelection(rectangle:$0,scene:scene,clip:op.clip) }
         let sourcePlane = op.sourcePlane ?? op.sourcePoint.flatMap { scene.plane(at:$0) }
         let wraps = op.wrap == true && (scene.hasMarqueeNeighbors(op.plane)
           || sourcePlane.map(scene.hasMarqueeNeighbors) == true)
@@ -532,7 +585,7 @@ public enum VanishingEngine {
             if pieces.allSatisfy({ ProjectedDabCoverage.isNarrow($0.corners) }) {
               try charge(ProjectedDabCoverage.projectionWork)
               let footprint = try ProjectedDabCoverage(center:center,radius:radius,hardness:hard,
-                layout:layout,clip:op.clip,extensionPlane:dab.plane,charge:charge)
+                layout:layout,clip:op.clip,extensionPlane:dab.plane,selection:selection,charge:charge)
               try footprint.forEachPixel(in:.init(x:0,y:0,width:sample.width,height:sample.height),charge:charge) { x,y,fraction in
                 let point = PathPoint(Double(x)+0.5,Double(y)+0.5)
                 try charge(pieces.count+(donorLayout?.faces.count ?? 0))
@@ -548,7 +601,7 @@ public enum VanishingEngine {
                   try Task.checkCancellation()
                   for x in r.x..<(r.x+r.width) {
                     let p = PathPoint(Double(x)+0.5,Double(y)+0.5)
-                    guard piece.contains(p) else { continue }
+                    guard piece.contains(p),selection?.contains(p) != false else { continue }
                     let m = layout.coordinates(p,on:piece.plane)
                     let d = hypot(m.x-center.x,m.y-center.y)/radius
                     guard d < 1,!earlier.contains(where:{ earlierPiece in
@@ -567,7 +620,8 @@ public enum VanishingEngine {
           let ring=(0..<32).map { k in let a=Double(k)/32*2 * .pi;return frame.projected(.init(center.x+radius*cos(a),center.y+radius*sin(a))) },r=try region(ring)
           if ProjectedDabCoverage.isNarrow(ring) {
             try charge(ProjectedDabCoverage.projectionWork)
-            let footprint = try ProjectedDabCoverage(center: center, radius: radius, hardness: hard, frame: frame, clip: op.clip)
+            let footprint = try ProjectedDabCoverage(center:center,radius:radius,hardness:hard,
+              frame:frame,clip:op.clip,selection:selection,charge:charge)
             let canvas = IntRect(x: 0, y: 0, width: sample.width, height: sample.height)
             try footprint.forEachPixel(in: canvas, charge: charge) { x, y, coverage in
               let p = PathPoint(Double(x) + 0.5, Double(y) + 0.5)
@@ -576,7 +630,8 @@ public enum VanishingEngine {
             continue
           }
           for y in r.y..<(r.y+r.height) { try Task.checkCancellation();for x in r.x..<(r.x+r.width) {
-            let p=PathPoint(Double(x)+0.5,Double(y)+0.5);if op.clip && !frame.contains(p) { continue }
+            let p=PathPoint(Double(x)+0.5,Double(y)+0.5)
+            guard (!op.clip || frame.contains(p)),selection?.contains(p) != false else { continue }
             let m=frame.metric(p),d=hypot(m.x-center.x,m.y-center.y)/radius;guard d<1 else { continue }
             let fall = d <= hard ? 1 : 1 - (d - hard) / (1 - hard)
             try paint(x, y, m, fall * fall * (3 - 2 * fall))

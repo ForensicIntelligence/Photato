@@ -23,7 +23,7 @@ We replay the same operations in Photato and Photoshop 2026 with matching docume
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 743.** Vanishing Point Brush and Stamp follow linked perspective planes through the desktop and Photato API. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_743.md).
+**Development alpha — source build 744.** A Vanishing Point Marquee constrains Brush and Stamp in the editor and Photato API. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_744.md).
 
 ## Project layout
 

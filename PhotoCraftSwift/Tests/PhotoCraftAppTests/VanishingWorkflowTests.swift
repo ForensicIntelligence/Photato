@@ -857,6 +857,76 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testLinkedStrokeMarqueeSharesDesktopAndHTTPOutputAndUndo() async throws {
+    var original = try fixture()
+    var settings = VanishingSettings()
+    settings.planes = [.init(corners:[.init(4,4),.init(30,4),.init(30,44),.init(4,44)]),
+      .init(parent:0,edge:.right,angle:180)]
+    original.vanishingPoint = settings
+    let layerID = original.layers[0].id
+    let store = EditorStore(document:original,actions:ActionLibrary())
+    store.beginVanishingPoint()
+    let workspace = try XCTUnwrap(store.vanishingWorkspace)
+    defer { store.cancelVanishingPoint();store.renderTask?.cancel() }
+    await workspace.prepare()
+    let scene = try XCTUnwrap(workspace.scene)
+    workspace.tool = .marquee
+    workspace.beginGesture()
+    let drag = try XCTUnwrap(workspace.startMarqueeDrag(at:.init(23.5,20.5),flags:[],scene:scene))
+    let selection = try XCTUnwrap(workspace.projectedMarquee(for:drag,to:.init(41.5,38.5),constrained:false,scene:scene))
+    workspace.finishMarqueeDrag(drag,at:selection)
+    workspace.endGesture()
+    XCTAssertEqual(selection.wrap,true)
+
+    workspace.tool = .brush
+    workspace.diameter = 4
+    workspace.hardness = 100
+    workspace.color = Pixel(0.2,0.8,0.1)
+    workspace.stroke([.init(16.5,24.5),.init(49.5,24.5)])
+    workspace.tool = .stamp
+    workspace.setSource(.init(16.5,12.5))
+    workspace.stroke([.init(16.5,32.5),.init(49.5,32.5)])
+    XCTAssertEqual(workspace.program.operations.map(\.strokeSelection),[selection,selection])
+    await workspace.task?.value
+    XCTAssertTrue(workspace.ready,workspace.error ?? "Missing constrained stroke preview")
+    let operations = try workspace.program.operations.map { op -> [String:Any] in
+      var fields: [String:Any] = ["kind":op.kind.rawValue,"plane":op.plane,
+        "points":op.points.map { ["x":$0.x,"y":$0.y] },
+        "diameter":op.diameter,"hardness":op.hardness,"wrap":true,
+        "strokeSelection":try JSONSerialization.jsonObject(with:JSONEncoder().encode(selection))]
+      if let source = op.sourcePoint {
+        fields["sourcePoint"] = ["x":source.x,"y":source.y]
+      } else {
+        fields["color"] = ["r":op.color.r,"g":op.color.g,"b":op.color.b,"a":op.color.a]
+      }
+      return fields
+    }
+    store.commitVanishingPoint()
+    await store.geometryTask?.value
+    let native = store.document
+    XCTAssertEqual(store.session.undoStack.count,1)
+    XCTAssertNotEqual(native.layers,original.layers)
+
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:original)
+      try service.share(document)
+      let applied = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":layerID.uuidString,"operations":operations])
+      XCTAssertEqual(applied,200)
+      XCTAssertEqual(document.store.document,native)
+      let undone = try await helper.edit(service,document,"history.undo")
+      XCTAssertEqual(undone,200)
+      XCTAssertEqual(document.store.document,original)
+      var invalid = operations
+      invalid[0]["strokeSelection"] = NSNull()
+      let rejected = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":layerID.uuidString,"operations":invalid])
+      XCTAssertEqual(rejected,400)
+      XCTAssertEqual(document.store.document,original)
+    }
+  }
+
   @MainActor func testLinkedBrushAndAlignedStampShareDesktopAndHTTPUndo() async throws {
     var original = try fixture()
     var settings = VanishingSettings()

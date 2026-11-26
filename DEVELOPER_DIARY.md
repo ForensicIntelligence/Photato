@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **743** · The 10 most recent entries, newest first.
+Source build **744** · The 10 most recent entries, newest first.
+
+## 2026-11-25 — Step 744 — Constrain perspective retouching to a Marquee
+
+Vanishing Point Brush and Stamp now stay inside the drawn Marquee when applying marks. A selection can extend across a hinge. Stamp can still sample from outside the rectangle, and the Photato API accepts the same selection per stroke.
+
+All 50 focused Xcode tests passed, including a one-pixel footprint split at the selection edge and desktop/API output with one Undo. Photoshop exited before producing reference pixels on the owned two-face guide.
+
+Both optimized builds passed the two new tests and 864 of 866 overall. The inherited failures repeated, and all eight native replays matched byte for byte across Debug, Apple Silicon and Intel. The source checkpoint includes the matching Universal preview.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-744) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_744.md).
 
 ## 2026-11-25 — Step 743 — Paint and clone across linked Vanishing Point planes
 
@@ -93,13 +103,3 @@ Photoshop 27.2.0 opened both Photato exports with the linked grid and two editab
 Both optimized architectures passed 841 of 843 selected tests, including all four new cases. The two inherited color-profile and layer-effect failures repeated. Xcode built the Debug app and passed the 26 focused core, app and HTTP tests. The generated PSD and PSB each matched byte for byte in Debug, optimized Apple Silicon and Intel under Rosetta. Both slices of the locally signed macOS 14+ preview opened offscreen.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-735) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_735.md).
-
-## 2026-11-25 — Step 734 — Keep Vanishing Point grid spacing and export square planes
-
-Vanishing Point saves the Grid Size with the document. Use the number field or slider to set a shared spacing from 1 to 1,000. The overlay updates without repainting the image. Native documents, editable PSD and PSB and the authenticated Photato API retain fractional values.
-
-In Photoshop 27.2.0, the Photato square-to-camera export reopened as a blue calibrated grid with size 73. The companion PSB also reopened at 73. The square PSD and PSB match 41 numeric fields in Adobe’s saved grid. Each file has its own plane ID. The corrected single-parallel trapezoid displayed a blue grid too. The two-plane file reopened at 91.25 after changing only the spacing tokens in its original Photoshop resource.
-
-The desktop session timed out when launching the isolated Photato preview for direct input. Its native sheet was rendered offscreen in both appearances. Live keyboard and slider interaction, general projected grid placement, and the Photoshop measurement tools still need qualification.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-734) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_734.md).

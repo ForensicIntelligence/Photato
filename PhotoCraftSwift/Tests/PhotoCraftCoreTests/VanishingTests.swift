@@ -232,6 +232,50 @@ final class VanishingTests:XCTestCase {
     }
   }
 
+  func testMarqueeConstrainsBrushAndStampAcrossTheHinge() throws {
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners:[.init(10,10),.init(36.5,10),.init(36.5,50),.init(10,50)]),
+      .init(parent:0,edge:.right,angle:180)]
+    var sample = try Surface(width:80,height:64,depth:.f32,fill:Pixel(0.8,0.3,0.1))
+    for y in 15...17 {
+      for x in 0..<sample.width { sample.setLinearPixel(x:x,y:y,Pixel(0.2,0.6,0.9)) }
+    }
+    let selection = VanishingMarquee(plane:0,lower:.init(0.65,0.3),upper:.init(1.40,0.65),wrap:true)
+    var stroke = VanishingOperation(.brush)
+    stroke.color = Pixel(1,0,0)
+    stroke.diameter = 6
+    stroke.hardness = 100
+    stroke.points = [.init(20.5,27.5),.init(54.5,27.5)]
+    stroke.wrap = true
+    stroke.strokeSelection = selection
+    for kind: VanishingOperation.Kind in [.brush,.clone] {
+      stroke.kind = kind
+      // The Stamp reads a donor row outside the selection.
+      stroke.sourcePoint = kind == .clone ? .init(20.5,16.5) : nil
+      program.operations = [stroke]
+      let result = try VanishingEngine.render(program,sample:sample)
+      for x in [22,52] { XCTAssertEqual(result.linearPixel(x:x,y:27).a,0) }
+      for x in [30,36,42] {
+        let pixel = result.linearPixel(x:x,y:27)
+        XCTAssertEqual(pixel.a,1,accuracy:1e-5)
+        XCTAssertEqual(pixel.r,kind == .clone ? 0.2 : 1,accuracy:1e-5)
+      }
+    }
+
+    stroke.kind = .brush
+    stroke.sourcePoint = nil
+    stroke.diameter = 1
+    stroke.points = [.init(36.5,27.5)]
+    stroke.strokeSelection = .init(plane:0,lower:.init(1,0.3),upper:.init(1.4,0.65),wrap:true)
+    program.operations = [stroke]
+    let halfDab = try VanishingEngine.render(program,sample:sample).linearPixel(x:36,y:27).a
+    XCTAssertEqual(halfDab,.pi/8,accuracy:0.012)
+    stroke.strokeSelection = nil
+    program.operations = [stroke]
+    let fullDab = try VanishingEngine.render(program,sample:sample).linearPixel(x:36,y:27).a
+    XCTAssertEqual(fullDab,2*halfDab,accuracy:1e-5)
+  }
+
   func testLinkedStampSamplesEarlierMarksAcrossTheDonorHinge() throws {
     var program = VanishingProgram()
     program.settings.planes = [.init(corners:[.init(10,10),.init(36.5,10),.init(36.5,50),.init(10,50)]),

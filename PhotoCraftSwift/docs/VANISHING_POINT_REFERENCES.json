@@ -168,6 +168,13 @@
     "roundTrips": "Each measured PSD and PSB retained 3,240,000 merged RGB bytes. Unedited copies retain the original perspective record.",
     "remaining": "Additional seam orientations, exact calibration for guides with parallel rays, the full range of scene geometry and raster sampling across linked planes."
   },
+  "stroke_marquee_744": {
+    "reference": "Photoshop 2026 27.2.0 with the owned tilted hinge and a separate Adobe-authored rectangular control.",
+    "tiltedGuideSHA256": "fe3dbfaf8a802842bda934f6be8a950ad5ff7b38e2428ed4b8abc2de5f9d3d5a",
+    "observed": "Marquee double-click selected the tilted left face. Switching to Brush showed Diameter 100, Hardness 50, Opacity 100 and Heal Off. Photoshop exited at the start of the drag. The separate single-plane control returned to Home on the first Brush dab.",
+    "photato": "All eight native replays stayed within their projected selections. Brush, Stamp and healed Brush reached both faces with stroke wrapping enabled. Stamp sampled outside the selection.",
+    "remaining": "Independent Adobe stroke pixels, exact seam and selection edge coverage, and Shift-constrained Brush and Stamp."
+  },
   "linked_brush_stamp_743": {
     "reference": "Photoshop 2026 on the owned 1200 × 900 tilted-camera guide. This checkpoint also uses the earlier two-wall guide.",
     "sourceSHA256": "fe3dbfaf8a802842bda934f6be8a950ad5ff7b38e2428ed4b8abc2de5f9d3d5a",

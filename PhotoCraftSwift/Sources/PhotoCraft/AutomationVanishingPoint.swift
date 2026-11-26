@@ -58,6 +58,9 @@ extension VanishingSettings {
     let color:[String:Any]=["type":"object","additionalProperties":false,"required":["r","g","b","a"],"properties":Dictionary(uniqueKeysWithValues:["r","g","b","a"].map{($0,number(0,1,$0 == "a" ? 1:0))})]
     let shared:[String:Any]=["plane":["type":"integer","minimum":0,"maximum":31,"default":0],"opacity":number(0,100,100),"clip":["type":"boolean","default":true],
       "heal":["type":"string","enum":VanishingOperation.Heal.allCases.map(\.rawValue),"default":"off"]]
+    let rect: [String:Any] = ["type":"object","additionalProperties":false,"required":["plane","lower","upper"],
+      "properties":["plane":["type":"integer","minimum":0,"maximum":31],"lower":pointSchema,"upper":pointSchema,
+        "wrap":["type":"boolean","default":false]]]
     let variants=VanishingOperation.Kind.allCases.map { kind -> [String:Any] in
       var properties=shared;properties["kind"]=["const":kind.rawValue];var required=["kind"]
       switch kind {
@@ -65,9 +68,6 @@ extension VanishingSettings {
         properties["sourceLayerID"]=["type":"string","format":"uuid"];properties["at"]=pointSchema;properties["width"]=number(0.001,20,0.5);properties["angle"]=number(-360,360,0);required.append("sourceLayerID")
       case .marquee:
         properties.removeValue(forKey:"plane")
-        let rect: [String:Any] = ["type":"object","additionalProperties":false,"required":["plane","lower","upper"],
-          "properties":["plane":shared["plane"]!,"lower":pointSchema,"upper":pointSchema,
-            "wrap":["type":"boolean","default":false]]]
         let range = VanishingMarqueeTransfer.featherRange
         properties["marquee"] = ["type":"object","additionalProperties":false,"required":["source","destination"],
           "properties":["source":rect,"destination":rect,"feather":number(range.lowerBound,range.upperBound,1)]]
@@ -76,6 +76,7 @@ extension VanishingSettings {
       case .brush,.clone:
         properties["points"]=["type":"array","minItems":1,"maxItems":4096,"items":pointSchema];properties["diameter"]=number(1,2000,40);properties["hardness"]=number(0,100,50);required.append("points")
         properties["wrap"]=["type":"boolean","default":false]
+        properties["strokeSelection"] = rect
         if kind == .clone {
           properties["sourcePoint"]=pointSchema
           properties["sourcePlane"]=["type":"integer","minimum":0,"maximum":31,
@@ -100,6 +101,7 @@ extension VanishingSettings {
      "operations":"Create/save/edit planes with no operations; brush, clone and perspective paste with sourceLayerID (raw raster layer pixels, resolved before mutation). Sequential operations sample the visible composite plus earlier draft operations; each clone stroke takes an immutable source snapshot.",
      "marquee":"Lower and upper are rectified fractions of each rectangle's anchor plane. Set wrap:true individually on source and destination to continue that rectangle across linked surfaces. The destination angle rotates around its center in rectified space. Feather uses the projected selection boundary without feathering internal hinges. Each patch samples the visible composite and preceding operations using bicubic interpolation.",
      "strokeWrapping":"Set wrap:true on Brush or Stamp to continue through linked faces. Clip bounds the destination independently. Wrapped Stamp can use sourcePlane to identify an extrapolated donor and samples the visible image and earlier operations from an immutable snapshot. Omitting wrap preserves single-plane API edits.",
+     "strokeSelection":"Supply a strokeSelection rectangle to constrain Brush or Stamp output. Its lower and upper coordinates are rectified fractions of its anchor plane. The rectangle’s wrap flag follows linked faces independently of stroke wrapping. Stamp can sample outside the selection.",
      "heal":"Brush, clone and paste accept off, luminance or on. Luminance adjusts lighting. On adjusts lighting and color. The gradient-domain solve includes a one-pixel boundary within the 4-megapixel local repair budget.",
      "output":"The current raster layer can expand to cover the repair while keeping existing samples and masks in place. Use newLayer:true for a separate layer. Selection and transparency/image locks are honored. Smart Objects must be rasterized for the target. One cancellable undo transaction for the entire program.",
      "limits":"32 planes,256 operations,16,384 supplied points,4,096 points per stroke,128MiB embedded paste sources with up to 8,388,608 pixels, up to \(Surface.maxDimension) pixels per canvas side, 134,217,728 raster visits per program. Large canvases use a bounded overview. Existing API sharing limits also apply.",
@@ -179,13 +181,20 @@ extension AutomationCommand {
     }
     if let value=parameters["operations"] {
       guard case .array(let items)=value,items.count<=256 else { throw fail("Invalid operations.") }
+      func validRectangle(_ value: Any?) -> Bool {
+        guard let rect = value as? [String:Any],Set(rect.keys).isSubset(of:["plane","lower","upper","wrap"]),
+          rect["plane"] != nil,!(rect["wrap"] is NSNull),
+          let lower = rect["lower"] as? [String:Any],Set(lower.keys) == ["x","y"],
+          let upper = rect["upper"] as? [String:Any],Set(upper.keys) == ["x","y"] else { return false }
+        return true
+      }
       p.operations=try items.map { item in
         guard case .object(let fields)=item,case .string(let name)=fields["kind"],let kind=VanishingOperation.Kind(rawValue:name) else { throw fail("Invalid operation kind.") }
         let allowed: Set<String>
         switch kind {
         case .paste: allowed = ["kind","plane","at","width","angle","opacity","clip","sourceLayerID"]
-        case .clone: allowed = ["kind","plane","points","sourcePoint","sourcePlane","diameter","hardness","opacity","clip","wrap"]
-        case .brush: allowed = ["kind","plane","points","diameter","hardness","opacity","color","clip","wrap"]
+        case .clone: allowed = ["kind","plane","points","sourcePoint","sourcePlane","diameter","hardness","opacity","clip","wrap","strokeSelection"]
+        case .brush: allowed = ["kind","plane","points","diameter","hardness","opacity","color","clip","wrap","strokeSelection"]
         case .marquee: allowed = ["kind","marquee","angle","opacity","clip"]
         }
         guard Set(fields.keys).isSubset(of:allowed.union(["heal"])) else { throw fail("Unknown or irrelevant operation field.") }
@@ -207,18 +216,14 @@ extension AutomationCommand {
         if kind == .marquee {
           guard var patch = raw["marquee"] as? [String:Any],
             Set(patch.keys).isSubset(of:["source","destination","feather"]) else { throw fail("Invalid marquee patch.") }
-          for key in ["source","destination"] {
-            guard let rect = patch[key] as? [String:Any],Set(rect.keys).isSubset(of:["plane","lower","upper","wrap"]),
-              rect["plane"] != nil,!(rect["wrap"] is NSNull),
-              let lower = rect["lower"] as? [String:Any],Set(lower.keys) == ["x","y"],
-              let upper = rect["upper"] as? [String:Any],Set(upper.keys) == ["x","y"] else {
-              throw fail("Invalid marquee rectangle.")
-            }
+          guard validRectangle(patch["source"]),validRectangle(patch["destination"]) else {
+            throw fail("Invalid marquee rectangle.")
           }
           if patch["feather"] == nil { patch["feather"] = 1 }
           raw["marquee"] = patch
           raw["plane"] = (patch["destination"] as? [String:Any])?["plane"]
         }
+        if let selection = raw["strokeSelection"],!validRectangle(selection) { throw fail("Invalid stroke selection rectangle.") }
         if let value=raw["color"] { guard let c=value as? [String:Any],Set(c.keys)==["r","g","b","a"] else { throw fail("Invalid paint color.") } }
         if case .object(let c)=fields["color"] { guard c.values.allSatisfy({ if case .number(let n)=$0 { return n.isFinite && (0...1).contains(n) };return false }) else { throw fail("Color channels must be numbers from0 to1.") } }
         var op:VanishingOperation

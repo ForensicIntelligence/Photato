@@ -1,5 +1,15 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-25 — Step 744 — Constrain perspective retouching to a Marquee
+
+Vanishing Point Brush and Stamp now stay inside the drawn Marquee when applying marks. A selection can extend across a hinge. Stamp can still sample from outside the rectangle, and the Photato API accepts the same selection per stroke.
+
+All 50 focused Xcode tests passed, including a one-pixel footprint split at the selection edge and desktop/API output with one Undo. Photoshop exited before producing reference pixels on the owned two-face guide.
+
+Both optimized builds passed the two new tests and 864 of 866 overall. The inherited failures repeated, and all eight native replays matched byte for byte across Debug, Apple Silicon and Intel. The source checkpoint includes the matching Universal preview.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-744) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_744.md).
+
 ## 2026-11-25 — Step 743 — Paint and clone across linked Vanishing Point planes
 
 Brush and Stamp now follow the perspective around a hinge with Allow Multi-surface Operations enabled. Destination clipping is a separate control. An aligned Stamp keeps the same donor displacement as the stroke moves to the linked face. The desktop and API use the same renderer and Undo.
@@ -303,5 +313,15 @@ With the same seed and selection, the model used a teapot or orange reference to
 The optional model requires Apple Silicon and macOS 26 or later and uses a visual reference without text. Place depends on foreground detection and can omit generated shadows. The installed Photoshop 27.2.0 document query timed out. Exact Firefly output, the Adobe Execute Actions descriptor, partner providers, keyboard and assistive-technology checks remain open.
 
 [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-715) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_715.md).
+
+## 2026-11-21 — Step 714 — Guide Generate Image with Style and Composition references
+
+Generate Image accepts an optional reference. Style transfers colours and textures to the image described by the prompt. Composition uses edges to guide layout during generation. Photato keeps the reference with the editable Smart Object for Generate More and Generate Similar. The authenticated Photato API uses the same edit and history.
+
+Changing only the Composition reference moved the measured orange centre from x=151.5 to x=386.5 in a 512-pixel image. Changing only the Style reference moved mean red minus blue from 0.506 to -0.506. Editor and authenticated HTTP pixels matched exactly at the same seed for both modes. All four owned renders and their embedded reference samples survived Photato, PSD, and PSB reopens. An independent merged-preview reader matched each PSD and PSB to its PNG. Generate More after reopening PSB matched a fresh generation at the same seed and retained the earlier result. The optimized Apple Silicon worker and a signed sandbox harness each reproduced all four outputs byte for byte.
+
+Local models are optional on Apple Silicon with macOS 26 or later. The Style model operates at 224 pixels internally and can soften fine detail. Composition can add objects when edges are ambiguous. The Photoshop 27.2.0 AppleEvent query timed out. Direct Photoshop reopen, Firefly output fidelity, the Firefly ActionJSON descriptor, keyboard and assistive-technology testing remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-714) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_714.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)

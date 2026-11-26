@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 544 — Faster wide brushes
-
-The renderer prepares the brush tip once per dab. Wide brushes now start their first canvas preview from the initial pointer sample. The 24 MP hosted test measured first draw at 2,343 ms for a 5,000 px soft brush, compared with 2,442 ms in build 543.
-
-All 64 output comparisons were exact and 388 selected tests passed in each of the three configurations. Large-tip display cadence remains open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-544) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_544.md).
-
 ## 2026-11-17 — Step 543: reuse gradient samples
 
 Large gradients reuse identical colour samples, and fill rendering writes a tile at a time. On Apple Silicon the 2,048 × 2,048 Perceptual raster fell from 351 to 49 ms. All 84 test images matched build 542 byte for byte.
@@ -347,12 +339,12 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:743 -->
+<!-- current-status-step:744 -->
 ## Current development status — 25 November 2026
 
-Vanishing Point Brush and Stamp can continue across connected faces in the desktop and Photato API. Native tests cover clipping and aligned Stamp offsets across the hinge, with one Undo for the edit. Exact Photoshop stroke output and modifier-constrained painting remain open.
+Vanishing Point Brush and Stamp can follow linked faces and respect a perspective Marquee in the desktop and Photato API. The tests cover clipped output, an outside donor and one Undo for the edit. Exact Photoshop stroke output and modifier-constrained painting remain open.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-743) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_743.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-744) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_744.md).
 
 <!-- current-status:end -->
 
@@ -1302,5 +1294,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 741 | [Preserve Vanishing Point fold angles in Photoshop files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-741) |
 | 2026-11-25 | 742 | [Improve floating selection sampling in Vanishing Point](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-742) |
 | 2026-11-25 | 743 | [Paint and clone across linked Vanishing Point planes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-743) |
+| 2026-11-25 | 744 | [Constrain perspective retouching to a Marquee](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-744) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

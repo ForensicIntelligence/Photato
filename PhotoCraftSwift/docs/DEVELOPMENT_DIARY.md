@@ -1,3 +1,13 @@
+## 2026-11-25 — Step 744 — Constrain perspective retouching to a Marquee
+
+Vanishing Point Brush and Stamp now stay inside the drawn Marquee when applying marks. A selection can extend across a hinge. Stamp can still sample from outside the rectangle, and the Photato API accepts the same selection per stroke.
+
+All 50 focused Xcode tests passed, including a one-pixel footprint split at the selection edge and desktop/API output with one Undo. Photoshop exited before producing reference pixels on the owned two-face guide.
+
+Both optimized builds passed the two new tests and 864 of 866 overall. The inherited failures repeated, and all eight native replays matched byte for byte across Debug, Apple Silicon and Intel. The source checkpoint includes the matching Universal preview.
+
+[Development record](DEVLOG.md#dev-step-744) · [Qualification](SOURCE_PUBLICATION_744.md).
+
 ## 2026-11-25 — Step 743 — Paint and clone across linked Vanishing Point planes
 
 Brush and Stamp now follow the perspective around a hinge with Allow Multi-surface Operations enabled. Destination clipping is a separate control. An aligned Stamp keeps the same donor displacement as the stroke moves to the linked face. The desktop and API use the same renderer and Undo.
@@ -2051,12 +2061,12 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:743 -->
+<!-- current-status-step:744 -->
 ## Current development status — 25 November 2026
 
-Vanishing Point Brush and Stamp can continue across connected faces in the desktop and Photato API. Native tests cover clipping and aligned Stamp offsets across the hinge, with one Undo for the edit. Exact Photoshop stroke output and modifier-constrained painting remain open.
+Vanishing Point Brush and Stamp can follow linked faces and respect a perspective Marquee in the desktop and Photato API. The tests cover clipped output, an outside donor and one Undo for the edit. Exact Photoshop stroke output and modifier-constrained painting remain open.
 
-[Development record](DEVLOG.md#dev-step-743) · [Qualification](SOURCE_PUBLICATION_743.md).
+[Development record](DEVLOG.md#dev-step-744) · [Qualification](SOURCE_PUBLICATION_744.md).
 
 <!-- current-status:end -->
 
@@ -3006,6 +3016,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 741 | [Preserve Vanishing Point fold angles in Photoshop files](DEVLOG.md#dev-step-741) |
 | 2026-11-25 | 742 | [Improve floating selection sampling in Vanishing Point](DEVLOG.md#dev-step-742) |
 | 2026-11-25 | 743 | [Paint and clone across linked Vanishing Point planes](DEVLOG.md#dev-step-743) |
+| 2026-11-25 | 744 | [Constrain perspective retouching to a Marquee](DEVLOG.md#dev-step-744) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
