@@ -1,3 +1,13 @@
+## 2026-11-25 — Step 742 — Improve floating selection sampling in Vanishing Point
+
+Vanishing Point now uses bicubic sampling when a floating selection lands between pixels. Photoshop references on a synthetic pattern of stripes and dots showed the small overshoots produced by cubic interpolation. On the left-to-right two-wall image, the average donor interior error fell from 2.14 to 0.81 RGB levels. All five full patches improved. The narrow receiving area in one synthetic capture got slightly worse.
+
+All 44 focused Xcode tests passed. The desktop editor and authenticated Photato API produce the same subpixel edit with one Undo.
+
+Both optimized builds passed 858 of 860 selected tests. The two inherited failures repeated their diagnostics. All five replay PNGs agree across Debug, Apple Silicon and Intel.
+
+[Development record](DEVLOG.md#dev-step-742) · [Qualification](SOURCE_PUBLICATION_742.md).
+
 ## 2026-11-25 — Step 741 — Preserve Vanishing Point fold angles in Photoshop files
 
 PSD and PSB guides can keep their editable fold angles when moving between Photato and Photoshop. Photoshop reopened newly written guides at 45°, 90° and 135°. The reader also recovered the same off-centre camera from the three Photoshop saves. Untouched guide records and merged RGB samples survived both file formats.
@@ -2031,14 +2041,14 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:741 -->
+<!-- current-status-step:742 -->
 ## Current development status — 25 November 2026
 
-The tested Photoshop folds at 45°, 90° and 135° remain editable when reopened from Photato's PSD and PSB. Photato uses the camera recorded in the saved guides when it agrees with the projected geometry. Tests on the corrected 90° guide narrowed the linked Marquee discrepancy to sampling and edge coverage. Further hinge orientations and camera configurations remain open.
+Bicubic donor sampling brings Vanishing Point floating selections closer to the measured Photoshop output. All five whole patches improved, and one narrow receiving area regressed. Exact placement, RGB rounding and feathered edge coverage remain open. The desktop and Photato API share the renderer.
 
-Both optimized builds passed 857 of 859 selected tests. The two previous failures repeated their diagnostics.
+Both optimized architectures passed 858 of 860 selected tests. The two previous failures reproduced.
 
-[Development record](DEVLOG.md#dev-step-741) · [Qualification](SOURCE_PUBLICATION_741.md).
+[Development record](DEVLOG.md#dev-step-742) · [Qualification](SOURCE_PUBLICATION_742.md).
 
 <!-- current-status:end -->
 
@@ -2986,6 +2996,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 739 | [Wrap Vanishing Point selections across linked planes](DEVLOG.md#dev-step-739) |
 | 2026-11-25 | 740 | [Recover editable right-angle Photoshop hinges](DEVLOG.md#dev-step-740) |
 | 2026-11-25 | 741 | [Preserve Vanishing Point fold angles in Photoshop files](DEVLOG.md#dev-step-741) |
+| 2026-11-25 | 742 | [Improve floating selection sampling in Vanishing Point](DEVLOG.md#dev-step-742) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

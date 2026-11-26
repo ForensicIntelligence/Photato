@@ -295,7 +295,7 @@ public enum VanishingEngine {
       try charge(r.width * r.height)
       return r
     }
-    for op in program.operations {
+    for (index, op) in program.operations.enumerated() {
       try Task.checkCancellation();let frame=scene.frames[op.plane],opacity=Float(op.opacity/100)
       if opacity==0 { continue }
       let mode = op.heal ?? .off
@@ -375,8 +375,10 @@ public enum VanishingEngine {
             if op.clip && !sourceFrame.contains(donor) { return .clear }
           }
           guard VanishingSettings.validPoint(donor) else { return .clear }
-          return over(WarpRaster.sample(previous,donor,method:.bilinear,clampEdges:false),
-            WarpRaster.sample(sample,donor,method:.bilinear,clampEdges:false))
+          let image = WarpRaster.sample(sample,donor,method:.bicubic,clampEdges:false)
+          // The first operation has no prior marks to sample.
+          let overlay = index == 0 ? .clear : WarpRaster.sample(previous,donor,method:.bicubic,clampEdges:false)
+          return over(overlay,image)
         }
         for y in bounds.y..<(bounds.y+bounds.height) {
           try Task.checkCancellation()

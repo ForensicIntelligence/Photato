@@ -824,7 +824,7 @@ final class VanishingWorkflowTests:XCTestCase {
     workspace.endGesture()
     XCTAssertNil(workspace.marquee)
     XCTAssertNotNil(workspace.floatingMarqueeOperation)
-    workspace.nudgeMarquee(dx:5,dy:3)
+    workspace.nudgeMarquee(dx:5.5,dy:3)
     await workspace.task?.value
     XCTAssertTrue(workspace.ready,workspace.error ?? "Missing preview")
     XCTAssertEqual(store.document,original)

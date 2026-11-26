@@ -65,6 +65,25 @@ final class VanishingTests:XCTestCase {
     }
   }
 
+  func testFloatingMarqueeUsesCubicDonorSamplesBetweenPixelCenters() throws {
+    var sample = try Surface(width:64,height:48,depth:.u8,fill:Pixel(96.0/255,0.25,0.5))
+    for y in 8..<16 { sample.setPixel(x:10,y:y,Pixel(160.0/255,0.25,0.5)) }
+
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners:[.init(0,0),.init(64,0),.init(64,48),.init(0,48)])]
+    let source = VanishingMarquee(plane:0,lower:.init(8.0/64,8.0/48),upper:.init(16.0/64,16.0/48))
+    let destination = VanishingMarquee(plane:0,lower:.init(32.5/64,24.0/48),upper:.init(40.5/64,32.0/48))
+    var patch = VanishingOperation(.marquee)
+    patch.marquee = .init(source:source,destination:destination,feather:0)
+    program.operations = [patch]
+    let output = try VanishingEngine.render(program,sample:sample)
+    // A half-pixel shift gives weights −1/16, 9/16, 9/16 and −1/16 around the impulse.
+    let red = (33...36).map { Int((output.pixel(x:$0,y:28).r*255).rounded()) }
+    XCTAssertEqual(red,[92,132,132,92])
+    XCTAssertEqual(output.pixel(x:34,y:28).a,1)
+    XCTAssertEqual(output.pixel(x:31,y:28).a,0)
+  }
+
   func testLinkedMarqueeFollowsBothPlanesInEitherDragDirection() throws {
     var settings = VanishingSettings()
     settings.center = .init(60,45)

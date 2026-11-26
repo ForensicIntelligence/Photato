@@ -760,7 +760,26 @@ For a readable account of the project from the beginning, see [Photato developme
 | 739 | 2026-11-25 | [Wrap Vanishing Point selections across linked planes](#dev-step-739) |
 | 740 | 2026-11-25 | [Recover editable right-angle Photoshop hinges](#dev-step-740) |
 | 741 | 2026-11-25 | [Preserve Vanishing Point fold angles in Photoshop files](#dev-step-741) |
+| 742 | 2026-11-25 | [Improve floating selection sampling in Vanishing Point](#dev-step-742) |
 <!-- history-index:end -->
+
+<a id="dev-step-742"></a>
+
+## 2026-11-25 — Improve floating selection sampling in Vanishing Point
+
+The corrected 90° captures from step 741 favored a cubic donor filter on the original artwork. To distinguish the filter from a slight offset in the selection, independent synthetic red and green stripes and blue dots were placed under the same perspective guide. Photoshop saved both directions at Feather 0, Opacity 100% and Heal Off after floating the whole face and pressing Shift-arrow six times. The picker briefly reported the selection before it appeared in the accessibility tree. The exact filename and path were verified before opening. Source art and user documents were left untouched. [Adobe's floating selection workflow](https://helpx.adobe.com/uk/photoshop/using/vanishing-point.html)
+
+The Photoshop rasters contain values beyond the known input stripe extrema. In one direction red undershoots its background of 96 to 91 and green overshoots 136 to 141. Those lobes agree with Catmull–Rom. An independently fitted Catmull–Rom model had lower held-out interior error than nearest, bilinear or the steeper cubic models tested. The fitted model still differs from the Photoshop render at some interior samples.
+
+`VanishingEngine.swift` now uses the existing bicubic sampler for Marquee donors, including preceding marks. The first operation skips reading an empty overlay. A core regression checks the positive and negative taps of a known half-pixel shift. The desktop and authenticated HTTP comparison now moves by a subpixel distance. The API capability text and automation guide describe the shared sampling. The app build number advances to 742. The earlier bilinear replay and the new native validation are recorded separately.
+
+The checked-in Xcode project built successfully. All 27 focused Core tests passed, including the half-pixel stripe. The two native impulse replays and three original two-wall replays each committed a single Undo entry. Across the union of changed pixels, all five outputs had lower mean RGB error after the sampler change. On the left-to-right color capture, mean error dropped from 3.32 to 2.16 RGB levels across the patch and from 2.14 to 0.81 in the donor interior. On the impulse capture in the same direction, the narrow receiving area rose from 7.20 to 7.48 even as the whole-patch error fell from 1.72 to 1.14. Exact donor displacement, seam sampling and edge coverage remain open. Both optimized suites started with source digest `be73aa96e808b5d7709946f26f184e94cb416cbbad31991ad7d13670b5936e5e`.
+
+A separate Source-mode trial did not yield a valid raster reference. A held rectangle drag left no usable selection in this session. Double-click selected the entire face and exposed Source in Move Mode. After the attempted cross-seam drag the dialog surfaced with disabled controls. Escape did not dismiss it. The successful keyboard-based floating selection captures remain independent of this attempt.
+
+A reciprocal seam fit trained on the stripes also lowered error on the separate two-wall textures with the same guide. On a new tilted guide with a 1.6 width ratio, Photoshop and Photato both reopened a 90° child. Applying the first guide's proportional correction did not transfer. It changed held-out receiving error from 2.54 to 2.52 for the left donor and from 0.59 to 1.05 for the right. A new fitted transform helped on that guide. Those fits are evidence of a geometry-dependent error. The renderer keeps its current projection. The first native replay of the tilted reference used the wrong scratch directory and its log is retained. The rerun measured both directions on matching owned source pixels.
+
+Both optimized architectures passed 858 of 860 selected tests. The inherited color-profile and layer-effect tests repeated the same diagnostics as build 741. All five native replay PNGs match byte for byte across Xcode Debug, optimized Apple Silicon and optimized Intel under Rosetta. Both slices of the signed preview target macOS 14 and opened offscreen on macOS 27.2.1. The diary generator passed. The history audit refreshed its local index and repeated the same 701 older offline evidence paths. The public parity estimate stays at 50%. [Qualification](SOURCE_PUBLICATION_742.md)
 
 <a id="dev-step-741"></a>
 

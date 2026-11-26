@@ -168,6 +168,16 @@
     "roundTrips": "Each measured PSD and PSB retained 3,240,000 merged RGB bytes. Unedited copies retain the original perspective record.",
     "remaining": "Additional seam orientations, exact calibration for guides with parallel rays, the full range of scene geometry and raster sampling across linked planes."
   },
+  "marquee_donor_interpolation_742": {
+    "reference": "Photoshop 2026 27.2.0 on independent synthetic stripe and dot channels under the corrected 90-degree guide, plus the prior two-wall captures.",
+    "impulseSourceSHA256": "ab343090ba8d346e9adaca1f37bca92a525d66d553ac78a0453bd82735356846",
+    "impulseAdobeLeftSourceSHA256": "9b6d282d75eb86f3b7be9db7e02a54b539de9336cb4b8b042d2602000eee8fec",
+    "impulseAdobeRightSourceSHA256": "6a47d3109241920331e897523063c64ae1a75398243fbe11128f35867c72d078",
+    "gesture": "Float the entire selected face, then move by six Shift-arrow presses with opacity 100% and Heal Off. The two impulse captures use Feather 0.",
+    "sampling": "The Photoshop impulse rasters contain overshoot and undershoot. Of the four cubic and noncubic alternatives compared against Catmull–Rom, none had lower held-out donor error on either direction.",
+    "photato": "Bicubic donor sampling improves full-support mean RGB error on all five replays. The left-to-right impulse receiving region regresses from 7.197 to 7.478 RGB levels.",
+    "remaining": "Exact donor position and channel rounding, projected edge coverage, the held Source drag, other interpolation conditions and higher-depth Photoshop captures."
+  },
   "connected_marquee_739": {
     "reference": "Installed Photoshop 2026 and the owned 1,200 × 900 two-wall RGB8 fixture.",
     "guidePNGSHA256": "2058ef58bf946cc2b37b6a0602ce0a1aaecb7b51256ca86746a270d60fc20b3b",
