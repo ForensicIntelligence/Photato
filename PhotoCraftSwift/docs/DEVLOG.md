@@ -772,7 +772,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 751 | 2026-11-26 | [Navigate the Vanishing Point preview](#dev-step-751) |
 | 752 | 2026-11-26 | [Reuse the Vanishing Point preview geometry](#dev-step-752) |
 | 753 | 2026-11-26 | [Render a Vanishing Point grid onto a layer](#dev-step-753) |
+| 754 | 2026-11-26 | [Calibrate manual Vanishing Point grid spacing](#dev-step-754) |
 <!-- history-index:end -->
+
+<a id="dev-step-754"></a>
+
+## 2026-11-26 — Step 754 — Calibrate manual Vanishing Point grid spacing
+
+The Vanishing Point preview and raster grid now use the same plane scale as the Measure tool when you enter Grid Size manually. Keeping a manual size and linking a measurement of the same size now produces the same grid. The authenticated Photato API reports the same projected intervals in scene state. Grid Size retains its existing value and file format.
+
+VanishingScene converts the manual step using the same calibrated metric as linked grids. The focused regression rejects the old grid positions and verifies that manual and linked rendering agree.
+
+All 69 focused Debug tests passed. Both optimized architectures passed 883 of 885 selected tests, including the new grid-spacing regression. Intel ran under Rosetta. The two inherited failures repeated their earlier diagnostics. The extracted Universal app passed signature verification and offscreen launches on both architectures. The macOS 14+ ZIP is 77,837,980 bytes with SHA-256 `6aebb7fec8caff9c78d78e830dd2ccbdfe416bed8c15d4e230ac65fd0bfab70c`.
+
+The corrected tilted rectangle grid matches all 51,233 marked RGBA samples in the equivalent measurement-linked control. All 105,704 marked samples on the straight-on control remain exact, as do its complete PSD and PNG files. Photoshop’s preview spacing on the tilted reference agrees with the corrected geometry at the observed zoom. An independent Photoshop grid raster is still needed to qualify the exact coordinates, color and alpha. [Adobe’s Vanishing Point reference](https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/define-perspective-planes-in-vanishing-point.html). The 50% estimate remains current. [Qualification](SOURCE_PUBLICATION_754.md).
 
 <a id="dev-step-753"></a>
 

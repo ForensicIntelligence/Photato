@@ -581,6 +581,31 @@ final class VanishingTests:XCTestCase {
     XCTAssertEqual(session.document,source)
   }
 
+  func testManualAndMeasurementLinkedGridsShareTheOpticalScale() throws {
+    var program = VanishingProgram()
+    // The owned rectangle's rays form a near-parallel, tilted camera.
+    program.settings.planes = [.init(corners:[.init(160.00005416273552,200.02866503019413),
+      .init(1480,199.75),.init(1480,1000),.init(160,1000)])]
+    program.renderGrids = true
+    let scene = try VanishingScene(program.settings,width:1600,height:1200)
+    let frame = scene.frames[0]
+    let intervals = scene.gridIntervals(for:0,settings:program.settings)
+    XCTAssertGreaterThan(scene.focal,2_000_000)
+    let firstColumn = frame.point(.init(intervals.x/frame.width,0))
+    let firstRow = frame.point(.init(0,intervals.y/frame.height))
+    XCTAssertEqual(firstColumn.x,240.4761,accuracy:0.02)
+    XCTAssertEqual(firstRow.y,300.0118,accuracy:0.02)
+    var lines = 0
+    scene.forEachInteriorGridLine(for:0,settings:program.settings) { _,_ in lines += 1 }
+    XCTAssertEqual(lines,24)
+
+    let sample = try Surface(width:1600,height:1200,fill:.clear)
+    let manual = try VanishingEngine.render(program,sample:sample)
+    program.settings.setMeasurementScale(.init(root:0,pixelsPerUnit:100,linkedToGrid:true))
+    XCTAssertEqual(scene.gridIntervals(for:0,settings:program.settings),intervals)
+    XCTAssertEqual(try VanishingEngine.render(program,sample:sample),manual)
+  }
+
   func testDenseGridRendersAcrossTileBoundariesWithinWorkBudget() throws {
     let width = 1_600, height = 768
     let input = try Surface(width:width,height:height,fill:.clear)

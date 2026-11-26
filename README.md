@@ -23,7 +23,7 @@ Our target is byte-identical output for the same operation in Photato and Photos
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 753.** Apply the perspective grid to a raster layer from Vanishing Point. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_753.md).
+**Development alpha — source build 754.** Manual and measured Vanishing Point grids now share the same spacing. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_754.md).
 
 ## Project layout
 

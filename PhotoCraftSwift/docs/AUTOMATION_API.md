@@ -1,5 +1,7 @@
 ### Vanishing Point raster grids
 
+Manual grid intervals use the same calibrated plane metric as measurement-linked intervals. The returned scene intervals describe the grid used for both preview and output. [Qualification](SOURCE_PUBLICATION_754.md).
+
 Set the top-level `renderGrids` boolean on `filter.vanishingPoint` to rasterize the saved or supplied plane borders and grid lines on Apply. The option defaults to false. The raster uses the current plane grid size or linked measurement scale. Use `newLayer:true` for a separate layer. The planes remain editable, and undo restores the exact prior document. The open workspace’s `renderGrids` field reports the pending desktop choice independently from `showGrid`, which controls the preview overlay.
 
 [Qualification](SOURCE_PUBLICATION_753.md).

@@ -412,13 +412,11 @@ public struct VanishingScene:Sendable {
 
   public func gridIntervals(for plane: Int, settings: VanishingSettings) -> PathPoint {
     let scale = settings.measurementScale(for: measurementRoots[plane])
-    if scale.linkedToGrid {
-      let metric = measurementMetrics[plane]
-      return .init(scale.pixelsPerUnit*frames[plane].width/metric.x,
-        scale.pixelsPerUnit*frames[plane].height/metric.y)
-    }
-    let interval = settings.effectiveGridSize / focal
-    return .init(interval,interval)
+    let step = scale.linkedToGrid ? scale.pixelsPerUnit : settings.effectiveGridSize
+    let metric = measurementMetrics[plane]
+    let frame = frames[plane]
+    // Express each calibrated step in the plane frame used for projection.
+    return .init(step*frame.width/metric.x,step*frame.height/metric.y)
   }
 
   /// Visits projected interior grid lines. A preview can thin the grid at small view scales.

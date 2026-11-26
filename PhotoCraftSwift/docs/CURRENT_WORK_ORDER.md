@@ -1,4 +1,4 @@
-**Vanishing Point.** Measure the projected grid positions and compare the raster paint with the installed Photoshop reference. [Development record](DEVLOG.md#dev-step-753) · [Qualification](SOURCE_PUBLICATION_753.md).
+**Vanishing Point.** Capture an independent Photoshop raster for grid paint and qualify the separate Show Edges command. [Development record](DEVLOG.md#dev-step-754) · [Qualification](SOURCE_PUBLICATION_754.md).
 
 **Source checkpoint 738.** The native Marquee creates perspective rectangles and turns them into sampled floating patches. The authenticated Photato API shares the edit and document history. The captured Photoshop 20 × 10 pixel move matched Photato's placement. Edge coverage and eight-bit rounding still differ. [Qualification](SOURCE_PUBLICATION_738.md).
 
