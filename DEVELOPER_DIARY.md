@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **751** · The 10 most recent entries, newest first.
+Source build **752** · The 10 most recent entries, newest first.
+
+## 2026-11-26 — Step 752 — Reuse the Vanishing Point preview geometry
+
+Vanishing Point retains its resolved planes as you pan, zoom and apply pixel-only workspace edits. Valid changes to plane settings resolve new geometry. Invalid changes leave the last valid scene available.
+
+All 65 focused Debug tests passed. Both optimized architectures passed 879 of 881 selected tests, including the new scene reuse case. Intel ran under Rosetta. The two inherited failures repeated their earlier diagnostics.
+
+A 32-plane Debug replay read the scene across 240 view updates. Geometry reads fell from 93.70 ms to 0.057 ms with the same checksum. The measurement excludes drawing and compositor work. Exact Photoshop raster and overall interactive frame rate remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-752) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_752.md).
 
 ## 2026-11-26 — Step 751 — Navigate the Vanishing Point preview
 
@@ -93,13 +103,3 @@ On two owned guides, Brush, Stamp and the healed Brush reached both faces. Turni
 All 48 focused Xcode tests passed. Both optimized builds passed all four new tests and 862 of 864 selected tests overall. The two inherited failures repeated their previous results. All eight owned replay PNGs match across Debug and both optimized builds. The matching Universal preview now ships with the source checkpoint on GitHub.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-743) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_743.md).
-
-## 2026-11-25 — Step 742 — Improve floating selection sampling in Vanishing Point
-
-Vanishing Point now uses bicubic sampling when a floating selection lands between pixels. Photoshop references on a synthetic pattern of stripes and dots showed the small overshoots produced by cubic interpolation. On the left-to-right two-wall image, the average donor interior error fell from 2.14 to 0.81 RGB levels. All five full patches improved. The narrow receiving area in one synthetic capture got slightly worse.
-
-All 44 focused Xcode tests passed. The desktop editor and authenticated Photato API produce the same subpixel edit with one Undo.
-
-Both optimized builds passed 858 of 860 selected tests. The two inherited failures repeated their diagnostics. All five replay PNGs agree across Debug, Apple Silicon and Intel.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-742) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_742.md).

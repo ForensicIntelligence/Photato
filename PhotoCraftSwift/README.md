@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 752.** Reuse Vanishing Point geometry while navigating and editing. [Qualification](docs/SOURCE_PUBLICATION_752.md).
+
 **Source checkpoint 751.** Navigate the Vanishing Point preview. [Qualification](docs/SOURCE_PUBLICATION_751.md).
 
 **Source checkpoint 750.** Resize and move a floating Vanishing Point paste. [Qualification](docs/SOURCE_PUBLICATION_750.md).

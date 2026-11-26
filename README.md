@@ -23,7 +23,7 @@ Our target is byte-identical output for the same operation in Photato and Photos
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 751.** Vanishing Point adds pointer-anchored zoom and temporary Hand and magnification shortcuts. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_751.md).
+**Development alpha — source build 752.** Vanishing Point reuses resolved plane geometry while you navigate its preview. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_752.md).
 
 ## Project layout
 

@@ -157,7 +157,7 @@ import PhotoCraftImaging
   private var gestureStart:EditState?
   private var cloneAnchor: StampAnchor?
   var size:CGSize { .init(width:original.width,height:original.height) }
-  var scene:VanishingScene? { try? VanishingScene(program.settings,width:original.width,height:original.height) }
+  private(set) var scene: VanishingScene?
   var exportingScene = false
   var sceneExportMessage: String?
   var sceneExportError: String?
@@ -174,17 +174,30 @@ import PhotoCraftImaging
     seedSnapshot = snapshot
     seedDisplay = display
     program.settings = document.vanishingPoint ?? .init()
+    scene = try? VanishingScene(program.settings,width:document.width,height:document.height)
     tool = program.settings.planes.isEmpty ? .create : .edit
   }
   func prepare() async { refresh();await task?.value }
   private func remember(_ state: EditState) { undoStates.append(state);if undoStates.count>40 { undoStates.removeFirst() };redoStates=[] }
   func change(_ p:VanishingProgram,remember:Bool=true) {
-    do { try p.validate();_ = try VanishingScene(p.settings,width:original.width,height:original.height) } catch { self.error=error.localizedDescription;return }
+    let resolved: VanishingScene?
+    do {
+      try p.validate()
+      if scene == nil || p.settings != program.settings {
+        resolved = try VanishingScene(p.settings,width:original.width,height:original.height)
+      } else {
+        resolved = nil
+      }
+    } catch {
+      self.error=error.localizedDescription
+      return
+    }
     guard p != program else { error=nil;return }
     var previous = program
     previous.settings = previous.settings.withDisplayMetadata(from:p.settings)
     if remember && gestureStart == nil { self.remember(editState) }
     program = p
+    if let resolved { scene = resolved }
     selected = max(0,min(selected,p.settings.planes.count-1))
     if let i = selectedPaste, !p.operations.indices.contains(i) || p.operations[i].kind != .paste { selectedPaste = nil }
     if let i = selectedMarqueePatch, !p.operations.indices.contains(i) || p.operations[i].marquee == nil { selectedMarqueePatch = nil }

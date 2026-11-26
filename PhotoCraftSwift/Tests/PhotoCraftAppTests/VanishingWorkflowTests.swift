@@ -899,6 +899,42 @@ final class VanishingWorkflowTests:XCTestCase {
     XCTAssertFalse(model.canUndo)
   }
 
+  @MainActor func testVanishingSceneReusesResolvedFramesUntilSettingsChange() throws {
+    var document = try fixture()
+    document.vanishingPoint = program().settings
+    let model = VanishingWorkspace(document:document,layerID:document.layers[0].id)
+    defer { model.close() }
+    let initial = try XCTUnwrap(model.scene)
+
+    func sharesFrames(with expected: VanishingScene) throws -> Bool {
+      let frames = try XCTUnwrap(model.scene).frames
+      return frames.withUnsafeBufferPointer { current in
+        expected.frames.withUnsafeBufferPointer { previous in current.baseAddress == previous.baseAddress }
+      }
+    }
+
+    model.changePreviewZoom(by:1.5,about:.init(x:270,y:195),in:.init(width:800,height:600))
+    model.pan = .init(width:18,height:-4)
+    XCTAssertTrue(try sharesFrames(with:initial))
+    var painted = model.program
+    painted.operations = program().operations
+    model.change(painted)
+    XCTAssertTrue(try sharesFrames(with:initial))
+    model.movePlane(0,dx:5,dy:-2)
+    let moved = try XCTUnwrap(model.scene)
+    XCTAssertEqual(moved.frames[0].corners[0],.init(9,2))
+    XCTAssertFalse(try sharesFrames(with:initial))
+    let movedProgram = model.program
+    model.moveCorner(0,1,to:moved.frames[0].corners[0])
+    XCTAssertNotNil(model.error)
+    XCTAssertEqual(model.program,movedProgram)
+    XCTAssertTrue(try sharesFrames(with:moved))
+    model.undo()
+    XCTAssertEqual(model.scene?.frames[0].corners,initial.frames[0].corners)
+    XCTAssertEqual(model.program,painted)
+    XCTAssertNil(model.error)
+  }
+
   @MainActor func testClipboardPasteStartsInCanvasAndConformsAroundTheGrabPoint() async throws {
     let original = try fixture()
     let store = EditorStore(document:original,actions:ActionLibrary())

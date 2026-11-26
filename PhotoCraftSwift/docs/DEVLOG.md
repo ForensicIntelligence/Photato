@@ -770,7 +770,20 @@ For a readable account of the project from the beginning, see [Photato developme
 | 749 | 2026-11-25 | [Paste clipboard pixels before choosing a perspective plane](#dev-step-749) |
 | 750 | 2026-11-25 | [Resize and nudge floating Vanishing Point pastes](#dev-step-750) |
 | 751 | 2026-11-26 | [Navigate the Vanishing Point preview](#dev-step-751) |
+| 752 | 2026-11-26 | [Reuse the Vanishing Point preview geometry](#dev-step-752) |
 <!-- history-index:end -->
+
+<a id="dev-step-752"></a>
+
+## 2026-11-26 — Step 752 — Reuse the Vanishing Point preview geometry
+
+Vanishing Point retains its resolved planes as you pan, zoom and apply pixel-only workspace edits. Valid changes to plane settings resolve new geometry. Invalid changes leave the last valid scene available. The authenticated Photato API reads the same resolved scene as the desktop workspace. Existing request and response fields keep their meaning.
+
+VanishingWorkspace resolves a new scene when its settings change and observes the result. VanishingWorkflowTests checks reuse, validation and undo before returning to the previous scene.
+
+All 65 focused Debug tests passed. Both optimized architectures passed 879 of 881 selected tests, including the new scene reuse case. Intel ran under Rosetta. The two inherited failures repeated their earlier diagnostics. The extracted Universal app passed signature verification and offscreen launches on both architectures. The macOS 14+ ZIP is 77,829,674 bytes with SHA-256 `484f05f286245bc071e9764fdc8668fb3207f821a0273061acc30cc677a1e60d`.
+
+A 32-plane Debug replay read the scene across 240 view updates. Geometry reads fell from 93.70 ms to 0.057 ms with the same checksum. The measurement excludes drawing and compositor work. Exact Photoshop raster and overall interactive frame rate remain open. The 50% estimate remains current. [Qualification](SOURCE_PUBLICATION_752.md).
 
 <a id="dev-step-751"></a>
 
