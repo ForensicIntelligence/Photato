@@ -1,3 +1,13 @@
+## 2026-11-26 — Step 753 — Render a Vanishing Point grid onto a layer
+
+Use Render Grids to Document in Vanishing Point to draw plane edges and grid lines onto the selected layer. New Layer keeps the result separate from the source pixels. The option resets every session, and Undo restores the prior document.
+
+All 68 focused Debug tests passed. Both optimized architectures passed 882 of 884 selected tests, including the three new grid cases. Intel ran under Rosetta. The two inherited failures repeated their earlier diagnostics.
+
+A 1,600 × 768 dense grid previously reached the rendering work cap. The fixed implementation meters each tile draw and checks coverage across a tile boundary. A separate 1,600 × 1,200 PSD reopened with its raster and editable plane intact. The installed Photoshop menu showed grid rendering. Exact Photoshop grid positions and pixel values remain open. [Adobe’s Vanishing Point reference](https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/define-perspective-planes-in-vanishing-point.html).
+
+[Development record](DEVLOG.md#dev-step-753) · [Qualification](SOURCE_PUBLICATION_753.md).
+
 ## 2026-11-26 — Step 752 — Reuse the Vanishing Point preview geometry
 
 Vanishing Point retains its resolved planes as you pan, zoom and apply pixel-only workspace edits. Valid changes to plane settings resolve new geometry. Invalid changes leave the last valid scene available.
@@ -2141,11 +2151,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:752 -->
+<!-- current-status-step:753 -->
 
-Vanishing Point retains its resolved planes as you pan, zoom and apply pixel-only workspace edits. Valid changes to plane settings resolve new geometry. Invalid changes leave the last valid scene available.
+Use Render Grids to Document in Vanishing Point to draw plane edges and grid lines onto the selected layer. New Layer keeps the result separate from the source pixels. The option resets every session, and Undo restores the prior document.
 
-[Development record](DEVLOG.md#dev-step-752) · [Qualification](SOURCE_PUBLICATION_752.md).
+[Development record](DEVLOG.md#dev-step-753) · [Qualification](SOURCE_PUBLICATION_753.md).
 
 <!-- current-status:end -->
 
@@ -3104,6 +3114,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-25 | 750 | [Resize and nudge floating Vanishing Point pastes](DEVLOG.md#dev-step-750) |
 | 2026-11-26 | 751 | [Navigate the Vanishing Point preview](DEVLOG.md#dev-step-751) |
 | 2026-11-26 | 752 | [Reuse the Vanishing Point preview geometry](DEVLOG.md#dev-step-752) |
+| 2026-11-26 | 753 | [Render a Vanishing Point grid onto a layer](DEVLOG.md#dev-step-753) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

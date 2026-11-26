@@ -80,6 +80,9 @@ struct VanishingSheet:View {
           Button("Cancel Export") { model.cancelSceneExport() }
         }
         Menu("Options") {
+          Toggle("Render Grids to Document",isOn:$model.renderGrids)
+            .disabled(model.program.settings.planes.isEmpty)
+            .help("Draw the perspective grids on the document when applying Vanishing Point.")
           Toggle("Allow Multi-surface Operations",isOn:$model.allowMultiSurfaceOperations)
             .help("Continue Brush and Stamp strokes and wrap Marquee selections across linked planes.")
           Toggle("Clip Operations to Surface Edges",isOn:Binding(
@@ -330,23 +333,10 @@ struct VanishingPreview:View {
             var grid = Path()
             grid.addLines(frame.corners.map(screen))
             grid.closeSubpath()
-            let intervals = scene.gridIntervals(for:i,settings:settings)
-            func drawLines(length: Double, horizontal: Bool) {
-              let count = length / (horizontal ? intervals.y : intervals.x)
-              guard count.isFinite, count > 1 else { return }
-              // Thin out small projected intervals to bound preview work.
-              let stride = max(1, (count / 384).rounded(.up))
-              for index in 1...384 {
-                let position = Double(index) * stride / count
-                guard position < 1 else { break }
-                let start = horizontal ? PathPoint(0,position) : PathPoint(position,0)
-                let end = horizontal ? PathPoint(1,position) : PathPoint(position,1)
-                grid.move(to: screen(frame.point(start)))
-                grid.addLine(to: screen(frame.point(end)))
-              }
+            scene.forEachInteriorGridLine(for:i,settings:settings,previewLimit:384) { start,end in
+              grid.move(to:screen(start))
+              grid.addLine(to:screen(end))
             }
-            drawLines(length: frame.width, horizontal: false)
-            drawLines(length: frame.height, horizontal: true)
             context.stroke(grid,with:.color(i==model.selected ? .cyan:.blue.opacity(0.6)),lineWidth:i==model.selected ? 1:0.6)
             for p in frame.corners { let q=screen(p);context.fill(Path(ellipseIn:CGRect(x:q.x-4,y:q.y-4,width:8,height:8)),with:.color(i==model.selected ? .cyan:.blue)) }
           }

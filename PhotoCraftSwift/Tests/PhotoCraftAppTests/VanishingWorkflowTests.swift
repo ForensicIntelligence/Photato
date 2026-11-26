@@ -737,6 +737,57 @@ final class VanishingWorkflowTests:XCTestCase {
     }
   }
 
+  @MainActor func testRenderGridsNativeAndAPIProduceTheSameLayerAndUndo() async throws {
+    var source = try fixture()
+    var settings = program().settings
+    let scene = try VanishingScene(settings,width:source.width,height:source.height)
+    settings.center = scene.center
+    settings.focalLength = scene.focal
+    source.vanishingPoint = settings
+    let id = source.layers[0].id
+    let store = EditorStore(document:source,actions:ActionLibrary())
+    defer { store.renderTask?.cancel();store.cancelVanishingPoint() }
+    store.beginVanishingPoint()
+    let model = try XCTUnwrap(store.vanishingWorkspace)
+    await model.prepare()
+    XCTAssertTrue(model.ready,model.error ?? "Grid workspace was not ready")
+    XCTAssertFalse(model.renderGrids)
+    XCTAssertNil(model.annotationRenderRequest())
+    model.showGrid = false
+    model.renderGrids = true
+    XCTAssertEqual(model.apiState["renderGrids"] as? Bool,true)
+    XCTAssertEqual(store.document,source)
+    store.commitVanishingPoint()
+    await store.geometryTask?.value
+    XCTAssertNil(store.error)
+    let native = store.document
+    XCTAssertNotEqual(native.layers[0].content,source.layers[0].content)
+    XCTAssertEqual(native.vanishingPoint,source.vanishingPoint)
+    XCTAssertEqual(store.session.undoStack.count,1)
+    _ = await store.requestHistory(redo:false).value
+    XCTAssertEqual(store.document,source)
+    store.beginVanishingPoint()
+    XCTAssertEqual(store.vanishingWorkspace?.renderGrids,false)
+    store.cancelVanishingPoint()
+
+    let helper = AutomationTests()
+    try await helper.withService(actions:ActionLibrary(),pressedMouseButtons:{0}) { service,document in
+      document.store.session = EditorSession(document:source)
+      try service.share(document)
+      let malformed = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":id.uuidString,"renderGrids":"true"])
+      XCTAssertEqual(malformed,400)
+      XCTAssertEqual(document.store.document,source)
+      let applied = try await helper.edit(service,document,"filter.vanishingPoint",
+        ["layerID":id.uuidString,"renderGrids":true])
+      XCTAssertEqual(applied,200)
+      XCTAssertEqual(document.store.document,native)
+      let undone = try await helper.edit(service,document,"history.undo")
+      XCTAssertEqual(undone,200)
+      XCTAssertEqual(document.store.document,source)
+    }
+  }
+
   @MainActor func testRenderMeasurementsNativeAndAPIProduceTheSameLayerAndUndo() async throws {
     var source = try fixture()
     var settings = program().settings

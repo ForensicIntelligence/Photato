@@ -1,0 +1,150 @@
+{
+  "build": 753,
+  "base": "d4041c1c6a8de2cd91b788c194068bb2a7fda577",
+  "inputCount": 9429,
+  "inputDigest": "2e5717b17dbc846c75316a5facda320aacf1376b8d87a80ec248c8eb00141942",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraft/AutomationCommands.swift": "15804687edf37fd4176bfdf22569cd0116ac73bb1f048c5a571a298676c0dc15",
+    "Sources/PhotoCraft/AutomationVanishingPoint.swift": "d0cb573ef5a2bb26848237b6c7819d8480a5ac0d0b5c5ccab58b54836e00aeed",
+    "Sources/PhotoCraft/VanishingSheet.swift": "876441afeddc50c923ee3ac69d01d8e82d2979033c26d3e72930daa4e6741277",
+    "Sources/PhotoCraft/VanishingWorkspace.swift": "6346a71d37630d09f9d361905544634989076f320ef7f18a22faf7761561502d",
+    "Sources/PhotoCraftCore/VanishingAnnotations.swift": "a5cfafa6f0c6221c5967e9f1a0abee57959b258f9f810787ad80871480f285d6",
+    "Sources/PhotoCraftCore/VanishingEngine.swift": "7ba8207c759b0fadb4926e71b507a0023ac86c7c4bbb8fb3edcd0833f99db22b",
+    "Sources/PhotoCraftCore/VanishingPoint.swift": "246ea133d827562d44c8a9535b294526b18f8f65e666591c7d33b65dc33a6afe",
+    "Tests/PhotoCraftAppTests/VanishingWorkflowTests.swift": "a9a7f9fa04151a102c0900f63cbe8d7f7dba196c2c6852f8c228bd4b000a1f28",
+    "Tests/PhotoCraftCoreTests/VanishingTests.swift": "ac882d3f5d2237659830bc2ea31bd57b549d15f3ee7ea148de6ec202b16849f6",
+    "scripts/Info.plist": "d3eaa9a988c9331e97fc72c23d68f770aa9b6d73fd00bc14e19b9675de5775f1"
+  },
+  "focusedDebug": {
+    "corePass": 37,
+    "appAndHTTPPass": 31
+  },
+  "qualification": {
+    "arm": {
+      "architecture": "arm64",
+      "configuration": "release",
+      "expected": 884,
+      "passed": 882,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "56ec587d9987e7c5da3d6709fbd7bde56b4dbcbd449660ef9f5102ed8123fffa"
+    },
+    "intel": {
+      "architecture": "x86_64",
+      "configuration": "release",
+      "expected": 884,
+      "passed": 882,
+      "newCasesExpected": 3,
+      "newCasesPassed": 3,
+      "failed": [
+        "PhotoCraftImagingTests.PagedColorProfileTests/testDenseAndPagedRetainAllFrozenLegacyWordsAndExplicitErrors",
+        "PhotoCraftImagingTests.SourceLayerEffectTests/testAllOriginalEffectReferenceWordsExactly"
+      ],
+      "missing": [],
+      "matchesPredecessorFailureNames": true,
+      "testExecutableSHA256": "b91a60e14cc4e531ad6edf3d0aa438048ae47f9ac873f8cd564a518e0ae0bb80"
+    }
+  },
+  "predecessorFailureDiagnostics": {
+    "arm": 152,
+    "intel": 412
+  },
+  "rectangleGridRoundTrip": {
+    "canvas": [
+      1600,
+      1200
+    ],
+    "gridSize": 100,
+    "layerBounds": [
+      159,
+      199,
+      1322,
+      802
+    ],
+    "planes": 1,
+    "reopenedWithEditablePlanes": true
+  },
+  "psdSHA256": "de8239ba92c9f76928f9380a2295019b1818a80732a950c9e04d3d74377f1844",
+  "compositePngSHA256": "e863d00d0555fccb66baabd7634f985d74f1aef362064a378f53cf4895828475",
+  "photoshopReference": {
+    "documentation": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/define-perspective-planes-in-vanishing-point.html",
+    "exactRasterQualified": false,
+    "nativeMenuObserved": true
+  },
+  "preview": {
+    "build": 753,
+    "archive": "Photato-universal.zip",
+    "archiveSHA256": "3a1dec30e13d59af853bbbe755b8e10599b1bcbf4ac2eb673328fdcc76339367",
+    "archiveBytes": 77836558,
+    "gitPath": "downloads/Photato-universal.zip",
+    "bundleID": "ca.forensicintelligence.photato.preview",
+    "signing": "ad-hoc",
+    "localSymbolsStripped": true,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "8d1bbd41d2fea3576ac8d0cf9ca3635ea3e866e94289ab228c51d9cbabf087b0",
+    "architectureInputsSHA256": {
+      "arm64": "99d209b6a457ff625baeee6ea861c2d64e51988cd3e6e7d93cd0fc7fa5f8d650",
+      "x86_64": "f645a668296efeba7063f13da0309ace8d537519285884e40035c1ef2da70a15"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    }
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "pngSHA256": "c26608357d25297707ffaaf345cc06ceb6fd53de40217773436f1dd13956852f",
+      "size": [
+        1700,
+        1174
+      ]
+    },
+    "x86_64": {
+      "pngSHA256": "70b36ff2bc8f1d8b462a1fd2aa4feba01ac14c6317a622f27ab841eacbfb66d2",
+      "size": [
+        1700,
+        1174
+      ]
+    }
+  },
+  "probeLogsSHA256": {
+    "xcode-debug-753-02.log": "62de96da0c86fbef854f497988b8de2abb72f63747c309858ec42c9d1966ec5c",
+    "xcode-focused-core-753-03.log": "a395f29e2f62e93728c6f497eb5e661aa3f9c4f2eea38f3ae05975667f9a945f",
+    "xcode-focused-app-753-02.log": "2929f1412004e12bc7a27cb9a66091d59ab169506802de7b529949ae9208902d",
+    "xcode-focused-core-753-02-before-grid-budget.log": "ec236a43b8c3508c1160166f1a09cc6df11543a1a71b37c0b37f774558960e46",
+    "PHOTOSHOP_GRID_MENU.md": "a61295d28d5c859b13278288a06ab775e1fb9481e510831bba0885c939d35ed0",
+    "swiftpm-release-arm01.log": "8ababab5004008fae76008689a4a6d2ecb94726c37de0b824038e4d51e175e97",
+    "swiftpm-release-intel01.log": "456877a6761938bbfffe36003e5df3fbe477042f24b03225fdfcc59108bef998",
+    "package-preview01.log": "664957fa30d612aebdfc089d470d6518e1a0adf708899d0929ecf80194d328d3",
+    "preview-offscreen01.log": "44be5ecdcf96572b489585a309a0de5e6f537c253bc7830766d48606f6faad98",
+    "qualification-arm01.log": "96cb1aa349336b92c719e4a6f3101387a4afdc5f4ecff0d4b4e67d96c7ab3d69",
+    "qualification-intel01.log": "fcbb8c12880827a2c57d70255a051fe56ad17c0f14a71a874412cc79d3498fd9"
+  }
+}

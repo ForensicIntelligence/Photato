@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 753.** Rasterize a Vanishing Point grid on a layer. [Qualification](docs/SOURCE_PUBLICATION_753.md).
+
 **Source checkpoint 752.** Reuse Vanishing Point geometry while navigating and editing. [Qualification](docs/SOURCE_PUBLICATION_752.md).
 
 **Source checkpoint 751.** Navigate the Vanishing Point preview. [Qualification](docs/SOURCE_PUBLICATION_751.md).

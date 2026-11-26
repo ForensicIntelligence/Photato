@@ -648,8 +648,8 @@ public enum VanishingEngine {
         }
       }
     }
-    if program.drawsMeasurements {
-      try VanishingAnnotationRaster.apply(program.settings,scene:scene,to:&output,charge:charge)
+    if program.drawsMeasurements || program.drawsGrids {
+      try VanishingAnnotationRaster.apply(program,scene:scene,to:&output,charge:charge)
     }
     return output
   }
@@ -663,8 +663,8 @@ public struct VanishingEdit:Sendable {
   public let layerID:UUID
   public let program:VanishingProgram
   public func updatingDisplayMetadata(_ settings: VanishingSettings) throws -> Self {
-    guard !program.drawsMeasurements else {
-      throw CraftError.invalid("Rendered measurement pixels must be prepared again when their settings change.")
+    guard !program.drawsMeasurements, !program.drawsGrids else {
+      throw CraftError.invalid("Rendered perspective annotations must be prepared again when their settings change.")
     }
     var program = program, result = result
     program.settings = program.settings.withDisplayMetadata(from: settings)
@@ -688,7 +688,7 @@ public struct VanishingEdit:Sendable {
     let scene = try VanishingScene(program.settings,width:d.width,height:d.height)
     var result=d,settings=program.settings;settings.center=scene.center;settings.focalLength=scene.focal
     result.vanishingPoint=settings.planes.isEmpty ? nil:settings
-    if !program.operations.isEmpty || program.drawsMeasurements {
+    if !program.operations.isEmpty || program.drawsMeasurements || program.drawsGrids {
       let overlay=try VanishingEngine.render(program,sample:sample.converted(to:d.depth))
       if program.newLayer {
         guard d.layers.count<LayerLimits.maximumLayers else { throw CraftError.invalid("Layer limit reached.") }

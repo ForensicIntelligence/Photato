@@ -44,6 +44,7 @@ import PhotoCraftImaging
   var marqueeHeal: VanishingOperation.Heal = .off
   /// Session choice. The preview remains editable until Apply.
   var renderMeasurements = false
+  var renderGrids = false
   var showMeasurements = true
   var measurements: [VanishingMeasurement] { program.settings.measurements ?? [] }
   var selectedMeasurementLength: Double? {
@@ -585,10 +586,12 @@ import PhotoCraftImaging
       } catch { guard let self,!self.closed,self.generation==token else { return };self.rendering=false;if !Task.isCancelled { self.error=error.localizedDescription } }
     }
   }
-  func measurementRenderRequest() -> (program: VanishingProgram, sample: Surface)? {
-    guard renderMeasurements, !measurements.isEmpty, let sourcePreview else { return nil }
+  func annotationRenderRequest() -> (program: VanishingProgram, sample: Surface)? {
+    guard let sourcePreview else { return nil }
     var output = program
-    output.renderMeasurements = true
+    output.renderMeasurements = renderMeasurements && !measurements.isEmpty ? true : nil
+    output.renderGrids = renderGrids && !program.settings.planes.isEmpty ? true : nil
+    guard output.renderMeasurements == true || output.renderGrids == true else { return nil }
     return (output,sourcePreview.sample ?? sourcePreview.snapshot.surface)
   }
   func presentSceneExport(_ format: VanishingSceneExport.Format) {
@@ -678,7 +681,7 @@ extension EditorStore {
   func cancelVanishingPoint() { vanishingWorkspace?.close();vanishingWorkspace=nil }
   func commitVanishingPoint() {
     guard let draft = vanishingWorkspace, draft.ready, let edit = draft.preparedEdit, document == edit.source else { return }
-    let request = draft.measurementRenderRequest()
+    let request = draft.annotationRenderRequest()
     draft.close()
     vanishingWorkspace = nil
     performGeometry(label: "Vanishing Point") { source in

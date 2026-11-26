@@ -536,6 +536,67 @@ final class VanishingTests:XCTestCase {
     }
   }
 
+  func testRenderGridsUsesPlaneSpacingAndDocumentSelection() throws {
+    var source = try CraftDocument(width:64,height:48)
+    let empty = try Surface(width:64,height:48,fill:.clear)
+    source.layers[0].content = .raster(empty)
+    source.selection = .init(x:0,y:4,width:32,height:40)
+    let id = source.layers[0].id
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners:[.init(4,4),.init(60,4),.init(60,44),.init(4,44)])]
+    program.settings.gridSize = 8
+    let scene = try VanishingScene(program.settings,width:64,height:48)
+    var lines: [(PathPoint,PathPoint)] = []
+    scene.forEachInteriorGridLine(for:0,settings:program.settings,previewLimit:2) { lines.append(($0,$1)) }
+    XCTAssertFalse(lines.isEmpty)
+    XCTAssertLessThanOrEqual(lines.count,4)
+    let defaultEdit = try VanishingEdit.prepare(source,layerID:id,program:program,sample:empty)
+    XCTAssertEqual(defaultEdit.result.layers,source.layers)
+    XCTAssertEqual(defaultEdit.result.vanishingPoint?.planes,program.settings.planes)
+    XCTAssertEqual(defaultEdit.result.vanishingPoint?.gridSize,8)
+
+    program.newLayer = true
+    program.renderGrids = true
+    let edit = try VanishingEdit.prepare(source,layerID:id,program:program,sample:empty)
+    XCTAssertEqual(edit.result.layers.count,2)
+    XCTAssertEqual(edit.result.layers[0],source.layers[0])
+    XCTAssertEqual(edit.result.vanishingPoint,defaultEdit.result.vanishingPoint)
+    XCTAssertThrowsError(try edit.updatingDisplayMetadata(program.settings))
+    guard case .raster(let grid) = edit.result.layers[1].content else { return XCTFail() }
+    let line = grid.pixel(x:12,y:16)
+    XCTAssertGreaterThan(line.a,0.25)
+    XCTAssertGreaterThan(line.b,line.r)
+    XCTAssertGreaterThan(grid.pixel(x:4,y:16).a,0.25)
+    XCTAssertEqual(grid.pixel(x:16,y:16).a,0)
+    XCTAssertEqual(grid.pixel(x:36,y:16).a,0)
+    XCTAssertEqual(grid.pixel(x:2,y:16).a,0)
+
+    program.settings.measurementScales = [.init(root:0,pixelsPerUnit:4,linkedToGrid:true)]
+    let calibrated = try VanishingEdit.prepare(source,layerID:id,program:program,sample:empty)
+    guard case .raster(let closer) = calibrated.result.layers[1].content else { return XCTFail() }
+    XCTAssertGreaterThan(closer.pixel(x:16,y:16).a,0.25)
+    var session = EditorSession(document:source)
+    try session.execute(.vanishingPoint(edit))
+    try session.undo()
+    XCTAssertEqual(session.document,source)
+  }
+
+  func testDenseGridRendersAcrossTileBoundariesWithinWorkBudget() throws {
+    let width = 1_600, height = 768
+    let input = try Surface(width:width,height:height,fill:.clear)
+    var program = VanishingProgram()
+    program.settings.planes = [.init(corners:[.init(0,0),.init(Double(width),0),
+      .init(Double(width),Double(height)),.init(0,Double(height))])]
+    program.settings.gridSize = 1
+    program.renderGrids = true
+    let grid = try VanishingEngine.render(program,sample:input)
+    let center = grid.pixel(x:799,y:383)
+    XCTAssertGreaterThan(center.a,0.5)
+    for point in [(63,63),(64,63),(63,64),(64,64),(1_598,766)] {
+      XCTAssertEqual(grid.pixel(x:point.0,y:point.1),center)
+    }
+  }
+
   func testRasterMeasurementsUseSparseDiagonalTiles() throws {
     let side = 16_384
     let input = try Surface(width:side,height:side,fill:.clear)

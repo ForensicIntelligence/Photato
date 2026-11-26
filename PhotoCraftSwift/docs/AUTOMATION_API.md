@@ -1,3 +1,9 @@
+### Vanishing Point raster grids
+
+Set the top-level `renderGrids` boolean on `filter.vanishingPoint` to rasterize the saved or supplied plane borders and grid lines on Apply. The option defaults to false. The raster uses the current plane grid size or linked measurement scale. Use `newLayer:true` for a separate layer. The planes remain editable, and undo restores the exact prior document. The open workspace’s `renderGrids` field reports the pending desktop choice independently from `showGrid`, which controls the preview overlay.
+
+[Qualification](SOURCE_PUBLICATION_753.md).
+
 ### Vanishing Point preview navigation
 
 The open desktop workspace publishes its current `zoom` and `pan` in the authenticated workspace state. Pan uses preview offsets in view points. These fields are read-only observations of the desktop view. The desktop Zoom and Hand tools share the same workspace state and never create an undo step. [Qualification](SOURCE_PUBLICATION_751.md).

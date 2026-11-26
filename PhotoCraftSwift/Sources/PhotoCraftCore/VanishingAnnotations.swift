@@ -53,19 +53,22 @@ enum VanishingAnnotationRaster {
   }
 
   private enum Mark {
+    case grid(CGPoint,CGPoint)
     case line(CGPoint,CGPoint)
     case label(Label)
   }
 
-  static func apply(_ settings: VanishingSettings, scene: VanishingScene, to output: inout Surface,
+  static func apply(_ program: VanishingProgram, scene: VanishingScene, to output: inout Surface,
     charge: (Int) throws -> Void) throws
   {
-    guard let lines = settings.measurements, !lines.isEmpty else { return }
+    let settings = program.settings
+    let lines = program.drawsMeasurements ? settings.measurements ?? [] : []
     let side = Surface.tileSide
     let width = output.width, height = output.height
     let columns = (width + side - 1) / side
     let font = CTFontCreateWithName("Menlo" as CFString,11,nil)
     let black = CGColor(gray:0,alpha:1), white = CGColor(gray:1,alpha:1)
+    let blue = CGColor(red:0.18,green:0.52,blue:1,alpha:1)
     var tiles: [Int:[Mark]] = [:]
 
     func indices(_ minimum: Double,_ maximum: Double, dimension: Int) -> ClosedRange<Int>? {
@@ -78,8 +81,16 @@ enum VanishingAnnotationRaster {
     func append(_ mark: Mark, toRow row: Int, from left: Double,to right: Double) throws {
       guard let columnsTouched = indices(left,right,dimension:width) else { return }
       for column in columnsTouched {
-        try charge(min(side,width-column*side)*min(side,height-row*side))
-        tiles[row*columns+column,default:[]].append(mark)
+        let key = row*columns+column
+        let area = min(side,width-column*side)*min(side,height-row*side)
+        if case .grid = mark {
+          // All grid segments share one draw and readback per tile.
+          try charge(side+1)
+          if tiles[key] == nil { try charge(area) }
+        } else {
+          try charge(area)
+        }
+        tiles[key,default:[]].append(mark)
       }
     }
 
@@ -88,15 +99,9 @@ enum VanishingAnnotationRaster {
       for row in rows { try append(.label(label),toRow:row,from:label.box.minX,to:label.box.maxX) }
     }
 
-    let format = FloatingPointFormatStyle<Double>.number.locale(Locale(identifier:"en_US_POSIX"))
-      .grouping(.never).precision(.fractionLength(0...2))
-    for (index,line) in lines.enumerated() {
+    func enqueueLine(from a: CGPoint, to b: CGPoint, padding: Double, mark: Mark) throws {
       try Task.checkCancellation()
-      let frame = scene.frames[line.plane]
-      let p = frame.point(line.start), q = frame.point(line.end)
-      let a = CGPoint(x:p.x,y:p.y), b = CGPoint(x:q.x,y:q.y)
       let dx = b.x-a.x, dy = b.y-a.y
-      let padding = 4.0
       if let rows = indices(min(a.y,b.y)-padding,max(a.y,b.y)+padding,dimension:height) {
         for row in rows {
           try Task.checkCancellation()
@@ -111,9 +116,33 @@ enum VanishingAnnotationRaster {
           }
           guard start <= end else { continue }
           let x0 = a.x + start*dx, x1 = a.x + end*dx
-          try append(.line(a,b),toRow:row,from:min(x0,x1)-padding,to:max(x0,x1)+padding)
+          try append(mark,toRow:row,from:min(x0,x1)-padding,to:max(x0,x1)+padding)
         }
       }
+    }
+
+    if program.drawsGrids {
+      func gridLine(_ start: PathPoint, _ end: PathPoint) throws {
+        try charge(side)
+        let a = CGPoint(x:start.x,y:start.y), b = CGPoint(x:end.x,y:end.y)
+        try enqueueLine(from:a,to:b,padding:1,mark:.grid(a,b))
+      }
+      for (index,frame) in scene.frames.enumerated() {
+        for corner in frame.corners.indices {
+          try gridLine(frame.corners[corner],frame.corners[(corner+1)%frame.corners.count])
+        }
+        try scene.forEachInteriorGridLine(for:index,settings:settings,gridLine)
+      }
+    }
+
+    let format = FloatingPointFormatStyle<Double>.number.locale(Locale(identifier:"en_US_POSIX"))
+      .grouping(.never).precision(.fractionLength(0...2))
+    for (index,line) in lines.enumerated() {
+      let frame = scene.frames[line.plane]
+      let p = frame.point(line.start), q = frame.point(line.end)
+      let a = CGPoint(x:p.x,y:p.y), b = CGPoint(x:q.x,y:q.y)
+      let dx = b.x-a.x, dy = b.y-a.y
+      try enqueueLine(from:a,to:b,padding:4,mark:.line(a,b))
       if let length = scene.measurementLength(line,settings:settings) {
         let text = length < 1e10 ? length.formatted(format) : String(format:"%.3g",length)
         try enqueue(Label(text:text,centeredAt:.init(x:(a.x+b.x)/2,y:(a.y+b.y)/2-13),font:font,color:white))
@@ -126,7 +155,7 @@ enum VanishingAnnotationRaster {
     }
 
     guard let space = CGColorSpace(name:output.depth == .f32 ? CGColorSpace.linearSRGB : CGColorSpace.sRGB)
-      else { throw CraftError.invalid("Could not prepare the measurement annotation color space.") }
+      else { throw CraftError.invalid("Could not prepare the perspective annotation color space.") }
     for key in tiles.keys.sorted() {
       try Task.checkCancellation()
       let x0 = key % columns * side, y0 = key / columns * side
@@ -134,16 +163,29 @@ enum VanishingAnnotationRaster {
       let layout = CGBitmapInfo.byteOrder32Big.rawValue | CGImageAlphaInfo.premultipliedLast.rawValue
       guard let context = CGContext(data:nil,width:tileWidth,height:tileHeight,bitsPerComponent:8,
         bytesPerRow:tileWidth*4,space:space,bitmapInfo:layout), let raw = context.data else {
-        throw CraftError.invalid("Could not prepare a measurement annotation tile.")
+        throw CraftError.invalid("Could not prepare a perspective annotation tile.")
       }
       context.clear(CGRect(x:0,y:0,width:tileWidth,height:tileHeight))
       context.translateBy(x:-CGFloat(x0),y:CGFloat(tileHeight+y0))
       context.scaleBy(x:1,y:-1)
       context.setAllowsFontSmoothing(false)
       context.setLineCap(.round)
+      if program.drawsGrids {
+        context.setLineCap(.butt)
+        context.setStrokeColor(blue)
+        context.setLineWidth(1)
+        context.beginPath()
+        for case .grid(let a,let b) in tiles[key,default:[]] {
+          context.move(to:a)
+          context.addLine(to:b)
+        }
+        context.strokePath()
+        context.setLineCap(.round)
+      }
 
       for mark in tiles[key,default:[]] {
         switch mark {
+        case .grid: break
         case .line(let a,let b):
           for (color,strokeWidth) in [(black,3.0),(white,1.0)] {
             context.setStrokeColor(color)

@@ -421,6 +421,29 @@ public struct VanishingScene:Sendable {
     return .init(interval,interval)
   }
 
+  /// Visits projected interior grid lines. A preview can thin the grid at small view scales.
+  public func forEachInteriorGridLine(for plane: Int, settings: VanishingSettings, previewLimit: Int? = nil,
+    _ visit: (PathPoint, PathPoint) throws -> Void) rethrows
+  {
+    guard frames.indices.contains(plane) else { return }
+    let frame = frames[plane]
+    let intervals = gridIntervals(for:plane,settings:settings)
+    for horizontal in [false,true] {
+      let count = horizontal ? frame.height/intervals.y : frame.width/intervals.x
+      guard count.isFinite, count > 1 else { continue }
+      let stride = previewLimit.map { max(1,(count/Double(max(1,$0))).rounded(.up)) } ?? 1
+      var index = 1
+      while true {
+        let position = Double(index)*stride/count
+        guard position < 1 else { break }
+        let start = horizontal ? PathPoint(0,position) : PathPoint(position,0)
+        let end = horizontal ? PathPoint(1,position) : PathPoint(position,1)
+        try visit(frame.point(start),frame.point(end))
+        index += 1
+      }
+    }
+  }
+
   public func measurement(plane: Int, from start: PathPoint, to end: PathPoint) -> VanishingMeasurement? {
     guard frames.indices.contains(plane) else { return nil }
     let frame = frames[plane]
@@ -583,6 +606,9 @@ public struct VanishingProgram:Codable,Equatable,Sendable {
   /// An opt-in write for this edit. Editable lines remain with the document.
   public var renderMeasurements: Bool?
   var drawsMeasurements: Bool { renderMeasurements == true && !(settings.measurements?.isEmpty ?? true) }
+  /// Write the current plane grids as raster marks while retaining the editable planes.
+  public var renderGrids: Bool?
+  var drawsGrids: Bool { renderGrids == true && !settings.planes.isEmpty }
   public init() {}
   public func validate() throws {
     try settings.validate();guard operations.count<=256,operations.reduce(0,{$0+$1.points.count})<=16384,operations.reduce(0,{$0+($1.source?.allocatedBytes ?? 0)})<=134_217_728 else { throw CraftError.unsupported("Vanishing Point exceeds the operation or source memory limit.") }

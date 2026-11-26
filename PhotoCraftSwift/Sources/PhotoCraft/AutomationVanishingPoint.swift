@@ -109,6 +109,7 @@ extension VanishingSettings {
      "coordinates":"Corners and stroke/source points are document pixels. Paste at is plane(u,v), width is a fraction of metric plane width, rotation clockwise about paste origin. Zero focal length first uses measured orthogonal axes across a usable linked hinge, then infers from the first plane or uses the longer canvas side.",
      "state":"Document and workspace state include resolved camera, plane corners and grid intervals, projected measurement endpoints, calibrated lengths, and angles in degrees.",
      "renderMeasurements":"Set renderMeasurements:true to write raster annotations with calibrated distances and angles. The existing newLayer option controls destination. Editable lines remain with the document and each apply takes one undo step.",
+     "renderGrids":"Set renderGrids:true to draw plane borders and the current calibrated grid spacing. Combine with newLayer:true to retain existing layer pixels. Editable planes remain with the document and each apply takes one undo step.",
      "measurement":"Desktop Measure and API settings keep editable lines in a plane, including visible points outside the plane. The command can calibrate a selected line to a known length. Connected planes share the root's calibration and optional grid link.",
      "operations":"Create/save/edit planes with no operations; brush, clone and perspective paste with sourceLayerID (raw raster layer pixels, resolved before mutation). Sequential operations sample the visible composite plus earlier draft operations; each clone stroke takes an immutable source snapshot.",
      "marquee":"Lower and upper are rectified fractions of each rectangle's anchor plane. Set wrap:true individually on source and destination to continue that rectangle across linked surfaces. The destination angle rotates around its center in rectified space. Feather uses the projected selection boundary without feathering internal hinges. Each patch samples the visible composite and preceding operations using bicubic interpolation.",
@@ -144,6 +145,10 @@ extension AutomationCommand {
     if let value = parameters["renderMeasurements"] {
       guard case .bool(let enabled) = value else { throw fail("renderMeasurements must be boolean.") }
       if enabled { p.renderMeasurements = true }
+    }
+    if let value = parameters["renderGrids"] {
+      guard case .bool(let enabled) = value else { throw fail("renderGrids must be boolean.") }
+      if enabled { p.renderGrids = true }
     }
     if let value=parameters["settings"] {
       guard case .object(let fields)=value,Set(fields.keys).isSubset(of:["planes","focalLength","center","gridSize","measurements","measurementScales"]) else { throw fail("Invalid plane settings.") }
@@ -296,7 +301,7 @@ extension AutomationCommand {
       }
       return state
     }
-    return ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"pan":["x":pan.width,"y":pan.height],"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"canExportScene":canExportScene,"exportingScene":exportingScene,"renderMeasurements":renderMeasurements,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
+    return ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"pan":["x":pan.width,"y":pan.height],"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"canExportScene":canExportScene,"exportingScene":exportingScene,"renderMeasurements":renderMeasurements,"renderGrids":renderGrids,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
       "pendingMeasurement":pendingMeasurement != nil,"canUndo":canUndo,"canRedo":canRedo,"heal":heal.rawValue,"selectedPasteHeal":selectedPasteHeal?.rawValue as Any? ?? NSNull(),"error":error as Any? ?? NSNull(),
       "marquee":bounds as Any? ?? NSNull(),"marqueeMoveMode":marqueeMoveMode.rawValue,"floatingMarquee":floatingMarqueeOperation != nil,
       "selectedPaste":paste as Any? ?? NSNull(),
