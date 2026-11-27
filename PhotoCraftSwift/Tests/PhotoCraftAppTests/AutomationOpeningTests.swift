@@ -99,6 +99,44 @@ final class AutomationOpeningTests: XCTestCase {
       }
     }
   }
+  @MainActor func testGrayscalePNGImportAndDownloadPreserveTheNativePlanes() async throws {
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, original in
+      defer { for document in service.controller.documents where document !== original { document.close() } }
+      service.setDocumentTransfersEnabled(true)
+      for depth in [PixelDepth.u8, .u16] {
+        let maximum: UInt32 = depth == .u8 ? 255 : 65535
+        let gray = [maximum - 11, maximum / 2, 3]
+        let alpha: [UInt32] = [0, 1, maximum]
+        let builder = try NativeModeRaster.RowBuilder(width: 3, height: 1, mode: .grayscale, depth: depth)
+        try builder.appendRow(gray, component: 0)
+        try builder.appendRow(alpha, component: 1)
+        let raster = try builder.finish()
+        var document = try CraftDocument(width: 3, height: 1, depth: depth)
+        document.modeDescriptor = try .init(mode: .grayscale, depth: depth, profile: raster.profile)
+        document.layers[0].nativeMode = raster
+        document.layers[0].content = .raster(try raster.surface())
+        let input = try DocumentIO.encode(document, format: .png)
+        let imported = try await upload(service, bytes: input, type: "image/png", format: "png")
+        XCTAssertEqual(imported.0.statusCode, 201, String(decoding: imported.1, as: UTF8.self))
+        let share = try XCTUnwrap(service.shares.last)
+        let opened = try XCTUnwrap(share.document?.store.document)
+        func check(_ document: CraftDocument) throws {
+          XCTAssertEqual(document.colorMode, .grayscale)
+          XCTAssertEqual(document.depth, depth)
+          let native = try XCTUnwrap(document.layers.first?.nativeMode)
+          XCTAssertEqual(gray.indices.map { native.rawWord(component: 0, index: $0) }, gray)
+          XCTAssertEqual(alpha.indices.map { native.rawWord(component: 1, index: $0) }, alpha)
+        }
+        try check(opened)
+        if depth == .u8 { try check(AdobeActionAssets.decode(input)) }
+        let download = try await helper.request(service, path: "/v1/documents/\(share.id)/file.png")
+        XCTAssertEqual(download.0.statusCode, 200)
+        try check(RasterIO.read(download.1))
+      }
+    }
+  }
+
   @MainActor func testNativeOpeningStatePrivacyPermissionsAndExactIDCancellation() async throws {
     let api = AutomationTests()
     try await api.withService { service, original in

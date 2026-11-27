@@ -121,6 +121,12 @@ extension AutomationService {
         "limits": "Little-endian fill/path descriptors and opaque blocks, PSB-style ImageSourceData, non-default layered orientation, non-RGB rich content, spot inks, Quick Mask, saved alpha outside RGB8, indexed/bitmap modes and native-mode tiled/JPEG-compressed input remain unsupported. Unsupported records reject instead of flattening. Classic output is bounded to512MiB and1024 layer records including group markers. Flattened Gray/CMYK components remain numerical; Lab16 composite chroma is quantized to the TIFF signed 1/256 scale (up to one native code step). Layer planes remain exact. Multi-layer mode previews still use RGB composition/reseparation. Full Photoshop byte parity remains unqualified.",
         "api": "Native Open, Photato import, and both action-job inputs share the decoder. Native Save and Photato save commands default to preserving layers. Copy/download and Photato jobs preserve layers with encodingOptions.tiffLayers=true; default exports remain flattened. TIFF layer compression is rle or zip and requires tiffLayers=true. Omitted layered byte order is bigEndian. The Adobe TiffOutput contract has no preservation field; its flattened output stays unchanged.",
       ],
+      "grayscalePNG": [
+        "inputSampleDepths": [2, 4, 8, 16], "outputSampleDepths": [8, 16],
+        "storage": "Still Grayscale PNG preserves editable gray and straight opacity, including transparency keys and hidden gray. Embedded gray profiles or declared gamma keep their color interpretation. Packed 2/4-bit values expand to 8-bit. Existing one-bit Bitmap import remains separate.",
+        "api": "Native Open and Save, authenticated Photato import/download and supported action jobs share the codec. Adobe-compatible PNG action input retains its existing local 8-bit limit.",
+        "limits": "Flat PNG output. Layered documents use the existing color composite; exact Photoshop compositing, profile defaults and complete file equality remain open."
+      ],
       "restrictedFormats": [
         "modes": ["indexed": 8, "bitmap": 1], "nativeArchive": 47,
         "inputOutput": ["psd", "psb", "png", "tiff"],

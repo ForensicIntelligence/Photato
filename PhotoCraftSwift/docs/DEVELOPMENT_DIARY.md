@@ -1,3 +1,13 @@
+## 2026-11-27 — Step 761 — Preserve grayscale PNG samples and profiles
+
+Open retains Grayscale PNG as an editable gray plane with straight opacity. Packed 2-bit and 4-bit values expand to 8-bit. Eligible flat 8-bit and 16-bit Save output retains the exact gray and opacity samples, including hidden gray, along with embedded profiles and declared gamma.
+
+All 36 focused Xcode Debug tests passed. Both optimized architectures passed all 214 selected tests, including the three new Grayscale PNG regressions. Intel ran under Rosetta.
+
+Six independently generated files matched all 1,122 gray/alpha pairs on import. All 2,244 pairs in twelve standard and Adam7 exports matched. A 36-megapixel sparse control preserved the six sampled pairs through PNG and native archive round trips. Candidate 01 discarded declared gamma. The corrected reader retains the color interpretation of all three tested gamma values and the embedded gray ICC control. Layered grayscale still goes through the RGB composite. Its output differs from a diagnostic based on the measured RGB Normal model. Independent Photoshop Grayscale output and complete file equality remain open.
+
+[Development record](DEVLOG.md#dev-step-761) · [Qualification](SOURCE_PUBLICATION_761.md).
+
 ## 2026-11-27 — Step 760 — Show and hide Vanishing Point edges
 
 Vanishing Point adds a checked Show Edges control in Options with a Command-H binding. Turning it off hides plane borders, grids and idle selection outlines. Selection outlines reappear during a drag. Measurement visibility and grids rendered into the image remain independently controlled.
@@ -2221,11 +2231,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:760 -->
+<!-- current-status-step:761 -->
 
-Vanishing Point adds a checked Show Edges control in Options with a Command-H binding. Turning it off hides plane borders, grids and idle selection outlines. Selection outlines reappear during a drag. Measurement visibility and grids rendered into the image remain independently controlled.
+Open retains Grayscale PNG as an editable gray plane with straight opacity. Packed 2-bit and 4-bit values expand to 8-bit. Eligible flat 8-bit and 16-bit Save output retains the exact gray and opacity samples, including hidden gray, along with embedded profiles and declared gamma.
 
-[Development record](DEVLOG.md#dev-step-760) · [Qualification](SOURCE_PUBLICATION_760.md).
+[Development record](DEVLOG.md#dev-step-761) · [Qualification](SOURCE_PUBLICATION_761.md).
 
 <!-- current-status:end -->
 
@@ -3192,6 +3202,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-26 | 758 | [Preserve straight RGBA in PNG exports](DEVLOG.md#dev-step-758) |
 | 2026-11-26 | 759 | [Preserve hidden RGB when opening PNGs](DEVLOG.md#dev-step-759) |
 | 2026-11-27 | 760 | [Show and hide Vanishing Point edges](DEVLOG.md#dev-step-760) |
+| 2026-11-27 | 761 | [Preserve grayscale PNG samples and profiles](DEVLOG.md#dev-step-761) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

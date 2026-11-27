@@ -58,7 +58,7 @@ final class RasterEncodingOptionsTests: XCTestCase {
       for interlaced in [false, true] {
         let png = try RasterIO.encoded(source, type: .png,
           options: .init(pngCompression: 9, pngInterlaced: interlaced))
-        XCTAssertEqual(try straightRGBASamples(png), expected, "\(fixture), Adam7 \(interlaced)")
+        XCTAssertEqual(try straightPNGSamples(png), expected, "\(fixture), Adam7 \(interlaced)")
       }
     }
   }
@@ -78,7 +78,7 @@ final class RasterEncodingOptionsTests: XCTestCase {
           expected[offset + 1] = direct[offset]
         }
       }
-      XCTAssertEqual(try straightRGBASamples(RasterIO.encoded(surface)), expected)
+      XCTAssertEqual(try straightPNGSamples(RasterIO.encoded(surface)), expected)
     }
   }
 
@@ -109,19 +109,83 @@ final class RasterEncodingOptionsTests: XCTestCase {
           }
           XCTAssertEqual(bytes, expected, "\(fixture), Adam7 \(interlaced)")
         }
-        XCTAssertEqual(try straightRGBASamples(RasterIO.encoded(restored)), expected)
+        XCTAssertEqual(try straightPNGSamples(RasterIO.encoded(restored)), expected)
       }
     }
   }
 
-  private func straightRGBASamples(_ png: Data) throws -> Data {
+  func testGrayscalePNGKeepsGrayAndOpacityThroughOpenArchiveAndSave() throws {
+    let controls: [(bits: UInt8, type: UInt8, input: [UInt8], transparent: [UInt8]?,
+      saved: [UInt8], savedType: UInt8)] = [
+      (2, 0, [0b11011000], nil, [255, 85, 170], 0),
+      (4, 0, [0x81, 0xa0], [0, 8], [136, 0, 17, 255, 170, 255], 4),
+      (8, 4, [195, 0, 113, 1, 9, 255], nil, [195, 0, 113, 1, 9, 255], 4),
+      (16, 0, [0xc3, 0x81, 0x11, 0x59, 0xd4, 0xff], nil,
+        [0xc3, 0x81, 0x11, 0x59, 0xd4, 0xff], 0),
+      (16, 4, [0xc3, 0x81, 0, 0, 0x11, 0x59, 0, 1, 0xd4, 0xff, 255, 255], nil,
+        [0xc3, 0x81, 0, 0, 0x11, 0x59, 0, 1, 0xd4, 0xff, 255, 255], 4),
+    ]
+    for control in controls {
+      let header = PNGRestrictedStorage.number(3) + PNGRestrictedStorage.number(1)
+        + Data([control.bits, control.type, 0, 0, 0])
+      let pixels = try RestrictedRasterCompression.deflate(Data([0] + control.input))
+      var png = PNGRestrictedStorage.signature + PNGRestrictedStorage.chunk("IHDR", header)
+      if let transparent = control.transparent { png += PNGRestrictedStorage.chunk("tRNS", Data(transparent)) }
+      png += PNGRestrictedStorage.chunk("IDAT", pixels) + PNGRestrictedStorage.chunk("IEND", Data())
+
+      let source = try RasterIO.read(png)
+      XCTAssertEqual(source.colorMode, .grayscale)
+      XCTAssertEqual(source.depth, control.bits == 16 ? .u16 : .u8)
+      XCTAssertEqual(source.profileIsUntagged, true)
+      let raster = try XCTUnwrap(source.layers.first?.nativeMode)
+      let saved = try NativeArchive.decode(NativeArchive.encodeChunked(source))
+      XCTAssertEqual(saved.layers.first?.nativeMode, raster)
+      for interlaced in [false, true] {
+        let encoded = try RasterIO.encoded(saved, options: .init(pngCompression: 9, pngInterlaced: interlaced))
+        XCTAssertEqual(try straightPNGSamples(encoded, colorType: control.savedType), Data(control.saved))
+        XCTAssertEqual(try UntaggedOutput.hasProfile(encoded), false)
+        let reopened = try RasterIO.read(encoded)
+        XCTAssertEqual(reopened.layers.first?.nativeMode, raster)
+      }
+    }
+  }
+
+  func testGrayscalePNGPreservesItsDeclaredTransferCurve() throws {
+    let header = PNGRestrictedStorage.number(3) + PNGRestrictedStorage.number(1)
+      + Data([8, 0, 0, 0, 0])
+    let pixels = try RestrictedRasterCompression.deflate(Data([0, 83, 127, 200]))
+    var profiles = Set<Data>()
+    for storedGamma in [45_455, 60_000, 100_000] {
+      let png = PNGRestrictedStorage.signature
+        + PNGRestrictedStorage.chunk("IHDR", header)
+        + PNGRestrictedStorage.chunk("gAMA", PNGRestrictedStorage.number(storedGamma))
+        + PNGRestrictedStorage.chunk("IDAT", pixels)
+        + PNGRestrictedStorage.chunk("IEND", Data())
+      let expected = try XCTUnwrap(image(png).colorSpace?.copyICCData()) as Data
+      let source = try RasterIO.read(png)
+      XCTAssertEqual(source.modeDescriptor?.profile, expected)
+      XCTAssertEqual(source.sourceICC, expected)
+      XCTAssertNil(source.profileIsUntagged)
+      profiles.insert(expected)
+
+      let exported = try RasterIO.encoded(source)
+      XCTAssertEqual(try UntaggedOutput.hasProfile(exported), true)
+      XCTAssertEqual(try straightPNGSamples(exported, colorType: 0), Data([83, 127, 200]))
+      let reloaded = try RasterIO.read(exported)
+      XCTAssertEqual(reloaded.modeDescriptor?.profile, expected)
+    }
+    XCTAssertEqual(profiles.count, 3)
+  }
+
+  private func straightPNGSamples(_ png: Data, colorType: UInt8 = 6) throws -> Data {
     let blocks = try PNGRestrictedStorage.chunks(png)
     let header = try XCTUnwrap(blocks.first).data
     let width = PNGRestrictedStorage.integer(header, 0)
     let height = PNGRestrictedStorage.integer(header, 4)
-    XCTAssertEqual(header[9], 6)
+    XCTAssertEqual(header[9], colorType)
     XCTAssertTrue([8, 16].contains(header[8]))
-    let pixelBytes = Int(header[8]) / 2
+    let channels = colorType == 6 ? 4 : colorType == 4 ? 2 : 1
+    let pixelBytes = Int(header[8]) / 8 * channels
     let passes = PNGRestrictedStorage.passes(header[12] == 1)
       .filter { width > $0.0 && height > $0.1 }
     let size = passes.reduce(0) { total, pass in

@@ -1,3 +1,9 @@
+### Grayscale PNG transfers (checkpoint 761)
+
+Native Open and Save and authenticated Photato import/download share the codec. The Adobe-compatible action resource reader uses the same implementation within its existing local 8-bit PNG limit. Command and request schemas stay the same.
+
+[Qualification](SOURCE_PUBLICATION_761.md).
+
 ### Vanishing Point overlays (checkpoint 760)
 
 The authenticated Photato document state reports the open workspace’s showEdges value alongside showGrid and showMeasurements. These preview flags do not change the renderGrids or renderMeasurements settings or add a document edit. This local preview setting has no corresponding Adobe v2 operation.

@@ -144,6 +144,12 @@ public enum RasterIO {
     if jpegXL, CGImageSourceGetStatusAtIndex(source, 0) != .statusComplete {
       throw CraftError.invalid("The JPEG XL image is incomplete.")
     }
+    let completePNG = (CGImageSourceGetType(source) as String?) == UTType.png.identifier
+      && CGImageSourceGetStatusAtIndex(source, 0) == .statusComplete
+    if completePNG, let grayscale = try PNGGrayscaleStorage.read(image, from: source, data: data,
+      name: name, properties: properties) {
+      return grayscale
+    }
     let orientation = properties[kCGImagePropertyOrientation] as? Int ?? 1
     let depth: PixelDepth =
       image.bitsPerComponent > 16 ? .f32 : image.bitsPerComponent > 8 ? .u16 : .u8
@@ -158,9 +164,7 @@ public enum RasterIO {
     let nativeTIFF = embedded != nil && embedded == working
       ? try TIFFStorage.surface(data, depth: depth, encoding: encoding,
         space: workingSpace) : nil
-    let straightPNG = (CGImageSourceGetType(source) as String?) == UTType.png.identifier
-      && CGImageSourceGetStatusAtIndex(source, 0) == .statusComplete
-      ? try straightPNGSurface(image, depth: depth, space: workingSpace) : nil
+    let straightPNG = completePNG ? try straightPNGSurface(image, depth: depth, space: workingSpace) : nil
     let pixels = try oriented(
       nativeTIFF ?? straightPNG ?? surface(image, depth: depth, space: workingSpace, colorEncoding: encoding),
       orientation: orientation)
@@ -366,12 +370,20 @@ public enum RasterIO {
       }
       profileName = workingDocument.map { $0.depth == .f32 ? "sRGB" : ColorManagement.name($0) }
     }
+    return try encodeImage(image, type: type, resolution: resolution, bits: bits, exportSpace: exportSpace,
+      profileName: profileName, sourceMetadata: sourceMetadata, options: options, floatTIFF: floatTIFF)
+  }
+
+  private static func encodeImage(_ image: CGImage, type: UTType, resolution: Double, bits: Int,
+    exportSpace: CGColorSpace, profileName: String?, sourceMetadata: [String: Data]?,
+    options: RasterEncodingOptions, floatTIFF: Bool = false, photoshopMode: Int = 3) throws -> Data {
+    let width = image.width, height = image.height
     let isSRGB = exportSpace == (try colorSpace())
     let output = NSMutableData()
     guard let dest = CGImageDestinationCreateWithData(output, type.identifier as CFString, 1, nil)
     else { throw CraftError.invalid("Encoder unavailable.") }
     var properties = try RasterMetadata.properties(
-      sourceMetadata, width: surface.width, height: surface.height, resolution: resolution,
+      sourceMetadata, width: width, height: height, resolution: resolution,
       bits: bits, isSRGB: isSRGB)
     properties[kCGImageDestinationLossyCompressionQuality] = 0.95
     if let quality = options.jpegQuality {
@@ -396,9 +408,9 @@ public enum RasterIO {
     CGImageDestinationAddImageAndMetadata(
       dest, image,
       try RasterMetadata.metadata(
-        sourceMetadata, width: surface.width, height: surface.height, resolution: resolution,
+        sourceMetadata, width: width, height: height, resolution: resolution,
         linear: floatTIFF, profileName: profileName,
-        isSRGB: isSRGB),
+        isSRGB: isSRGB, photoshopMode: photoshopMode),
       properties as CFDictionary)
     guard CGImageDestinationFinalize(dest) else {
       throw CraftError.invalid("Image encoding failed.")
@@ -422,6 +434,18 @@ public enum RasterIO {
     }
     return output as Data
   }
+
+  static func retainedFlatRaster(in document: CraftDocument, width: Int, height: Int) -> NativeModeRaster? {
+    guard document.layers.count == 1, let layer = document.layers.first,
+      let stored = layer.nativeMode, layer.visible, layer.opacity == 1,
+      layer.x == 0, layer.y == 0, layer.mask == nil, layer.vectorMask == nil,
+      layer.style == nil, layer.smartObject == nil, layer.smartFilters == nil,
+      layer.affine == nil, layer.warp == nil, layer.parentID == nil, layer.clipped != true,
+      layer.blendMode == .normal, document.artboardOrigin == nil,
+      stored.width == width, stored.height == height else { return nil }
+    return stored
+  }
+
   public static func supportsLayeredTIFFSavedAlpha(_ document: CraftDocument) -> Bool {
     document.colorMode == .rgb && document.depth == .u8 && document.quickMask == nil
       && (document.alphaChannels ?? []).allSatisfy { $0.spot == nil }
@@ -470,6 +494,19 @@ public enum RasterIO {
       return try TIFFRestrictedStorage.write(document, options: options)
     }
     try options.validate(for: type)
+    if type == .png, document.colorMode == .grayscale, document.depth != .f32,
+      let descriptor = document.modeDescriptor {
+      try document.validate()
+      let raster = try retainedFlatRaster(in: document, width: document.width, height: document.height)
+        ?? NativeModeRaster.converting(Renderer.composite(document), to: .grayscale, depth: document.depth,
+          profile: descriptor.profile, intent: descriptor.intent, pagedOutput: true)
+      let image = try PNGGrayscaleStorage.image(raster)
+      guard let space = image.colorSpace else { throw CraftError.invalid("Missing Grayscale PNG profile.") }
+      let data = try encodeImage(image, type: type, resolution: document.pixelsPerInch,
+        bits: raster.bytesPerSample * 8, exportSpace: space, profileName: ColorManagement.name(document),
+        sourceMetadata: document.sourceMetadata, options: options, photoshopMode: 1)
+      return try document.profileIsUntagged == true ? UntaggedOutput.strip(data, type: type) : data
+    }
     var compositeOptions = options
     compositeOptions.tiffLayers = nil; compositeOptions.tiffLayerCompression = nil
     if options.tiffLayers == true, compositeOptions.tiffByteOrder == nil {

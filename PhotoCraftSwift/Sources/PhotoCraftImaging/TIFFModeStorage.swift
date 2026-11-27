@@ -140,13 +140,8 @@ enum TIFFModeStorage {
     }
     guard document.width <= NativeModeRaster.maximumPixels / document.height else { throw CraftError.unsupported("TIFF component output currently supports up to8,388,608pixels; use native86 to retain this document.") }
     let native: NativeModeRaster
-    if preserveSingleLayer, document.layers.count == 1, let layer = document.layers.first,
-      let stored = layer.nativeMode, layer.visible, layer.opacity == 1,
-      layer.x == 0, layer.y == 0, layer.mask == nil, layer.vectorMask == nil,
-      layer.style == nil, layer.smartObject == nil, layer.smartFilters == nil,
-      layer.affine == nil, layer.warp == nil, layer.parentID == nil, layer.clipped != true,
-      layer.blendMode == .normal, document.artboardOrigin == nil,
-      stored.width == surface.width, stored.height == surface.height {
+    if preserveSingleLayer, let stored = RasterIO.retainedFlatRaster(in: document,
+      width: surface.width, height: surface.height) {
       native = stored
     } else {
       // Existing merged previews still use RGB composition/reseparation; exact
