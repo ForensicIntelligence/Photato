@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 765.** Match grayscale PSD and PSB previews. [Qualification](docs/SOURCE_PUBLICATION_765.md).
+
 **Source checkpoint 764.** Open larger PNG palettes as editable RGB. [Qualification](docs/SOURCE_PUBLICATION_764.md).
 
 **Source checkpoint 763.** Open indexed PNGs with complex transparency. [Qualification](docs/SOURCE_PUBLICATION_763.md).

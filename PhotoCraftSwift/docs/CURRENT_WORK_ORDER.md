@@ -1,3 +1,5 @@
+**Rendered file parity.** The tested grayscale PSD and PSB merged previews match the Photoshop captures. Capture grayscale TIFF with a separate opacity channel and compare its saved samples. [Development record](DEVLOG.md#dev-step-765) · [Qualification](SOURCE_PUBLICATION_765.md).
+
 **Rendered file parity.** Large palettes that need RGB expansion now open through a paged path. Qualify native grayscale TIFF and PSD/PSB merged samples. [Development record](DEVLOG.md#dev-step-764) · [Qualification](SOURCE_PUBLICATION_764.md).
 
 **Rendered file parity.** Indexed PNG imports now match the tested Photoshop document modes. Qualify native grayscale TIFF and PSD/PSB merged samples. [Development record](DEVLOG.md#dev-step-763) · [Qualification](SOURCE_PUBLICATION_763.md).

@@ -151,6 +151,19 @@ final class AutomationOpeningTests: XCTestCase {
         let flattened = try XCTUnwrap(RasterIO.read(layeredDownload.1).layers.first?.nativeMode)
         XCTAssertEqual(flattened.rawWord(component: 0, index: 0), maximum)
         XCTAssertEqual(flattened.rawWord(component: 1, index: 0), 0)
+
+        for format in [DocumentIO.Format.psd, .psb] {
+          let expected = try DocumentIO.encode(layeredDocument, format: format)
+          let file = try await helper.request(service, path: "/v1/documents/\(layeredShare.id)/file.\(format.rawValue)")
+          XCTAssertEqual(file.0.statusCode, 200)
+          XCTAssertEqual(file.1, expected)
+          XCTAssertEqual(file.1.prefix(14).suffix(2), Data([0, 2]))
+        }
+        let encoding = AutomationEncodingOptionsTests()
+        let body = encoding.body(outputs: [encoding.output("image/vnd.adobe.photoshop")])
+        let request = try AdobeActionsRequest(data: JSONSerialization.data(withJSONObject: body))
+        let adobe = try AdobeActionAssets.encode(request, document: layeredDocument)
+        XCTAssertEqual(adobe.map(\.data), [try DocumentIO.encode(layeredDocument, format: .psd)])
       }
     }
   }

@@ -1379,9 +1379,6 @@ public enum PSDCodec {
     let compOutput = try PSDLayerComps.prepare(doc)
     let auxiliaryChannels=PSDAuxiliaryChannels.all(doc)
     guard includeComposite || auxiliaryChannels.isEmpty else {throw CraftError.unsupported("Auxiliary channel export requires complete PSD/PSB merged planes; TIFF mapping remains separate.")}
-    let gray32Composite = try includeComposite && maximizeCompatibility ? PSDGray32CompositeRows(doc) : nil
-    let mergedTransparency = try maximizeCompatibility && gray32Composite?.hasOpaqueBackground != true
-      && PSDAuxiliaryChannels.mergedTransparency(doc)
     guard !doc.layers.isEmpty, doc.width <= format.maximumDimension,
       doc.height <= format.maximumDimension
     else {
@@ -1391,6 +1388,19 @@ public enum PSDCodec {
     }
     let depth = doc.depth == .u8 ? 8 : doc.depth == .u16 ? 16 : 32
     let colorChannels = doc.colorMode.componentCount
+    let gray32Composite = try includeComposite && maximizeCompatibility ? PSDGray32CompositeRows(doc) : nil
+    let grayIntegerComposite = try includeComposite && maximizeCompatibility
+      ? doc.modeDescriptor.flatMap { try GrayscaleNormalComposite(doc, descriptor: $0) } : nil
+    let mergedTransparency: Bool
+    if let grayIntegerComposite {
+      mergedTransparency = try grayIntegerComposite.hasTransparency()
+      guard colorChannels + auxiliaryChannels.count + (mergedTransparency ? 1 : 0) <= 56 else {
+        throw CraftError.unsupported("The grayscale image and its saved channels exceed Photoshop's 56-channel limit.")
+      }
+    } else {
+      mergedTransparency = try maximizeCompatibility && gray32Composite?.hasOpaqueBackground != true
+        && PSDAuxiliaryChannels.mergedTransparency(doc)
+    }
     let exportSpace = try doc.modeDescriptor.flatMap { CGColorSpace(iccData: $0.profile as CFData) } ?? ColorManagement.space(for: doc)
     var entries: [(Layer, Int)] = []
     let indexedChildren = Dictionary(grouping: doc.layers, by: \.parentID)
@@ -1981,10 +1991,12 @@ public enum PSDCodec {
       retainedCMYKRows = try PSDNativeRowSupport(width: doc.width, height: doc.height,
         streams: (0..<colorChannels).map(retainedCMYK.storedComponentRanges))
     } else { retainedCMYKRows = nil }
-    let pagedModeComposite = try gray32Composite == nil && retainedCMYK == nil && doc.modeDescriptor != nil
+    let pagedModeComposite = try gray32Composite == nil && grayIntegerComposite == nil
+      && retainedCMYK == nil && doc.modeDescriptor != nil
       && (doc.width > NativeModeRaster.maximumPixels / doc.height || doc.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }))
       ? PSDModeCompositeRows(doc) : nil
-    let composite = try gray32Composite == nil && pagedComposite == nil && pagedModeComposite == nil && retainedCMYK == nil
+    let composite = try gray32Composite == nil && grayIntegerComposite == nil
+      && pagedComposite == nil && pagedModeComposite == nil && retainedCMYK == nil
       ? Renderer.composite(doc) : nil
     let nativeComposite: NativeModeRaster?
     if let retainedCMYK {
@@ -1996,14 +2008,15 @@ public enum PSDCodec {
       nativeComposite = nil
     }
     let repeatedRows: ((Int) -> Int)?
-    if sparseComposite != nil || gray32Composite?.usesSparseRows == true || retainedCMYKRows != nil
+    if sparseComposite != nil || grayIntegerComposite?.usesSparseRows == true
+      || gray32Composite?.usesSparseRows == true || retainedCMYKRows != nil
       || storedAuxiliary.contains(where: { $0 != nil }) {
       repeatedRows = { index in
         let channel = index / doc.height, y = index % doc.height
         if channel >= imageChannels {
           return storedAuxiliary[channel - imageChannels]?.repeatedRows(from: y) ?? 1
         }
-        return gray32Composite?.repeatedRows(from: y) ?? sparseComposite?.repeatedRows(from: y)
+        return grayIntegerComposite?.repeatedRows(from: y) ?? gray32Composite?.repeatedRows(from: y) ?? sparseComposite?.repeatedRows(from: y)
           ?? retainedCMYKRows?.repeatedRows(from: y) ?? 1
       }
     } else { repeatedRows = nil }
@@ -2013,6 +2026,7 @@ public enum PSDCodec {
         let channel = index / doc.height, y = index % doc.height
         try Task.checkCancellation()
         if channel >= imageChannels { return try auxiliaryRow(channel - imageChannels, y) }
+        if let grayIntegerComposite { return try grayIntegerComposite.photoshopRow(y, channel: channel, transparency: mergedTransparency) }
         if let gray32Composite { return try gray32Composite.row(y, channel: channel, transparency: mergedTransparency) }
         if let sparseComposite { return try sparseComposite.row(y, channel: channel, depth: depth) }
         if let pagedComposite {return try pagedComposite.row(y,channel:channel,depth:depth)}

@@ -1,3 +1,9 @@
+### Grayscale PSD and PSB previews (checkpoint 765)
+
+Desktop Save, authenticated Photato PSD and PSB downloads and the Adobe-compatible PSD output encoder share the writer. The hosted Photato and Adobe-compatible action routes matched the four Photoshop preview references.
+
+[Qualification](SOURCE_PUBLICATION_765.md).
+
 ### Paged indexed PNG expansion (checkpoint 764)
 
 Desktop Open, authenticated Photato import and both action resource interfaces use the same paged decoder. The two resource paths passed the 8.39-megapixel test. Existing compressed input, scratch and operation limits still apply.

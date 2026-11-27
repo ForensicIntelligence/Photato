@@ -178,17 +178,21 @@ final class RasterEncodingOptionsTests: XCTestCase {
     XCTAssertEqual(profiles.count, 3)
   }
 
-  func testPhotoshopGrayscalePNGMatchesLayeredNormalSamples() throws {
-    // Digests cover the independently decoded network-order samples of four
-    // Photoshop 27.2.0 Save a Copy controls made from this owned layer stack.
-    let captures: [(PixelDepth, Bool, String)] = [
-      (.u8, true, "91ab665bb16769839a3515252004406ec740fd48ec07f02d4ad43b7cac540a9f"),
-      (.u8, false, "56f3228751a665f48d2ff36f81355c3ac09dec87432b4d3f5732e38b8f6b5420"),
-      (.u16, true, "c26e1b74df7b07dd8d4a6af235b91588d903e950b658695dc66011c06f17af07"),
-      (.u16, false, "5e0fc9ada4dd822d1f6874189b87bac952fc1802af37e8099e0468b4d6f7b4de"),
+  func testPhotoshopGrayscaleFilesMatchLayeredNormalSamples() throws {
+    // Independent digests cover the straight interleaved PNG and the planar
+    // merged PSD samples from Photoshop 27.2.0 copies of the same owned stack.
+    let captures: [(depth: PixelDepth, opaqueBase: Bool, png: String, photoshop: String)] = [
+      (.u8, true, "91ab665bb16769839a3515252004406ec740fd48ec07f02d4ad43b7cac540a9f",
+        "91ab665bb16769839a3515252004406ec740fd48ec07f02d4ad43b7cac540a9f"),
+      (.u8, false, "56f3228751a665f48d2ff36f81355c3ac09dec87432b4d3f5732e38b8f6b5420",
+        "5b2f31d856f0af82db2e15734cfba3921ac1b5aa2823b751e5901444906a4220"),
+      (.u16, true, "c26e1b74df7b07dd8d4a6af235b91588d903e950b658695dc66011c06f17af07",
+        "c26e1b74df7b07dd8d4a6af235b91588d903e950b658695dc66011c06f17af07"),
+      (.u16, false, "5e0fc9ada4dd822d1f6874189b87bac952fc1802af37e8099e0468b4d6f7b4de",
+        "abfb9a2066f67e430798d9c2a977696a266ba5ef064bb2d6b12f6580042497eb"),
     ]
     let width = 64, height = 32
-    for (depth, opaqueBase, expected) in captures {
+    for (depth, opaqueBase, expectedPNG, expectedPhotoshop) in captures {
       let profile = try ColorSettings().profile(.grayscale, depth: depth)
       let maximum: UInt32 = depth == .u8 ? 255 : 65_535
       var document = try CraftDocument(width: width, height: height, depth: depth)
@@ -222,8 +226,47 @@ final class RasterEncodingOptionsTests: XCTestCase {
         let png = try RasterIO.encoded(reopened, options: .init(pngInterlaced: interlaced))
         let words = try straightPNGSamples(png, colorType: opaqueBase ? 0 : 4)
         let actual = SHA256.hash(data: words).map { String(format: "%02x", $0) }.joined()
-        XCTAssertEqual(actual, expected, "\(depth), opaque base: \(opaqueBase), Adam7: \(interlaced)")
+        XCTAssertEqual(actual, expectedPNG, "\(depth), opaque base: \(opaqueBase), Adam7: \(interlaced)")
       }
+      for format in PSDFileFormat.allCases {
+        let encoded = try PSDCodec.writeRasterLayers(reopened, format: format, compositeCompression: .raw)
+        let channels = opaqueBase ? 1 : 2
+        XCTAssertEqual(Int(encoded[12]) * 256 + Int(encoded[13]), channels)
+        let count = width * height * channels * (depth == .u8 ? 1 : 2)
+        let digest = SHA256.hash(data: encoded.suffix(count)).map { String(format: "%02x", $0) }.joined()
+        XCTAssertEqual(digest, expectedPhotoshop, "\(format), \(depth), opaque base: \(opaqueBase)")
+        let saved = try RasterIO.read(encoded)
+        XCTAssertEqual(saved.layers.map(\.nativeMode), reopened.layers.map(\.nativeMode))
+        XCTAssertEqual(saved.layers.map(\.opacity), reopened.layers.map(\.opacity))
+      }
+    }
+  }
+
+  func testSparseGrayPSDCoverageControlsTheMergedOpacityPlane() throws {
+    let width = 4097, height = 2048, point = width * 1025 + 2048
+    let profile = try NativeModeProfile.standard(.grayscale, depth: .u8)
+    var document = try CraftDocument(width: width, height: height)
+    document.modeDescriptor = try .init(mode: .grayscale, depth: .u8, profile: profile)
+    for opaque in [false, true] {
+      document.layers = try [false, true].map { upper in
+        let builder = try NativeModeRaster.RowBuilder(width: width, height: height,
+          mode: .grayscale, depth: .u8, profile: profile)
+        try builder.fill(component: 0, word: upper ? 190 : 31)
+        try builder.fill(component: 1, word: upper ? 0 : 255)
+        var raster = try builder.finish()
+        try raster.set(upper && opaque ? 1 : 0, component: 1, index: point)
+        var layer = Layer(name: upper ? "Top gray" : "Base gray", content: .raster(try raster.surface()))
+        layer.nativeMode = raster
+        return layer
+      }
+      document.activeLayerID = document.layers.last?.id
+      let data = try PSDCodec.writeRasterLayers(document, compositeCompression: .raw)
+      let channels = opaque ? 1 : 2
+      XCTAssertEqual(Int(data[12]) * 256 + Int(data[13]), channels)
+      let gray = data.count - width * height * channels
+      XCTAssertEqual(data[gray], 31)
+      XCTAssertEqual(data[gray + point], opaque ? 190 : 255)
+      if !opaque { XCTAssertEqual(data[gray + width * height + point], 0) }
     }
   }
 

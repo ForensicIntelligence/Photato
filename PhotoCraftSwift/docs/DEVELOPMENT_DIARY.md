@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 765 — Match grayscale PSD and PSB previews
+
+PSD and PSB now compose the merged preview from native gray samples on aligned Normal layers at 8 and 16 bits per channel. The preview is white-matted when the composite has transparency. Opaque composites omit the merged opacity plane. Save retains the original editable layer samples and opacities.
+
+Four Photoshop 27.2.0 PSD saves cover opaque and transparent stacks at both depths. An independent decoder matched every merged sample in the Photato PSD and PSB files with Raw and RLE encoding. The 16 comparison files match byte for byte across Debug, optimized Apple Silicon and translated Intel.
+
+The Xcode project built and all 37 focused imaging and 11 app and HTTP tests passed. Both optimized architectures passed all 226 selected tests. The extracted Universal preview rendered offscreen on each slice. Intel ran under Rosetta.
+
+The Adobe comparisons cover the merged previews of the tested layer stacks. Whole-file equality, Adobe’s layer bounds and Gray16 rounding on re-save, and grayscale TIFF opacity remain open.
+
+[Development record](DEVLOG.md#dev-step-765) · [Qualification](SOURCE_PUBLICATION_765.md).
+
 ## 2026-11-27 — Step 764 — Open larger PNG palettes as editable RGB
 
 Open can now expand larger PNG palettes with partial opacity or multiple transparent entries into editable RGB8. The importer streams packed scanlines to scratch storage and builds file-backed RGB tiles. It handles standard and Adam7 layouts and applies EXIF rotations.
@@ -2267,11 +2279,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:764 -->
+<!-- current-status-step:765 -->
 
-Open can now expand larger PNG palettes with partial opacity or multiple transparent entries into editable RGB8. The importer streams packed scanlines to scratch storage and builds file-backed RGB tiles. It handles standard and Adam7 layouts and applies EXIF rotations.
+PSD and PSB now compose the merged preview from native gray samples on aligned Normal layers at 8 and 16 bits per channel. The preview is white-matted when the composite has transparency. Opaque composites omit the merged opacity plane. Save retains the original editable layer samples and opacities.
 
-[Development record](DEVLOG.md#dev-step-764) · [Qualification](SOURCE_PUBLICATION_764.md).
+[Development record](DEVLOG.md#dev-step-765) · [Qualification](SOURCE_PUBLICATION_765.md).
 
 <!-- current-status:end -->
 
@@ -3242,6 +3254,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 762 | [Match layered grayscale PNG samples](DEVLOG.md#dev-step-762) |
 | 2026-11-27 | 763 | [Open indexed PNGs with complex transparency](DEVLOG.md#dev-step-763) |
 | 2026-11-27 | 764 | [Open larger PNG palettes as editable RGB](DEVLOG.md#dev-step-764) |
+| 2026-11-27 | 765 | [Match grayscale PSD and PSB previews](DEVLOG.md#dev-step-765) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

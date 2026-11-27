@@ -91,6 +91,18 @@ struct PSDNativeRowSupport {
     return max(1, ranges[next].lowerBound / width - y)
   }
 
+  func containsSample(matching predicate: (Int) -> Bool) throws -> Bool {
+    if predicate(implicitIndex) { return true }
+    for range in ranges {
+      try Task.checkCancellation()
+      for index in range {
+        if index % 4096 == 0 { try Task.checkCancellation() }
+        if predicate(index) { return true }
+      }
+    }
+    return false
+  }
+
   func row(_ y: Int, depth: Int, sample: (Int) -> Float) throws -> [UInt8] {
     let rowStart = y * width, rowEnd = rowStart + width
     let bytesPerSample = depth / 8

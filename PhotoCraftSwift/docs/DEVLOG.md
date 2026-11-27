@@ -783,7 +783,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 762 | 2026-11-27 | [Match layered grayscale PNG samples](#dev-step-762) |
 | 763 | 2026-11-27 | [Open indexed PNGs with complex transparency](#dev-step-763) |
 | 764 | 2026-11-27 | [Open larger PNG palettes as editable RGB](#dev-step-764) |
+| 765 | 2026-11-27 | [Match grayscale PSD and PSB previews](#dev-step-765) |
 <!-- history-index:end -->
+
+<a id="dev-step-765"></a>
+
+## 2026-11-27 — Step 765 — Match grayscale PSD and PSB previews
+
+PSD and PSB now compose the merged preview from native gray samples on aligned Normal layers at 8 and 16 bits per channel. The preview is white-matted when the composite has transparency. Opaque composites omit the merged opacity plane. Save retains the original editable layer samples and opacities.
+
+The earlier writer differed at 1,552 of 2,048 opaque Gray8 gray samples and 1,893 opaque Gray16 samples. The transparent references differed at 1,208 and 1,655 gray samples. The largest opacity differences were one and four, respectively. An initial replay requested merged ZIP and ZIP prediction. The editable grayscale writer used its existing Raw fallback. The format comparison here uses Raw and RLE. A restart cleared the first qualification directory, so the Xcode build, test runs and independent comparisons were repeated from the preserved source.
+
+GrayscaleNormalComposite shares integer layer composition with the PNG writer. PSDCodec uses it for the compatible merged image, and PSDNativeRowSupport lets the writer test implicit and stored coverage without scanning empty rows. The existing editable layer writer handles the channel payload. The automation capability description and tests cover the shared file output. The menu and request contracts remain stable.
+
+Four Photoshop 27.2.0 PSD saves cover opaque and transparent stacks at both depths. An independent decoder matched every merged sample in the Photato PSD and PSB files with Raw and RLE encoding. The 16 comparison files match byte for byte across Debug, optimized Apple Silicon and translated Intel.
+
+Desktop Save, authenticated Photato PSD and PSB downloads and the Adobe-compatible PSD output encoder share the writer. The hosted Photato and Adobe-compatible action routes matched the four Photoshop preview references.
+
+The Xcode project built and all 37 focused imaging and 11 app and HTTP tests passed. Both optimized architectures passed all 226 selected tests. The extracted Universal preview rendered offscreen on each slice. Intel ran under Rosetta.
+
+The Adobe comparisons cover the merged previews of the tested layer stacks. Whole-file equality, Adobe’s layer bounds and Gray16 rounding on re-save, and grayscale TIFF opacity remain open.
+
+The signed Universal ZIP targets macOS 14 and later. It contains 77,982,405 bytes with SHA-256 `3b554c86932c54800a04102286ba31d6c4d1e7f9eec4af63861b7ed19695a4f0`.
+
+[Qualification](SOURCE_PUBLICATION_765.md).
 
 <a id="dev-step-764"></a>
 
