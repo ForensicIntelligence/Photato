@@ -2,7 +2,17 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **759** · The 10 most recent entries, newest first.
+Source build **760** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 760 — Show and hide Vanishing Point edges
+
+Vanishing Point adds a checked Show Edges control in Options with a Command-H binding. Turning it off hides plane borders, grids and idle selection outlines. Selection outlines reappear during a drag. Measurement visibility and grids rendered into the image remain independently controlled.
+
+All five focused Xcode Debug tests passed. Both optimized architectures passed all 210 focused tests, including the new Show Edges regression. Intel ran under Rosetta.
+
+Photoshop 27.2.0 showed Show Edges checked in Vanishing Point with Command-H. The Photato tests cover overlay state. The live Options and keyboard checks remain pending. Independent verification of Photoshop’s grid raster is still open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-760) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_760.md).
 
 ## 2026-11-26 — Step 759 — Preserve hidden RGB when opening PNGs
 
@@ -93,13 +103,3 @@ All 64 focused Debug tests passed, including anchor preservation and navigation 
 Offscreen Xcode captures confirm the fitted, zoomed and panned sheet in light and dark appearances. Live pointer input and exact Photoshop rectangle zoom and double-click behavior remain unqualified. Exact Photoshop paste raster output remains open. [Adobe’s Vanishing Point reference](https://helpx.adobe.com/uk/photoshop/using/vanishing-point.html).
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-751) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_751.md).
-
-## 2026-11-25 — Step 750 — Resize and nudge floating Vanishing Point pastes
-
-Floating Vanishing Point pastes now have side handles for changing width or height independently. The arrow keys move a selected paste by one pixel. Shift and an arrow move it by ten. The current handle and modifiers are reflected in the pointer.
-
-All 62 focused Debug tests passed. Each optimized architecture passed 876 of 878 selected tests, including the updated side-handle and nudge assertions. Intel ran under Rosetta. The two inherited failures repeated their earlier diagnostics. The replay image of a side stretch, nudge and undo/redo matched across Debug and both optimized builds.
-
-An independent nine-impulse RGB8 donor showed that Photoshop’s plain, Flip and Flop results differ from exact donor mapping at 112, 2,432 and 2,436 pixels. All three preserved every pixel outside the patch. The reflected responses moved different distances at different locations and had fractional spill. Exact Photoshop raster parity remains open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-750) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_750.md).

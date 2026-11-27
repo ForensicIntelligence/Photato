@@ -246,5 +246,20 @@
     },
     "exactRasterQualified": false,
     "public_receipt": "SOURCE_PUBLICATION_750.json"
+  },
+  "show_edges_760": {
+    "source": "SOURCE_PUBLICATION_760.md",
+    "shortcut": "Command-H",
+    "liveObservation": {
+      "photoshopVersion": "27.2.0",
+      "photoshopDefaultChecked": true,
+      "photoshopMenu": "Vanishing Point Options",
+      "shortcut": "Command-H",
+      "photatoBuild": 760,
+      "photatoLiveVerification": "pending",
+      "photatoMenuToggle": null,
+      "photatoShortcutToggle": null
+    },
+    "reference": "https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/define-perspective-planes-in-vanishing-point.html"
   }
 }

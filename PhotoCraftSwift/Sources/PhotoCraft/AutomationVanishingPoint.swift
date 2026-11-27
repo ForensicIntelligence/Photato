@@ -116,6 +116,7 @@ extension VanishingSettings {
      "marqueeTransform":"The desktop Transform handles use the same destination rectangle and angle as a marquee operation. To scale a patch, change the destination bounds around its center. To rotate, set angle in degrees.",
      "pasteTransform":"Use canvasPaste with origin, width and height in document pixels for a free paste. A plane-bound paste uses plane, at, width and pasteHeight. Side handles edit one dimension and keyboard nudges move the selected paste. Set flip to reflect left to right and flop to reflect top to bottom. The current paste transform is visible as selectedPaste in workspace state.",
      "previewNavigation":"The workspace tool and zoom state describe the local preview. Hand, Zoom, temporary Space panning and X magnification do not modify document data or undo history.",
+     "previewOverlays":"The workspace reports showEdges, showGrid and showMeasurements independently. They describe preview visibility. The renderGrids and renderMeasurements options control raster output.",
      "strokeWrapping":"Set wrap:true on Brush or Stamp to continue through linked faces. Clip bounds the destination independently. Wrapped Stamp can use sourcePlane to identify an extrapolated donor and samples the visible image and earlier operations from an immutable snapshot. Omitting wrap preserves single-plane API edits.",
      "strokeSelection":"Supply a strokeSelection rectangle to constrain Brush or Stamp output. Its lower and upper coordinates are rectified fractions of its anchor plane. The rectangle’s wrap flag follows linked faces independently of stroke wrapping. Stamp can sample outside the selection.",
      "straightStroke":"Set straightStroke:true to connect the first and last points of a Brush or Stamp stroke. The desktop uses the same operation for Shift-drag and Shift-click.",
@@ -303,7 +304,7 @@ extension AutomationCommand {
     }
     return ["settings":program.settings.apiValue,"scene":scene?.apiValue(settings:program.settings) as Any? ?? NSNull(),"operationCount":program.operations.count,"newLayer":program.newLayer,"tool":tool.rawValue,"selectedPlane":selected,"pendingCorners":pending.count,"preview":preview,"rendering":rendering,"zoom":zoom,"pan":["x":pan.width,"y":pan.height],"showGrid":showGrid,"gridSize":gridSize,"showMeasurements":showMeasurements,"canExportScene":canExportScene,"exportingScene":exportingScene,"renderMeasurements":renderMeasurements,"renderGrids":renderGrids,"selectedMeasurement":selectedMeasurement as Any? ?? NSNull(),
       "pendingMeasurement":pendingMeasurement != nil,"canUndo":canUndo,"canRedo":canRedo,"heal":heal.rawValue,"selectedPasteHeal":selectedPasteHeal?.rawValue as Any? ?? NSNull(),"error":error as Any? ?? NSNull(),
-      "marquee":bounds as Any? ?? NSNull(),"marqueeMoveMode":marqueeMoveMode.rawValue,"floatingMarquee":floatingMarqueeOperation != nil,
+      "showEdges":showEdges,"marquee":bounds as Any? ?? NSNull(),"marqueeMoveMode":marqueeMoveMode.rawValue,"floatingMarquee":floatingMarqueeOperation != nil,
       "selectedPaste":paste as Any? ?? NSNull(),
       "brushColor":["r":color.r,"g":color.g,"b":color.b,"a":color.a],
       "allowMultiSurfaceOperations":allowMultiSurfaceOperations,"allowMultiSurfaceMarquee":allowMultiSurfaceOperations,

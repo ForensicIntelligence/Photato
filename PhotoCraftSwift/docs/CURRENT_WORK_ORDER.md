@@ -1,3 +1,5 @@
+**Vanishing Point.** Compare the independent Photoshop grid raster with the native renderer. Verify the native Show Edges control and Command-H binding in the live sheet. [Development record](DEVLOG.md#dev-step-760) · [Qualification](SOURCE_PUBLICATION_760.md).
+
 **Rendered file parity.** Continue with the independent Vanishing Point grid-raster comparison and Show Edges behavior. PNG Open now passes the three captured straight-alpha controls. [Development record](DEVLOG.md#dev-step-759) · [Qualification](SOURCE_PUBLICATION_759.md).
 
 **Rendered file parity.** Verify that PNG imports preserve the measured straight-alpha samples through native persistence. [Development record](DEVLOG.md#dev-step-758) · [Qualification](SOURCE_PUBLICATION_758.md).

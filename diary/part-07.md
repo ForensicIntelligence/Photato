@@ -323,11 +323,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:759 -->
+<!-- current-status-step:760 -->
 
-Opening eligible 8-bit and 16-bit RGB PNGs preserves colour beneath transparent pixels. The reader keeps straight samples in the working space, including alpha zero and the smallest nonzero alpha. The existing conversion still handles colour-space changes and providers outside the supported layout and size budget.
+Vanishing Point adds a checked Show Edges control in Options with a Command-H binding. Turning it off hides plane borders, grids and idle selection outlines. Selection outlines reappear during a drag. Measurement visibility and grids rendered into the image remain independently controlled.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-759) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_759.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-760) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_760.md).
 
 <!-- current-status:end -->
 
@@ -1293,5 +1293,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-26 | 757 | [Match Normal RGB8 raster composition](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-757) |
 | 2026-11-26 | 758 | [Preserve straight RGBA in PNG exports](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-758) |
 | 2026-11-26 | 759 | [Preserve hidden RGB when opening PNGs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-759) |
+| 2026-11-27 | 760 | [Show and hide Vanishing Point edges](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-760) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

@@ -950,6 +950,42 @@ final class VanishingWorkflowTests:XCTestCase {
     XCTAssertFalse(model.canUndo)
   }
 
+  @MainActor func testVanishingShowEdgesKeepsSelectionAndRenderOptions() async throws {
+    var original = try fixture()
+    original.vanishingPoint = program().settings
+    let model = VanishingWorkspace(document: original, layerID: original.layers[0].id)
+    defer { model.close() }
+    await model.prepare()
+    XCTAssertTrue(model.ready)
+    model.tool = .marquee
+    let selection = VanishingMarquee(plane: 0, lower: .init(0.2, 0.2), upper: .init(0.7, 0.5))
+    model.marquee = selection
+    model.renderGrids = true
+    let prepared = try XCTUnwrap(model.preparedEdit?.result)
+    XCTAssertTrue(model.showsPlaneOverlay)
+    XCTAssertTrue(model.showsSelectionOutline(duringDrag: false))
+    XCTAssertEqual(model.apiState["showEdges"] as? Bool, true)
+
+    model.showEdges = false
+    XCTAssertFalse(model.showsPlaneOverlay)
+    XCTAssertFalse(model.showsSelectionOutline(duringDrag: false))
+    XCTAssertTrue(model.showsSelectionOutline(duringDrag: true))
+    XCTAssertEqual(model.apiState["showEdges"] as? Bool, false)
+    XCTAssertEqual(model.apiState["showGrid"] as? Bool, true)
+    XCTAssertEqual(model.apiState["showMeasurements"] as? Bool, true)
+    XCTAssertEqual(model.apiState["renderGrids"] as? Bool, true)
+    XCTAssertEqual(model.activeMarquee, selection)
+    XCTAssertEqual(model.preparedEdit?.result, prepared)
+    XCTAssertFalse(model.canUndo)
+
+    model.showGrid = false
+    model.showEdges = true
+    XCTAssertFalse(model.showsPlaneOverlay)
+    XCTAssertTrue(model.showsSelectionOutline(duringDrag: false))
+    model.showGrid = true
+    XCTAssertTrue(model.showsPlaneOverlay)
+  }
+
   @MainActor func testVanishingSceneReusesResolvedFramesUntilSettingsChange() throws {
     var document = try fixture()
     document.vanishingPoint = program().settings

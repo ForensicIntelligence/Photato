@@ -1,3 +1,13 @@
+## 2026-11-27 — Step 760 — Show and hide Vanishing Point edges
+
+Vanishing Point adds a checked Show Edges control in Options with a Command-H binding. Turning it off hides plane borders, grids and idle selection outlines. Selection outlines reappear during a drag. Measurement visibility and grids rendered into the image remain independently controlled.
+
+All five focused Xcode Debug tests passed. Both optimized architectures passed all 210 focused tests, including the new Show Edges regression. Intel ran under Rosetta.
+
+Photoshop 27.2.0 showed Show Edges checked in Vanishing Point with Command-H. The Photato tests cover overlay state. The live Options and keyboard checks remain pending. Independent verification of Photoshop’s grid raster is still open.
+
+[Development record](DEVLOG.md#dev-step-760) · [Qualification](SOURCE_PUBLICATION_760.md).
+
 ## 2026-11-26 — Step 759 — Preserve hidden RGB when opening PNGs
 
 Opening eligible 8-bit and 16-bit RGB PNGs preserves colour beneath transparent pixels. The reader keeps straight samples in the working space, including alpha zero and the smallest nonzero alpha. The existing conversion still handles colour-space changes and providers outside the supported layout and size budget.
@@ -2211,11 +2221,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:759 -->
+<!-- current-status-step:760 -->
 
-Opening eligible 8-bit and 16-bit RGB PNGs preserves colour beneath transparent pixels. The reader keeps straight samples in the working space, including alpha zero and the smallest nonzero alpha. The existing conversion still handles colour-space changes and providers outside the supported layout and size budget.
+Vanishing Point adds a checked Show Edges control in Options with a Command-H binding. Turning it off hides plane borders, grids and idle selection outlines. Selection outlines reappear during a drag. Measurement visibility and grids rendered into the image remain independently controlled.
 
-[Development record](DEVLOG.md#dev-step-759) · [Qualification](SOURCE_PUBLICATION_759.md).
+[Development record](DEVLOG.md#dev-step-760) · [Qualification](SOURCE_PUBLICATION_760.md).
 
 <!-- current-status:end -->
 
@@ -3181,6 +3191,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-26 | 757 | [Match Normal RGB8 raster composition](DEVLOG.md#dev-step-757) |
 | 2026-11-26 | 758 | [Preserve straight RGBA in PNG exports](DEVLOG.md#dev-step-758) |
 | 2026-11-26 | 759 | [Preserve hidden RGB when opening PNGs](DEVLOG.md#dev-step-759) |
+| 2026-11-27 | 760 | [Show and hide Vanishing Point edges](DEVLOG.md#dev-step-760) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

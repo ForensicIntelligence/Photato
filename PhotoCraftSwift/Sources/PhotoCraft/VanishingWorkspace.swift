@@ -78,7 +78,12 @@ import PhotoCraftImaging
   var aligned=true
   var image:CGImage?
   var originalImage:CGImage?
+  var showEdges = true
   var showGrid=true
+  var showsPlaneOverlay: Bool { showEdges && showGrid }
+
+  func showsSelectionOutline(duringDrag: Bool) -> Bool { showEdges || duringDrag }
+
   var gridSize: Double {
     get { program.settings.effectiveGridSize }
     set {

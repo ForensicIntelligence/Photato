@@ -1,3 +1,9 @@
+### Vanishing Point overlays (checkpoint 760)
+
+The authenticated Photato document state reports the open workspace’s showEdges value alongside showGrid and showMeasurements. These preview flags do not change the renderGrids or renderMeasurements settings or add a document edit. This local preview setting has no corresponding Adobe v2 operation.
+
+[Qualification](SOURCE_PUBLICATION_760.md).
+
 ### PNG import samples (checkpoint 759)
 
 The desktop and authenticated Photato import paths preserve 8-bit and 16-bit samples. The Adobe-compatible action input uses the same reader within its current RGB8 limit. Import commands and schemas stay the same.

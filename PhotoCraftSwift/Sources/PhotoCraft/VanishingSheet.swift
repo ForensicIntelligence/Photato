@@ -80,6 +80,9 @@ struct VanishingSheet:View {
           Button("Cancel Export") { model.cancelSceneExport() }
         }
         Menu("Options") {
+          Toggle("Show Edges", isOn: $model.showEdges)
+            .keyboardShortcut("h", modifiers: .command)
+            .help("Show perspective planes, grids and selection outlines in the preview.")
           Toggle("Render Grids to Document",isOn:$model.renderGrids)
             .disabled(model.program.settings.planes.isEmpty)
             .help("Draw the perspective grids on the document when applying Vanishing Point.")
@@ -328,7 +331,7 @@ struct VanishingPreview:View {
         func screen(_ p:PathPoint)->CGPoint { .init(x:offset.x+p.x*scale,y:offset.y+p.y*scale) }
         context.fill(Path(CGRect(origin:.zero,size:size)),with:.color(Color(white:0.13)))
         if let image=model.preview ? model.image:model.originalImage { context.draw(Image(decorative:image,scale:1),in:CGRect(x:offset.x,y:offset.y,width:model.size.width*scale,height:model.size.height*scale)) }
-        if model.showGrid,let scene {
+        if model.showsPlaneOverlay,let scene {
           for (i,frame) in scene.frames.enumerated() {
             var grid = Path()
             grid.addLines(frame.corners.map(screen))
@@ -387,7 +390,9 @@ struct VanishingPreview:View {
             context.fill(Path(ellipseIn:CGRect(x:anchor.x-3,y:anchor.y-3,width:6,height:6)),with:.color(.yellow))
           }
         }
-        if let scene {
+        if let scene, model.showsSelectionOutline(
+          duringDrag: marqueeDrag != nil || marqueeTransformDrag != nil || pasteDrag != nil
+        ) {
           func drawTransformHandle(at point: PathPoint, rotation: Bool) {
             let position = screen(point)
             let bounds = CGRect(x:position.x-4,y:position.y-4,width:8,height:8)

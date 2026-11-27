@@ -23,7 +23,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 759.** Preserve hidden RGB when opening PNGs. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_759.md).
+**Development alpha — source build 760.** Show and hide Vanishing Point edges. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_760.md).
 
 ## Project layout
 
