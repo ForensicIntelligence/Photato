@@ -1,3 +1,9 @@
+### PNG import samples (checkpoint 759)
+
+The desktop and authenticated Photato import paths preserve 8-bit and 16-bit samples. The Adobe-compatible action input uses the same reader within its current RGB8 limit. Import commands and schemas stay the same.
+
+[Qualification](SOURCE_PUBLICATION_759.md).
+
 ### PNG export samples (checkpoint 758)
 
 Native Save, authenticated Photato downloads and the Adobe-compatible action-job output share the same PNG encoder. Compression, interlacing, save policy and API schemas continue to apply.

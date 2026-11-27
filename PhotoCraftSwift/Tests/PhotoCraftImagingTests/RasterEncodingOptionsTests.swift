@@ -82,6 +82,38 @@ final class RasterEncodingOptionsTests: XCTestCase {
     }
   }
 
+  func testPNGImportAndNativeArchiveKeepPhotoshopStraightSamples() throws {
+    let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+      .appendingPathComponent("Fixtures/png-straight-alpha")
+    for fixture in ["rgb8", "rgb16", "offset"] {
+      let source = try RasterIO.read(root.appendingPathComponent("\(fixture).psd"))
+      let expected = try Data(contentsOf: root.appendingPathComponent("\(fixture).rgba"))
+      for interlaced in [false, true] {
+        let png = try RasterIO.encoded(source, options: .init(pngInterlaced: interlaced))
+        let imported = try RasterIO.read(png)
+        XCTAssertEqual(imported.depth, source.depth)
+        XCTAssertEqual(imported.layers.count, 1)
+        let restored = try NativeArchive.decode(NativeArchive.encode(imported))
+        for model in [imported, restored] {
+          guard case .raster(let pixels) = try XCTUnwrap(model.layers.first).content else {
+            XCTFail("Expected one editable raster layer.")
+            continue
+          }
+          var bytes = try pixels.rgbaData(depth: model.depth)
+          if model.depth == .u16 {
+            for offset in stride(from: 0, to: bytes.count, by: 2) {
+              let low = bytes[offset]
+              bytes[offset] = bytes[offset + 1]
+              bytes[offset + 1] = low
+            }
+          }
+          XCTAssertEqual(bytes, expected, "\(fixture), Adam7 \(interlaced)")
+        }
+        XCTAssertEqual(try straightRGBASamples(RasterIO.encoded(restored)), expected)
+      }
+    }
+  }
+
   private func straightRGBASamples(_ png: Data) throws -> Data {
     let blocks = try PNGRestrictedStorage.chunks(png)
     let header = try XCTUnwrap(blocks.first).data

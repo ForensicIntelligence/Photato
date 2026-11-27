@@ -6,7 +6,7 @@
 
 Photato is a native Swift image editor for macOS 14 and later. It is an independent port of [PhotoCraft](https://github.com/storytold/photocraft), with Photoshop 2026 workflow compatibility as a development goal.
 
-Every published source commit includes its matching Universal app. We run the same operation in Photato and Photoshop 2026 with identical inputs, settings, color profiles and bit depths. We call the rendered output byte-identical only when every output pixel byte matches. We also compare complete export files where their format and settings permit a meaningful byte-for-byte check. The Developer Diary records confirmed matches, measured differences and workflows still to be tested. [Developer Diary](DEVELOPER_DIARY.md)
+**How we verify byte-for-byte output.** We run the same operation in Photato and Photoshop 2026 with identical inputs, settings, colour profiles and bit depths. Every pixel byte must match. For file-level parity we compare the complete export, including metadata and encoding. We record exact matches, measured differences and cases still to test in the diary. Every published source commit includes the matching Universal app. [Developer Diary](DEVELOPER_DIARY.md)
 
 **[Download Photato for macOS (Universal)](downloads/Photato-universal.zip?raw=1)** · Ad-hoc signed development alpha · macOS 14+ · Apple Silicon and Intel
 
@@ -23,7 +23,7 @@ Every published source commit includes its matching Universal app. We run the sa
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 758.** Preserve straight RGBA samples in PNG exports. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_758.md).
+**Development alpha — source build 759.** Preserve hidden RGB when opening PNGs. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_759.md).
 
 ## Project layout
 

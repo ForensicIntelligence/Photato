@@ -1,3 +1,5 @@
+**Rendered file parity.** Continue with the independent Vanishing Point grid-raster comparison and Show Edges behavior. PNG Open now passes the three captured straight-alpha controls. [Development record](DEVLOG.md#dev-step-759) · [Qualification](SOURCE_PUBLICATION_759.md).
+
 **Rendered file parity.** Verify that PNG imports preserve the measured straight-alpha samples through native persistence. [Development record](DEVLOG.md#dev-step-758) · [Qualification](SOURCE_PUBLICATION_758.md).
 
 **Rendered file parity.** Check straight-alpha PNG exports with owned Photoshop controls at 8 and 16 bits. [Development record](DEVLOG.md#dev-step-757) · [Qualification](SOURCE_PUBLICATION_757.md).

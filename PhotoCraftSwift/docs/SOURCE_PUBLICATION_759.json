@@ -1,0 +1,289 @@
+{
+  "build": 759,
+  "base": "9ead781d4243dcb096cb284832e2ced5abcd064c",
+  "inputCount": 9439,
+  "inputDigest": "78154f69fc105158427f4e9a7e2ac66a346fe25ed91a07928a8da865f06b8eaf",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraftImaging/PagedRasterImport.swift": "a2d3b2119298e857ac19730001e559532bdc73ed390008161dd7f1558d4559a4",
+    "Sources/PhotoCraftImaging/RasterIO.swift": "c7e0b95a0382d102d87121f26fe770a382198c6a0319019354e50325d2942858",
+    "Tests/PhotoCraftAppTests/AutomationOpeningTests.swift": "7c111d4fb87abc2dfa73218655da20577d308162c659ee2c5fb701293775b6c9",
+    "Tests/PhotoCraftImagingTests/RasterEncodingOptionsTests.swift": "9c605f23824c3c75d00fe50843699b3d0b002c097d214c0e3053e71b66f4ba4a",
+    "scripts/Info.plist": "34974493ad6067e1f1294b431871881ec5baa8291287480ffd689479bf24bedd"
+  },
+  "focusedDebug": {
+    "imagingPass": 25,
+    "appAndHTTPPass": 8
+  },
+  "qualification": {
+    "arm64": {
+      "build": 759,
+      "architecture": "arm64",
+      "expected": 135,
+      "passed": 135,
+      "missing": [],
+      "failed": [],
+      "skipped": [],
+      "newCases": [
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB",
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests/testPNGImportAndNativeArchiveKeepPhotoshopStraightSamples"
+      ],
+      "newCasesPassed": 2,
+      "groupExits": {
+        "PhotoCraftAppTests.AutomationEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.AutomationLayerMergeTests": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB": 0,
+        "PhotoCraftAppTests.DocumentEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.TIFFFloatWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLayerWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFModeWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFRichWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFStorageWorkflowTests": 0,
+        "PhotoCraftCoreTests.LayerMergeTests": 0,
+        "PhotoCraftCoreTests.PreparedLayerMergeTests": 0,
+        "PhotoCraftImagingTests.GroupRenderTests": 0,
+        "PhotoCraftImagingTests.LayerLayoutRenderTests": 0,
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests": 0,
+        "PhotoCraftImagingTests.RichLayerMergeTests": 0,
+        "PhotoCraftImagingTests.TIFFFloatTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerCompositeBoundaryTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerTests": 0,
+        "PhotoCraftImagingTests.TIFFModeTests": 0,
+        "PhotoCraftImagingTests.TIFFRestrictedTests": 0,
+        "PhotoCraftImagingTests.TIFFRichTests": 0,
+        "PhotoCraftImagingTests.TIFFStorageTests": 0
+      },
+      "testExecutableSHA256": "11e95a547fc815a312ef03fcc5e649462316d0cc9c7dd244b9419bddcfbdaa15"
+    },
+    "x86_64": {
+      "build": 759,
+      "architecture": "x86_64",
+      "expected": 135,
+      "passed": 135,
+      "missing": [],
+      "failed": [],
+      "skipped": [],
+      "newCases": [
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB",
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests/testPNGImportAndNativeArchiveKeepPhotoshopStraightSamples"
+      ],
+      "newCasesPassed": 2,
+      "groupExits": {
+        "PhotoCraftAppTests.AutomationEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.AutomationLayerMergeTests": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB": 0,
+        "PhotoCraftAppTests.DocumentEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.TIFFFloatWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLayerWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFModeWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFRichWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFStorageWorkflowTests": 0,
+        "PhotoCraftCoreTests.LayerMergeTests": 0,
+        "PhotoCraftCoreTests.PreparedLayerMergeTests": 0,
+        "PhotoCraftImagingTests.GroupRenderTests": 0,
+        "PhotoCraftImagingTests.LayerLayoutRenderTests": 0,
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests": 0,
+        "PhotoCraftImagingTests.RichLayerMergeTests": 0,
+        "PhotoCraftImagingTests.TIFFFloatTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerCompositeBoundaryTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerTests": 0,
+        "PhotoCraftImagingTests.TIFFModeTests": 0,
+        "PhotoCraftImagingTests.TIFFRestrictedTests": 0,
+        "PhotoCraftImagingTests.TIFFRichTests": 0,
+        "PhotoCraftImagingTests.TIFFStorageTests": 0
+      },
+      "testExecutableSHA256": "46844e38ba4a6608f143324f3cc7052e7b99eb443dcd9ae20076ad6b6ac88139"
+    }
+  },
+  "photoshopReference": {
+    "rgb8": {
+      "referencePNG": {
+        "width": 32,
+        "height": 8,
+        "depth": 8,
+        "encodedSHA256": "af0461ca082f11725332b540ed607ca6477bba57de73d4bb1830c0a5e0914cdc",
+        "chunks": [
+          "IHDR",
+          "pHYs",
+          "iTXt",
+          "IDAT",
+          "IEND"
+        ],
+        "profile": null
+      },
+      "decodedSampleBytes": 1024,
+      "differences": {}
+    },
+    "rgb16": {
+      "referencePNG": {
+        "width": 32,
+        "height": 8,
+        "depth": 16,
+        "encodedSHA256": "b8e33dc99ddf488218d8a50873a5c5c4af3406e4262a25ab6cdf6719a80202e9",
+        "chunks": [
+          "IHDR",
+          "pHYs",
+          "iTXt",
+          "IDAT",
+          "IEND"
+        ],
+        "profile": null
+      },
+      "decodedSampleBytes": 2048,
+      "differences": {}
+    },
+    "offset": {
+      "referencePNG": {
+        "width": 16,
+        "height": 12,
+        "depth": 8,
+        "encodedSHA256": "3aefee373f727500e6825a0b4e26021208ec325121f5e48e1c5a912edbae8a43",
+        "chunks": [
+          "IHDR",
+          "pHYs",
+          "iTXt",
+          "IDAT",
+          "IEND"
+        ],
+        "profile": null
+      },
+      "decodedSampleBytes": 768,
+      "differences": {}
+    }
+  },
+  "sparseImportControl": {
+    "surfacePixels": 36006000,
+    "allocatedTileCount": 4,
+    "mappedStorageBytes": 262144,
+    "exactSelectedRGBABytes": 20
+  },
+  "syntheticPNGSampleSweep": {
+    "rgb8": {
+      "depth": 8,
+      "width": 256,
+      "height": 16,
+      "adam7": false,
+      "bytes": 16384,
+      "differentBytes": 0,
+      "referenceBytesSHA256": "c12a76f24932cf8600652cdd1179ad78b4fe09aab8161ba4f5b2823b4e1a4d7f",
+      "actualBytesSHA256": "c12a76f24932cf8600652cdd1179ad78b4fe09aab8161ba4f5b2823b4e1a4d7f"
+    },
+    "rgb16": {
+      "depth": 16,
+      "width": 256,
+      "height": 256,
+      "adam7": false,
+      "bytes": 524288,
+      "differentBytes": 0,
+      "referenceBytesSHA256": "8c90ce858277935a346dc3a1a81193d6d0bc45c0f15723798d5f3955171d08f5",
+      "actualBytesSHA256": "8c90ce858277935a346dc3a1a81193d6d0bc45c0f15723798d5f3955171d08f5"
+    },
+    "offset": {
+      "depth": 16,
+      "width": 256,
+      "height": 256,
+      "adam7": true,
+      "bytes": 524288,
+      "differentBytes": 0,
+      "referenceBytesSHA256": "8c90ce858277935a346dc3a1a81193d6d0bc45c0f15723798d5f3955171d08f5",
+      "actualBytesSHA256": "8c90ce858277935a346dc3a1a81193d6d0bc45c0f15723798d5f3955171d08f5"
+    }
+  },
+  "taggedPNGSampleSweep": {
+    "rgb8": {
+      "profile": "authored-p3-32.icc",
+      "profileSHA256": "824a4f5fd857b611a8610e0d746dff6c1dff3257be457eadffa6da648e620299",
+      "bytes": 16384,
+      "differentBytes": 0,
+      "taggedSHA256": "c12a76f24932cf8600652cdd1179ad78b4fe09aab8161ba4f5b2823b4e1a4d7f",
+      "untaggedSHA256": "c12a76f24932cf8600652cdd1179ad78b4fe09aab8161ba4f5b2823b4e1a4d7f"
+    },
+    "rgb16": {
+      "profile": "authored-adobe-32.icc",
+      "profileSHA256": "66081670b62b612f277afb359c116289c23d12731533b19e41d3db8b7270aca6",
+      "bytes": 524288,
+      "differentBytes": 0,
+      "taggedSHA256": "8c90ce858277935a346dc3a1a81193d6d0bc45c0f15723798d5f3955171d08f5",
+      "untaggedSHA256": "8c90ce858277935a346dc3a1a81193d6d0bc45c0f15723798d5f3955171d08f5"
+    },
+    "offset": {
+      "profile": "authored-p3-32.icc",
+      "profileSHA256": "824a4f5fd857b611a8610e0d746dff6c1dff3257be457eadffa6da648e620299",
+      "bytes": 524288,
+      "differentBytes": 0,
+      "taggedSHA256": "8c90ce858277935a346dc3a1a81193d6d0bc45c0f15723798d5f3955171d08f5",
+      "untaggedSHA256": "8c90ce858277935a346dc3a1a81193d6d0bc45c0f15723798d5f3955171d08f5"
+    }
+  },
+  "preview": {
+    "build": 759,
+    "archive": "Photato-universal.zip",
+    "archiveSHA256": "65fccb029f2bc62db2bde265b9a565cb2f627906414134e6b6042a053322b829",
+    "archiveBytes": 77916037,
+    "gitPath": "downloads/Photato-universal.zip",
+    "bundleID": "ca.forensicintelligence.photato.preview",
+    "signing": "ad-hoc",
+    "localSymbolsStripped": true,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "f564eec9b60db85014a47539c63cd361e2e8fe6d03c22f1d1c26e00d4afffc13",
+    "architectureInputsSHA256": {
+      "arm64": "31a83186777b90e25e692e90dc524300fd39ec522d8ad401576381965e12da4d",
+      "x86_64": "35a50b634af5e0bad22a518fe1fb044b31a0df1843e7823ef11639b2c6db14e8"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    },
+    "verifiedEntitlementArchs": [
+      "arm64",
+      "x86_64"
+    ]
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "size": [
+        1000,
+        650
+      ],
+      "pngSHA256": "768be48d60b817bf0d1eb89df3a91e54a5513cf71702b73991fd216fa6568171"
+    },
+    "x86_64": {
+      "size": [
+        1000,
+        650
+      ],
+      "pngSHA256": "467dbe167ecf5906feafe002446a8287c153332b12a2803da095b552ba8a5f28"
+    }
+  },
+  "probeLogsSHA256": {
+    "xcode-debug-759-01.log": "ff31a39c8f0bb32686306f79b6bec44fda61e9516e0f38152a536a5cc70f570f",
+    "xcode-debug-759-02.log": "c11b38a76af6639ced344af2be50edac6c33f18452dd11e3066b24cbd5d47496",
+    "xcode-focused-imaging-759-02.log": "d95ca2d230d9ce1af30a65b1153b8bf9d9a91957f1b411344df495465b76cc68",
+    "xcode-focused-app-759-01.log": "e48fe6ebfd7b032356383bdadd9f791f804e4cfb98f10d36e188520a986f6b42",
+    "xcode-focused-app-759-02.log": "68294a47b174ff8b38fc6344d06560deaf1afcfafe5bfe7ea42ecf2e9ccae3d2",
+    "import-proof-02/png-import-comparison-759-02.json": "045a7ea31358c962727832f53a2fe47e41a0c60b180177dcc20aa2be98516f1f",
+    "import-proof-02/paged-png-proof-759-01.json": "b1b11b3a4d63cadecdf706721375c3ec103f8486cfc6e60130cde8a739b11809"
+  }
+}

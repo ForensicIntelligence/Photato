@@ -1,6 +1,7 @@
 import AppKit
 import Foundation
 import PhotoCraftCore
+import PhotoCraftImaging
 import XCTest
 @testable import PhotoCraft
 
@@ -68,6 +69,34 @@ final class AutomationOpeningTests: XCTestCase {
       let legacy = try await upload(service, bytes: bytes, type: "image/png")
       XCTAssertEqual(legacy.0.statusCode, 422)
       XCTAssertEqual(AutomationCommand.definitions.count, AutomationTests.expectedCommandCount)
+    }
+  }
+
+  @MainActor func testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB() async throws {
+    try await AutomationTests().withService(pressedMouseButtons: { 0 }) { service, original in
+      defer { for document in service.controller.documents where document !== original { document.close() } }
+      service.setDocumentTransfersEnabled(true)
+      for depth in [PixelDepth.u8, .u16] {
+        var pixels = try Surface(width: 3, height: 2, depth: depth)
+        let minimumOpacity: Float = depth == .u8 ? 1 / 255 : 1 / 65535
+        pixels.setPixel(x: 0, y: 0, Pixel(206 / 255, 173 / 255, 204 / 255, 0))
+        pixels.setPixel(x: 1, y: 0, Pixel(25 / 255, 197 / 255, 51 / 255, minimumOpacity))
+        let png = try RasterIO.encoded(pixels, options: .init(pngInterlaced: true))
+        let expected = try pixels.rgbaData(depth: depth)
+        func check(_ model: CraftDocument) throws {
+          XCTAssertEqual(model.depth, depth)
+          guard case .raster(let raster) = try XCTUnwrap(model.layers.first).content else {
+            XCTFail("Expected raw PNG samples on a raster layer.")
+            return
+          }
+          XCTAssertEqual(try raster.rgbaData(depth: depth), expected)
+        }
+        try check(DocumentIO.decodeUpload(png, native: false, name: "Owned PNG"))
+        if depth == .u8 { try check(AdobeActionAssets.decode(png)) }
+        let reply = try await upload(service, bytes: png, type: "image/png", format: "png")
+        XCTAssertEqual(reply.0.statusCode, 201, String(decoding: reply.1, as: UTF8.self))
+        try check(XCTUnwrap(service.shares.last?.document?.store.document))
+      }
     }
   }
   @MainActor func testNativeOpeningStatePrivacyPermissionsAndExactIDCancellation() async throws {

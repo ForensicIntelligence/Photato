@@ -151,17 +151,19 @@ public enum RasterIO {
     let working = try ColorManagement.importedProfile(embedded, depth: depth)
     var workingDocument = try CraftDocument(width: 1, height: 1, depth: depth)
     workingDocument.workingICC = working
+    let workingSpace = try ColorManagement.space(for: workingDocument)
     let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
     // ImageIO's planar Float32 path can supply NaN in place of alpha. Decode
     // supported TIFF samples directly when no profile conversion is needed.
     let nativeTIFF = embedded != nil && embedded == working
       ? try TIFFStorage.surface(data, depth: depth, encoding: encoding,
-        space: ColorManagement.space(for: workingDocument)) : nil
+        space: workingSpace) : nil
+    let straightPNG = (CGImageSourceGetType(source) as String?) == UTType.png.identifier
+      && CGImageSourceGetStatusAtIndex(source, 0) == .statusComplete
+      ? try straightPNGSurface(image, depth: depth, space: workingSpace) : nil
     let pixels = try oriented(
-      nativeTIFF ?? surface(
-        image, depth: depth,
-        space: ColorManagement.space(for: workingDocument),
-        colorEncoding: encoding), orientation: orientation)
+      nativeTIFF ?? straightPNG ?? surface(image, depth: depth, space: workingSpace, colorEncoding: encoding),
+      orientation: orientation)
     var d = try CraftDocument(
       width: pixels.width, height: pixels.height, depth: depth,
       name: name)
@@ -179,6 +181,57 @@ public enum RasterIO {
     d.activeLayerID = l.id
     return try TIFFLayers.read(data, composite: d) ?? d
   }
+
+  /// ImageIO exposes straight integer PNG samples. Reading them directly keeps
+  /// RGB under zero alpha, which drawing into a premultiplied context discards.
+  private static func straightPNGSurface(_ image: CGImage, depth: PixelDepth, space: CGColorSpace) throws -> Surface? {
+    guard depth == .u8 || depth == .u16, let sourceSpace = image.colorSpace,
+      sourceSpace.model == .rgb, space.model == .rgb, image.decode == nil,
+      !image.isMask, image.alphaInfo == .last, !image.bitmapInfo.contains(.floatComponents)
+    else { return nil }
+    if sourceSpace != space {
+      guard let sourceProfile = sourceSpace.copyICCData() as Data?, let targetProfile = space.copyICCData() as Data?,
+        sourceProfile == targetProfile else { return nil }
+    }
+    let componentBytes = depth == .u8 ? 1 : 2
+    let pixelBytes = 4 * componentBytes
+    let order = image.bitmapInfo.intersection(.byteOrderMask)
+    guard image.bitsPerComponent == componentBytes * 8, image.bitsPerPixel == pixelBytes * 8,
+      depth == .u8 || order == .byteOrder16Little || order == .byteOrder16Big else { return nil }
+    let width = image.width, height = image.height, rowBytes = image.bytesPerRow
+    // Keep ImageIO's complete provider within the existing 1 GiB budget.
+    guard width > 0, height > 0, rowBytes >= width * pixelBytes,
+      rowBytes <= 1_073_741_824 / height,
+      let data = image.dataProvider?.data as Data?, data.count >= rowBytes * (height - 1) + width * pixelBytes
+    else { return nil }
+
+    return try data.withUnsafeBytes { bytes in
+      func sample(_ offset: Int) -> Float {
+        if depth == .u8 { return Float(bytes[offset]) / 255 }
+        let word = bytes.loadUnaligned(fromByteOffset: offset, as: UInt16.self)
+        return Float(order == .byteOrder16Little ? UInt16(littleEndian: word) : UInt16(bigEndian: word)) / 65535
+      }
+      func patch(_ area: IntRect) throws -> Surface {
+        var result = try Surface(width: area.width, height: area.height, depth: depth)
+        for y in 0..<area.height {
+          try Task.checkCancellation()
+          let row = (area.y + y) * rowBytes + area.x * pixelBytes
+          for x in 0..<area.width {
+            let offset = row + x * pixelBytes
+            let pixel = Pixel(sample(offset), sample(offset + componentBytes),
+              sample(offset + 2 * componentBytes), sample(offset + 3 * componentBytes))
+            if pixel != .clear { result.setPixel(x: x, y: y, pixel) }
+          }
+        }
+        return result
+      }
+      if width > Surface.maximumDensePixels / height {
+        return try pagedRaster(width: width, height: height, depth: depth, colorEncoding: .sRGB, patch: patch)
+      }
+      return try patch(IntRect(x: 0, y: 0, width: width, height: height))
+    }
+  }
+
   public static func oriented(_ source: Surface, orientation: Int) throws -> Surface {
     guard (1...8).contains(orientation) else {
       throw CraftError.invalid("Invalid EXIF orientation.")

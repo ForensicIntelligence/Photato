@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 759.** Preserve hidden RGB when opening PNGs. [Qualification](docs/SOURCE_PUBLICATION_759.md).
+
 **Source checkpoint 758.** Preserve straight RGBA in PNG exports. [Qualification](docs/SOURCE_PUBLICATION_758.md).
 
 **Source checkpoint 757.** Match Normal RGB8 raster composition. [Qualification](docs/SOURCE_PUBLICATION_757.md).

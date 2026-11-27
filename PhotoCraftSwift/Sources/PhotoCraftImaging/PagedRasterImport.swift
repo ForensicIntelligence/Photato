@@ -9,19 +9,26 @@ extension RasterIO {
     space: CGColorSpace? = nil, colorEncoding: SurfaceColorEncoding = .sRGB,
     backing: RasterTileStore? = nil) throws -> Surface {
     let target = try space ?? colorSpace()
-    let builder=try Surface.PagedBuilder(width:image.width,height:image.height,depth:depth,colorEncoding:colorEncoding,backing:backing)
     let direct = depth == .f32 && colorEncoding == .linearRGB ? try FloatRasterSamples.Reader(image, space: target) : nil
-    for y in stride(from: 0, to: image.height, by: Surface.tileSide) {
-      for x in stride(from: 0, to: image.width, by: 2048) {
+    return try pagedRaster(width: image.width, height: image.height, depth: depth,
+      colorEncoding: colorEncoding, backing: backing) { region in
+      if let direct { return try direct.surface(region: region) }
+      guard let crop = image.cropping(to: CGRect(x: region.x, y: region.y, width: region.width, height: region.height))
+      else { throw CraftError.invalid("Could not decode an image patch.") }
+      return try surface(crop, depth: depth, space: target, colorEncoding: colorEncoding)
+    }
+  }
+
+  static func pagedRaster(width: Int, height: Int, depth: PixelDepth,
+    colorEncoding: SurfaceColorEncoding, backing: RasterTileStore? = nil,
+    patch: (IntRect) throws -> Surface) throws -> Surface {
+    let builder = try Surface.PagedBuilder(width: width, height: height, depth: depth,
+      colorEncoding: colorEncoding, backing: backing)
+    for y in stride(from: 0, to: height, by: Surface.tileSide) {
+      for x in stride(from: 0, to: width, by: 2048) {
         try Task.checkCancellation()
-        let region = IntRect(x: x, y: y, width: min(2048, image.width - x), height: min(Surface.tileSide, image.height - y))
-        let patch: Surface
-        if let direct { patch = try direct.surface(region: region) }
-        else {
-          guard let crop = image.cropping(to: CGRect(x: x, y: y, width: region.width, height: region.height)) else { throw CraftError.invalid("Could not decode an image patch.") }
-          patch = try surface(crop, depth: depth, space: target, colorEncoding: colorEncoding)
-        }
-        try builder.append(patch,atX:x,atY:y)
+        let region = IntRect(x: x, y: y, width: min(2048, width - x), height: min(Surface.tileSide, height - y))
+        try builder.append(patch(region), atX: x, atY: y)
       }
     }
     return try builder.finish()
