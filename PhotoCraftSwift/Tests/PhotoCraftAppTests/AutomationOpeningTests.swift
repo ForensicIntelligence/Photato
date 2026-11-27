@@ -133,6 +133,23 @@ final class AutomationOpeningTests: XCTestCase {
         let download = try await helper.request(service, path: "/v1/documents/\(share.id)/file.png")
         XCTAssertEqual(download.0.statusCode, 200)
         try check(RasterIO.read(download.1))
+
+        var top = Layer(name: "Top gray", content: .raster(try raster.surface()))
+        top.nativeMode = raster
+        top.opacity = Float(149) / 255
+        document.layers.append(top)
+        let layeredInput = try DocumentIO.encode(document, format: .psd)
+        let layered = try await upload(service, bytes: layeredInput, type: "application/octet-stream", format: "psd")
+        XCTAssertEqual(layered.0.statusCode, 201, String(decoding: layered.1, as: UTF8.self))
+        let layeredShare = try XCTUnwrap(service.shares.last)
+        let layeredDocument = try XCTUnwrap(layeredShare.document?.store.document)
+        XCTAssertEqual(layeredDocument.layers.count, 2)
+        let layeredDownload = try await helper.request(service, path: "/v1/documents/\(layeredShare.id)/file.png")
+        XCTAssertEqual(layeredDownload.0.statusCode, 200)
+        XCTAssertEqual(layeredDownload.1, try DocumentIO.encode(layeredDocument, format: .png))
+        let flattened = try XCTUnwrap(RasterIO.read(layeredDownload.1).layers.first?.nativeMode)
+        XCTAssertEqual(flattened.rawWord(component: 0, index: 0), maximum)
+        XCTAssertEqual(flattened.rawWord(component: 1, index: 0), 0)
       }
     }
   }

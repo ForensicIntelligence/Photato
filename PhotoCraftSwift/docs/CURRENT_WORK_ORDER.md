@@ -1,3 +1,5 @@
+**Rendered file parity.** Eligible layered Grayscale PNG copies match the four Photoshop gray and opacity references. Verify grayscale TIFF and PSD/PSB merged previews and indexed PNG transparency. [Development record](DEVLOG.md#dev-step-762) · [Qualification](SOURCE_PUBLICATION_762.md).
+
 **Rendered file parity.** Grayscale PNG preserves editable gray and opacity and honors declared transfer curves. Capture independent Photoshop grayscale saves and qualify layered output. The Vanishing Point grid raster and live shortcut remain open. [Development record](DEVLOG.md#dev-step-761) · [Qualification](SOURCE_PUBLICATION_761.md).
 
 **Vanishing Point.** Compare the independent Photoshop grid raster with the native renderer. Verify the native Show Edges control and Command-H binding in the live sheet. [Development record](DEVLOG.md#dev-step-760) · [Qualification](SOURCE_PUBLICATION_760.md).

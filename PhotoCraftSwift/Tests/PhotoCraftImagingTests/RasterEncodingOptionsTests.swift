@@ -1,3 +1,4 @@
+import CryptoKit
 import Foundation
 import ImageIO
 import PhotoCraftCore
@@ -175,6 +176,55 @@ final class RasterEncodingOptionsTests: XCTestCase {
       XCTAssertEqual(reloaded.modeDescriptor?.profile, expected)
     }
     XCTAssertEqual(profiles.count, 3)
+  }
+
+  func testPhotoshopGrayscalePNGMatchesLayeredNormalSamples() throws {
+    // Digests cover the independently decoded network-order samples of four
+    // Photoshop 27.2.0 Save a Copy controls made from this owned layer stack.
+    let captures: [(PixelDepth, Bool, String)] = [
+      (.u8, true, "91ab665bb16769839a3515252004406ec740fd48ec07f02d4ad43b7cac540a9f"),
+      (.u8, false, "56f3228751a665f48d2ff36f81355c3ac09dec87432b4d3f5732e38b8f6b5420"),
+      (.u16, true, "c26e1b74df7b07dd8d4a6af235b91588d903e950b658695dc66011c06f17af07"),
+      (.u16, false, "5e0fc9ada4dd822d1f6874189b87bac952fc1802af37e8099e0468b4d6f7b4de"),
+    ]
+    let width = 64, height = 32
+    for (depth, opaqueBase, expected) in captures {
+      let profile = try ColorSettings().profile(.grayscale, depth: depth)
+      let maximum: UInt32 = depth == .u8 ? 255 : 65_535
+      var document = try CraftDocument(width: width, height: height, depth: depth)
+      document.modeDescriptor = try .init(mode: .grayscale, depth: depth, profile: profile)
+      document.layers = try [255, 149, 217].enumerated().map { stage, opacity in
+        let builder = try NativeModeRaster.RowBuilder(width: width, height: height, mode: .grayscale,
+          depth: depth, profile: profile)
+        for y in 0..<height {
+          let gray = (0..<width).map { x -> UInt32 in
+            UInt32((y * width + x) * (511 + stage * 149) + 113 + stage * 17) & maximum
+          }
+          let alpha = (0..<width).map { x -> UInt32 in
+            if opaqueBase && stage == 0 { return maximum }
+            if x % (stage + 3) == 0 { return 0 }
+            return UInt32((y * width + x) * (989 + stage * 201) + 137 + stage * 34) & maximum
+          }
+          try builder.appendRow(gray, component: 0)
+          try builder.appendRow(alpha, component: 1)
+        }
+        let native = try builder.finish()
+        var layer = Layer(name: "Gray layer \(stage + 1)", content: .raster(try native.surface()))
+        layer.nativeMode = native
+        layer.opacity = Float(opacity) / 255
+        return layer
+      }
+      document.activeLayerID = document.layers.last?.id
+      document.resolution = 300
+      let reopened = try RasterIO.read(PSDCodec.writeRasterLayers(document))
+      XCTAssertEqual(reopened.layers.count, 3)
+      for interlaced in [false, true] {
+        let png = try RasterIO.encoded(reopened, options: .init(pngInterlaced: interlaced))
+        let words = try straightPNGSamples(png, colorType: opaqueBase ? 0 : 4)
+        let actual = SHA256.hash(data: words).map { String(format: "%02x", $0) }.joined()
+        XCTAssertEqual(actual, expected, "\(depth), opaque base: \(opaqueBase), Adam7: \(interlaced)")
+      }
+    }
   }
 
   private func straightPNGSamples(_ png: Data, colorType: UInt8 = 6) throws -> Data {

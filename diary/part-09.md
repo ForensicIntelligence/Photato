@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-27 — Step 762 — Match layered grayscale PNG samples
+
+Saving an eligible layered Grayscale PNG now blends the retained gray and opacity samples directly. The 16-bit calculation promotes layer opacity before composing. Transparent pixels within the visible bounds retain the bottom layer’s gray, and pixels outside those bounds use transparent white.
+
+All 28 focused imaging tests and nine app and HTTP tests passed in Xcode Debug. Both optimized architectures passed all 215 selected tests. Intel ran under Rosetta.
+
+Photoshop 27.2.0 opened four owned three-layer PSDs and saved PNG copies at 8 and 16 bits, each with opaque and transparent base cases. An independent reader compared all 16,384 gray and alpha pairs across standard and Adam7 Photato exports. All pairs matched, including hidden gray. The four noninterlaced exports also matched Photoshop’s filtered scanlines byte for byte. A fifth 16-bit reference distinguished the two half-tie rounding orders at 32 positions. All 128 gray and alpha pairs across its ordinary and Adam7 exports matched.
+
+Complete PNG files differ. Photoshop’s observed profile setting left the reference untagged and the exported files also differ in metadata and compressed IDAT bytes. The numerical check covers aligned Normal layers with a shared profile. Masked or transformed stacks, other blend modes, TIFF and Photoshop merged previews still need separate verification.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-762) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_762.md).
+
 ## 2026-11-27 — Step 761 — Preserve grayscale PNG samples and profiles
 
 Open retains Grayscale PNG as an editable gray plane with straight opacity. Packed 2-bit and 4-bit values expand to 8-bit. Eligible flat 8-bit and 16-bit Save output retains the exact gray and opacity samples, including hidden gray, along with embedded profiles and declared gamma.
@@ -493,5 +505,15 @@ Changing only the Composition reference moved the measured orange centre from x=
 Local models are optional on Apple Silicon with macOS 26 or later. The Style model operates at 224 pixels internally and can soften fine detail. Composition can add objects when edges are ambiguous. The Photoshop 27.2.0 AppleEvent query timed out. Direct Photoshop reopen, Firefly output fidelity, the Firefly ActionJSON descriptor, keyboard and assistive-technology testing remain open.
 
 [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-714) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_714.md).
+
+## 2026-11-21 — Step 713 — Edit a whole image with local instructions and saved variations
+
+Edit → Prompt to Edit and the canvas action use the selected pixel layer and a text instruction to create alternatives on this Mac. The new editable Smart Object preserves the original layer and source alpha. The original is hidden and can be restored in one Undo. Generate More uses the saved reference. Edit This Variation starts from a chosen result. The Photato HTTP API shares the same edit and history.
+
+The real InstructPix2Pix model delivered identical same-seed pixels through the native editor and authenticated HTTP API. A saved second variation matched the same seed run independently.On a locally generated 512 × 512 still life, a blue-teapot instruction moved the average red-minus-blue value in the sampled pot from 0.879 to −0.775. The model also changed some surrounding colours. Photato, PSD and PSB reopened with both variants and identical rendered bytes. An independent reader compared all 2,097,152 merged RGBA bytes from the PSD and PSB previews to the PNG. A 300,000 × 8 PSB kept the original source, editable placement and exact pixels at both sampled edges.
+
+The local workflow uses the optional 512 × 512 Core ML model on Apple Silicon and macOS 26 or later. Current input support is still RGB and visible root pixel or supported generative layers outside clipping stacks. The installed Photoshop 27.2.0 document query timed out. Direct Photoshop reopening, Adobe model output equality, shared Firefly action descriptors, and live keyboard and assistive technology checks remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-713) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_713.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)

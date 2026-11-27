@@ -1,0 +1,1267 @@
+{
+  "build": 762,
+  "base": "568fcc72117005a6e3cd59bb6a2cc52783240c1d",
+  "inputCount": 9441,
+  "inputDigest": "0afc78b0daa4908651898e8b8dae20821215015a997dbf06622a9c6cb638d7f4",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraftImaging/GrayscalePNGComposite.swift": "dba3bc49916afcea78f6fcc3bf4c60a823018d0c98398264a2fcc690d66d168c",
+    "Sources/PhotoCraftImaging/PNGGrayscaleStorage.swift": "1ed1b5d95e4f3ae350c0d0433fe06923127199e073a7f197b4f4f01dd3c1f31a",
+    "Sources/PhotoCraftImaging/RasterIO.swift": "aa9411289179964063176367c24c0748c57151c65ea67a30e3add6076a47a778",
+    "Tests/PhotoCraftAppTests/AutomationOpeningTests.swift": "a9aa81835b63fd2fefd18a4664caa646ce4db4f9a07e8e08660095cf85487afe",
+    "Tests/PhotoCraftImagingTests/RasterEncodingOptionsTests.swift": "500dea3ca8137acf235439324362d053fd58f49518be1ddb4971bd5152cae446",
+    "scripts/Info.plist": "13301be1051e88352ff4df5c40c42d4bc5c5fa50050dc85a6830e20aff4d4a5a"
+  },
+  "focusedDebug": {
+    "imagingPass": 28,
+    "appAndHTTPPass": 9
+  },
+  "qualification": {
+    "arm64": {
+      "build": 762,
+      "architecture": "arm64",
+      "expected": 215,
+      "passed": 215,
+      "missing": [],
+      "failed": [],
+      "skipped": [],
+      "newCases": [
+        "PhotoCraftAppTests.AutomationOpeningTests/testGrayscalePNGImportAndDownloadPreserveTheNativePlanes",
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests/testGrayscalePNGKeepsGrayAndOpacityThroughOpenArchiveAndSave",
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests/testGrayscalePNGPreservesItsDeclaredTransferCurve",
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests/testPhotoshopGrayscalePNGMatchesLayeredNormalSamples"
+      ],
+      "newCasesPassed": 4,
+      "groupExits": {
+        "PhotoCraftAppTests.AdobeSmartObjectAppearanceTests/testGrayPNG16GrayPSDAndGrayJPEGSupplyNumericMaskSamples": 0,
+        "PhotoCraftAppTests.AutomationEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.AutomationLayerMergeTests": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testGrayscalePNGImportAndDownloadPreserveTheNativePlanes": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB": 0,
+        "PhotoCraftAppTests.DocumentEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.TIFFFloatWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLayerWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFModeWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFRichWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFStorageWorkflowTests": 0,
+        "PhotoCraftAppTests.VanishingWorkflowTests": 0,
+        "PhotoCraftCoreTests.LayerMergeTests": 0,
+        "PhotoCraftCoreTests.PreparedLayerMergeTests": 0,
+        "PhotoCraftCoreTests.VanishingTests": 0,
+        "PhotoCraftImagingTests.GroupRenderTests": 0,
+        "PhotoCraftImagingTests.LayerLayoutRenderTests": 0,
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests": 0,
+        "PhotoCraftImagingTests.RichLayerMergeTests": 0,
+        "PhotoCraftImagingTests.TIFFFloatTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerCompositeBoundaryTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerTests": 0,
+        "PhotoCraftImagingTests.TIFFModeTests": 0,
+        "PhotoCraftImagingTests.TIFFRestrictedTests": 0,
+        "PhotoCraftImagingTests.TIFFRichTests": 0,
+        "PhotoCraftImagingTests.TIFFStorageTests": 0
+      },
+      "testExecutableSHA256": "3873fa9ff6b5669a6013f66f756ffab32d81c0e3cd0523a8d089ae5cc900ba1d"
+    },
+    "x86_64": {
+      "build": 762,
+      "architecture": "x86_64",
+      "expected": 215,
+      "passed": 215,
+      "missing": [],
+      "failed": [],
+      "skipped": [],
+      "newCases": [
+        "PhotoCraftAppTests.AutomationOpeningTests/testGrayscalePNGImportAndDownloadPreserveTheNativePlanes",
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests/testGrayscalePNGKeepsGrayAndOpacityThroughOpenArchiveAndSave",
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests/testGrayscalePNGPreservesItsDeclaredTransferCurve",
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests/testPhotoshopGrayscalePNGMatchesLayeredNormalSamples"
+      ],
+      "newCasesPassed": 4,
+      "groupExits": {
+        "PhotoCraftAppTests.AdobeSmartObjectAppearanceTests/testGrayPNG16GrayPSDAndGrayJPEGSupplyNumericMaskSamples": 0,
+        "PhotoCraftAppTests.AutomationEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.AutomationLayerMergeTests": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testGrayscalePNGImportAndDownloadPreserveTheNativePlanes": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB": 0,
+        "PhotoCraftAppTests.DocumentEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.TIFFFloatWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLayerWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFModeWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFRichWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFStorageWorkflowTests": 0,
+        "PhotoCraftAppTests.VanishingWorkflowTests": 0,
+        "PhotoCraftCoreTests.LayerMergeTests": 0,
+        "PhotoCraftCoreTests.PreparedLayerMergeTests": 0,
+        "PhotoCraftCoreTests.VanishingTests": 0,
+        "PhotoCraftImagingTests.GroupRenderTests": 0,
+        "PhotoCraftImagingTests.LayerLayoutRenderTests": 0,
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests": 0,
+        "PhotoCraftImagingTests.RichLayerMergeTests": 0,
+        "PhotoCraftImagingTests.TIFFFloatTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerCompositeBoundaryTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerTests": 0,
+        "PhotoCraftImagingTests.TIFFModeTests": 0,
+        "PhotoCraftImagingTests.TIFFRestrictedTests": 0,
+        "PhotoCraftImagingTests.TIFFRichTests": 0,
+        "PhotoCraftImagingTests.TIFFStorageTests": 0
+      },
+      "testExecutableSHA256": "da77b3bf1c4cca87a7b907c358156c29de8466acae292dfd38aee5ee92ab83ec"
+    }
+  },
+  "photoshopReference": {
+    "version": "27.2.0",
+    "action": "Save a Copy, PNG, embed profile unchecked",
+    "figures": "Four owned synthetic 64 \u00d7 32 PSDs with three editable Normal layers",
+    "checkpoints761": {
+      "gray16-opaque": {
+        "reference": {
+          "width": 64,
+          "height": 32,
+          "depth": 16,
+          "colorType": 0,
+          "interlaced": false,
+          "sha256": "38e7f345bd46b7c56a7e01502c718c9185efb324a7b34c83e61396424fbbb460",
+          "profileChunks": []
+        },
+        "photato": {
+          "width": 64,
+          "height": 32,
+          "depth": 16,
+          "colorType": 0,
+          "interlaced": false,
+          "sha256": "c42dae0be5a4b638f16669dd308fabab645fb2970badf4fb33012cfa99e9e817",
+          "profileChunks": [
+            "iCCP"
+          ]
+        },
+        "grayAlphaDifference": {
+          "positions": 2048,
+          "differentPerChannel": [
+            1971,
+            0
+          ],
+          "maximumDifferencePerChannel": [
+            5350,
+            0
+          ],
+          "differentOnlyUnderZeroAlpha": 0
+        }
+      },
+      "gray16-transparent": {
+        "reference": {
+          "width": 64,
+          "height": 32,
+          "depth": 16,
+          "colorType": 4,
+          "interlaced": false,
+          "sha256": "385a4264cd088dc360cc7e81f38b51981c6d646e96daec382bc96f6ebe6394f7",
+          "profileChunks": []
+        },
+        "photato": {
+          "width": 64,
+          "height": 32,
+          "depth": 16,
+          "colorType": 4,
+          "interlaced": false,
+          "sha256": "1c8c738d1dd1a9627c7b38ffa59cb90ef1e8886450933a64f34819e2d8bf143f",
+          "profileChunks": [
+            "iCCP"
+          ]
+        },
+        "grayAlphaDifference": {
+          "positions": 2048,
+          "differentPerChannel": [
+            1817,
+            1165
+          ],
+          "maximumDifferencePerChannel": [
+            5525,
+            4
+          ],
+          "differentOnlyUnderZeroAlpha": 64
+        }
+      },
+      "gray8-opaque": {
+        "reference": {
+          "width": 64,
+          "height": 32,
+          "depth": 8,
+          "colorType": 0,
+          "interlaced": false,
+          "sha256": "c1adf48fa0270a2c94bb1dbd5d5cee783edf1f28f1b2f0efd0db78898d7ea7dd",
+          "profileChunks": []
+        },
+        "photato": {
+          "width": 64,
+          "height": 32,
+          "depth": 8,
+          "colorType": 0,
+          "interlaced": false,
+          "sha256": "a9eb535808f04fa94e14394bd3c22063d4de76f256f1da5621dc1f4bed7cadd6",
+          "profileChunks": [
+            "iCCP"
+          ]
+        },
+        "grayAlphaDifference": {
+          "positions": 2048,
+          "differentPerChannel": [
+            1552,
+            0
+          ],
+          "maximumDifferencePerChannel": [
+            19,
+            0
+          ],
+          "differentOnlyUnderZeroAlpha": 0
+        }
+      },
+      "gray8-transparent": {
+        "reference": {
+          "width": 64,
+          "height": 32,
+          "depth": 8,
+          "colorType": 4,
+          "interlaced": false,
+          "sha256": "63ea51deec10baf700811e79b1afd0a6603c3f23370a4221f991c6c5f5248ad7",
+          "profileChunks": []
+        },
+        "photato": {
+          "width": 64,
+          "height": 32,
+          "depth": 8,
+          "colorType": 4,
+          "interlaced": false,
+          "sha256": "e8d3df3d163def10ef3ab11173484089bdf663d1914584da60d465819bab2d66",
+          "profileChunks": [
+            "iCCP"
+          ]
+        },
+        "grayAlphaDifference": {
+          "positions": 2048,
+          "differentPerChannel": [
+            1416,
+            368
+          ],
+          "maximumDifferencePerChannel": [
+            20,
+            1
+          ],
+          "differentOnlyUnderZeroAlpha": 64
+        }
+      }
+    },
+    "exactSampleReplay": {
+      "gray16-opaque": {
+        "reference": {
+          "width": 64,
+          "height": 32,
+          "depth": 16,
+          "colorType": 0,
+          "interlaced": false,
+          "sha256": "38e7f345bd46b7c56a7e01502c718c9185efb324a7b34c83e61396424fbbb460",
+          "profileChunks": []
+        },
+        "outputs": [
+          {
+            "fileBytes": 5623,
+            "mode": {
+              "width": 64,
+              "height": 32,
+              "depth": 16,
+              "colorType": 0,
+              "interlaced": false,
+              "sha256": "7e5419e1735e3911b4c8f689868378b7105a6ac1fb19ab623c4ab9b5a5a38424",
+              "profileChunks": [
+                "iCCP"
+              ]
+            },
+            "numberOfIdenticalGrayAlphaPairs": 2048,
+            "identicalCompleteFile": false
+          },
+          {
+            "fileBytes": 5696,
+            "mode": {
+              "width": 64,
+              "height": 32,
+              "depth": 16,
+              "colorType": 0,
+              "interlaced": true,
+              "sha256": "af034dc41340d0de1b6f6cb61613735982f2b58cc3dcfce9c990de292d7311e2",
+              "profileChunks": [
+                "iCCP"
+              ]
+            },
+            "numberOfIdenticalGrayAlphaPairs": 2048,
+            "identicalCompleteFile": false
+          }
+        ]
+      },
+      "gray8-transparent": {
+        "reference": {
+          "width": 64,
+          "height": 32,
+          "depth": 8,
+          "colorType": 4,
+          "interlaced": false,
+          "sha256": "63ea51deec10baf700811e79b1afd0a6603c3f23370a4221f991c6c5f5248ad7",
+          "profileChunks": []
+        },
+        "outputs": [
+          {
+            "fileBytes": 2423,
+            "mode": {
+              "width": 64,
+              "height": 32,
+              "depth": 8,
+              "colorType": 4,
+              "interlaced": false,
+              "sha256": "08cb0489cccc03dfe16a3ff1d1e980a386756fea88787acd233dfacbebfbbfda",
+              "profileChunks": [
+                "iCCP"
+              ]
+            },
+            "numberOfIdenticalGrayAlphaPairs": 2048,
+            "identicalCompleteFile": false
+          },
+          {
+            "fileBytes": 2439,
+            "mode": {
+              "width": 64,
+              "height": 32,
+              "depth": 8,
+              "colorType": 4,
+              "interlaced": true,
+              "sha256": "f816dc274c225b58f07f5dd817a8d45520e240061c95d07ea8c36c1d3c1b487c",
+              "profileChunks": [
+                "iCCP"
+              ]
+            },
+            "numberOfIdenticalGrayAlphaPairs": 2048,
+            "identicalCompleteFile": false
+          }
+        ]
+      },
+      "gray8-opaque": {
+        "reference": {
+          "width": 64,
+          "height": 32,
+          "depth": 8,
+          "colorType": 0,
+          "interlaced": false,
+          "sha256": "c1adf48fa0270a2c94bb1dbd5d5cee783edf1f28f1b2f0efd0db78898d7ea7dd",
+          "profileChunks": []
+        },
+        "outputs": [
+          {
+            "fileBytes": 2078,
+            "mode": {
+              "width": 64,
+              "height": 32,
+              "depth": 8,
+              "colorType": 0,
+              "interlaced": false,
+              "sha256": "21f4694ab99ab3d50811f31cfa6b482493165fec71f4a02f1e5df415519152c6",
+              "profileChunks": [
+                "iCCP"
+              ]
+            },
+            "numberOfIdenticalGrayAlphaPairs": 2048,
+            "identicalCompleteFile": false
+          },
+          {
+            "fileBytes": 2100,
+            "mode": {
+              "width": 64,
+              "height": 32,
+              "depth": 8,
+              "colorType": 0,
+              "interlaced": true,
+              "sha256": "d031fbb0e01030efa4ddf6ae9bce884a360b8a96fa8d5258fa3593009ae0b87c",
+              "profileChunks": [
+                "iCCP"
+              ]
+            },
+            "numberOfIdenticalGrayAlphaPairs": 2048,
+            "identicalCompleteFile": false
+          }
+        ]
+      },
+      "gray16-transparent": {
+        "reference": {
+          "width": 64,
+          "height": 32,
+          "depth": 16,
+          "colorType": 4,
+          "interlaced": false,
+          "sha256": "385a4264cd088dc360cc7e81f38b51981c6d646e96daec382bc96f6ebe6394f7",
+          "profileChunks": []
+        },
+        "outputs": [
+          {
+            "fileBytes": 9747,
+            "mode": {
+              "width": 64,
+              "height": 32,
+              "depth": 16,
+              "colorType": 4,
+              "interlaced": false,
+              "sha256": "5498a044beb8d7cd7e25820a6413abd66bf0166e95cb4413f862bd7e6b117abf",
+              "profileChunks": [
+                "iCCP"
+              ]
+            },
+            "numberOfIdenticalGrayAlphaPairs": 2048,
+            "identicalCompleteFile": false
+          },
+          {
+            "fileBytes": 9740,
+            "mode": {
+              "width": 64,
+              "height": 32,
+              "depth": 16,
+              "colorType": 4,
+              "interlaced": true,
+              "sha256": "cd109147824ad0bc28d2c921a827f660bb06210a33c8598096d03a17848eb9d5",
+              "profileChunks": [
+                "iCCP"
+              ]
+            },
+            "numberOfIdenticalGrayAlphaPairs": 2048,
+            "identicalCompleteFile": false
+          }
+        ]
+      }
+    },
+    "containerComparison": {
+      "gray16-opaque": {
+        "Photoshop": {
+          "bytes": 5587,
+          "chunks": [
+            {
+              "type": "IHDR",
+              "length": 13,
+              "sha256": "d0a9f5179ff75f3180761de8498c143636ab8346b73cc1b904507cd97958f812"
+            },
+            {
+              "type": "pHYs",
+              "length": 9,
+              "sha256": "5b628f116c96eede2fdbb324c459120a8ca3db6a52cf4bc5a7f42f91ca1ee472"
+            },
+            {
+              "type": "iTXt",
+              "length": 1594,
+              "sha256": "f5be11fd4f7cd9a8c2f6bed7d6414f2f24e9e6d0d315e327e5853f6d5eb94ade"
+            },
+            {
+              "type": "IDAT",
+              "length": 3903,
+              "sha256": "8ec7f102a91725758b4d80c3ffd635d7aaa9428607c7749aaf5cfe3dc0b6d7d1"
+            },
+            {
+              "type": "IEND",
+              "length": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "formatFilters": {
+            "1": 29,
+            "4": 3
+          },
+          "zlibHeader": "5885",
+          "inflatedSHA256": "871c22b26f2ce1d5e1e3f5641c6fb78e89996a50b31f8342bdcc04f7135df0fa"
+        },
+        "Photato": {
+          "bytes": 5623,
+          "chunks": [
+            {
+              "type": "IHDR",
+              "length": 13,
+              "sha256": "d0a9f5179ff75f3180761de8498c143636ab8346b73cc1b904507cd97958f812"
+            },
+            {
+              "type": "iCCP",
+              "length": 756,
+              "sha256": "f54a2dd8a8986f544b3ab4eb1c0cf6cb07543e5b8d184cbdee85d01a6d35f0fc"
+            },
+            {
+              "type": "eXIf",
+              "length": 120,
+              "sha256": "9427d6647f4741ef0768fb7b35317ac032d5fa4bf1ced490b7ed45c60e50f5f0"
+            },
+            {
+              "type": "pHYs",
+              "length": 9,
+              "sha256": "5b628f116c96eede2fdbb324c459120a8ca3db6a52cf4bc5a7f42f91ca1ee472"
+            },
+            {
+              "type": "iTXt",
+              "length": 718,
+              "sha256": "05ec22c9af8db4a68fbf1d1a3033817e30b81ea6568d392e717efeca881852e3"
+            },
+            {
+              "type": "IDAT",
+              "length": 3915,
+              "sha256": "ce2e015dd8f612f65f3c585da6ef8d4500dcf56e26449589c42a447b43d9481c"
+            },
+            {
+              "type": "IEND",
+              "length": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "formatFilters": {
+            "1": 29,
+            "4": 3
+          },
+          "zlibHeader": "5809",
+          "inflatedSHA256": "871c22b26f2ce1d5e1e3f5641c6fb78e89996a50b31f8342bdcc04f7135df0fa"
+        },
+        "sameScanlines": true,
+        "sameDeflate": false,
+        "matchingZlibParameters": []
+      },
+      "gray16-transparent": {
+        "Photoshop": {
+          "bytes": 9719,
+          "chunks": [
+            {
+              "type": "IHDR",
+              "length": 13,
+              "sha256": "16c9397280e287854acccfa2d3538d24cfb6d815275576c4da8a07d9bc13aacf"
+            },
+            {
+              "type": "pHYs",
+              "length": 9,
+              "sha256": "5b628f116c96eede2fdbb324c459120a8ca3db6a52cf4bc5a7f42f91ca1ee472"
+            },
+            {
+              "type": "iTXt",
+              "length": 1594,
+              "sha256": "4f555a0a56d5492f55d076d9a1b552f8648e8e8029bc80820cf15bd7e945896c"
+            },
+            {
+              "type": "IDAT",
+              "length": 8035,
+              "sha256": "cbc279c74125b4e0779c019f08ae6451082afa3dd701357bddfc185dc5c7c955"
+            },
+            {
+              "type": "IEND",
+              "length": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "formatFilters": {
+            "1": 8,
+            "4": 20,
+            "3": 2,
+            "2": 2
+          },
+          "zlibHeader": "6881",
+          "inflatedSHA256": "d6009a57acf6cd57ac1413c59bafdbbc70882f056d2a8b396e8be94814fa7346"
+        },
+        "Photato": {
+          "bytes": 9747,
+          "chunks": [
+            {
+              "type": "IHDR",
+              "length": 13,
+              "sha256": "16c9397280e287854acccfa2d3538d24cfb6d815275576c4da8a07d9bc13aacf"
+            },
+            {
+              "type": "iCCP",
+              "length": 756,
+              "sha256": "f54a2dd8a8986f544b3ab4eb1c0cf6cb07543e5b8d184cbdee85d01a6d35f0fc"
+            },
+            {
+              "type": "eXIf",
+              "length": 120,
+              "sha256": "9427d6647f4741ef0768fb7b35317ac032d5fa4bf1ced490b7ed45c60e50f5f0"
+            },
+            {
+              "type": "pHYs",
+              "length": 9,
+              "sha256": "5b628f116c96eede2fdbb324c459120a8ca3db6a52cf4bc5a7f42f91ca1ee472"
+            },
+            {
+              "type": "iTXt",
+              "length": 718,
+              "sha256": "05ec22c9af8db4a68fbf1d1a3033817e30b81ea6568d392e717efeca881852e3"
+            },
+            {
+              "type": "IDAT",
+              "length": 8039,
+              "sha256": "41b9ee27f9e8181e3707442afd65ac3a7907d7fd97799f67ce78814a121eaf61"
+            },
+            {
+              "type": "IEND",
+              "length": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "formatFilters": {
+            "1": 8,
+            "4": 20,
+            "3": 2,
+            "2": 2
+          },
+          "zlibHeader": "6805",
+          "inflatedSHA256": "d6009a57acf6cd57ac1413c59bafdbbc70882f056d2a8b396e8be94814fa7346"
+        },
+        "sameScanlines": true,
+        "sameDeflate": false,
+        "matchingZlibParameters": []
+      },
+      "gray8-opaque": {
+        "Photoshop": {
+          "bytes": 2058,
+          "chunks": [
+            {
+              "type": "IHDR",
+              "length": 13,
+              "sha256": "8abbad689fa5e7efad7b4f20654407144eaa2d33a6f0e62b25c16a162ef842cf"
+            },
+            {
+              "type": "pHYs",
+              "length": 9,
+              "sha256": "5b628f116c96eede2fdbb324c459120a8ca3db6a52cf4bc5a7f42f91ca1ee472"
+            },
+            {
+              "type": "iTXt",
+              "length": 1594,
+              "sha256": "a4d625380af7d4b27508022607b79b77661a7a3b371819f8c3c5aa9339b48ed8"
+            },
+            {
+              "type": "IDAT",
+              "length": 374,
+              "sha256": "67d974b2be20ac41a74b658631d3a85b730e896a6b073918ec94f62617d27b7a"
+            },
+            {
+              "type": "IEND",
+              "length": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "formatFilters": {
+            "1": 9,
+            "4": 8,
+            "3": 15
+          },
+          "zlibHeader": "4889",
+          "inflatedSHA256": "c312bedf251cf394d0b8af661db5ceb1a84493880f2aaac5e42b78dac95f5d35"
+        },
+        "Photato": {
+          "bytes": 2078,
+          "chunks": [
+            {
+              "type": "IHDR",
+              "length": 13,
+              "sha256": "8abbad689fa5e7efad7b4f20654407144eaa2d33a6f0e62b25c16a162ef842cf"
+            },
+            {
+              "type": "iCCP",
+              "length": 756,
+              "sha256": "f54a2dd8a8986f544b3ab4eb1c0cf6cb07543e5b8d184cbdee85d01a6d35f0fc"
+            },
+            {
+              "type": "eXIf",
+              "length": 120,
+              "sha256": "9427d6647f4741ef0768fb7b35317ac032d5fa4bf1ced490b7ed45c60e50f5f0"
+            },
+            {
+              "type": "pHYs",
+              "length": 9,
+              "sha256": "5b628f116c96eede2fdbb324c459120a8ca3db6a52cf4bc5a7f42f91ca1ee472"
+            },
+            {
+              "type": "iTXt",
+              "length": 718,
+              "sha256": "05ec22c9af8db4a68fbf1d1a3033817e30b81ea6568d392e717efeca881852e3"
+            },
+            {
+              "type": "IDAT",
+              "length": 370,
+              "sha256": "24ecf0256248e0df7399570eb4ceda3d8329b6d09363d0d2853b2ae8dddb5d44"
+            },
+            {
+              "type": "IEND",
+              "length": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "formatFilters": {
+            "1": 9,
+            "4": 8,
+            "3": 15
+          },
+          "zlibHeader": "480d",
+          "inflatedSHA256": "c312bedf251cf394d0b8af661db5ceb1a84493880f2aaac5e42b78dac95f5d35"
+        },
+        "sameScanlines": true,
+        "sameDeflate": false,
+        "matchingZlibParameters": []
+      },
+      "gray8-transparent": {
+        "Photoshop": {
+          "bytes": 2413,
+          "chunks": [
+            {
+              "type": "IHDR",
+              "length": 13,
+              "sha256": "9282510809409d2c7aff50637b6679a412f376a98e1f86547bcaa36fc450f8dc"
+            },
+            {
+              "type": "pHYs",
+              "length": 9,
+              "sha256": "5b628f116c96eede2fdbb324c459120a8ca3db6a52cf4bc5a7f42f91ca1ee472"
+            },
+            {
+              "type": "iTXt",
+              "length": 1594,
+              "sha256": "16ca341a196dbf941de20a35e2eb305c15581348055eded079b8b4c42f6802fa"
+            },
+            {
+              "type": "IDAT",
+              "length": 729,
+              "sha256": "ee96aea09cc015a0244b6db9dc29dcfce7a5ea4608afacb4a213f6b0a732f11c"
+            },
+            {
+              "type": "IEND",
+              "length": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "formatFilters": {
+            "1": 1,
+            "2": 31
+          },
+          "zlibHeader": "5885",
+          "inflatedSHA256": "c1ee77adee1f58b851ce54e025a2f5873e5861adbedf78bca750c2eed573c907"
+        },
+        "Photato": {
+          "bytes": 2423,
+          "chunks": [
+            {
+              "type": "IHDR",
+              "length": 13,
+              "sha256": "9282510809409d2c7aff50637b6679a412f376a98e1f86547bcaa36fc450f8dc"
+            },
+            {
+              "type": "iCCP",
+              "length": 756,
+              "sha256": "f54a2dd8a8986f544b3ab4eb1c0cf6cb07543e5b8d184cbdee85d01a6d35f0fc"
+            },
+            {
+              "type": "eXIf",
+              "length": 120,
+              "sha256": "9427d6647f4741ef0768fb7b35317ac032d5fa4bf1ced490b7ed45c60e50f5f0"
+            },
+            {
+              "type": "pHYs",
+              "length": 9,
+              "sha256": "5b628f116c96eede2fdbb324c459120a8ca3db6a52cf4bc5a7f42f91ca1ee472"
+            },
+            {
+              "type": "iTXt",
+              "length": 718,
+              "sha256": "05ec22c9af8db4a68fbf1d1a3033817e30b81ea6568d392e717efeca881852e3"
+            },
+            {
+              "type": "IDAT",
+              "length": 715,
+              "sha256": "da0f4dd924e4a355e8c55536031cb1094bc1a77f3e2ccadc23c186470724f234"
+            },
+            {
+              "type": "IEND",
+              "length": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "formatFilters": {
+            "1": 1,
+            "2": 31
+          },
+          "zlibHeader": "5809",
+          "inflatedSHA256": "c1ee77adee1f58b851ce54e025a2f5873e5861adbedf78bca750c2eed573c907"
+        },
+        "sameScanlines": true,
+        "sameDeflate": false,
+        "matchingZlibParameters": []
+      }
+    },
+    "alphaHalfTieCases": {
+      "testPositions": 32,
+      "expectations": [
+        {
+          "x": 1,
+          "y": 0,
+          "baseAlpha": 1,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 16385,
+          "roundComplementAlpha": 16384,
+          "photoshopStoredAlpha": 32768
+        },
+        {
+          "x": 3,
+          "y": 0,
+          "baseAlpha": 3,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 16386,
+          "roundComplementAlpha": 16385,
+          "photoshopStoredAlpha": 32769
+        },
+        {
+          "x": 4,
+          "y": 0,
+          "baseAlpha": 8191,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 20480,
+          "roundComplementAlpha": 20479,
+          "photoshopStoredAlpha": 40957
+        },
+        {
+          "x": 7,
+          "y": 0,
+          "baseAlpha": 16383,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 24576,
+          "roundComplementAlpha": 24575,
+          "photoshopStoredAlpha": 49149
+        },
+        {
+          "x": 9,
+          "y": 0,
+          "baseAlpha": 16385,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 24577,
+          "roundComplementAlpha": 24576,
+          "photoshopStoredAlpha": 49151
+        },
+        {
+          "x": 10,
+          "y": 0,
+          "baseAlpha": 24575,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 28672,
+          "roundComplementAlpha": 28671,
+          "photoshopStoredAlpha": 57341
+        },
+        {
+          "x": 12,
+          "y": 0,
+          "baseAlpha": 24577,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 28673,
+          "roundComplementAlpha": 28672,
+          "photoshopStoredAlpha": 57343
+        },
+        {
+          "x": 14,
+          "y": 0,
+          "baseAlpha": 32767,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 32768,
+          "roundComplementAlpha": 32767,
+          "photoshopStoredAlpha": 65533
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "baseAlpha": 1,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 16385,
+          "roundComplementAlpha": 16384,
+          "photoshopStoredAlpha": 32768
+        },
+        {
+          "x": 3,
+          "y": 1,
+          "baseAlpha": 3,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 16386,
+          "roundComplementAlpha": 16385,
+          "photoshopStoredAlpha": 32769
+        },
+        {
+          "x": 4,
+          "y": 1,
+          "baseAlpha": 8191,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 20480,
+          "roundComplementAlpha": 20479,
+          "photoshopStoredAlpha": 40957
+        },
+        {
+          "x": 7,
+          "y": 1,
+          "baseAlpha": 16383,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 24576,
+          "roundComplementAlpha": 24575,
+          "photoshopStoredAlpha": 49149
+        },
+        {
+          "x": 9,
+          "y": 1,
+          "baseAlpha": 16385,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 24577,
+          "roundComplementAlpha": 24576,
+          "photoshopStoredAlpha": 49151
+        },
+        {
+          "x": 10,
+          "y": 1,
+          "baseAlpha": 24575,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 28672,
+          "roundComplementAlpha": 28671,
+          "photoshopStoredAlpha": 57341
+        },
+        {
+          "x": 12,
+          "y": 1,
+          "baseAlpha": 24577,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 28673,
+          "roundComplementAlpha": 28672,
+          "photoshopStoredAlpha": 57343
+        },
+        {
+          "x": 14,
+          "y": 1,
+          "baseAlpha": 32767,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 32768,
+          "roundComplementAlpha": 32767,
+          "photoshopStoredAlpha": 65533
+        },
+        {
+          "x": 1,
+          "y": 2,
+          "baseAlpha": 1,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 16385,
+          "roundComplementAlpha": 16384,
+          "photoshopStoredAlpha": 32768
+        },
+        {
+          "x": 3,
+          "y": 2,
+          "baseAlpha": 3,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 16386,
+          "roundComplementAlpha": 16385,
+          "photoshopStoredAlpha": 32769
+        },
+        {
+          "x": 4,
+          "y": 2,
+          "baseAlpha": 8191,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 20480,
+          "roundComplementAlpha": 20479,
+          "photoshopStoredAlpha": 40957
+        },
+        {
+          "x": 7,
+          "y": 2,
+          "baseAlpha": 16383,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 24576,
+          "roundComplementAlpha": 24575,
+          "photoshopStoredAlpha": 49149
+        },
+        {
+          "x": 9,
+          "y": 2,
+          "baseAlpha": 16385,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 24577,
+          "roundComplementAlpha": 24576,
+          "photoshopStoredAlpha": 49151
+        },
+        {
+          "x": 10,
+          "y": 2,
+          "baseAlpha": 24575,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 28672,
+          "roundComplementAlpha": 28671,
+          "photoshopStoredAlpha": 57341
+        },
+        {
+          "x": 12,
+          "y": 2,
+          "baseAlpha": 24577,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 28673,
+          "roundComplementAlpha": 28672,
+          "photoshopStoredAlpha": 57343
+        },
+        {
+          "x": 14,
+          "y": 2,
+          "baseAlpha": 32767,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 32768,
+          "roundComplementAlpha": 32767,
+          "photoshopStoredAlpha": 65533
+        },
+        {
+          "x": 1,
+          "y": 3,
+          "baseAlpha": 1,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 16385,
+          "roundComplementAlpha": 16384,
+          "photoshopStoredAlpha": 32768
+        },
+        {
+          "x": 3,
+          "y": 3,
+          "baseAlpha": 3,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 16386,
+          "roundComplementAlpha": 16385,
+          "photoshopStoredAlpha": 32769
+        },
+        {
+          "x": 4,
+          "y": 3,
+          "baseAlpha": 8191,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 20480,
+          "roundComplementAlpha": 20479,
+          "photoshopStoredAlpha": 40957
+        },
+        {
+          "x": 7,
+          "y": 3,
+          "baseAlpha": 16383,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 24576,
+          "roundComplementAlpha": 24575,
+          "photoshopStoredAlpha": 49149
+        },
+        {
+          "x": 9,
+          "y": 3,
+          "baseAlpha": 16385,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 24577,
+          "roundComplementAlpha": 24576,
+          "photoshopStoredAlpha": 49151
+        },
+        {
+          "x": 10,
+          "y": 3,
+          "baseAlpha": 24575,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 28672,
+          "roundComplementAlpha": 28671,
+          "photoshopStoredAlpha": 57341
+        },
+        {
+          "x": 12,
+          "y": 3,
+          "baseAlpha": 24577,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 28673,
+          "roundComplementAlpha": 28672,
+          "photoshopStoredAlpha": 57343
+        },
+        {
+          "x": 14,
+          "y": 3,
+          "baseAlpha": 32767,
+          "topAlpha": 16384,
+          "roundPositiveTermAlpha": 32768,
+          "roundComplementAlpha": 32767,
+          "photoshopStoredAlpha": 65533
+        }
+      ],
+      "matchingTieOrderPerCount": {
+        "roundPositiveTermAlpha": 0,
+        "roundComplementAlpha": 32
+      },
+      "photoshop": {
+        "width": 16,
+        "height": 4,
+        "depth": 16,
+        "colorType": 4,
+        "interlaced": false,
+        "sha256": "a6ba4c2285e8796e3a610e09bc6fa0b8e3f181620338f50a8249a000200163bc",
+        "profileChunks": []
+      }
+    },
+    "alphaHalfTieReplay": {
+      "reference": {
+        "width": 16,
+        "height": 4,
+        "depth": 16,
+        "colorType": 4,
+        "interlaced": false,
+        "sha256": "a6ba4c2285e8796e3a610e09bc6fa0b8e3f181620338f50a8249a000200163bc",
+        "profileChunks": []
+      },
+      "outputs": [
+        {
+          "mode": {
+            "width": 16,
+            "height": 4,
+            "depth": 16,
+            "colorType": 4,
+            "interlaced": true,
+            "sha256": "bfcefa92eb812f22dde9228a467d210cfe19132b41e1a093c26546d9b83f7fe9",
+            "profileChunks": [
+              "iCCP"
+            ]
+          },
+          "difference": {
+            "positions": 64,
+            "differentPerChannel": [
+              0,
+              0
+            ],
+            "maximumDifferencePerChannel": [
+              0,
+              0
+            ],
+            "differentOnlyUnderZeroAlpha": 0
+          },
+          "fullSamplesMatch": true
+        },
+        {
+          "mode": {
+            "width": 16,
+            "height": 4,
+            "depth": 16,
+            "colorType": 4,
+            "interlaced": false,
+            "sha256": "70c2e7d00ebb995cbb78a14be01c4687a9c53dd4cdfbb4971bfd0101822946d5",
+            "profileChunks": [
+              "iCCP"
+            ]
+          },
+          "difference": {
+            "positions": 64,
+            "differentPerChannel": [
+              0,
+              0
+            ],
+            "maximumDifferencePerChannel": [
+              0,
+              0
+            ],
+            "differentOnlyUnderZeroAlpha": 0
+          },
+          "fullSamplesMatch": true
+        }
+      ]
+    }
+  },
+  "largeSparseDebugReplay": {
+    "pixelCount": 36006000,
+    "debugEncodeSeconds": 61.959803417,
+    "outputBytes": 338001,
+    "samples": [
+      {
+        "index": 0,
+        "alpha": 159,
+        "gray": 108
+      },
+      {
+        "index": 4095,
+        "gray": 184,
+        "alpha": 202
+      },
+      {
+        "gray": 35,
+        "alpha": 159,
+        "index": 4096
+      },
+      {
+        "gray": 25,
+        "index": 6013,
+        "alpha": 0
+      },
+      {
+        "alpha": 255,
+        "index": 35999999,
+        "gray": 77
+      },
+      {
+        "alpha": 202,
+        "gray": 184,
+        "index": 36005999
+      }
+    ]
+  },
+  "preview": {
+    "build": 762,
+    "archive": "Photato-universal.zip",
+    "archiveSHA256": "46f89e8fc0fea2ff0b4cf97ae0ecbeaadd203f6d41d483ee7d3f6b100e0a9841",
+    "archiveBytes": 77945124,
+    "gitPath": "downloads/Photato-universal.zip",
+    "bundleID": "ca.forensicintelligence.photato.preview",
+    "signing": "ad-hoc",
+    "localSymbolsStripped": true,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "b67a852534f55c120a822d459fd71720928db63a9eeeb2a1f935cce8fe23bb43",
+    "architectureInputsSHA256": {
+      "arm64": "7104e944ea7b3198aa0b7bb5d8a9029177cfd62ae969929d4c2b6878a3d02734",
+      "x86_64": "76f13f0c70448932724e105e4e7880aff20505f7bcd3194ba95f9ede06aa1b03"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    },
+    "verifiedEntitlementArchs": [
+      "arm64",
+      "x86_64"
+    ]
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "size": [
+        1000,
+        650
+      ],
+      "pngSHA256": "5938f16e00db861ec66904befdc1d2fc8919a6495ca39f386a7440d8d3129f05"
+    },
+    "x86_64": {
+      "size": [
+        1000,
+        650
+      ],
+      "pngSHA256": "e5c6bc91a42eff68c67ab2c2afc3a61111a31655dabe9a5f7060990e4e999d54"
+    }
+  },
+  "debugLogSHA256": {
+    "xcode-debug-762-gray-01.log": "4d0e7e4fadee5d929a6706e0b943f02eb50dd3a85abdbdfaafc0073c78750736",
+    "xcode-focused-762-gray-imaging-01.log": "d10878836f928ba0e77cb380f373a378e7a699eb4735679f0dc279a750583af4",
+    "xcode-focused-762-gray-app-01.log": "5451fd62b864271db19bfc4b4691b34601102fd1a2ff8d39dd115eb818eaba6d"
+  }
+}

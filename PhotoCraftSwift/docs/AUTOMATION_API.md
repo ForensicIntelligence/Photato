@@ -1,3 +1,9 @@
+### Layered grayscale PNG transfers (checkpoint 762)
+
+Desktop Save and the authenticated Photato download use the same encoder. The HTTP regression uploads a layered PSD and compares its PNG with Desktop Save. Existing Adobe-compatible routes retain their current operation and format limits.
+
+[Qualification](SOURCE_PUBLICATION_762.md).
+
 ### Grayscale PNG transfers (checkpoint 761)
 
 Native Open and Save and authenticated Photato import/download share the codec. The Adobe-compatible action resource reader uses the same implementation within its existing local 8-bit PNG limit. Command and request schemas stay the same.

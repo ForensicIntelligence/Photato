@@ -1,15 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)
 
-## 2026-11-21 — Step 713 — Edit a whole image with local instructions and saved variations
-
-Edit → Prompt to Edit and the canvas action use the selected pixel layer and a text instruction to create alternatives on this Mac. The new editable Smart Object preserves the original layer and source alpha. The original is hidden and can be restored in one Undo. Generate More uses the saved reference. Edit This Variation starts from a chosen result. The Photato HTTP API shares the same edit and history.
-
-The real InstructPix2Pix model delivered identical same-seed pixels through the native editor and authenticated HTTP API. A saved second variation matched the same seed run independently.On a locally generated 512 × 512 still life, a blue-teapot instruction moved the average red-minus-blue value in the sampled pot from 0.879 to −0.775. The model also changed some surrounding colours. Photato, PSD and PSB reopened with both variants and identical rendered bytes. An independent reader compared all 2,097,152 merged RGBA bytes from the PSD and PSB previews to the PNG. A 300,000 × 8 PSB kept the original source, editable placement and exact pixels at both sampled edges.
-
-The local workflow uses the optional 512 × 512 Core ML model on Apple Silicon and macOS 26 or later. Current input support is still RGB and visible root pixel or supported generative layers outside clipping stacks. The installed Photoshop 27.2.0 document query timed out. Direct Photoshop reopening, Adobe model output equality, shared Firefly action descriptors, and live keyboard and assistive technology checks remain open.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-713) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_713.md).
-
 ## 2026-11-21 — Step 712 — Generate editable images from a text prompt on-device
 
 Edit → Generate Image and the canvas controls now generate artwork from a text prompt on eligible Macs. The optional local Core ML model creates one to three alternatives in a single editable Smart Object and preserves the original layers and selection. Properties switches variations and can generate more from the prompt or generate similar results from a saved variation. The Photato API shares the same prepared edit and history. The existing Apple Intelligence route remains available.
@@ -1415,5 +1405,13 @@ Linear and Perceptual gradients now round the nonlinear part of sRGB the same wa
 All 370 selected tests passed. The same three RGB8 Gradient Map fixtures still differ from Photoshop by at most one RGB8 level.
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-542) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_542.md).
+
+## 2026-11-17 — Step 541: faster feedback with large brushes
+
+The brush preview and flat compositor now write changed pixels one tile at a time. In the 24 MP hosted workspace, the 1,800 px brush showed its first preview in 489 ms, down from 802 ms. The 5,000 px brush took 2.50 seconds, down from 3.61.
+
+All 266 selected tests passed. The compiled builds reproduced all 32 brush outputs and 144 composite buffers from build 540 on each architecture. The larger brushes still need further responsiveness work.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-541) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_541.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

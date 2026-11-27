@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 762.** Match layered grayscale PNG samples. [Qualification](docs/SOURCE_PUBLICATION_762.md).
+
 **Source checkpoint 761.** Preserve grayscale PNG samples and profiles. [Qualification](docs/SOURCE_PUBLICATION_761.md).
 
 **Source checkpoint 760.** Show and hide Vanishing Point edges. [Qualification](docs/SOURCE_PUBLICATION_760.md).

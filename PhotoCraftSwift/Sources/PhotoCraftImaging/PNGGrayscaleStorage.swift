@@ -80,7 +80,7 @@ enum PNGGrayscaleStorage {
     return document
   }
 
-  static func image(_ raster: NativeModeRaster) throws -> CGImage {
+  static func image(_ raster: NativeModeRaster, visibleBounds: IntRect? = nil) throws -> CGImage {
     let hasAlpha = !raster.isOpaque
     let bytesPerSample = raster.bytesPerSample
     let bytesPerPixel = bytesPerSample * (hasAlpha ? 2 : 1)
@@ -97,7 +97,11 @@ enum PNGGrayscaleStorage {
         for x in 0..<raster.width {
           let index = y * raster.width + x
           let offset = index * bytesPerPixel
-          let gray = raster.rawWord(component: 0, index: index)
+          // Layered copies keep bottom-layer gray within the visible bounds.
+          // Photoshop writes transparent white outside those bounds.
+          let gray = visibleBounds?.contains(x, y) == false
+            ? (bytesPerSample == 1 ? UInt32(255) : UInt32(65_535))
+            : raster.rawWord(component: 0, index: index)
           if bytesPerSample == 1 {
             bytes[offset] = UInt8(gray)
             if hasAlpha { bytes[offset + 1] = UInt8(raster.rawWord(component: 1, index: index)) }

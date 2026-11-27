@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 762 — Match layered grayscale PNG samples
+
+Saving an eligible layered Grayscale PNG now blends the retained gray and opacity samples directly. The 16-bit calculation promotes layer opacity before composing. Transparent pixels within the visible bounds retain the bottom layer’s gray, and pixels outside those bounds use transparent white.
+
+All 28 focused imaging tests and nine app and HTTP tests passed in Xcode Debug. Both optimized architectures passed all 215 selected tests. Intel ran under Rosetta.
+
+Photoshop 27.2.0 opened four owned three-layer PSDs and saved PNG copies at 8 and 16 bits, each with opaque and transparent base cases. An independent reader compared all 16,384 gray and alpha pairs across standard and Adam7 Photato exports. All pairs matched, including hidden gray. The four noninterlaced exports also matched Photoshop’s filtered scanlines byte for byte. A fifth 16-bit reference distinguished the two half-tie rounding orders at 32 positions. All 128 gray and alpha pairs across its ordinary and Adam7 exports matched.
+
+Complete PNG files differ. Photoshop’s observed profile setting left the reference untagged and the exported files also differ in metadata and compressed IDAT bytes. The numerical check covers aligned Normal layers with a shared profile. Masked or transformed stacks, other blend modes, TIFF and Photoshop merged previews still need separate verification.
+
+[Development record](DEVLOG.md#dev-step-762) · [Qualification](SOURCE_PUBLICATION_762.md).
+
 ## 2026-11-27 — Step 761 — Preserve grayscale PNG samples and profiles
 
 Open retains Grayscale PNG as an editable gray plane with straight opacity. Packed 2-bit and 4-bit values expand to 8-bit. Eligible flat 8-bit and 16-bit Save output retains the exact gray and opacity samples, including hidden gray, along with embedded profiles and declared gamma.
@@ -2231,11 +2243,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:761 -->
+<!-- current-status-step:762 -->
 
-Open retains Grayscale PNG as an editable gray plane with straight opacity. Packed 2-bit and 4-bit values expand to 8-bit. Eligible flat 8-bit and 16-bit Save output retains the exact gray and opacity samples, including hidden gray, along with embedded profiles and declared gamma.
+Saving an eligible layered Grayscale PNG now blends the retained gray and opacity samples directly. The 16-bit calculation promotes layer opacity before composing. Transparent pixels within the visible bounds retain the bottom layer’s gray, and pixels outside those bounds use transparent white.
 
-[Development record](DEVLOG.md#dev-step-761) · [Qualification](SOURCE_PUBLICATION_761.md).
+[Development record](DEVLOG.md#dev-step-762) · [Qualification](SOURCE_PUBLICATION_762.md).
 
 <!-- current-status:end -->
 
@@ -3203,6 +3215,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-26 | 759 | [Preserve hidden RGB when opening PNGs](DEVLOG.md#dev-step-759) |
 | 2026-11-27 | 760 | [Show and hide Vanishing Point edges](DEVLOG.md#dev-step-760) |
 | 2026-11-27 | 761 | [Preserve grayscale PNG samples and profiles](DEVLOG.md#dev-step-761) |
+| 2026-11-27 | 762 | [Match layered grayscale PNG samples](DEVLOG.md#dev-step-762) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

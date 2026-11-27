@@ -497,10 +497,20 @@ public enum RasterIO {
     if type == .png, document.colorMode == .grayscale, document.depth != .f32,
       let descriptor = document.modeDescriptor {
       try document.validate()
-      let raster = try retainedFlatRaster(in: document, width: document.width, height: document.height)
-        ?? NativeModeRaster.converting(Renderer.composite(document), to: .grayscale, depth: document.depth,
+      let raster: NativeModeRaster
+      let visibleBounds: IntRect?
+      if let retained = retainedFlatRaster(in: document, width: document.width, height: document.height) {
+        raster = retained
+        visibleBounds = nil
+      } else if let composite = try GrayscalePNGComposite(document, descriptor: descriptor) {
+        raster = composite.raster
+        visibleBounds = composite.visibleBounds
+      } else {
+        raster = try NativeModeRaster.converting(Renderer.composite(document), to: .grayscale, depth: document.depth,
           profile: descriptor.profile, intent: descriptor.intent, pagedOutput: true)
-      let image = try PNGGrayscaleStorage.image(raster)
+        visibleBounds = nil
+      }
+      let image = try PNGGrayscaleStorage.image(raster, visibleBounds: visibleBounds)
       guard let space = image.colorSpace else { throw CraftError.invalid("Missing Grayscale PNG profile.") }
       let data = try encodeImage(image, type: type, resolution: document.pixelsPerInch,
         bits: raster.bytesPerSample * 8, exportSpace: space, profileName: ColorManagement.name(document),
