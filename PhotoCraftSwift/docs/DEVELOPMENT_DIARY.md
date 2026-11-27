@@ -1,3 +1,13 @@
+## 2026-11-26 — Step 755 — Keep saved selections in layered RGB8 TIFFs
+
+Layered 8-bit RGB TIFFs can retain named saved selections alongside editable layer masks and the merged image’s transparency. Open and Save preserve the channel name, sampled values, and display polarity.
+
+All 17 focused Debug checks passed. All 63 focused TIFF cases passed on each optimized architecture, including the three new regressions. The broader inventory discovered 5,952 cases per architecture. Results were 5,844 passed, 89 failed, 15 skipped and 4 incomplete on Apple Silicon, 5,835 passed, 98 failed, 15 skipped and 4 incomplete on Intel under Rosetta. Every failing case and incomplete verdict also occurred when replayed against the hash-verified public 754 source. The Intel video-cancellation case had variable diagnostics on repeat. The evidence names failed, skipped and incomplete cases. The earlier checkpoint used a narrower inventory.
+
+An independent TIFF reader matched all 24,576 saved-selection bytes and all 98,304 process and opacity bytes across eight opaque and transparent output variants. The process and opacity comparison used the equivalent flat Photato export. The two Photoshop-authored files retained their editable layers, layer masks, and 6,144 exact saved-selection bytes. Photoshop reopened the Photato export and displayed its saved selection by name. Its TIFF re-export kept all 3,072 selection bytes. Across those three Adobe TIFFs, all 82,944 raw editable layer and mask samples matched the source PSD. The matched transparent exports differed by one byte value in 266 red, 54 blue, and 50 opacity samples. The Green and saved selection planes matched exactly. The test fixtures preserve the Photoshop image samples and layer blocks with unrelated file metadata removed. Complete file bytes, other channel depths, spot inks, and Quick Mask still require qualification.
+
+[Development record](DEVLOG.md#dev-step-755) · [Qualification](SOURCE_PUBLICATION_755.md).
+
 ## 2026-11-26 — Step 754 — Calibrate manual Vanishing Point grid spacing
 
 The Vanishing Point preview and raster grid now use the same plane scale as the Measure tool when you enter Grid Size manually. Keeping a manual size and linking a measurement of the same size now produces the same grid.
@@ -2161,11 +2171,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:754 -->
+<!-- current-status-step:755 -->
 
-The Vanishing Point preview and raster grid now use the same plane scale as the Measure tool when you enter Grid Size manually. Keeping a manual size and linking a measurement of the same size now produces the same grid.
+Layered 8-bit RGB TIFFs can retain named saved selections alongside editable layer masks and the merged image’s transparency. Open and Save preserve the channel name, sampled values, and display polarity.
 
-[Development record](DEVLOG.md#dev-step-754) · [Qualification](SOURCE_PUBLICATION_754.md).
+[Development record](DEVLOG.md#dev-step-755) · [Qualification](SOURCE_PUBLICATION_755.md).
 
 <!-- current-status:end -->
 
@@ -3126,6 +3136,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-26 | 752 | [Reuse the Vanishing Point preview geometry](DEVLOG.md#dev-step-752) |
 | 2026-11-26 | 753 | [Render a Vanishing Point grid onto a layer](DEVLOG.md#dev-step-753) |
 | 2026-11-26 | 754 | [Calibrate manual Vanishing Point grid spacing](DEVLOG.md#dev-step-754) |
+| 2026-11-26 | 755 | [Keep saved selections in layered RGB8 TIFFs](DEVLOG.md#dev-step-755) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

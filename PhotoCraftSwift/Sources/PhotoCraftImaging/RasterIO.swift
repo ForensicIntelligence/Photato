@@ -354,6 +354,11 @@ public enum RasterIO {
     }
     return output as Data
   }
+  public static func supportsLayeredTIFFSavedAlpha(_ document: CraftDocument) -> Bool {
+    document.colorMode == .rgb && document.depth == .u8 && document.quickMask == nil
+      && (document.alphaChannels ?? []).allSatisfy { $0.spot == nil }
+  }
+
   /// Composition uses a float working surface; exports retain the document depth
   /// rather than accidentally promoting every RGB8 document to 16-bit output.
   public static func encoded(_ document: CraftDocument, type: UTType = .png,
@@ -370,6 +375,17 @@ public enum RasterIO {
     compositeOptions.tiffLayers = nil; compositeOptions.tiffLayerCompression = nil
     if options.tiffLayers == true, compositeOptions.tiffByteOrder == nil {
       compositeOptions.tiffByteOrder = .bigEndian
+    }
+    if options.tiffLayers == true, document.hasAuxiliaryChannels {
+      guard supportsLayeredTIFFSavedAlpha(document) else {
+        throw CraftError.unsupported("Layered TIFF auxiliary output supports RGB8 saved alpha channels.")
+      }
+      try document.validate()
+      let raw = try encoded(Renderer.composite(document),type:.tiff,
+        resolution:document.pixelsPerInch,outputDepth:document.depth,
+        sourceMetadata:document.sourceMetadata,workingDocument:document,options:.init(tiffCompression:.none))
+      let composite = try TIFFStorage.rewrite(raw,options:compositeOptions,savedAlpha:document.alphaChannels ?? [])
+      return try TIFFLayers.write(document,composite:composite,compression:options.tiffLayerCompression ?? .zip)
     }
     if type == .tiff, document.hasNativeModeStorage {
       let composite = try TIFFModeStorage.write(Renderer.composite(document), document: document,

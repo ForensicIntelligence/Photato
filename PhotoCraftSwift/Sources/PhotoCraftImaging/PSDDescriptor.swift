@@ -98,10 +98,10 @@ struct PSDDescriptor: Equatable {
     return descriptor
   }
 
-  static func readPrefix(_ data: Data) throws -> (descriptor: Self, consumed: Int) {
+  static func readPrefix(_ data: Data, littleEndian: Bool = false) throws -> (descriptor: Self, consumed: Int) {
     guard data.count <= maxBytes else { throw CraftError.invalid("PSD descriptor exceeds 16 MiB.") }
-    var parser = Parser(reader: PSDReader(data: data))
-    guard try parser.reader.u32() == 16 else {
+    var parser = Parser(reader: PSDReader(data: data), littleEndian: littleEndian)
+    guard try parser.u32() == 16 else {
       throw CraftError.invalid("Unsupported PSD descriptor version.")
     }
     let descriptor = try parser.descriptor(0)
@@ -113,7 +113,7 @@ struct PSDDescriptor: Equatable {
   static func readPrefix(_ reader: inout PSDReader) throws -> Self {
     var lookahead = reader
     var parser = Parser(reader: try lookahead.view(min(reader.remaining, maxBytes)))
-    guard try parser.reader.u32() == 16 else {
+    guard try parser.u32() == 16 else {
       throw CraftError.invalid("Unsupported PSD descriptor version.")
     }
     let descriptor = try parser.descriptor(0)
@@ -121,9 +121,9 @@ struct PSDDescriptor: Equatable {
     return descriptor
   }
 
-  func encoded() throws -> Data {
-    var encoder = Encoder()
-    encoder.writer.n(16, 4)
+  func encoded(littleEndian: Bool = false) throws -> Data {
+    var encoder = Encoder(littleEndian: littleEndian)
+    encoder.number(16, 4)
     try encoder.descriptor(self, 0)
     guard encoder.writer.data.count <= Self.maxBytes else {
       throw CraftError.invalid("PSD descriptor exceeds 16 MiB.")
@@ -133,7 +133,19 @@ struct PSDDescriptor: Equatable {
 
   private struct Parser {
     var reader: PSDReader
+    var littleEndian = false
     var nodes = 0
+    mutating func number(_ width: Int) throws -> UInt64 {
+      let bits = try reader.number(width)
+      return littleEndian ? bits.byteSwapped >> ((8 - width) * 8) : bits
+    }
+    mutating func u32() throws -> Int { Int(try number(4)) }
+    mutating func i32() throws -> Int32 { Int32(bitPattern: UInt32(try number(4))) }
+    mutating func codeBytes() throws -> Data {
+      let bytes = try reader.bytes(4)
+      return littleEndian ? Data(bytes.reversed()) : bytes
+    }
+    mutating func code() throws -> String { String(decoding: try codeBytes(), as: UTF8.self) }
     mutating func visit(_ depth: Int) throws {
       nodes += 1
       guard depth <= maxDepth, nodes <= maxNodes else {
@@ -141,23 +153,28 @@ struct PSDDescriptor: Equatable {
       }
     }
     mutating func count(_ minimumBytes: Int) throws -> Int {
-      let n = try reader.u32()
+      let n = try u32()
       guard n <= maxNodes - nodes, n <= reader.remaining / minimumBytes else {
         throw CraftError.invalid("Invalid PSD descriptor item count.")
       }
       return n
     }
     mutating func unicode() throws -> [UInt16] {
-      let n = try reader.u32()
+      let n = try u32()
       guard n <= 1_048_576, n <= reader.remaining / 2 else {
         throw CraftError.invalid("Invalid PSD descriptor string length.")
       }
-      return try (0..<n).map { _ in UInt16(try reader.u16()) }
+      return try (0..<n).map { _ in UInt16(try number(2)) }
     }
     mutating func id() throws -> PSDID {
-      let n = try reader.u32()
+      let n = try u32()
       guard n <= 65_536 else { throw CraftError.invalid("PSD descriptor ID is too long.") }
-      return PSDID(bytes: try reader.bytes(n == 0 ? 4 : n), isCode: n == 0)
+      let bytes = n == 0 ? try codeBytes() : try reader.bytes(n)
+      return PSDID(bytes: bytes, isCode: n == 0)
+    }
+    mutating func blob() throws -> Data {
+      let size = try u32()
+      return try reader.bytes(size)
     }
     mutating func type() throws -> PSDClass { try PSDClass(name: unicode(), id: id()) }
     mutating func descriptor(_ depth: Int) throws -> PSDDescriptor {
@@ -173,7 +190,7 @@ struct PSDDescriptor: Equatable {
     }
     mutating func value(_ depth: Int) throws -> PSDValue {
       try visit(depth)
-      switch try reader.string(4) {
+      switch try code() {
       case "obj ":
         let n = try count(8)
         return .reference(try (0..<n).map { _ in try reference(depth + 1) })
@@ -182,39 +199,39 @@ struct PSDDescriptor: Equatable {
       case "VlLs":
         let n = try count(4)
         return .list(try (0..<n).map { _ in try value(depth + 1) })
-      case "doub": return .doubleBits(try reader.number(8))
-      case "UntF": return try .unit(reader.bytes(4), reader.number(8))
+      case "doub": return .doubleBits(try number(8))
+      case "UntF": return try .unit(codeBytes(), number(8))
       case "UnFl":
-        let unit = try reader.bytes(4)
+        let unit = try codeBytes()
         let n = try count(8)
         nodes += n
-        return .units(unit, try (0..<n).map { _ in try reader.number(8) })
+        return .units(unit, try (0..<n).map { _ in try number(8) })
       case "TEXT": return .text(try unicode())
       case "enum": return try .enumerated(id(), id())
-      case "long": return .integer(Int32(try reader.i32()))
-      case "comp": return .largeInteger(Int64(bitPattern: try reader.number(8)))
+      case "long": return .integer(try i32())
+      case "comp": return .largeInteger(Int64(bitPattern: try number(8)))
       case "bool":
         let b = try reader.u8()
         guard b <= 1 else { throw CraftError.invalid("Invalid PSD descriptor boolean.") }
         return .boolean(b == 1)
       case "type": return .type(try type())
       case "GlbC": return .globalClass(try type())
-      case "alis": return .alias(try reader.bytes(reader.u32()))
-      case "Pth ": return .path(try reader.bytes(reader.u32()))
-      case "tdta": return .raw(try reader.bytes(reader.u32()))
-      case "ObAr": return try .objectArray(UInt32(reader.u32()), descriptor(depth + 1))
+      case "alis": return .alias(try blob())
+      case "Pth ": return .path(try blob())
+      case "tdta": return .raw(try blob())
+      case "ObAr": return try .objectArray(UInt32(u32()), descriptor(depth + 1))
       default: throw CraftError.unsupported("Unknown PSD descriptor value type.")
       }
     }
     mutating func reference(_ depth: Int) throws -> PSDReference {
       try visit(depth)
-      switch try reader.string(4) {
+      switch try code() {
       case "prop": return try .property(type(), id())
       case "Clss": return .type(try type())
       case "Enmr": return try .enumerated(type(), id(), id())
-      case "rele": return try .offset(type(), Int32(reader.i32()))
-      case "Idnt": return .identifier(UInt32(try reader.u32()))
-      case "indx": return .index(UInt32(try reader.u32()))
+      case "rele": return try .offset(type(), i32())
+      case "Idnt": return .identifier(UInt32(try u32()))
+      case "indx": return .index(UInt32(try u32()))
       case "name": return try .name(type(), unicode())
       default: throw CraftError.unsupported("Unknown PSD descriptor reference type.")
       }
@@ -223,7 +240,20 @@ struct PSDDescriptor: Equatable {
 
   private struct Encoder {
     var writer = PSDWriter()
+    var littleEndian = false
     var nodes = 0
+    mutating func number(_ value: Int, _ width: Int) {
+      if littleEndian {
+        let bits = UInt64(truncatingIfNeeded: value)
+        for i in 0..<width { writer.data.append(UInt8(truncatingIfNeeded: bits >> (i * 8))) }
+      } else {
+        writer.n(value, width)
+      }
+    }
+    mutating func codeBytes(_ value: Data) {
+      writer.data.append(littleEndian ? Data(value.reversed()) : value)
+    }
+    mutating func code(_ value: String) { codeBytes(Data(value.utf8)) }
     mutating func visit(_ depth: Int) throws {
       nodes += 1
       guard depth <= maxDepth, nodes <= maxNodes, writer.data.count <= maxBytes else {
@@ -232,8 +262,8 @@ struct PSDDescriptor: Equatable {
     }
     mutating func unicode(_ value: [UInt16]) throws {
       guard value.count <= 1_048_576 else { throw CraftError.invalid("PSD string is too long.") }
-      writer.n(value.count, 4)
-      for unit in value { writer.n(Int(unit), 2) }
+      number(value.count, 4)
+      for unit in value { number(Int(unit), 2) }
     }
     mutating func id(_ value: PSDID) throws {
       guard
@@ -242,28 +272,29 @@ struct PSDDescriptor: Equatable {
       else {
         throw CraftError.invalid("Invalid PSD descriptor ID.")
       }
-      writer.n(value.isCode ? 0 : value.bytes.count, 4)
-      writer.data.append(value.bytes)
+      number(value.isCode ? 0 : value.bytes.count, 4)
+      if value.isCode { codeBytes(value.bytes) } else { writer.data.append(value.bytes) }
     }
     mutating func type(_ value: PSDClass) throws {
       try unicode(value.name)
       try id(value.id)
     }
-    mutating func bits(_ value: UInt64) { writer.n(Int(truncatingIfNeeded: value), 8) }
+    mutating func bits(_ value: UInt64) { number(Int(truncatingIfNeeded: value), 8) }
     mutating func blob(_ value: Data) throws {
       guard value.count <= maxBytes else { throw CraftError.invalid("PSD value is too large.") }
-      writer.section(value)
+      number(value.count, 4)
+      writer.data.append(value)
     }
     mutating func unit(_ value: Data) throws {
       guard value.count == 4 else { throw CraftError.invalid("Invalid PSD unit code.") }
-      writer.data.append(value)
+      codeBytes(value)
     }
     mutating func descriptor(_ d: PSDDescriptor, _ depth: Int) throws {
       try visit(depth)
       try unicode(d.name)
       try id(d.classID)
       guard d.items.count <= maxNodes else { throw CraftError.invalid("Too many PSD items.") }
-      writer.n(d.items.count, 4)
+      number(d.items.count, 4)
       for item in d.items {
         try id(item.key)
         try value(item.value, depth + 1)
@@ -273,24 +304,24 @@ struct PSDDescriptor: Equatable {
       try visit(depth)
       switch v {
       case .reference(let refs):
-        writer.text("obj ")
-        writer.n(refs.count, 4)
+        code("obj ")
+        number(refs.count, 4)
         for ref in refs { try reference(ref, depth + 1) }
       case .object(let d):
-        writer.text("Objc")
+        code("Objc")
         try descriptor(d, depth + 1)
       case .globalObject(let d):
-        writer.text("GlbO")
+        code("GlbO")
         try descriptor(d, depth + 1)
       case .list(let values):
-        writer.text("VlLs")
-        writer.n(values.count, 4)
+        code("VlLs")
+        number(values.count, 4)
         for v in values { try value(v, depth + 1) }
       case .doubleBits(let b):
-        writer.text("doub")
+        code("doub")
         bits(b)
       case .unit(let u, let b):
-        writer.text("UntF")
+        code("UntF")
         try unit(u)
         bits(b)
       case .units(let u, let values):
@@ -298,44 +329,44 @@ struct PSDDescriptor: Equatable {
           throw CraftError.invalid("Too many PSD units.")
         }
         nodes += values.count
-        writer.text("UnFl")
+        code("UnFl")
         try unit(u)
-        writer.n(values.count, 4)
+        number(values.count, 4)
         for b in values { bits(b) }
       case .text(let text):
-        writer.text("TEXT")
+        code("TEXT")
         try unicode(text)
       case .enumerated(let t, let v):
-        writer.text("enum")
+        code("enum")
         try id(t)
         try id(v)
       case .integer(let v):
-        writer.text("long")
-        writer.n(Int(v), 4)
+        code("long")
+        number(Int(v), 4)
       case .largeInteger(let v):
-        writer.text("comp")
-        writer.n(Int(v), 8)
+        code("comp")
+        number(Int(v), 8)
       case .boolean(let v):
-        writer.text("bool")
-        writer.n(v ? 1 : 0, 1)
+        code("bool")
+        number(v ? 1 : 0, 1)
       case .type(let t):
-        writer.text("type")
+        code("type")
         try type(t)
       case .globalClass(let t):
-        writer.text("GlbC")
+        code("GlbC")
         try type(t)
       case .alias(let b):
-        writer.text("alis")
+        code("alis")
         try blob(b)
       case .path(let b):
-        writer.text("Pth ")
+        code("Pth ")
         try blob(b)
       case .raw(let b):
-        writer.text("tdta")
+        code("tdta")
         try blob(b)
       case .objectArray(let prefix, let d):
-        writer.text("ObAr")
-        writer.n(Int(prefix), 4)
+        code("ObAr")
+        number(Int(prefix), 4)
         try descriptor(d, depth + 1)
       }
     }
@@ -343,29 +374,29 @@ struct PSDDescriptor: Equatable {
       try visit(depth)
       switch r {
       case .property(let t, let k):
-        writer.text("prop")
+        code("prop")
         try type(t)
         try id(k)
       case .type(let t):
-        writer.text("Clss")
+        code("Clss")
         try type(t)
       case .enumerated(let t, let k, let v):
-        writer.text("Enmr")
+        code("Enmr")
         try type(t)
         try id(k)
         try id(v)
       case .offset(let t, let v):
-        writer.text("rele")
+        code("rele")
         try type(t)
-        writer.n(Int(v), 4)
+        number(Int(v), 4)
       case .identifier(let v):
-        writer.text("Idnt")
-        writer.n(Int(v), 4)
+        code("Idnt")
+        number(Int(v), 4)
       case .index(let v):
-        writer.text("indx")
-        writer.n(Int(v), 4)
+        code("indx")
+        number(Int(v), 4)
       case .name(let t, let n):
-        writer.text("name")
+        code("name")
         try type(t)
         try unicode(n)
       }

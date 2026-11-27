@@ -130,6 +130,36 @@ final class TIFFLayerWorkflowTests: XCTestCase {
       XCTAssertEqual(document.store.document, edited)
     }
   }
+  @MainActor func testSavedSelectionSurvivesTIFFSaveAndHTTPDownload() async throws {
+    let folder = try DocumentPersistenceTests().directory()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    var model = try RasterIO.read(fixture("8-big-marker.tiff"))
+    let alpha = try Surface(width: model.width, height: model.height, fill: Pixel(64.0/255, 64.0/255, 64.0/255))
+    model.alphaChannels = [AlphaChannel(name: "Saved selection", pixels: alpha)]
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, document in
+      document.store.session = EditorSession(document: model)
+      XCTAssertTrue(document.saveFormats.contains(.tiff))
+      let target = folder.appendingPathComponent("saved.tiff")
+      try await document.persistDocument(to: target, format: .tiff, operation: .saveAsOperation)
+      let saved = try DocumentIO.read(target)
+      try content(saved, model)
+      XCTAssertEqual(saved.alphaChannels?.first?.name, "Saved selection")
+      XCTAssertEqual(saved.alphaChannels?.first?.pixels, alpha)
+      XCTAssertNotNil(DocumentIO.persistenceIssue(model, format: .tiff, options: .init(tiffLayers: false)))
+      service.setDocumentTransfersEnabled(true)
+      try service.share(document)
+      let id = try XCTUnwrap(service.shares.first?.id)
+      let download = try await helper.request(service, path: "/v1/documents/\(id)/file.tiff",
+        headers: ["X-Photato-Export-Options": "{\"tiffLayers\":true}"])
+      XCTAssertEqual(download.0.statusCode, 200, String(decoding: download.1, as: UTF8.self))
+      let downloaded = try RasterIO.read(download.1)
+      try content(downloaded, model)
+      XCTAssertEqual(downloaded.alphaChannels?.first?.name, "Saved selection")
+      XCTAssertEqual(downloaded.alphaChannels?.first?.pixels, alpha)
+    }
+  }
+
   @MainActor func testHTTPPreservingDownloadAndDefaultSaveShareSerializerAndExposeDefaults() async throws {
     let helper = AutomationTests(), folder = try DocumentPersistenceTests().directory()
     defer { try? FileManager.default.removeItem(at: folder) }

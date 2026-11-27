@@ -11,24 +11,34 @@ enum TIFFStorage {
     let width: Int, height: Int, bits: Int, channels: Int, rows: Int
     let planar: Bool, associated: Bool, compression: Int, predictor: Int
     let offsets: [Int], counts: [Int]
+    let savedAlphaSamples: [Int]
     init?(_ file: TIFFContainer, allowAssociatedAlpha: Bool = false,
-      colorComponents: Int = 3, photometric: Int = 2) throws {
+      colorComponents: Int = 3, photometric: Int = 2, allowSavedAlpha: Bool = false) throws {
       // Tile decoding remains with ImageIO; the strip path must not reject it.
       guard file.root.fields[324] == nil, file.root.fields[325] == nil else { return nil }
       guard try file.scalar(262) == photometric else { return nil }
       width = try file.scalar(256); height = try file.scalar(257)
       channels = try file.scalar(277)
       let depths = try file.numbers(258), formats = try file.numbers(339, default: [1])
-      guard [colorComponents, colorComponents + 1].contains(channels), [1, channels].contains(depths.count),
+      let maxChannels = colorComponents + 1 + (allowSavedAlpha ? CraftDocument.maximumAlphaChannels : 0)
+      guard (colorComponents...maxChannels).contains(channels), [1, channels].contains(depths.count),
         Set(depths).count == 1, [8, 16, 32].contains(depths[0]),
         [1, channels].contains(formats.count), Set(formats).count == 1,
         formats[0] == (depths[0] == 32 ? 3 : 1) else { return nil }
       bits = depths[0]
-      if channels == colorComponents + 1 {
-        let alpha = try file.numbers(338, default: [0])
-        guard alpha == [2] || (allowAssociatedAlpha && alpha == [1]) else { return nil }
-        associated = alpha == [1]
-      } else { associated = false }
+      if channels > colorComponents {
+        let extras = try file.numbers(338, default: [])
+        guard extras.count == channels-colorComponents else { return nil }
+        let transparency = extras.filter { $0 != 0 }
+        guard transparency.count <= 1,
+          transparency.allSatisfy({ $0 == 2 || ($0 == 1 && allowAssociatedAlpha) }),
+          allowSavedAlpha || transparency.count == extras.count else { return nil }
+        savedAlphaSamples = extras.indices.filter { extras[$0] == 0 }.map { colorComponents+$0 }
+        associated = transparency == [1]
+      } else {
+        savedAlphaSamples = []
+        associated = false
+      }
       let layout = try file.scalar(284, default: 1)
       guard [1, 2].contains(layout) else { return nil }
       planar = layout == 2
@@ -53,6 +63,69 @@ enum TIFFStorage {
       }
     }
   }
+  private static func decodedStrip(_ file: TIFFContainer, geometry g: Geometry,
+    index: Int, rows: Int, components: Int) throws -> [UInt8]
+  {
+    let bps = g.bits / 8
+    let packed = Data(file.data[g.offsets[index]..<g.offsets[index] + g.counts[index]])
+    let rowBytes = g.width * components * bps, expected = rows * rowBytes
+    guard expected <= TIFFContainer.byteLimit else {
+      throw CraftError.invalid("TIFF strip exceeds the sample budget.")
+    }
+    var samples: [UInt8]
+    switch g.compression {
+    case 1:
+      guard packed.count == expected else { throw CraftError.invalid("Truncated TIFF strip.") }
+      samples = [UInt8](packed)
+    case 5: samples = try TIFFLZW.decode(packed, expected: expected)
+    default: samples = try PSDChannelCodec.inflate(packed, expected: expected)
+    }
+    if g.predictor != 1 {
+      for row in 0..<rows {
+        try Task.checkCancellation()
+        let start = row * rowBytes
+        let decoded = restore(Array(samples[start..<start + rowBytes]), bits: g.bits,
+          components: components, order: file.order, predictor: g.predictor)
+        samples.replaceSubrange(start..<start + rowBytes, with: decoded)
+      }
+    }
+    return samples
+  }
+
+  /// Copy TIFF's named mask samples into a raw Photoshop channel stream.
+  static func savedAlphaReader(_ file: TIFFContainer, geometry g: Geometry) throws -> PSDChannelReader {
+    let count = g.savedAlphaSamples.count
+    let planeBytes = g.width * g.height
+    guard g.bits == 8, count > 0, planeBytes <= (TIFFContainer.byteLimit-2)/count else {
+      throw CraftError.unsupported("Layered TIFF saved alpha exceeds the supported RGB8 input budget.")
+    }
+    var planes = Data(count:2+planeBytes*count)
+    let strips = (g.height-1)/g.rows+1
+    let components = g.planar ? 1 : g.channels
+    try planes.withUnsafeMutableBytes { (out: UnsafeMutableRawBufferPointer) in
+      let physicalPlanes = g.planar ? g.savedAlphaSamples : [0]
+      for (ordinal,sample) in physicalPlanes.enumerated() {
+        for strip in 0..<strips {
+          try Task.checkCancellation()
+          let y0 = strip*g.rows, rows = min(g.rows,g.height-y0)
+          let bytes = try decodedStrip(file,geometry:g,index:sample*strips+strip,rows:rows,components:components)
+          if g.planar {
+            let destination = 2+ordinal*planeBytes+y0*g.width
+            for pixel in bytes.indices { out[destination+pixel] = bytes[pixel] }
+          } else {
+            for (plane,channel) in g.savedAlphaSamples.enumerated() {
+              let destination = 2+plane*planeBytes+y0*g.width
+              for pixel in 0..<rows*g.width {
+                out[destination+pixel] = bytes[pixel*components+channel]
+              }
+            }
+          }
+        }
+      }
+    }
+    return try PSDChannelReader(PSDReader(data:planes),width:g.width,height:g.height,depth:g.bits,channels:count)
+  }
+
   static func surface(_ data: Data, depth: PixelDepth,
     encoding: SurfaceColorEncoding, space: CGColorSpace? = nil) throws -> Surface? {
     guard TIFFContainer.isClassic(data) else { return nil }
@@ -73,28 +146,8 @@ enum TIFFStorage {
         try Task.checkCancellation()
         let y0 = strip * g.rows, rows = min(g.rows, g.height - y0)
         let index = plane * stripsPerPlane + strip
-        let packed = Data(file.data[g.offsets[index]..<g.offsets[index] + g.counts[index]])
-        let rowBytes = g.width * components * bps, expected = rows * rowBytes
-        guard expected <= TIFFContainer.byteLimit else {
-          throw CraftError.invalid("TIFF strip exceeds the sample budget.")
-        }
-        var samples: [UInt8]
-        switch g.compression {
-        case 1:
-          guard packed.count == expected else { throw CraftError.invalid("Truncated TIFF strip.") }
-          samples = [UInt8](packed)
-        case 5: samples = try TIFFLZW.decode(packed, expected: expected)
-        default: samples = try PSDChannelCodec.inflate(packed, expected: expected)
-        }
-        if g.predictor != 1 {
-          for row in 0..<rows {
-            try Task.checkCancellation()
-            let start = row * rowBytes
-            let decoded = restore(Array(samples[start..<start + rowBytes]), bits: g.bits,
-              components: components, order: file.order, predictor: g.predictor)
-            samples.replaceSubrange(start..<start + rowBytes, with: decoded)
-          }
-        }
+        let rowBytes = g.width * components * bps
+        let samples = try decodedStrip(file,geometry:g,index:index,rows:rows,components:components)
         func sample(_ at: Int) throws -> Float {
           var bits: UInt32 = 0
           for byte in 0..<bps {
@@ -143,13 +196,18 @@ enum TIFFStorage {
     return output
   }
   static func rewrite(_ data: Data, options: RasterEncodingOptions,
-    colorComponents: Int = 3, photometric: Int = 2) throws -> Data {
+    colorComponents: Int = 3, photometric: Int = 2, savedAlpha: [AlphaChannel] = []) throws -> Data {
     try options.validate(for: .tiff)
     let file = try TIFFContainer(data, metadata: true)
     guard let g = try Geometry(file, allowAssociatedAlpha: true,
       colorComponents: colorComponents, photometric: photometric),
       !g.planar, g.compression == 1, g.predictor == 1 else {
       throw CraftError.invalid("Expected uncompressed interleaved TIFF intermediate.")
+    }
+    guard savedAlpha.isEmpty || (g.bits == 8 && savedAlpha.allSatisfy({
+      $0.pixels.width == g.width && $0.pixels.height == g.height && $0.pixels.depth == .u8
+    })) else {
+      throw CraftError.invalid("TIFF saved alpha must match the RGB8 image.")
     }
     let predictor = options.tiffPredictor == true
     guard !predictor || g.bits == 32 else {
@@ -163,7 +221,8 @@ enum TIFFStorage {
     }
     let planar = options.tiffPixelOrder == .perChannel
     let compression = options.tiffCompression ?? .none
-    let components = planar ? 1 : g.channels, bps = g.bits / 8
+    let channelCount = g.channels+savedAlpha.count
+    let components = planar ? 1 : channelCount, bps = g.bits / 8
     let rowBytes = g.width * components * bps
     let rowsPerStrip = compression == .none ? g.height : max(1, min(g.height, 65536 / rowBytes))
     var output = Data(order == .little ? [73, 73, 42, 0, 0, 0, 0, 0] : [77, 77, 0, 42, 0, 0, 0, 0])
@@ -174,7 +233,7 @@ enum TIFFStorage {
       }
       output.append(data)
     }
-    for plane in 0..<(planar ? g.channels : 1) {
+    for plane in 0..<(planar ? channelCount : 1) {
       for startRow in stride(from: 0, to: g.height, by: rowsPerStrip) {
         try Task.checkCancellation()
         let endRow = min(g.height, startRow + rowsPerStrip)
@@ -189,9 +248,20 @@ enum TIFFStorage {
             throw CraftError.invalid("Incomplete uncompressed TIFF row.")
           }
           var row: [UInt8] = []; row.reserveCapacity(rowBytes)
+          let alphaRows: [[UInt8]]
+          if planar {
+            alphaRows = plane < g.channels ? [] : [try PSDAuxiliaryChannels.row(savedAlpha[plane-g.channels],y:y,depth:8)]
+          } else {
+            alphaRows = try savedAlpha.map { try PSDAuxiliaryChannels.row($0,y:y,depth:8) }
+          }
           for x in 0..<g.width {
             for channel in 0..<components {
-              let at = sourceRow + (x * g.channels + (planar ? plane : channel)) * bps
+              let index = planar ? plane : channel
+              if index >= g.channels {
+                row.append(alphaRows[planar ? 0 : index-g.channels][x])
+                continue
+              }
+              let at = sourceRow + (x * g.channels + index) * bps
               for byte in 0..<bps {
                 row.append(file.data[at + (order == file.order ? byte : bps - 1 - byte)])
               }
@@ -221,6 +291,12 @@ enum TIFFStorage {
     file.set(273, offsets, type: 4); file.set(279, counts, type: 4)
     file.set(278, [rowsPerStrip], type: 4)
     file.set(284, [planar ? 2 : 1]); file.set(317, [predictor ? 3 : 1])
+    if !savedAlpha.isEmpty {
+      file.set(277,[channelCount])
+      file.set(258,Array(repeating:g.bits,count:channelCount))
+      file.set(338,try file.numbers(338,default:[]) + Array(repeating:0,count:savedAlpha.count))
+      if file.root.fields[339] != nil { file.set(339,Array(repeating:1,count:channelCount)) }
+    }
     try file.appendDirectories(to: &output, order: order)
     try Task.checkCancellation()
     return output

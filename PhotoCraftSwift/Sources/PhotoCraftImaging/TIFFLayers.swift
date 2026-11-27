@@ -17,9 +17,18 @@ enum TIFFLayers {
     let components = try tiff.scalar(277)
     let extra = try tiff.numbers(338, default: [])
     let colors = composite.colorMode.componentCount
-    guard (components == colors && extra.isEmpty)
-      || (components == colors + 1 && extra.count == 1 && [1, 2].contains(extra[0])) else {
-      throw CraftError.unsupported("Layered TIFF saved alpha and spot channels are not yet supported.")
+    let ordinarySamples = (components == colors && extra.isEmpty)
+      || (components == colors + 1 && extra.count == 1 && [1, 2].contains(extra[0]))
+    let savedAlpha: TIFFStorage.Geometry?
+    if ordinarySamples {
+      savedAlpha = nil
+    } else {
+      guard composite.colorMode == .rgb, depth == 8,
+        let geometry = try TIFFStorage.Geometry(tiff, allowAssociatedAlpha: true, allowSavedAlpha: true),
+        !geometry.savedAlphaSamples.isEmpty else {
+        throw CraftError.unsupported("Unsupported layered TIFF auxiliary sample layout.")
+      }
+      savedAlpha = geometry
     }
     guard try TIFFModeStorage.mode(tiff.scalar(262)) == composite.colorMode,
       try tiff.scalar(274, default: 1) == 1,
@@ -30,7 +39,7 @@ enum TIFFLayers {
       throw CraftError.unsupported("Layered TIFF requires an unrotated supported color mode/depth within PSD dimensions.")
     }
     var r = PSDReader(data: field.data, offset: signature.count)
-    var globals = PSDWriter(), seen = Set<String>(), hasLayers = false
+    var globals = PSDWriter(), seen = Set<String>(), hasLayers = false, hasEditableLayers = false
     let expectedLayerTag = depth == 16 ? "Lr16" : depth == 32 ? "Lr32" : "Layr"
     while r.remaining >= 12 {
       try Task.checkCancellation()
@@ -62,6 +71,7 @@ enum TIFFLayers {
         }
         content = try TIFFLayerEndian.layers(content, order: tiff.order)
         hasLayers = true
+        hasEditableLayers = content.count >= 2 && content.prefix(2).contains { $0 != 0 }
       } else if tiff.order == .little {
         content = try TIFFLayerEndian.payload(content, tag: tag, global: true)
       }
@@ -76,6 +86,13 @@ enum TIFFLayers {
       throw CraftError.invalid("Invalid TIFF Photoshop resources.")
     }
     let blocks = try PSDImageResources.blocks(resources)
+    if savedAlpha != nil {
+      guard hasEditableLayers,
+        blocks.contains(where: { [1006, 1045].contains($0.id) && !$0.data.isEmpty }),
+        !blocks.contains(where: { $0.id == 1022 }) else {
+        throw CraftError.unsupported("Layered TIFF auxiliary samples require named channels and editable layers.")
+      }
+    }
     let profiles = blocks.filter { $0.id == 1039 }
     guard profiles.count <= 1 else { throw CraftError.invalid("Duplicate TIFF Photoshop profiles.") }
     if let icc = tiff.root.fields[34675], ![1, 7].contains(icc.type) {
@@ -98,6 +115,19 @@ enum TIFFLayers {
       throw CraftError.invalid("TIFF Photoshop structures exceed the input budget.")
     }
     var result = try PSDCodec.read(PSDReader(data: adapter.data), name: composite.name, tiffComposite: pixels, tiffNativeComposite: composite.layers.first?.nativeMode)
+    if let savedAlpha {
+      let count = savedAlpha.savedAlphaSamples.count
+      let reader = try TIFFStorage.savedAlphaReader(tiff, geometry: savedAlpha)
+      // Photoshop's MTrn marks the leading opacity sample. Some TIFF writers
+      // describe only saved channels, while Photoshop also names that sample.
+      let transparencyRecord = seen.contains("MTrn") && (extra.first == 1 || extra.first == 2)
+        && (try? PSDAuxiliaryChannels.names(blocks, count: count + 1)) != nil
+      try PSDAuxiliaryChannels.read(reader, first: components-count, count: count,
+        blocks: blocks, document: &result, paging: nil, leadingTransparency: transparencyRecord)
+      guard result.alphaChannels?.allSatisfy({ $0.spot == nil }) == true else {
+        throw CraftError.unsupported("Layered TIFF spot channels are not yet supported.")
+      }
+    }
     result.resolution = composite.resolution
     result.sourceICC = composite.sourceICC
     result.profileIsUntagged = composite.profileIsUntagged
@@ -114,12 +144,35 @@ enum TIFFLayers {
       throw CraftError.invalid("TIFF exceeds the layer record limit.")
     }
     let tiff = try TIFFContainer(composite, metadata: true)
+    let savedAlpha = document.alphaChannels ?? []
+    var layerDocument = document
+    let componentCount = try tiff.scalar(277)
+    let hasTransparency: Bool
+    if savedAlpha.isEmpty {
+      hasTransparency = componentCount == document.colorMode.componentCount+1
+    } else {
+      let extra = try tiff.numbers(338)
+      let remaining = extra.dropLast(savedAlpha.count)
+      guard document.colorMode == .rgb, document.depth == .u8, document.quickMask == nil,
+        savedAlpha.allSatisfy({ $0.spot == nil }), extra.count == componentCount-3, extra.count >= savedAlpha.count,
+        extra.suffix(savedAlpha.count).allSatisfy({ $0 == 0 }),
+        remaining.isEmpty || remaining == [1] || remaining == [2] else {
+        throw CraftError.invalid("TIFF saved-alpha samples disagree with the selected channels.")
+      }
+      hasTransparency = !remaining.isEmpty
+      // The PSD intermediate contributes layer records. The TIFF carries the saved samples.
+      layerDocument.alphaChannels = nil
+    }
     let psd = PSDOutput()
-    try PSDCodec.writeRasterLayers(document, compression: compression.codec, format: .psd,
+    try PSDCodec.writeRasterLayers(layerDocument, compression: compression.codec, format: .psd,
       output: psd, includeComposite: false)
     var reader = PSDReader(data: psd.data, offset: 26)
     _ = try reader.section()
-    let resources = try reader.section().data
+    var resources = try reader.section().data
+    if !savedAlpha.isEmpty {
+      resources.append(try PSDAuxiliaryChannels.resources(document,first:componentCount-savedAlpha.count,
+        leadingTransparency:hasTransparency))
+    }
     var section = try reader.section()
     let directLayers = try section.section().data
     _ = try section.section()
@@ -137,7 +190,7 @@ enum TIFFLayers {
       blocks.append(Data(repeating: 0, count: (4 - payload.count % 4) % 4))
     }
     // TIFF's transparency marker is distinct from PSD's Mtrn and precedes layers.
-    if try tiff.scalar(277) == document.colorMode.componentCount + 1 { try append("MTrn", Data()) }
+    if hasTransparency { try append("MTrn", Data()) }
     if !directLayers.isEmpty {
       try append("Layr", TIFFLayerEndian.layers(directLayers, order: .big, target: tiff.order))
     }

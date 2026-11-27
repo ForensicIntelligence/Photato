@@ -1,3 +1,9 @@
+### Layered TIFF saved selections (checkpoint 755)
+
+Photato’s native Save and authenticated file routes use the same codec. Ordinary Save preserves editable layers by default. Download or Save a Copy can keep layers with `tiffLayers: true`. The Adobe v2 TIFF schema continues to expose its published flattened output.
+
+The transfer capability lists the extended scope. Named saved alpha is supported in editable RGB8 TIFF input and output. [Qualification](SOURCE_PUBLICATION_755.md).
+
 ### Vanishing Point raster grids
 
 Manual grid intervals use the same calibrated plane metric as measurement-linked intervals. The returned scene intervals describe the grid used for both preview and output. [Qualification](SOURCE_PUBLICATION_754.md).

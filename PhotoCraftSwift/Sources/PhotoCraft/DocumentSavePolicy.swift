@@ -23,7 +23,7 @@ extension DocumentIO.Format {
         "Saves a single pixel layer at its current 8- or 16-bit depth, using its RGB working profile. Use Save a Copy for a flattened version of a layered document."
     case .tiff:
       return
-        "Keeps supported editable layers, masks and paths at 8-, 16- or 32-bit depth. Both byte orders retain supported numeric adjustments and vector masks. Fill/path descriptors and opaque records currently require big-endian TIFF."
+        "Keeps supported editable layers, masks and paths at 8-, 16- or 32-bit depth, and named saved selections in 8-bit RGB. Both byte orders retain supported numeric adjustments and vector masks. Fill/path descriptors and opaque records currently require big-endian TIFF."
     case .jpeg:
       return
         "Saves a single opaque 8-bit pixel layer using the selected JPEG quality, format and color-profile settings. JPEG compression changes pixels."
@@ -91,7 +91,11 @@ extension DocumentIO {
       }
       return nil
     }
-    if document.hasAuxiliaryChannels,format != .psd,format != .psb { return "Save as Photato to retain alpha channels and Quick Mask. Save a Copy can export a flattened image." }
+    if document.hasAuxiliaryChannels, format != .psd, format != .psb {
+      guard format == .tiff, options.tiffLayers != false, RasterIO.supportsLayeredTIFFSavedAlpha(document) else {
+        return "Save as Photato to retain alpha channels and Quick Mask. Save a Copy can export a flattened image."
+      }
+    }
     if document.restrictedMode != nil {
       if format == .jpeg { return "JPEG cannot retain Indexed Color or Bitmap mode. Use Save a Copy or convert the document to RGB." }
       if format == .png, !(document.paths ?? []).isEmpty { return "Save as Photato, PSD or TIFF to retain saved paths." }

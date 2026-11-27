@@ -44,21 +44,26 @@ enum PSDAuxiliaryChannels {
     return(index-first,flag != 0)
   }
   static func read(_ reader:PSDChannelReader,first:Int,count:Int,blocks:[PSDImageResources.Block],
-    document:inout CraftDocument,paging:PSDRasterPaging.Context?)throws {
+    document:inout CraftDocument,paging:PSDRasterPaging.Context?,leadingTransparency:Bool=false)throws {
     if count==0 {
       guard !blocks.contains(where:{$0.id==1022})else{throw CraftError.invalid("Quick Mask has no auxiliary plane.")};return
     }
     for id in resourceIDs {guard blocks.filter({$0.id==id}).count<=1 else{throw CraftError.invalid("Duplicate Photoshop auxiliary channel resource.")}}
-    let names=try names(blocks,count:count)
+    let firstSaved = leadingTransparency ? 1 : 0
+    let metadataCount = count + firstSaved
+    let names=try names(blocks,count:metadataCount)
     let hasDisplay=blocks.contains{$0.id==1077 || $0.id==1007}
     let displays:[PSDInkChannels.Display]
-    if hasDisplay {displays=try PSDInkChannels.displays(blocks,count:count)}
-    else {displays=(0..<count).map{_ in .init(color:Pixel(1,0,0),opacity:0.5,kind:1,raw:Data())}}
+    if hasDisplay {displays=try PSDInkChannels.displays(blocks,count:metadataCount)}
+    else {displays=(0..<metadataCount).map{_ in .init(color:Pixel(1,0,0),opacity:0.5,kind:1,raw:Data())}}
+    if leadingTransparency, displays[0].kind == 2 {
+      throw CraftError.invalid("TIFF merged transparency cannot be a spot channel.")
+    }
     var identifiers:[UInt32]=[]
     if let block=blocks.first(where:{$0.id==1053}) {
-      guard block.data.count==count*4 else{throw CraftError.invalid("Channel identifiers disagree with the plane count.")}
+      guard block.data.count==metadataCount*4 else{throw CraftError.invalid("Channel identifiers disagree with the plane count.")}
       var input=PSDReader(data:block.data)
-      identifiers=try (0..<count).map{_ in UInt32(try input.u32())}
+      identifiers=try (0..<metadataCount).map{_ in UInt32(try input.u32())}
       guard Set(identifiers).count==identifiers.count else{throw CraftError.invalid("Duplicate Photoshop channel identifier.")}
     }
     let (quickIndex,initiallyEmpty)=try quickMaskInfo(blocks,first:first,count:count)
@@ -66,7 +71,9 @@ enum PSDAuxiliaryChannels {
     let context=try paging ?? PSDRasterPaging.Context(heapByteLimit:512*1024*1024)
     var channels:[AlphaChannel]=[]
     for index in 0..<count {
-      try Task.checkCancellation();let info=displays[index],depth=document.bitsPerChannel
+      try Task.checkCancellation()
+      let metadataIndex = firstSaved + index
+      let info=displays[metadataIndex],depth=document.bitsPerChannel
       guard index != quickIndex || info.kind != 2 else{throw CraftError.invalid("Quick Mask cannot be a printing spot separation.")}
       let tiles=(document.width+63)/64*((document.height+63)/64)
       try context.admitRaster(bytes:tiles*65536)
@@ -107,9 +114,9 @@ enum PSDAuxiliaryChannels {
           }
       }
       var options=ChannelDisplayOptions();options.color=info.color;options.opacity=info.opacity;options.indicates=info.kind==0 ? .selectedAreas:.maskedAreas
-      var channel=AlphaChannel(name:names[index],pixels:pixels,options:options,spot:info.kind==2 ? SpotInk(color:info.color,solidity:info.opacity):nil)
+      var channel=AlphaChannel(name:names[metadataIndex],pixels:pixels,options:options,spot:info.kind==2 ? SpotInk(color:info.color,solidity:info.opacity):nil)
       channel.psdDisplay=info.raw.isEmpty ? nil:info.raw
-      if !identifiers.isEmpty{channel.psdIdentifier=identifiers[index]}
+      if !identifiers.isEmpty{channel.psdIdentifier=identifiers[metadataIndex]}
       channel.psdSpotGray=info.kind==2 ? sourceGray:nil
       channel.psdSelectedGray=info.kind==0 ? sourceGray:nil
       if index==quickIndex {channel.psdQuickMaskInitiallyEmpty=initiallyEmpty;document.quickMask=channel}
@@ -118,16 +125,27 @@ enum PSDAuxiliaryChannels {
     guard channels.count<=document.auxiliaryChannelLimit else{throw CraftError.invalid("Too many saved alpha/spot channels.")}
     document.alphaChannels=channels.isEmpty ? nil:channels
   }
-  static func resources(_ document:CraftDocument,first:Int)throws->Data {
+  static func resources(_ document:CraftDocument,first:Int,leadingTransparency:Bool=false)throws->Data {
     let channels=all(document);guard !channels.isEmpty else{return Data()}
     var names=PSDWriter(),legacy=PSDWriter(),display=PSDWriter(),ids=PSDWriter();display.n(1,4)
     var used=Set(channels.compactMap(\.psdIdentifier)),next:UInt32=1
+    func appendName(_ name: String) {
+      let units=Array(name.utf16);names.n(units.count+1,4);for u in units{names.n(Int(u),2)};names.n(0,2)
+      let bytes=Data((name.data(using:.macOSRoman,allowLossyConversion:true) ?? Data("Channel".utf8)).prefix(255));legacy.n(bytes.count,1);legacy.data+=bytes
+    }
+    if leadingTransparency {
+      // Photoshop TIFF's MTrn names the first extra sample in these resources.
+      // It uses ID zero and a red 100% masked-area display entry.
+      appendName("Transparency")
+      for word in [0, 65535, 0, 0, 0, 100] { display.n(word,2) }
+      display.n(1,1)
+      ids.n(0,4)
+    }
     for channel in channels {
-      let units=Array(channel.name.utf16);names.n(units.count+1,4);for u in units{names.n(Int(u),2)};names.n(0,2)
-      let bytes=Data((channel.name.data(using:.macOSRoman,allowLossyConversion:true) ?? Data("Channel".utf8)).prefix(255));legacy.n(bytes.count,1);legacy.data+=bytes
+      appendName(channel.name)
       display.data += try displayRecord(channel, in: document)
       let identifier:UInt32
-      if let original=channel.psdIdentifier{identifier=original}
+      if let original=channel.psdIdentifier, !leadingTransparency || original != 0 {identifier=original}
       else{while used.contains(next){next+=1};identifier=next;used.insert(next)}
       ids.n(Int(identifier),4)
     }

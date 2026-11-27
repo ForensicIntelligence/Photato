@@ -44,6 +44,22 @@ enum TIFFLayerEndian {
       }
       offset = limit
     }
+    mutating func descriptor(size: Int, padding: Int = 3) throws {
+      let start = offset
+      try skip(size)
+      let littleEndian = order == .little
+      let bytes = Data(input[start..<offset])
+      let (descriptor, consumed) = try PSDDescriptor.readPrefix(bytes, littleEndian: littleEndian)
+      let tail = bytes.dropFirst(consumed)
+      guard tail.count <= padding, tail.allSatisfy({ $0 == 0 }) else {
+        throw CraftError.unsupported("Unrepresented TIFF descriptor trailer.")
+      }
+      let converted = try descriptor.encoded(littleEndian: !littleEndian)
+      guard converted.count == consumed else {
+        throw CraftError.invalid("TIFF descriptor length changed during byte-order conversion.")
+      }
+      output.replaceSubrange(start..<start + consumed, with: converted)
+    }
     mutating func mask() throws -> PSDMaskRecord? {
       let count = try n(4), start = offset, parentLimit = limit
       guard count <= remaining else { throw CraftError.invalid("Truncated TIFF mask.") }
@@ -107,6 +123,29 @@ enum TIFFLayerEndian {
     case "lnsr", "clbl", "infx", "lmgm", "vmgm", "knko", "iOpa":
       // Byte-valued flags and the opaque layer-name-source identifier.
       return input
+    case "shmd" where !global:
+      let count = try c.n(4)
+      guard count <= 4096, count <= c.remaining / 16 else {
+        throw CraftError.invalid("Invalid TIFF layer metadata count.")
+      }
+      for _ in 0..<count {
+        let signature = try c.word(), key = try c.word()
+        guard ["8BIM", "8ELE"].contains(signature), ["cust", "cmls"].contains(key) else {
+          throw CraftError.unsupported("Unrepresented TIFF layer metadata entry.")
+        }
+        try c.skip(4)
+        let size = try c.n(4)
+        try c.descriptor(size: size)
+      }
+      guard c.remaining <= 3 else { throw CraftError.invalid("Unexpected TIFF layer metadata tail.") }
+      try c.padding()
+    case "GenI" where global, "cinf" where global:
+      try c.descriptor(size: c.remaining)
+    case "CAI " where global:
+      guard try c.n(4) == 3 else { throw CraftError.unsupported("Unknown TIFF CAI metadata version.") }
+      try c.descriptor(size: c.remaining, padding: 8)
+    case "Patt" where global && input.isEmpty:
+      return input
     case "LMsk" where global, "FMsk" where global:
       guard input.count >= 12, input.count <= 16 else {
         throw CraftError.invalid("Invalid TIFF user-mask display metadata.")
@@ -149,10 +188,11 @@ enum TIFFLayerEndian {
       c.limit = extraStart + extraSize
       let mask = try c.mask()
       let rangeSize = try c.n(4)
-      guard rangeSize % 4 == 0, rangeSize <= c.remaining else {
+      guard rangeSize % 8 == 0, rangeSize <= c.remaining else {
         throw CraftError.invalid("Invalid TIFF blending ranges.")
       }
-      for _ in 0..<rangeSize / 4 { try c.n(4) }
+      // Each range is eight separate threshold bytes in either TIFF byte order.
+      try c.skip(rangeSize)
       let nameCount = try c.n(1)
       try c.skip(nameCount + (4 - (nameCount + 1) % 4) % 4)
       while c.remaining >= 12 {
