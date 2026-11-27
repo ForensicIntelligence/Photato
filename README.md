@@ -23,7 +23,7 @@ Every published source commit includes its matching Universal app. We run the sa
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 755.** Preserve named saved selections in layered 8-bit RGB TIFFs. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_755.md).
+**Development alpha — source build 756.** Control merged TIFF transparency while keeping editable layers. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_756.md).
 
 ## Project layout
 

@@ -4,6 +4,92 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class TIFFLayerOutputTests: XCTestCase {
+  func testTIFFSaveTransparencyMattesOnlyMergedImage() throws {
+    let source = try RasterIO.read(TIFFLayerTests().fixture("photoshop-transparent-be-fixture.tiff"))
+    for layout in RasterEncodingOptions.TIFFPixelOrder.allCases {
+      var options = RasterEncodingOptions(tiffCompression: RasterEncodingOptions.TIFFCompression.none,
+        tiffByteOrder: .littleEndian, tiffPixelOrder: layout, tiffLayers: true, tiffTransparency: true)
+      let transparent = try RasterIO.encoded(source, type: .tiff, options: options)
+      options.tiffTransparency = false
+      let matted = try RasterIO.encoded(source, type: .tiff, options: options)
+      let a = try TIFFContainer(transparent, metadata: false)
+      let b = try TIFFContainer(matted, metadata: false, additionalTags: [37724])
+      XCTAssertEqual(try a.numbers(338), [1, 0])
+      XCTAssertEqual(try b.numbers(338), [0])
+      XCTAssertNil(try XCTUnwrap(b.root.fields[37724]).data.range(of: Data("nrTM".utf8)))
+      let offsetsA = try a.numbers(273), offsetsB = try b.numbers(273)
+      let planar = layout == .perChannel
+      func sample(_ file: TIFFContainer, _ offsets: [Int], _ pixel: Int, _ channel: Int, _ count: Int) -> Int {
+        Int(file.data[planar ? offsets[channel] + pixel : offsets[0] + pixel * count + channel])
+      }
+      for pixel in 0..<source.width * source.height {
+        let opacity = sample(a, offsetsA, pixel, 3, 5)
+        for color in 0..<3 {
+          XCTAssertEqual(sample(b, offsetsB, pixel, color, 4), sample(a, offsetsA, pixel, color, 5) + 255 - opacity)
+        }
+        XCTAssertEqual(sample(b, offsetsB, pixel, 3, 4), sample(a, offsetsA, pixel, 4, 5))
+      }
+      let reopened = try RasterIO.read(matted)
+      XCTAssertEqual(reopened.layers.map(\.content), source.layers.map(\.content))
+      XCTAssertEqual(reopened.layers.map(\.mask), source.layers.map(\.mask))
+      XCTAssertEqual(reopened.alphaChannels?.first?.pixels, source.alphaChannels?.first?.pixels)
+      XCTAssertEqual(reopened.alphaChannels?.first?.name, source.alphaChannels?.first?.name)
+    }
+  }
+
+  func testFlatTIFFOmitsOpacityAtEachRGBDepth() throws {
+    for depth in PixelDepth.allCases {
+      let surface = try Surface(width: 4, height: 3, depth: depth, fill: .clear)
+      let options = RasterEncodingOptions(tiffCompression: .zip, tiffByteOrder: .bigEndian,
+        tiffPixelOrder: .perChannel, tiffPredictor: depth == .f32, tiffTransparency: false)
+      let bytes = try RasterIO.encoded(surface, type: .tiff, options: options)
+      let file = try TIFFContainer(bytes, metadata: false)
+      XCTAssertEqual(try file.scalar(277), 3)
+      XCTAssertNil(file.root.fields[338])
+      let imported = try TIFFLayerTests().raster(RasterIO.read(bytes).layers[0])
+      XCTAssertEqual(imported.pixel(x: 0, y: 0), .white)
+    }
+  }
+
+  func testTIFFWhiteMatteUsesNativeLightInkAndPaletteSamples() throws {
+    for mode in [DocumentColorMode.grayscale, .cmyk, .lab] {
+      for depth in mode.depths {
+        var raster = try NativeModeRaster(width: 2, height: 1, mode: mode, depth: depth)
+        for channel in 0..<mode.componentCount {
+          try raster.set(0.25, component: channel, index: 0)
+          try raster.set(0.25, component: channel, index: 1)
+        }
+        try raster.set(0, component: mode.componentCount, index: 0)
+        try raster.set(1, component: mode.componentCount, index: 1)
+        var document = try CraftDocument(width: 2, height: 1, depth: depth)
+        document.modeDescriptor = try .init(mode: mode, depth: depth, profile: raster.profile)
+        document.layers[0].content = .raster(try raster.surface())
+        document.layers[0].nativeMode = raster
+        let bytes = try RasterIO.encoded(document, type: .tiff, options: .init(tiffTransparency: false))
+        let result = try XCTUnwrap(RasterIO.read(bytes).layers[0].nativeMode)
+        XCTAssertEqual(result.value(component: mode.componentCount, index: 0), 1)
+        for channel in 0..<mode.componentCount {
+          let white: Float = mode == .cmyk ? 0 : (mode == .lab && channel > 0 ? 128 / 255 : 1)
+          let tolerance: Float = depth == .u8 ? 1.01 / 255 : (depth == .u16 ? 1.01 / 65535 : 0)
+          XCTAssertEqual(result.value(component: channel, index: 0), white, accuracy: tolerance)
+          XCTAssertEqual(result.value(component: channel, index: 1),
+            raster.value(component: channel, index: 1), accuracy: tolerance)
+        }
+      }
+    }
+    let indexed = try IndexedRaster(width: 2, height: 1, palette: [.init(0,0,0), .init(40,80,120)],
+      indices: Data([0,1]), transparentIndex: 0)
+    let source = try CraftDocument(width: 2, height: 1).replacingRestrictedMode(.indexed(indexed))
+    let encoded = try RasterIO.encoded(source, type: .tiff, options: .init(tiffTransparency: false))
+    guard case .indexed(let result) = try RasterIO.read(encoded).restrictedMode else {
+      return XCTFail("Save Transparency changed the indexed color mode.")
+    }
+    XCTAssertEqual(result.indices, indexed.indices)
+    XCTAssertEqual(result.palette, [.init(255,255,255), .init(40,80,120)])
+    XCTAssertNil(result.transparentIndex)
+    XCTAssertEqual(source.restrictedMode, .indexed(indexed))
+  }
+
   func testPhotoshopTIFFSavedSelectionAndMergedTransparencyMetadata() throws {
     let helper = TIFFLayerTests()
     for (name, order, extras) in [

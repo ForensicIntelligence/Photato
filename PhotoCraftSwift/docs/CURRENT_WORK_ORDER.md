@@ -1,3 +1,5 @@
+**Layered TIFF interchange.** Compare the remaining merged RGB8 samples and qualify the export default. [Development record](DEVLOG.md#dev-step-756) · [Qualification](SOURCE_PUBLICATION_756.md).
+
 **Layered TIFF interchange.** Qualify the separate Save Transparency control and reduce the remaining merged RGB8 rounding differences. [Development record](DEVLOG.md#dev-step-755) · [Qualification](SOURCE_PUBLICATION_755.md).
 
 **Vanishing Point.** Capture an independent Photoshop raster for grid paint and qualify the separate Show Edges command. [Development record](DEVLOG.md#dev-step-754) · [Qualification](SOURCE_PUBLICATION_754.md).

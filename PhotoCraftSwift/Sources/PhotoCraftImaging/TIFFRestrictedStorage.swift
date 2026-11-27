@@ -199,7 +199,14 @@ enum TIFFRestrictedStorage {
     }
     try document.validate(); return document
   }
-  static func write(_ document: CraftDocument, options: RasterEncodingOptions) throws -> Data {
+  static func write(_ source: CraftDocument, options: RasterEncodingOptions) throws -> Data {
+    var document = source
+    if options.tiffTransparency == false, case .indexed(let indexed) = document.restrictedMode,
+      let index = indexed.transparentIndex {
+      var palette = indexed.palette
+      palette[index] = PaletteColor(255, 255, 255)
+      document = try source.replacingColorTable(palette, transparentIndex: nil)
+    }
     try document.validate(); try options.validate(for: .tiff)
     guard let raster = document.restrictedMode, options.tiffLayers != true, options.tiffPredictor != true else {
       throw CraftError.unsupported("Indexed/Bitmap TIFF output requires flat samples without the floating-point predictor.")

@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 756.** Control merged TIFF transparency. [Qualification](docs/SOURCE_PUBLICATION_756.md).
+
 **Source checkpoint 755.** Preserve named saved selections in layered 8-bit RGB TIFFs. [Qualification](docs/SOURCE_PUBLICATION_755.md).
 
 **Source checkpoint 754.** Use a calibrated plane scale for the manual grid. [Qualification](docs/SOURCE_PUBLICATION_754.md).

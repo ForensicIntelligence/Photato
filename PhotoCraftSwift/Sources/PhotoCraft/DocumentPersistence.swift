@@ -23,6 +23,7 @@ enum DocumentPersistenceConflict: LocalizedError {
   let tiffPixelOrder = NSPopUpButton(frame: .zero, pullsDown: false)
   let tiffPredictor = NSButton(checkboxWithTitle: "Use Predictor", target: nil, action: nil)
   let tiffLayers = NSButton(checkboxWithTitle: "Layers", target: nil, action: nil)
+  let tiffTransparency = NSButton(checkboxWithTitle: "Save Transparency", target: nil, action: nil)
   let tiffLayerCompression = NSPopUpButton(frame: .zero, pullsDown: false)
   let tiffLayersRow = NSStackView()
   let tiffByteOrderRow = NSStackView(), tiffPixelOrderRow = NSStackView()
@@ -30,6 +31,7 @@ enum DocumentPersistenceConflict: LocalizedError {
   private let mode: DocumentColorMode
   private var predictorExplicit = false
   private var layersExplicit = false
+  private var transparencyExplicit = false
   let pngRow = NSStackView(), tiffRow = NSStackView()
   let psdLayerCompression = NSPopUpButton(frame: .zero, pullsDown: false)
   let psdCompositeCompression = NSPopUpButton(frame: .zero, pullsDown: false)
@@ -60,6 +62,7 @@ enum DocumentPersistenceConflict: LocalizedError {
           RasterEncodingOptions.TIFFPixelOrder.allCases[tiffPixelOrder.indexOfSelectedItem - 1],
         tiffPredictor: predictorExplicit || tiffPredictor.state == .on ? tiffPredictor.state == .on : nil,
         tiffLayers: mode.isRestricted ? false : (layersExplicit || tiffLayers.state == .on ? tiffLayers.state == .on : nil),
+        tiffTransparency: mode == .bitmap || !transparencyExplicit ? nil : tiffTransparency.state == .on,
         tiffLayerCompression: tiffLayers.state != .on || tiffLayerCompression.indexOfSelectedItem <= 0 ? nil :
           RasterEncodingOptions.TIFFLayerCompression.allCases[tiffLayerCompression.indexOfSelectedItem - 1])
     case .psd, .psb: return photoshopEncodingOptions
@@ -123,6 +126,11 @@ enum DocumentPersistenceConflict: LocalizedError {
     tiffLayers.isEnabled = !mode.isRestricted
     tiffLayers.setAccessibilityLabel("TIFF layers")
     tiffLayers.target = self; tiffLayers.action = #selector(changeTIFFLayers)
+    transparencyExplicit = tiffOptions.tiffTransparency != nil
+    tiffTransparency.state = mode != .bitmap && (tiffOptions.tiffTransparency ?? true) ? .on : .off
+    tiffTransparency.isEnabled = mode != .bitmap
+    tiffTransparency.target = self; tiffTransparency.action = #selector(changeTIFFTransparency)
+    tiffTransparency.toolTip = "Keeps transparency in the merged TIFF image. Turn off to use white behind the image. Editable layers retain their transparency."
     tiffLayerCompression.addItems(withTitles: ["Default (ZIP)", "RLE", "ZIP"])
     tiffLayerCompression.setAccessibilityLabel("TIFF layer compression")
     if let selected = tiffOptions.tiffLayerCompression,
@@ -163,6 +171,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     view.addArrangedSubview(pngRow); view.addArrangedSubview(tiffRow)
     view.addArrangedSubview(tiffByteOrderRow); view.addArrangedSubview(tiffPixelOrderRow)
     view.addArrangedSubview(tiffLayersRow)
+    view.addArrangedSubview(tiffTransparency)
     view.addArrangedSubview(psdLayerRow); view.addArrangedSubview(psdCompositeRow)
     view.addArrangedSubview(explanation)
     view.widthAnchor.constraint(equalToConstant: 420).isActive = true
@@ -175,6 +184,7 @@ enum DocumentPersistenceConflict: LocalizedError {
   @objc func changeTIFFLayers() {
     layersExplicit = true; updateTIFFLayers()
   }
+  @objc func changeTIFFTransparency() { transparencyExplicit = true }
   @objc func updateTIFFCompression() {
     tiffPredictor.isHidden = depth != .f32
     tiffPredictor.isEnabled = depth == .f32 && tiffCompression.indexOfSelectedItem >= 2
@@ -196,6 +206,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     exrControls.view.isHidden = format != .exr
     tiffByteOrderRow.isHidden = format != .tiff; tiffPixelOrderRow.isHidden = format != .tiff
     tiffLayersRow.isHidden = format != .tiff
+    tiffTransparency.isHidden = format != .tiff
     psdLayerRow.isHidden = photoshopFormat == nil || mode.isRestricted || mode == .multichannel; psdCompositeRow.isHidden = photoshopFormat == nil
     psdCompositeCompression.autoenablesItems = false
     psdCompositeCompression.item(at: 4)?.isEnabled = mode != .bitmap

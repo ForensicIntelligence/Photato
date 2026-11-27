@@ -1,3 +1,9 @@
+### TIFF Save Transparency (checkpoint 756)
+
+Native Save and authenticated Photato transfers share the TIFF implementation. `tiffTransparency` can be true or false and defaults to the existing transparent export. The Adobe-compatible endpoint uses the published options for its output.
+
+[Qualification](SOURCE_PUBLICATION_756.md).
+
 ### Layered TIFF saved selections (checkpoint 755)
 
 Photato’s native Save and authenticated file routes use the same codec. Ordinary Save preserves editable layers by default. Download or Save a Copy can keep layers with `tiffLayers: true`. The Adobe v2 TIFF schema continues to expose its published flattened output.

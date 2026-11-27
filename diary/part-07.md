@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 542: get the same gradient pixels on Apple Silicon and Intel
-
-Linear and Perceptual gradients now round the nonlinear part of sRGB the same way across the two builds. All 18 Gradient Map buffers that differed in build 541 now match, and the 32 tested Brush buffers are byte-identical to the prior build.
-
-All 370 selected tests passed. The same three RGB8 Gradient Map fixtures still differ from Photoshop by at most one RGB8 level.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-542) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_542.md).
-
 ## 2026-11-17 — Step 541: faster feedback with large brushes
 
 The brush preview and flat compositor now write changed pixels one tile at a time. In the 24 MP hosted workspace, the 1,800 px brush showed its first preview in 489 ms, down from 802 ms. The 5,000 px brush took 2.50 seconds, down from 3.61.
@@ -331,11 +323,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:755 -->
+<!-- current-status-step:756 -->
 
-Layered 8-bit RGB TIFFs can retain named saved selections alongside editable layer masks and the merged image’s transparency. Open and Save preserve the channel name, sampled values, and display polarity.
+TIFF Save Transparency controls the merged preview. Turning it off composites the preview over white and omits the merged opacity sample. Editable layers, layer masks and named saved selections retain their samples. The checkbox starts checked, preserving the previous Photato export behaviour.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-755) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_755.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-756) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_756.md).
 
 <!-- current-status:end -->
 
@@ -1297,5 +1289,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-26 | 753 | [Render a Vanishing Point grid onto a layer](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-753) |
 | 2026-11-26 | 754 | [Calibrate manual Vanishing Point grid spacing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-754) |
 | 2026-11-26 | 755 | [Keep saved selections in layered RGB8 TIFFs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-755) |
+| 2026-11-26 | 756 | [Control merged transparency in TIFF saves](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-756) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

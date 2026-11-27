@@ -774,7 +774,22 @@ For a readable account of the project from the beginning, see [Photato developme
 | 753 | 2026-11-26 | [Render a Vanishing Point grid onto a layer](#dev-step-753) |
 | 754 | 2026-11-26 | [Calibrate manual Vanishing Point grid spacing](#dev-step-754) |
 | 755 | 2026-11-26 | [Keep saved selections in layered RGB8 TIFFs](#dev-step-755) |
+| 756 | 2026-11-26 | [Control merged transparency in TIFF saves](#dev-step-756) |
 <!-- history-index:end -->
+
+<a id="dev-step-756"></a>
+
+## 2026-11-26 — Step 756 — Control merged transparency in TIFF saves
+
+TIFF Save Transparency controls the merged preview. Turning it off composites the preview over white and omits the merged opacity sample. Editable layers, layer masks and named saved selections retain their samples. The checkbox starts checked, preserving the previous Photato export behaviour. Native Save and authenticated Photato transfers share the TIFF implementation. `tiffTransparency` can be true or false and defaults to the existing transparent export. The Adobe-compatible endpoint uses the published options for its output.
+
+All 21 focused Xcode Debug checks and 81 optimized cases per architecture passed. The selected scope covers TIFF, raster encoding options, native save options and API transfers. Each architecture passed the four new regression tests. Intel ran under Rosetta. The expanded baseline inventory remains documented with checkpoint 755.
+
+The independent TIFF parser confirmed the measured white-matte equation across all 9,216 colour samples and an unchanged 3,072-byte selection channel. The matched matted output differs from Photoshop by one sample value in 316 red, 50 green and 104 blue samples. Other colour modes and the Photoshop factory checkbox default still need reference checks.
+
+The signed Universal ZIP targets macOS 14+ and both extracted slices rendered offscreen. The 77,889,139-byte archive has SHA-256 `b2b5f3a0b165213d44560babb0d52a564fa34c1f94d961f81676f64fec57e684`.
+
+[Qualification](SOURCE_PUBLICATION_756.md).
 
 <a id="dev-step-755"></a>
 

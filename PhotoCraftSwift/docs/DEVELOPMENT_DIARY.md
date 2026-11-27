@@ -1,3 +1,13 @@
+## 2026-11-26 — Step 756 — Control merged transparency in TIFF saves
+
+TIFF Save Transparency controls the merged preview. Turning it off composites the preview over white and omits the merged opacity sample. Editable layers, layer masks and named saved selections retain their samples. The checkbox starts checked, preserving the previous Photato export behaviour.
+
+All 21 focused Xcode Debug checks and 81 optimized cases per architecture passed. The selected scope covers TIFF, raster encoding options, native save options and API transfers. Each architecture passed the four new regression tests. Intel ran under Rosetta. The expanded baseline inventory remains documented with checkpoint 755.
+
+The independent TIFF parser confirmed the measured white-matte equation across all 9,216 colour samples and an unchanged 3,072-byte selection channel. The matched matted output differs from Photoshop by one sample value in 316 red, 50 green and 104 blue samples. Other colour modes and the Photoshop factory checkbox default still need reference checks.
+
+[Development record](DEVLOG.md#dev-step-756) · [Qualification](SOURCE_PUBLICATION_756.md).
+
 ## 2026-11-26 — Step 755 — Keep saved selections in layered RGB8 TIFFs
 
 Layered 8-bit RGB TIFFs can retain named saved selections alongside editable layer masks and the merged image’s transparency. Open and Save preserve the channel name, sampled values, and display polarity.
@@ -2171,11 +2181,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:755 -->
+<!-- current-status-step:756 -->
 
-Layered 8-bit RGB TIFFs can retain named saved selections alongside editable layer masks and the merged image’s transparency. Open and Save preserve the channel name, sampled values, and display polarity.
+TIFF Save Transparency controls the merged preview. Turning it off composites the preview over white and omits the merged opacity sample. Editable layers, layer masks and named saved selections retain their samples. The checkbox starts checked, preserving the previous Photato export behaviour.
 
-[Development record](DEVLOG.md#dev-step-755) · [Qualification](SOURCE_PUBLICATION_755.md).
+[Development record](DEVLOG.md#dev-step-756) · [Qualification](SOURCE_PUBLICATION_756.md).
 
 <!-- current-status:end -->
 
@@ -3137,6 +3147,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-26 | 753 | [Render a Vanishing Point grid onto a layer](DEVLOG.md#dev-step-753) |
 | 2026-11-26 | 754 | [Calibrate manual Vanishing Point grid spacing](DEVLOG.md#dev-step-754) |
 | 2026-11-26 | 755 | [Keep saved selections in layered RGB8 TIFFs](DEVLOG.md#dev-step-755) |
+| 2026-11-26 | 756 | [Control merged transparency in TIFF saves](DEVLOG.md#dev-step-756) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

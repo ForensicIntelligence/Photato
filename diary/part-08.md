@@ -1408,4 +1408,12 @@ All 372 selected tests passed in Debug and both optimized builds. The three save
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-543) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_543.md).
 
+## 2026-11-17 — Step 542: get the same gradient pixels on Apple Silicon and Intel
+
+Linear and Perceptual gradients now round the nonlinear part of sRGB the same way across the two builds. All 18 Gradient Map buffers that differed in build 541 now match, and the 32 tested Brush buffers are byte-identical to the prior build.
+
+All 370 selected tests passed. The same three RGB8 Gradient Map fixtures still differ from Photoshop by at most one RGB8 level.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-542) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_542.md).
+
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

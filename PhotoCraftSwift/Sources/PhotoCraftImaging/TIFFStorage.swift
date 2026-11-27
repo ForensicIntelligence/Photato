@@ -221,7 +221,9 @@ enum TIFFStorage {
     }
     let planar = options.tiffPixelOrder == .perChannel
     let compression = options.tiffCompression ?? .none
-    let channelCount = g.channels+savedAlpha.count
+    let matte = options.tiffTransparency == false && g.channels == colorComponents + 1
+    let imageChannels = matte ? colorComponents : g.channels
+    let channelCount = imageChannels + savedAlpha.count
     let components = planar ? 1 : channelCount, bps = g.bits / 8
     let rowBytes = g.width * components * bps
     let rowsPerStrip = compression == .none ? g.height : max(1, min(g.height, 65536 / rowBytes))
@@ -250,20 +252,32 @@ enum TIFFStorage {
           var row: [UInt8] = []; row.reserveCapacity(rowBytes)
           let alphaRows: [[UInt8]]
           if planar {
-            alphaRows = plane < g.channels ? [] : [try PSDAuxiliaryChannels.row(savedAlpha[plane-g.channels],y:y,depth:8)]
+            alphaRows = plane < imageChannels ? [] : [try PSDAuxiliaryChannels.row(savedAlpha[plane-imageChannels],y:y,depth:8)]
           } else {
             alphaRows = try savedAlpha.map { try PSDAuxiliaryChannels.row($0,y:y,depth:8) }
           }
           for x in 0..<g.width {
+            let pixel = sourceRow + x * g.channels * bps
+            let alpha = matte ? file.order.number(file.data, pixel + colorComponents * bps, bps) : 0
             for channel in 0..<components {
               let index = planar ? plane : channel
-              if index >= g.channels {
-                row.append(alphaRows[planar ? 0 : index-g.channels][x])
+              if index >= imageChannels {
+                row.append(alphaRows[planar ? 0 : index-imageChannels][x])
                 continue
               }
-              let at = sourceRow + (x * g.channels + index) * bps
-              for byte in 0..<bps {
-                row.append(file.data[at + (order == file.order ? byte : bps - 1 - byte)])
+              let at = pixel + index * bps
+              if matte {
+                let sample = file.order.number(file.data, at, bps)
+                let white = photometric != 5 && (photometric != 8 || index == 0)
+                let word = whiteMatteSample(sample, alpha: alpha, bits: g.bits,
+                  associated: g.associated, white: white, signedChroma: photometric == 8 && index > 0)
+                for byte in 0..<bps {
+                  row.append(UInt8(truncatingIfNeeded: word >> (8 * (order == .little ? byte : bps - 1 - byte))))
+                }
+              } else {
+                for byte in 0..<bps {
+                  row.append(file.data[at + (order == file.order ? byte : bps - 1 - byte)])
+                }
               }
             }
           }
@@ -291,15 +305,37 @@ enum TIFFStorage {
     file.set(273, offsets, type: 4); file.set(279, counts, type: 4)
     file.set(278, [rowsPerStrip], type: 4)
     file.set(284, [planar ? 2 : 1]); file.set(317, [predictor ? 3 : 1])
-    if !savedAlpha.isEmpty {
+    if matte || !savedAlpha.isEmpty {
       file.set(277,[channelCount])
       file.set(258,Array(repeating:g.bits,count:channelCount))
-      file.set(338,try file.numbers(338,default:[]) + Array(repeating:0,count:savedAlpha.count))
-      if file.root.fields[339] != nil { file.set(339,Array(repeating:1,count:channelCount)) }
+      let extra = (matte ? [] : try file.numbers(338,default:[])) + Array(repeating:0,count:savedAlpha.count)
+      if extra.isEmpty { file.root.fields.removeValue(forKey: 338) }
+      else { file.set(338, extra) }
+      if file.root.fields[339] != nil { file.set(339,Array(repeating:g.bits == 32 ? 3 : 1,count:channelCount)) }
     }
     try file.appendDirectories(to: &output, order: order)
     try Task.checkCancellation()
     return output
+  }
+  private static func whiteMatteSample(_ sample: Int, alpha: Int, bits: Int,
+    associated: Bool, white: Bool, signedChroma: Bool) -> Int {
+    // Associated samples already carry the light from the image. Supply only
+    // the missing white contribution, or neutral zero ink/chroma.
+    if bits == 32 {
+      let a = Float(bitPattern: UInt32(alpha))
+      let value = Float(bitPattern: UInt32(sample))
+      let paint = associated ? value : value * a
+      return Int((paint + (white ? 1 - a : 0)).bitPattern)
+    }
+    let maximum = (1 << bits) - 1
+    if signedChroma {
+      if associated { return sample }
+      let value = bits == 8 ? Int(Int8(bitPattern: UInt8(sample))) : Int(Int16(bitPattern: UInt16(sample)))
+      let magnitude = (abs(value) * alpha + maximum / 2) / maximum
+      return value < 0 ? -magnitude : magnitude
+    }
+    let paint = associated ? sample : (sample * alpha + maximum / 2) / maximum
+    return min(maximum, paint + (white ? maximum - alpha : 0))
   }
   /// TIFF floating prediction puts each row's most-significant bytes first,
   /// then differences by samples-per-pixel across the entire shuffled row.
