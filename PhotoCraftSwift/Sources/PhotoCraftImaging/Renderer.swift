@@ -110,23 +110,24 @@ public enum Renderer {
     return blend.composite(backdrop: backdrop, source: source, opacity: opacity, x: x, y: y)
   }
 
-  /// The measured integer kernel applies to ordinary, aligned RGB8 raster stacks.
-  static func usesRGB8NormalRasterComposite(_ document: CraftDocument) -> Bool {
-    document.depth == .u8 && document.colorMode == .rgb && document.restrictedMode == nil
+  /// These aligned raster stacks use the measured integer Normal kernel.
+  static func usesIntegerNormalRasterComposite(_ document: CraftDocument) -> Bool {
+    document.depth != .f32 && document.colorMode == .rgb && document.restrictedMode == nil
       && document.inkMode == nil && document.videoTimeline == nil && document.layers.allSatisfy { layer in
         guard !layer.isGroup, layer.parentID == nil, !layer.isClipped else { return false }
         guard layer.visible, layer.opacity > 0 else { return true }
         guard case .raster(let source) = layer.content else { return false }
-        return source.depth == .u8 && layer.blendMode == .normal && layer.affine == nil
+        return source.depth == document.depth && layer.blendMode == .normal && layer.affine == nil
           && layer.style == nil && layer.shape == nil && layer.smartObject == nil
           && layer.warp == nil && layer.smartFilters == nil && layer.sourceProjection == nil
           && layer.vectorMask == nil && layer.effectiveMaskProperties == MaskProperties()
+          && (document.depth == .u8 || layer.mask == nil)
       }
   }
 
-  static func compositeRGB8NormalRaster(backdrop: Pixel, source: Pixel, opacity: Float) -> Pixel {
-    if source.a == 1 && opacity == 1 { return source }
-    return NormalLayerComposite.composite(backdrop: backdrop, source: source, opacity: opacity, depth: .u8)
+  static func compositeIntegerNormalRaster(backdrop: Pixel, source: Pixel, opacity: Float, depth: PixelDepth) -> Pixel {
+    if depth == .u8, source.a == 1, opacity == 1 { return source }
+    return NormalLayerComposite.composite(backdrop: backdrop, source: source, opacity: opacity, depth: depth)
   }
 
   private static func compositeRGB8NormalShape(backdrop b: Pixel, source s: Pixel, opacity: Int) -> Pixel {
@@ -334,7 +335,7 @@ public enum Renderer {
   {
     let region = (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height))
       .clipped(toWidth: d.width, height: d.height)
-    let integerNormalRaster = usesRGB8NormalRasterComposite(d)
+    let integerNormalRaster = usesIntegerNormalRasterComposite(d)
     var output = backdrop
     for layer in layers where layer.visible && (layer.opacity > 0 || {if case .adjustment(.source)=layer.content{return true};return false}()) {
       try Task.checkCancellation()
@@ -559,7 +560,7 @@ public enum Renderer {
         p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
         guard p.a > 0 else { return nil }
         if integerNormalRaster {
-          return compositeRGB8NormalRaster(backdrop: backdrop, source: p, opacity: layer.opacity)
+          return compositeIntegerNormalRaster(backdrop: backdrop, source: p, opacity: layer.opacity, depth: d.depth)
         }
         if let shapeOpacity {
           return compositeRGB8NormalShape(backdrop: backdrop, source: p, opacity: shapeOpacity)

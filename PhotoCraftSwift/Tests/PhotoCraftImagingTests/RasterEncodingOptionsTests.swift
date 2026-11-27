@@ -49,6 +49,88 @@ final class RasterEncodingOptionsTests: XCTestCase {
       XCTAssertEqual(try RasterIO.encoded(model, options: .init()), baseline)
     }
   }
+  func testPhotoshopPNGPreservesStraightRGBAndHiddenColor() throws {
+    let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+      .appendingPathComponent("Fixtures/png-straight-alpha")
+    for fixture in ["rgb8", "rgb16", "offset"] {
+      let source = try RasterIO.read(root.appendingPathComponent("\(fixture).psd"))
+      let expected = try Data(contentsOf: root.appendingPathComponent("\(fixture).rgba"))
+      for interlaced in [false, true] {
+        let png = try RasterIO.encoded(source, type: .png,
+          options: .init(pngCompression: 9, pngInterlaced: interlaced))
+        XCTAssertEqual(try straightRGBASamples(png), expected, "\(fixture), Adam7 \(interlaced)")
+      }
+    }
+  }
+
+  func testDirectPNGEncodingKeepsStraightSurfaceSamplesAtZeroAndLowOpacity() throws {
+    for depth in [PixelDepth.u8, .u16] {
+      let maximum = depth == .u8 ? Float(255) : Float(65535)
+      var surface = try Surface(width: 4, height: 1, depth: depth)
+      for (index, alpha) in [0, 1, 2, 7].enumerated() {
+        surface.setPixel(x: index, y: 0, Pixel(206 / 255, 173 / 255, 204 / 255, Float(alpha) / maximum))
+      }
+      let direct = try surface.rgbaData(depth: depth)
+      var expected = direct
+      if depth == .u16 {
+        for offset in stride(from: 0, to: direct.count, by: 2) {
+          expected[offset] = direct[offset + 1]
+          expected[offset + 1] = direct[offset]
+        }
+      }
+      XCTAssertEqual(try straightRGBASamples(RasterIO.encoded(surface)), expected)
+    }
+  }
+
+  private func straightRGBASamples(_ png: Data) throws -> Data {
+    let blocks = try PNGRestrictedStorage.chunks(png)
+    let header = try XCTUnwrap(blocks.first).data
+    let width = PNGRestrictedStorage.integer(header, 0)
+    let height = PNGRestrictedStorage.integer(header, 4)
+    XCTAssertEqual(header[9], 6)
+    XCTAssertTrue([8, 16].contains(header[8]))
+    let pixelBytes = Int(header[8]) / 2
+    let passes = PNGRestrictedStorage.passes(header[12] == 1)
+      .filter { width > $0.0 && height > $0.1 }
+    let size = passes.reduce(0) { total, pass in
+      let (x, y, dx, dy) = pass
+      return total + (((width - x + dx - 1) / dx) * pixelBytes + 1) * ((height - y + dy - 1) / dy)
+    }
+    let packed = blocks.filter { $0.type == "IDAT" }.reduce(into: Data()) { $0.append($1.data) }
+    let data = try RestrictedRasterCompression.inflate(packed, limit: size, expected: size)
+    var result = Data(count: width * height * pixelBytes)
+    var offset = 0
+    for (x, y, dx, dy) in passes {
+      let columns = (width - x + dx - 1) / dx
+      let rowBytes = columns * pixelBytes
+      var previous = [UInt8](repeating: 0, count: rowBytes)
+      for row in stride(from: y, to: height, by: dy) {
+        let filter = data[offset]
+        XCTAssertLessThanOrEqual(filter, 4)
+        var restored = Array(data[offset + 1..<offset + 1 + rowBytes])
+        offset += rowBytes + 1
+        for index in restored.indices {
+          let left = index < pixelBytes ? 0 : restored[index - pixelBytes]
+          let upperLeft = index < pixelBytes ? 0 : previous[index - pixelBytes]
+          switch filter {
+          case 1: restored[index] &+= left
+          case 2: restored[index] &+= previous[index]
+          case 3: restored[index] &+= UInt8((Int(left) + Int(previous[index])) / 2)
+          case 4: restored[index] &+= PNGRestrictedStorage.paeth(left, previous[index], upperLeft)
+          default: break
+          }
+        }
+        for column in 0..<columns {
+          let destination = (row * width + x + column * dx) * pixelBytes
+          let sample = column * pixelBytes
+          result.replaceSubrange(destination..<destination + pixelBytes, with: restored[sample..<sample + pixelBytes])
+        }
+        previous = restored
+      }
+    }
+    return result
+  }
+
   func testTIFFCompressionTagsDepthAndSamplesMatchUnmodifiedEncoder() throws {
     for depth in [PixelDepth.u8, .u16] {
       let model = try fixture(depth), baseline = try RasterIO.encoded(model, type: .tiff)

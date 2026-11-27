@@ -8,7 +8,7 @@ final class TIFFLayerOutputTests: XCTestCase {
     let fixtures = TIFFLayerTests()
     let transparentReference = try fixtures.fixture("photoshop-transparent-be-fixture.tiff")
     let source = try RasterIO.read(transparentReference)
-    XCTAssertTrue(Renderer.usesRGB8NormalRasterComposite(source))
+    XCTAssertTrue(Renderer.usesIntegerNormalRasterComposite(source))
 
     func samplePlanes(_ bytes: Data) throws -> [[UInt8]] {
       let file = try TIFFContainer(bytes, metadata: false)

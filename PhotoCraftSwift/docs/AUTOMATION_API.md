@@ -1,3 +1,9 @@
+### PNG export samples (checkpoint 758)
+
+Native Save, authenticated Photato downloads and the Adobe-compatible action-job output share the same PNG encoder. Compression, interlacing, save policy and API schemas continue to apply.
+
+[Qualification](SOURCE_PUBLICATION_758.md).
+
 ### RGB8 rendering (checkpoint 757)
 
 The desktop renderer and the existing authenticated render and file routes share the same RGB8 arithmetic. The established API options and file schemas continue to apply.

@@ -1,0 +1,32 @@
+{
+  "rgb8": {
+    "dimensions": [
+      32,
+      8
+    ],
+    "bitDepth": 8,
+    "sourceSHA256": "8cabf851e457a2e2cc13d1ac08ba8b90eef5ee6598f573b15702c0d32b1877f7",
+    "referencePngSHA256": "af0461ca082f11725332b540ed607ca6477bba57de73d4bb1830c0a5e0914cdc",
+    "decodedRgbaSHA256": "52edb159a37aeeabdaa742ac064041691192609a1977515729ce58a6c384f0b5"
+  },
+  "rgb16": {
+    "dimensions": [
+      32,
+      8
+    ],
+    "bitDepth": 16,
+    "sourceSHA256": "77ab8d9af7b3c5b54b96f16dcfc76b756e4e0185b50f3d54dd07168f1bebd97a",
+    "referencePngSHA256": "b8e33dc99ddf488218d8a50873a5c5c4af3406e4262a25ab6cdf6719a80202e9",
+    "decodedRgbaSHA256": "434c50c43d63541899e72f874d7cbe3034ca1a13661601a7958e66e326788564"
+  },
+  "offset": {
+    "dimensions": [
+      16,
+      12
+    ],
+    "bitDepth": 8,
+    "sourceSHA256": "fa5cd77c57a849c7c35728591aa66be7f7be1f44fe5b6e1944e12449914611f6",
+    "referencePngSHA256": "3aefee373f727500e6825a0b4e26021208ec325121f5e48e1c5a912edbae8a43",
+    "decodedRgbaSHA256": "c296382e6e424df4a53ec2c479233f98b00b586b4479aef36d74203caabcc84c"
+  }
+}

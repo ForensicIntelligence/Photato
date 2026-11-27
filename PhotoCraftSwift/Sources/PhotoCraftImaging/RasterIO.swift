@@ -268,34 +268,49 @@ public enum RasterIO {
       bits = 32
       profileName = ColorManagement.name(target)
     } else {
-      let original =
-        try workingDocument.map { try ColorManagement.image(surface, in: $0) } ?? cgImage(surface)
       // Integer exports retain the working profile. HDR-to-integer uses explicit SDR sRGB conversion.
       exportSpace =
         try workingDocument.flatMap { $0.depth == .f32 ? nil : $0 }
         .map { try ColorManagement.space(for: $0) } ?? colorSpace()
       bits = type == .jpeg || (outputDepth ?? surface.depth) == .u8 ? 8 : 16
-      let alpha = type == .jpeg ? CGImageAlphaInfo.noneSkipLast : .premultipliedLast
-      let info = alpha.rawValue | (bits == 16 ? CGBitmapInfo.byteOrder16Little.rawValue : 0)
-      guard
-        let context = CGContext(
-          data: nil, width: surface.width, height: surface.height, bitsPerComponent: bits,
-          bytesPerRow: 0, space: exportSpace, bitmapInfo: info)
-      else { throw CraftError.invalid("Could not allocate an export image.") }
-      if type == .jpeg {
-        if let matte = options.jpegMatte,
-          let color = CGColor(colorSpace: try colorSpace(), components: matte.map { CGFloat($0) } + [CGFloat(1)]) {
-          context.setFillColor(color)
-        } else {
-          context.setFillColor(CGColor(gray: 1, alpha: 1))
+      if type == .png, (workingDocument?.depth ?? surface.depth) != .f32 {
+        // PNG stores straight RGB. An integer premultiplied drawing surface
+        // discards hidden color and rounds each partially transparent sample.
+        let samples = try surface.rgbaData(depth: bits == 8 ? .u8 : .u16)
+        var bitmap = CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue)
+        if bits == 16 { bitmap.insert(.byteOrder16Little) }
+        guard let provider = CGDataProvider(data: samples as CFData),
+          let straight = CGImage(width: surface.width, height: surface.height, bitsPerComponent: bits,
+            bitsPerPixel: bits * 4, bytesPerRow: surface.width * bits / 2, space: exportSpace,
+            bitmapInfo: bitmap, provider: provider, decode: nil, shouldInterpolate: false,
+            intent: .relativeColorimetric)
+        else { throw CraftError.invalid("Could not allocate a straight-alpha PNG image.") }
+        image = straight
+      } else {
+        let original =
+          try workingDocument.map { try ColorManagement.image(surface, in: $0) } ?? cgImage(surface)
+        let alpha = type == .jpeg ? CGImageAlphaInfo.noneSkipLast : .premultipliedLast
+        let info = alpha.rawValue | (bits == 16 ? CGBitmapInfo.byteOrder16Little.rawValue : 0)
+        guard
+          let context = CGContext(
+            data: nil, width: surface.width, height: surface.height, bitsPerComponent: bits,
+            bytesPerRow: 0, space: exportSpace, bitmapInfo: info)
+        else { throw CraftError.invalid("Could not allocate an export image.") }
+        if type == .jpeg {
+          if let matte = options.jpegMatte,
+            let color = CGColor(colorSpace: try colorSpace(), components: matte.map { CGFloat($0) } + [CGFloat(1)]) {
+            context.setFillColor(color)
+          } else {
+            context.setFillColor(CGColor(gray: 1, alpha: 1))
+          }
+          context.fill(CGRect(x: 0, y: 0, width: surface.width, height: surface.height))
         }
-        context.fill(CGRect(x: 0, y: 0, width: surface.width, height: surface.height))
+        context.draw(original, in: CGRect(x: 0, y: 0, width: surface.width, height: surface.height))
+        guard let rendered = context.makeImage() else {
+          throw CraftError.invalid("Export image creation failed.")
+        }
+        image = rendered
       }
-      context.draw(original, in: CGRect(x: 0, y: 0, width: surface.width, height: surface.height))
-      guard let rendered = context.makeImage() else {
-        throw CraftError.invalid("Export image creation failed.")
-      }
-      image = rendered
       profileName = workingDocument.map { $0.depth == .f32 ? "sRGB" : ColorManagement.name($0) }
     }
     let isSRGB = exportSpace == (try colorSpace())
@@ -359,6 +374,37 @@ public enum RasterIO {
       && (document.alphaChannels ?? []).allSatisfy { $0.spot == nil }
   }
 
+  private static func pngComposite(_ document: CraftDocument) throws -> Surface {
+    let rendered = try Renderer.composite(document)
+    let visible = document.layers.filter { $0.visible && $0.opacity > 0 }
+    guard rendered.width <= Surface.maximumDensePixels / rendered.height,
+      Renderer.usesIntegerNormalRasterComposite(document),
+      visible.allSatisfy({ $0.mask == nil }), let bottom = visible.first,
+      case .raster(let samples) = bottom.content, try !rendered.isOpaque()
+    else { return rendered }
+
+    // Photoshop retains the bottom layer's hidden RGB within the visible
+    // composite bounds, with transparent white where that layer does not reach.
+    let white = Pixel(1, 1, 1, 0)
+    guard let bounds = try rendered.contentBounds() else {
+      return try Surface(width: rendered.width, height: rendered.height, depth: rendered.depth, fill: white)
+    }
+    let canvas = IntRect(x: 0, y: 0, width: rendered.width, height: rendered.height)
+    return try rendered.compositingPixels(in: canvas) { x, y, pixel in
+      guard pixel.a == 0 else { return nil }
+      let localX = x - bottom.x, localY = y - bottom.y
+      guard x >= bounds.x, x < bounds.x + bounds.width, y >= bounds.y, y < bounds.y + bounds.height,
+        localX >= 0, localX < samples.width, localY >= 0, localY < samples.height
+      else { return white }
+      var hidden = samples.pixel(x: localX, y: localY)
+      hidden.a = 0
+      if document.depth == .u16 {
+        return NormalLayerComposite.composite(backdrop: hidden, source: .clear, opacity: 0, depth: .u16)
+      }
+      return hidden
+    }
+  }
+
   /// Composition uses a float working surface; exports retain the document depth
   /// rather than accidentally promoting every RGB8 document to 16-bit output.
   public static func encoded(_ document: CraftDocument, type: UTType = .png,
@@ -396,7 +442,7 @@ public enum RasterIO {
         : composite
     }
     let composite = try encoded(
-      Renderer.composite(document), type: type,
+      type == .png ? pngComposite(document) : Renderer.composite(document), type: type,
       resolution: document.pixelsPerInch, outputDepth: document.depth,
       sourceMetadata: document.sourceMetadata, workingDocument: document, options: compositeOptions)
     return options.tiffLayers == true

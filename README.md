@@ -23,7 +23,7 @@ Every published source commit includes its matching Universal app. We run the sa
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 757.** Match the captured Normal RGB8 raster and TIFF output samples. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_757.md).
+**Development alpha — source build 758.** Preserve straight RGBA samples in PNG exports. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_758.md).
 
 ## Project layout
 
