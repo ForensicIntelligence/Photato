@@ -1,3 +1,5 @@
+**Rendered file parity.** Check straight-alpha PNG exports with owned Photoshop controls at 8 and 16 bits. [Development record](DEVLOG.md#dev-step-757) · [Qualification](SOURCE_PUBLICATION_757.md).
+
 **Layered TIFF interchange.** Compare the remaining merged RGB8 samples and qualify the export default. [Development record](DEVLOG.md#dev-step-756) · [Qualification](SOURCE_PUBLICATION_756.md).
 
 **Layered TIFF interchange.** Qualify the separate Save Transparency control and reduce the remaining merged RGB8 rounding differences. [Development record](DEVLOG.md#dev-step-755) · [Qualification](SOURCE_PUBLICATION_755.md).

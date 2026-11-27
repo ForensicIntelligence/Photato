@@ -1,3 +1,13 @@
+## 2026-11-26 — Step 757 — Match Normal RGB8 raster composition
+
+Normal blends between supported aligned 8-bit RGB raster layers use the measured integer compositing formula. The dense, paged and sparse render paths share the arithmetic. Default pixel masks remain editable.
+
+All 22 focused Xcode Debug checks passed, including native Save and authenticated transfers. All 131 selected optimized tests passed on each architecture. The suite covers TIFF, raster encoding, Normal layer blends, layer-layout and group rendering, and file transfer options. Intel ran under Rosetta.
+
+The two owned Photoshop TIFF captures and the committed output regression match all 27,648 sampled colour, opacity, and saved-selection bytes with Save Transparency enabled and disabled. The independent TIFF strip reader compared the Adobe-authored files against outputs from the original PSD. Whole TIFF files retain different container bytes. An independent 131,072-pixel Normal merge comparison also matched all visible samples and opacity. Hidden RGB at zero opacity remains different in two merge-fixture variants.
+
+[Development record](DEVLOG.md#dev-step-757) · [Qualification](SOURCE_PUBLICATION_757.md).
+
 ## 2026-11-26 — Step 756 — Control merged transparency in TIFF saves
 
 TIFF Save Transparency controls the merged preview. Turning it off composites the preview over white and omits the merged opacity sample. Editable layers, layer masks and named saved selections retain their samples. The checkbox starts checked, preserving the previous Photato export behaviour.
@@ -2181,11 +2191,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:756 -->
+<!-- current-status-step:757 -->
 
-TIFF Save Transparency controls the merged preview. Turning it off composites the preview over white and omits the merged opacity sample. Editable layers, layer masks and named saved selections retain their samples. The checkbox starts checked, preserving the previous Photato export behaviour.
+Normal blends between supported aligned 8-bit RGB raster layers use the measured integer compositing formula. The dense, paged and sparse render paths share the arithmetic. Default pixel masks remain editable.
 
-[Development record](DEVLOG.md#dev-step-756) · [Qualification](SOURCE_PUBLICATION_756.md).
+[Development record](DEVLOG.md#dev-step-757) · [Qualification](SOURCE_PUBLICATION_757.md).
 
 <!-- current-status:end -->
 
@@ -3148,6 +3158,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-26 | 754 | [Calibrate manual Vanishing Point grid spacing](DEVLOG.md#dev-step-754) |
 | 2026-11-26 | 755 | [Keep saved selections in layered RGB8 TIFFs](DEVLOG.md#dev-step-755) |
 | 2026-11-26 | 756 | [Control merged transparency in TIFF saves](DEVLOG.md#dev-step-756) |
+| 2026-11-26 | 757 | [Match Normal RGB8 raster composition](DEVLOG.md#dev-step-757) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

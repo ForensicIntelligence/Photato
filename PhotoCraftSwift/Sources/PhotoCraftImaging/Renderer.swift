@@ -110,6 +110,25 @@ public enum Renderer {
     return blend.composite(backdrop: backdrop, source: source, opacity: opacity, x: x, y: y)
   }
 
+  /// The measured integer kernel applies to ordinary, aligned RGB8 raster stacks.
+  static func usesRGB8NormalRasterComposite(_ document: CraftDocument) -> Bool {
+    document.depth == .u8 && document.colorMode == .rgb && document.restrictedMode == nil
+      && document.inkMode == nil && document.videoTimeline == nil && document.layers.allSatisfy { layer in
+        guard !layer.isGroup, layer.parentID == nil, !layer.isClipped else { return false }
+        guard layer.visible, layer.opacity > 0 else { return true }
+        guard case .raster(let source) = layer.content else { return false }
+        return source.depth == .u8 && layer.blendMode == .normal && layer.affine == nil
+          && layer.style == nil && layer.shape == nil && layer.smartObject == nil
+          && layer.warp == nil && layer.smartFilters == nil && layer.sourceProjection == nil
+          && layer.vectorMask == nil && layer.effectiveMaskProperties == MaskProperties()
+      }
+  }
+
+  static func compositeRGB8NormalRaster(backdrop: Pixel, source: Pixel, opacity: Float) -> Pixel {
+    if source.a == 1 && opacity == 1 { return source }
+    return NormalLayerComposite.composite(backdrop: backdrop, source: source, opacity: opacity, depth: .u8)
+  }
+
   private static func compositeRGB8NormalShape(backdrop b: Pixel, source s: Pixel, opacity: Int) -> Pixel {
     func byte(_ value: Float) -> Int { Int((unit(value) * 255).rounded()) }
     let sourceAlpha = (byte(s.a) * opacity + 127) / 255
@@ -315,6 +334,7 @@ public enum Renderer {
   {
     let region = (region ?? IntRect(x: 0, y: 0, width: d.width, height: d.height))
       .clipped(toWidth: d.width, height: d.height)
+    let integerNormalRaster = usesRGB8NormalRasterComposite(d)
     var output = backdrop
     for layer in layers where layer.visible && (layer.opacity > 0 || {if case .adjustment(.source)=layer.content{return true};return false}()) {
       try Task.checkCancellation()
@@ -329,7 +349,8 @@ public enum Renderer {
           cache: GroupRenderCache(inputTarget: inputTarget, region: region, facts: facts))
         continue
       }
-      output = try compositeFlatContent(layer, in: d, over: consume output, region: region, facts: facts)
+      output = try compositeFlatContent(layer, in: d, over: consume output, region: region,
+        facts: facts, integerNormalRaster: integerNormalRaster)
     }
     return output
   }
@@ -339,7 +360,7 @@ public enum Renderer {
   @inline(never)
   private static func compositeFlatContent(
     _ layer: Layer, in d: CraftDocument, over backdrop: consuming Surface,
-    region: IntRect, facts: CompositionFacts?
+    region: IntRect, facts: CompositionFacts?, integerNormalRaster: Bool
   ) throws -> Surface {
     let mask: LayerMaskSampler? = if layer.mask == nil && layer.vectorMask == nil {
       nil
@@ -348,7 +369,7 @@ public enum Renderer {
         ?? LayerMaskSampler.make(layer: layer, document: d, pixelRegion: region)
     }
     return try compositeFlatPixels(layer, in: d, over: consume backdrop, region: region, mask: mask,
-      patternPreparation: facts?.patternPreparation)
+      patternPreparation: facts?.patternPreparation, integerNormalRaster: integerNormalRaster)
   }
 
   // Mask preparation can itself allocate sizeable render state. Keep its
@@ -356,7 +377,8 @@ public enum Renderer {
   @inline(never)
   private static func compositeFlatPixels(
     _ layer: Layer, in d: CraftDocument, over backdrop: consuming Surface,
-    region: IntRect, mask: LayerMaskSampler?, patternPreparation: PatternFillSampler.PreparationCache?
+    region: IntRect, mask: LayerMaskSampler?, patternPreparation: PatternFillSampler.PreparationCache?,
+    integerNormalRaster: Bool
   ) throws -> Surface {
     var output = backdrop
     if case .adjustment(.source(let settings))=layer.content {
@@ -536,6 +558,9 @@ public enum Renderer {
         var p = surface.pixel(x: x - ox, y: y - oy)
         p.a *= mask?.coverage(x: Double(x) + 0.5, y: Double(y) + 0.5) ?? 1
         guard p.a > 0 else { return nil }
+        if integerNormalRaster {
+          return compositeRGB8NormalRaster(backdrop: backdrop, source: p, opacity: layer.opacity)
+        }
         if let shapeOpacity {
           return compositeRGB8NormalShape(backdrop: backdrop, source: p, opacity: shapeOpacity)
         }

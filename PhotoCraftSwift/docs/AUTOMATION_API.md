@@ -1,3 +1,9 @@
+### RGB8 rendering (checkpoint 757)
+
+The desktop renderer and the existing authenticated render and file routes share the same RGB8 arithmetic. The established API options and file schemas continue to apply.
+
+[Qualification](SOURCE_PUBLICATION_757.md).
+
 ### TIFF Save Transparency (checkpoint 756)
 
 Native Save and authenticated Photato transfers share the TIFF implementation. `tiffTransparency` can be true or false and defaults to the existing transparent export. The Adobe-compatible endpoint uses the published options for its output.

@@ -4,6 +4,56 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class TIFFLayerOutputTests: XCTestCase {
+  func testPhotoshopTIFFNormalCompositeMatchesMergedSamples() throws {
+    let fixtures = TIFFLayerTests()
+    let transparentReference = try fixtures.fixture("photoshop-transparent-be-fixture.tiff")
+    let source = try RasterIO.read(transparentReference)
+    XCTAssertTrue(Renderer.usesRGB8NormalRasterComposite(source))
+
+    func samplePlanes(_ bytes: Data) throws -> [[UInt8]] {
+      let file = try TIFFContainer(bytes, metadata: false)
+      let layout = try XCTUnwrap(TIFFStorage.Geometry(file, allowAssociatedAlpha: true, allowSavedAlpha: true))
+      XCTAssertEqual(layout.compression, 1)
+      XCTAssertEqual(layout.bits, 8)
+      let strips = zip(layout.offsets, layout.counts).map { offset, count in
+        Array(file.data[offset..<offset + count])
+      }
+      if layout.planar {
+        let stripsPerPlane = strips.count / layout.channels
+        return (0..<layout.channels).map { channel in
+          let start = channel * stripsPerPlane
+          return strips[start..<start + stripsPerPlane].flatMap { $0 }
+        }
+      }
+      let samples = strips.flatMap { $0 }
+      return (0..<layout.channels).map { channel in
+        stride(from: channel, to: samples.count, by: layout.channels).map { samples[$0] }
+      }
+    }
+
+    let dense = try Renderer.composite(source).rgbaData(depth: .u8)
+    XCTAssertEqual(try Renderer.compositePaged(source).rgbaData(depth: .u8), dense)
+    let sparse = try XCTUnwrap(SparseCanvasRenderer.composite(source))
+    XCTAssertEqual(try sparse.rgbaData(depth: .u8), dense)
+
+    for (keepTransparency, order, layout, reference) in [
+      (true, RasterEncodingOptions.TIFFByteOrder.bigEndian, RasterEncodingOptions.TIFFPixelOrder.interleaved, transparentReference),
+      (false, .littleEndian, .perChannel, try fixtures.fixture("photoshop-selection-le-fixture.tiff")),
+    ] {
+      let options = RasterEncodingOptions(tiffCompression: RasterEncodingOptions.TIFFCompression.none,
+        tiffByteOrder: order, tiffPixelOrder: layout, tiffLayers: true, tiffTransparency: keepTransparency)
+      let actual = try samplePlanes(RasterIO.encoded(source, type: .tiff, options: options))
+      let expected = try samplePlanes(reference)
+      XCTAssertEqual(actual.count, expected.count)
+      for (channel, samples) in zip(actual, expected).enumerated() {
+        XCTAssertEqual(samples.0.count, source.width * source.height)
+        XCTAssertEqual(samples.1.count, samples.0.count)
+        let differences = zip(samples.0, samples.1).filter { $0 != $1 }.count
+        XCTAssertEqual(differences, 0, "Channel \(channel), Save Transparency \(keepTransparency)")
+      }
+    }
+  }
+
   func testTIFFSaveTransparencyMattesOnlyMergedImage() throws {
     let source = try RasterIO.read(TIFFLayerTests().fixture("photoshop-transparent-be-fixture.tiff"))
     for layout in RasterEncodingOptions.TIFFPixelOrder.allCases {

@@ -323,11 +323,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:756 -->
+<!-- current-status-step:757 -->
 
-TIFF Save Transparency controls the merged preview. Turning it off composites the preview over white and omits the merged opacity sample. Editable layers, layer masks and named saved selections retain their samples. The checkbox starts checked, preserving the previous Photato export behaviour.
+Normal blends between supported aligned 8-bit RGB raster layers use the measured integer compositing formula. The dense, paged and sparse render paths share the arithmetic. Default pixel masks remain editable.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-756) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_756.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-757) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_757.md).
 
 <!-- current-status:end -->
 
@@ -1290,5 +1290,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-26 | 754 | [Calibrate manual Vanishing Point grid spacing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-754) |
 | 2026-11-26 | 755 | [Keep saved selections in layered RGB8 TIFFs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-755) |
 | 2026-11-26 | 756 | [Control merged transparency in TIFF saves](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-756) |
+| 2026-11-26 | 757 | [Match Normal RGB8 raster composition](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-757) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

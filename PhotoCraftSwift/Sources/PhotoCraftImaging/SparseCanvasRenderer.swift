@@ -56,6 +56,7 @@ enum SparseCanvasRenderer {
     let linearNormal = d.depth == .f32 && layers.allSatisfy {
       if case .raster = $0.content { return $0.blendMode == .normal }; return false
     }
+    let integerNormalRaster = Renderer.usesRGB8NormalRasterComposite(d)
     let opaque: Bool
     if linearNormal, let first = layers.first, first.opacity == 1, let s=sources.first {
       opaque = try s.allStoredSamplesSatisfy { $0.a == 1 }
@@ -96,6 +97,9 @@ enum SparseCanvasRenderer {
       } else {
         output = try output.combiningStoredSamples(with: source) { backdrop, pixel in
           guard pixel.a > 0 else { return backdrop }
+          if integerNormalRaster {
+            return Renderer.compositeRGB8NormalRaster(backdrop: backdrop, source: pixel, opacity: layer.opacity)
+          }
           let mixed = d.depth == .f32
             ? Renderer.compositeLinearPixel(layer.blendMode, backdrop: backdrop, source: pixel, opacity: layer.opacity, x: 0, y: 0)
             : Renderer.compositePixel(layer.blendMode, backdrop: backdrop, source: pixel, opacity: layer.opacity, depth: d.depth, x: 0, y: 0)
