@@ -186,6 +186,12 @@ public enum RasterIO {
     return try TIFFLayers.read(data, composite: d) ?? d
   }
 
+  /// The action-resource path uses this when the general unpaged PNG limit
+  /// would reject an indexed source that can be expanded a tile at a time.
+  package static func readPagedPalettePNG(_ data: Data, name: String) throws -> CraftDocument? {
+    try PNGRestrictedStorage.read(data, name: name, requirePagedRGB: true)
+  }
+
   /// ImageIO exposes straight integer PNG samples. Reading them directly keeps
   /// RGB under zero alpha, which drawing into a premultiplied context discards.
   private static func straightPNGSurface(_ image: CGImage, depth: PixelDepth, space: CGColorSpace) throws -> Surface? {

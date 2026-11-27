@@ -125,6 +125,50 @@ final class RestrictedFormatTests: XCTestCase {
       }
     }
   }
+  func testLargeComplexPalettePNGOpensAsSparseEditableRGB() throws {
+    let metadata = try XCTUnwrap(Bundle.module.url(forResource: "provenance", withExtension: "json",
+      subdirectory: "Fixtures/png-paged-palette"))
+    let manifest = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: metadata)) as? [String: Any])
+    let cases = try XCTUnwrap(manifest["cases"] as? [[String: Any]])
+    let palette = [Pixel(29 / 255, 180 / 255, 245 / 255, 0), Pixel(29 / 255, 180 / 255, 245 / 255, 1 / 255),
+      Pixel(240 / 255, 157 / 255, 23 / 255, 127 / 255), Pixel(175 / 255, 34 / 255, 209 / 255, 1)]
+    for fixture in cases {
+      let name = try XCTUnwrap(fixture["file"] as? String)
+      let data = try Data(contentsOf: metadata.deletingLastPathComponent().appendingPathComponent(name))
+      let bytes = SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+      XCTAssertEqual(bytes, fixture["pngSHA256"] as? String)
+      let document = try RasterIO.read(data, name: name)
+      XCTAssertEqual(document.colorMode, .rgb)
+      XCTAssertEqual(document.depth, .u8)
+      XCTAssertEqual(document.width, fixture["width"] as? Int)
+      XCTAssertEqual(document.height, fixture["height"] as? Int)
+      XCTAssertEqual(document.pixelsPerInch, 300, accuracy: 0.013)
+      XCTAssertNil(document.restrictedMode)
+      guard case .raster(let surface) = try XCTUnwrap(document.layers.first).content else { return XCTFail() }
+      XCTAssertGreaterThan(surface.mappedTileCount, 0)
+      XCTAssertLessThanOrEqual(surface.tileCount, 12)
+      XCTAssertEqual(surface.pixel(x: 0, y: 0), palette[0])
+      XCTAssertEqual(surface.pixel(x: 320, y: 740), palette[0])
+      let changes = try XCTUnwrap(fixture["changes"] as? [[Int]])
+      for point in changes {
+        XCTAssertEqual(surface.pixel(x: point[0], y: point[1]), palette[point[2]], "\(name): \(point)")
+      }
+      if name == "paged-ordinary.png" {
+        let exif = Data([73, 73, 42, 0, 8, 0, 0, 0, 1, 0, 18, 1, 3, 0, 1, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0])
+        var rotated = data
+        rotated.insert(contentsOf: PNGRestrictedStorage.chunk("eXIf", exif), at: 33)
+        let opened = try RasterIO.read(rotated)
+        XCTAssertEqual(opened.width, document.height)
+        XCTAssertEqual(opened.height, document.width)
+        guard case .raster(let transformed) = try XCTUnwrap(opened.layers.first).content else { return XCTFail() }
+        XCTAssertGreaterThan(transformed.mappedTileCount, 0)
+        XCTAssertLessThanOrEqual(transformed.tileCount, 12)
+        for point in changes {
+          XCTAssertEqual(transformed.pixel(x: document.height - 1 - point[1], y: point[0]), palette[point[2]])
+        }
+      }
+    }
+  }
   func testMalformedContainersAndInvalidAlphaTablesReject() throws {
     let indexed = try documents()[0], good = try RasterIO.encoded(indexed, type: .png)
     var corrupt = good; corrupt[29] ^= 1; XCTAssertThrowsError(try RasterIO.read(corrupt))

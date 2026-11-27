@@ -1,3 +1,5 @@
+**Rendered file parity.** Large palettes that need RGB expansion now open through a paged path. Qualify native grayscale TIFF and PSD/PSB merged samples. [Development record](DEVLOG.md#dev-step-764) · [Qualification](SOURCE_PUBLICATION_764.md).
+
 **Rendered file parity.** Indexed PNG imports now match the tested Photoshop document modes. Qualify native grayscale TIFF and PSD/PSB merged samples. [Development record](DEVLOG.md#dev-step-763) · [Qualification](SOURCE_PUBLICATION_763.md).
 
 **Rendered file parity.** Eligible layered Grayscale PNG copies match the four Photoshop gray and opacity references. Verify grayscale TIFF and PSD/PSB merged previews and indexed PNG transparency. [Development record](DEVLOG.md#dev-step-762) · [Qualification](SOURCE_PUBLICATION_762.md).

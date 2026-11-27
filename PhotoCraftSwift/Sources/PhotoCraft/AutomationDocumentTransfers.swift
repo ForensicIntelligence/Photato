@@ -125,7 +125,12 @@ extension AutomationService {
         "inputSampleDepths": [2, 4, 8, 16], "outputSampleDepths": [8, 16],
         "storage": "Still Grayscale PNG preserves editable gray and straight opacity, including transparency keys and hidden gray. Embedded gray profiles or declared gamma keep their color interpretation. Packed 2/4-bit values expand to 8-bit. Existing one-bit Bitmap import remains separate.",
         "api": "Native Open and Save, authenticated Photato import/download and supported action jobs share the codec. Adobe-compatible PNG action input retains its existing local 8-bit limit.",
-        "limits": "Flat PNG output. Layered documents use the existing color composite; exact Photoshop compositing, profile defaults and complete file equality remain open."
+        "limits": "Aligned same-profile Normal layers compose directly at 8 and 16 bits. Other layered documents use the general compositor. Profile defaults and complete file equality remain open."
+      ],
+      "indexedPNGExpansion": [
+        "inputSampleDepths": [1, 2, 4, 8], "outputMode": "rgb8", "preservesStraightOpacity": true,
+        "scope": "Partial palette opacity or multiple transparent entries open as editable RGB8. Packed scanlines and destination tiles are file-backed for large imports, including Adam7. Tables that fit Indexed Color retain editable indices.",
+        "api": "Desktop Open, the authenticated Photato import and supported Adobe-compatible and Photato action resources use the same decoder. Resource, scratch, resident document and operation limits apply."
       ],
       "restrictedFormats": [
         "modes": ["indexed": 8, "bitmap": 1], "nativeArchive": 47,
@@ -135,7 +140,7 @@ extension AutomationService {
         "png": "Indexed1/2/4/8-bit and grayscale1-bit input; indexed8-bit or grayscale1-bit output; all scanline filters/Adam7 decode and optional Adam7 output.",
         "tiff": "Palette1/2/4/8-bit and bilevel strip/tile input, raw/LZW/ZIP/PackBits;8-bit palette or1-bit bilevel output with raw/LZW/ZIP. Single transparent index can use unassociated alpha samples. Rotated raster samples retain index/bit identity.",
         "api": "Native Open/Save and Photato import/download use shared codecs. Existing Photato/Adobe action-job resource paths share the same native decoder/encoder; conversion commands are not yet advertised.",
-        "limits": "8,388,608 pixels before the lower existing API/job budgets. Flat storage only. No auxiliary channels, PSD layers, restricted TIFF ImageSourceData, CCITT, non-square pixels or high-precision TIFF ColorMap. PNG multiple/partial alpha, animated PNG, TIFF transfer tables and rotated saved paths reject explicitly. Full Photoshop numerical/file equivalence and broader contexts remain unqualified."
+        "limits": "Retained Indexed Color and Bitmap storage support 8,388,608 pixels before lower API/job budgets. Flat storage only. No auxiliary channels, PSD layers, restricted TIFF ImageSourceData, CCITT, non-square pixels or high-precision TIFF ColorMap. Animated PNG, TIFF transfer tables and rotated saved paths reject explicitly. See indexedPNGExpansion for PNG palettes that open as RGB8. Full Photoshop numerical and file equivalence remains unqualified."
       ],
       "photoshopContainers": [
         "readVersions": [1, 2], "writeFormats": ["psd", "psb"],

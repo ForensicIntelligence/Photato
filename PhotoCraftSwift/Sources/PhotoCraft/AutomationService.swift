@@ -2157,6 +2157,7 @@ import UniformTypeIdentifiers
           "maximumLayers": LayerLimits.maximumLayers, "maximumResourceBytes": AdobeActionAssets.maximumResourceBytes,
           "maximumAggregateOutputBytes": AdobeActionAssets.maximumOutputBytes,
           "pagedInputFormats": ["psd", "psb"], "pagedInputDepths": [8,16,32],
+          "pagedIndexedPNGExpansion": "PNG palettes with partial opacity or multiple transparent entries can open as editable RGB8 above the unpaged input limit. Other PNG action-resource limits remain in effect.",
           "maximumUnpagedInputPixels": AdobeActionAssets.maximumUnpagedInputPixels,
           "maximumAnalysisPixels": AdobeActionAssets.maximumAnalysisPixels,
           "maximumArtboardPixels": AdobeActionAssets.maximumArtboardPixels,

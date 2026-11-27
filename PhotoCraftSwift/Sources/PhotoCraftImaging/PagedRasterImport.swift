@@ -20,9 +20,9 @@ extension RasterIO {
   }
 
   static func pagedRaster(width: Int, height: Int, depth: PixelDepth,
-    colorEncoding: SurfaceColorEncoding, backing: RasterTileStore? = nil,
+    colorEncoding: SurfaceColorEncoding, fill: Pixel = .clear, backing: RasterTileStore? = nil,
     patch: (IntRect) throws -> Surface) throws -> Surface {
-    let builder = try Surface.PagedBuilder(width: width, height: height, depth: depth,
+    let builder = try Surface.PagedBuilder(width: width, height: height, depth: depth, fill: fill,
       colorEncoding: colorEncoding, backing: backing)
     for y in stride(from: 0, to: height, by: Surface.tileSide) {
       for x in stride(from: 0, to: width, by: 2048) {
@@ -34,12 +34,16 @@ extension RasterIO {
     return try builder.finish()
   }
   static func pagedOrientation(_ source: Surface, orientation: Int) throws -> Surface {
+    guard (1...8).contains(orientation) else { throw CraftError.invalid("Invalid EXIF orientation.") }
+    if orientation == 1 { return source }
     let swapped = orientation >= 5
     let width = swapped ? source.height : source.width, height = swapped ? source.width : source.height
-    let builder=try Surface.PagedBuilder(width:width,height:height,depth:source.depth,colorEncoding:source.colorEncoding)
+    let fill: Pixel = source.colorEncoding == .sRGB ? source.defaultPixel : .clear
+    let builder=try Surface.PagedBuilder(width:width,height:height,depth:source.depth,fill:fill,colorEncoding:source.colorEncoding)
     for y in stride(from: 0, to: height, by: Surface.tileSide) {
       for x in stride(from: 0, to: width, by: 2048) {
-        var patch = try Surface(width: min(2048,width-x),height: min(Surface.tileSide,height-y),depth:source.depth,colorEncoding:source.colorEncoding)
+        var patch = try Surface(width: min(2048,width-x),height: min(Surface.tileSide,height-y),depth:source.depth,
+          fill:fill,colorEncoding:source.colorEncoding)
         for py in 0..<patch.height {
           try Task.checkCancellation()
           for px in 0..<patch.width {
@@ -55,7 +59,10 @@ extension RasterIO {
             default:(sx,sy)=(dx,dy)
             }
             if source.colorEncoding == .linearRGB { patch.setLinearPixel(x:px,y:py,source.linearPixel(x:sx,y:sy)) }
-            else { patch.setPixel(x:px,y:py,source.pixel(x:sx,y:sy)) }
+            else {
+              let sample = source.pixel(x:sx,y:sy)
+              if sample != fill { patch.setPixel(x:px,y:py,sample) }
+            }
           }
         }
         try builder.append(patch,atX:x,atY:y)

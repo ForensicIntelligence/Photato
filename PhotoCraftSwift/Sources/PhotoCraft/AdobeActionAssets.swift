@@ -96,13 +96,18 @@ enum AdobeActionAssets {
       height = h
     }
     try checkDimensions(width: width, height: height)
-    if !isPhotoshop, width > maximumUnpagedInputPixels / height {
-      throw AdobeAPIError.invalid("Raster input exceeds the local 4,194,304 pixel decoder limit; use a supported paged PSD/PSB resource for larger RGB documents.")
+    let document: CraftDocument
+    if isPhotoshop {
+      document = try PSDCodec.readPaged(data, name: "Action Input", heapByteLimit: maximumDocumentBytes)
+    } else if width > maximumUnpagedInputPixels / height {
+      guard !isTIFF, let paged = try RasterIO.readPagedPalettePNG(data, name: "Action Input") else {
+        throw AdobeAPIError.invalid("Raster input exceeds the local 4,194,304 pixel decoder limit; use a supported paged resource for larger RGB documents.")
+      }
+      document = paged
+    } else {
+      document = try RasterIO.read(data, name: "Action Input")
     }
-    let document = isPhotoshop
-      ? try PSDCodec.readPaged(data, name: "Action Input", heapByteLimit: maximumDocumentBytes)
-      : try RasterIO.read(data, name: "Action Input")
-    if !isTIFF && !data.starts(with: Data("8BPS".utf8)), document.depth != .u8 {
+    if !isTIFF && !isPhotoshop, document.depth != .u8 {
       throw AdobeAPIError.unsupported("PNG action input currently requires RGB8.")
     }
     try check(document)

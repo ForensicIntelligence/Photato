@@ -190,6 +190,31 @@ final class AutomationOpeningTests: XCTestCase {
     }
   }
 
+  @MainActor func testLargerPalettePNGUsesPagedRGBInBothResourcePaths() async throws {
+    let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+      .appendingPathComponent("PhotoCraftImagingTests/Fixtures/png-paged-palette/paged-ordinary.png")
+    let input = try Data(contentsOf: fixture)
+    func check(_ document: CraftDocument) throws {
+      XCTAssertEqual(document.colorMode, .rgb)
+      XCTAssertEqual(document.width, 8193)
+      XCTAssertEqual(document.height, 1024)
+      guard case .raster(let surface) = try XCTUnwrap(document.layers.first).content else { return XCTFail() }
+      XCTAssertGreaterThan(surface.mappedTileCount, 0)
+      XCTAssertEqual(surface.pixel(x: 0, y: 0), Pixel(29 / 255, 180 / 255, 245 / 255, 0))
+      XCTAssertEqual(surface.pixel(x: 4096, y: 512), Pixel(29 / 255, 180 / 255, 245 / 255, 1 / 255))
+      XCTAssertEqual(surface.pixel(x: 8192, y: 1023), Pixel(175 / 255, 34 / 255, 209 / 255, 1))
+    }
+    try check(AdobeActionAssets.decode(input))
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, original in
+      defer { for document in service.controller.documents where document !== original { document.close() } }
+      service.setDocumentTransfersEnabled(true)
+      let reply = try await upload(service, bytes: input, type: "image/png", format: "png")
+      XCTAssertEqual(reply.0.statusCode, 201, String(decoding: reply.1, as: UTF8.self))
+      try check(XCTUnwrap(service.shares.last?.document?.store.document))
+    }
+  }
+
   @MainActor func testNativeOpeningStatePrivacyPermissionsAndExactIDCancellation() async throws {
     let api = AutomationTests()
     try await api.withService { service, original in

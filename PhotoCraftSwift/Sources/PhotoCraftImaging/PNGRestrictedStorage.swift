@@ -62,15 +62,52 @@ enum PNGRestrictedStorage {
     let p = Int(a) + Int(b) - Int(c), da = abs(p - Int(a)), db = abs(p - Int(b)), dc = abs(p - Int(c))
     return da <= db && da <= dc ? a : db <= dc ? b : c
   }
-  static func read(_ input: Data, name: String) throws -> CraftDocument? {
+  static func restoreScanline(_ values: inout [UInt8], filter: UInt8, previous: [UInt8]) throws {
+    guard filter <= 4 else { throw CraftError.invalid("Unknown PNG row filter.") }
+    guard filter != 0 else { return }
+    for i in values.indices {
+      let a: UInt8 = i == 0 ? 0 : values[i - 1], b = previous[i], c: UInt8 = i == 0 ? 0 : previous[i - 1]
+      switch filter {
+      case 1: values[i] &+= a
+      case 2: values[i] &+= b
+      case 3: values[i] &+= UInt8((Int(a) + Int(b)) / 2)
+      case 4: values[i] &+= paeth(a, b, c)
+      default: break
+      }
+    }
+  }
+  private static func compactSamples(_ compressed: Data, width: Int, height: Int,
+    bits: Int, interlaced: Bool) throws -> Data {
+    var expected = 0
+    for (x, y, dx, dy) in passes(interlaced) where width > x && height > y {
+      let w = (width - x + dx - 1) / dx, h = (height - y + dy - 1) / dy
+      expected += ((w * bits + 7) / 8 + 1) * h
+    }
+    let bytes = try RestrictedRasterCompression.inflate(compressed, limit: expected, expected: expected)
+    var samples = Data(count: width * height), offset = 0
+    for (x0, y0, dx, dy) in passes(interlaced) where width > x0 && height > y0 {
+      let w = (width - x0 + dx - 1) / dx, h = (height - y0 + dy - 1) / dy, stride = (w * bits + 7) / 8
+      var previous = [UInt8](repeating: 0, count: stride)
+      for row in 0..<h {
+        try Task.checkCancellation(); let filter = bytes[offset]; offset += 1
+        var values = Array(bytes[offset..<offset + stride]); offset += stride
+        try restoreScanline(&values, filter: filter, previous: previous)
+        for x in 0..<w { samples[(y0 + row * dy) * width + x0 + x * dx] = (values[x * bits / 8] >> (8 - bits - (x * bits % 8))) & UInt8((1 << bits) - 1) }
+        previous = values
+      }
+    }
+    return samples
+  }
+  static func read(_ input: Data, name: String, requirePagedRGB: Bool = false) throws -> CraftDocument? {
     let input = Data(input)
     guard input.starts(with: signature), input.count >= 33 else { return nil }
     // Other PNG types retain the qualified ImageIO path.
     guard input[25] == 3 || (input[25] == 0 && input[24] == 1) else { return nil }
+    if requirePagedRGB, input[25] != 3 { return nil }
     let blocks = try chunks(input), header = blocks[0].data
     let width = integer(header, 0), height = integer(header, 4), bits = Int(header[8]), indexed = header[9] == 3
     guard width > 0, height > 0, width <= Surface.maxDimension, height <= Surface.maxDimension,
-      width <= PaletteQuantization.maximumPixels / height,
+      width <= Surface.maxPixels / height,
       (indexed ? [1,2,4,8].contains(bits) : bits == 1), header[10] == 0, header[11] == 0, header[12] <= 1 else {
       throw CraftError.invalid("Invalid restricted PNG sample layout.")
     }
@@ -106,35 +143,15 @@ enum PNGRestrictedStorage {
       profile = try RestrictedRasterCompression.inflate(Data(compressed[(zero + 2)...]), limit: ICCProfile.maximumBytes)
       try NativeModeProfile.validate(profile!, mode: indexed ? .rgb : .grayscale, depth: .u8)
     }
-    var expected = 0
-    for (x, y, dx, dy) in passes(header[12] == 1) where width > x && height > y {
-      let w = (width - x + dx - 1) / dx, h = (height - y + dy - 1) / dy
-      expected += ((w * bits + 7) / 8 + 1) * h
+    if requirePagedRGB, expandedAlpha == nil { return nil }
+    let needsPaging = requirePagedRGB || width > PaletteQuantization.maximumPixels / height
+    if needsPaging, expandedAlpha == nil {
+      throw CraftError.unsupported("Editable Bitmap and Indexed Color PNGs exceed the restricted color mode pixel limit.")
     }
     let compressed = blocks.filter { $0.type == "IDAT" }.reduce(into: Data()) { $0.append($1.data) }
-    let bytes = try RestrictedRasterCompression.inflate(compressed, limit: expected, expected: expected)
-    var samples = Data(count: width * height), offset = 0
-    for (x0, y0, dx, dy) in passes(header[12] == 1) where width > x0 && height > y0 {
-      let w = (width - x0 + dx - 1) / dx, h = (height - y0 + dy - 1) / dy, stride = (w * bits + 7) / 8
-      var previous = [UInt8](repeating: 0, count: stride)
-      for row in 0..<h {
-        try Task.checkCancellation(); let filter = bytes[offset]; offset += 1
-        guard filter <= 4 else { throw CraftError.invalid("Unknown PNG row filter.") }
-        var values = Array(bytes[offset..<offset + stride]); offset += stride
-        for i in values.indices {
-          let a: UInt8 = i == 0 ? 0 : values[i - 1], b = previous[i], c: UInt8 = i == 0 ? 0 : previous[i - 1]
-          switch filter {
-          case 1: values[i] &+= a
-          case 2: values[i] &+= b
-          case 3: values[i] &+= UInt8((Int(a) + Int(b)) / 2)
-          case 4: values[i] &+= paeth(a, b, c)
-          default: break
-          }
-        }
-        for x in 0..<w { samples[(y0 + row * dy) * width + x0 + x * dx] = (values[x * bits / 8] >> (8 - bits - (x * bits % 8))) & UInt8((1 << bits) - 1) }
-        previous = values
-      }
-    }
+    let interlaced = header[12] == 1
+    let samples = needsPaging ? Data() : try compactSamples(compressed, width: width, height: height,
+      bits: bits, interlaced: interlaced)
     let source = CGImageSourceCreateWithData(input as CFData, nil)
     let properties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) as? [CFString: Any] }
     var document: CraftDocument
@@ -150,17 +167,25 @@ enum PNGRestrictedStorage {
           pixel.a = index < expandedAlpha.count ? Float(expandedAlpha[index]) / 255 : 1
           return pixel
         }
-        var pixels = try Surface(width: width, height: height)
-        for y in 0..<height {
-          try Task.checkCancellation()
-          for x in 0..<width {
-            let index = Int(samples[y * width + x])
-            guard table.indices.contains(index) else { throw CraftError.invalid("A pixel refers to a missing palette entry.") }
-            pixels.setPixel(x: x, y: y, table[index])
+        let pixels: Surface
+        if needsPaging {
+          pixels = try PNGPagedPaletteRGB.read(compressed, width: width, height: height, bits: bits,
+            interlaced: interlaced, palette: table)
+        } else {
+          var surface = try Surface(width: width, height: height)
+          for y in 0..<height {
+            try Task.checkCancellation()
+            for x in 0..<width {
+              let index = Int(samples[y * width + x])
+              guard table.indices.contains(index) else { throw CraftError.invalid("A pixel refers to a missing palette entry.") }
+              surface.setPixel(x: x, y: y, table[index])
+            }
           }
+          pixels = surface
         }
         let orientation = properties?[kCGImagePropertyOrientation] as? Int ?? 1
-        let oriented = try RasterIO.oriented(pixels, orientation: orientation)
+        let oriented = needsPaging ? try RasterIO.pagedOrientation(pixels, orientation: orientation)
+          : try RasterIO.oriented(pixels, orientation: orientation)
         document = try CraftDocument(width: oriented.width, height: oriented.height, name: name)
         document.workingICC = try ColorManagement.importedProfile(profile, depth: .u8)
         document.profileIsUntagged = profile == nil && payload("sRGB") == nil ? true : nil

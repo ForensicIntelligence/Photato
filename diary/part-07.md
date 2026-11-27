@@ -315,11 +315,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:763 -->
+<!-- current-status-step:764 -->
 
-Open now creates an editable RGB8 layer from a PNG palette with partial opacity or multiple transparent entries. The decoder retains straight RGB and all per-pixel opacity. A palette with one or zero fully transparent entries and no partial opacity stays editable as Indexed Color.
+Open can now expand larger PNG palettes with partial opacity or multiple transparent entries into editable RGB8. The importer streams packed scanlines to scratch storage and builds file-backed RGB tiles. It handles standard and Adam7 layouts and applies EXIF rotations.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-763) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_763.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-764) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_764.md).
 
 <!-- current-status:end -->
 
@@ -1289,5 +1289,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 761 | [Preserve grayscale PNG samples and profiles](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-761) |
 | 2026-11-27 | 762 | [Match layered grayscale PNG samples](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-762) |
 | 2026-11-27 | 763 | [Open indexed PNGs with complex transparency](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-763) |
+| 2026-11-27 | 764 | [Open larger PNG palettes as editable RGB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-764) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

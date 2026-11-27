@@ -1,3 +1,9 @@
+### Paged indexed PNG expansion (checkpoint 764)
+
+Desktop Open, authenticated Photato import and both action resource interfaces use the same paged decoder. The two resource paths passed the 8.39-megapixel test. Existing compressed input, scratch and operation limits still apply.
+
+[Qualification](SOURCE_PUBLICATION_764.md).
+
 ### Indexed PNG transparency on import (checkpoint 763)
 
 Desktop Open, authenticated Photato import and the existing Adobe-compatible PNG action-resource reader share the native decoder. The regression also compares the authenticated PNG download with a desktop save. The public schemas stay the same.
