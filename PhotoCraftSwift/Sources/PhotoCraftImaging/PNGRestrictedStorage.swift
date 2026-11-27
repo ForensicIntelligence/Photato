@@ -79,6 +79,7 @@ enum PNGRestrictedStorage {
     }
     func payload(_ type: String) -> Data? { blocks.first { $0.type == type }?.data }
     var palette = [PaletteColor](), transparent: Int?
+    var expandedAlpha: Data?
     if indexed {
       guard let table = payload("PLTE"), !table.isEmpty, table.count % 3 == 0, table.count / 3 <= 1 << bits else {
         throw CraftError.invalid("Invalid PNG palette.")
@@ -86,10 +87,13 @@ enum PNGRestrictedStorage {
       palette = stride(from: 0, to: table.count, by: 3).map { .init(table[$0], table[$0 + 1], table[$0 + 2]) }
       if let alpha = payload("tRNS") {
         guard !alpha.isEmpty, alpha.count <= palette.count else { throw CraftError.invalid("Invalid PNG palette alpha table.") }
-        guard alpha.allSatisfy({ $0 == 0 || $0 == 255 }), alpha.filter({ $0 == 0 }).count <= 1 else {
-          throw CraftError.unsupported("This indexed PNG has multiple or partial palette alpha values; the current Color Table supports one transparent entry.")
+        if alpha.allSatisfy({ $0 == 0 || $0 == 255 }), alpha.filter({ $0 == 0 }).count <= 1 {
+          transparent = alpha.firstIndex(of: 0)
+        } else {
+          // Photoshop opens the entire image as RGB when the table cannot fit
+          // Indexed Color, even if the unrepresentable entry is unused.
+          expandedAlpha = alpha
         }
-        transparent = alpha.firstIndex(of: 0)
       }
     } else if payload("tRNS") != nil {
       throw CraftError.unsupported("Transparent grayscale PNG needs an alpha-capable document mode.")
@@ -131,18 +135,48 @@ enum PNGRestrictedStorage {
         previous = values
       }
     }
-    var document = try CraftDocument(width: width, height: height, name: name)
+    let source = CGImageSourceCreateWithData(input as CFData, nil)
+    let properties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) as? [CFString: Any] }
+    var document: CraftDocument
     if indexed {
       if profile == nil, payload("gAMA") != nil || payload("cHRM") != nil,
-        let source = CGImageSourceCreateWithData(input as CFData, nil), let image = CGImageSourceCreateImageAtIndex(source, 0, nil), let space = image.colorSpace {
+        let source, let image = CGImageSourceCreateImageAtIndex(source, 0, nil), let space = image.colorSpace {
         let base = space.model == .indexed ? space.baseColorSpace : space
         if base?.model == .rgb { profile = base?.copyICCData() as Data? }
       }
-      document = try document.replacingRestrictedMode(.indexed(IndexedRaster(width: width, height: height, palette: palette, indices: samples, transparentIndex: transparent, profile: profile)))
+      if let expandedAlpha {
+        let table = palette.enumerated().map { index, color in
+          var pixel = color.pixel
+          pixel.a = index < expandedAlpha.count ? Float(expandedAlpha[index]) / 255 : 1
+          return pixel
+        }
+        var pixels = try Surface(width: width, height: height)
+        for y in 0..<height {
+          try Task.checkCancellation()
+          for x in 0..<width {
+            let index = Int(samples[y * width + x])
+            guard table.indices.contains(index) else { throw CraftError.invalid("A pixel refers to a missing palette entry.") }
+            pixels.setPixel(x: x, y: y, table[index])
+          }
+        }
+        let orientation = properties?[kCGImagePropertyOrientation] as? Int ?? 1
+        let oriented = try RasterIO.oriented(pixels, orientation: orientation)
+        document = try CraftDocument(width: oriented.width, height: oriented.height, name: name)
+        document.workingICC = try ColorManagement.importedProfile(profile, depth: .u8)
+        document.profileIsUntagged = profile == nil && payload("sRGB") == nil ? true : nil
+        let layer = Layer(name: name, content: .raster(oriented))
+        document.layers = [layer]
+        document.activeLayerID = layer.id
+      } else {
+        let raster = try IndexedRaster(width: width, height: height, palette: palette, indices: samples,
+          transparentIndex: transparent, profile: profile)
+        document = try CraftDocument(width: width, height: height, name: name).replacingRestrictedMode(.indexed(raster))
+      }
     } else {
       var packed = Data(count: ((width + 7) / 8) * height)
       for y in 0..<height { for x in 0..<width where samples[y * width + x] == 0 { packed[y * ((width + 7) / 8) + x / 8] |= 0x80 >> (x % 8) } }
-      document = try document.replacingRestrictedMode(.bitmap(BitmapRaster(width: width, height: height, bits: packed)))
+      let raster = try BitmapRaster(width: width, height: height, bits: packed)
+      document = try CraftDocument(width: width, height: height, name: name).replacingRestrictedMode(.bitmap(raster))
     }
     document.sourceICC = profile
     if let physical = payload("pHYs") {
@@ -151,7 +185,7 @@ enum PNGRestrictedStorage {
       guard x == y else { throw CraftError.unsupported("Non-square PNG pixels are not represented by this document.") }
       if physical[8] == 1 { let dpi = Double(x) * 0.0254; guard (1...100_000).contains(dpi) else { throw CraftError.invalid("PNG resolution is outside the document range.") }; document.resolution = dpi }
     }
-    if let source = CGImageSourceCreateWithData(input as CFData, nil), let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any] {
+    if let source, let properties {
       document.sourceMetadata = try RasterMetadata.capture(source, properties: properties)
     }
     try document.validate(); return document

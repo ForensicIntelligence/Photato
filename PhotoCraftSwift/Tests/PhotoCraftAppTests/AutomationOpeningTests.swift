@@ -1,4 +1,5 @@
 import AppKit
+import CryptoKit
 import Foundation
 import PhotoCraftCore
 import PhotoCraftImaging
@@ -151,6 +152,41 @@ final class AutomationOpeningTests: XCTestCase {
         XCTAssertEqual(flattened.rawWord(component: 0, index: 0), maximum)
         XCTAssertEqual(flattened.rawWord(component: 1, index: 0), 0)
       }
+    }
+  }
+
+  @MainActor func testIndexedPNGWithGradedAlphaOpensThroughPhotatoAndAdobeAsRGB() async throws {
+    // Owned 17 × 11 Adam7 fixture with duplicate RGB entries and palette alpha 0, 1, 127 and 255.
+    let encoded = """
+      iVBORw0KGgoAAAANSUhEUgAAABEAAAALAgMAAAGTSb4CAAAAAXNSR0IArs4c6QAAAAxQTFRFHbT1HbT18J0XryLR8pTS/
+      AAAAAR0Uk5TAAF//zf0hhkAAAAXSURBVHicY2RghMBV1xhXgSjGuwyPGcsZToLpJfIi+wAAABdJREFUuwyMHQxAHqMSA
+      5T9n4GB4SCQy8BwjzESTxNpAAAAEElEQVQUSL4GCjIw/ICIAwCr/hJOXnjp+wAAAABJRU5ErkJggg==
+      """
+    let png = try XCTUnwrap(Data(base64Encoded: encoded, options: .ignoreUnknownCharacters))
+    let expected = "e961e9100f3b121b3961037561b359114fed43eebba105bebe7fbe79e004a483"
+    func check(_ document: CraftDocument) throws {
+      XCTAssertEqual(document.colorMode, .rgb)
+      XCTAssertEqual(document.depth, .u8)
+      XCTAssertNil(document.restrictedMode)
+      guard case .raster(let surface) = try XCTUnwrap(document.layers.first).content else { return XCTFail() }
+      let digest = try SHA256.hash(data: surface.rgbaData(depth: .u8)).map { String(format: "%02x", $0) }.joined()
+      XCTAssertEqual(digest, expected)
+    }
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, original in
+      defer { for document in service.controller.documents where document !== original { document.close() } }
+      service.setDocumentTransfersEnabled(true)
+      try check(DocumentIO.decodeUpload(png, native: false, name: "Palette transparency"))
+      try check(AdobeActionAssets.decode(png))
+      let reply = try await upload(service, bytes: png, type: "image/png", format: "png")
+      XCTAssertEqual(reply.0.statusCode, 201, String(decoding: reply.1, as: UTF8.self))
+      let share = try XCTUnwrap(service.shares.last)
+      let opened = try XCTUnwrap(share.document?.store.document)
+      try check(opened)
+      let download = try await helper.request(service, path: "/v1/documents/\(share.id)/file.png")
+      XCTAssertEqual(download.0.statusCode, 200)
+      XCTAssertEqual(download.1, try DocumentIO.encode(opened, format: .png))
+      try check(RasterIO.read(download.1))
     }
   }
 

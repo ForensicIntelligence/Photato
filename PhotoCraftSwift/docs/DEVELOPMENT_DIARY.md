@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 763 — Open indexed PNGs with complex transparency
+
+Open now creates an editable RGB8 layer from a PNG palette with partial opacity or multiple transparent entries. The decoder retains straight RGB and all per-pixel opacity. A palette with one or zero fully transparent entries and no partial opacity stays editable as Indexed Color.
+
+All 35 focused imaging tests and ten app and HTTP tests passed in Xcode Debug. Both optimized architectures passed all 223 selected tests. Intel ran under Rosetta.
+
+Photoshop 27.2.0 opened all five owned controls in the same modes as Photato. Independent decoding matched 748 straight RGBA imports and 187 retained indices. The graded-palette Photoshop PNG copy matched all 187 source RGBA samples, including hidden RGB. The second Photoshop PNG copy verified all 187 rendered samples for the unused-opacity control, including the fully transparent pixels outside the visible bounds.
+
+The comparisons cover the tested palette tables and exact decoded samples. Complete PNG container equality and animated indexed PNG import remain open. Photoshop also opened an owned 8,389,632-pixel palette PNG beyond the current Photato restricted PNG limit.
+
+[Development record](DEVLOG.md#dev-step-763) · [Qualification](SOURCE_PUBLICATION_763.md).
+
 ## 2026-11-27 — Step 762 — Match layered grayscale PNG samples
 
 Saving an eligible layered Grayscale PNG now blends the retained gray and opacity samples directly. The 16-bit calculation promotes layer opacity before composing. Transparent pixels within the visible bounds retain the bottom layer’s gray, and pixels outside those bounds use transparent white.
@@ -2243,11 +2255,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:762 -->
+<!-- current-status-step:763 -->
 
-Saving an eligible layered Grayscale PNG now blends the retained gray and opacity samples directly. The 16-bit calculation promotes layer opacity before composing. Transparent pixels within the visible bounds retain the bottom layer’s gray, and pixels outside those bounds use transparent white.
+Open now creates an editable RGB8 layer from a PNG palette with partial opacity or multiple transparent entries. The decoder retains straight RGB and all per-pixel opacity. A palette with one or zero fully transparent entries and no partial opacity stays editable as Indexed Color.
 
-[Development record](DEVLOG.md#dev-step-762) · [Qualification](SOURCE_PUBLICATION_762.md).
+[Development record](DEVLOG.md#dev-step-763) · [Qualification](SOURCE_PUBLICATION_763.md).
 
 <!-- current-status:end -->
 
@@ -3216,6 +3228,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 760 | [Show and hide Vanishing Point edges](DEVLOG.md#dev-step-760) |
 | 2026-11-27 | 761 | [Preserve grayscale PNG samples and profiles](DEVLOG.md#dev-step-761) |
 | 2026-11-27 | 762 | [Match layered grayscale PNG samples](DEVLOG.md#dev-step-762) |
+| 2026-11-27 | 763 | [Open indexed PNGs with complex transparency](DEVLOG.md#dev-step-763) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

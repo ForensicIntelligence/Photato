@@ -315,11 +315,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:762 -->
+<!-- current-status-step:763 -->
 
-Saving an eligible layered Grayscale PNG now blends the retained gray and opacity samples directly. The 16-bit calculation promotes layer opacity before composing. Transparent pixels within the visible bounds retain the bottom layer’s gray, and pixels outside those bounds use transparent white.
+Open now creates an editable RGB8 layer from a PNG palette with partial opacity or multiple transparent entries. The decoder retains straight RGB and all per-pixel opacity. A palette with one or zero fully transparent entries and no partial opacity stays editable as Indexed Color.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-762) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_762.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-763) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_763.md).
 
 <!-- current-status:end -->
 
@@ -1288,5 +1288,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 760 | [Show and hide Vanishing Point edges](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-760) |
 | 2026-11-27 | 761 | [Preserve grayscale PNG samples and profiles](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-761) |
 | 2026-11-27 | 762 | [Match layered grayscale PNG samples](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-762) |
+| 2026-11-27 | 763 | [Open indexed PNGs with complex transparency](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-763) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

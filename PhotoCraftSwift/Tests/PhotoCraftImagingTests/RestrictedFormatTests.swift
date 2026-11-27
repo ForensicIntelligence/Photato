@@ -88,11 +88,48 @@ final class RestrictedFormatTests: XCTestCase {
       XCTAssertEqual(r.indices, Data([0,1,2,3,1]))
     }
   }
-  func testMalformedContainersAndUnsupportedAlphaReject() throws {
+  func testPaletteAlphaPromotesOnlyUnrepresentableTablesToRGB() throws {
+    let colors = Data([29, 180, 245, 29, 180, 245, 240, 157, 23, 175, 34, 209])
+    let order = [1, 0, 2, 3]
+    let tables: [([UInt8], Bool)] = [([0], false), ([255, 0], false), ([0, 255, 0], true), ([0, 1, 127, 255], true)]
+    let profile = try NativeModeProfile.standard(.rgb, depth: .u8)
+    let compressedProfile = try RestrictedRasterCompression.deflate(profile)
+    for (alpha, promotes) in tables {
+      for interlaced in [false, true] {
+        let header = PNGRestrictedStorage.number(4) + PNGRestrictedStorage.number(1)
+          + Data([2, 3, 0, 0, interlaced ? 1 : 0])
+        let rows = interlaced ? Data([0, 0x40, 0, 0x80, 0, 0x30]) : Data([0, 0x4b])
+        let png = PNGRestrictedStorage.signature + PNGRestrictedStorage.chunk("IHDR", header)
+          + PNGRestrictedStorage.chunk("iCCP", Data("Owned RGB".utf8) + Data([0, 0]) + compressedProfile)
+          + PNGRestrictedStorage.chunk("PLTE", colors) + PNGRestrictedStorage.chunk("tRNS", Data(alpha))
+          + PNGRestrictedStorage.chunk("pHYs", PNGRestrictedStorage.number(11811) + PNGRestrictedStorage.number(11811) + Data([1]))
+          + PNGRestrictedStorage.chunk("IDAT", try RestrictedRasterCompression.deflate(rows))
+          + PNGRestrictedStorage.chunk("IEND", Data())
+        let document = try RasterIO.read(png)
+        XCTAssertEqual(document.pixelsPerInch, 300, accuracy: 0.013)
+        XCTAssertEqual(document.sourceICC, profile)
+        if promotes {
+          XCTAssertEqual(document.colorMode, .rgb)
+          XCTAssertEqual(document.workingICC, profile)
+          let expected = Data(order.flatMap { index in
+            Array(colors[(index * 3)..<(index * 3 + 3)]) + [index < alpha.count ? alpha[index] : 255]
+          })
+          let archive = try NativeArchive.decode(NativeArchive.encodeChunked(document))
+          guard case .raster(let raster) = try XCTUnwrap(archive.layers.first).content else { return XCTFail() }
+          XCTAssertEqual(try raster.rgbaData(depth: .u8), expected)
+        } else {
+          guard case .indexed(let raster) = document.restrictedMode else { return XCTFail() }
+          XCTAssertEqual(raster.indices, Data(order.map(UInt8.init)))
+          XCTAssertEqual(raster.transparentIndex, alpha.firstIndex(of: 0))
+        }
+      }
+    }
+  }
+  func testMalformedContainersAndInvalidAlphaTablesReject() throws {
     let indexed = try documents()[0], good = try RasterIO.encoded(indexed, type: .png)
     var corrupt = good; corrupt[29] ^= 1; XCTAssertThrowsError(try RasterIO.read(corrupt))
     XCTAssertThrowsError(try RasterIO.read(good.dropLast()))
-    for alpha in [Data([0,0]), Data([128])] {
+    for alpha in [Data(), Data(repeating: 0, count: 6)] {
       let blocks = try PNGRestrictedStorage.chunks(good)
       let png = blocks.reduce(into: PNGRestrictedStorage.signature) { $0 += PNGRestrictedStorage.chunk($1.type, $1.type == "tRNS" ? alpha : $1.data) }
       XCTAssertThrowsError(try RasterIO.read(png))

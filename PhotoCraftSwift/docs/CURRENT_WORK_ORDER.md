@@ -1,3 +1,5 @@
+**Rendered file parity.** Indexed PNG imports now match the tested Photoshop document modes. Qualify native grayscale TIFF and PSD/PSB merged samples. [Development record](DEVLOG.md#dev-step-763) · [Qualification](SOURCE_PUBLICATION_763.md).
+
 **Rendered file parity.** Eligible layered Grayscale PNG copies match the four Photoshop gray and opacity references. Verify grayscale TIFF and PSD/PSB merged previews and indexed PNG transparency. [Development record](DEVLOG.md#dev-step-762) · [Qualification](SOURCE_PUBLICATION_762.md).
 
 **Rendered file parity.** Grayscale PNG preserves editable gray and opacity and honors declared transfer curves. Capture independent Photoshop grayscale saves and qualify layered output. The Vanishing Point grid raster and live shortcut remain open. [Development record](DEVLOG.md#dev-step-761) · [Qualification](SOURCE_PUBLICATION_761.md).

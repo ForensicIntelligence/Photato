@@ -1,3 +1,9 @@
+### Indexed PNG transparency on import (checkpoint 763)
+
+Desktop Open, authenticated Photato import and the existing Adobe-compatible PNG action-resource reader share the native decoder. The regression also compares the authenticated PNG download with a desktop save. The public schemas stay the same.
+
+[Qualification](SOURCE_PUBLICATION_763.md).
+
 ### Layered grayscale PNG transfers (checkpoint 762)
 
 Desktop Save and the authenticated Photato download use the same encoder. The HTTP regression uploads a layered PSD and compares its PNG with Desktop Save. Existing Adobe-compatible routes retain their current operation and format limits.

@@ -1,0 +1,937 @@
+{
+  "build": 763,
+  "base": "9b1471f38c26fb9f22c805f9cc6fc3ac8b6a7d87",
+  "inputCount": 9441,
+  "inputDigest": "ed52ad5edca885ad6d0cefb4877c140cb1df4c4b7d7857e5f9c4a5b16ee5250a",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraftImaging/PNGRestrictedStorage.swift": "08e1ee121f01b9b61040456fbd9fd0e3f75b3d322d942d20332ce7770982dcf4",
+    "Tests/PhotoCraftAppTests/AutomationOpeningTests.swift": "e1c839a7f91e696bac2ac3258e7397e8d41b0545501b977a49274bb3c84092cc",
+    "Tests/PhotoCraftImagingTests/RestrictedFormatTests.swift": "d719aef26f72ef73fbc8349dc830e9153770e982b576aa5199e58d2ea23fc17a",
+    "scripts/Info.plist": "9ceebf5a8c9a7d25430f91b494bdec16aef61b743dc5f2718ceb4d65e45a8eac"
+  },
+  "focusedDebug": {
+    "imagingPass": 35,
+    "appAndHTTPPass": 10
+  },
+  "qualification": {
+    "arm64": {
+      "build": 763,
+      "architecture": "arm64",
+      "expected": 223,
+      "passed": 223,
+      "missing": [],
+      "failed": [],
+      "skipped": [],
+      "newCases": [
+        "PhotoCraftAppTests.AutomationOpeningTests/testIndexedPNGWithGradedAlphaOpensThroughPhotatoAndAdobeAsRGB",
+        "PhotoCraftImagingTests.RestrictedFormatTests/testMalformedContainersAndInvalidAlphaTablesReject",
+        "PhotoCraftImagingTests.RestrictedFormatTests/testPaletteAlphaPromotesOnlyUnrepresentableTablesToRGB"
+      ],
+      "newCasesPassed": 3,
+      "groupExits": {
+        "PhotoCraftAppTests.AdobeSmartObjectAppearanceTests/testGrayPNG16GrayPSDAndGrayJPEGSupplyNumericMaskSamples": 0,
+        "PhotoCraftAppTests.AutomationEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.AutomationLayerMergeTests": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testGrayscalePNGImportAndDownloadPreserveTheNativePlanes": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testIndexedPNGWithGradedAlphaOpensThroughPhotatoAndAdobeAsRGB": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB": 0,
+        "PhotoCraftAppTests.DocumentEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.TIFFFloatWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLayerWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFModeWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFRichWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFStorageWorkflowTests": 0,
+        "PhotoCraftAppTests.VanishingWorkflowTests": 0,
+        "PhotoCraftCoreTests.LayerMergeTests": 0,
+        "PhotoCraftCoreTests.PreparedLayerMergeTests": 0,
+        "PhotoCraftCoreTests.VanishingTests": 0,
+        "PhotoCraftImagingTests.GroupRenderTests": 0,
+        "PhotoCraftImagingTests.LayerLayoutRenderTests": 0,
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests": 0,
+        "PhotoCraftImagingTests.RestrictedFormatTests": 0,
+        "PhotoCraftImagingTests.RichLayerMergeTests": 0,
+        "PhotoCraftImagingTests.TIFFFloatTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerCompositeBoundaryTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerTests": 0,
+        "PhotoCraftImagingTests.TIFFModeTests": 0,
+        "PhotoCraftImagingTests.TIFFRestrictedTests": 0,
+        "PhotoCraftImagingTests.TIFFRichTests": 0,
+        "PhotoCraftImagingTests.TIFFStorageTests": 0
+      },
+      "testExecutableSHA256": "8ecb49b984204f1224dea8ebd1213ebaa439651e0eb3d8bc9b6d5b76aa349e56"
+    },
+    "x86_64": {
+      "build": 763,
+      "architecture": "x86_64",
+      "expected": 223,
+      "passed": 223,
+      "missing": [],
+      "failed": [],
+      "skipped": [],
+      "newCases": [
+        "PhotoCraftAppTests.AutomationOpeningTests/testIndexedPNGWithGradedAlphaOpensThroughPhotatoAndAdobeAsRGB",
+        "PhotoCraftImagingTests.RestrictedFormatTests/testMalformedContainersAndInvalidAlphaTablesReject",
+        "PhotoCraftImagingTests.RestrictedFormatTests/testPaletteAlphaPromotesOnlyUnrepresentableTablesToRGB"
+      ],
+      "newCasesPassed": 3,
+      "groupExits": {
+        "PhotoCraftAppTests.AdobeSmartObjectAppearanceTests/testGrayPNG16GrayPSDAndGrayJPEGSupplyNumericMaskSamples": 0,
+        "PhotoCraftAppTests.AutomationEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.AutomationLayerMergeTests": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testGrayscalePNGImportAndDownloadPreserveTheNativePlanes": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testIndexedPNGWithGradedAlphaOpensThroughPhotatoAndAdobeAsRGB": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB": 0,
+        "PhotoCraftAppTests.DocumentEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.TIFFFloatWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLayerWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFModeWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFRichWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFStorageWorkflowTests": 0,
+        "PhotoCraftAppTests.VanishingWorkflowTests": 0,
+        "PhotoCraftCoreTests.LayerMergeTests": 0,
+        "PhotoCraftCoreTests.PreparedLayerMergeTests": 0,
+        "PhotoCraftCoreTests.VanishingTests": 0,
+        "PhotoCraftImagingTests.GroupRenderTests": 0,
+        "PhotoCraftImagingTests.LayerLayoutRenderTests": 0,
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests": 0,
+        "PhotoCraftImagingTests.RestrictedFormatTests": 0,
+        "PhotoCraftImagingTests.RichLayerMergeTests": 0,
+        "PhotoCraftImagingTests.TIFFFloatTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerCompositeBoundaryTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerTests": 0,
+        "PhotoCraftImagingTests.TIFFModeTests": 0,
+        "PhotoCraftImagingTests.TIFFRestrictedTests": 0,
+        "PhotoCraftImagingTests.TIFFRichTests": 0,
+        "PhotoCraftImagingTests.TIFFStorageTests": 0
+      },
+      "testExecutableSHA256": "2e94d9050ae90b7c430bd1eef97961ece657a249fba288088b3fc4fdb6af1fb2"
+    }
+  },
+  "photoshopReference": {
+    "version": "27.2.0",
+    "openModes": {
+      "single-zero": "indexed",
+      "multiple-zero": "rgb",
+      "graded-dupe": "rgb",
+      "graded-eight": "rgb",
+      "unused-graded": "rgb"
+    },
+    "gradedPalettePNG": {
+      "graded-dupe": {
+        "reference": {
+          "width": 17,
+          "height": 11,
+          "depth": 8,
+          "colorType": 6,
+          "interlaced": false,
+          "sha256": "e49ba9c4a6758ff0b87eb61c6fc5bb40be7433fdd3234a883ad9ef496496c57b",
+          "profileChunks": []
+        },
+        "differenceFromSourceRGBA": {
+          "positions": 187,
+          "differentPerChannel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "maximumDifferencePerChannel": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "differentOnlyUnderZeroAlpha": 0
+        }
+      }
+    },
+    "unusedOpacityPNG": {
+      "reference": {
+        "width": 17,
+        "height": 11,
+        "depth": 8,
+        "colorType": 6,
+        "interlaced": false,
+        "sha256": "36491c021bcfc3d8f2ddec1e478fdd16b9cc9c07b1270b73558bc42f91856d93",
+        "profileChunks": []
+      },
+      "photato": {
+        "width": 17,
+        "height": 11,
+        "depth": 8,
+        "colorType": 6,
+        "interlaced": false,
+        "sha256": "4c1279917389384cb9d034b2439e986b4aa078efd28cb1bd2e37b80eef902e2c",
+        "profileChunks": [
+          "sRGB"
+        ]
+      },
+      "adobeVersusSource": {
+        "positions": 187,
+        "differentPerChannel": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "maximumDifferencePerChannel": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "differentOnlyUnderZeroAlpha": 17
+      },
+      "photatoVersusSource": {
+        "positions": 187,
+        "differentPerChannel": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "maximumDifferencePerChannel": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "differentOnlyUnderZeroAlpha": 17
+      },
+      "adobeVersusPhotato": {
+        "positions": 187,
+        "differentPerChannel": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "maximumDifferencePerChannel": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "differentOnlyUnderZeroAlpha": 0
+      },
+      "hiddenDifferences": [
+        {
+          "x": 0,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 2,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 3,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 4,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 5,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 6,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 7,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 8,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 9,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 10,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 11,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 12,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 13,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 14,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 15,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        },
+        {
+          "x": 16,
+          "y": 0,
+          "source": [
+            29,
+            180,
+            245,
+            0
+          ],
+          "adobe": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "photato": [
+            255,
+            255,
+            255,
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "independentReplay": {
+    "graded-dupe": {
+      "height": 11,
+      "mode": "rgb",
+      "width": 17,
+      "matchedImportedRGBAPixels": 187,
+      "outputs": [
+        {
+          "mode": {
+            "width": 17,
+            "height": 11,
+            "depth": 8,
+            "colorType": 6,
+            "interlaced": false,
+            "sha256": "61de0bded2a0868c6dea4b99919667d22f932d69d9ed74502788ca09dc0ecf11",
+            "profileChunks": [
+              "sRGB"
+            ]
+          },
+          "differentSamples": {
+            "positions": 187,
+            "differentPerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "maximumDifferencePerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "differentOnlyUnderZeroAlpha": 0
+          }
+        },
+        {
+          "mode": {
+            "width": 17,
+            "height": 11,
+            "depth": 8,
+            "colorType": 6,
+            "interlaced": true,
+            "sha256": "b10cc63c6816b1b1d9bad3597488379c833e18905e8812e04174d99333a166e2",
+            "profileChunks": [
+              "sRGB"
+            ]
+          },
+          "differentSamples": {
+            "positions": 187,
+            "differentPerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "maximumDifferencePerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "differentOnlyUnderZeroAlpha": 0
+          }
+        }
+      ]
+    },
+    "graded-eight": {
+      "height": 11,
+      "mode": "rgb",
+      "width": 17,
+      "matchedImportedRGBAPixels": 187,
+      "outputs": [
+        {
+          "mode": {
+            "width": 17,
+            "height": 11,
+            "depth": 8,
+            "colorType": 6,
+            "interlaced": false,
+            "sha256": "9e14f5f1e08f40b150dc1dbf312ad00d5147b5578415d59d48e36208cbbbe6c8",
+            "profileChunks": [
+              "sRGB"
+            ]
+          },
+          "differentSamples": {
+            "positions": 187,
+            "differentPerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "maximumDifferencePerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "differentOnlyUnderZeroAlpha": 0
+          }
+        },
+        {
+          "mode": {
+            "width": 17,
+            "height": 11,
+            "depth": 8,
+            "colorType": 6,
+            "interlaced": true,
+            "sha256": "46b562d2ee07f42e0e91675dbd4c9f82243ff0e7c916e1837bbb90e81bfa26fc",
+            "profileChunks": [
+              "sRGB"
+            ]
+          },
+          "differentSamples": {
+            "positions": 187,
+            "differentPerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "maximumDifferencePerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "differentOnlyUnderZeroAlpha": 0
+          }
+        }
+      ]
+    },
+    "multiple-zero": {
+      "height": 11,
+      "mode": "rgb",
+      "width": 17,
+      "matchedImportedRGBAPixels": 187,
+      "outputs": [
+        {
+          "mode": {
+            "width": 17,
+            "height": 11,
+            "depth": 8,
+            "colorType": 6,
+            "interlaced": false,
+            "sha256": "44e9caa479cf0b39d59d5812951bf0cfdcb00442e4a755afc92537606ac4e298",
+            "profileChunks": [
+              "sRGB"
+            ]
+          },
+          "differentSamples": {
+            "positions": 187,
+            "differentPerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "maximumDifferencePerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "differentOnlyUnderZeroAlpha": 0
+          }
+        },
+        {
+          "mode": {
+            "width": 17,
+            "height": 11,
+            "depth": 8,
+            "colorType": 6,
+            "interlaced": true,
+            "sha256": "89955f89cc409d4bb4866683b3660726b346cec56aaf4a0c8587cecba297b51a",
+            "profileChunks": [
+              "sRGB"
+            ]
+          },
+          "differentSamples": {
+            "positions": 187,
+            "differentPerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "maximumDifferencePerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "differentOnlyUnderZeroAlpha": 0
+          }
+        }
+      ]
+    },
+    "single-zero": {
+      "height": 11,
+      "mode": "indexed",
+      "paletteSize": 4,
+      "transparentIndex": 0,
+      "width": 17,
+      "matchedIndexCount": 187
+    },
+    "unused-graded": {
+      "height": 11,
+      "mode": "rgb",
+      "width": 17,
+      "matchedImportedRGBAPixels": 187,
+      "outputs": [
+        {
+          "mode": {
+            "width": 17,
+            "height": 11,
+            "depth": 8,
+            "colorType": 6,
+            "interlaced": false,
+            "sha256": "4c1279917389384cb9d034b2439e986b4aa078efd28cb1bd2e37b80eef902e2c",
+            "profileChunks": [
+              "sRGB"
+            ]
+          },
+          "differentSamples": {
+            "positions": 187,
+            "differentPerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "maximumDifferencePerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "differentOnlyUnderZeroAlpha": 17
+          }
+        },
+        {
+          "mode": {
+            "width": 17,
+            "height": 11,
+            "depth": 8,
+            "colorType": 6,
+            "interlaced": true,
+            "sha256": "0b831f234c55544154f02163c6190581a311a74bb987741b0b053b31464441cf",
+            "profileChunks": [
+              "sRGB"
+            ]
+          },
+          "differentSamples": {
+            "positions": 187,
+            "differentPerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "maximumDifferencePerChannel": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "differentOnlyUnderZeroAlpha": 17
+          }
+        }
+      ]
+    }
+  },
+  "preview": {
+    "build": 763,
+    "archive": "Photato-universal.zip",
+    "archiveSHA256": "290fd76bf39efd5c6ac86ed9e4efa404f7636f341ab3a0545457a44686de5403",
+    "archiveBytes": 77953079,
+    "gitPath": "downloads/Photato-universal.zip",
+    "bundleID": "ca.forensicintelligence.photato.preview",
+    "signing": "ad-hoc",
+    "localSymbolsStripped": true,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "5fbca2bf16dda524505b8c9ae8d622c54df045fe6a637a0686e531a2c59d806d",
+    "architectureInputsSHA256": {
+      "arm64": "d191b2b2e5064d44c84eb7af383607ffff329dd04b3b06a2acc738a2295b0b8a",
+      "x86_64": "b891fe1d8021297056ce0d60239c99a63cdb9080fbdd46ec9466cd3baf29819a"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    },
+    "verifiedEntitlementArchs": [
+      "arm64",
+      "x86_64"
+    ]
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "size": [
+        1000,
+        650
+      ],
+      "pngSHA256": "5938f16e00db861ec66904befdc1d2fc8919a6495ca39f386a7440d8d3129f05"
+    },
+    "x86_64": {
+      "size": [
+        1000,
+        650
+      ],
+      "pngSHA256": "097d0426d3023c69d1c9a91bdd85c306023d628e9e264dfb389aff21d17e89cd"
+    }
+  },
+  "debugLogSHA256": {
+    "xcode-debug-763-gray-01.log": "01668d3034b8e0a9f5bae30b5d2cc5e497d4517453b2c2779f9b5a02ea95ca02",
+    "xcode-focused-763-gray-imaging-01.log": "0745c790bed147935adabad872f5c8afb1479262d6957715349547184a90b47e",
+    "xcode-focused-763-gray-app-01.log": "e5d034c6a14fa275b3712c844761c348c8fd6112672817a50084785a98831492"
+  }
+}
