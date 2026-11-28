@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 797 — Save a developed image directly from Camera Raw
+
+Command–S opens Save Image from the local Camera Raw source workspace. The same native format controls can save TIFF, JPEG, PNG or PSD with the current adjustments and output settings. The source stays open for further adjustment.
+
+The signed native app saved a 512 × 384 RGB16 sRGB TIFF with Exposure set to +0.75. Cancelling a second save kept the adjustment visible. Closing Camera Raw preserved the DNG and left the directory without an XMP sidecar.
+
+Adobe’s Camera Raw Save Options also exposed JPEG XL, AVIF and DNG. Photato keeps sensor-preserving DNG Copy in the existing settings menu.
+
+Xcode built the app and the focused test verified all four file formats through the native encoder and authenticated API. Both optimized architectures passed all 368 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+Rendered JPEG XL and AVIF destinations, output sharpening, installed ICC choices and Adobe RAW pixel and file-byte parity remain open.
+
+[Development record](DEVLOG.md#dev-step-797) · [Qualification](SOURCE_PUBLICATION_797.md).
+
 ## 2026-11-28 — Step 796 — Speed up exact Camera Raw profile conversion
 
 Photato packs the same opaque RGB input for ColorSync without copying the source raster tile by tile. Hidden RGB and source alpha survive conversion. Opaque output avoids a second pass to restore alpha.
@@ -2653,11 +2667,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:796 -->
+<!-- current-status-step:797 -->
 
-Photato packs the same opaque RGB input for ColorSync without copying the source raster tile by tile. Hidden RGB and source alpha survive conversion. Opaque output avoids a second pass to restore alpha.
+Command–S opens Save Image from the local Camera Raw source workspace. The same native format controls can save TIFF, JPEG, PNG or PSD with the current adjustments and output settings. The source stays open for further adjustment.
 
-[Development record](DEVLOG.md#dev-step-796) · [Qualification](SOURCE_PUBLICATION_796.md).
+[Development record](DEVLOG.md#dev-step-797) · [Qualification](SOURCE_PUBLICATION_797.md).
 
 <!-- current-status:end -->
 
@@ -3660,6 +3674,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 794 | [Open Camera Raw files as images, Smart Objects or copies](DEVLOG.md#dev-step-794) |
 | 2026-11-28 | 795 | [Set Camera Raw output profile, bit depth, resolution and size](DEVLOG.md#dev-step-795) |
 | 2026-11-28 | 796 | [Speed up exact Camera Raw profile conversion](DEVLOG.md#dev-step-796) |
+| 2026-11-28 | 797 | [Save a developed image directly from Camera Raw](DEVLOG.md#dev-step-797) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

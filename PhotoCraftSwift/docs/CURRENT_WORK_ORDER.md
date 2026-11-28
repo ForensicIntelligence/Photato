@@ -1,3 +1,5 @@
+**Camera Raw RAW workflow.** Measure neutral-color input profiles and output sharpening against the independent Adobe exports. [Development record](DEVLOG.md#dev-step-797) · [Qualification](SOURCE_PUBLICATION_797.md).
+
 **Camera Raw RAW workflow.** Finish Save Image and use the matching Adobe references to narrow camera rendering and output sharpening differences. [Development record](DEVLOG.md#dev-step-796) · [Qualification](SOURCE_PUBLICATION_796.md).
 
 **Camera Raw RAW workflow.** Compare controlled Adobe exports, then finish output sharpening and installed ICC profile support. [Development record](DEVLOG.md#dev-step-795) · [Qualification](SOURCE_PUBLICATION_795.md).

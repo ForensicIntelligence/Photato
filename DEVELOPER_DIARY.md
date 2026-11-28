@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **796** · The 10 most recent entries, newest first.
+Source build **797** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 797 — Save a developed image directly from Camera Raw
+
+Command–S opens Save Image from the local Camera Raw source workspace. The same native format controls can save TIFF, JPEG, PNG or PSD with the current adjustments and output settings. The source stays open for further adjustment.
+
+The signed native app saved a 512 × 384 RGB16 sRGB TIFF with Exposure set to +0.75. Cancelling a second save kept the adjustment visible. Closing Camera Raw preserved the DNG and left the directory without an XMP sidecar.
+
+Adobe’s Camera Raw Save Options also exposed JPEG XL, AVIF and DNG. Photato keeps sensor-preserving DNG Copy in the existing settings menu.
+
+Xcode built the app and the focused test verified all four file formats through the native encoder and authenticated API. Both optimized architectures passed all 368 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+Rendered JPEG XL and AVIF destinations, output sharpening, installed ICC choices and Adobe RAW pixel and file-byte parity remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-797) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_797.md).
 
 ## 2026-11-28 — Step 796 — Speed up exact Camera Raw profile conversion
 
@@ -113,15 +127,3 @@ Xcode built the app. Three focused imaging tests and one authenticated HTTP test
 This covers the tested classic DNG settings. Other RAW sidecar writing, camera-specific defaults and settings databases, DNG preview regeneration, physical Intel testing, and pixel-level Adobe Camera Raw equivalence remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-788) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_788.md).
-
-## 2026-11-27 — Step 787 — Save editable Camera Raw settings in DNG copies
-
-Camera Raw can export a DNG copy with supported adjustments embedded as XMP. The copy retains original sensor bytes, and the source stays unchanged.
-
-Camera Raw 18.1.1 opened the Photato copy with Exposure +1.50, Contrast +21, Highlights −17 and Vibrance +9. All 393,216 sensor bytes matched the original and the Adobe-saved file. The sandboxed Photato export matched the tested copy byte for byte.
-
-Xcode built the app. Three focused imaging tests and one real authenticated HTTP test passed. Both optimized architectures passed all 336 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-In-place Done, importing sidecar-only metadata into edited DNGs, general RAW-to-DNG conversion, preview regeneration, Apple-only sensor controls in XMP and exact Photoshop pixel rendering remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-787) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_787.md).

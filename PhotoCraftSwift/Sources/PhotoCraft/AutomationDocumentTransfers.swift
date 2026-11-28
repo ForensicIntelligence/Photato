@@ -91,6 +91,13 @@ extension AutomationService {
         "result":
           "New shared document state, including id, revision and isModified. Native archives retain their stored name.",
       ],
+      "cameraRawDevelopedImage": [
+        "import": "POST /v1/documents/import with X-Photato-Raw-Open-Mode: copy",
+        "optionalImportHeaders": ["X-Photato-Raw-XMP", "X-Photato-Raw-Workflow"],
+        "download": "GET /v1/documents/{id}/file.{format}",
+        "formats": ["tiff", "jpeg", "png", "psd"],
+        "behavior": "Uses the same developed raster and encoders as Camera Raw Save Image. The uploaded source is never written.",
+      ],
       "download": [
         "method": "GET", "path": "/v1/documents/{id}/file.{format}",
         "formats": DocumentIO.Format.allCases.map(\.rawValue),

@@ -19,9 +19,15 @@ struct CameraRawSheet: View {
   @State private var exportName = "Camera Raw.xmp"
   @State private var dngTask: Task<Void, Never>?
   @State private var sourceTask: Task<Void, Never>?
+  @State private var imageExportTask: Task<Void, Never>?
+  @State private var imageExportPanel: NSSavePanel?
+  @State private var imageExportStatus: String?
+  @State private var imageExportFormat = DocumentIO.Format.tiff
+  @State private var imageExportOptions: [DocumentIO.Format: RasterEncodingOptions] = [:]
   @State private var showingWorkflow = false
   @State private var openModifiers: NSEvent.ModifierFlags = []
   private var savingSource: Bool { sourceTask != nil }
+  private var exportingImage: Bool { imageExportTask != nil || imageExportPanel != nil }
   @State private var sourceSaveError: String?
   @State private var sidecarAccessPanel: NSOpenPanel?
   private static let xmpType = UTType(filenameExtension: "xmp", conformingTo: .data) ?? .xml
@@ -43,11 +49,20 @@ struct CameraRawSheet: View {
         Spacer()
         if savingSource {
           ProgressView().controlSize(.small).accessibilityLabel("Finishing Camera Raw")
+        } else if imageExportTask != nil {
+          ProgressView().controlSize(.small).accessibilityLabel("Preparing the developed image")
         } else if model.rendering {
           ProgressView().controlSize(.small).accessibilityLabel("Rendering Camera Raw preview")
         }
+        if let document = store.initialRawDocument {
+          Button("Save Image…") { saveDevelopedImage(from: document) }
+            .keyboardShortcut("s", modifiers: .command)
+            .help("Save a TIFF, JPEG, PNG or Photoshop file using these Camera Raw settings.")
+            .disabled(!model.ready || exportingImage || dngTask != nil || showingWorkflow)
+        }
         Button("Load Settings…") { importing = true }
           .help("Load Camera Raw XMP or Photato JSON settings.")
+          .disabled(exportingImage)
         Menu("Save Settings") {
           Button("Camera Raw XMP…") { exportSettings(xmp: true) }
             .help("Share supported adjustments with Adobe Camera Raw.")
@@ -58,7 +73,7 @@ struct CameraRawSheet: View {
             Button("DNG Copy…", action: exportDNG)
               .help("Save a copy of the RAW sensor data with embedded Camera Raw settings.")
           }
-        }.disabled(dngTask != nil)
+        }.disabled(dngTask != nil || exportingImage)
       }.padding(12)
       Divider()
       HStack(spacing:0) {
@@ -82,6 +97,8 @@ struct CameraRawSheet: View {
       Divider()
       if let error = sourceSaveError ?? model.error {
         Text(error).font(.caption).foregroundStyle(.red).padding(6)
+      } else if let imageExportStatus {
+        Text(imageExportStatus).font(.caption).foregroundStyle(.secondary).padding(6)
       }
       HStack {
         Toggle("Preview",isOn:$model.preview)
@@ -107,7 +124,7 @@ struct CameraRawSheet: View {
           if document.localRawSource != nil {
             Button("Done") { finishSource(document, mode: nil) }
               .help("Save these settings to the RAW file or its XMP sidecar and close Camera Raw.")
-              .disabled(!model.ready || dngTask != nil)
+              .disabled(!model.ready || dngTask != nil || exportingImage)
           }
           let mode = RawOpenShortcuts.mode(for: openModifiers, defaultAsObject: defaultOpenAsObject)
           HStack(spacing: 4) {
@@ -131,10 +148,12 @@ struct CameraRawSheet: View {
             .help("Choose how to open this RAW image.")
             .fixedSize()
           }
-          .disabled(!model.ready || dngTask != nil)
-          .background(RawOpenKeyMonitor(onFlags: { openModifiers = $0 }, onOpen: { flags in
+          .disabled(!model.ready || dngTask != nil || exportingImage)
+          .background(RawSourceKeyMonitor(onFlags: { openModifiers = $0 }, onOpen: { flags in
             let selected = RawOpenShortcuts.mode(for: flags, defaultAsObject: defaultOpenAsObject)
             finishSource(document, mode: selected)
+          }, onSave: {
+            saveDevelopedImage(from: document)
           }))
         } else {
           Button("OK", action: commit).keyboardShortcut(.defaultAction).disabled(!model.ready)
@@ -155,6 +174,10 @@ struct CameraRawSheet: View {
         retainRawOutput: store.initialRawDocument != nil)
     }
     .onDisappear {
+      imageExportTask?.cancel()
+      imageExportTask = nil
+      imageExportPanel?.cancel(nil)
+      imageExportPanel = nil
       sourceTask?.cancel()
       sourceTask = nil
       dngTask?.cancel()
@@ -202,7 +225,7 @@ struct CameraRawSheet: View {
   }
 
   private func finishSource(_ document: CraftNSDocument, mode: RawOpenMode?, authorizedFolder: URL? = nil) {
-    guard !savingSource, !showingWorkflow, sidecarAccessPanel == nil, dngTask == nil,
+    guard !savingSource, !exportingImage, !showingWorkflow, sidecarAccessPanel == nil, dngTask == nil,
       store.initialRawDocument === document, let layerID = store.filterDraft?.id,
       let settings = model.sensorSettings, model.canOpen(in: store.document),
       let output = model.developedRawPreview else { return }
@@ -258,6 +281,75 @@ struct CameraRawSheet: View {
     }
     if let window = document.windowForSheet?.attachedSheet {
       panel.beginSheetModal(for: window, completionHandler: completion)
+    } else {
+      panel.begin(completionHandler: completion)
+    }
+  }
+
+  private func saveDevelopedImage(from document: CraftNSDocument) {
+    guard !exportingImage, !savingSource, dngTask == nil, !showingWorkflow,
+      store.initialRawDocument === document, model.canOpen(in: store.document),
+      let developed = model.developedRawPreview else { return }
+    let workflow = document.ownerController?.cameraRawPreferences.workflowOutput ?? .init()
+    let original = document.importedSourceURL
+    imageExportStatus = nil
+    sourceSaveError = nil
+    imageExportTask = Task {
+      defer { imageExportTask = nil }
+      let worker = Task.detached(priority: .userInitiated) {
+        try RawOpenMode.copy.output(from: developed, workflow: workflow)
+      }
+      do {
+        let output = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+        try Task.checkCancellation()
+        guard store.initialRawDocument === document else { return }
+        showDevelopedImageSavePanel(output, document: document, original: original)
+      } catch is CancellationError {
+      } catch { sourceSaveError = error.localizedDescription }
+    }
+  }
+
+  private func showDevelopedImageSavePanel(_ output: CraftDocument, document: CraftNSDocument, original: URL?) {
+    let panel = NSSavePanel()
+    panel.title = "Save Developed Image"
+    panel.nameFieldStringValue = output.name + "." + imageExportFormat.rawValue
+    panel.directoryURL = original?.deletingLastPathComponent()
+    panel.canCreateDirectories = true
+    let accessory = DocumentCopyAccessory(panel: panel, initial: imageExportFormat,
+      availableFormats: [.tiff, .jpeg, .png, .psd], initialOptions: imageExportOptions,
+      depth: output.depth, mode: output.colorMode, documentIsUntagged: output.profileIsUntagged == true,
+      width: output.width, height: output.height)
+    panel.accessoryView = accessory.view
+    imageExportPanel = panel
+    let completion: (NSApplication.ModalResponse) -> Void = { response in
+      imageExportPanel = nil
+      guard response == .OK, let destination = panel.url, store.initialRawDocument === document else { return }
+      let format = accessory.format
+      let options = accessory.encodingOptions
+      imageExportTask = Task {
+        defer { imageExportTask = nil }
+        let worker = Task.detached(priority: .userInitiated) {
+          let access = destination.startAccessingSecurityScopedResource()
+          defer { if access { destination.stopAccessingSecurityScopedResource() } }
+          guard destination.standardizedFileURL.resolvingSymlinksInPath() != original else {
+            throw CraftError.invalid("Choose a different destination to keep the original Camera Raw file.")
+          }
+          let file = try DocumentIO.prepareOutput(output, format: format, persistence: false, options: options)
+          try file.write(to: destination)
+        }
+        do {
+          try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+          try Task.checkCancellation()
+          guard store.initialRawDocument === document else { return }
+          imageExportFormat = format
+          imageExportOptions[format] = options
+          imageExportStatus = "Saved " + destination.lastPathComponent
+        } catch is CancellationError {
+        } catch { sourceSaveError = error.localizedDescription }
+      }
+    }
+    if let parent = document.windowForSheet?.attachedSheet {
+      panel.beginSheetModal(for: parent, completionHandler: completion)
     } else {
       panel.begin(completionHandler: completion)
     }
@@ -429,20 +521,23 @@ enum RawOpenShortcuts {
   }
 }
 
-private struct RawOpenKeyMonitor: NSViewRepresentable {
+private struct RawSourceKeyMonitor: NSViewRepresentable {
   var onFlags: (NSEvent.ModifierFlags) -> Void
   var onOpen: (NSEvent.ModifierFlags) -> Void
+  var onSave: () -> Void
 
   func makeNSView(context: Context) -> MonitorView { MonitorView() }
 
   func updateNSView(_ view: MonitorView, context: Context) {
     view.onFlags = onFlags
     view.onOpen = onOpen
+    view.onSave = onSave
   }
 
   final class MonitorView: NSView {
     var onFlags: ((NSEvent.ModifierFlags) -> Void)?
     var onOpen: ((NSEvent.ModifierFlags) -> Void)?
+    var onSave: (() -> Void)?
     private var monitor: Any?
 
     override func viewWillMove(toWindow newWindow: NSWindow?) {
@@ -454,10 +549,17 @@ private struct RawOpenKeyMonitor: NSViewRepresentable {
           let flags = event.modifierFlags.intersection(modifiers)
           if event.type == .flagsChanged {
             onFlags?(flags)
-          } else if flags.contains(.command), !flags.contains(.control),
-            event.charactersIgnoringModifiers?.lowercased() == "o" {
-            if !event.isARepeat { onOpen?(flags) }
-            return nil
+          } else if flags.contains(.command), !flags.contains(.control) {
+            switch event.charactersIgnoringModifiers?.lowercased() {
+            case "o":
+              if !event.isARepeat { onOpen?(flags) }
+              return nil
+            case "s" where flags == .command:
+              if !event.isARepeat { onSave?() }
+              return nil
+            default:
+              break
+            }
           }
           return event
         }

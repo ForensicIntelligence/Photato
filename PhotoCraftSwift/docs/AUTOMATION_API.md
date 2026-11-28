@@ -1,3 +1,9 @@
+### Camera Raw Save Image (checkpoint 797)
+
+The development and encoder path is available through authenticated RAW import with `X-Photato-Raw-Open-Mode: copy`, optional XMP and workflow headers, and the existing format download. The capability response advertises this workflow. The four tested native and HTTP encoding results were byte-identical.
+
+[Qualification](SOURCE_PUBLICATION_797.md).
+
 ### Camera Raw profile conversion (checkpoint 796)
 
 The same conversion code serves the desktop and existing Photato and Adobe-compatible output paths. The change retains their existing profile, alpha and encoding settings.
