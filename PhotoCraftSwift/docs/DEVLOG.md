@@ -831,7 +831,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 810 | 2026-11-28 | [Refresh Camera Raw thumbnails from developed photos](#dev-step-810) |
 | 811 | 2026-11-28 | [Save deselected Camera Raw edits when closing with Done](#dev-step-811) |
 | 812 | 2026-11-28 | [Hide and reveal photos in Camera Raw sessions](#dev-step-812) |
+| 813 | 2026-11-28 | [Merge Camera Raw exposures into editable HDR DNGs](#dev-step-813) |
 <!-- history-index:end -->
+
+<a id="dev-step-813"></a>
+
+## 2026-11-28 — Step 813 — Merge Camera Raw exposures into editable HDR DNGs
+
+Select two or more RAW brackets and use Merge to HDR. The preview supports alignment, automatic exposure, three deghost strengths and an overlay. The result returns to the filmstrip as an editable DNG.
+
+Use a thumbnail IFD plus a binary16 LinearRaw SubIFD with bounded strips and atomic publication. Both Apple’s RAW decoder and Adobe Camera Raw opened the written format. Protect all originals in the session from output replacement. The HDR API adds the 300th command. The catalogue test count was updated before optimized qualification.
+
+Option–M opened the preview on three owned brackets, and Option–Shift–M opened the destination picker. The regular merge added a fourth photo and preserved all source bytes. Adobe Camera Raw rendered a Photato-generated linear DNG and allowed exposure edits. Native and authenticated API DNG downloads matched byte for byte with identical inputs and settings.
+
+Adobe Camera Raw 18.1.1 confirmed Align Images and Apply Auto Settings as initial defaults, with Deghost Off. [Adobe Camera Raw shortcuts](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/default-keyboard-shortcuts.html).
+
+Authenticated `raw.mergeHDR` takes distinct shared RAW Smart Object layer IDs plus optional `align`, `autoSettings` and `deghost`. It downloads `image/x-adobe-dng` and leaves source documents and Undo unchanged.
+
+Xcode and forty focused application and imaging tests passed, including the ten existing HDR merge workflow cases. Both optimized architectures passed all 415 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The merge kernel reuses Photato’s photographic HDR engine. Automatic settings currently embed a single calculated exposure adjustment. Adobe’s result used JPEG XL and multiple tone adjustments. The tested decoded RGB samples and complete file bytes differ from Adobe’s result. RAW-specific fusion, larger brackets and exact render parity remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 79,827,161 bytes with SHA-256 `54a9ac8dcf247920a8568d6b627067ca00f62b1e799091986a6b1b6710b31237`.
+
+[Qualification](SOURCE_PUBLICATION_813.md).
 
 <a id="dev-step-812"></a>
 

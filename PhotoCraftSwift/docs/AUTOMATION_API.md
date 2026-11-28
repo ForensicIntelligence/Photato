@@ -1,3 +1,9 @@
+### Camera Raw HDR merge (checkpoint 813)
+
+Authenticated `raw.mergeHDR` takes distinct shared RAW Smart Object layer IDs plus optional `align`, `autoSettings` and `deghost`. It downloads `image/x-adobe-dng` and leaves source documents and Undo unchanged.
+
+[Qualification](SOURCE_PUBLICATION_813.md).
+
 ### Camera Raw photo visibility (checkpoint 812)
 
 Visibility is presentation state in the native Camera Raw session. The authenticated RAW inspection and adjustment commands retain their document scope.

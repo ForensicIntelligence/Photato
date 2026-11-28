@@ -10940,6 +10940,13 @@
       "link": "DEVLOG.md#dev-step-812",
       "section_sha256": "37ab42de820d0f6c1f0626b260897d5f90a7ee83b22ec500377d1cdc59e5dde2",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-813",
+      "title": "2026-11-28 \u2014 Step 813 \u2014 Merge Camera Raw exposures into editable HDR DNGs",
+      "link": "DEVLOG.md#dev-step-813",
+      "section_sha256": "e5c38b6569f13046f7562f218f924583f473997e5bd69be4dda5fd2c93d1f8af",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13775,8 +13782,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "5c70776f78aca821a072c20af5d3411fe187eeecf7b5474d3410b4aae0b30fba",
-      "bytes": 191705,
+      "sha256": "9677df75ec6c769b1e2f4e32fad12e6433a29f4107186089df4fbbfc31ca6ba6",
+      "bytes": 191833,
       "rolling_current_snapshot": false
     },
     {
@@ -15497,8 +15504,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "a78304eb5d1a10c6f66e036368589e3b0b2eef103a45468df6b23777ab45d89b",
-      "bytes": 762512,
+      "sha256": "9d51176758bffe97c4504f179343e68d523d4531d8df9287fe7abdac4e966830",
+      "bytes": 762813,
       "rolling_current_snapshot": false
     },
     {
@@ -16067,8 +16074,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "1de39285e0fdcf380701ee4c178fd938db0aa3b0ecbc88c2638d04d66a63ee06",
-      "bytes": 406704,
+      "sha256": "a1ec749469d8193a3f9384f3bdc5c4ce09b4967091ed4780628b21317567e818",
+      "bytes": 406833,
       "rolling_current_snapshot": false
     },
     {
@@ -16187,8 +16194,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "9e51c79e4da69d0636e51a1e0606bd89fccab68746303ff200e54257c863f282",
-      "bytes": 234214,
+      "sha256": "52b7facef0d70a4a847c3ceb86685f232dfe2dd56dfbdc099b3944f1f66d47ed",
+      "bytes": 234446,
       "rolling_current_snapshot": false
     },
     {
@@ -16265,14 +16272,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "065cd8fa40aaf0244433ee14fd6d023b62d2f77f5e50fa3426c21f832cc8b86b",
-      "bytes": 1110267,
+      "sha256": "a62c1d08751ea6e632a2c8fe1f9df19e6c1ccc3d43dde1a6bd26f299258581dc",
+      "bytes": 1111947,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "ce17fee13d2b8760690e2eeb253beca2ebc0eccbae6ca29f7b4acbcd01917ef7",
-      "bytes": 5264213,
+      "sha256": "96c813924055e7cc58051542a142cfe40827a4d13894690057df85ef0c853fc5",
+      "bytes": 5266586,
       "rolling_current_snapshot": false
     },
     {
@@ -24226,6 +24233,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_813.json",
+      "sha256": "2120caa1bd9e0350af012c818bc56a0bf6dff6ff59b2d515812fddcc76b34d36",
+      "bytes": 28644,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_813.md",
+      "sha256": "c871a5c2324725a26383f1403515fc14dd40ce6553ddcf89554e000cb63e2b49",
+      "bytes": 1989,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24785,8 +24804,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "3675bf3247e3d82782cf0a60c6e94dbbad1695c9fbc41c754cc058017b9a8d4b",
-      "bytes": 526174,
+      "sha256": "e3b6219c973e458f6329c5e428f8edc7a7e40f33d87e79f1446b650e9fa93963",
+      "bytes": 526692,
       "rolling_current_snapshot": false
     },
     {
@@ -27299,8 +27318,8 @@
     }
   ],
   "counts": {
-    "milestones": 812,
-    "evidence_files": 2256,
+    "milestones": 813,
+    "evidence_files": 2258,
     "logs": 0,
     "missing_explicit_references": 704
   }

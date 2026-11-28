@@ -129,6 +129,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored var imageStackOperationID: UUID?
   @ObservationIgnored var imageStackSourceIDs = Set<UUID>()
   @ObservationIgnored var hdrMergeTask: Task<HDRMerge.Result,Error>?
+  @ObservationIgnored var rawHDRMergeTask: Task<Data, Error>?
   @ObservationIgnored var hdrMergeOperationID: UUID?
   @ObservationIgnored var hdrMergeSourceIDs = Set<UUID>()
   @ObservationIgnored var photomergePreparation: @Sendable ([CraftDocument], PhotomergeSettings, String) throws -> Photomerge.Result = {
@@ -243,7 +244,7 @@ import UniformTypeIdentifiers
   func setDocumentTransfersEnabled(_ enabled: Bool) {
     documentTransferGeneration = UUID()
     documentTransfersEnabled = enabled && isRunning
-    if !documentTransfersEnabled { mergeChannelsTask?.cancel();pdfImportTask?.cancel();movieFramesImportTask?.cancel();imageProcessorTask?.cancel();scanCropTask?.cancel();contactSheetTask?.cancel();photomergeTask?.cancel();hdrMergeTask?.cancel();imageStackTask?.cancel();videoSequenceTask?.cancel();for share in shares {cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedIllustratorPaths(share);cancelSharedLayerFiles(share);cancelSharedAudio(share)};luts.removeAll(); lutCacheGeneration = UUID() }
+    if !documentTransfersEnabled { mergeChannelsTask?.cancel();pdfImportTask?.cancel();movieFramesImportTask?.cancel();imageProcessorTask?.cancel();scanCropTask?.cancel();contactSheetTask?.cancel();photomergeTask?.cancel();hdrMergeTask?.cancel();rawHDRMergeTask?.cancel();imageStackTask?.cancel();videoSequenceTask?.cancel();for share in shares {cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedIllustratorPaths(share);cancelSharedLayerFiles(share);cancelSharedAudio(share)};luts.removeAll(); lutCacheGeneration = UUID() }
   }
   func setDocumentSavesEnabled(_ enabled: Bool) {
     documentSaveGeneration = UUID()
@@ -1476,6 +1477,7 @@ import UniformTypeIdentifiers
       if command.name == "document.hdrMerge" { return try await executeHDRMerge(command,anchorID:id) }
       if command.name == "raw.inspect" { return .json(try await inspectRaw(command,document:document,shareID:id)) }
       if command.name == RawBatchExportAPI.name { return try await exportRawBatch(command, document: document, shareID: id) }
+      if command.name == RawHDRMergeAPI.name { return try await mergeRawHDR(command, document: document, shareID: id) }
       if command.name == RawMarkingAPI.name {
         let edit = try RawMarkingAPI.edit(command, document: store.document)
         if let edit { try store.executeEditorCommand(edit) }

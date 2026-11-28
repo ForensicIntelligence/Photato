@@ -49,6 +49,7 @@ import SwiftUI
   static let defaultGridSize = 150.0
   static let gridSizeRange = 96.0...280.0
   var presentation = RawFilmstripPresentation.loupe
+  var hdrMergeRequest: RawFilmstripHDRRequest?
   var gridThumbnailSize = defaultGridSize
   var gridDetails = RawGridDetails.all
   private(set) var ratingFilter = RawFilmstripRatingFilter.all
@@ -121,6 +122,56 @@ import SwiftUI
   }
 
   func setWorkflow(_ output: RawWorkflowOutput) { controller?.cameraRawPreferences.workflowOutput = output }
+
+  func canMergeHDR(contextPhoto: UUID? = nil) -> Bool {
+    !busy && !closed && hdrMergeRequest == nil
+      && RawHDRMerge.sourceCount.contains(visibilityTargets(contextPhoto: contextPhoto).count)
+  }
+
+  func beginHDRMerge(contextPhoto: UUID? = nil, skipPreview: Bool = false) {
+    guard canMergeHDR(contextPhoto: contextPhoto) else { return }
+    let ids = visibilityTargets(contextPhoto: contextPhoto)
+    let inputs = displayedPhotos.filter { ids.contains($0.id) }
+    guard RawHDRMerge.sourceCount.contains(inputs.count) else { return }
+    let settings = controller?.cameraRawPreferences.hdrMerge ?? .init()
+    hdrMergeRequest = RawFilmstripHDRRequest(photos: inputs, skipPreview: skipPreview, settings: settings)
+  }
+
+  func dismissHDRMerge() { hdrMergeRequest = nil }
+
+  func saveHDRMerge(_ result: RawHDRMerge.Result, to url: URL, requestID: UUID) async throws -> Photo {
+    guard let controller, let request = hdrMergeRequest, request.id == requestID, !closed else { throw CancellationError() }
+    let destination = url.standardizedFileURL.resolvingSymlinksInPath()
+    guard destination.pathExtension.lowercased() == "dng", !photos.contains(where: {
+      $0.original.url.standardizedFileURL.resolvingSymlinksInPath() == destination
+    }) else {
+      throw CraftError.invalid("Choose a DNG destination different from the source exposures.")
+    }
+    let storage = controller.cameraRawPreferences.dngStorage
+    let defaults = controller.cameraRawPreferences.rawDefaults
+    let worker = Task.detached(priority: .userInitiated) {
+      let access = url.startAccessingSecurityScopedResource()
+      defer { if access { url.stopAccessingSecurityScopedResource() } }
+      try result.write(to: url)
+      let source = try RawSourceIO.prepareLocalOriginal(url, dngStorage: storage, rawDefaults: defaults)
+      return Photo(id: UUID(), original: source, thumbnail: source.thumbnail(),
+        settings: source.settings, marking: source.marking)
+    }
+    return try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+  }
+
+  func acceptHDRMerge(_ photo: Photo, requestID: UUID, settings: RawHDRMergeSettings) {
+    guard !closed, hdrMergeRequest?.id == requestID else { return }
+    controller?.cameraRawPreferences.hdrMerge = settings
+    photos.append(photo)
+    if displayedPhotos.contains(where: { $0.id == photo.id }) {
+      select(photo.id)
+      exportStatus = nil
+    } else {
+      exportStatus = "Saved \(photo.name). The current filters hide it."
+    }
+    dismissHDRMerge()
+  }
 
   func thumbnail(for photo: Photo) -> CGImage? {
     if let cached = developedThumbnails[photo.id], cached.settings == photo.settings {
@@ -591,6 +642,7 @@ import SwiftUI
   func close() {
     guard !closed else { return }
     closed = true
+    dismissHDRMerge()
     previewTask?.cancel()
     operation?.cancel()
     folderPanel?.cancel(nil)

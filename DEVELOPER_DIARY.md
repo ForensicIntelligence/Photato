@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **812** · The 10 most recent entries, newest first.
+Source build **813** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 813 — Merge Camera Raw exposures into editable HDR DNGs
+
+Select two or more RAW brackets and use Merge to HDR. The preview supports alignment, automatic exposure, three deghost strengths and an overlay. The result returns to the filmstrip as an editable DNG.
+
+Option–M opened the preview on three owned brackets, and Option–Shift–M opened the destination picker. The regular merge added a fourth photo and preserved all source bytes. Adobe Camera Raw rendered a Photato-generated linear DNG and allowed exposure edits. Native and authenticated API DNG downloads matched byte for byte with identical inputs and settings.
+
+Adobe Camera Raw 18.1.1 confirmed Align Images and Apply Auto Settings as initial defaults, with Deghost Off. [Adobe Camera Raw shortcuts](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/default-keyboard-shortcuts.html).
+
+Xcode and forty focused application and imaging tests passed, including the ten existing HDR merge workflow cases. Both optimized architectures passed all 415 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The merge kernel reuses Photato’s photographic HDR engine. Automatic settings currently embed a single calculated exposure adjustment. Adobe’s result used JPEG XL and multiple tone adjustments. The tested decoded RGB samples and complete file bytes differ from Adobe’s result. RAW-specific fusion, larger brackets and exact render parity remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-813) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_813.md).
 
 ## 2026-11-28 — Step 812 — Hide and reveal photos in Camera Raw sessions
 
@@ -129,17 +143,3 @@ Xcode built the app. All seven focused core tests passed. The new case verifies 
 The camera and RAW layout must be supported at full size by the Apple decoder. The 65,000-pixel side and 512-megapixel area are admission bounds. The installed decoder does not return full-size rasters for the tested canonical DNGs at those two bounds.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-804) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_804.md).
-
-## 2026-11-28 — Step 803 — Apply local tone to full-size Camera Raw images
-
-Camera Raw can adjust Highlights, Shadows, Texture and Clarity on supported sensor images above 36 megapixels. The native processor uses the full image dimensions to choose the filter radii.
-
-The production RAW development command applied all four controls to the owned 8,192 × 5,120 DNG and returned 10,240 mapped tiles. Five inspected RGB samples changed, including adjacent rows across a band boundary. The sampled alpha and all source-file bytes were retained.
-
-The output comparisons use the existing Photato renderer. Adobe tone and RAW output comparisons remain open.
-
-Xcode built the app. All six focused core tests passed. The new test covers RGB16 and linear Float32 with partial alpha, both with and without Detail sharpening. Each stored sample matches the dense Photato renderer. Both optimized architectures passed all 385 selected cases, including authenticated capability discovery. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
-
-Dehaze still has a 36-megapixel limit in this build. The maximum RAW sensor dimensions depend on the Apple decoder.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-803) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_803.md).

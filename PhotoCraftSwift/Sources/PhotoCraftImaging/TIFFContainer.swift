@@ -244,7 +244,7 @@ struct TIFFContainer {
   /// Keep JPEG table and color context intact for the native TIFF decoder.
   static let jpegFields: Set<Int> = [347, 529, 530, 531, 532]
 
-  private init(order: Order) {
+  init(order: Order) {
     self.order = order
     isBigTIFF = false
     storage = .memory(Data())

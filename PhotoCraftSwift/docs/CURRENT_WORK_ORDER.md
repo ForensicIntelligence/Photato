@@ -1,3 +1,5 @@
+**Camera Raw development.** Compare RAW-specific exposure fusion and automatic tone settings with the controlled Adobe HDR DNG references. [Development record](DEVLOG.md#dev-step-813) · [Qualification](SOURCE_PUBLICATION_813.md).
+
 **Camera Raw development.** Qualify a native linear DNG writer for Camera Raw HDR merging using the owned Adobe bracket reference. [Development record](DEVLOG.md#dev-step-812) · [Qualification](SOURCE_PUBLICATION_812.md).
 
 **Camera Raw development.** Add session-only Hide Photo and Show Only commands, with Show All recovery and focused save checks. [Development record](DEVLOG.md#dev-step-811) · [Qualification](SOURCE_PUBLICATION_811.md).

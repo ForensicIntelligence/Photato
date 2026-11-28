@@ -51,6 +51,15 @@ enum RawGridDetails: String, CaseIterable {
     select(displayed[destination].id, extending: extending)
   }
 
+  func handleHDRMergeKey(_ event: NSEvent) -> Bool {
+    guard canMergeHDR(), !(event.window?.firstResponder is NSTextView),
+      event.charactersIgnoringModifiers?.lowercased() == "m" else { return false }
+    let modifiers = event.modifierFlags.intersection([.command, .option, .control, .shift])
+    guard modifiers == .option || modifiers == [.option, .shift] else { return false }
+    beginHDRMerge(skipPreview: modifiers.contains(.shift))
+    return true
+  }
+
   func handlePresentationKey(_ event: NSEvent) -> Bool {
     guard !busy, !closed, !photos.isEmpty, !(event.window?.firstResponder is NSTextView),
       let key = event.charactersIgnoringModifiers else { return false }

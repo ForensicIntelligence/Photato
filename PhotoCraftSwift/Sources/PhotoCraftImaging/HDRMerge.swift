@@ -14,6 +14,7 @@ public enum HDRMerge {
     public let ghostFraction: Double
     public let stops: Double
     public let response: [[Double]]
+    package let ghostMask: [Float]?
   }
   public static func exposureFactor(_ document: CraftDocument) -> Double? {
     guard let data = document.sourceMetadata?[RasterMetadata.propertiesKey],data.count <= RasterMetadata.maximumBytes,
@@ -26,6 +27,11 @@ public enum HDRMerge {
     let factor = time*iso/(100*aperture*aperture);return factor.isFinite && factor > 0 ? factor:nil
   }
   public static func prepare(_ sources: [CraftDocument],settings s: HDRMergeSettings,name: String = "Untitled HDR") throws -> Result {
+    try prepare(sources, settings: s, name: name, ghostThreshold: 0.35, retainGhostMask: false)
+  }
+
+  static func prepare(_ sources: [CraftDocument], settings s: HDRMergeSettings, name: String,
+    ghostThreshold: Double, retainGhostMask: Bool) throws -> Result {
     try s.validate(count:sources.count);try Task.checkCancellation()
     guard !name.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty,name.count <= 256 else { throw CraftError.invalid("Choose an HDR name with1–256 characters.") }
     let first = sources[0],w = first.width,h = first.height
@@ -74,7 +80,8 @@ public enum HDRMerge {
         }
       }
     }
-    let merged = try HDRMergeMath.merge(width:w,height:h,images:images,exposures:exposures,removeGhosts:s.removeGhosts,ghostBase:s.ghostBase)
+    let merged = try HDRMergeMath.merge(width:w,height:h,images:images,exposures:exposures,removeGhosts:s.removeGhosts,ghostBase:s.ghostBase,
+      ghostThreshold: ghostThreshold, retainGhostMask: retainGhostMask)
     let pixels = s.depth == .f32 ? merged.pixels:try HDRMergeMath.toneMap(merged.pixels,width:w,height:h,settings:s)
     working.depth = s.depth
     var surface = try Surface(width:w,height:h,depth:s.depth,colorEncoding:s.depth == .f32 ? .linearRGB:.sRGB)
@@ -82,7 +89,7 @@ public enum HDRMerge {
       if s.depth == .f32 { surface.setLinearPixel(x:x,y:y,p) } else { surface.setPixel(x:x,y:y,p) }
     } }
     working.layers = [Layer(name:"HDR Merge",content:.raster(surface))];working.activeLayerID = working.layers[0].id
-    try working.validate();return Result(document:working,exposureEV:exposures.map(log2),exposureSource:s.exposureSource,offsets:offsets,ghostBase:merged.ghostBase,ghostFraction:merged.ghostFraction,stops:merged.stops,response:merged.response)
+    try working.validate();return Result(document:working,exposureEV:exposures.map(log2),exposureSource:s.exposureSource,offsets:offsets,ghostBase:merged.ghostBase,ghostFraction:merged.ghostFraction,stops:merged.stops,response:merged.response,ghostMask:merged.ghostMask)
   }
   /// Display exposure never changes the new document's32-bit samples.
   public static func preview(_ result: Result,exposure: Double) throws -> CGImage {

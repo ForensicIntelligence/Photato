@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 813.** Merge Camera Raw exposures into editable HDR DNGs. [Qualification](docs/SOURCE_PUBLICATION_813.md).
+
 **Source checkpoint 812.** Hide and reveal photos in Camera Raw sessions. [Qualification](docs/SOURCE_PUBLICATION_812.md).
 
 **Source checkpoint 811.** Save deselected Camera Raw edits when closing with Done. [Qualification](docs/SOURCE_PUBLICATION_811.md).

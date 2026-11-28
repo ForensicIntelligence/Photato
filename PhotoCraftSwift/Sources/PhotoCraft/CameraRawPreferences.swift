@@ -10,6 +10,7 @@ import UniformTypeIdentifiers
   private static let objectKey = "Photato.CameraRaw.OpenAsSmartObject"
   private static let outputKey = "Photato.CameraRaw.WorkflowOutput"
   private static let defaultsKey = "Photato.CameraRaw.RawDefaults"
+  private static let hdrKey = "Photato.CameraRaw.HDRMerge"
   private let defaults: UserDefaults?
   private(set) var revision = UUID()
   var dngStorage: RawDNGSettingsStorage {
@@ -38,6 +39,13 @@ import UniformTypeIdentifiers
     }
   }
 
+  var hdrMerge: RawHDRMergeSettings {
+    didSet {
+      guard hdrMerge != oldValue else { return }
+      if let data = try? JSONEncoder().encode(hdrMerge) { defaults?.set(data, forKey: Self.hdrKey) }
+    }
+  }
+
   private(set) var rawDefaults: RawDefaults
 
   func setRawDefaults(_ value: RawDefaults) throws {
@@ -58,6 +66,10 @@ import UniformTypeIdentifiers
     } else {
       rawDefaults = .init()
     }
+    if let data = defaults?.data(forKey: Self.hdrKey), data.count <= 512,
+      let settings = try? JSONDecoder().decode(RawHDRMergeSettings.self, from: data) {
+      hdrMerge = settings
+    } else { hdrMerge = .init() }
     openAsSmartObject = defaults?.bool(forKey: Self.objectKey) ?? false
     let stored = defaults?.data(forKey: Self.outputKey).flatMap { try? JSONDecoder().decode(RawWorkflowOutput.self, from: $0) }
     if let stored, (try? stored.validate()) != nil {

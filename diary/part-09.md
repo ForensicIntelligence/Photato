@@ -1,4 +1,4 @@
-[Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
+[Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-10.md) · [Next page](part-08.md)
 
 ## 2026-11-28 — Step 812 — Hide and reveal photos in Camera Raw sessions
 
@@ -1172,4 +1172,4 @@ Harmonize estimates the adjustment and shadow locally. Adobe documents its separ
 
 [Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-711) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_711.md).
 
-[Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
+[Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-10.md) · [Next page](part-08.md)

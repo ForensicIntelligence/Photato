@@ -259,11 +259,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:812 -->
+<!-- current-status-step:813 -->
 
-Use the Photo menu or a thumbnail’s contextual menu to hide photos, isolate a selection, or reveal hidden photos. The filmstrip and Grid share visibility. A new Camera Raw session starts with every photo visible.
+Select two or more RAW brackets and use Merge to HDR. The preview supports alignment, automatic exposure, three deghost strengths and an overlay. The result returns to the filmstrip as an editable DNG.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-812) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_812.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-813) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_813.md).
 
 <!-- current-status:end -->
 
@@ -1282,5 +1282,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 810 | [Refresh Camera Raw thumbnails from developed photos](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-810) |
 | 2026-11-28 | 811 | [Save deselected Camera Raw edits when closing with Done](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-811) |
 | 2026-11-28 | 812 | [Hide and reveal photos in Camera Raw sessions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-812) |
+| 2026-11-28 | 813 | [Merge Camera Raw exposures into editable HDR DNGs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-813) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 813 — Merge Camera Raw exposures into editable HDR DNGs
+
+Select two or more RAW brackets and use Merge to HDR. The preview supports alignment, automatic exposure, three deghost strengths and an overlay. The result returns to the filmstrip as an editable DNG.
+
+Option–M opened the preview on three owned brackets, and Option–Shift–M opened the destination picker. The regular merge added a fourth photo and preserved all source bytes. Adobe Camera Raw rendered a Photato-generated linear DNG and allowed exposure edits. Native and authenticated API DNG downloads matched byte for byte with identical inputs and settings.
+
+Adobe Camera Raw 18.1.1 confirmed Align Images and Apply Auto Settings as initial defaults, with Deghost Off. [Adobe Camera Raw shortcuts](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/default-keyboard-shortcuts.html).
+
+Xcode and forty focused application and imaging tests passed, including the ten existing HDR merge workflow cases. Both optimized architectures passed all 415 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The merge kernel reuses Photato’s photographic HDR engine. Automatic settings currently embed a single calculated exposure adjustment. Adobe’s result used JPEG XL and multiple tone adjustments. The tested decoded RGB samples and complete file bytes differ from Adobe’s result. RAW-specific fusion, larger brackets and exact render parity remain open.
+
+[Development record](DEVLOG.md#dev-step-813) · [Qualification](SOURCE_PUBLICATION_813.md).
+
 ## 2026-11-28 — Step 812 — Hide and reveal photos in Camera Raw sessions
 
 Use the Photo menu or a thumbnail’s contextual menu to hide photos, isolate a selection, or reveal hidden photos. The filmstrip and Grid share visibility. A new Camera Raw session starts with every photo visible.
@@ -2879,11 +2893,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:812 -->
+<!-- current-status-step:813 -->
 
-Use the Photo menu or a thumbnail’s contextual menu to hide photos, isolate a selection, or reveal hidden photos. The filmstrip and Grid share visibility. A new Camera Raw session starts with every photo visible.
+Select two or more RAW brackets and use Merge to HDR. The preview supports alignment, automatic exposure, three deghost strengths and an overlay. The result returns to the filmstrip as an editable DNG.
 
-[Development record](DEVLOG.md#dev-step-812) · [Qualification](SOURCE_PUBLICATION_812.md).
+[Development record](DEVLOG.md#dev-step-813) · [Qualification](SOURCE_PUBLICATION_813.md).
 
 <!-- current-status:end -->
 
@@ -3902,6 +3916,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 810 | [Refresh Camera Raw thumbnails from developed photos](DEVLOG.md#dev-step-810) |
 | 2026-11-28 | 811 | [Save deselected Camera Raw edits when closing with Done](DEVLOG.md#dev-step-811) |
 | 2026-11-28 | 812 | [Hide and reveal photos in Camera Raw sessions](DEVLOG.md#dev-step-812) |
+| 2026-11-28 | 813 | [Merge Camera Raw exposures into editable HDR DNGs](DEVLOG.md#dev-step-813) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

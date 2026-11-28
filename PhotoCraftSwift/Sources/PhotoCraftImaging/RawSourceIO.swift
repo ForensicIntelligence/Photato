@@ -395,6 +395,10 @@ public enum RawSourceIO {
       return try (draft ?? marking).applying(to: document)
     }
 
+    package func hdrMergeSource(settings: RawDevelopment) -> RawHDRMerge.Source {
+      .init(bytes: bytes, fileName: url.lastPathComponent, settings: settings)
+    }
+
     package func thumbnail() -> CGImage? {
       guard let source = CGImageSourceCreateWithData(bytes.data as CFData, nil) else { return nil }
       return CGImageSourceCreateThumbnailAtIndex(source, 0, [

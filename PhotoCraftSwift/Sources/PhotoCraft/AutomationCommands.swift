@@ -158,6 +158,7 @@ struct AutomationCommand: Sendable {
         if name == CameraRawXMPAPI.name { properties[key] = CameraRawXMPAPI.schema(key); continue }
         if name == RawSynchronizationAPI.name { properties[key] = RawSynchronizationAPI.schema(key); continue }
         if name == RawBatchExportAPI.name { properties[key] = RawBatchExportAPI.schema(key); continue }
+        if name == RawHDRMergeAPI.name { properties[key] = RawHDRMergeAPI.schema(key); continue }
         if name == RawMarkingAPI.name { properties[key] = RawMarkingAPI.schema(key); continue }
         if name == "raw.saveSourceSettings", key == "photoMarkingOnly" { properties[key] = BrushAPI.flag; continue }
         if name == "document.hdrMerge",key == "settings" || key == "sources" {
@@ -501,6 +502,7 @@ struct AutomationCommand: Sendable {
     CameraRawXMPAPI.definition,
     RawSynchronizationAPI.definition,
     RawBatchExportAPI.definition,
+    RawHDRMergeAPI.definition,
     RawMarkingAPI.definition,
     .init(name:"raw.inspect",parameters:["layerID":"RAW Smart Object UUID"],description:"Read sensor/decoder capabilities and retained settings without mutation."),
     .init(name: "raw.saveSourceSettings", parameters: ["layerID": "Original local RAW layer UUID", "photoMarkingOnly": "Save only the rating and color label"],

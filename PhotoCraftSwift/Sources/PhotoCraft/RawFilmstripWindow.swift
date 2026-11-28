@@ -38,13 +38,13 @@ extension CraftDocumentController {
     window.center()
     keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak window, weak workspace] event in
       guard let window, let workspace, window.isKeyWindow, event.window === window,
-        workspace.handlePresentationKey(event) || workspace.handleMarkingKey(event) else { return event }
+        workspace.handleHDRMergeKey(event) || workspace.handlePresentationKey(event) || workspace.handleMarkingKey(event) else { return event }
       return nil
     }
   }
 
   required init?(coder: NSCoder) { nil }
-  func windowShouldClose(_ sender: NSWindow) -> Bool { !workspace.finishing }
+  func windowShouldClose(_ sender: NSWindow) -> Bool { !workspace.finishing && workspace.hdrMergeRequest == nil }
   func windowWillClose(_ notification: Notification) {
     if let keyMonitor { NSEvent.removeMonitor(keyMonitor); self.keyMonitor = nil }
     Task { workspace.close() }
@@ -91,6 +91,8 @@ private struct RawFilmstripView: View {
           Button("Select Rated") { workspace.selectRated() }
           Divider()
           visibilityCommands()
+          Divider()
+          mergeHDRCommand()
         }
         Button("Photo Info", systemImage: "info.circle") { showingInformation.toggle() }
           .labelStyle(.iconOnly)
@@ -192,6 +194,9 @@ private struct RawFilmstripView: View {
       } else if let status = workspace.exportStatus {
         Text(status).font(.caption).foregroundStyle(.secondary).padding(8)
       }
+    }
+    .sheet(item: Bindable(workspace).hdrMergeRequest) { request in
+      RawFilmstripHDRMergeView(workspace: workspace, request: request)
     }
   }
 
@@ -303,7 +308,14 @@ private struct RawFilmstripView: View {
       markingCommands(for: photo.id)
       Divider()
       visibilityCommands(for: photo.id)
+      Divider()
+      mergeHDRCommand(for: photo.id)
     }
+  }
+
+  private func mergeHDRCommand(for photo: UUID? = nil) -> some View {
+    Button("Merge to HDR…") { workspace.beginHDRMerge(contextPhoto: photo) }
+      .disabled(!workspace.canMergeHDR(contextPhoto: photo))
   }
 
   @ViewBuilder private var emptyPhotoMessage: some View {
