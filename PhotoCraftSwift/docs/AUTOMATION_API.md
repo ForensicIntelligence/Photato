@@ -1,3 +1,9 @@
+### Large classic RGB TIFF input and output (checkpoint 770)
+
+Authenticated Photato uploads and action resources share the expanded TIFF input, including hidden straight RGB samples. The TIFF writer targets local files and Data through the same compression, endian and profile options. HTTP transfer limits still apply.
+
+[Qualification](SOURCE_PUBLICATION_770.md).
+
 ### File-backed classic TIFF input and output (checkpoint 769)
 
 Authenticated TIFF downloads and Save As use the same strip serializer through their existing options. The selected HTTP save and download produced identical files, with exact gray and opacity samples after reopening. HTTP transfer and individual layer payload limits still apply.

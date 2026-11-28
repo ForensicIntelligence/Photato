@@ -1,0 +1,50 @@
+{
+  "width": 9000,
+  "height": 8000,
+  "bitDepth": 16,
+  "sampleLayout": "RGB plus unassociated alpha",
+  "encodedBytes": 576000186,
+  "rawSHA256": "6acff8735b4b88015f632e5792cd072ef25a4d586f7bde981f44cd49426102d8",
+  "nonzeroPixels": [
+    {
+      "x": 0,
+      "y": 0,
+      "samples": [
+        65535,
+        32768,
+        123,
+        32768
+      ]
+    },
+    {
+      "x": 8999,
+      "y": 0,
+      "samples": [
+        777,
+        12345,
+        65535,
+        0
+      ]
+    },
+    {
+      "x": 120,
+      "y": 3200,
+      "samples": [
+        40000,
+        30000,
+        20000,
+        65535
+      ]
+    },
+    {
+      "x": 8999,
+      "y": 7999,
+      "samples": [
+        456,
+        23456,
+        54321,
+        50123
+      ]
+    }
+  ]
+}

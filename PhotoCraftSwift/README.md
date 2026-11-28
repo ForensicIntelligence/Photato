@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 770.** Stream larger RGB TIFF files through Open and Save. [Qualification](docs/SOURCE_PUBLICATION_770.md).
+
 **Source checkpoint 769.** Save and reopen larger classic TIFF files. [Qualification](docs/SOURCE_PUBLICATION_769.md).
 
 **Source checkpoint 768.** Open larger grayscale, CMYK and Lab TIFFs. [Qualification](docs/SOURCE_PUBLICATION_768.md).

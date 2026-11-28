@@ -540,13 +540,17 @@ public struct NativeModeRaster:Codable,Equatable,Sendable {
   /// A temporary RGB surface in the ICC's own coordinates for compositing.
   /// Unlike the display cache, this surface has undergone no color conversion.
   public func retainedRGBSurface() throws -> Surface {
+    try retainedRGBSurface(backing: nil) { $0 }
+  }
+  package func retainedRGBSurface(backing: RasterTileStore?,
+    converting: (Pixel) throws -> Pixel) throws -> Surface {
     guard mode == .rgb else { throw CraftError.invalid("RGB working samples require an RGB raster.") }
     let defaults = defaultComponents()
-    let fill = Pixel(defaults[0], defaults[1], defaults[2], defaults[3])
+    let fill = try converting(Pixel(defaults[0], defaults[1], defaults[2], defaults[3]))
     return try projectedSurface(fill: fill, encoding: depth == .f32 ? .linearRGB : .sRGB,
-      components: [0, 1, 2, 3]) { i in
-      Pixel(value(component: 0, index: i), value(component: 1, index: i),
-        value(component: 2, index: i), value(component: 3, index: i))
+      components: [0, 1, 2, 3], backing: backing) { i in
+      try converting(Pixel(value(component: 0, index: i), value(component: 1, index: i),
+        value(component: 2, index: i), value(component: 3, index: i)))
     }
   }
   public func surface(backing:RasterTileStore? = nil)throws->Surface {

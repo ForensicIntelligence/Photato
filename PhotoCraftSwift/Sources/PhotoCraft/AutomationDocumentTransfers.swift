@@ -112,7 +112,7 @@ extension AutomationService {
           "Metadata, selection and active document remain resident; full paging, crash-relaunch recovery, large-file and live platform qualification remain open",
       ],
       "pagedComponentTIFF": [
-        "colorModes": ["grayscale": [8, 16, 32], "cmyk": [8, 16], "lab": [8, 16]],
+        "colorModes": ["rgb": [8, 16, 32], "grayscale": [8, 16, 32], "cmyk": [8, 16], "lab": [8, 16]],
         "stripCompression": ["raw", "lzw", "zip"],
         "strategy": "Supported classic TIFF strips open into editable file-backed numerical components and an RGB preview. Native Open, Photato uploads and action-job resource decoding share storage.",
         "desktopClassicTIFFMaximumBytes": Int(UInt32.max),

@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **769** · The 10 most recent entries, newest first.
+Source build **770** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 770 — Stream larger RGB TIFF files through Open and Save
+
+Photato opens supported large classic RGB8, RGB16 and RGB32 TIFF strips as ordinary editable RGB rasters and writes large copies through bounded regions. The files retain working profiles and the selected transparency behavior.
+
+A 9,000 × 8,000 RGB16 control opened above 512 MiB, saved as a 576 MB TIFF and reopened with its ICC profile and measured opacity samples. An independent parser matched all 288 million packed color and alpha words against the authored raster and established document encoder samples. Focused RGB8, RGB16 and RGB32 packing checks compare standard and Display P3 profiles, profile embedding and transparency choices against the established encoder.
+
+The native Xcode target built and all three new imaging and six selected app/HTTP tests passed. Both optimized architectures passed all 241 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on each slice.
+
+The checks cover selected classic RGB strip inputs and output. Large saved auxiliary channels, component tiles, JPEG-in-TIFF, BigTIFF and complete Photoshop sample and storage comparisons remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-770) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_770.md).
 
 ## 2026-11-27 — Step 769 — Save and reopen larger classic TIFF files
 
@@ -109,13 +121,3 @@ All 36 focused Xcode Debug tests passed. Both optimized architectures passed all
 Six independently generated files matched all 1,122 gray/alpha pairs on import. All 2,244 pairs in twelve standard and Adam7 exports matched. A 36-megapixel sparse control preserved the six sampled pairs through PNG and native archive round trips. Candidate 01 discarded declared gamma. The corrected reader retains the color interpretation of all three tested gamma values and the embedded gray ICC control. Layered grayscale still goes through the RGB composite. Its output differs from a diagnostic based on the measured RGB Normal model. Independent Photoshop Grayscale output and complete file equality remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-761) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_761.md).
-
-## 2026-11-27 — Step 760 — Show and hide Vanishing Point edges
-
-Vanishing Point adds a checked Show Edges control in Options with a Command-H binding. Turning it off hides plane borders, grids and idle selection outlines. Selection outlines reappear during a drag. Measurement visibility and grids rendered into the image remain independently controlled.
-
-All five focused Xcode Debug tests passed. Both optimized architectures passed all 210 focused tests, including the new Show Edges regression. Intel ran under Rosetta.
-
-Photoshop 27.2.0 showed Show Edges checked in Vanishing Point with Command-H. The Photato tests cover overlay state. The live Options and keyboard checks remain pending. Independent verification of Photoshop’s grid raster is still open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-760) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_760.md).

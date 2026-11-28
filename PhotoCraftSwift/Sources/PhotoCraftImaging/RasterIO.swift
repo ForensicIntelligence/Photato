@@ -98,7 +98,7 @@ public enum RasterIO {
       }
       if source.count > TIFFContainer.byteLimit, TIFFContainer.isClassic(header) {
         guard let result = try TIFFModeStorage.read(source, url: url, name: name) else {
-          throw CraftError.unsupported("Large classic TIFF files currently require supported Grayscale, CMYK or Lab strips.")
+          throw CraftError.unsupported("Large classic TIFF files currently require supported RGB, Grayscale, CMYK or Lab strips.")
         }
         try source.validateUnchanged()
         return result
@@ -581,8 +581,11 @@ public enum RasterIO {
       : composite
   }
   package static func supportsPagedComponentTIFFOutput(_ document: CraftDocument) -> Bool {
-    document.hasNativeModeStorage && document.colorMode != .rgb && document.inkMode == nil
-      && document.restrictedMode == nil && !document.hasAuxiliaryChannels
+    guard document.inkMode == nil, document.restrictedMode == nil, !document.hasAuxiliaryChannels else { return false }
+    if document.colorMode == .rgb, !document.hasNativeModeStorage {
+      return document.width > Surface.maximumDensePixels / document.height
+    }
+    return document.hasNativeModeStorage && document.colorMode != .rgb
       && document.width > NativeModeRaster.maximumPixels / document.height
   }
   public static func write(_ document: CraftDocument, to url: URL, type: UTType = .png,

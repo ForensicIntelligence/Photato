@@ -45,10 +45,14 @@ enum TIFFComponentExport {
   private static func write(_ document: CraftDocument, options: RasterEncodingOptions, output: Output) throws {
     try options.validate(for: .tiff)
     try document.validate()
-    guard let descriptor = document.modeDescriptor else {
-      throw CraftError.invalid("Native TIFF output requires a component color mode.")
-    }
     let width = document.width, height = document.height, depth = document.depth
+    let rgb = document.modeDescriptor == nil && document.colorMode == .rgb
+    let descriptor: DocumentModeDescriptor
+    if let retained = document.modeDescriptor { descriptor = retained }
+    else if rgb {
+      let profile = try document.workingICC ?? NativeModeProfile.standard(.rgb, depth: depth)
+      descriptor = try .init(mode: .rgb, depth: depth, profile: profile)
+    } else { throw CraftError.invalid("Native TIFF output requires a component color mode.") }
     let bytesPerSample = depth == .u8 ? 1 : depth == .u16 ? 2 : 4
     let bits = bytesPerSample * 8, colors = descriptor.mode.componentCount
     let photometric = TIFFModeStorage.photometric(descriptor.mode)
@@ -63,9 +67,10 @@ enum TIFFComponentExport {
     }
     let matted = preserveAlpha ? nil : try GrayscaleNormalComposite(document, descriptor: descriptor)
     let retained = RasterIO.retainedFlatRaster(in: document, width: width, height: height)
-    let renderer = matted == nil && retained == nil ? try PSDModeCompositeRows(document) : nil
+    let rgbRows = rgb ? try TIFFRGBRows(document, transparency: preserveAlpha) : nil
+    let renderer = !rgb && matted == nil && retained == nil ? try PSDModeCompositeRows(document) : nil
     let container = try directoryTemplate(document, options: options, descriptor: descriptor,
-      bits: bits, colors: colors, channels: channels, photometric: photometric)
+      bits: bits, colors: colors, channels: channels, photometric: photometric, associated: rgbRows?.associated ?? false)
     let order: TIFFContainer.Order
     switch options.tiffByteOrder {
     case .bigEndian: order = .big
@@ -104,7 +109,9 @@ enum TIFFComponentExport {
           append(color, to: &row)
         }
       }
-      if let matted {
+      if let rgbRows {
+        row = try rgbRows.row(y, components: first..<end, order: order)
+      } else if let matted {
         for x in 0..<width { append(Int(matted.whiteMattedSample(at: y * width + x)), to: &row) }
       } else if let retained {
         for x in 0..<width { appendPixel(retained, y * width + x) }
@@ -139,7 +146,8 @@ enum TIFFComponentExport {
   }
 
   private static func directoryTemplate(_ document: CraftDocument, options: RasterEncodingOptions,
-    descriptor: DocumentModeDescriptor, bits: Int, colors: Int, channels: Int, photometric: Int) throws -> TIFFContainer {
+    descriptor: DocumentModeDescriptor, bits: Int, colors: Int, channels: Int, photometric: Int,
+    associated: Bool) throws -> TIFFContainer {
     let resolution = document.pixelsPerInch, depth = document.depth
     guard resolution.isFinite, (1...100_000).contains(resolution) else {
       throw CraftError.invalid("Native TIFF export requires a valid resolution.")
@@ -153,21 +161,23 @@ enum TIFFComponentExport {
     file.set(256, [document.width], type: 4); file.set(257, [document.height], type: 4)
     file.set(258, Array(repeating: bits, count: channels)); file.set(262, [photometric]); file.set(277, [channels])
     file.set(339, Array(repeating: depth == .f32 ? 3 : 1, count: channels))
-    if channels > colors { file.set(338, [2]) }
+    if channels > colors { file.set(338, [associated ? 1 : 2]) }
     if descriptor.mode == .cmyk { file.set(332, [1]); file.set(334, [4]) }
     let embedsProfile = options.tiffEmbedProfile ?? (document.profileIsUntagged != true)
     if embedsProfile {
       let profile = descriptor.profile
       file.root.fields[34675] = .init(tag: 34675, type: 7, count: profile.count, data: profile)
     } else { UntaggedOutput.removeTIFFProfile(from: file) }
+    let rgb = document.modeDescriptor == nil && descriptor.mode == .rgb
+    let isSRGB = rgb ? try ColorManagement.space(for: document) == RasterIO.colorSpace() : false
     if let exif = file.root.fields[34665]?.children.first {
-      exif.fields[40961] = .init(tag: 40961, type: 3, count: 1, data: file.order.bytes(65535, 2))
+      exif.fields[40961] = .init(tag: 40961, type: 3, count: 1, data: file.order.bytes(isSRGB ? 1 : 65535, 2))
       exif.fields[40962] = .init(tag: 40962, type: 4, count: 1, data: file.order.bytes(document.width, 4))
       exif.fields[40963] = .init(tag: 40963, type: 4, count: 1, data: file.order.bytes(document.height, 4))
     }
     if let metadata = try RasterMetadata.metadata(document.sourceMetadata, width: document.width, height: document.height,
-      resolution: resolution, linear: depth == .f32, profileName: descriptor.mode.title,
-      isSRGB: false, photoshopMode: PSDModeStorage.code(descriptor.mode), embedsProfile: embedsProfile),
+      resolution: resolution, linear: depth == .f32, profileName: rgb ? ColorManagement.name(document) : descriptor.mode.title,
+      isSRGB: isSRGB, photoshopMode: PSDModeStorage.code(descriptor.mode), embedsProfile: embedsProfile),
       let bytes = CGImageMetadataCreateXMPData(metadata, nil) as Data? {
       file.root.fields[700] = .init(tag: 700, type: 1, count: bytes.count, data: bytes)
     }

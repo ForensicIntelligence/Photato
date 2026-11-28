@@ -32,11 +32,15 @@ enum TIFFModeStorage {
     metadataSource: () -> CGImageSource?,
     layers: (CraftDocument, RasterTileStore?) throws -> CraftDocument?) throws -> CraftDocument? {
     let photo = try file.scalar(262)
-    // Keep the qualified legacy RGB/tiled/ImageIO path unchanged.
-    guard let mode = mode(photo), mode != .rgb else { return nil }
+    guard let mode = mode(photo) else { return nil }
+    if mode == .rgb, !forcePaged {
+      let width = try file.scalar(256), height = try file.scalar(257)
+      guard width > 0, height > 0, width > Surface.maximumDensePixels / height else { return nil }
+    }
     if mode == .grayscale, try file.numbers(258).contains(where: { $0 < 8 }) { return nil }
     guard let g = try TIFFStorage.Geometry(file, allowAssociatedAlpha: true,
       colorComponents: mode.componentCount, photometric: photo) else {
+      if mode == .rgb { return nil }
       throw CraftError.unsupported("This TIFF color-mode storage variant is not supported yet; import cancelled to retain its components.")
     }
     if mode == .cmyk {
@@ -50,7 +54,8 @@ enum TIFFModeStorage {
       throw CraftError.invalid("Invalid TIFF ICC profile field.")
     }
     let original = file.root.fields[34675]?.data
-    let profile = try PSDModeStorage.profile(original, mode: mode, depth: depth)
+    let rgbWorkingICC = mode == .rgb ? try ColorManagement.importedProfile(original, depth: depth) : nil
+    let profile = try rgbWorkingICC ?? PSDModeStorage.profile(original, mode: mode, depth: depth)
     let backing = forcePaged || g.width > NativeModeRaster.maximumPixels / g.height ? try RasterTileStore() : nil
     var native: NativeModeRaster
     if let backing {
@@ -69,7 +74,8 @@ enum TIFFModeStorage {
       }
     }
     var document = try CraftDocument(width: native.width, height: native.height, depth: depth, name: name)
-    document.modeDescriptor = try .init(mode: mode, depth: depth, profile: profile)
+    if mode == .rgb { document.workingICC = rgbWorkingICC }
+    else { document.modeDescriptor = try .init(mode: mode, depth: depth, profile: profile) }
     document.sourceICC = original
     document.profileIsUntagged = original == nil ? true : nil
     if let source = metadataSource(),
@@ -77,10 +83,34 @@ enum TIFFModeStorage {
       document.sourceMetadata = try RasterMetadata.capture(source, properties: properties)
       if let dpi = properties[kCGImagePropertyDPIWidth] as? Double, dpi.isFinite, (1...100_000).contains(dpi) { document.resolution = dpi }
     }
-    var layer = Layer(name: name, content: .raster(try native.surface(backing: backing))); layer.nativeMode = native
+    let rgb = mode == .rgb
+    let pixels = rgb ? try rgbSurface(native, original: original, backing: backing) : try native.surface(backing: backing)
+    var layer = Layer(name: name, content: .raster(pixels))
+    if !rgb { layer.nativeMode = native }
     document.layers = [layer]; document.activeLayerID = layer.id
     try document.validate()
     return try layers(document, backing) ?? document
+  }
+
+  private static func rgbSurface(_ native: NativeModeRaster, original: Data?, backing: RasterTileStore?) throws -> Surface {
+    guard let original, original != native.profile else {
+      return try native.retainedRGBSurface(backing: backing) { $0 }
+    }
+    guard let encoded = CGColorSpace(iccData: original as CFData),
+      let working = CGColorSpace(iccData: native.profile as CFData), let extended = CGColorSpaceCreateExtended(working) else {
+      throw CraftError.invalid("TIFF RGB profile conversion is unavailable.")
+    }
+    return try native.retainedRGBSurface(backing: backing) { pixel in
+      guard let color = CGColor(colorSpace: encoded,
+        components: [CGFloat(pixel.r), CGFloat(pixel.g), CGFloat(pixel.b), 1]),
+        let converted = color.converted(to: extended, intent: .relativeColorimetric, options: nil)?.components,
+        converted.count == 4 else {
+        throw CraftError.invalid("TIFF RGB profile conversion failed.")
+      }
+      let result = Pixel(Float(converted[0]), Float(converted[1]), Float(converted[2]), pixel.a)
+      guard result.isFinite else { throw CraftError.invalid("Non-finite TIFF color profile result.") }
+      return result
+    }
   }
 
   private static func readDense(_ file: TIFFContainer, geometry g: TIFFStorage.Geometry,

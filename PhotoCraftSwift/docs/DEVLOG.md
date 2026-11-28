@@ -788,7 +788,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 767 | 2026-11-27 | [Preserve the TIFF color profile choice](#dev-step-767) |
 | 768 | 2026-11-27 | [Open larger grayscale, CMYK and Lab TIFFs](#dev-step-768) |
 | 769 | 2026-11-27 | [Save and reopen larger classic TIFF files](#dev-step-769) |
+| 770 | 2026-11-27 | [Stream larger RGB TIFF files through Open and Save](#dev-step-770) |
 <!-- history-index:end -->
+
+<a id="dev-step-770"></a>
+
+## 2026-11-27 — Step 770 — Stream larger RGB TIFF files through Open and Save
+
+Photato opens supported large classic RGB8, RGB16 and RGB32 TIFF strips as ordinary editable RGB rasters and writes large copies through bounded regions. The files retain working profiles and the selected transparency behavior.
+
+The earlier local TIFF limit still rejected the 576 MB RGB file, while compressed RGB relied on the full-image import path. The new reader shares file-backed planes and produces standard working RGB, with ColorSync linearization for nonlinear RGB32 sources. The writer packages bounded regions through the established integer and floating encoder, preserving measured premultiplication and composition rounding.
+
+A 9,000 × 8,000 RGB16 control opened above 512 MiB, saved as a 576 MB TIFF and reopened with its ICC profile and measured opacity samples. An independent parser matched all 288 million packed color and alpha words against the authored raster and established document encoder samples. Focused RGB8, RGB16 and RGB32 packing checks compare standard and Display P3 profiles, profile embedding and transparency choices against the established encoder.
+
+Authenticated Photato uploads and action resources share the expanded TIFF input, including hidden straight RGB samples. The TIFF writer targets local files and Data through the same compression, endian and profile options. HTTP transfer limits still apply.
+
+The native Xcode target built and all three new imaging and six selected app/HTTP tests passed. Both optimized architectures passed all 241 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on each slice.
+
+The checks cover selected classic RGB strip inputs and output. Large saved auxiliary channels, component tiles, JPEG-in-TIFF, BigTIFF and complete Photoshop sample and storage comparisons remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,062,246 bytes with SHA-256 `5d84d134f78f310d44daa06c13a0ceb1e576891686ff757ccf1a02bb146f2f09`.
+
+[Qualification](SOURCE_PUBLICATION_770.md).
 
 <a id="dev-step-769"></a>
 

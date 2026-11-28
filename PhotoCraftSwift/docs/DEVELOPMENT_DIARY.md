@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 770 — Stream larger RGB TIFF files through Open and Save
+
+Photato opens supported large classic RGB8, RGB16 and RGB32 TIFF strips as ordinary editable RGB rasters and writes large copies through bounded regions. The files retain working profiles and the selected transparency behavior.
+
+A 9,000 × 8,000 RGB16 control opened above 512 MiB, saved as a 576 MB TIFF and reopened with its ICC profile and measured opacity samples. An independent parser matched all 288 million packed color and alpha words against the authored raster and established document encoder samples. Focused RGB8, RGB16 and RGB32 packing checks compare standard and Display P3 profiles, profile embedding and transparency choices against the established encoder.
+
+The native Xcode target built and all three new imaging and six selected app/HTTP tests passed. Both optimized architectures passed all 241 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on each slice.
+
+The checks cover selected classic RGB strip inputs and output. Large saved auxiliary channels, component tiles, JPEG-in-TIFF, BigTIFF and complete Photoshop sample and storage comparisons remain open.
+
+[Development record](DEVLOG.md#dev-step-770) · [Qualification](SOURCE_PUBLICATION_770.md).
+
 ## 2026-11-27 — Step 769 — Save and reopen larger classic TIFF files
 
 Supported Grayscale, CMYK and Lab TIFF strips stream through local file Open and Save. Photato keeps the original numerical channels and uses bounded strips for the copy or composite.
@@ -2327,11 +2339,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:769 -->
+<!-- current-status-step:770 -->
 
-Supported Grayscale, CMYK and Lab TIFF strips stream through local file Open and Save. Photato keeps the original numerical channels and uses bounded strips for the copy or composite.
+Photato opens supported large classic RGB8, RGB16 and RGB32 TIFF strips as ordinary editable RGB rasters and writes large copies through bounded regions. The files retain working profiles and the selected transparency behavior.
 
-[Development record](DEVLOG.md#dev-step-769) · [Qualification](SOURCE_PUBLICATION_769.md).
+[Development record](DEVLOG.md#dev-step-770) · [Qualification](SOURCE_PUBLICATION_770.md).
 
 <!-- current-status:end -->
 
@@ -3307,6 +3319,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 767 | [Preserve the TIFF color profile choice](DEVLOG.md#dev-step-767) |
 | 2026-11-27 | 768 | [Open larger grayscale, CMYK and Lab TIFFs](DEVLOG.md#dev-step-768) |
 | 2026-11-27 | 769 | [Save and reopen larger classic TIFF files](DEVLOG.md#dev-step-769) |
+| 2026-11-27 | 770 | [Stream larger RGB TIFF files through Open and Save](DEVLOG.md#dev-step-770) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -2158,7 +2158,7 @@ import UniformTypeIdentifiers
           "maximumAggregateOutputBytes": AdobeActionAssets.maximumOutputBytes,
           "pagedInputFormats": ["psd", "psb"], "pagedInputDepths": [8,16,32],
           "pagedIndexedPNGExpansion": "PNG palettes with partial opacity or multiple transparent entries can open as editable RGB8 above the unpaged input limit. Other PNG action-resource limits remain in effect.",
-          "pagedComponentTIFFInput": "Supported Grayscale, CMYK and Lab classic TIFF strips use the shared paged resource reader above the unpaged input limit. See documentTransfers.pagedComponentTIFF.",
+          "pagedComponentTIFFInput": "Supported RGB, Grayscale, CMYK and Lab classic TIFF strips use the shared paged resource reader above the unpaged input limit. See documentTransfers.pagedComponentTIFF.",
           "maximumUnpagedInputPixels": AdobeActionAssets.maximumUnpagedInputPixels,
           "maximumAnalysisPixels": AdobeActionAssets.maximumAnalysisPixels,
           "maximumArtboardPixels": AdobeActionAssets.maximumArtboardPixels,

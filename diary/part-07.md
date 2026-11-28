@@ -307,11 +307,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:769 -->
+<!-- current-status-step:770 -->
 
-Supported Grayscale, CMYK and Lab TIFF strips stream through local file Open and Save. Photato keeps the original numerical channels and uses bounded strips for the copy or composite.
+Photato opens supported large classic RGB8, RGB16 and RGB32 TIFF strips as ordinary editable RGB rasters and writes large copies through bounded regions. The files retain working profiles and the selected transparency behavior.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-769) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_769.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-770) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_770.md).
 
 <!-- current-status:end -->
 
@@ -1287,5 +1287,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 767 | [Preserve the TIFF color profile choice](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-767) |
 | 2026-11-27 | 768 | [Open larger grayscale, CMYK and Lab TIFFs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-768) |
 | 2026-11-27 | 769 | [Save and reopen larger classic TIFF files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-769) |
+| 2026-11-27 | 770 | [Stream larger RGB TIFF files through Open and Save](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-770) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
