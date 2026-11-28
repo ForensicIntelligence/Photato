@@ -263,7 +263,7 @@ final class TIFFLayerOutputTests: XCTestCase {
       let model = try RasterIO.read(helper.fixture("\(depth)-little-marker.tiff"))
       for order in RasterEncodingOptions.TIFFByteOrder.allCases {
         for compression in RasterEncodingOptions.TIFFLayerCompression.allCases {
-          for image in RasterEncodingOptions.TIFFCompression.allCases {
+          for image in RasterEncodingOptions.TIFFCompression.allCases.filter { $0 != .jpeg } {
             let options = RasterEncodingOptions(tiffCompression: image, tiffByteOrder: order,
               tiffPixelOrder: .perChannel, tiffPredictor: depth == 32 && image != .none,
               tiffLayers: true, tiffLayerCompression: compression)

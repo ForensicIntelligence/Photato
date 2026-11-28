@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 539: render large brush dabs faster
-
-The 5,000 px color-dynamics test took 0.52 seconds on Apple Silicon, down from 1.99. Brush rendering now updates one tile at a time.
-
-All 205 selected tests passed. The optimized Apple Silicon and Intel builds reproduced the same bytes for both full-size brush tests. Live editing cadence still needs measurement.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-539) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_539.md).
-
 ## 2026-11-17 — Step 538: use a 5,000 px brush
 
 Set a primary Brush diameter up to 5,000 pixels from the native controls or API. Large strokes process small regions before committing, with the same Undo and recorded Action behavior.
@@ -307,11 +299,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:776 -->
+<!-- current-status-step:777 -->
 
-Photato opens opaque Gray8 and RGB8 JPEG-compressed classic TIFFs as editable images. The decoder handles strips, rectangular tiles and separate RGB channels and keeps the original resolution, profiles and supported editable TIFF layers.
+TIFF Save and Save a Copy can use JPEG compression for opaque RGB8 and Gray8 images. Choose JPEG Quality from 0 through 12. Supported editable layers, profiles, storage orders and optional reduced-resolution previews are preserved.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-776) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_776.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-777) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_777.md).
 
 <!-- current-status:end -->
 
@@ -1294,5 +1286,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 774 | [Open tiled TIFFs with native components](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-774) |
 | 2026-11-27 | 775 | [Save TIFF image pyramids](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-775) |
 | 2026-11-27 | 776 | [Open JPEG-compressed TIFFs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-776) |
+| 2026-11-27 | 777 | [Save JPEG-compressed TIFFs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-777) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

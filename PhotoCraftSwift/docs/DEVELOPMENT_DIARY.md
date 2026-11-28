@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 777 — Save JPEG-compressed TIFFs
+
+TIFF Save and Save a Copy can use JPEG compression for opaque RGB8 and Gray8 images. Choose JPEG Quality from 0 through 12. Supported editable layers, profiles, storage orders and optional reduced-resolution previews are preserved.
+
+Independent libtiff decoding opened the three JPEG TIFF outputs. Photoshop 27.2 reopened the grayscale TIFF and both RGB8 files with their editable overlay selected in the RGB cases. Photato produced identical file and Data output for the tested job. Quality settings changed the compressed bytes and the TIFF records the native encoder’s chroma layout. Photato also reopened 1 × 1 with all 13 settings and 30,000 × 33 at three settings.
+
+Xcode built the native app. All 3 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 263 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+JPEG changes the composite samples. Choose lossless compression to keep named selection channels. The exact Photoshop quality curve, JPEG output bytes and decoding differences remain open.
+
+[Development record](DEVLOG.md#dev-step-777) · [Qualification](SOURCE_PUBLICATION_777.md).
+
 ## 2026-11-27 — Step 776 — Open JPEG-compressed TIFFs
 
 Photato opens opaque Gray8 and RGB8 JPEG-compressed classic TIFFs as editable images. The decoder handles strips, rectangular tiles and separate RGB channels and keeps the original resolution, profiles and supported editable TIFF layers.
@@ -2411,11 +2423,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:776 -->
+<!-- current-status-step:777 -->
 
-Photato opens opaque Gray8 and RGB8 JPEG-compressed classic TIFFs as editable images. The decoder handles strips, rectangular tiles and separate RGB channels and keeps the original resolution, profiles and supported editable TIFF layers.
+TIFF Save and Save a Copy can use JPEG compression for opaque RGB8 and Gray8 images. Choose JPEG Quality from 0 through 12. Supported editable layers, profiles, storage orders and optional reduced-resolution previews are preserved.
 
-[Development record](DEVLOG.md#dev-step-776) · [Qualification](SOURCE_PUBLICATION_776.md).
+[Development record](DEVLOG.md#dev-step-777) · [Qualification](SOURCE_PUBLICATION_777.md).
 
 <!-- current-status:end -->
 
@@ -3398,6 +3410,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 774 | [Open tiled TIFFs with native components](DEVLOG.md#dev-step-774) |
 | 2026-11-27 | 775 | [Save TIFF image pyramids](DEVLOG.md#dev-step-775) |
 | 2026-11-27 | 776 | [Open JPEG-compressed TIFFs](DEVLOG.md#dev-step-776) |
+| 2026-11-27 | 777 | [Save JPEG-compressed TIFFs](DEVLOG.md#dev-step-777) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -305,6 +305,27 @@ public enum RasterIO {
     if type == .tiff, options.tiffEmbedProfile == nil, workingDocument?.profileIsUntagged == true {
       options.tiffEmbedProfile = false
     }
+    if type == .tiff, options.tiffCompression == .jpeg {
+      try options.validate(for: type)
+      let mode = workingDocument?.colorMode ?? .rgb
+      guard surface.depth == .u8, (outputDepth ?? surface.depth) == .u8,
+        RasterEncodingOptions.supportsTIFFJPEG(width: surface.width, height: surface.height, depth: .u8, mode: mode),
+        options.tiffLayers != true else {
+        throw CraftError.unsupported("A flat JPEG-compressed TIFF requires 8-bit RGB or Grayscale, at most 30,000 pixels per side.")
+      }
+      var document = try CraftDocument(width: surface.width, height: surface.height, depth: .u8)
+      document.resolution = resolution
+      document.workingICC = workingDocument?.workingICC
+      document.profileIsUntagged = workingDocument?.profileIsUntagged
+      document.sourceMetadata = sourceMetadata
+      document.layers[0].content = .raster(surface)
+      if mode == .grayscale, let descriptor = workingDocument?.modeDescriptor {
+        document.modeDescriptor = descriptor
+        document.layers[0].nativeMode = try NativeModeRaster.converting(surface,
+          to: .grayscale, depth: .u8, profile: descriptor.profile, intent: descriptor.intent, pagedOutput: true)
+      }
+      return try TIFFComponentExport.encoded(document, options: options)
+    }
     let bytes = try encodedManaged(surface, type: type, resolution: resolution, outputDepth: outputDepth,
       sourceMetadata: sourceMetadata, workingDocument: workingDocument, options: options)
     if type == .tiff, options.tiffImagePyramid == true {
@@ -552,7 +573,7 @@ public enum RasterIO {
       return try document.profileIsUntagged == true ? UntaggedOutput.strip(data, type: type) : data
     }
     if type == .tiff {
-      if supportsPagedComponentTIFFOutput(document) {
+      if options.tiffCompression == .jpeg || supportsPagedComponentTIFFOutput(document) {
         return try TIFFComponentExport.encoded(document, options: options)
       }
       let composite = try renderedTIFF(document, options: options)
@@ -604,12 +625,13 @@ public enum RasterIO {
   }
   package static func supportsFileBackedTIFFOutput(_ document: CraftDocument, options: RasterEncodingOptions) -> Bool {
     supportsPagedComponentTIFFOutput(document)
-      || ((options.tiffLayers == true || options.tiffImagePyramid == true)
+      || ((options.tiffLayers == true || options.tiffImagePyramid == true || options.tiffCompression == .jpeg)
           && document.inkMode == nil && document.restrictedMode == nil)
   }
   public static func write(_ document: CraftDocument, to url: URL, type: UTType = .png,
     options: RasterEncodingOptions = .init()) throws {
-    if type == .tiff, supportsPagedComponentTIFFOutput(document) {
+    if type == .tiff, (supportsPagedComponentTIFFOutput(document)
+      || (options.tiffCompression == .jpeg && document.inkMode == nil && document.restrictedMode == nil)) {
       try TIFFComponentExport.write(document, to: url, options: options)
       return
     }

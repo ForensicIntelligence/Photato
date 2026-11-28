@@ -75,9 +75,11 @@ enum RasterMetadata {
     result[kCGImagePropertyDPIWidth] = resolution
     result[kCGImagePropertyDPIHeight] = resolution
     var tiff = result[kCGImagePropertyTIFFDictionary] as? [CFString: Any] ?? [:]
-    // Imported encoding options are not descriptive metadata: JPEG-in-TIFF
-    // compression would otherwise introduce new losses during an ordinary export.
-    tiff.removeValue(forKey: kCGImagePropertyTIFFCompression)
+    // The output encoder owns compression and tile geometry. Copying input
+    // tile dimensions asks ImageIO to tile a temporary uncompressed image.
+    for key in [kCGImagePropertyTIFFCompression, kCGImagePropertyTIFFTileWidth, kCGImagePropertyTIFFTileLength] {
+      tiff.removeValue(forKey: key)
+    }
     tiff[kCGImagePropertyTIFFOrientation] = 1
     tiff[kCGImagePropertyTIFFXResolution] = resolution
     tiff[kCGImagePropertyTIFFYResolution] = resolution
@@ -122,7 +124,9 @@ enum RasterMetadata {
     ] where CGImageMetadataCopyTagWithPath(metadata, nil, path as CFString) != nil {
       _ = CGImageMetadataSetValueWithPath(metadata, nil, path as CFString, value as CFString)
     }
-    for path in ["tiff:BitsPerSample", "xmp:Thumbnails"] {
+    for path in ["tiff:BitsPerSample", "tiff:Compression", "tiff:TileWidth", "tiff:TileLength",
+      "tiff:RowsPerStrip", "tiff:StripOffsets", "tiff:StripByteCounts", "tiff:TileOffsets", "tiff:TileByteCounts",
+      "tiff:PlanarConfiguration", "tiff:YCbCrSubSampling", "tiff:YCbCrPositioning", "xmp:Thumbnails"] {
       _ = CGImageMetadataRemoveTagWithPath(metadata, nil, path as CFString)
     }
     if !embedsProfile { _ = CGImageMetadataRemoveTagWithPath(metadata, nil, "photoshop:ICCProfile" as CFString) }

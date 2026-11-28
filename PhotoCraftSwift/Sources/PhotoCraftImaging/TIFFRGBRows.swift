@@ -11,13 +11,15 @@ final class TIFFRGBRows {
   private let options: RasterEncodingOptions
   private let channels: Int
   private let bytesPerSample: Int
+  private let requiresOpaque: Bool
   let associated: Bool
   private var start = -1
   private var height = 0
   private var packedRows: [[UInt8]] = []
 
-  init(_ document: CraftDocument, transparency: Bool) throws {
+  init(_ document: CraftDocument, transparency: Bool, requiresOpaque: Bool = false) throws {
     self.document = document
+    self.requiresOpaque = requiresOpaque
     (prepared, video) = try Renderer.preparedSources(document)
     facts = document.width > Surface.maximumDensePixels / document.height ? CompositionFacts(prepared) : nil
     bytesPerSample = document.depth == .u8 ? 1 : document.depth == .u16 ? 2 : 4
@@ -56,6 +58,9 @@ final class TIFFRGBRows {
       let bounds = IntRect(x: left, y: firstRow, width: min(2048, document.width - left), height: height)
       let rendered = try Renderer.compositePrepared(prepared, region: bounds, video: video, facts: facts)
       let patch = try rendered.cropped(to: bounds)
+      if requiresOpaque, try !patch.isOpaque() {
+        throw CraftError.unsupported("JPEG-compressed TIFF requires an opaque composite. Turn off Save Transparency to use white.")
+      }
       let bytes = try RasterIO.encoded(patch, type: .tiff, resolution: document.pixelsPerInch,
         outputDepth: document.depth, workingDocument: document, options: options)
       let file = try TIFFContainer(bytes, metadata: false)

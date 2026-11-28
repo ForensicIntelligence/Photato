@@ -110,7 +110,16 @@ enum TIFFComponentExport {
     let bytesPerSample = depth == .u8 ? 1 : depth == .u16 ? 2 : 4
     let bits = bytesPerSample * 8, colors = descriptor.mode.componentCount
     let photometric = TIFFModeStorage.photometric(descriptor.mode)
-    let preserveAlpha = options.tiffTransparency != false
+    let compression = options.tiffCompression ?? .none
+    let jpeg = compression == .jpeg
+    if jpeg && !RasterEncodingOptions.supportsTIFFJPEG(width: width, height: height, depth: depth, mode: descriptor.mode) {
+      throw CraftError.unsupported("JPEG-compressed TIFF requires RGB or Grayscale at 8 bits per channel and at most 30,000 pixels per side.")
+    }
+    if jpeg, options.tiffLayers == true, document.hasAuxiliaryChannels {
+      throw CraftError.unsupported("JPEG-compressed TIFF cannot store saved selection channels. Choose lossless TIFF compression to retain them.")
+    }
+    let requiresOpaque = jpeg && options.tiffTransparency == nil
+    let preserveAlpha = !jpeg && options.tiffTransparency != false
     let imageChannels = colors + (preserveAlpha ? 1 : 0)
     let savedAlpha: [AlphaChannel]
     if options.tiffLayers == true, document.hasAuxiliaryChannels {
@@ -124,13 +133,13 @@ enum TIFFComponentExport {
     let planar = options.tiffPixelOrder == .perChannel
     let samplesPerRowPixel = planar ? 1 : channels
     let rowBytes = width * samplesPerRowPixel * bytesPerSample
-    let compression = options.tiffCompression ?? .none, predictor = options.tiffPredictor == true
+    let predictor = options.tiffPredictor == true
     guard !predictor || depth == .f32 else {
       throw CraftError.invalid("TIFF floating-point predictor requires a 32-bit document.")
     }
-    let matted = preserveAlpha ? nil : try GrayscaleNormalComposite(document, descriptor: descriptor)
+    let matted = preserveAlpha || requiresOpaque ? nil : try GrayscaleNormalComposite(document, descriptor: descriptor)
     let retained = RasterIO.retainedFlatRaster(in: document, width: width, height: height)
-    let rgbRows = rgb ? try TIFFRGBRows(document, transparency: preserveAlpha) : nil
+    let rgbRows = rgb ? try TIFFRGBRows(document, transparency: preserveAlpha, requiresOpaque: requiresOpaque) : nil
     let renderer = !rgb && matted == nil && retained == nil ? try PSDModeCompositeRows(document) : nil
     let transparencyExtras = preserveAlpha ? [rgbRows?.associated == true ? 1 : 2] : []
     let extras = transparencyExtras + Array(repeating: 0, count: savedAlpha.count)
@@ -145,9 +154,11 @@ enum TIFFComponentExport {
     let pyramid = options.tiffImagePyramid == true
       ? TIFFImagePyramid(width: width, height: height, bits: bits, colors: colors, opacity: preserveAlpha,
           sourceChannels: channels, planar: planar, order: order, compression: compression,
-          predictor: predictor, photometric: photometric, output: output)
+          predictor: predictor, photometric: photometric, output: output, jpegQuality: options.tiffJPEGQuality)
       : nil
-    let rowsPerStrip = min(height, max(1, 65_536 / rowBytes))
+    let jpegEncoder = jpeg ? TIFFJPEGOutput(components: samplesPerRowPixel, quality: options.tiffJPEGQuality) : nil
+    let rowsPerStrip = jpeg ? TIFFJPEGOutput.rowsPerStrip(height: height, rowBytes: rowBytes)
+      : min(height, max(1, 65_536 / rowBytes))
     try output.append(Data(order == .big ? [77, 77, 0, 42, 0, 0, 0, 0] : [73, 73, 42, 0, 0, 0, 0, 0]))
     var offsets: [Int] = [], counts: [Int] = []
 
@@ -173,8 +184,11 @@ enum TIFFComponentExport {
       try Task.checkCancellation()
       var row: [UInt8] = []
       row.reserveCapacity(rowBytes)
-      func appendPixel(_ raster: NativeModeRaster, _ index: Int) {
+      func appendPixel(_ raster: NativeModeRaster, _ index: Int) throws {
         let alpha = preserveAlpha ? 0 : Int(raster.rawWord(component: colors, index: index))
+        if requiresOpaque, alpha != 255 {
+          throw CraftError.unsupported("JPEG-compressed TIFF requires an opaque composite. Turn off Save Transparency to use white.")
+        }
         for component in first..<end {
           let word = sample(raster, index, component)
           let color = preserveAlpha ? word : TIFFStorage.whiteMatteSample(word, alpha: alpha, bits: bits,
@@ -200,7 +214,7 @@ enum TIFFComponentExport {
       } else if let matted {
         for x in 0..<width { append(Int(matted.whiteMattedSample(at: y * width + x)), to: &row) }
       } else if let retained {
-        for x in 0..<width { appendPixel(retained, y * width + x) }
+        for x in 0..<width { try appendPixel(retained, y * width + x) }
       } else if let renderer {
         try renderer.forEachSample(inRow: y, appendPixel)
       }
@@ -219,7 +233,8 @@ enum TIFFComponentExport {
         }
         if output.count % 2 != 0 { try output.append(Data([0])) }
         let start = output.count
-        try output.append(encodeStrip(strip, compression: compression))
+        if let jpegEncoder { try output.append(jpegEncoder.encode(strip, width: width)) }
+        else { try output.append(encodeStrip(strip, compression: compression)) }
         offsets.append(start)
         counts.append(output.count - start)
       }
@@ -227,6 +242,7 @@ enum TIFFComponentExport {
     container.set(259, [compression.tag]); container.set(273, offsets, type: 4)
     container.set(278, [rowsPerStrip], type: 4); container.set(279, counts, type: 4)
     container.set(284, [planar ? 2 : 1]); container.set(317, [predictor ? 3 : 1])
+    jpegEncoder?.setYCbCrFields(on: container.root, order: container.order)
     try pyramid?.attach(to: container, resolution: document.pixelsPerInch, opacity: transparencyExtras.first)
     if options.tiffLayers == true {
       try TIFFLayers.attach(document, to: container, order: order,
@@ -246,7 +262,10 @@ enum TIFFComponentExport {
       resolution: resolution, outputDepth: depth, sourceMetadata: document.sourceMetadata,
       options: .init(tiffCompression: RasterEncodingOptions.TIFFCompression.none))
     let file = try TIFFContainer(template, metadata: true)
-    for tag in [301, 318, 319, 320, 330, 332, 333, 334, 336, 338, 34377, 37724] { file.root.fields.removeValue(forKey: tag) }
+    for tag in [301, 318, 319, 320, 322, 323, 324, 325, 330, 332, 333, 334, 336, 338, 347,
+      529, 530, 531, 532, 34377, 37724] {
+      file.root.fields.removeValue(forKey: tag)
+    }
     file.root.next = nil
     file.set(256, [document.width], type: 4); file.set(257, [document.height], type: 4)
     file.set(258, Array(repeating: bits, count: channels)); file.set(262, [photometric]); file.set(277, [channels])
@@ -290,6 +309,7 @@ enum TIFFComponentExport {
       guard status == Z_OK else { throw CraftError.invalid("TIFF ZIP compression failed.") }
       buffer.count = Int(length)
       return buffer
+    case .jpeg: throw CraftError.invalid("JPEG TIFF requires an opaque strip with known geometry.")
     }
   }
 }
@@ -306,12 +326,15 @@ private final class TIFFImagePyramid {
     var strip: [UInt8] = []
     var offsets: [Int] = []
     var counts: [Int] = []
+    let jpegEncoder: TIFFJPEGOutput?
 
-    init(width: Int, height: Int, bytesPerPixel: Int) {
+    init(width: Int, height: Int, bytesPerPixel: Int, jpegEncoder: TIFFJPEGOutput?) {
       self.width = width
       self.height = height
       rowBytes = width * bytesPerPixel
-      rowsPerStrip = min(height, max(1, 65_536 / rowBytes))
+      self.jpegEncoder = jpegEncoder
+      rowsPerStrip = jpegEncoder == nil ? min(height, max(1, 65_536 / rowBytes))
+        : TIFFJPEGOutput.rowsPerStrip(height: height, rowBytes: rowBytes)
     }
   }
 
@@ -331,7 +354,7 @@ private final class TIFFImagePyramid {
 
   init(width: Int, height: Int, bits: Int, colors: Int, opacity: Bool, sourceChannels: Int,
     planar: Bool, order: TIFFContainer.Order, compression: RasterEncodingOptions.TIFFCompression,
-    predictor: Bool, photometric: Int, output: TIFFComponentExport.Output) {
+    predictor: Bool, photometric: Int, output: TIFFComponentExport.Output, jpegQuality: Int? = nil) {
     self.bits = bits
     self.bytesPerSample = bits / 8
     self.mainChannels = colors + (opacity ? 1 : 0)
@@ -347,7 +370,8 @@ private final class TIFFImagePyramid {
     for _ in 0..<3 {
       w = (w + 1) / 2
       h = (h + 1) / 2
-      built.append(Level(width: w, height: h, bytesPerPixel: physicalChannels * bytesPerSample))
+      let encoder = compression == .jpeg ? TIFFJPEGOutput(components: physicalChannels, quality: jpegQuality) : nil
+      built.append(Level(width: w, height: h, bytesPerPixel: physicalChannels * bytesPerSample, jpegEncoder: encoder))
     }
     levels = built
   }
@@ -428,7 +452,9 @@ private final class TIFFImagePyramid {
   private func flush(_ level: Level) throws {
     guard !level.strip.isEmpty else { return }
     if output.count % 2 != 0 { try output.append(Data([0])) }
-    let encoded = try TIFFComponentExport.encodeStrip(level.strip, compression: compression)
+    let encoded: Data
+    if let jpegEncoder = level.jpegEncoder { encoded = try jpegEncoder.encode(level.strip, width: level.width) }
+    else { encoded = try TIFFComponentExport.encodeStrip(level.strip, compression: compression) }
     level.offsets.append(output.count)
     level.counts.append(encoded.count)
     try output.append(encoded)
@@ -478,6 +504,7 @@ private final class TIFFImagePyramid {
       if let opacity { set(338, [opacity], in: node) }
       if bits == 32 { set(339, Array(repeating: 3, count: mainChannels), in: node) }
       for tag in [332, 334, 34675] { node.fields[tag] = container.root.fields[tag] }
+      level.jpegEncoder?.setYCbCrFields(on: node, order: container.order)
       if let last { last.next = node } else { first = node }
       last = node
     }

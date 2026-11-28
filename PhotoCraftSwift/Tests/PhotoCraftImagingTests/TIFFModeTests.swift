@@ -36,7 +36,7 @@ final class TIFFModeTests: XCTestCase {
       let original = try XCTUnwrap(document.layers[0].nativeMode)
       for order in RasterEncodingOptions.TIFFByteOrder.allCases {
         for layout in RasterEncodingOptions.TIFFPixelOrder.allCases {
-          for compression in RasterEncodingOptions.TIFFCompression.allCases {
+          for compression in RasterEncodingOptions.TIFFCompression.allCases.filter { $0 != .jpeg } {
             let options = RasterEncodingOptions(tiffCompression: compression, tiffByteOrder: order,
               tiffPixelOrder: layout, tiffPredictor: depth == .f32 && compression != .none)
             let bytes = try RasterIO.encoded(document, type: .tiff, options: options)

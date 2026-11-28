@@ -1,3 +1,9 @@
+### JPEG-compressed TIFF output (checkpoint 777)
+
+Photato commands and downloads share the native TIFF writer. Set tiffCompression=jpeg and optionally tiffJPEGQuality=0…12. Authenticated download and document.saveAs use the same compression path as the native editor. The Adobe wire schema retains its published fields.
+
+[Qualification](SOURCE_PUBLICATION_777.md).
+
 ### JPEG-compressed TIFF input (checkpoint 776)
 
 Native file Open, authenticated Photato uploads and Adobe-compatible action resource decoding share this TIFF reader. The API test compares all grayscale and opacity samples across these paths without changing Adobe request fields.

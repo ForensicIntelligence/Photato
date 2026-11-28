@@ -35,7 +35,7 @@ final class TIFFFloatTests: XCTestCase {
     for (index, profile) in [nil, adobe, p3].enumerated() {
       var d = try fixture(); d.workingICC = profile
       let original = d, expected = try raw(d)
-      for compression in RasterEncodingOptions.TIFFCompression.allCases {
+      for compression in RasterEncodingOptions.TIFFCompression.allCases.filter { $0 != .jpeg } {
         let data = try RasterIO.encoded(d, type: .tiff, options: .init(tiffCompression: compression))
         let source = try XCTUnwrap(CGImageSourceCreateWithData(data as CFData, nil))
         let image = try XCTUnwrap(CGImageSourceCreateImageAtIndex(source, 0, nil))

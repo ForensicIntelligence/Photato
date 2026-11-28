@@ -95,6 +95,12 @@ extension RecoveryPreferences {
       if result.psdMaximizeCompatibility == false, !PSDCodec.canOmitMergedImage(document) {
         result.psdMaximizeCompatibility = nil
       }
+      if result.tiffCompression == .jpeg,
+        !RasterEncodingOptions.supportsTIFFJPEG(width: document.width, height: document.height,
+          depth: document.depth, mode: document.colorMode) {
+        result.tiffCompression = nil
+        result.tiffJPEGQuality = nil
+      }
       guard document.colorMode.isRestricted else { return result }
       if result.tiffLayers != nil { result.tiffLayers = false }
       result.tiffLayerCompression = nil

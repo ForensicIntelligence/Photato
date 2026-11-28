@@ -20,8 +20,8 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
     }
   }
   public enum TIFFCompression: String, Codable, CaseIterable, Sendable {
-    case none, lzw, zip
-    public var tag: Int { switch self { case .none: 1; case .lzw: 5; case .zip: 8 } }
+    case none, lzw, zip, jpeg
+    public var tag: Int { switch self { case .none: 1; case .lzw: 5; case .zip: 8; case .jpeg: 7 } }
   }
   public enum TIFFByteOrder: String, Codable, CaseIterable, Sendable {
     case bigEndian, littleEndian
@@ -39,6 +39,7 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
   public var pngCompression: Int?
   public var pngInterlaced: Bool?
   public var tiffCompression: TIFFCompression?
+  public var tiffJPEGQuality: Int?
   public var tiffByteOrder: TIFFByteOrder?
   public var tiffPixelOrder: TIFFPixelOrder?
   public var tiffPredictor: Bool?
@@ -57,6 +58,7 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
     tiffPredictor: Bool? = nil, tiffLayers: Bool? = nil,
     tiffTransparency: Bool? = nil,
     tiffImagePyramid: Bool? = nil,
+    tiffJPEGQuality: Int? = nil,
     tiffEmbedProfile: Bool? = nil,
     tiffLayerCompression: TIFFLayerCompression? = nil,
     jpegQuality: Int? = nil, jpegFormat: JPEGFormat? = nil,
@@ -72,6 +74,7 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
     self.pngCompression = pngCompression
     self.pngInterlaced = pngInterlaced
     self.tiffCompression = tiffCompression
+    self.tiffJPEGQuality = tiffJPEGQuality
     self.tiffByteOrder = tiffByteOrder
     self.tiffPixelOrder = tiffPixelOrder
     self.tiffPredictor = tiffPredictor
@@ -95,9 +98,19 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
   }
   public var hasTIFFStorageOptions: Bool {
     tiffByteOrder != nil || tiffPixelOrder != nil || tiffPredictor != nil
-      || tiffTransparency == false || tiffEmbedProfile == false
+      || tiffTransparency == false || tiffEmbedProfile == false || tiffJPEGQuality != nil
+  }
+  package static func supportsTIFFJPEG(width: Int, height: Int, depth: PixelDepth, mode: DocumentColorMode) -> Bool {
+    depth == .u8 && (mode == .rgb || mode == .grayscale)
+      && (1...30_000).contains(width) && (1...30_000).contains(height)
   }
   public func validate(for type: UTType) throws {
+    if let quality = tiffJPEGQuality, tiffCompression != .jpeg || !(0...12).contains(quality) {
+      throw CraftError.invalid("TIFF JPEG quality requires JPEG compression and an integer from 0 through 12.")
+    }
+    if tiffCompression == .jpeg, tiffTransparency == true {
+      throw CraftError.invalid("JPEG-compressed TIFF cannot store composite transparency.")
+    }
     if let quality = jpegQuality, !(0...12).contains(quality) {
       throw CraftError.invalid("JPEG quality must be an integer from 0 through 12.")
     }

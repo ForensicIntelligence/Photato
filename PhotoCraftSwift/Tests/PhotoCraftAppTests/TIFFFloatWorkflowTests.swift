@@ -64,7 +64,7 @@ final class TIFFFloatWorkflowTests: XCTestCase {
       service.setDocumentTransfersEnabled(true); service.setDocumentSavesEnabled(true)
       service.setSaveDirectory(folder); try service.share(d)
       let id = try XCTUnwrap(service.shares.first?.id), before = d.store.document
-      for method in RasterEncodingOptions.TIFFCompression.allCases {
+      for method in RasterEncodingOptions.TIFFCompression.allCases.filter { $0 != .jpeg } {
         let options = RasterEncodingOptions(tiffCompression: method)
         let fields = DocumentEncodingOptions.json(options)
         let header = String(decoding: try JSONSerialization.data(withJSONObject: fields), as: UTF8.self)
@@ -109,7 +109,7 @@ final class TIFFFloatWorkflowTests: XCTestCase {
         XCTAssertEqual(outputs, [try DocumentIO.encode(model, format: .tiff)])
         XCTAssertEqual(try raw(RasterIO.read(XCTUnwrap(outputs.first))), try raw(model))
       }
-      let options = RasterEncodingOptions.TIFFCompression.allCases.map {
+      let options = RasterEncodingOptions.TIFFCompression.allCases.filter { $0 != .jpeg }.map {
         RasterEncodingOptions(tiffCompression: $0)
       }
       let extended = helper.body(outputs: options.map {

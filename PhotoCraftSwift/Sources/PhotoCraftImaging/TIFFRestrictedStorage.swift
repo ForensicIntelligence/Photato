@@ -209,6 +209,9 @@ enum TIFFRestrictedStorage {
       document = try source.replacingColorTable(palette, transparentIndex: nil)
     }
     try document.validate(); try options.validate(for: .tiff)
+    guard options.tiffCompression != .jpeg else {
+      throw CraftError.unsupported("JPEG TIFF compression requires RGB8 or Grayscale8.")
+    }
     guard let raster = document.restrictedMode, options.tiffLayers != true, options.tiffPredictor != true else {
       throw CraftError.unsupported("Indexed/Bitmap TIFF output requires flat samples without the floating-point predictor.")
     }
@@ -271,6 +274,7 @@ enum TIFFRestrictedStorage {
       case .none: packed = samples
       case .lzw: packed = try TIFFLZW.encode(Array(samples))
       case .zip: packed = try RestrictedRasterCompression.deflate(samples)
+      case .jpeg: throw CraftError.unsupported("JPEG TIFF compression requires RGB8 or Grayscale8.")
       }
       if output.count % 2 != 0 { output.append(0) }
       offsets.append(output.count); counts.append(packed.count); output.append(packed)

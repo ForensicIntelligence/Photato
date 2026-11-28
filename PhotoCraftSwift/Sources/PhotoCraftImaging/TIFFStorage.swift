@@ -309,6 +309,7 @@ enum TIFFStorage {
         switch compression {
         case .none: break
         case .lzw: try append(TIFFLZW.encode(strip))
+        case .jpeg: throw CraftError.invalid("JPEG TIFF requires the component strip writer.")
         case .zip:
           var size = compressBound(uLong(strip.count)), packed = [UInt8](repeating: 0, count: Int(compressBound(uLong(strip.count))))
           let status = packed.withUnsafeMutableBufferPointer { destination in

@@ -19,6 +19,13 @@ enum DocumentPersistenceConflict: LocalizedError {
   let pngCompression = NSPopUpButton(frame: .zero, pullsDown: false)
   let pngInterlaced = NSButton(checkboxWithTitle: "Interlaced", target: nil, action: nil)
   let tiffCompression = NSPopUpButton(frame: .zero, pullsDown: false)
+  let tiffJPEGQuality = NSPopUpButton(frame: .zero, pullsDown: false)
+  private let tiffJPEGQualityRow = NSStackView()
+  private var selectedTIFFCompression: RasterEncodingOptions.TIFFCompression? {
+    let index = tiffCompression.indexOfSelectedItem - 1
+    let choices = RasterEncodingOptions.TIFFCompression.allCases
+    return choices.indices.contains(index) ? choices[index] : nil
+  }
   let tiffByteOrder = NSPopUpButton(frame: .zero, pullsDown: false)
   let tiffPixelOrder = NSPopUpButton(frame: .zero, pullsDown: false)
   let tiffPredictor = NSButton(checkboxWithTitle: "Use Predictor", target: nil, action: nil)
@@ -58,8 +65,8 @@ enum DocumentPersistenceConflict: LocalizedError {
       return .init(pngCompression: pngCompression.indexOfSelectedItem == 0 ? nil : pngCompression.indexOfSelectedItem - 1,
         pngInterlaced: pngInterlaced.state == .on)
     case .tiff:
-      return .init(tiffCompression: tiffCompression.indexOfSelectedItem == 0 ? nil :
-        RasterEncodingOptions.TIFFCompression.allCases[tiffCompression.indexOfSelectedItem - 1],
+      let compression = selectedTIFFCompression
+      return .init(tiffCompression: compression,
         tiffByteOrder: tiffByteOrder.indexOfSelectedItem <= 0 ? nil :
           RasterEncodingOptions.TIFFByteOrder.allCases[tiffByteOrder.indexOfSelectedItem - 1],
         tiffPixelOrder: tiffPixelOrder.indexOfSelectedItem <= 0 ? nil :
@@ -68,6 +75,8 @@ enum DocumentPersistenceConflict: LocalizedError {
         tiffLayers: mode.isRestricted ? false : (layersExplicit || tiffLayers.state == .on ? tiffLayers.state == .on : nil),
         tiffTransparency: mode == .bitmap || !transparencyExplicit ? nil : tiffTransparency.state == .on,
         tiffImagePyramid: !tiffImagePyramid.isEnabled || !pyramidExplicit ? nil : tiffImagePyramid.state == .on,
+        tiffJPEGQuality: compression == .jpeg && tiffJPEGQuality.indexOfSelectedItem > 0
+          ? tiffJPEGQuality.indexOfSelectedItem - 1 : nil,
         tiffEmbedProfile: mode == .bitmap || !embedProfileExplicit ? nil : tiffEmbedProfile.state == .on,
         tiffLayerCompression: tiffLayers.state != .on || tiffLayerCompression.indexOfSelectedItem <= 0 ? nil :
           RasterEncodingOptions.TIFFLayerCompression.allCases[tiffLayerCompression.indexOfSelectedItem - 1])
@@ -81,7 +90,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     availableFormats: [DocumentIO.Format] = DocumentIO.Format.allCases, saving: Bool = false,
     initialOptions: [DocumentIO.Format: RasterEncodingOptions] = [:],
     uncompressedPhotoshopDefault: Bool = false, depth: PixelDepth = .u8, mode: DocumentColorMode = .rgb,
-    documentIsUntagged: Bool = false
+    documentIsUntagged: Bool = false, width: Int = 1, height: Int = 1
   ) {
     self.panel = panel
     self.availableFormats = availableFormats.isEmpty ? [.native] : availableFormats
@@ -114,12 +123,23 @@ enum DocumentPersistenceConflict: LocalizedError {
     pngInterlaced.state = initialOptions[.png]?.pngInterlaced == true ? .on : .off
     pngRow.addArrangedSubview(NSTextField(labelWithString: "Compression:"))
     pngRow.addArrangedSubview(pngCompression); pngRow.addArrangedSubview(pngInterlaced)
-    tiffCompression.addItems(withTitles: ["Default", "None", "LZW", "ZIP"])
+    tiffCompression.addItems(withTitles: ["Default", "None", "LZW", "ZIP", "JPEG"])
+    tiffCompression.autoenablesItems = false
     tiffCompression.setAccessibilityLabel("TIFF image compression")
-    if let selected = initialOptions[.tiff]?.tiffCompression,
+    let allowsJPEG = RasterEncodingOptions.supportsTIFFJPEG(width: width, height: height, depth: depth, mode: mode)
+    tiffCompression.itemArray.last?.isEnabled = allowsJPEG
+    tiffCompression.itemArray.last?.toolTip = "Requires opaque RGB or Grayscale at 8 bits per channel and at most 30,000 pixels per side."
+    if let selected = initialOptions[.tiff]?.tiffCompression, selected != .jpeg || allowsJPEG,
       let index = RasterEncodingOptions.TIFFCompression.allCases.firstIndex(of: selected) {
       tiffCompression.selectItem(at: index + 1)
     }
+    tiffJPEGQuality.addItems(withTitles: ["Default (95%)"] + (0...12).map(String.init))
+    if let quality = initialOptions[.tiff]?.tiffJPEGQuality, (0...12).contains(quality) {
+      tiffJPEGQuality.selectItem(at: quality + 1)
+    }
+    tiffJPEGQuality.setAccessibilityLabel("TIFF JPEG quality")
+    tiffJPEGQualityRow.addArrangedSubview(NSTextField(labelWithString: "JPEG Quality"))
+    tiffJPEGQualityRow.addArrangedSubview(tiffJPEGQuality)
     tiffRow.addArrangedSubview(NSTextField(labelWithString: "Image Compression:"))
     tiffRow.addArrangedSubview(tiffCompression)
     tiffCompression.target = self; tiffCompression.action = #selector(updateTIFFCompression)
@@ -186,6 +206,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     psdCompositeRow.addArrangedSubview(NSTextField(labelWithString: "Composite Compression:"))
     psdCompositeRow.addArrangedSubview(psdCompositeCompression)
     view.addArrangedSubview(pngRow); view.addArrangedSubview(tiffRow)
+    view.addArrangedSubview(tiffJPEGQualityRow)
     view.addArrangedSubview(tiffByteOrderRow); view.addArrangedSubview(tiffPixelOrderRow)
     view.addArrangedSubview(tiffLayersRow)
     view.addArrangedSubview(tiffImagePyramid)
@@ -208,8 +229,9 @@ enum DocumentPersistenceConflict: LocalizedError {
   @objc func changeTIFFEmbedProfile() { embedProfileExplicit = true }
   @objc func updateTIFFCompression() {
     tiffPredictor.isHidden = depth != .f32
-    tiffPredictor.isEnabled = depth == .f32 && tiffCompression.indexOfSelectedItem >= 2
+    tiffPredictor.isEnabled = depth == .f32 && (selectedTIFFCompression == .lzw || selectedTIFFCompression == .zip)
     if !tiffPredictor.isEnabled { tiffPredictor.state = .off }
+    tiffJPEGQualityRow.isHidden = format != .tiff || selectedTIFFCompression != .jpeg
   }
   @objc func updateFormat() {
     if let previous = photoshopFormat { photoshopOptions[previous] = photoshopEncodingOptions }
@@ -223,6 +245,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     panel?.allowedContentTypes = [format.contentType]
     explanation.stringValue = saving ? format.saveNotice : format.copyDescription
     pngRow.isHidden = format != .png; tiffRow.isHidden = format != .tiff
+    updateTIFFCompression()
     jpegControls.view.isHidden = format != .jpeg
     exrControls.view.isHidden = format != .exr
     tiffByteOrderRow.isHidden = format != .tiff; tiffPixelOrderRow.isHidden = format != .tiff
@@ -395,7 +418,7 @@ enum DocumentPersistenceConflict: LocalizedError {
       availableFormats: dialogCopyFormats, initialOptions: compatibleRememberedEncodingOptions,
       uncompressedPhotoshopDefault: fileHandlingPreferences.disablePSDCompression
         && store.document.depth != .u8, depth: store.document.depth, mode: store.document.colorMode,
-      documentIsUntagged: store.document.profileIsUntagged == true)
+      documentIsUntagged: store.document.profileIsUntagged == true, width: store.document.width, height: store.document.height)
     panel.accessoryView = accessory.view
     copyPanel = panel
     let finish: (NSApplication.ModalResponse) -> Void = { [weak self, accessory] response in

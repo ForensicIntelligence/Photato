@@ -47,7 +47,7 @@ final class TIFFStorageTests: XCTestCase {
       }
       for order in RasterEncodingOptions.TIFFByteOrder.allCases {
         for layout in RasterEncodingOptions.TIFFPixelOrder.allCases {
-          for compression in RasterEncodingOptions.TIFFCompression.allCases {
+          for compression in RasterEncodingOptions.TIFFCompression.allCases.filter { $0 != .jpeg } {
             for prediction in depth == .f32 && compression != .none ? [false, true] : [false] {
               let options = RasterEncodingOptions(tiffCompression: compression,
                 tiffByteOrder: order, tiffPixelOrder: layout, tiffPredictor: prediction)

@@ -227,7 +227,7 @@ import SwiftUI
       availableFormats: formats, saving: true, initialOptions: compatibleRememberedEncodingOptions,
       uncompressedPhotoshopDefault: fileHandlingPreferences.disablePSDCompression
         && store.document.depth != .u8, depth: store.document.depth, mode: store.document.colorMode,
-      documentIsUntagged: store.document.profileIsUntagged == true)
+      documentIsUntagged: store.document.profileIsUntagged == true, width: store.document.width, height: store.document.height)
     saveAccessory = accessory
     panel.accessoryView = accessory.view
     return super.prepareSavePanel(panel)

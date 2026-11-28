@@ -1422,4 +1422,12 @@ The 5,000 px Brush still takes 3.70 seconds to draw its first preview in the 24 
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-540) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_540.md).
 
+## 2026-11-17 — Step 539: render large brush dabs faster
+
+The 5,000 px color-dynamics test took 0.52 seconds on Apple Silicon, down from 1.99. Brush rendering now updates one tile at a time.
+
+All 205 selected tests passed. The optimized Apple Silicon and Intel builds reproduced the same bytes for both full-size brush tests. Live editing cadence still needs measurement.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-539) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_539.md).
+
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

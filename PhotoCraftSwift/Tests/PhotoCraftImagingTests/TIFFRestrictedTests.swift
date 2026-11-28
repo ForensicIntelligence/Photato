@@ -10,7 +10,7 @@ final class TIFFRestrictedTests: XCTestCase {
     for document in try RestrictedFormatTests().documents() {
       for order in RasterEncodingOptions.TIFFByteOrder.allCases {
         for layout in RasterEncodingOptions.TIFFPixelOrder.allCases {
-          for compression in RasterEncodingOptions.TIFFCompression.allCases {
+          for compression in RasterEncodingOptions.TIFFCompression.allCases.filter { $0 != .jpeg } {
             let data = try RasterIO.encoded(document, type: .tiff,
               options: .init(tiffCompression: compression, tiffByteOrder: order, tiffPixelOrder: layout))
             let file = try TIFFContainer(data, metadata: true), result = try RasterIO.read(data)
@@ -134,7 +134,7 @@ final class TIFFRestrictedTests: XCTestCase {
       case .indexed(let r): expected["palette"] = r.palette.map { [Int($0.red),Int($0.green),Int($0.blue)] }; expected["indices"] = Array(r.indices); expected["transparentIndex"] = r.transparentIndex
       case .bitmap(let r): expected["black"] = (0..<document.height).flatMap { y in (0..<document.width).map { r.isBlack(x: $0,y: y) } }
       }
-      for order in RasterEncodingOptions.TIFFByteOrder.allCases { for layout in RasterEncodingOptions.TIFFPixelOrder.allCases { for compression in RasterEncodingOptions.TIFFCompression.allCases {
+      for order in RasterEncodingOptions.TIFFByteOrder.allCases { for layout in RasterEncodingOptions.TIFFPixelOrder.allCases { for compression in RasterEncodingOptions.TIFFCompression.allCases.filter { $0 != .jpeg } {
         let filename = "\(document.name)-\(order.rawValue)-\(layout.rawValue)-\(compression.rawValue).tiff"
         let data = try RasterIO.encoded(document, type: .tiff, options: .init(tiffCompression: compression, tiffByteOrder: order, tiffPixelOrder: layout))
         try data.write(to: directory.appendingPathComponent(filename))

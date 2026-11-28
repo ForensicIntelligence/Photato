@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **776** · The 10 most recent entries, newest first.
+Source build **777** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 777 — Save JPEG-compressed TIFFs
+
+TIFF Save and Save a Copy can use JPEG compression for opaque RGB8 and Gray8 images. Choose JPEG Quality from 0 through 12. Supported editable layers, profiles, storage orders and optional reduced-resolution previews are preserved.
+
+Independent libtiff decoding opened the three JPEG TIFF outputs. Photoshop 27.2 reopened the grayscale TIFF and both RGB8 files with their editable overlay selected in the RGB cases. Photato produced identical file and Data output for the tested job. Quality settings changed the compressed bytes and the TIFF records the native encoder’s chroma layout. Photato also reopened 1 × 1 with all 13 settings and 30,000 × 33 at three settings.
+
+Xcode built the native app. All 3 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 263 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+JPEG changes the composite samples. Choose lossless compression to keep named selection channels. The exact Photoshop quality curve, JPEG output bytes and decoding differences remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-777) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_777.md).
 
 ## 2026-11-27 — Step 776 — Open JPEG-compressed TIFFs
 
@@ -111,15 +123,3 @@ The Xcode project built and all 44 selected imaging and 13 app and HTTP tests pa
 This checkpoint changes supported classic strip input. The 512 MiB encoded desktop limit, large TIFF output, tiled component TIFF, BigTIFF, layered capacity and independent Photoshop transparency comparisons remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-768) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_768.md).
-
-## 2026-11-27 — Step 767 — Preserve the TIFF color profile choice
-
-The TIFF save panel now has an Embed Color Profile checkbox. It follows the document’s profile choice by default and accepts a per-file override. The TIFF writer preserves the sample values with either choice.
-
-An independent decoder matched all 2,048 Gray16 samples with the Photoshop references in four profile cases on each architecture. Tagged and untagged copies also matched those samples when saved through the native Photato panel. The imaging tests cover flat and layered RGB, grayscale, CMYK and Lab, plus Indexed Color without an embedded profile.
-
-The Xcode project built and 39 focused imaging and 12 app, panel and HTTP tests passed. Both optimized architectures passed all 227 selected tests. The extracted Universal preview rendered offscreen on each slice. Intel ran under Rosetta.
-
-The checks establish TIFF profile choice and sample preservation in the tested cases. Photoshop TIFF opacity, whole-file equivalence and larger component TIFF documents are still open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-767) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_767.md).
