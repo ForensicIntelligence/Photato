@@ -1,3 +1,9 @@
+### Flat TIFF alpha and spot channels (checkpoint 782)
+
+Lossless Photato TIFF output accepts independent `tiffAlphaChannels` and `tiffSpotColors` booleans. When omitted, their defaults still follow `tiffLayers`. Both existing API input paths decode named channels in flat or layered TIFF. Adobe v2 output retains its published options.
+
+[Qualification](SOURCE_PUBLICATION_782.md).
+
 ### Layered TIFF alpha and spot channels (checkpoint 781)
 
 Native Save, Photato import, download and Save As, and Adobe-compatible asset input share the same channel handling. Lossless copy and download retain editable channels with `tiffLayers: true`. The published Adobe output schema and existing transfer size limits remain in effect.

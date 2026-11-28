@@ -106,4 +106,59 @@ final class TIFFBigOutputWorkflowTests: XCTestCase {
     }
   }
 
+
+  @MainActor func testTIFFCopyOptionsKeepFlatNamedChannelsThroughBothAPIs() async throws {
+    let accessory = DocumentCopyAccessory(panel: NSSavePanel(), initial: .tiff, depth: .u8,
+      hasAlphaChannels: true, hasSpotColors: true)
+    XCTAssertEqual(accessory.tiffLayers.state, .off)
+    XCTAssertEqual(accessory.tiffAlphaChannels.state, .on)
+    XCTAssertEqual(accessory.tiffSpotColors.state, .on)
+    XCTAssertEqual(accessory.encodingOptions.tiffAlphaChannels, true)
+    accessory.tiffAlphaChannels.performClick(nil)
+    XCTAssertEqual(accessory.encodingOptions.tiffAlphaChannels, false)
+    XCTAssertEqual(accessory.encodingOptions.tiffSpotColors, true)
+    let jpegIndex = try XCTUnwrap(RasterEncodingOptions.TIFFCompression.allCases.firstIndex(of: .jpeg))
+    accessory.tiffCompression.selectItem(at: jpegIndex + 1)
+    accessory.updateTIFFCompression()
+    XCTAssertFalse(accessory.tiffSpotColors.isEnabled)
+    XCTAssertEqual(accessory.encodingOptions.tiffSpotColors, false)
+    accessory.tiffCompression.selectItem(at: 0)
+    accessory.updateTIFFCompression()
+    XCTAssertEqual(accessory.encodingOptions.tiffAlphaChannels, false)
+    XCTAssertEqual(accessory.encodingOptions.tiffSpotColors, true)
+    accessory.formats.selectItem(withTitle: DocumentIO.Format.png.title)
+    accessory.updateFormat()
+    XCTAssertNil(accessory.encodingOptions.tiffSpotColors)
+
+    let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+      .appendingPathComponent("PhotoCraftImagingTests/Fixtures/tiff-flat-aux/photoshop-flat-rgb16-aux.tiff")
+    let bytes = try Data(contentsOf: fixture)
+    let original = try DocumentIO.read(fixture)
+    XCTAssertEqual(try AdobeActionAssets.decode(bytes).alphaChannels?.map(\.name), ["Proof ink", "Alpha 2"])
+    let options = RasterEncodingOptions(tiffCompression: .zip, tiffLayers: false,
+      tiffTransparency: false, tiffBigTIFF: true, tiffAlphaChannels: false, tiffSpotColors: true)
+    let fields = DocumentEncodingOptions.json(options)
+    let header = String(decoding: try JSONSerialization.data(withJSONObject: fields), as: UTF8.self)
+    let automation = AutomationTests()
+    try await automation.withService(pressedMouseButtons: { 0 }) { service, shared in
+      defer { for document in service.controller.documents where document !== shared { document.close() } }
+      service.setDocumentTransfersEnabled(true)
+      let upload = try await AutomationOpeningTests().upload(service, bytes: bytes,
+        type: "image/tiff", format: "tiff")
+      XCTAssertEqual(upload.0.statusCode, 201, String(decoding: upload.1, as: UTF8.self))
+      let share = try XCTUnwrap(service.shares.last)
+      XCTAssertEqual(share.document?.store.document.alphaChannels?.map(\.name), ["Proof ink", "Alpha 2"])
+      let route = "/v1/documents/\(share.id)/file.tiff"
+      let download = try await automation.request(service, path: route, headers: ["X-Photato-Export-Options": header])
+      XCTAssertEqual(download.0.statusCode, 200, String(decoding: download.1, as: UTF8.self))
+      XCTAssertEqual(download.1, try RasterIO.encoded(original, type: .tiff, options: options))
+      let output = try AdobeActionAssets.decode(download.1)
+      XCTAssertEqual(output.layers.count, 1)
+      XCTAssertEqual(output.alphaChannels?.map(\.name), ["Proof ink"])
+      let malformed = try await automation.request(service, path: route,
+        headers: ["X-Photato-Export-Options": #"{"tiffSpotColors":1}"#])
+      XCTAssertEqual(malformed.0.statusCode, 400)
+    }
+  }
+
 }

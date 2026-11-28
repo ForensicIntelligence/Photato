@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **781** · The 10 most recent entries, newest first.
+Source build **782** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 782 — Preserve selected channels in flat TIFF copies
+
+Native TIFF Save and Save a Copy offer separate Alpha Channels and Spot Colors checkboxes. Both start checked when present, and either channel type can survive a flattened TIFF or BigTIFF.
+
+Photato saved an RGB16 spot-only copy and kept its layered source open. Photato and Photoshop 27.2 reopened the copy with only the named spot plate. Photoshop also reopened the flattened Float32 BigTIFF with both named channels and its separate opacity sample. LibTIFF matched all 25,929 measured alpha and spot samples exactly.
+
+Xcode built the native app. All 6 focused imaging and 3 focused app and HTTP tests passed. Both optimized architectures passed all 299 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+In the live RGB16 comparison, 5,474 of 8,643 process-color words differed by one code. Quick Mask and dense multi-gigabyte layered interchange also remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-782) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_782.md).
 
 ## 2026-11-27 — Step 781 — Keep saved alpha and spot channels in layered TIFF
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 12 focused imaging and 8 app and HTTP tests pass
 The capacity controls cover classic TIFF with editable RGB8 layers. Near-limit files, unsupported Photoshop descriptors, tiled input and broader direct Photoshop comparisons still need qualification.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-773) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_773.md).
-
-## 2026-11-27 — Step 772 — Open larger editable TIFF layer data
-
-Photato can open classic TIFF files with editable Photoshop layer data above the previous 512 MiB limit. It reads the layer samples in bounded ranges and keeps the original layers editable.
-
-Two independently built 12,000 × 12,000 TIFFs each contained 576 MB of editable layer data. Photato restored the authored RGB and opacity samples in both byte orders. On these sparse fixtures, the standalone native decoder peaked at 7.2 MiB for big endian and 7.6 MiB for little endian. Two further controls retained their 300 ppi setting, TIFF description and XMP title.
-
-Xcode built the native app. All 10 focused imaging and 7 app and HTTP tests passed. Both optimized architectures passed all 246 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
-
-This checkpoint removes the input limit for the tested layer container. Larger layer payloads when saving, unsupported Photoshop descriptors, additional TIFF layouts and broader byte comparisons remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-772) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_772.md).

@@ -111,12 +111,8 @@ enum TIFFLayers {
       throw CraftError.invalid("Invalid TIFF Photoshop resources.")
     }
     let blocks = try PSDImageResources.blocks(resources)
-    if savedAlpha != nil {
-      guard hasEditableLayers,
-        blocks.contains(where: { [1006, 1045].contains($0.id) && !$0.data.isEmpty }),
-        !blocks.contains(where: { $0.id == 1022 }) else {
-        throw CraftError.unsupported("Layered TIFF auxiliary samples require named channels and editable layers.")
-      }
+    if savedAlpha != nil, !hasEditableLayers {
+      throw CraftError.unsupported("Layered TIFF auxiliary samples require editable layers.")
     }
     let profiles = blocks.filter { $0.id == 1039 }
     guard profiles.count <= 1 else { throw CraftError.invalid("Duplicate TIFF Photoshop profiles.") }
@@ -144,15 +140,11 @@ enum TIFFLayers {
       tiffNativeComposite: composite.layers.first?.nativeMode, paging: paging)
     if let savedAlpha {
       let count = savedAlpha.savedAlphaSamples.count
-      // Photoshop's MTrn marks the leading opacity sample. Some TIFF writers
-      // describe only saved channels, while Photoshop also names that sample.
-      let transparencyRecord = seen.contains("MTrn") && (extra.first == 1 || extra.first == 2)
-        && (try? PSDAuxiliaryChannels.names(blocks, count: count + 1)) != nil
       guard let storedAlpha, storedAlpha.count == count else {
         throw CraftError.invalid("TIFF channel samples disagree with the layer metadata.")
       }
-      try PSDAuxiliaryChannels.read(storedAlpha, first: components-count, blocks: blocks,
-        document: &result, paging: paging, leadingTransparency: transparencyRecord)
+      try TIFFChannelMetadata.restore(storedAlpha, first: components-count, blocks: blocks,
+        document: &result, paging: paging, hasLeadingOpacity: extra.first == 1 || extra.first == 2)
     }
     result.resolution = composite.resolution
     result.sourceICC = composite.sourceICC
@@ -163,14 +155,16 @@ enum TIFFLayers {
     return result
   }
 
-  static func attach(_ document: CraftDocument, to tiff: TIFFContainer, order: TIFFContainer.Order,
-    compression: RasterEncodingOptions.TIFFLayerCompression, fileBacked: Bool = false) throws {
+  static func attach(_ document: CraftDocument, savedChannels savedAlpha: [AlphaChannel], to tiff: TIFFContainer,
+    order: TIFFContainer.Order, compression: RasterEncodingOptions.TIFFLayerCompression,
+    fileBacked: Bool = false) throws {
     try Task.checkCancellation()
     guard document.layers.count + document.layers.filter({ $0.group != nil }).count <= 1024 else {
       throw CraftError.invalid("TIFF exceeds the layer record limit.")
     }
-    let savedAlpha = document.alphaChannels ?? []
+    guard document.quickMask == nil else { throw CraftError.unsupported("Save Quick Mask in Photato, PSD or PSB.") }
     var layerDocument = document
+    layerDocument.alphaChannels = nil
     let componentCount = try tiff.scalar(277)
     let hasTransparency: Bool
     let colors = document.colorMode.componentCount
@@ -186,8 +180,6 @@ enum TIFFLayers {
         throw CraftError.invalid("TIFF saved-alpha samples disagree with the selected channels.")
       }
       hasTransparency = !remaining.isEmpty
-      // The PSD intermediate contributes layer records. The TIFF carries the saved samples.
-      layerDocument.alphaChannels = nil
     }
     func serializeLayers(_ output: PSDOutput) throws {
       try PSDCodec.writeRasterLayers(layerDocument, compression: compression.codec, format: .psd,
@@ -212,8 +204,8 @@ enum TIFFLayers {
     _ = try reader.section()
     var resources = try reader.section().data
     if !savedAlpha.isEmpty {
-      resources.append(try PSDAuxiliaryChannels.resources(document,first:componentCount-savedAlpha.count,
-        leadingTransparency:hasTransparency))
+      resources.append(try TIFFChannelMetadata.encode(savedAlpha, document: document,
+        first: componentCount - savedAlpha.count, transparency: hasTransparency))
     }
     var section = try reader.section()
     let directLayers = try section.section()
@@ -267,5 +259,30 @@ enum TIFFLayers {
     } else {
       tiff.root.fields[37724] = .init(tag: 37724, type: 7, count: payloadBytes, data: try payload.data)
     }
+  }
+}
+
+/// Channel names and display metadata describe extra samples independently of layer records.
+enum TIFFChannelMetadata {
+  static func named(_ blocks: [PSDImageResources.Block]) -> Bool {
+    blocks.contains { [1006, 1045].contains($0.id) && !$0.data.isEmpty }
+  }
+
+  static func restore(_ samples: [Surface], first: Int, blocks: [PSDImageResources.Block],
+    document: inout CraftDocument, paging: PSDRasterPaging.Context?, hasLeadingOpacity: Bool) throws {
+    guard named(blocks), !blocks.contains(where: { $0.id == 1022 }) else {
+      throw CraftError.unsupported("TIFF saved channels require named channel resources without Quick Mask.")
+    }
+    // Writers may name the separate leading opacity sample in these resources.
+    let opacityIsNamed = hasLeadingOpacity && (try? PSDAuxiliaryChannels.names(blocks, count: samples.count + 1)) != nil
+    try PSDAuxiliaryChannels.read(samples, first: first, blocks: blocks, document: &document,
+      paging: paging, leadingTransparency: opacityIsNamed)
+  }
+
+  static func encode(_ samples: [AlphaChannel], document: CraftDocument, first: Int, transparency: Bool) throws -> Data {
+    var selected = document
+    selected.alphaChannels = samples
+    selected.quickMask = nil
+    return try PSDAuxiliaryChannels.resources(selected, first: first, leadingTransparency: transparency)
   }
 }

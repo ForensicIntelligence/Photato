@@ -107,7 +107,7 @@ enum TIFFComponentExport {
     }
     if options.tiffLayers == true {
       guard let document else { throw CraftError.invalid("Layered TIFF encoding requires a document.") }
-      try TIFFLayers.attach(document, to: container, order: order,
+      try TIFFLayers.attach(document, savedChannels: [], to: container, order: order,
         compression: options.tiffLayerCompression ?? .zip, fileBacked: output.isFileBacked)
     }
     try finish(container, order: order, output: output)
@@ -138,19 +138,16 @@ enum TIFFComponentExport {
     if jpeg && !RasterEncodingOptions.supportsTIFFJPEG(width: width, height: height, depth: depth, mode: descriptor.mode) {
       throw CraftError.unsupported("JPEG-compressed TIFF requires RGB or Grayscale at 8 bits per channel and at most 30,000 pixels per side.")
     }
-    if jpeg, options.tiffLayers == true, document.hasAuxiliaryChannels {
-      throw CraftError.unsupported("JPEG-compressed TIFF cannot store saved selection channels. Choose lossless TIFF compression to retain them.")
+    let savedAlpha = options.tiffSavedChannels(document)
+    if jpeg, !savedAlpha.isEmpty {
+      throw CraftError.unsupported("JPEG-compressed TIFF cannot store saved alpha or spot channels. Choose lossless TIFF compression to retain them.")
     }
     let requiresOpaque = jpeg && options.tiffTransparency == nil
     let preserveAlpha = !jpeg && options.tiffTransparency != false
     let imageChannels = colors + (preserveAlpha ? 1 : 0)
-    let savedAlpha: [AlphaChannel]
-    if options.tiffLayers == true, document.hasAuxiliaryChannels {
-      guard RasterIO.supportsLayeredTIFFSavedAlpha(document) else {
-        throw CraftError.unsupported("Layered TIFF can retain saved alpha and spot channels in component color modes. Save Quick Mask in Photato, PSD or PSB.")
-      }
-      savedAlpha = document.alphaChannels ?? []
-    } else { savedAlpha = [] }
+    if options.tiffLayers == true, document.quickMask != nil {
+      throw CraftError.unsupported("Save Quick Mask in Photato, PSD or PSB.")
+    }
     let savedRows = savedAlpha.map(PSDAuxiliaryChannels.storedRows)
     let channels = imageChannels + savedAlpha.count
     let planar = options.tiffPixelOrder == .perChannel
@@ -279,8 +276,12 @@ enum TIFFComponentExport {
     jpegEncoder?.setYCbCrFields(on: container.root, order: container.order)
     try pyramid?.attach(to: container, resolution: document.pixelsPerInch, opacity: transparencyExtras.first)
     if options.tiffLayers == true {
-      try TIFFLayers.attach(document, to: container, order: order,
+      try TIFFLayers.attach(document, savedChannels: savedAlpha, to: container, order: order,
         compression: options.tiffLayerCompression ?? .zip, fileBacked: output.isFileBacked)
+    } else if !savedAlpha.isEmpty {
+      let bytes = try TIFFChannelMetadata.encode(savedAlpha, document: document, first: imageChannels,
+        transparency: preserveAlpha)
+      container.root.fields[34377] = .init(tag: 34377, type: 1, count: bytes.count, data: bytes)
     }
     try finish(container, order: order, output: output)
   }

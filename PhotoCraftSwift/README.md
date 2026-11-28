@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 782.** Preserve selected channels in flat TIFF copies. [Qualification](docs/SOURCE_PUBLICATION_782.md).
+
 **Source checkpoint 781.** Keep saved alpha and spot channels in layered TIFF. [Qualification](docs/SOURCE_PUBLICATION_781.md).
 
 **Source checkpoint 780.** Open dense RGB TIFFs without intermediate planes. [Qualification](docs/SOURCE_PUBLICATION_780.md).

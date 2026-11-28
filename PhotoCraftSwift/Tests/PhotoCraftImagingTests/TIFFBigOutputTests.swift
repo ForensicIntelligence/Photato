@@ -224,4 +224,63 @@ final class TIFFBigOutputTests: XCTestCase {
     }
   }
 
+
+  func testFlatTIFFPreservesAdobeAlphaAndSpotPlanesIndependentlyOfLayers() throws {
+    struct Fixture: Decodable {
+      let fixtureSHA256: String
+      let names: [String]
+      let identifiers: [UInt32]
+      let sampleSHA256: [String]
+      let depth: Int
+    }
+    struct Provenance: Decodable { let fixtures: [String: Fixture] }
+    func digest(_ data: Data) -> String { SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined() }
+    let folder = fixtures.appendingPathComponent("tiff-flat-aux")
+    let provenance = try JSONDecoder().decode(Provenance.self,
+      from: Data(contentsOf: folder.appendingPathComponent("provenance.json")))
+    let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".tiff")
+    defer { try? FileManager.default.removeItem(at: url) }
+    for (name, evidence) in provenance.fixtures.sorted(by: { $0.key < $1.key }) {
+      let reference = folder.appendingPathComponent(name)
+      XCTAssertEqual(digest(try Data(contentsOf: reference)), evidence.fixtureSHA256)
+      let original = try RasterIO.read(reference)
+      func check(_ document: CraftDocument, expecting names: Set<String>) throws {
+        XCTAssertEqual(document.colorMode, .rgb)
+        XCTAssertEqual(document.bitsPerChannel, evidence.depth)
+        XCTAssertEqual(document.width, 67)
+        XCTAssertEqual(document.height, 43)
+        XCTAssertEqual(document.layers.count, 1)
+        XCTAssertEqual(document.alphaChannels?.map(\.name) ?? [], evidence.names.filter(names.contains))
+        for channel in document.alphaChannels ?? [] {
+          let index = try XCTUnwrap(evidence.names.firstIndex(of: channel.name))
+          XCTAssertEqual(channel.psdIdentifier, evidence.identifiers[index])
+          let bytes = try (0..<document.height).flatMap { try PSDAuxiliaryChannels.row(channel, y: $0, depth: evidence.depth) }
+          XCTAssertEqual(digest(Data(bytes)), evidence.sampleSHA256[index])
+        }
+      }
+      try check(original, expecting: Set(evidence.names))
+      let flat = RasterEncodingOptions(tiffCompression: .zip, tiffByteOrder: .littleEndian,
+        tiffPixelOrder: .perChannel, tiffPredictor: evidence.depth == 32,
+        tiffLayers: false, tiffTransparency: true, tiffBigTIFF: true,
+        tiffAlphaChannels: true, tiffSpotColors: true)
+      let encoded = try RasterIO.encoded(original, type: .tiff, options: flat)
+      try RasterIO.write(original, to: url, type: .tiff, options: flat)
+      XCTAssertEqual(try Data(contentsOf: url), encoded)
+      let tiff = try TIFFContainer(encoded, metadata: false, additionalTags: [34377, 37724])
+      XCTAssertNil(tiff.root.fields[37724])
+      XCTAssertNotNil(tiff.root.fields[34377])
+      XCTAssertEqual(try tiff.numbers(338).count, evidence.names.count + 1)
+      try check(RasterIO.read(url), expecting: Set(evidence.names))
+      var select = flat
+      select.tiffAlphaChannels = false
+      select.tiffTransparency = false
+      select.tiffBigTIFF = false
+      try check(RasterIO.read(RasterIO.encoded(original, type: .tiff, options: select)), expecting: ["Proof ink"])
+      select.tiffAlphaChannels = true
+      select.tiffSpotColors = false
+      try check(RasterIO.read(RasterIO.encoded(original, type: .tiff, options: select)), expecting: ["Alpha 2"])
+      try check(RasterIO.read(RasterIO.encoded(original, type: .tiff)), expecting: [])
+    }
+  }
+
 }

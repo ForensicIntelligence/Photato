@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 538: use a 5,000 px brush
-
-Set a primary Brush diameter up to 5,000 pixels from the native controls or API. Large strokes process small regions before committing, with the same Undo and recorded Action behavior.
-
-All 204 selected checks passed. The optimized Apple Silicon and Intel versions rendered the same bytes for a full-size dab and the 24 earlier Brush samples. Wide strokes still need performance work.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-538) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_538.md).
-
 ## 2026-11-17 — Step 537: record Pencil strokes in Actions
 
 The Pencil now plays back in Actions. A recorded stroke keeps the points, brush settings and destination. Auto Erase checks the first pixel in the playback document, so the same step can switch between foreground and background on different images.
@@ -299,11 +291,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:781 -->
+<!-- current-status-step:782 -->
 
-Layered TIFF and BigTIFF now keep saved alpha and spot plates in RGB, Grayscale, CMYK and Lab. Associated or straight composite opacity stays separate from the named channels. Names, display colors, spot solidity and channel IDs survive Open and lossless Save.
+Native TIFF Save and Save a Copy offer separate Alpha Channels and Spot Colors checkboxes. Both start checked when present, and either channel type can survive a flattened TIFF or BigTIFF.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-781) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_781.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-782) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_782.md).
 
 <!-- current-status:end -->
 
@@ -1291,5 +1283,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 779 | [Save BigTIFF files with 64-bit offsets](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-779) |
 | 2026-11-27 | 780 | [Open dense RGB TIFFs without intermediate planes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-780) |
 | 2026-11-27 | 781 | [Keep saved alpha and spot channels in layered TIFF](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-781) |
+| 2026-11-27 | 782 | [Preserve selected channels in flat TIFF copies](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-782) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

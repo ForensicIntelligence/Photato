@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 782 — Preserve selected channels in flat TIFF copies
+
+Native TIFF Save and Save a Copy offer separate Alpha Channels and Spot Colors checkboxes. Both start checked when present, and either channel type can survive a flattened TIFF or BigTIFF.
+
+Photato saved an RGB16 spot-only copy and kept its layered source open. Photato and Photoshop 27.2 reopened the copy with only the named spot plate. Photoshop also reopened the flattened Float32 BigTIFF with both named channels and its separate opacity sample. LibTIFF matched all 25,929 measured alpha and spot samples exactly.
+
+Xcode built the native app. All 6 focused imaging and 3 focused app and HTTP tests passed. Both optimized architectures passed all 299 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+In the live RGB16 comparison, 5,474 of 8,643 process-color words differed by one code. Quick Mask and dense multi-gigabyte layered interchange also remain open.
+
+[Development record](DEVLOG.md#dev-step-782) · [Qualification](SOURCE_PUBLICATION_782.md).
+
 ## 2026-11-27 — Step 781 — Keep saved alpha and spot channels in layered TIFF
 
 Layered TIFF and BigTIFF now keep saved alpha and spot plates in RGB, Grayscale, CMYK and Lab. Associated or straight composite opacity stays separate from the named channels. Names, display colors, spot solidity and channel IDs survive Open and lossless Save.
@@ -2471,11 +2483,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:781 -->
+<!-- current-status-step:782 -->
 
-Layered TIFF and BigTIFF now keep saved alpha and spot plates in RGB, Grayscale, CMYK and Lab. Associated or straight composite opacity stays separate from the named channels. Names, display colors, spot solidity and channel IDs survive Open and lossless Save.
+Native TIFF Save and Save a Copy offer separate Alpha Channels and Spot Colors checkboxes. Both start checked when present, and either channel type can survive a flattened TIFF or BigTIFF.
 
-[Development record](DEVLOG.md#dev-step-781) · [Qualification](SOURCE_PUBLICATION_781.md).
+[Development record](DEVLOG.md#dev-step-782) · [Qualification](SOURCE_PUBLICATION_782.md).
 
 <!-- current-status:end -->
 
@@ -3463,6 +3475,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 779 | [Save BigTIFF files with 64-bit offsets](DEVLOG.md#dev-step-779) |
 | 2026-11-27 | 780 | [Open dense RGB TIFFs without intermediate planes](DEVLOG.md#dev-step-780) |
 | 2026-11-27 | 781 | [Keep saved alpha and spot channels in layered TIFF](DEVLOG.md#dev-step-781) |
+| 2026-11-27 | 782 | [Preserve selected channels in flat TIFF copies](DEVLOG.md#dev-step-782) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

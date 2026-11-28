@@ -43,7 +43,13 @@ enum TIFFModeStorage {
     let photo = try file.scalar(262)
     guard let mode = mode(photo) else { return nil }
     let jpeg = try file.scalar(259, default: 1) == 7
-    let hasNamedExtras = try file.root.fields[37724] != nil && file.numbers(338, default: []).contains(0)
+    let hasExtraSamples = try file.numbers(338, default: []).contains(0)
+    let flatResources: [PSDImageResources.Block]
+    if hasExtraSamples, file.root.fields[37724] == nil, let resources = file.root.fields[34377],
+      [1, 7].contains(resources.type) {
+      flatResources = try PSDImageResources.blocks(resources.data)
+    } else { flatResources = [] }
+    let hasNamedExtras = hasExtraSamples && (file.root.fields[37724] != nil || TIFFChannelMetadata.named(flatResources))
     if mode == .rgb, !jpeg, !forcePaged, !hasNamedExtras,
       file.root.fields[324] == nil, file.root.fields[325] == nil {
       let width = try file.scalar(256), height = try file.scalar(257)
@@ -75,7 +81,7 @@ enum TIFFModeStorage {
     let orientation = try file.scalar(274, default: 1)
     guard (1...8).contains(orientation) else { throw CraftError.invalid("Invalid TIFF orientation.") }
     if !g.savedAlphaSamples.isEmpty, orientation != 1 {
-      throw CraftError.unsupported("TIFF saved alpha and spot channels require unrotated Photoshop layer data.")
+      throw CraftError.unsupported("TIFF saved alpha and spot channels require unrotated samples.")
     }
     let pixels: Surface
     let nativeMode: NativeModeRaster?
@@ -126,7 +132,12 @@ enum TIFFModeStorage {
     document.layers = [layer]; document.activeLayerID = layer.id
     try document.validate()
     if let layered = try layers(document, backing, savedAlpha) { return layered }
-    guard savedAlpha == nil else { throw CraftError.unsupported("Saved TIFF selections require editable layer metadata.") }
+    if let savedAlpha {
+      let paging = try backing.map { try PSDRasterPaging.Context(sharedBacking: $0) }
+      try TIFFChannelMetadata.restore(savedAlpha, first: g.channels - savedAlpha.count, blocks: flatResources,
+        document: &document, paging: paging, hasLeadingOpacity: g.opacitySample == mode.componentCount)
+      try document.validate()
+    }
     return document
   }
 

@@ -317,6 +317,9 @@ public enum RasterIO {
     workingDocument: CraftDocument? = nil, options: RasterEncodingOptions = .init()
   ) throws -> Data {
     var options = options
+    if type == .tiff, options.tiffAlphaChannels == true || options.tiffSpotColors == true {
+      throw CraftError.invalid("TIFF alpha and spot channel encoding requires a document.")
+    }
     if type == .tiff, options.tiffEmbedProfile == nil, workingDocument?.profileIsUntagged == true {
       options.tiffEmbedProfile = false
     }
@@ -588,7 +591,7 @@ public enum RasterIO {
     }
     if type == .tiff {
       if options.tiffCompression == .jpeg || options.tiffBigTIFF == true || supportsPagedComponentTIFFOutput(document)
-        || (options.tiffLayers == true && document.hasAuxiliaryChannels) {
+        || (options.tiffLayers == true && document.quickMask != nil) || !options.tiffSavedChannels(document).isEmpty {
         return try TIFFComponentExport.encoded(document, options: options)
       }
       let composite = try renderedTIFF(document, options: options)
@@ -608,6 +611,7 @@ public enum RasterIO {
     var compositeOptions = options
     compositeOptions.tiffLayers = nil; compositeOptions.tiffLayerCompression = nil
     compositeOptions.tiffImagePyramid = nil
+    compositeOptions.tiffAlphaChannels = nil; compositeOptions.tiffSpotColors = nil
     if options.tiffLayers == true, compositeOptions.tiffByteOrder == nil {
       compositeOptions.tiffByteOrder = .bigEndian
     }
@@ -638,7 +642,7 @@ public enum RasterIO {
     options: RasterEncodingOptions = .init()) throws {
     if type == .tiff, (supportsPagedComponentTIFFOutput(document)
       || ((options.tiffCompression == .jpeg || options.tiffBigTIFF == true
-            || (options.tiffLayers == true && document.hasAuxiliaryChannels))
+            || (options.tiffLayers == true && document.quickMask != nil) || !options.tiffSavedChannels(document).isEmpty)
           && document.inkMode == nil && document.restrictedMode == nil)) {
       try TIFFComponentExport.write(document, to: url, options: options)
       return

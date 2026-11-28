@@ -1,15 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)
 
-## 2026-11-21 — Step 712 — Generate editable images from a text prompt on-device
-
-Edit → Generate Image and the canvas controls now generate artwork from a text prompt on eligible Macs. The optional local Core ML model creates one to three alternatives in a single editable Smart Object and preserves the original layers and selection. Properties switches variations and can generate more from the prompt or generate similar results from a saved variation. The Photato API shares the same prepared edit and history. The existing Apple Intelligence route remains available.
-
-The real local model produced identical same-seed rendered pixels through the native editor and authenticated HTTP API. Edited test documents retained their variations in Photato, PSD and PSB at RGB8, RGB16 and RGB32. A 768 × 512 locally generated still life retained both variants and identical rendered bytes across all three formats. An independent reader matched all 3,145,728 merged RGBA bytes in the PSD and PSB previews to the PNG. A 300,000 × 8 PSB reopened with exact edge samples, editable placement and the original square model resolution.
-
-The on-device model generates at 512 × 512 and offers a centered canvas crop. Adobe’s model picker and hosted Firefly output have separate engines and remain unqualified. The installed Photoshop 27.2.0 document query timed out. Direct Photoshop reopening, live keyboard and assistive technology checks, and Adobe-compatible Generate Image action coverage remain open.
-
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-712) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_712.md).
-
 ## 2026-11-21 — Step 711 — Match a subject to its background with editable Harmonize variations
 
 Harmonize adds Subtle, Balanced and Ambient colour, tone and contact-shadow variations for a pixel subject over a background. Use the contextual bar, Layer menu or Properties. The original subject and mask are retained. The group contains ordinary editable Curves and separate shadow layers. Properties switches alternatives and each change can be undone.
@@ -1429,5 +1419,13 @@ The 5,000 px color-dynamics test took 0.52 seconds on Apple Silicon, down from 1
 All 205 selected tests passed. The optimized Apple Silicon and Intel builds reproduced the same bytes for both full-size brush tests. Live editing cadence still needs measurement.
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-539) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_539.md).
+
+## 2026-11-17 — Step 538: use a 5,000 px brush
+
+Set a primary Brush diameter up to 5,000 pixels from the native controls or API. Large strokes process small regions before committing, with the same Undo and recorded Action behavior.
+
+All 204 selected checks passed. The optimized Apple Silicon and Intel versions rendered the same bytes for a full-size dab and the 24 earlier Brush samples. Wide strokes still need performance work.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-538) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_538.md).
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

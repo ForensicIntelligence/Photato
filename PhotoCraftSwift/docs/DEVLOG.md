@@ -800,7 +800,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 779 | 2026-11-27 | [Save BigTIFF files with 64-bit offsets](#dev-step-779) |
 | 780 | 2026-11-27 | [Open dense RGB TIFFs without intermediate planes](#dev-step-780) |
 | 781 | 2026-11-27 | [Keep saved alpha and spot channels in layered TIFF](#dev-step-781) |
+| 782 | 2026-11-27 | [Preserve selected channels in flat TIFF copies](#dev-step-782) |
 <!-- history-index:end -->
+
+<a id="dev-step-782"></a>
+
+## 2026-11-27 — Step 782 — Preserve selected channels in flat TIFF copies
+
+Native TIFF Save and Save a Copy offer separate Alpha Channels and Spot Colors checkboxes. Both start checked when present, and either channel type can survive a flattened TIFF or BigTIFF.
+
+Photoshop’s TIFF Save a Copy keeps alpha and spot options available when the layer payload is discarded. Both writers use extra samples and independent Photoshop channel resources in flattened files. Photato shares that reader with the layered path and keeps the options beside Layers in the native panel. Existing TIFF opacity controls remain separate.
+
+Photato saved an RGB16 spot-only copy and kept its layered source open. Photato and Photoshop 27.2 reopened the copy with only the named spot plate. Photoshop also reopened the flattened Float32 BigTIFF with both named channels and its separate opacity sample. LibTIFF matched all 25,929 measured alpha and spot samples exactly.
+
+Lossless Photato TIFF output accepts independent `tiffAlphaChannels` and `tiffSpotColors` booleans. When omitted, their defaults still follow `tiffLayers`. Both existing API input paths decode named channels in flat or layered TIFF. Adobe v2 output retains its published options.
+
+Xcode built the native app. All 6 focused imaging and 3 focused app and HTTP tests passed. Both optimized architectures passed all 299 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+In the live RGB16 comparison, 5,474 of 8,643 process-color words differed by one code. Quick Mask and dense multi-gigabyte layered interchange also remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,225,706 bytes with SHA-256 `3026e09ddce6a67cc7f835f6c5678a8da474b338058cfb09404d798053c57e95`.
+
+[Qualification](SOURCE_PUBLICATION_782.md).
 
 <a id="dev-step-781"></a>
 

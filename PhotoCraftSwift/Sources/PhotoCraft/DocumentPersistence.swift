@@ -30,6 +30,13 @@ enum DocumentPersistenceConflict: LocalizedError {
   let tiffPixelOrder = NSPopUpButton(frame: .zero, pullsDown: false)
   let tiffPredictor = NSButton(checkboxWithTitle: "Use Predictor", target: nil, action: nil)
   let tiffLayers = NSButton(checkboxWithTitle: "Layers", target: nil, action: nil)
+  let tiffAlphaChannels = NSButton(checkboxWithTitle: "Alpha Channels", target: nil, action: nil)
+  let tiffSpotColors = NSButton(checkboxWithTitle: "Spot Colors", target: nil, action: nil)
+  private let tiffChannelsRow = NSStackView()
+  private let hasAlphaChannels: Bool
+  private let hasSpotColors: Bool
+  private var keepAlphaChannels = true
+  private var keepSpotColors = true
   let tiffImagePyramid = NSButton(checkboxWithTitle: "Save Image Pyramid", target: nil, action: nil)
   let tiffBigTIFF = NSButton(checkboxWithTitle: "Use BigTIFF format", target: nil, action: nil)
   private var bigTIFFExplicit = false
@@ -78,6 +85,8 @@ enum DocumentPersistenceConflict: LocalizedError {
         tiffTransparency: mode == .bitmap || !transparencyExplicit ? nil : tiffTransparency.state == .on,
         tiffImagePyramid: !tiffImagePyramid.isEnabled || !pyramidExplicit ? nil : tiffImagePyramid.state == .on,
         tiffBigTIFF: bigTIFFExplicit ? tiffBigTIFF.state == .on : nil,
+        tiffAlphaChannels: hasAlphaChannels ? tiffAlphaChannels.state == .on : nil,
+        tiffSpotColors: hasSpotColors ? tiffSpotColors.state == .on : nil,
         tiffJPEGQuality: compression == .jpeg && tiffJPEGQuality.indexOfSelectedItem > 0
           ? tiffJPEGQuality.indexOfSelectedItem - 1 : nil,
         tiffEmbedProfile: mode == .bitmap || !embedProfileExplicit ? nil : tiffEmbedProfile.state == .on,
@@ -93,13 +102,16 @@ enum DocumentPersistenceConflict: LocalizedError {
     availableFormats: [DocumentIO.Format] = DocumentIO.Format.allCases, saving: Bool = false,
     initialOptions: [DocumentIO.Format: RasterEncodingOptions] = [:],
     uncompressedPhotoshopDefault: Bool = false, depth: PixelDepth = .u8, mode: DocumentColorMode = .rgb,
-    documentIsUntagged: Bool = false, width: Int = 1, height: Int = 1
+    documentIsUntagged: Bool = false, width: Int = 1, height: Int = 1,
+    hasAlphaChannels: Bool = false, hasSpotColors: Bool = false
   ) {
     self.panel = panel
     self.availableFormats = availableFormats.isEmpty ? [.native] : availableFormats
     self.saving = saving
     self.depth = depth
     self.mode = mode
+    self.hasAlphaChannels = hasAlphaChannels && DocumentColorMode.componentModes.contains(mode)
+    self.hasSpotColors = hasSpotColors && DocumentColorMode.componentModes.contains(mode)
     self.photoshopOptions = initialOptions
     super.init()
     formats.addItems(withTitles: self.availableFormats.map(\.title))
@@ -151,6 +163,16 @@ enum DocumentPersistenceConflict: LocalizedError {
     tiffByteOrder.setAccessibilityLabel("TIFF byte order")
     tiffPixelOrder.setAccessibilityLabel("TIFF pixel order")
     let tiffOptions = initialOptions[.tiff] ?? .init()
+    keepAlphaChannels = tiffOptions.tiffAlphaChannels ?? true
+    keepSpotColors = tiffOptions.tiffSpotColors ?? true
+    tiffAlphaChannels.target = self; tiffAlphaChannels.action = #selector(changeTIFFChannels)
+    tiffSpotColors.target = self; tiffSpotColors.action = #selector(changeTIFFChannels)
+    tiffAlphaChannels.toolTip = "Keeps saved selections with lossless TIFF compression, including in a flattened copy."
+    tiffSpotColors.toolTip = "Keeps spot printing plates with lossless TIFF compression, including in a flattened copy."
+    tiffAlphaChannels.isHidden = !self.hasAlphaChannels
+    tiffSpotColors.isHidden = !self.hasSpotColors
+    tiffChannelsRow.addArrangedSubview(tiffAlphaChannels)
+    tiffChannelsRow.addArrangedSubview(tiffSpotColors)
     layersExplicit = tiffOptions.tiffLayers != nil
     tiffLayers.state = !mode.isRestricted && (tiffOptions.tiffLayers ?? saving) ? .on : .off
     tiffLayers.isEnabled = !mode.isRestricted
@@ -216,6 +238,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     view.addArrangedSubview(tiffJPEGQualityRow)
     view.addArrangedSubview(tiffByteOrderRow); view.addArrangedSubview(tiffPixelOrderRow)
     view.addArrangedSubview(tiffLayersRow)
+    view.addArrangedSubview(tiffChannelsRow)
     view.addArrangedSubview(tiffImagePyramid)
     view.addArrangedSubview(tiffBigTIFF)
     view.addArrangedSubview(tiffTransparency)
@@ -236,11 +259,20 @@ enum DocumentPersistenceConflict: LocalizedError {
   @objc func changeBigTIFF() { bigTIFFExplicit = true }
   @objc func changeTIFFTransparency() { transparencyExplicit = true }
   @objc func changeTIFFEmbedProfile() { embedProfileExplicit = true }
+  @objc func changeTIFFChannels(_ sender: NSButton) {
+    if sender === tiffAlphaChannels { keepAlphaChannels = sender.state == .on }
+    else { keepSpotColors = sender.state == .on }
+  }
   @objc func updateTIFFCompression() {
     tiffPredictor.isHidden = depth != .f32
     tiffPredictor.isEnabled = depth == .f32 && (selectedTIFFCompression == .lzw || selectedTIFFCompression == .zip)
     if !tiffPredictor.isEnabled { tiffPredictor.state = .off }
-    tiffJPEGQualityRow.isHidden = format != .tiff || selectedTIFFCompression != .jpeg
+    let lossless = selectedTIFFCompression != .jpeg
+    tiffAlphaChannels.isEnabled = lossless && hasAlphaChannels
+    tiffSpotColors.isEnabled = lossless && hasSpotColors
+    tiffAlphaChannels.state = tiffAlphaChannels.isEnabled && keepAlphaChannels ? .on : .off
+    tiffSpotColors.state = tiffSpotColors.isEnabled && keepSpotColors ? .on : .off
+    tiffJPEGQualityRow.isHidden = format != .tiff || lossless
   }
   @objc func updateFormat() {
     if let previous = photoshopFormat { photoshopOptions[previous] = photoshopEncodingOptions }
@@ -259,6 +291,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     exrControls.view.isHidden = format != .exr
     tiffByteOrderRow.isHidden = format != .tiff; tiffPixelOrderRow.isHidden = format != .tiff
     tiffLayersRow.isHidden = format != .tiff
+    tiffChannelsRow.isHidden = format != .tiff || (!hasAlphaChannels && !hasSpotColors)
     tiffImagePyramid.isHidden = format != .tiff
     tiffBigTIFF.isHidden = format != .tiff
     tiffTransparency.isHidden = format != .tiff
@@ -428,7 +461,9 @@ enum DocumentPersistenceConflict: LocalizedError {
       availableFormats: dialogCopyFormats, initialOptions: compatibleRememberedEncodingOptions,
       uncompressedPhotoshopDefault: fileHandlingPreferences.disablePSDCompression
         && store.document.depth != .u8, depth: store.document.depth, mode: store.document.colorMode,
-      documentIsUntagged: store.document.profileIsUntagged == true, width: store.document.width, height: store.document.height)
+      documentIsUntagged: store.document.profileIsUntagged == true, width: store.document.width, height: store.document.height,
+      hasAlphaChannels: store.document.alphaChannels?.contains { $0.spot == nil } == true,
+      hasSpotColors: store.document.alphaChannels?.contains { $0.spot != nil } == true)
     panel.accessoryView = accessory.view
     copyPanel = panel
     let finish: (NSApplication.ModalResponse) -> Void = { [weak self, accessory] response in

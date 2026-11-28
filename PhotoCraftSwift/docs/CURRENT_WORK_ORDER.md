@@ -1,3 +1,5 @@
+**TIFF interchange.** Match Photoshop’s RGB16 TIFF white-matte rounding and qualify dense multi-gigabyte editable-layer interchange. [Development record](DEVLOG.md#dev-step-782) · [Qualification](SOURCE_PUBLICATION_782.md).
+
 **TIFF interchange.** Qualify flattened TIFF alpha and spot channels, followed by dense multi-gigabyte editable-layer interchange. [Development record](DEVLOG.md#dev-step-781) · [Qualification](SOURCE_PUBLICATION_781.md).
 
 **TIFF interchange.** Qualify dense multi-gigabyte BigTIFF with editable layers and saved channels. [Development record](DEVLOG.md#dev-step-780) · [Qualification](SOURCE_PUBLICATION_780.md).

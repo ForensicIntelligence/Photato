@@ -1,0 +1,80 @@
+{
+  "authoring": "Owned sample documents opened in Adobe Photoshop 27.2 (Photoshop 2026). The Save a Copy dialog selected TIFF and Discard Layers and Save a Copy with uncompressed interleaved Macintosh byte order. The RGB16 spot-only control unchecked Alpha Channels. These references keep the original numerical image and channel samples and Photoshop channel metadata. Exif, XMP, unrelated image resources, private metadata and thumbnails were omitted.",
+  "fixtures": {
+    "photoshop-flat-rgb16-aux.tiff": {
+      "originalSHA256": "2828d88f72bd668f9e7500aa85dfa4f63877246e6e08ba7aa0410d2f204e6ce2",
+      "fixtureSHA256": "63ecfcb314553a8540f6995d837ef11fe4cde890bdbd3dfff23817636cf9c7b3",
+      "resolution": [
+        144,
+        144
+      ],
+      "dimensions": [
+        67,
+        43
+      ],
+      "depth": 16,
+      "samplesPerPlane": 2881,
+      "names": [
+        "Proof ink",
+        "Alpha 2"
+      ],
+      "identifiers": [
+        2,
+        5
+      ],
+      "sampleSHA256": [
+        "161d22753cab6f77c8a557272cd957f4eb27d41d715ecb3ca9d5a61b62c954a8",
+        "632635a140f739cff630424fb414c2ea26a5f4326b34920af6de7bba5a656b99"
+      ]
+    },
+    "photoshop-flat-rgb16-spot.tiff": {
+      "originalSHA256": "ae1af954e15032ea48724bbd4d00f0d0f06874ab4adfdc67653aa0e3c594827b",
+      "fixtureSHA256": "7865037a3df08789612dfac0946eeaa5f22af3efa37a087775235c3382454f3e",
+      "resolution": [
+        144,
+        144
+      ],
+      "dimensions": [
+        67,
+        43
+      ],
+      "depth": 16,
+      "samplesPerPlane": 2881,
+      "names": [
+        "Proof ink"
+      ],
+      "identifiers": [
+        2
+      ],
+      "sampleSHA256": [
+        "161d22753cab6f77c8a557272cd957f4eb27d41d715ecb3ca9d5a61b62c954a8"
+      ]
+    },
+    "photoshop-flat-rgb32-aux.tiff": {
+      "originalSHA256": "c4128279e8ac9fb348c9394924f13c9a2b28b7f5e565e93c7608dfb709654f84",
+      "fixtureSHA256": "6ea5f55e04908a065d982562c5664cca5f31743dfe5aeb7b2c89c38e7f4e88b2",
+      "resolution": [
+        144,
+        144
+      ],
+      "dimensions": [
+        67,
+        43
+      ],
+      "depth": 32,
+      "samplesPerPlane": 2881,
+      "names": [
+        "Proof ink",
+        "Alpha 2"
+      ],
+      "identifiers": [
+        2,
+        5
+      ],
+      "sampleSHA256": [
+        "787273a73954faaa029b31715ca54e2a11e68e83c77f3cc5740891f6c871e9ea",
+        "ee2be7c6c8070225b791d346134496a4fb8698075e55a8afa5503273e8909e9c"
+      ]
+    }
+  }
+}
