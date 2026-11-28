@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-27 — Step 780 — Open dense RGB TIFFs without intermediate planes
+
+Eligible opaque RGB8 and RGB16 TIFFs now stream directly into editable tiles. The same path reads classic TIFF and BigTIFF while keeping the original document bit depth.
+
+A 27,000 × 27,000 uncompressed RGB16 BigTIFF was opened and saved through the native codec. The output directory was beyond 4 GiB. An independent libtiff read verified all 2,187,000,000 components against the quantization measured in Photoshop. All 53,055 TIFF samples in the separate Photoshop 27.2 reference matched Photato exactly. The 4,099 × 521 output files from builds 779 and 780 were byte-identical.
+
+Xcode built the native app. All 5 focused imaging and 2 focused app and HTTP tests passed. Both optimized architectures passed all 274 selected tests, with Intel running under Rosetta. Both slices of the Universal preview rendered offscreen.
+
+The dense test covers a flattened, untagged, interleaved RGB16 image without transparency. Dense layered files, other color modes and profiles, and full-format byte equality remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-780) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_780.md).
+
 ## 2026-11-27 — Step 779 — Save BigTIFF files with 64-bit offsets
 
 Use BigTIFF format is available in the TIFF save dialog. Photato writes 64-bit offsets for image strips and pyramid previews while keeping supported TIFF compression, profiles, layers and saved selections.

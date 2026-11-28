@@ -72,6 +72,60 @@ enum TIFFComponentRows {
     return (raster, try saved.map { try $0.finish().channel(0) })
   }
 
+  /// A flat opaque RGB TIFF is edited as RGB tiles. Import one tile row at
+  /// a time without writing three temporary component planes and rereading them.
+  static func opaqueIntegerRGB(_ file: TIFFContainer, geometry g: TIFFStorage.Geometry,
+    depth: PixelDepth, backing: RasterTileStore) throws -> Surface {
+    let littleEndian = file.order == .little
+    let wide = depth == .u16
+    let pixelBytes = wide ? 6 : 3
+    let rowBytes = g.width * pixelBytes
+    let bandHeight = Surface.tileSide
+    var rows: [UInt8] = []
+    rows.reserveCapacity(min(bandHeight, g.height) * rowBytes)
+    var fill = Pixel.black
+    var builder: Surface.PagedBuilder?
+    var top = 0
+
+    func pixel(_ bytes: UnsafeRawBufferPointer, at offset: Int) -> Pixel {
+      if !wide {
+        return Pixel(Float(bytes[offset]) / 255, Float(bytes[offset + 1]) / 255,
+          Float(bytes[offset + 2]) / 255, 1)
+      }
+      func sample(_ at: Int) -> Float {
+        let word = bytes.loadUnaligned(fromByteOffset: at, as: UInt16.self)
+        return Float(littleEndian ? UInt16(littleEndian: word) : UInt16(bigEndian: word)) / 65535
+      }
+      return Pixel(sample(offset), sample(offset + 2), sample(offset + 4), 1)
+    }
+
+    try packedRows(file, g, components: 3) { _, row in
+      if builder == nil {
+        fill = row.withUnsafeBytes { pixel($0, at: (g.width / 2) * pixelBytes) }
+        builder = try Surface.PagedBuilder(width: g.width, height: g.height, depth: depth,
+          fill: fill, backing: backing)
+      }
+      rows.append(contentsOf: row)
+      let height = min(bandHeight, g.height - top)
+      guard rows.count == height * rowBytes, let builder else { return }
+      try rows.withUnsafeBytes { bytes in
+        for x in stride(from: 0, to: g.width, by: 2048) {
+          let width = min(2048, g.width - x)
+          let patch = try Surface(width: width, height: height, depth: depth, fill: fill)
+            .compositingPixels(in: .init(x: 0, y: 0, width: width, height: height)) { px, py, old in
+              let sample = pixel(bytes, at: py * rowBytes + (x + px) * pixelBytes)
+              return sample.hasSameBits(as: old) ? nil : sample
+            }
+          try builder.append(patch, atX: x, atY: top)
+        }
+      }
+      top += height
+      rows.removeAll(keepingCapacity: true)
+    }
+    guard top == g.height, let builder else { throw CraftError.invalid("Incomplete RGB TIFF image.") }
+    return try builder.finish()
+  }
+
   static func packedRows(_ file: TIFFContainer, _ g: TIFFStorage.Geometry, components: Int,
     consume: (_ plane: Int, _ samples: [UInt8]) throws -> Void) throws {
     let bands = (g.height - 1) / g.rows + 1

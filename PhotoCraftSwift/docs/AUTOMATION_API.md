@@ -1,3 +1,9 @@
+### Direct paged RGB TIFF import (checkpoint 780)
+
+File Open and the existing authenticated Photato import and supported Adobe-compatible asset input share the optimized decoder. Existing request schemas and HTTP size limits apply.
+
+[Qualification](SOURCE_PUBLICATION_780.md).
+
 ### Native BigTIFF output (checkpoint 779)
 
 Native Save, Save a Copy and the authenticated Photato save and download paths use the same encoder. Set tiffBigTIFF=true to choose BigTIFF. Omission or false selects classic TIFF. Existing transfer limits apply.

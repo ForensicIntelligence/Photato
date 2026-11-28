@@ -2,6 +2,7 @@ import CryptoKit
 import Foundation
 import PhotoCraftCore
 import XCTest
+import zlib
 @testable import PhotoCraftImaging
 
 final class TIFFBigInputTests: XCTestCase {
@@ -102,6 +103,79 @@ final class TIFFBigInputTests: XCTestCase {
     invalid = original
     store(4, in: &invalid, at: 4, width: 2)
     XCTAssertThrowsError(try RasterIO.read(invalid))
+  }
+
+  func testOpaqueInterleavedRGBReadsDirectlyAcrossTileRowsAndByteOrders() throws {
+    let width = 2051, height = 67
+    for depth: PixelDepth in [.u8, .u16] {
+      let sampleBytes = depth == .u8 ? 1 : 2
+      let maximum: UInt32 = depth == .u8 ? 255 : 65535
+      let fill: UInt32 = maximum / 2
+      let samples: [(x: Int, y: Int, r: UInt32, g: UInt32, b: UInt32)] = [
+        (0, 0, 0, 1, maximum), (64, 63, 23, maximum - 17, maximum / 3),
+        (64, 64, 2, maximum - 1, 0), (2048, 65, 7, maximum, maximum / 4),
+        (width - 1, height - 1, maximum, 0, 9),
+      ]
+      for order: TIFFContainer.Order in [.little, .big] {
+        let layout = TIFFContainer.Layout(bigTIFF: true)
+        let rowBytes = width * 3 * sampleBytes
+        var pixels = Data()
+        let uniformPixel = Data(order.bytes(Int(fill), sampleBytes) + order.bytes(Int(fill), sampleBytes)
+          + order.bytes(Int(fill), sampleBytes))
+        for _ in 0..<(width * height) { pixels.append(uniformPixel) }
+        for sample in samples {
+          let offset = sample.y * rowBytes + sample.x * 3 * sampleBytes
+          let bytes = order.bytes(Int(sample.r), sampleBytes) + order.bytes(Int(sample.g), sampleBytes)
+            + order.bytes(Int(sample.b), sampleBytes)
+          pixels.replaceSubrange(offset..<offset + bytes.count, with: bytes)
+        }
+        let compression: RasterEncodingOptions.TIFFCompression = depth == .u8 ? .lzw : .zip
+        let strip: Data
+        if compression == .lzw { strip = try TIFFLZW.encode(Array(pixels)) }
+        else {
+          var count = compressBound(uLong(pixels.count))
+          var zip = Data(count: Int(count))
+          let status = zip.withUnsafeMutableBytes { dest in pixels.withUnsafeBytes { source in
+            compress(dest.bindMemory(to: Bytef.self).baseAddress, &count,
+              source.bindMemory(to: Bytef.self).baseAddress, uLong(source.count))
+          } }
+          XCTAssertEqual(status, Z_OK)
+          strip = zip.prefix(Int(count))
+        }
+        let fields: [(tag: Int, type: Int, size: Int, values: [Int])] = [
+          (256, 4, 4, [width]), (257, 4, 4, [height]), (258, 3, 2, Array(repeating: sampleBytes * 8, count: 3)),
+          (259, 3, 2, [compression.tag]), (262, 3, 2, [2]), (273, 16, 8, [layout.headerBytes]),
+          (277, 3, 2, [3]), (278, 4, 4, [height]), (279, 16, 8, [strip.count]), (284, 3, 2, [1]),
+        ]
+        var data = layout.header(order: order)
+        data.append(strip)
+        data.append(Data(repeating: 0, count: layout.padding(at: data.count)))
+        data.replaceSubrange(layout.headerPointerOffset..<layout.headerBytes, with: order.bytes(data.count, 8))
+        data.append(order.bytes(fields.count, 8))
+        for field in fields {
+          data.append(order.bytes(field.tag, 2))
+          data.append(order.bytes(field.type, 2))
+          data.append(order.bytes(field.values.count, 8))
+          for value in field.values { data.append(order.bytes(value, field.size)) }
+          data.append(Data(repeating: 0, count: 8 - field.values.count * field.size))
+        }
+        data.append(Data(repeating: 0, count: 8))
+        let document = try RasterIO.read(data)
+        guard case .raster(let surface) = try XCTUnwrap(document.layers.first).content else {
+          return XCTFail("Expected editable RGB pixels.")
+        }
+        XCTAssertEqual(surface.tileCount, 4)
+        XCTAssertEqual(surface.width, width)
+        XCTAssertEqual(surface.height, height)
+        XCTAssertEqual(surface.depth, depth)
+        XCTAssertEqual(surface.pixel(x: 1000, y: 7), Pixel(Float(fill) / Float(maximum),
+          Float(fill) / Float(maximum), Float(fill) / Float(maximum)))
+        for sample in samples {
+          XCTAssertEqual(surface.pixel(x: sample.x, y: sample.y), Pixel(Float(sample.r) / Float(maximum),
+            Float(sample.g) / Float(maximum), Float(sample.b) / Float(maximum)))
+        }
+      }
+    }
   }
 
   private func checkGrayscale(_ document: CraftDocument) throws {

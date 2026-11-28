@@ -299,11 +299,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:779 -->
+<!-- current-status-step:780 -->
 
-Use BigTIFF format is available in the TIFF save dialog. Photato writes 64-bit offsets for image strips and pyramid previews while keeping supported TIFF compression, profiles, layers and saved selections.
+Eligible opaque RGB8 and RGB16 TIFFs now stream directly into editable tiles. The same path reads classic TIFF and BigTIFF while keeping the original document bit depth.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-779) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_779.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-780) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_780.md).
 
 <!-- current-status:end -->
 
@@ -1289,5 +1289,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 777 | [Save JPEG-compressed TIFFs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-777) |
 | 2026-11-27 | 778 | [Open BigTIFF files with 64-bit offsets](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-778) |
 | 2026-11-27 | 779 | [Save BigTIFF files with 64-bit offsets](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-779) |
+| 2026-11-27 | 780 | [Open dense RGB TIFFs without intermediate planes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-780) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

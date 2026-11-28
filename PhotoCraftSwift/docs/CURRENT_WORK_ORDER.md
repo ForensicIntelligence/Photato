@@ -1,3 +1,5 @@
+**TIFF interchange.** Qualify dense multi-gigabyte BigTIFF with editable layers and saved channels. [Development record](DEVLOG.md#dev-step-780) · [Qualification](SOURCE_PUBLICATION_780.md).
+
 **TIFF interchange.** Qualify multi-gigabyte BigTIFF saves and finish the editable layer and channel workflow comparisons. [Development record](DEVLOG.md#dev-step-779) · [Qualification](SOURCE_PUBLICATION_779.md).
 
 **TIFF interchange.** Write BigTIFF with 64-bit offsets and qualify large-file Save, editable layers and pyramid output. [Development record](DEVLOG.md#dev-step-778) · [Qualification](SOURCE_PUBLICATION_778.md).

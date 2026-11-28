@@ -75,25 +75,37 @@ enum TIFFModeStorage {
     if !g.savedAlphaSamples.isEmpty, depth != .u8 || orientation != 1 {
       throw CraftError.unsupported("Saved selections in paged TIFF require unrotated RGB8 layer data.")
     }
-    var native: NativeModeRaster
+    let pixels: Surface
+    let nativeMode: NativeModeRaster?
     let savedAlpha: [Surface]?
-    if let backing {
-      let decoded = try TIFFComponentRows.read(file, geometry: g, mode: mode, photometric: photo,
-        depth: depth, profile: profile, backing: backing)
-      native = decoded.raster
-      savedAlpha = decoded.savedAlpha.isEmpty ? nil : decoded.savedAlpha
-    } else {
-      native = try readDense(file, geometry: g, mode: mode, photometric: photo, depth: depth, profile: profile)
+    if let backing, photo == 2, !g.planar, g.channels == 3, depth != .f32, orientation == 1,
+      original == nil || original == profile, file.root.fields[37724] == nil {
+      pixels = try TIFFComponentRows.opaqueIntegerRGB(file, geometry: g, depth: depth, backing: backing)
+      nativeMode = nil
       savedAlpha = nil
-    }
-    if orientation != 1 {
+    } else {
+      var native: NativeModeRaster
       if let backing {
-        native = try TIFFComponentRows.oriented(native, orientation: orientation, backing: backing)
+        let decoded = try TIFFComponentRows.read(file, geometry: g, mode: mode, photometric: photo,
+          depth: depth, profile: profile, backing: backing)
+        native = decoded.raster
+        savedAlpha = decoded.savedAlpha.isEmpty ? nil : decoded.savedAlpha
       } else {
-        native = try oriented(native, orientation: orientation)
+        native = try readDense(file, geometry: g, mode: mode, photometric: photo, depth: depth, profile: profile)
+        savedAlpha = nil
       }
+      if orientation != 1 {
+        if let backing {
+          native = try TIFFComponentRows.oriented(native, orientation: orientation, backing: backing)
+        } else {
+          native = try oriented(native, orientation: orientation)
+        }
+      }
+      pixels = mode == .rgb ? try rgbSurface(native, original: original, backing: backing)
+        : try native.surface(backing: backing)
+      nativeMode = mode == .rgb ? nil : native
     }
-    var document = try CraftDocument(width: native.width, height: native.height, depth: depth, name: name)
+    var document = try CraftDocument(width: pixels.width, height: pixels.height, depth: depth, name: name)
     if mode == .rgb { document.workingICC = rgbWorkingICC }
     else { document.modeDescriptor = try .init(mode: mode, depth: depth, profile: profile) }
     document.sourceICC = original
@@ -107,10 +119,8 @@ enum TIFFModeStorage {
       document.sourceMetadata = try RasterMetadata.capture(source, properties: properties)
       if let dpi = properties[kCGImagePropertyDPIWidth] as? Double, dpi.isFinite, (1...100_000).contains(dpi) { document.resolution = dpi }
     }
-    let rgb = mode == .rgb
-    let pixels = rgb ? try rgbSurface(native, original: original, backing: backing) : try native.surface(backing: backing)
     var layer = Layer(name: name, content: .raster(pixels))
-    if !rgb { layer.nativeMode = native }
+    layer.nativeMode = nativeMode
     document.layers = [layer]; document.activeLayerID = layer.id
     try document.validate()
     if let layered = try layers(document, backing, savedAlpha) { return layered }

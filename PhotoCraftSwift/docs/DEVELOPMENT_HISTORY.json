@@ -10709,6 +10709,13 @@
       "link": "DEVLOG.md#dev-step-779",
       "section_sha256": "7f98f81738ea20c8fe4c4a483abff688d9644135f150db30ec971923df3d8e22",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-780",
+      "title": "2026-11-27 \u2014 Step 780 \u2014 Open dense RGB TIFFs without intermediate planes",
+      "link": "DEVLOG.md#dev-step-780",
+      "section_sha256": "cd0075feef401b19711ea9e424f3a58fab3d3c4f9ac5ad2e644e629257aaaac9",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13544,8 +13551,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "974e2aebf6d68c37c8936f14382be892ca41cb798f0d2659d9c369a57bcfb3ed",
-      "bytes": 187601,
+      "sha256": "69a6c2498e5d58eda580dd40e99e2b63402b06df6eec2f1d46ce676d33ad8f3b",
+      "bytes": 187728,
       "rolling_current_snapshot": false
     },
     {
@@ -15266,8 +15273,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "53da3c98babc2e29d2cf141b3ee4e02cd055424cb6ab45f4584f7b5773e7fa24",
-      "bytes": 750774,
+      "sha256": "dd37de44509e3305ee0b6a722f79b7571c83b335082285211f3550baade3895a",
+      "bytes": 751052,
       "rolling_current_snapshot": false
     },
     {
@@ -15836,8 +15843,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "f218c98b87e3bf27287163e775273694d0472ebcbf05a4e9c88dda67dae0c692",
-      "bytes": 399027,
+      "sha256": "60260351d130eaa68ff754793735b21e60a6390a9cdbf6c5284abfe131ada179",
+      "bytes": 399283,
       "rolling_current_snapshot": false
     },
     {
@@ -15956,8 +15963,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "76d5012757c1cd8349308495757bfbe50d21274cdc7681f75e02963e6eb1f2d4",
-      "bytes": 225688,
+      "sha256": "318c69f9ca9a9271b82928e46fb302e52de3ca6a5ee949791d4362e1512435c3",
+      "bytes": 225881,
       "rolling_current_snapshot": false
     },
     {
@@ -16034,14 +16041,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "7d84f1aaff5117a651569fa344e63c00153bb38414ce970eb9a42b4a3bbd7891",
-      "bytes": 1064002,
+      "sha256": "42172c57dfc18d429ce312ab86ddabfd82ea72834cdee087c4ae3bb0beb3a130",
+      "bytes": 1065252,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "f50afe4486e5f73d04e0f25aea8a648a760d507b072a566392c42b23f1737f93",
-      "bytes": 5193097,
+      "sha256": "8e10ff9530e15b19ef0f3420e823fc6991fdffe5da804b3fdab48a692f8a1b59",
+      "bytes": 5195060,
       "rolling_current_snapshot": false
     },
     {
@@ -23599,6 +23606,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_780.json",
+      "sha256": "d675e813d1c7e8ec7c9523643de605d19f302c762f2dc0bef9327704cedd6b29",
+      "bytes": 12663,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_780.md",
+      "sha256": "89a5760b2d757b506f34f4b6c38ee2a5588bfbc329b3960876003685309c7ee4",
+      "bytes": 1553,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24158,8 +24177,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "ce9fad40b2c60361f14034a8ae111b870a93aa0bad23983b2a96897172056c81",
-      "bytes": 507161,
+      "sha256": "3356661bb87da3c3376b4160ac440d89d6fb623065164db722a263efa298170d",
+      "bytes": 507647,
       "rolling_current_snapshot": false
     },
     {
@@ -26672,8 +26691,8 @@
     }
   ],
   "counts": {
-    "milestones": 779,
-    "evidence_files": 2190,
+    "milestones": 780,
+    "evidence_files": 2192,
     "logs": 0,
     "missing_explicit_references": 704
   }
