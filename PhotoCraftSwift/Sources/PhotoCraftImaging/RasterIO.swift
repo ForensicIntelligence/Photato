@@ -550,6 +550,9 @@ public enum RasterIO {
     if options.tiffLayers == true, compositeOptions.tiffByteOrder == nil {
       compositeOptions.tiffByteOrder = .bigEndian
     }
+    if type == .tiff, supportsPagedComponentTIFFOutput(document) {
+      return try TIFFComponentExport.encoded(document, options: options)
+    }
     if options.tiffLayers == true, document.hasAuxiliaryChannels {
       guard supportsLayeredTIFFSavedAlpha(document) else {
         throw CraftError.unsupported("Layered TIFF auxiliary output supports RGB8 saved alpha channels.")
@@ -560,9 +563,6 @@ public enum RasterIO {
         sourceMetadata:document.sourceMetadata,workingDocument:document,options:.init(tiffCompression:.none))
       let composite = try TIFFStorage.rewrite(raw,options:compositeOptions,savedAlpha:document.alphaChannels ?? [])
       return try TIFFLayers.write(document,composite:composite,compression:options.tiffLayerCompression ?? .zip)
-    }
-    if type == .tiff, supportsPagedComponentTIFFOutput(document) {
-      return try TIFFComponentExport.encoded(document, options: options)
     }
     if type == .tiff, document.hasNativeModeStorage {
       let composite = try TIFFModeStorage.write(Renderer.composite(document), document: document,
@@ -581,7 +581,7 @@ public enum RasterIO {
       : composite
   }
   package static func supportsPagedComponentTIFFOutput(_ document: CraftDocument) -> Bool {
-    guard document.inkMode == nil, document.restrictedMode == nil, !document.hasAuxiliaryChannels else { return false }
+    guard document.inkMode == nil, document.restrictedMode == nil else { return false }
     if document.colorMode == .rgb, !document.hasNativeModeStorage {
       return document.width > Surface.maximumDensePixels / document.height
     }

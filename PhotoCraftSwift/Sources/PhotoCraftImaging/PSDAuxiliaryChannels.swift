@@ -43,8 +43,22 @@ enum PSDAuxiliaryChannels {
     guard (first..<first+count).contains(index),flag<=1 else{throw CraftError.invalid("Quick Mask does not identify an auxiliary plane.")}
     return(index-first,flag != 0)
   }
+  private enum InputPlanes {
+    case rows(PSDChannelReader)
+    case stored([Surface])
+  }
   static func read(_ reader:PSDChannelReader,first:Int,count:Int,blocks:[PSDImageResources.Block],
     document:inout CraftDocument,paging:PSDRasterPaging.Context?,leadingTransparency:Bool=false)throws {
+    try read(.rows(reader), first: first, count: count, blocks: blocks, document: &document,
+      paging: paging, leadingTransparency: leadingTransparency)
+  }
+  static func read(_ planes: [Surface], first: Int, blocks: [PSDImageResources.Block],
+    document: inout CraftDocument, paging: PSDRasterPaging.Context?, leadingTransparency: Bool) throws {
+    try read(.stored(planes), first: first, count: planes.count, blocks: blocks, document: &document,
+      paging: paging, leadingTransparency: leadingTransparency)
+  }
+  private static func read(_ planes: InputPlanes, first:Int,count:Int,blocks:[PSDImageResources.Block],
+    document:inout CraftDocument,paging:PSDRasterPaging.Context?,leadingTransparency:Bool)throws {
     if count==0 {
       guard !blocks.contains(where:{$0.id==1022})else{throw CraftError.invalid("Quick Mask has no auxiliary plane.")};return
     }
@@ -80,38 +94,54 @@ enum PSDAuxiliaryChannels {
       var sourceGray:Surface?
       let pixels:Surface
       let inverted=info.kind==2 || info.kind==0
-      if document.width > Surface.maximumDensePixels / document.height {
-        let gray = try PSDRasterPaging.sparseLayer(width: document.width, height: document.height,
-          depth: document.depth, channels: [reader], context: context, invertMask: inverted && depth != 32)
-        if inverted, depth == 32 {
-          sourceGray = gray
-          try context.admitRaster(bytes: tiles * 65536)
-          pixels = try gray.mappedStoredSamples(backing: context.backing) { sample in
-            let value = 1 - sample.r
+      switch planes {
+      case .stored(let surfaces):
+        let gray = surfaces[index]
+        guard depth == 8, gray.width == document.width, gray.height == document.height,
+          gray.depth == document.depth else { throw CraftError.invalid("Invalid stored TIFF selection plane.") }
+        if inverted {
+          let coverage = try gray.mappedStoredSamples(backing: context.backing) { pixel in
+            let value = sample(pixel.r, inverted: true, depth: depth, original: nil)
             return Pixel(value, value, value)
           }
+          pixels = try coverage.retaggedCoverageStorage(depth: document.depth)
         } else {
           pixels = gray
         }
-      } else if inverted,depth==32 {
-        let gray=try PSDRasterPaging.layer(width:document.width,height:document.height,depth:document.depth,components:1,
-          fill:.black,mask:true,clampMask:false,context:context) {_ in [try reader.nextRow()]}
-        sourceGray=gray;try context.admitRaster(bytes:tiles*65536)
-        pixels=try PSDRasterPaging.layer(width:document.width,height:document.height,depth:document.depth,components:1,
-          fill:.white,mask:true,clampMask:false,context:context) {y in
-            var row:[UInt8]=[];row.reserveCapacity(document.width*4)
-            for x in 0..<document.width {try PSDChannelCodec.append(1-gray.pixel(x:x,y:y).r,depth:32,to:&row)}
-            return [row]
+      case .rows(let reader):
+        if document.width > Surface.maximumDensePixels / document.height {
+          let gray = try PSDRasterPaging.sparseLayer(width: document.width, height: document.height,
+            depth: document.depth, channels: [reader], context: context, invertMask: inverted && depth != 32)
+          if inverted, depth == 32 {
+            sourceGray = gray
+            try context.admitRaster(bytes: tiles * 65536)
+            pixels = try gray.mappedStoredSamples(backing: context.backing) { sample in
+              let value = 1 - sample.r
+              return Pixel(value, value, value)
+            }
+          } else {
+            pixels = gray
           }
-      }else{
-        pixels=try PSDRasterPaging.layer(width:document.width,height:document.height,depth:document.depth,components:1,
-          fill:.black,mask:true,clampMask:false,context:context) {_ in
-            var row=try reader.nextRow()
-            if inverted {
-              if depth==8 {row=row.map{255-$0}}
-              else {for x in 0..<document.width {let at=x*2,n=65535-(Int(row[at])<<8|Int(row[at+1]));row[at]=UInt8(n>>8);row[at+1]=UInt8(n&255)}}
-            };return [row]
-          }
+        } else if inverted,depth==32 {
+          let gray=try PSDRasterPaging.layer(width:document.width,height:document.height,depth:document.depth,components:1,
+            fill:.black,mask:true,clampMask:false,context:context) {_ in [try reader.nextRow()]}
+          sourceGray=gray;try context.admitRaster(bytes:tiles*65536)
+          pixels=try PSDRasterPaging.layer(width:document.width,height:document.height,depth:document.depth,components:1,
+            fill:.white,mask:true,clampMask:false,context:context) {y in
+              var row:[UInt8]=[];row.reserveCapacity(document.width*4)
+              for x in 0..<document.width {try PSDChannelCodec.append(1-gray.pixel(x:x,y:y).r,depth:32,to:&row)}
+              return [row]
+            }
+        }else{
+          pixels=try PSDRasterPaging.layer(width:document.width,height:document.height,depth:document.depth,components:1,
+            fill:.black,mask:true,clampMask:false,context:context) {_ in
+              var row=try reader.nextRow()
+              if inverted {
+                if depth==8 {row=row.map{255-$0}}
+                else {for x in 0..<document.width {let at=x*2,n=65535-(Int(row[at])<<8|Int(row[at+1]));row[at]=UInt8(n>>8);row[at+1]=UInt8(n&255)}}
+              };return [row]
+            }
+        }
       }
       var options=ChannelDisplayOptions();options.color=info.color;options.opacity=info.opacity;options.indicates=info.kind==0 ? .selectedAreas:.maskedAreas
       var channel=AlphaChannel(name:names[metadataIndex],pixels:pixels,options:options,spot:info.kind==2 ? SpotInk(color:info.color,solidity:info.opacity):nil)

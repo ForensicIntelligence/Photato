@@ -1,3 +1,5 @@
+**TIFF interchange.** Keep editable layers through TIFF saves with large embedded layer payloads and verify Photoshop’s separate grayscale opacity. [Development record](DEVLOG.md#dev-step-771) · [Qualification](SOURCE_PUBLICATION_771.md).
+
 **TIFF interchange.** Verify Photoshop’s separate TIFF opacity samples and qualify the retained large-file layer and transparency variants. [Development record](DEVLOG.md#dev-step-770) · [Qualification](SOURCE_PUBLICATION_770.md).
 
 **TIFF interchange.** Extend bounded TIFF input to large RGB files and qualify its alpha and profile choices. Verify the separate Photoshop TIFF opacity samples. [Development record](DEVLOG.md#dev-step-769) · [Qualification](SOURCE_PUBLICATION_769.md).

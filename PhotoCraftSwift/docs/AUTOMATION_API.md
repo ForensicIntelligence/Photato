@@ -1,3 +1,9 @@
+### Saved selections in large layered RGB8 TIFFs (checkpoint 771)
+
+The authenticated Photato TIFF download preserves the saved channels, and the Adobe-compatible action resource decoder restores them from the exported bytes. Both interfaces use the native TIFF codec. HTTP transfer limits still apply.
+
+[Qualification](SOURCE_PUBLICATION_771.md).
+
 ### Large classic RGB TIFF input and output (checkpoint 770)
 
 Authenticated Photato uploads and action resources share the expanded TIFF input, including hidden straight RGB samples. The TIFF writer targets local files and Data through the same compression, endian and profile options. HTTP transfer limits still apply.

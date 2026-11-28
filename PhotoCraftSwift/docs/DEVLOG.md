@@ -789,7 +789,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 768 | 2026-11-27 | [Open larger grayscale, CMYK and Lab TIFFs](#dev-step-768) |
 | 769 | 2026-11-27 | [Save and reopen larger classic TIFF files](#dev-step-769) |
 | 770 | 2026-11-27 | [Stream larger RGB TIFF files through Open and Save](#dev-step-770) |
+| 771 | 2026-11-27 | [Keep named selections in large layered TIFFs](#dev-step-771) |
 <!-- history-index:end -->
+
+<a id="dev-step-771"></a>
+
+## 2026-11-27 — Step 771 — Keep named selections in large layered TIFFs
+
+Large layered RGB8 TIFFs now keep named selections alongside editable layers, layer masks and composite opacity. A saved channel can be loaded as a selection after reopening the file.
+
+Build 770 saved the layers and local mask of the 7,200 × 5,400 control, then rejected the same document when a named selection was added. The new writer includes those selection samples in the common strip stream. The reader separates them from opacity and reuses Photoshop channel metadata. The first large reopen failed because Selected Areas inversion produced Float32 storage. The corrected reader restores the original RGB8 coverage depth. The repeat of the 660 MB import used the original output bytes because the correction only changed the decoder. The focused imaging and API tests reran both the writer and reader.
+
+Photato reopened an 11,000 × 10,000, 660 MB TIFF with both named selections, their channel IDs, two editable layers and a local layer mask. An independent parser checked all 220 million saved-selection bytes and all 110 million opacity bytes. In two Photoshop captures, all 6,144 authored selection samples matched, with and without a separate opacity sample.
+
+The authenticated Photato TIFF download preserves the saved channels, and the Adobe-compatible action resource decoder restores them from the exported bytes. Both interfaces use the native TIFF codec. HTTP transfer limits still apply.
+
+Xcode built the native app. All 10 focused imaging and 6 app and HTTP tests passed. Both optimized architectures passed all 245 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on each slice.
+
+The new evidence covers classic stripped RGB8 TIFFs with named non-spot channels. Larger embedded layer payloads, additional channel types and depths, tile layouts, JPEG-in-TIFF and BigTIFF still need qualification.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,071,791 bytes with SHA-256 `4615c284cebeb1e2b55c284216b3e6a8d2691ddbf14325ff52db32a12e14ac95`.
+
+[Qualification](SOURCE_PUBLICATION_771.md).
 
 <a id="dev-step-770"></a>
 

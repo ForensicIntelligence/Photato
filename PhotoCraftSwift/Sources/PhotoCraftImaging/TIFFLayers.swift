@@ -6,12 +6,14 @@ import PhotoCraftCore
 enum TIFFLayers {
   static let signature = Data("Adobe Photoshop Document Data Block\0".utf8)
 
-  static func read(_ data: Data, composite: CraftDocument, backing: RasterTileStore? = nil) throws -> CraftDocument? {
+  static func read(_ data: Data, composite: CraftDocument, backing: RasterTileStore? = nil,
+    storedAlpha: [Surface]? = nil) throws -> CraftDocument? {
     guard TIFFContainer.isClassic(data) else { return nil }
     let tiff = try TIFFContainer(data, metadata: false, additionalTags: [34377, 34675, 37724])
-    return try read(tiff, composite: composite, backing: backing)
+    return try read(tiff, composite: composite, backing: backing, storedAlpha: storedAlpha)
   }
-  static func read(_ tiff: TIFFContainer, composite: CraftDocument, backing: RasterTileStore?) throws -> CraftDocument? {
+  static func read(_ tiff: TIFFContainer, composite: CraftDocument, backing: RasterTileStore?,
+    storedAlpha: [Surface]? = nil) throws -> CraftDocument? {
     guard let field = tiff.root.fields[37724] else { return nil }
     guard [1, 7].contains(field.type), field.data.starts(with: signature) else {
       throw CraftError.unsupported("Unrecognized Photoshop TIFF layer container. Import cancelled to preserve its contents.")
@@ -122,13 +124,19 @@ enum TIFFLayers {
       tiffNativeComposite: composite.layers.first?.nativeMode, paging: paging)
     if let savedAlpha {
       let count = savedAlpha.savedAlphaSamples.count
-      let reader = try TIFFStorage.savedAlphaReader(tiff, geometry: savedAlpha)
       // Photoshop's MTrn marks the leading opacity sample. Some TIFF writers
       // describe only saved channels, while Photoshop also names that sample.
       let transparencyRecord = seen.contains("MTrn") && (extra.first == 1 || extra.first == 2)
         && (try? PSDAuxiliaryChannels.names(blocks, count: count + 1)) != nil
-      try PSDAuxiliaryChannels.read(reader, first: components-count, count: count,
-        blocks: blocks, document: &result, paging: nil, leadingTransparency: transparencyRecord)
+      if let storedAlpha {
+        guard storedAlpha.count == count else { throw CraftError.invalid("TIFF saved-selection planes disagree with the layer metadata.") }
+        try PSDAuxiliaryChannels.read(storedAlpha, first: components-count, blocks: blocks,
+          document: &result, paging: paging, leadingTransparency: transparencyRecord)
+      } else {
+        let reader = try TIFFStorage.savedAlphaReader(tiff, geometry: savedAlpha)
+        try PSDAuxiliaryChannels.read(reader, first: components-count, count: count,
+          blocks: blocks, document: &result, paging: nil, leadingTransparency: transparencyRecord)
+      }
       guard result.alphaChannels?.allSatisfy({ $0.spot == nil }) == true else {
         throw CraftError.unsupported("Layered TIFF spot channels are not yet supported.")
       }

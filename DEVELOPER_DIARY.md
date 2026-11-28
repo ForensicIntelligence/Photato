@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **770** · The 10 most recent entries, newest first.
+Source build **771** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 771 — Keep named selections in large layered TIFFs
+
+Large layered RGB8 TIFFs now keep named selections alongside editable layers, layer masks and composite opacity. A saved channel can be loaded as a selection after reopening the file.
+
+Photato reopened an 11,000 × 10,000, 660 MB TIFF with both named selections, their channel IDs, two editable layers and a local layer mask. An independent parser checked all 220 million saved-selection bytes and all 110 million opacity bytes. In two Photoshop captures, all 6,144 authored selection samples matched, with and without a separate opacity sample.
+
+Xcode built the native app. All 10 focused imaging and 6 app and HTTP tests passed. Both optimized architectures passed all 245 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on each slice.
+
+The new evidence covers classic stripped RGB8 TIFFs with named non-spot channels. Larger embedded layer payloads, additional channel types and depths, tile layouts, JPEG-in-TIFF and BigTIFF still need qualification.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-771) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_771.md).
 
 ## 2026-11-27 — Step 770 — Stream larger RGB TIFF files through Open and Save
 
@@ -111,13 +123,3 @@ Photoshop 27.2.0 opened four owned three-layer PSDs and saved PNG copies at 8 an
 Complete PNG files differ. Photoshop’s observed profile setting left the reference untagged and the exported files also differ in metadata and compressed IDAT bytes. The numerical check covers aligned Normal layers with a shared profile. Masked or transformed stacks, other blend modes, TIFF and Photoshop merged previews still need separate verification.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-762) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_762.md).
-
-## 2026-11-27 — Step 761 — Preserve grayscale PNG samples and profiles
-
-Open retains Grayscale PNG as an editable gray plane with straight opacity. Packed 2-bit and 4-bit values expand to 8-bit. Eligible flat 8-bit and 16-bit Save output retains the exact gray and opacity samples, including hidden gray, along with embedded profiles and declared gamma.
-
-All 36 focused Xcode Debug tests passed. Both optimized architectures passed all 214 selected tests, including the three new Grayscale PNG regressions. Intel ran under Rosetta.
-
-Six independently generated files matched all 1,122 gray/alpha pairs on import. All 2,244 pairs in twelve standard and Adam7 exports matched. A 36-megapixel sparse control preserved the six sampled pairs through PNG and native archive round trips. Candidate 01 discarded declared gamma. The corrected reader retains the color interpretation of all three tested gamma values and the embedded gray ICC control. Layered grayscale still goes through the RGB composite. Its output differs from a diagnostic based on the measured RGB Normal model. Independent Photoshop Grayscale output and complete file equality remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-761) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_761.md).

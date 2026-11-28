@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-27 — Step 771 — Keep named selections in large layered TIFFs
+
+Large layered RGB8 TIFFs now keep named selections alongside editable layers, layer masks and composite opacity. A saved channel can be loaded as a selection after reopening the file.
+
+Photato reopened an 11,000 × 10,000, 660 MB TIFF with both named selections, their channel IDs, two editable layers and a local layer mask. An independent parser checked all 220 million saved-selection bytes and all 110 million opacity bytes. In two Photoshop captures, all 6,144 authored selection samples matched, with and without a separate opacity sample.
+
+Xcode built the native app. All 10 focused imaging and 6 app and HTTP tests passed. Both optimized architectures passed all 245 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on each slice.
+
+The new evidence covers classic stripped RGB8 TIFFs with named non-spot channels. Larger embedded layer payloads, additional channel types and depths, tile layouts, JPEG-in-TIFF and BigTIFF still need qualification.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-771) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_771.md).
+
 ## 2026-11-27 — Step 770 — Stream larger RGB TIFF files through Open and Save
 
 Photato opens supported large classic RGB8, RGB16 and RGB32 TIFF strips as ordinary editable RGB rasters and writes large copies through bounded regions. The files retain working profiles and the selected transparency behavior.

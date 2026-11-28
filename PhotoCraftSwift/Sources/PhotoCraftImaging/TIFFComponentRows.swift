@@ -5,7 +5,7 @@ import PhotoCraftCore
 enum TIFFComponentRows {
   static func read(_ file: TIFFContainer, geometry g: TIFFStorage.Geometry,
     mode: DocumentColorMode, photometric: Int, depth: PixelDepth, profile: Data,
-    backing: RasterTileStore) throws -> NativeModeRaster {
+    backing: RasterTileStore) throws -> (raster: NativeModeRaster, savedAlpha: [Surface]) {
     let builder = try NativeModeRaster.RowBuilder(width: g.width, height: g.height,
       mode: mode, depth: depth, profile: profile, backing: backing)
     let colorCount = mode.componentCount
@@ -14,9 +14,16 @@ enum TIFFComponentRows {
     let strips = (g.height - 1) / g.rows + 1
     let rowComponents = g.planar ? 1 : g.channels
     let rowBytes = g.width * rowComponents * bytesPerSample
-    if g.channels == colorCount {
+    if g.opacitySample == nil {
       try builder.fill(component: colorCount, word: depth == .f32 ? Float(1).bitPattern : integerMaximum)
     }
+    let saved = try g.savedAlphaSamples.map { _ in
+      let builder = try NativeModeRaster.RowBuilder(width: g.width, height: g.height,
+        mode: .grayscale, depth: depth, backing: backing)
+      try builder.fill(component: 1, word: 255)
+      return builder
+    }
+    let savedBySample = Dictionary(uniqueKeysWithValues: zip(g.savedAlphaSamples, saved))
     func nativeWord(_ word: UInt32, component: Int) throws -> UInt32 {
       if component == colorCount { return word }
       if photometric == 0 {
@@ -70,7 +77,9 @@ enum TIFFComponentRows {
           let samples = g.predictor == 1 ? input : TIFFStorage.restore(input, bits: g.bits,
             components: rowComponents, order: file.order, predictor: g.predictor)
           for channel in 0..<rowComponents {
-            let component = g.planar ? plane : channel
+            let sample = g.planar ? plane : channel
+            let savedPlane = savedBySample[sample]
+            let component = sample < colorCount ? sample : colorCount
             for x in 0..<g.width {
               let start = (x * rowComponents + channel) * bytesPerSample
               var word: UInt32 = 0
@@ -78,9 +87,10 @@ enum TIFFComponentRows {
                 let offset = file.order == .big ? b : bytesPerSample - 1 - b
                 word = word << 8 | UInt32(samples[start + offset])
               }
-              words[x] = try nativeWord(word, component: component)
+              words[x] = savedPlane != nil ? word : try nativeWord(word, component: component)
             }
-            try builder.appendRow(words, component: component)
+            if let savedPlane { try savedPlane.appendRow(words, component: 0) }
+            else { try builder.appendRow(words, component: component) }
           }
         }
         try finish()
@@ -95,7 +105,7 @@ enum TIFFComponentRows {
         }
       }
     }
-    return raster
+    return (raster, try saved.map { try $0.finish().channel(0) })
   }
 
   static func oriented(_ source: NativeModeRaster, orientation: Int, backing: RasterTileStore) throws -> NativeModeRaster {

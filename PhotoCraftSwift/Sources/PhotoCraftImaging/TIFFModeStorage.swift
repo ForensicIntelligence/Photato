@@ -17,7 +17,7 @@ enum TIFFModeStorage {
     let file = try TIFFContainer(data, metadata: false, additionalTags: [332, 34675])
     return try read(file, name: name, forcePaged: forcePaged,
       metadataSource: { CGImageSourceCreateWithData(data as CFData, nil) },
-      layers: { try TIFFLayers.read(data, composite: $0, backing: $1) })
+      layers: { try TIFFLayers.read(data, composite: $0, backing: $1, storedAlpha: $2) })
   }
   static func read(_ source: PSDFileSource, url: URL, name: String) throws -> CraftDocument? {
     let file = try TIFFContainer(file: source, metadata: false, additionalTags: [332, 34675])
@@ -25,12 +25,12 @@ enum TIFFModeStorage {
       metadataSource: { CGImageSourceCreateWithURL(url as CFURL, nil) },
       layers: {
         let layerFile = try TIFFContainer(file: source, metadata: false, additionalTags: [34377, 34675, 37724])
-        return try TIFFLayers.read(layerFile, composite: $0, backing: $1)
+        return try TIFFLayers.read(layerFile, composite: $0, backing: $1, storedAlpha: $2)
       })
   }
   private static func read(_ file: TIFFContainer, name: String, forcePaged: Bool,
     metadataSource: () -> CGImageSource?,
-    layers: (CraftDocument, RasterTileStore?) throws -> CraftDocument?) throws -> CraftDocument? {
+    layers: (CraftDocument, RasterTileStore?, [Surface]?) throws -> CraftDocument?) throws -> CraftDocument? {
     let photo = try file.scalar(262)
     guard let mode = mode(photo) else { return nil }
     if mode == .rgb, !forcePaged {
@@ -39,7 +39,7 @@ enum TIFFModeStorage {
     }
     if mode == .grayscale, try file.numbers(258).contains(where: { $0 < 8 }) { return nil }
     guard let g = try TIFFStorage.Geometry(file, allowAssociatedAlpha: true,
-      colorComponents: mode.componentCount, photometric: photo) else {
+      colorComponents: mode.componentCount, photometric: photo, allowSavedAlpha: mode == .rgb) else {
       if mode == .rgb { return nil }
       throw CraftError.unsupported("This TIFF color-mode storage variant is not supported yet; import cancelled to retain its components.")
     }
@@ -57,15 +57,22 @@ enum TIFFModeStorage {
     let rgbWorkingICC = mode == .rgb ? try ColorManagement.importedProfile(original, depth: depth) : nil
     let profile = try rgbWorkingICC ?? PSDModeStorage.profile(original, mode: mode, depth: depth)
     let backing = forcePaged || g.width > NativeModeRaster.maximumPixels / g.height ? try RasterTileStore() : nil
-    var native: NativeModeRaster
-    if let backing {
-      native = try TIFFComponentRows.read(file, geometry: g, mode: mode, photometric: photo,
-        depth: depth, profile: profile, backing: backing)
-    } else {
-      native = try readDense(file, geometry: g, mode: mode, photometric: photo, depth: depth, profile: profile)
-    }
     let orientation = try file.scalar(274, default: 1)
     guard (1...8).contains(orientation) else { throw CraftError.invalid("Invalid TIFF orientation.") }
+    if !g.savedAlphaSamples.isEmpty, depth != .u8 || orientation != 1 {
+      throw CraftError.unsupported("Saved selections in paged TIFF require unrotated RGB8 layer data.")
+    }
+    var native: NativeModeRaster
+    let savedAlpha: [Surface]?
+    if let backing {
+      let decoded = try TIFFComponentRows.read(file, geometry: g, mode: mode, photometric: photo,
+        depth: depth, profile: profile, backing: backing)
+      native = decoded.raster
+      savedAlpha = decoded.savedAlpha.isEmpty ? nil : decoded.savedAlpha
+    } else {
+      native = try readDense(file, geometry: g, mode: mode, photometric: photo, depth: depth, profile: profile)
+      savedAlpha = nil
+    }
     if orientation != 1 {
       if let backing {
         native = try TIFFComponentRows.oriented(native, orientation: orientation, backing: backing)
@@ -89,7 +96,9 @@ enum TIFFModeStorage {
     if !rgb { layer.nativeMode = native }
     document.layers = [layer]; document.activeLayerID = layer.id
     try document.validate()
-    return try layers(document, backing) ?? document
+    if let layered = try layers(document, backing, savedAlpha) { return layered }
+    guard savedAlpha == nil else { throw CraftError.unsupported("Saved TIFF selections require editable layer metadata.") }
+    return document
   }
 
   private static func rgbSurface(_ native: NativeModeRaster, original: Data?, backing: RasterTileStore?) throws -> Surface {

@@ -117,6 +117,7 @@ extension AutomationService {
         "strategy": "Supported classic TIFF strips open into editable file-backed numerical components and an RGB preview. Native Open, Photato uploads and action-job resource decoding share storage.",
         "desktopClassicTIFFMaximumBytes": Int(UInt32.max),
         "pagedOutput": "Supported component images can write strips to a classic TIFF file or same-encoder API Data. TIFF layers use the supported Photoshop layer-record codec.",
+        "savedSelectionChannels": "Layered RGB8 TIFF preserves named saved-selection planes and their display metadata at paged dimensions. Save Transparency controls the composite opacity sample separately.",
         "limits": "The higher classic TIFF limit applies to local file Open and Save. Web transfer, image processing, embedded layers and decoded scratch budgets remain independent. BigTIFF and component tiles are outside this option."
       ],
       "layeredTIFF": [

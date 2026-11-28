@@ -57,7 +57,16 @@ enum TIFFComponentExport {
     let bits = bytesPerSample * 8, colors = descriptor.mode.componentCount
     let photometric = TIFFModeStorage.photometric(descriptor.mode)
     let preserveAlpha = options.tiffTransparency != false
-    let channels = colors + (preserveAlpha ? 1 : 0)
+    let imageChannels = colors + (preserveAlpha ? 1 : 0)
+    let savedAlpha: [AlphaChannel]
+    if options.tiffLayers == true, document.hasAuxiliaryChannels {
+      guard rgb, RasterIO.supportsLayeredTIFFSavedAlpha(document) else {
+        throw CraftError.unsupported("Layered TIFF auxiliary output supports RGB8 saved alpha channels.")
+      }
+      savedAlpha = document.alphaChannels ?? []
+    } else { savedAlpha = [] }
+    let savedRows = savedAlpha.map(PSDAuxiliaryChannels.storedRows)
+    let channels = imageChannels + savedAlpha.count
     let planar = options.tiffPixelOrder == .perChannel
     let samplesPerRowPixel = planar ? 1 : channels
     let rowBytes = width * samplesPerRowPixel * bytesPerSample
@@ -69,8 +78,10 @@ enum TIFFComponentExport {
     let retained = RasterIO.retainedFlatRaster(in: document, width: width, height: height)
     let rgbRows = rgb ? try TIFFRGBRows(document, transparency: preserveAlpha) : nil
     let renderer = !rgb && matted == nil && retained == nil ? try PSDModeCompositeRows(document) : nil
+    let transparencyExtras = preserveAlpha ? [rgbRows?.associated == true ? 1 : 2] : []
+    let extras = transparencyExtras + Array(repeating: 0, count: savedAlpha.count)
     let container = try directoryTemplate(document, options: options, descriptor: descriptor,
-      bits: bits, colors: colors, channels: channels, photometric: photometric, associated: rgbRows?.associated ?? false)
+      bits: bits, channels: channels, photometric: photometric, extras: extras)
     let order: TIFFContainer.Order
     switch options.tiffByteOrder {
     case .bigEndian: order = .big
@@ -95,6 +106,10 @@ enum TIFFComponentExport {
       }
       return Int(raster.rawWord(component: component, index: index))
     }
+    func savedAlphaRow(_ channel: Int, y: Int) throws -> [UInt8] {
+      if let rows = savedRows[channel] { return try rows.row(y, channel: 0, depth: 8) }
+      return try PSDAuxiliaryChannels.row(savedAlpha[channel], y: y, depth: 8)
+    }
     func makeRow(y: Int, first: Int, end: Int) throws -> [UInt8] {
       try Task.checkCancellation()
       var row: [UInt8] = []
@@ -110,7 +125,19 @@ enum TIFFComponentExport {
         }
       }
       if let rgbRows {
-        row = try rgbRows.row(y, components: first..<end, order: order)
+        if end <= imageChannels {
+          row = try rgbRows.row(y, components: first..<end, order: order)
+        } else if first >= imageChannels {
+          row = try savedAlphaRow(first - imageChannels, y: y)
+        } else {
+          let image = try rgbRows.row(y, components: first..<imageChannels, order: order)
+          let alpha = try savedAlpha.indices.map { try savedAlphaRow($0, y: y) }
+          for x in 0..<width {
+            let offset = x * imageChannels
+            row.append(contentsOf: image[offset..<offset + imageChannels])
+            for plane in alpha { row.append(plane[x]) }
+          }
+        }
       } else if let matted {
         for x in 0..<width { append(Int(matted.whiteMattedSample(at: y * width + x)), to: &row) }
       } else if let retained {
@@ -146,8 +173,8 @@ enum TIFFComponentExport {
   }
 
   private static func directoryTemplate(_ document: CraftDocument, options: RasterEncodingOptions,
-    descriptor: DocumentModeDescriptor, bits: Int, colors: Int, channels: Int, photometric: Int,
-    associated: Bool) throws -> TIFFContainer {
+    descriptor: DocumentModeDescriptor, bits: Int, channels: Int, photometric: Int,
+    extras: [Int]) throws -> TIFFContainer {
     let resolution = document.pixelsPerInch, depth = document.depth
     guard resolution.isFinite, (1...100_000).contains(resolution) else {
       throw CraftError.invalid("Native TIFF export requires a valid resolution.")
@@ -161,7 +188,7 @@ enum TIFFComponentExport {
     file.set(256, [document.width], type: 4); file.set(257, [document.height], type: 4)
     file.set(258, Array(repeating: bits, count: channels)); file.set(262, [photometric]); file.set(277, [channels])
     file.set(339, Array(repeating: depth == .f32 ? 3 : 1, count: channels))
-    if channels > colors { file.set(338, [associated ? 1 : 2]) }
+    if !extras.isEmpty { file.set(338, extras) }
     if descriptor.mode == .cmyk { file.set(332, [1]); file.set(334, [4]) }
     let embedsProfile = options.tiffEmbedProfile ?? (document.profileIsUntagged != true)
     if embedsProfile {

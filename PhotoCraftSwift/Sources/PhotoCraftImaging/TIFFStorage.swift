@@ -12,6 +12,7 @@ enum TIFFStorage {
     let planar: Bool, associated: Bool, compression: Int, predictor: Int
     let offsets: [Int], counts: [Int]
     let savedAlphaSamples: [Int]
+    let opacitySample: Int?
     init?(_ file: TIFFContainer, allowAssociatedAlpha: Bool = false,
       colorComponents: Int = 3, photometric: Int = 2, allowSavedAlpha: Bool = false) throws {
       // Tile decoding remains with ImageIO; the strip path must not reject it.
@@ -34,9 +35,11 @@ enum TIFFStorage {
           transparency.allSatisfy({ $0 == 2 || ($0 == 1 && allowAssociatedAlpha) }),
           allowSavedAlpha || transparency.count == extras.count else { return nil }
         savedAlphaSamples = extras.indices.filter { extras[$0] == 0 }.map { colorComponents+$0 }
+        opacitySample = extras.firstIndex(where: { $0 != 0 }).map { colorComponents + $0 }
         associated = transparency == [1]
       } else {
         savedAlphaSamples = []
+        opacitySample = nil
         associated = false
       }
       let layout = try file.scalar(284, default: 1)
