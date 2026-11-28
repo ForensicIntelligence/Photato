@@ -167,7 +167,7 @@ enum RawPanoramaAPI {
       let sources = try hdr ? RawPanorama.prepareHDRSources(inputs, bracketSize: bracketSize).photos
         : RawPanorama.prepareSources(inputs)
       let result = try RawPanorama.prepare(sources, options: settings, name: name, makePreview: false)
-      return try FileBackedSource.writing(maximumBytes: ImageAssetExport.maximumBytes) { url in
+      return try FileBackedSource.writing(maximumBytes: SmartObject.maximumCameraRawSourceBytes) { url in
         try result.write(to: url)
       }.data
     }

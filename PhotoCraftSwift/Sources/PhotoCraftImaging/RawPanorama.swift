@@ -45,6 +45,9 @@ package enum RawPanorama {
     }
   }
 
+  package static let maximumSourcePixels = RawHDRMerge.maximumPixels
+  package static let maximumTotalPixels = RawHDRMerge.maximumTotalPixels
+  package static let maximumOutputPixels = RawHDRMerge.maximumPixels
   package static let sourceCount = 2...PhotoAlign.maximumLayers
   package static let hdrSourceCount = 4...(PhotoAlign.maximumLayers * RawHDRMerge.sourceCount.upperBound)
 
@@ -89,16 +92,18 @@ package enum RawPanorama {
       let info = group[0].info
       total += info.nativeWidth * info.nativeHeight
     }
-    guard total <= PhotoAlign.maximumTotalPixels else {
-      throw CraftError.unsupported("The fused panorama positions exceed the combined 32 megapixel working limit.")
+    guard total <= maximumTotalPixels else {
+      throw CraftError.unsupported("The fused panorama positions exceed the combined 384 megapixel working limit.")
     }
+    let preferPaged = total > Surface.maximumDensePixels
     let reference = RawHDRMerge.reference(Array(measured[ranges[0]]))
     let whiteBalance = RawHDRMerge.whiteBalance(reference)
     var hdr = RawHDRMergeSettings()
     hdr.autoSettings = false
     let photos = try ranges.map { range in
       let bracket = try RawHDRMerge.developBracket(Array(measured[range]), whiteBalance: whiteBalance)
-      let result = try RawHDRSceneFusion.merge(bracket.map(\.bracket), options: hdr, referenceExposure: reference.exposure)
+      let result = try RawHDRSceneFusion.merge(bracket.map(\.bracket), options: hdr,
+        referenceExposure: reference.exposure, preferPaged: preferPaged)
       return try rasterDocument(result.pixels, name: measured[range.lowerBound].source.fileName)
     }
     return HDRSources(photos: photos, bracketSize: ranges[0].count)
@@ -115,14 +120,15 @@ package enum RawPanorama {
     }
     var total = 0
     for photo in info {
-      guard photo.nativeWidth <= PhotoAlign.maximumPixels / photo.nativeHeight else {
-        throw CraftError.unsupported("A Camera Raw panorama source exceeds 16 megapixels.")
+      guard photo.nativeWidth <= maximumSourcePixels / photo.nativeHeight else {
+        throw CraftError.unsupported("A Camera Raw panorama source exceeds 96 megapixels.")
       }
       total += photo.nativeWidth * photo.nativeHeight
     }
-    guard total <= PhotoAlign.maximumTotalPixels else {
-      throw CraftError.unsupported("The RAW panorama sources exceed the combined 32 megapixel working limit.")
+    guard total <= maximumTotalPixels else {
+      throw CraftError.unsupported("The RAW panorama sources exceed the combined 384 megapixel working limit.")
     }
+    let preferPaged = total > Surface.maximumDensePixels
     let reference = sources[0].settings
     let temperature = reference.temperature ?? info[0].temperature
     let tint = reference.tint ?? info[0].tint
@@ -137,7 +143,7 @@ package enum RawPanorama {
       settings.extendedRange = 0
       settings.highlightRecovery = false
       settings.adjustments = .init()
-      let pixels = try RawSourceIO.renderSceneExposure(source.bytes.data, settings: settings)
+      let pixels = try RawSourceIO.renderSceneExposure(source.bytes.data, settings: settings, preferPaged: preferPaged)
       return try rasterDocument(pixels, name: source.fileName)
     }
   }
@@ -162,8 +168,21 @@ package enum RawPanorama {
     var settings = PhotomergeSettings()
     settings.projection = projection.alignment
     settings.blendImages = false
-    let aligned = try Photomerge.prepare(sources, settings: settings, name: name)
-    return Registration(name: name, projection: projection, pixels: try stitch(aligned.document),
+    let total = sources.reduce(0) { $0 + $1.width * $1.height }
+    let preferPaged = total > Surface.maximumDensePixels || sources.contains {
+      $0.layers.contains { layer in
+        if case .raster(let pixels) = layer.content { return pixels.mappedBytes > 0 }
+        return false
+      }
+    }
+    let limits = PhotoAlign.WorkingLimits(pixelsPerLayer: maximumSourcePixels, totalPixels: maximumTotalPixels,
+      side: RawSourceIO.maximumDimension, preferPaged: preferPaged)
+    let aligned = try Photomerge.prepare(sources, settings: settings, name: name, outputPixelLimit: maximumOutputPixels,
+      alignmentLimits: limits) { source, target in
+        let composite = try preferPaged ? Renderer.compositePaged(source) : Renderer.composite(source)
+        return try ColorManagement.converted(composite, from: source, to: target)
+      }
+    return Registration(name: name, projection: projection, pixels: try stitch(aligned.document, preferPaged: preferPaged),
       matchedPoints: aligned.matchedPoints, rmsPixels: aligned.rmsPixels)
   }
 
@@ -212,38 +231,43 @@ package enum RawPanorama {
 
   // Work in linear light and visit only the source pixels touching each scanline.
   // Feather overlaps at their actual coverage boundaries, including curved edges.
-  private static func stitch(_ document: CraftDocument) throws -> Surface {
+  private static func stitch(_ document: CraftDocument, preferPaged: Bool) throws -> Surface {
     let width = document.width, height = document.height
     let layers = try document.layers.map { layer in
       guard case .raster(let surface) = layer.content else { throw CraftError.invalid("Missing panorama pixels.") }
       return (surface: surface, x: layer.x, y: layer.y)
     }
-    var output = try Surface(width: width, height: height, depth: .f32, colorEncoding: .linearRGB)
-    for y in 0..<height {
-      try Task.checkCancellation()
-      var rgb = [SIMD3<Float>](repeating: .zero, count: width)
-      var sum = [Float](repeating: 0, count: width), coverage = sum
-      for layer in layers {
-        let row = y - layer.y, surface = layer.surface
-        guard (0..<surface.height).contains(row), let range = coverageRange(surface, line: row, horizontal: true) else { continue }
-        let vertical = min(row + 1, surface.height - row)
-        for x in range {
-          let p = surface.linearPixel(x: x, y: row)
-          guard p.a > 0 else { continue }
-          let distance = min(x - range.lowerBound + 1, range.upperBound - x, vertical)
-          let amount = Float(min(64, distance)) * p.a
-          let i = layer.x + x
-          rgb[i] += p.rgb * amount
-          sum[i] += amount
-          coverage[i] = max(coverage[i], p.a)
+    return try Surface.linearBands(width: width, height: height, paged: preferPaged || width * height > Surface.maximumDensePixels) { top, rows in
+      var output = try Surface(width: width, height: rows, depth: .f32, colorEncoding: .linearRGB)
+      for y in top..<(top + rows) {
+        try Task.checkCancellation()
+        var rgb = [SIMD3<Float>](repeating: .zero, count: width)
+        var sum = [Float](repeating: 0, count: width), coverage = sum
+        for layer in layers {
+          let row = y - layer.y, surface = layer.surface
+          guard (0..<surface.height).contains(row) else { continue }
+          let samples = surface.linearRow(row)
+          guard let first = samples.firstIndex(where: { $0.a > 0.001 }),
+            let last = samples.lastIndex(where: { $0.a > 0.001 }) else { continue }
+          let vertical = min(row + 1, surface.height - row)
+          for x in first...last {
+            let p = samples[x]
+            guard p.a > 0 else { continue }
+            let distance = min(x - first + 1, last + 1 - x, vertical)
+            let amount = Float(min(64, distance)) * p.a
+            let i = layer.x + x
+            rgb[i] += p.rgb * amount
+            sum[i] += amount
+            coverage[i] = max(coverage[i], p.a)
+          }
+        }
+        for x in sum.indices where sum[x] > 0 {
+          let color = rgb[x] / sum[x]
+          output.setLinearPixel(x: x, y: y - top, Pixel(max(0, color.x), max(0, color.y), max(0, color.z), coverage[x]))
         }
       }
-      for x in sum.indices where sum[x] > 0 {
-        let color = rgb[x] / sum[x]
-        output.setLinearPixel(x: x, y: y, Pixel(max(0, color.x), max(0, color.y), max(0, color.z), coverage[x]))
-      }
+      return output
     }
-    return output
   }
 
   private static func coverageRange(_ surface: Surface, line: Int, horizontal: Bool) -> Range<Int>? {
@@ -260,21 +284,27 @@ package enum RawPanorama {
     func warp(_ input: Surface, horizontally: Bool) throws -> Surface {
       let width = input.width, height = input.height
       let lines = horizontally ? height : width, length = horizontally ? width : height
-      var result = try Surface(width: width, height: height, depth: .f32, colorEncoding: .linearRGB)
+      var transforms = [(start: Double, scale: Double)?]()
+      transforms.reserveCapacity(lines)
       for line in 0..<lines {
         try Task.checkCancellation()
-        guard let visible = coverageRange(input, line: line, horizontal: horizontally) else { continue }
-        let start = amount * Double(visible.lowerBound)
-        let span = Double(length) + amount * Double(visible.count - length)
-        for i in 0..<length {
-          let position = start + (Double(i) + 0.5) * (span / Double(length))
+        let visible = coverageRange(input, line: line, horizontal: horizontally)
+        transforms.append(visible.map {
+          (amount * Double($0.lowerBound), (Double(length) + amount * Double($0.count - length)) / Double(length))
+        })
+      }
+      let paged = input.mappedBytes > 0 || width * height > Surface.maximumDensePixels
+      return try Surface.linearBands(width: width, height: height, paged: paged) { top, rows in
+        try Surface.linearPatch(width: width, height: rows) { x, localY in
+          let y = top + localY
+          let line = horizontally ? y : x, i = horizontally ? x : y
+          guard let transform = transforms[line] else { return .clear }
+          let position = transform.start + (Double(i) + 0.5) * transform.scale
           let fixed = Double(line) + 0.5
-          let value = horizontally ? CropGeometry.sample(input, x: position, y: fixed)
+          return horizontally ? CropGeometry.sample(input, x: position, y: fixed)
             : CropGeometry.sample(input, x: fixed, y: position)
-          result.setLinearPixel(x: horizontally ? i : line, y: horizontally ? line : i, value)
         }
       }
-      return result
     }
     return try warp(warp(source, horizontally: false), horizontally: true)
   }
@@ -326,8 +356,9 @@ package enum RawPanorama {
     var best = IntRect(x: 0, y: 0, width: 0, height: 0)
     for y in 0..<height {
       try Task.checkCancellation()
+      let row = source.linearRow(y)
       for x in 0..<width {
-        heights[x] = source.linearPixel(x: x, y: y).a >= 0.999 ? heights[x] + 1 : 0
+        heights[x] = row[x].a >= 0.999 ? heights[x] + 1 : 0
       }
       stack.removeAll(keepingCapacity: true)
       for x in 0...width {

@@ -92,6 +92,12 @@ final class RawPanoramaWorkflowTests: XCTestCase {
       let commands = try XCTUnwrap(json["commands"] as? [[String:Any]])
       XCTAssertEqual(commands.count, AutomationTests.expectedCommandCount)
       XCTAssertTrue(commands.contains { $0["command"] as? String == "raw.mergePanorama" })
+      let raw = try XCTUnwrap(json["rawDevelopment"] as? [String:Any])
+      let limits = try XCTUnwrap(raw["panoramaMergeLimits"] as? [String:Int])
+      XCTAssertEqual(limits["maximumPixelsPerSource"], 96_000_000)
+      XCTAssertEqual(limits["maximumTotalPixels"], 384_000_000)
+      XCTAssertEqual(limits["maximumOutputPixels"], 96_000_000)
+      XCTAssertEqual(limits["maximumDownloadBytes"], SmartObject.maximumCameraRawSourceBytes)
       let share = try XCTUnwrap(service.shares.last)
       let route = "/v1/documents/\(share.id)/commands"
       let revision = service.revision(document.store)
@@ -110,6 +116,7 @@ final class RawPanoramaWorkflowTests: XCTestCase {
       let response = try await api.request(service, path: route, body: body)
       XCTAssertEqual(response.0.statusCode, 200)
       XCTAssertEqual(response.0.value(forHTTPHeaderField: "Content-Type"), "image/x-adobe-dng")
+      XCTAssertEqual(response.0.value(forHTTPHeaderField: "Content-Length"), String(expected.count))
       XCTAssertEqual(response.1, expected)
       XCTAssertEqual(document.store.document, sharedSource)
       XCTAssertTrue(document.store.session.undoStack.isEmpty)
@@ -147,6 +154,40 @@ final class RawPanoramaWorkflowTests: XCTestCase {
         let filled = try RawPanorama.finish(aligned, options: options, makePreview: false)
         let pixels = try Renderer.composite(filled.document)
         XCTAssertEqual(pixels.linearPixel(x: pixels.width - 1, y: 0).a, 1)
+      }
+    }
+  }
+
+  func testPagedPanoramaMatchesDenseDNGWithCoverageWarpAndCrop() throws {
+    let inputs = try inputDocuments()
+    let paged = try inputs.map { input -> CraftDocument in
+      var copy = input
+      guard case .raster(let source) = copy.layers[0].content else { throw CraftError.invalid("Missing fixture raster.") }
+      let builder = try Surface.PagedBuilder(width: source.width, height: source.height, depth: .f32, colorEncoding: .linearRGB)
+      try builder.append(source, atX: 0, atY: 0)
+      copy.layers[0].content = .raster(try builder.finish())
+      return copy
+    }
+    let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+    try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: false)
+    defer { try? FileManager.default.removeItem(at: folder) }
+    for projection in RawPanoramaSettings.Projection.allCases {
+      let denseScene = try RawPanorama.register(inputs, projection: projection, name: "Dense")
+      let pagedScene = try RawPanorama.register(paged, projection: projection, name: "Paged")
+      XCTAssertGreaterThan(pagedScene.pixels.mappedBytes, 0)
+      XCTAssertEqual(pagedScene.pixels, denseScene.pixels)
+      var options = RawPanoramaSettings()
+      options.projection = projection
+      for warp in [0.0, 64] {
+        options.boundaryWarp = warp
+        let dense = try RawPanorama.finish(denseScene, options: options, makePreview: false)
+        let mapped = try RawPanorama.finish(pagedScene, options: options, makePreview: false)
+        XCTAssertEqual(mapped.crop, dense.crop)
+        let denseURL = folder.appendingPathComponent("dense.dng")
+        let mappedURL = folder.appendingPathComponent("paged.dng")
+        try dense.write(to: denseURL)
+        try mapped.write(to: mappedURL)
+        XCTAssertEqual(try Data(contentsOf: mappedURL), try Data(contentsOf: denseURL))
       }
     }
   }

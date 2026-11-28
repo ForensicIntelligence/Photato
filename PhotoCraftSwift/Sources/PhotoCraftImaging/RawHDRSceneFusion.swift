@@ -83,7 +83,7 @@ enum RawHDRSceneFusion {
     }
 
     guard trackMotion else {
-      let fused = try render(width: width, height: height, paged: paged) { top, rows in
+      let fused = try Surface.linearBands(width: width, height: height, paged: paged) { top, rows in
         try Surface.linearPatch(width: width, height: rows) { x, y in try fusedSample(x: x, y: top + y).pixel }
       }
       return Result(pixels: fused, exposureEV: exposureEV, offsets: offsets, ghostMask: nil)
@@ -95,7 +95,7 @@ enum RawHDRSceneFusion {
     let storage = try FileBackedSource.writing(maximumBytes: maskBytes) { url in
       let writer = try AtomicFileWriter(to: url, maximumBytes: maskBytes)
       defer { writer.discard() }
-      firstPass = try render(width: width, height: height, paged: true) { top, rows in
+      firstPass = try Surface.linearBands(width: width, height: height, paged: true) { top, rows in
         var band = [Float](repeating: 0, count: width * rows)
         let patch = try Surface.linearPatch(width: width, height: rows) { x, y in
           let fused = try fusedSample(x: x, y: top + y)
@@ -126,7 +126,7 @@ enum RawHDRSceneFusion {
       }
     }
     let fused = try ghost.withSamples { values in
-      try render(width: width, height: height, paged: paged) { top, rows in
+      try Surface.linearBands(width: width, height: height, paged: paged) { top, rows in
         try Surface.linearPatch(width: width, height: rows) { x, y in
           let row = top + y
           let amount = values[row * width + x]
@@ -139,17 +139,6 @@ enum RawHDRSceneFusion {
       }
     }
     return Result(pixels: fused, exposureEV: exposureEV, offsets: offsets, ghostMask: ghost)
-  }
-
-  private static func render(width: Int, height: Int, paged: Bool,
-    band: (Int, Int) throws -> Surface) throws -> Surface {
-    guard paged else { return try band(0, height) }
-    let builder = try Surface.PagedBuilder(width: width, height: height, depth: .f32, colorEncoding: .linearRGB)
-    for top in stride(from: 0, to: height, by: Surface.tileSide) {
-      let patch = try band(top, min(Surface.tileSide, height - top))
-      try builder.append(patch, atX: 0, atY: top)
-    }
-    return try builder.finish()
   }
 
   private static func luminance(_ rgb: SIMD3<Float>) -> Float {

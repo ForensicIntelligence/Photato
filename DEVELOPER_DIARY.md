@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **818** · The 10 most recent entries, newest first.
+Source build **819** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 819 — Stitch full-resolution Camera Raw panoramas
+
+Camera Raw panorama registration keeps its reduced feature analysis while projection, stitching and Boundary Warp process the original samples in disk-backed bands. Panoramas preserve full-canvas transparency and editable Auto Crop in DNG.
+
+The native filmstrip merged two 4,320 × 4,224 exposures. Its 198,322,378-byte DNG matched the authenticated Photato download byte for byte. Reset Crop recovered the scene and sampled opacity. Both originals kept their hashes. Six small DNG controls matched the previous build across all three projections and both warp settings. A separate native engine probe fused four 18 MP exposures and reopened a 6,145 × 4,608 HDR panorama.
+
+Adobe Camera Raw 18.1.1 merged the same exposures using Perspective, Boundary Warp 35, Auto Crop and Apply Auto Settings. Adobe displayed a 6,129 × 4,005 crop. Photato produced 6,144 × 4,093. Adobe Camera Raw reopened the Photato DNG with editable settings. [Adobe Camera Raw panorama workflow](https://helpx.adobe.com/camera-raw/desktop/hdr-and-advanced-output/create-panoramas.html).
+
+Xcode built the app. All 69 focused checks passed, plus the large desktop and HTTP workflow. Both optimized architectures passed all 452 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The Camera Raw working limits are 96 MP per input and output and 384 MP across source positions. Fill Edges remains limited to 4 MP. The Adobe Fill Edges control reached 6,142 × 4,606. Adobe geometry, auto tone, compressed tiles, file equality and physical-platform performance remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-819) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_819.md).
 
 ## 2026-11-28 — Step 818 — Merge high-resolution Camera Raw HDR brackets
 
@@ -129,17 +143,3 @@ Xcode built the app and all twenty-one focused application tests passed. The new
 The current photo’s render refreshes its thumbnail. Other photos use their embedded thumbnail until viewed or edited as the active photo. Automatic refresh of every non-active photo in a batch remains open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-810) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_810.md).
-
-## 2026-11-28 — Step 809 — Browse and edit photos in Camera Raw Grid
-
-Press G to switch the Camera Raw preview to Grid. Double-click a thumbnail to return to Loupe. Both views share selection, ratings, labels, filters and sorting. Grid keeps the adjustments and source information available.
-
-In the native macOS window, three owned DNGs populated Grid. Option–Plus increased the thumbnail size and period hid cell information. Shift-click selected two photos. A 0.75 sensor exposure edit was still present on the second photo after opening it in Loupe.
-
-Grid behavior follows the published Adobe Camera Raw browsing workflow. [Adobe Camera Raw Grid](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
-
-Xcode built the app and all twenty focused application tests passed. Both optimized architectures passed all 397 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
-
-The live comparison covered Photato’s camera-raw window and the documented Adobe workflow. Developed thumbnails, Stacks, virtual copies, and a live comparison against a Grid-capable Adobe build remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-809) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_809.md).

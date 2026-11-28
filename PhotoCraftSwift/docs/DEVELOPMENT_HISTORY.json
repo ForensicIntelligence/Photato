@@ -10982,6 +10982,13 @@
       "link": "DEVLOG.md#dev-step-818",
       "section_sha256": "92575aefdb57bf0390988fb38e69cb563401e90dcc546f2b96a8c957cafdf0c3",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-819",
+      "title": "2026-11-28 \u2014 Step 819 \u2014 Stitch full-resolution Camera Raw panoramas",
+      "link": "DEVLOG.md#dev-step-819",
+      "section_sha256": "175328642edb07926662509cff4b51c56c0e2ae59b0643c75f4cd814950e2d8a",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13817,8 +13824,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "a0f40da9f3ec10ac7d1c93bc763b7ffbdb3be2b4fede713098e98d0d1d4fa066",
-      "bytes": 192449,
+      "sha256": "d67a8b49a2eec928e28a504b8023f32f183e00c418a89b91b15f52f9226ab344",
+      "bytes": 192571,
       "rolling_current_snapshot": false
     },
     {
@@ -15539,8 +15546,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "4111e6cb054d79c94b5c741daecd226d25953cb612ec876bb8f32ddf47245f50",
-      "bytes": 768456,
+      "sha256": "5ddef5f42b84719d6da1b56371d3dc0047b147012f7c1d57ced3e853c3a67d1b",
+      "bytes": 772390,
       "rolling_current_snapshot": false
     },
     {
@@ -16109,8 +16116,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "a9cec586ddb54695dab3890f515345df370f4c5fa5b468e70dd2136ddbdf1f8c",
-      "bytes": 407520,
+      "sha256": "25bf6f8ba05b12d5947068ff4c4c47f1c76f7af9d0793705d393ffaf70909eb6",
+      "bytes": 407649,
       "rolling_current_snapshot": false
     },
     {
@@ -16229,8 +16236,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "98bb9886e7cba1ab436a10c36236673ec42d44ca12f8da1b8cc18bda24c65104",
-      "bytes": 235652,
+      "sha256": "9af629bdb02876f20496f6e05d3a0e582d62696ede6abecf71dc52ca53573808",
+      "bytes": 235893,
       "rolling_current_snapshot": false
     },
     {
@@ -16307,14 +16314,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "70ebacc91fb13c53ad65120a6bce1370673d410742f32be53e7d892216ab092e",
-      "bytes": 1120954,
+      "sha256": "d32c60ef07a2f6f17044f485a2c0bd413452fa5351e57f6b101973483783941d",
+      "bytes": 1122779,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "5a8ad42e3c7191cb284371ab18cb50c43e88834206f1eb3978b94fed9e709e01",
-      "bytes": 5279357,
+      "sha256": "a7b9ace35c0bfbc3ca8f3c7638134f3be5a9bf393de5312b5126f1d19409d38b",
+      "bytes": 5281888,
       "rolling_current_snapshot": false
     },
     {
@@ -24340,6 +24347,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_819.json",
+      "sha256": "a917813f5a0971bb2a29cb76136190d2a5ff4405137663794d7a46af513b604f",
+      "bytes": 26021,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_819.md",
+      "sha256": "62962e0761d2eb094e8cca22d6906bc047b5d494754ccbb440cb6984b87ba633",
+      "bytes": 2139,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24899,8 +24918,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "b70280aca8d7724bd41bbef289ec5abd7f607fc7fefa945225fa39d574967afa",
-      "bytes": 529614,
+      "sha256": "dca08ad5ec78a3676dd1157354e1857dfcb792dd20b9aa72cc9fd282a88c38ca",
+      "bytes": 530148,
       "rolling_current_snapshot": false
     },
     {
@@ -27413,8 +27432,8 @@
     }
   ],
   "counts": {
-    "milestones": 818,
-    "evidence_files": 2268,
+    "milestones": 819,
+    "evidence_files": 2270,
     "logs": 0,
     "missing_explicit_references": 704
   }

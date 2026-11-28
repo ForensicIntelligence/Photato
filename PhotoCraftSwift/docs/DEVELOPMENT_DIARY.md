@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 819 — Stitch full-resolution Camera Raw panoramas
+
+Camera Raw panorama registration keeps its reduced feature analysis while projection, stitching and Boundary Warp process the original samples in disk-backed bands. Panoramas preserve full-canvas transparency and editable Auto Crop in DNG.
+
+The native filmstrip merged two 4,320 × 4,224 exposures. Its 198,322,378-byte DNG matched the authenticated Photato download byte for byte. Reset Crop recovered the scene and sampled opacity. Both originals kept their hashes. Six small DNG controls matched the previous build across all three projections and both warp settings. A separate native engine probe fused four 18 MP exposures and reopened a 6,145 × 4,608 HDR panorama.
+
+Adobe Camera Raw 18.1.1 merged the same exposures using Perspective, Boundary Warp 35, Auto Crop and Apply Auto Settings. Adobe displayed a 6,129 × 4,005 crop. Photato produced 6,144 × 4,093. Adobe Camera Raw reopened the Photato DNG with editable settings. [Adobe Camera Raw panorama workflow](https://helpx.adobe.com/camera-raw/desktop/hdr-and-advanced-output/create-panoramas.html).
+
+Xcode built the app. All 69 focused checks passed, plus the large desktop and HTTP workflow. Both optimized architectures passed all 452 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The Camera Raw working limits are 96 MP per input and output and 384 MP across source positions. Fill Edges remains limited to 4 MP. The Adobe Fill Edges control reached 6,142 × 4,606. Adobe geometry, auto tone, compressed tiles, file equality and physical-platform performance remain open.
+
+[Development record](DEVLOG.md#dev-step-819) · [Qualification](SOURCE_PUBLICATION_819.md).
+
 ## 2026-11-28 — Step 818 — Merge high-resolution Camera Raw HDR brackets
 
 Camera Raw HDR Merge now uses disk-backed raster bands for large brackets and processes deghost coverage in scratch storage. The authenticated command streams its DNG in bounded chunks. Opening the result in the filmstrip retains editable tone settings.
@@ -2963,11 +2977,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:818 -->
+<!-- current-status-step:819 -->
 
-Camera Raw HDR Merge now uses disk-backed raster bands for large brackets and processes deghost coverage in scratch storage. The authenticated command streams its DNG in bounded chunks. Opening the result in the filmstrip retains editable tone settings.
+Camera Raw panorama registration keeps its reduced feature analysis while projection, stitching and Boundary Warp process the original samples in disk-backed bands. Panoramas preserve full-canvas transparency and editable Auto Crop in DNG.
 
-[Development record](DEVLOG.md#dev-step-818) · [Qualification](SOURCE_PUBLICATION_818.md).
+[Development record](DEVLOG.md#dev-step-819) · [Qualification](SOURCE_PUBLICATION_819.md).
 
 <!-- current-status:end -->
 
@@ -3992,6 +4006,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 816 | [Stitch Camera Raw panoramas with an editable crop](DEVLOG.md#dev-step-816) |
 | 2026-11-28 | 817 | [Merge bracketed RAW photos into HDR panoramas](DEVLOG.md#dev-step-817) |
 | 2026-11-28 | 818 | [Merge high-resolution Camera Raw HDR brackets](DEVLOG.md#dev-step-818) |
+| 2026-11-28 | 819 | [Stitch full-resolution Camera Raw panoramas](DEVLOG.md#dev-step-819) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

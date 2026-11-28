@@ -19,11 +19,17 @@ package enum RawLinearDNG {
       throw CraftError.invalid("Linear DNG requires an HDR merge in linear sRGB or an equivalent opaque RGB32 document.")
     }
     try document.validate()
-    let surface = try Renderer.composite(document)
-    let thumbnailSurface = try crop.map { try surface.cropped(to: $0.rectangle(width: surface.width, height: surface.height)) } ?? surface
-    let previewRequest = try RasterPreviewRequest.overview(width: thumbnailSurface.width, height: thumbnailSurface.height,
+    let hasPagedSource = document.layers.contains { layer in
+      if case .raster(let pixels) = layer.content { return pixels.mappedBytes > 0 }
+      return false
+    }
+    let surface = try hasPagedSource ? Renderer.compositePaged(document) : Renderer.composite(document)
+    let previewRegion = try crop.map { try $0.rectangle(width: surface.width, height: surface.height) }
+      ?? IntRect(x: 0, y: 0, width: surface.width, height: surface.height)
+    let size = try RasterPreviewRequest.overview(width: previewRegion.width, height: previewRegion.height,
       maximumSide: previewMaximumSide)
-    let preview = try previewRequest.reducing(thumbnailSurface)
+    let previewRequest = try RasterPreviewRequest(region: previewRegion, width: size.width, height: size.height)
+    let preview = try previewRequest.reducing(surface)
     let file = try AtomicFileWriter(to: url, maximumBytes: SmartObject.maximumCameraRawSourceBytes)
     defer { file.discard() }
     try file.append(layout.header(order: order))
@@ -46,8 +52,7 @@ package enum RawLinearDNG {
         var offset = 0
         for y in startRow..<endRow {
           try Task.checkCancellation()
-          for x in 0..<width {
-            let pixel = surface.linearPixel(x: x, y: y)
+          for pixel in surface.linearRow(y) {
             guard pixel.isFinite, (preserveTransparency && (0...1).contains(pixel.a)) || pixel.a == 1,
               min(pixel.r, pixel.g, pixel.b) >= 0,
               max(pixel.r, pixel.g, pixel.b) <= 65_504 else {
@@ -119,10 +124,23 @@ package enum RawLinearDNG {
     try file.commit()
   }
 
+  struct TransparencyMask {
+    fileprivate let data: Data
+    fileprivate let width: Int
+    fileprivate let rowsPerStrip: Int
+    fileprivate let offsets: [Int]
+
+    func row(_ y: Int) -> Data {
+      let start = offsets[y / rowsPerStrip] + y % rowsPerStrip * width
+      let index = data.startIndex + start
+      return data[index..<(index + width)]
+    }
+  }
+
   // Core Image does not expose the alpha of an uncompressed DNG mask IFD.
-  // Recognize the standard single-channel, 8-bit strip layout used by our writer.
-  static func transparencyMask(in data: Data, width: Int, height: Int) throws -> Data? {
-    guard width <= PhotoAlign.maximumPixels / height, TIFFContainer.isClassic(data),
+  // Recognize the single-channel 8-bit strip layout and borrow rows from the original.
+  static func transparencyMask(in data: Data, width: Int, height: Int) throws -> TransparencyMask? {
+    guard width > 0, height > 0, width <= RawPanorama.maximumOutputPixels / height, TIFFContainer.isClassic(data),
       let file = try? TIFFContainer(data, metadata: false, additionalTags: [254], inspectSubIFDs: true,
         maximumBytes: SmartObject.maximumCameraRawSourceBytes) else { return nil }
     func integers(_ field: TIFFContainer.Field?) -> [Int] {
@@ -140,14 +158,12 @@ package enum RawLinearDNG {
     let offsets = integers(mask.fields[273]), lengths = integers(mask.fields[279])
     let strips = (height - 1) / rows + 1
     guard offsets.count == strips, lengths.count == strips else { return nil }
-    var alpha = Data(capacity: width * height)
     for strip in 0..<strips {
       try Task.checkCancellation()
       let count = width * min(rows, height - strip * rows)
-      guard lengths[strip] == count, offsets[strip] <= data.count - count else { return nil }
-      alpha.append(try file.bytes(at: offsets[strip], count: count))
+      guard lengths[strip] == count, offsets[strip] >= 0, offsets[strip] <= data.count - count else { return nil }
     }
-    return alpha
+    return TransparencyMask(data: data, width: width, rowsPerStrip: rows, offsets: offsets)
   }
 
   private static func transparencyDirectory(_ surface: Surface, writingTo file: AtomicFileWriter) throws -> TIFFContainer.Directory {
@@ -160,7 +176,7 @@ package enum RawLinearDNG {
       mask.reserveCapacity(width * (bottom - top))
       for y in top..<bottom {
         try Task.checkCancellation()
-        for x in 0..<width { mask.append(UInt8((255 * unit(surface.linearPixel(x: x, y: y).a)).rounded())) }
+        for pixel in surface.linearRow(y) { mask.append(UInt8((255 * unit(pixel.a)).rounded())) }
       }
       offsets.append(file.count)
       lengths.append(mask.count)

@@ -1,3 +1,9 @@
+### Full-resolution Camera Raw panorama merge (checkpoint 819)
+
+The existing `raw.mergePanorama` and `raw.mergeHDRPanorama` commands use the same paged registration pipeline. The authenticated download preserves document history and includes the exact Content-Length.
+
+[Qualification](SOURCE_PUBLICATION_819.md).
+
 ### High-resolution Camera Raw HDR merge (checkpoint 818)
 
 Send `raw.mergeHDR` to `POST /v1/documents/{id}/commands` with the current `revision` and the distinct embedded RAW exposure `layerIDs` in `parameters`. Enable document transfers to receive a linear `image/x-adobe-dng` download. The command does not modify the document or its undo history.
@@ -1653,6 +1659,30 @@ Submit to `POST /v1/documents/{id}/commands`. Omitted top-level settings retain 
 Upload genuine RAW using `POST /v1/documents/import`, media type `image/x-camera-raw` or `image/x-adobe-dng`; optional `X-Photato-Open-Format: raw`. The existing API4MP and 64MiB limits apply. Desktop sensor decoding is bounded to36MP/64MiB. Import defaults to RGB16; redevelopment follows current document depth/profile. State includes `layers[].smartObject.rawDevelopment`; the existing `smart-objects/{layerID}/source` download returns exact original bytes. A source revision now includes its development settings. Native documents containing RAW sources require `X-Photato-Archive-Version: 22`; earlier requested versions reject. Native22 readers also accept1…21. Save native Photato to retain editability; editable PSD RAW descriptors explicitly reject.
 
 The Adobe-compatible `POST /v2/edit` accepts supported RAW/DNG resources in the pinned `EditImageInput` contract, decodes sensors through the same native engine and applies supported LightroomEdits light/color/effects/detail fields. Existing async status/output conventions and PNG/JPEG output remain. DNG output, XMP, Adobe whiteBalance presets, proprietary pixel equality and all-camera support remain open. [Evidence and limitations](RAW_DEVELOPMENT_REFERENCES.json).
+
+## Camera Raw HDR merge
+
+Send `raw.mergeHDR` to `POST /v1/documents/{id}/commands` with the current `revision` and the distinct embedded RAW exposure `layerIDs` in `parameters`. Enable document transfers to receive a linear `image/x-adobe-dng` download. The command does not modify the document or its undo history.
+
+`align` and `autoSettings` default to `true`. `deghost` accepts `off`, `low`, `medium`, and `high` and defaults to `off`. Auto Settings writes editable Exposure, Contrast, Highlights, Shadows, Whites, Blacks, Vibrance, and Saturation to XMP. Turning it off omits that recipe and preserves the same linear RAW samples. The native Camera Raw merge uses the same calculation and writer.
+
+This command accepts up to 96 megapixels per source and 384 megapixels across the bracket. Large source, blend and deghost rasters use scratch storage. The server delivers the completed DNG in bounded chunks with a Content-Length header. Embedded RAW originals that are already mapped locally do not count toward the API's estimated owned-heap quota. Upload, decoder and panorama limits are separate.
+
+## Camera Raw panorama merge
+
+Send `raw.mergePanorama` to `POST /v1/documents/{id}/commands` with the current `revision` and `parameters.layerIDs`, an ordered list of two to sixteen distinct embedded RAW Smart Object layer UUIDs. Enable document transfers to download the `image/x-adobe-dng` result. The operation leaves the shared document and its Undo history intact.
+
+`projection` accepts `spherical` (default), `cylindrical`, and `perspective`. `boundaryWarp` accepts 0–100 (default 0). `fillEdges` defaults to `false`; `autoCrop` and `autoSettings` default to `true`. Auto Crop records editable XMP settings and retains the full sensor and transparency data. Camera Raw's Reset Crop and `raw.develop` with `settings.crop: null` restore access to the uncropped scene. To set an axis-aligned crop through `raw.develop`, supply `settings.crop` with normalized `left`, `top`, `right`, and `bottom` coordinates.
+
+Working limits are 96 MP per source, 384 MP combined, 96 MP for the panorama and a 2 GiB download. Large projection and stitch rasters use scratch storage. The API streams the completed DNG with Content-Length. Fill Edges supports output up to 4 MP. The published Adobe v2 API has no dedicated RAW panorama endpoint.
+
+## Camera Raw HDR panorama merge
+
+Send `raw.mergeHDRPanorama` to `POST /v1/documents/{id}/commands` with the current `revision` and an ordered `parameters.layerIDs` list of distinct embedded RAW Smart Objects. Supply at least two complete capture positions. Keep the exposures for each position together and in capture order. Each bracket must contain the same number of exposures and repeat the same relative exposure offsets. Shutter time, aperture, and ISO must be present. Positions may use different base exposures.
+
+`bracketSize` optionally specifies 2–16 exposures per position. Omit it to detect the smallest complete repeated pattern. Projection, Boundary Warp, Fill Edges, Auto Crop, and Auto Settings use the same parameters and defaults as `raw.mergePanorama`. The result is an `image/x-adobe-dng` download. The original layers and document history remain unchanged. Enable document transfers before requesting the download.
+
+HDR panoramas support up to 16 camera positions, up to 16 exposures per bracket, 96 MP per exposure and 384 MP per bracket. The fused positions have a separate 384 MP combined working limit. The panorama supports up to 96 MP. Fill Edges is available up to 4 MP. Adobe's published Firefly Photoshop API has no dedicated HDR panorama endpoint.
 
 ## Camera Raw Filter — step172
 

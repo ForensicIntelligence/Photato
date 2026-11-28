@@ -19,30 +19,45 @@ public enum Photomerge {
     public let rmsPixels: Double
   }
   public static func prepare(_ sources: [CraftDocument],settings: PhotomergeSettings,name: String = "Untitled Panorama") throws -> Result {
+    try prepare(sources, settings: settings, name: name)
+      { try ColorManagement.converted(Renderer.composite($0), from: $0, to: $1) }
+  }
+
+  package static func prepare(_ sources: [CraftDocument], settings: PhotomergeSettings, name: String,
+    outputPixelLimit: Int = PhotoAlign.maximumPixels, alignmentLimits: PhotoAlign.WorkingLimits = .desktop,
+    sourcePixels: (CraftDocument, CraftDocument) throws -> Surface) throws -> Result {
     try Task.checkCancellation();try settings.validate()
     guard (2...PhotoAlign.maximumLayers).contains(sources.count) else { throw CraftError.invalid("Photomerge needs two to sixteen source images.") }
     guard !name.trimmingCharacters(in:.whitespacesAndNewlines).isEmpty,name.count <= 256 else { throw CraftError.invalid("Choose a panorama name with 1–256 characters.") }
     var total = 0
-    for source in sources { try source.validate();guard source.width*source.height <= PhotoAlign.maximumPixels else { throw CraftError.unsupported("A Photomerge source exceeds the 16 megapixel working limit.") };total += source.width*source.height }
-    guard total <= PhotoAlign.maximumTotalPixels else { throw CraftError.unsupported("Photomerge sources exceed the combined 32 megapixel working limit.") }
+    for source in sources {
+      try source.validate()
+      guard source.width <= alignmentLimits.side, source.height <= alignmentLimits.side,
+        source.width <= alignmentLimits.pixelsPerLayer / source.height else {
+        throw CraftError.unsupported("A Photomerge source exceeds the \(alignmentLimits.pixelsPerLayer / 1_000_000) megapixel working limit.")
+      }
+      total += source.width * source.height
+    }
+    guard total <= alignmentLimits.totalPixels else { throw CraftError.unsupported("Photomerge sources exceed the combined \(alignmentLimits.totalPixels / 1_000_000) megapixel working limit.") }
     let first = sources[0]
     var input = try CraftDocument(width:first.width,height:first.height,depth:first.depth)
     input.layers = [];input.name = name;input.workingICC = first.workingICC;input.resolution = first.resolution
     for source in sources {
       try Task.checkCancellation()
-      let surface = try ColorManagement.converted(Renderer.composite(source),from:source,to:input)
+      let surface = try sourcePixels(source, input)
       input.layers.append(Layer(name:source.name,content:.raster(surface)))
     }
     input.activeLayerID = input.layers.last!.id
     var align = PhotoAlignSettings();align.projection = settings.projection;align.focalLengthPixels = settings.focalLengthPixels
-    let aligned = try PhotoAlign.prepare(input,layerIDs:Set(input.layers.map(\.id)),settings:align)
+    let layerIDs = Set(input.layers.map(\.id))
+    let aligned = try PhotoAlign.prepare(input, layerIDs: layerIDs, settings: align, limits: alignmentLimits)
     var output = aligned.result
     let bounds = try output.layers.map { layer -> IntRect in
       guard case .raster(let s) = layer.content else { throw CraftError.invalid("Missing panorama source pixels.") };return try layer.coordinateTransform.bounds(width:s.width,height:s.height)
     }
     let x0 = bounds.map(\.x).min()!,y0 = bounds.map(\.y).min()!,x1 = bounds.map{$0.x+$0.width}.max()!,y1 = bounds.map{$0.y+$0.height}.max()!
     let w = x1-x0,h = y1-y0
-    guard w > 0,h > 0,w <= Surface.maxDimension,h <= Surface.maxDimension,w <= PhotoAlign.maximumPixels/h else { throw CraftError.unsupported("The panorama exceeds the 16 megapixel canvas limit. Try a different projection or smaller sources.") }
+    guard w > 0,h > 0,w <= alignmentLimits.side,h <= alignmentLimits.side,w <= outputPixelLimit/h else { throw CraftError.unsupported("The panorama exceeds the \(outputPixelLimit / 1_000_000) megapixel canvas limit. Try a different projection or smaller sources.") }
     output.width = w;output.height = h
     for i in output.layers.indices { output.layers[i].x -= x0;output.layers[i].y -= y0 }
     try output.validate()

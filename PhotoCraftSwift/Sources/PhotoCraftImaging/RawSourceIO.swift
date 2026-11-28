@@ -531,7 +531,12 @@ public enum RawSourceIO {
   private static func makeDocument(_ bytes: EmbeddedSourceBytes, fileName: String,
     description: SourceDescription, settings initial: RawDevelopment, depth: PixelDepth) throws -> CraftDocument {
     let data = bytes.data
-    let (workingPixels, settings, info) = try render(data, settings: initial, depth: depth == .u8 ? .u16 : depth)
+    // A file-backed local original can keep its large rendered cache on disk too.
+    let residentPixelLimit = bytes.isFileBacked ? SmartObject.maximumSourceBytes / MemoryLayout<Pixel>.stride
+      : Surface.maximumDensePixels
+    let (workingPixels, settings, sensor) = try develop(data, settings: initial, depth: depth == .u8 ? .u16 : depth,
+      reusing: nil, residentPixelLimit: residentPixelLimit)
+    let info = sensor.info
     let pixels = try workingPixels.converted(to: depth)
     var name = URL(fileURLWithPath:fileName).lastPathComponent
     if (name as NSString).pathExtension.isEmpty { name += "." + (UTType(info.type)?.preferredFilenameExtension ?? "raw") }
@@ -566,11 +571,13 @@ public enum RawSourceIO {
   }
 
   private static func develop(_ data: Data, settings requested: RawDevelopment, depth: PixelDepth,
-    reusing previous: SensorRaster?) throws -> (Surface, RawDevelopment, SensorRaster) {
+    reusing previous: SensorRaster?, residentPixelLimit: Int = Surface.maximumDensePixels
+  ) throws -> (Surface, RawDevelopment, SensorRaster) {
     try requested.validate()
     try Task.checkCancellation()
     let key = SensorKey(data: data, depth: depth, settings: requested)
-    let sensor = try (previous?.key == key ? previous : nil) ?? readSensor(key, settings: requested)
+    let sensor = try (previous?.key == key ? previous : nil) ?? readSensor(key, settings: requested,
+      residentPixelLimit: residentPixelLimit)
     var settings = requested
     settings.decoderVersion = sensor.info.decoderVersion
     var pixels = try CameraRawEngine.develop(sensor.pixels, settings: settings.adjustments,
@@ -594,7 +601,7 @@ public enum RawSourceIO {
   }
 
   private static func readSensor(_ key: SensorKey, settings: RawDevelopment, disableToneMap: Bool = false,
-    preferPaged: Bool = false) throws -> SensorRaster {
+    preferPaged: Bool = false, residentPixelLimit: Int = Surface.maximumDensePixels) throws -> SensorRaster {
     let (raw, info) = try decoder(key.data, version: key.decoderVersion)
     let depth = key.depth
     if let temperature = settings.temperature { raw.neutralTemperature = temperature }
@@ -628,18 +635,21 @@ public enum RawSourceIO {
       context.render(image, toBitmap: &buffer, rowBytes: w * 16, bounds: rect, format: .RGBAf, colorSpace: space)
     }
     func copyBand(rows: Int, into pixels: inout Surface, top: Int, sourceY: Int) throws {
-      for row in 0..<rows { for x in 0..<w {
-        let offset = (row * w + x) * 4
-        let decodedAlpha = buffer[offset + 3]
-        let mask = transparency.map { Float($0[(sourceY + row) * w + x]) / 255 } ?? 1
-        let pixel = Pixel(buffer[offset], buffer[offset + 1], buffer[offset + 2], min(decodedAlpha, mask))
-        guard pixel.isFinite else { throw CraftError.invalid("The RAW decoder produced nonfinite sensor pixels.") }
-        if depth == .f32 { pixels.setLinearPixel(x: x, y: top + row, pixel) }
-        else { pixels.setPixel(x: x, y: top + row, SRGBTransfer.encoded(pixel)) }
-      } }
+      for row in 0..<rows {
+        let alpha = transparency?.row(sourceY + row)
+        for x in 0..<w {
+          let offset = (row * w + x) * 4
+          let decodedAlpha = buffer[offset + 3]
+          let mask = alpha.map { Float($0[$0.startIndex + x]) / 255 } ?? 1
+          let pixel = Pixel(buffer[offset], buffer[offset + 1], buffer[offset + 2], min(decodedAlpha, mask))
+          guard pixel.isFinite else { throw CraftError.invalid("The RAW decoder produced nonfinite sensor pixels.") }
+          if depth == .f32 { pixels.setLinearPixel(x: x, y: top + row, pixel) }
+          else { pixels.setPixel(x: x, y: top + row, SRGBTransfer.encoded(pixel)) }
+        }
+      }
     }
     let pixels: Surface
-    if preferPaged || w * h > Surface.maximumDensePixels {
+    if preferPaged || w * h > residentPixelLimit {
       let paged = try Surface.PagedBuilder(width: w, height: h, depth: depth, colorEncoding: encoding)
       for y in stride(from: 0, to: h, by: rows) {
         let count = min(rows, h - y)

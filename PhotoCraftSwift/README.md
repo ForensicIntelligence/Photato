@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 819.** Stitch full-resolution Camera Raw panoramas. [Qualification](docs/SOURCE_PUBLICATION_819.md).
+
 **Source checkpoint 818.** Merge high-resolution Camera Raw HDR brackets. [Qualification](docs/SOURCE_PUBLICATION_818.md).
 
 **Source checkpoint 817.** Merge bracketed RAW photos into HDR panoramas. [Qualification](docs/SOURCE_PUBLICATION_817.md).

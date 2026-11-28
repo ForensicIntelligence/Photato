@@ -15,21 +15,53 @@ public enum PhotoAlign {
   public static let maximumLayers = 16
   public static let maximumPixels = 16_777_216
   public static let maximumTotalPixels = 33_554_432
+  package struct WorkingLimits: Sendable {
+    package let pixelsPerLayer: Int
+    package let totalPixels: Int
+    package let side: Int
+    package let preferPaged: Bool
+
+    package init(pixelsPerLayer: Int, totalPixels: Int, side: Int, preferPaged: Bool) {
+      self.pixelsPerLayer = pixelsPerLayer
+      self.totalPixels = totalPixels
+      self.side = side
+      self.preferPaged = preferPaged
+    }
+
+    package static let desktop = WorkingLimits(pixelsPerLayer: PhotoAlign.maximumPixels,
+      totalPixels: PhotoAlign.maximumTotalPixels, side: Surface.maxDimension, preferPaged: false)
+  }
+
   public static func targets(_ ids: Set<UUID>,in d: CraftDocument) throws -> [Layer] {
+    try targets(ids, in: d, limits: .desktop)
+  }
+
+  private static func targets(_ ids: Set<UUID>, in d: CraftDocument, limits: WorkingLimits) throws -> [Layer] {
     guard (2...maximumLayers).contains(ids.count) else { throw CraftError.invalid("Select two to sixteen pixel layers for Auto-Align.") }
     let layers = d.layers.filter{ids.contains($0.id)}
     guard layers.count == ids.count else { throw CraftError.invalid("An Auto-Align layer no longer exists.") }
     var pixels = 0
     for l in layers {
       guard case .raster(let s) = l.content,l.smartObject == nil,l.smartFilters == nil,l.style == nil,l.vectorMask == nil,l.clipped != true,l.visible,l.parentID == layers[0].parentID else { throw CraftError.unsupported("Auto-Align requires visible pixel layers in one group. Rasterize Smart Objects, effects and vector masks first.") }
-      guard s.width*s.height <= maximumPixels else { throw CraftError.unsupported("Auto-Align supports up to 16 megapixels per layer.") };pixels += s.width*s.height
+      guard s.width <= limits.side, s.height <= limits.side, s.width <= limits.pixelsPerLayer / s.height else {
+        throw CraftError.unsupported("Auto-Align supports up to \(limits.pixelsPerLayer / 1_000_000) megapixels per layer.")
+      }
+      pixels += s.width * s.height
     }
-    guard pixels <= maximumTotalPixels else { throw CraftError.unsupported("Auto-Align exceeds the 32 megapixel combined working budget.") }
+    guard pixels <= limits.totalPixels else { throw CraftError.unsupported("Auto-Align exceeds the \(limits.totalPixels / 1_000_000) megapixel combined working budget.") }
     guard layers.filter({d.isImageLocked($0.id) || d.isPositionLocked($0.id) || d.isTransparencyLocked($0.id)}).count <= 1 else { throw CraftError.unsupported("Only one locked reference layer can be selected for Auto-Align.") }
     return layers
   }
   public static func prepare(_ d: CraftDocument,layerIDs: Set<UUID>,settings: PhotoAlignSettings) throws -> PhotoAlignEdit {
-    try Task.checkCancellation();try d.validate();try settings.validate();let layers = try targets(layerIDs,in:d)
+    try prepare(d, layerIDs: layerIDs, settings: settings, limits: .desktop)
+  }
+
+  package static func prepare(_ d: CraftDocument, layerIDs: Set<UUID>, settings: PhotoAlignSettings,
+    limits: WorkingLimits) throws -> PhotoAlignEdit {
+    try Task.checkCancellation()
+    try d.validate()
+    try settings.validate()
+    let layers = try targets(layerIDs, in: d, limits: limits)
     let locked = layers.firstIndex{d.isImageLocked($0.id) || d.isPositionLocked($0.id) || d.isTransparencyLocked($0.id)}
     let reference: Int
     if let id = settings.referenceLayerID { guard let i = layers.firstIndex(where:{$0.id == id}) else { throw CraftError.invalid("Reference layer must be selected.") };reference = i } else { reference = locked ?? 0 }
@@ -64,19 +96,48 @@ public enum PhotoAlign {
       if i == reference,registration.projection.planar { continue }
       try Task.checkCancellation();let l = layers[i],s = surfaces[i],placement = placements[i]
       let bounds = try placement.bounds(width:Double(s.width),height:Double(s.height))
-      guard bounds.width <= Surface.maxDimension,bounds.height <= Surface.maxDimension,bounds.width <= maximumPixels/bounds.height else { throw CraftError.unsupported("Projected layer exceeds the 16 megapixel output budget.") }
-      total += bounds.width*bounds.height;guard total <= maximumTotalPixels else { throw CraftError.unsupported("Projected layers exceed the 32 megapixel output budget.") }
+      guard bounds.width <= limits.side, bounds.height <= limits.side,
+        bounds.width <= limits.pixelsPerLayer / bounds.height else {
+        throw CraftError.unsupported("Projected layer exceeds the \(limits.pixelsPerLayer / 1_000_000) megapixel output budget.")
+      }
+      total += bounds.width * bounds.height
+      guard total <= limits.totalPixels else { throw CraftError.unsupported("Projected layers exceed the \(limits.totalPixels / 1_000_000) megapixel output budget.") }
       guard let inverse = placement.h.inverse(),let index = result.layers.firstIndex(where:{$0.id == l.id}) else { throw CraftError.invalid("Invalid alignment transform.") }
-      var out = try Surface(width:bounds.width,height:bounds.height,depth:s.depth,colorEncoding:s.colorEncoding)
-      let maskSampler = try l.mask.map{_ in try MaskSampler(layer:l,canvasSize:(d.width,d.height))}
-      var mask = try l.mask.map{old in try Surface(width:bounds.width,height:bounds.height,depth:old.depth)}
-      for y in 0..<bounds.height { try Task.checkCancellation();for x in 0..<bounds.width {
-        let global = PhotoPoint(Double(x+bounds.x)+0.5,Double(y+bounds.y)+0.5),denominator = inverse.m[6]*global.x+inverse.m[7]*global.y+inverse.m[8]
-        guard denominator > 1e-12,let q = placement.unproject(inverse.apply(global)),q.x >= 0,q.y >= 0,q.x < Double(s.width),q.y < Double(s.height) else { continue }
-        let pixel = CropGeometry.sample(s,x:q.x,y:q.y)
-        if s.depth == .f32 { out.setLinearPixel(x:x,y:y,pixel) } else { out.setPixel(x:x,y:y,pixel) }
-        if let maskSampler { let old = l.coordinateTransform.point(q.x,q.y),value = maskSampler.coverage(x:old.x,y:old.y);mask?.setPixel(x:x,y:y,Pixel(value,value,value,1)) }
-      } }
+      func sourcePoint(x: Int, y: Int) -> PhotoPoint? {
+        let global = PhotoPoint(Double(x + bounds.x) + 0.5, Double(y + bounds.y) + 0.5)
+        let denominator = inverse.m[6] * global.x + inverse.m[7] * global.y + inverse.m[8]
+        guard denominator > 1e-12, let q = placement.unproject(inverse.apply(global)),
+          q.x >= 0, q.y >= 0, q.x < Double(s.width), q.y < Double(s.height) else { return nil }
+        return q
+      }
+      var mask = try l.mask.map { old in try Surface(width: bounds.width, height: bounds.height, depth: old.depth) }
+      let out: Surface
+      if limits.preferPaged || bounds.width * bounds.height > Surface.maximumDensePixels, s.depth == .f32, s.colorEncoding == .linearRGB, mask == nil {
+        out = try Surface.linearBands(width: bounds.width, height: bounds.height, paged: true) { top, rows in
+          try Surface.linearPatch(width: bounds.width, height: rows) { x, y in
+            guard let q = sourcePoint(x: x, y: top + y) else { return .clear }
+            return CropGeometry.sample(s, x: q.x, y: q.y)
+          }
+        }
+      } else {
+        let maskSampler = try l.mask.map { _ in try MaskSampler(layer: l, canvasSize: (d.width, d.height)) }
+        var dense = try Surface(width: bounds.width, height: bounds.height, depth: s.depth, colorEncoding: s.colorEncoding)
+        for y in 0..<bounds.height {
+          try Task.checkCancellation()
+          for x in 0..<bounds.width {
+            guard let q = sourcePoint(x: x, y: y) else { continue }
+            let pixel = CropGeometry.sample(s, x: q.x, y: q.y)
+            if s.depth == .f32 { dense.setLinearPixel(x: x, y: y, pixel) }
+            else { dense.setPixel(x: x, y: y, pixel) }
+            if let maskSampler {
+              let old = l.coordinateTransform.point(q.x, q.y)
+              let value = maskSampler.coverage(x: old.x, y: old.y)
+              mask?.setPixel(x: x, y: y, Pixel(value, value, value, 1))
+            }
+          }
+        }
+        out = dense
+      }
       result.layers[index].content = .raster(out);result.layers[index].x = bounds.x;result.layers[index].y = bounds.y;result.layers[index].affine = nil
       if let mask { result.layers[index].mask = mask;var properties = MaskProperties();properties.linked = l.effectiveMaskProperties.linked;result.layers[index].maskProperties = properties }
     }

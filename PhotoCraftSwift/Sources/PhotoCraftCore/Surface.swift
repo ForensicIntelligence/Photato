@@ -578,6 +578,42 @@ public struct Surface: Codable, Equatable, Sendable {
     else { samples = try makeReplacement(nil, transform: transform) }
     return (samples.map(RasterTile.init), invalidatesOpacity)
   }
+  /// Rasterize linear samples in grid-aligned bands when the result should remain paged.
+  package static func linearBands(width: Int, height: Int, paged: Bool,
+    band: (Int, Int) throws -> Surface) throws -> Surface {
+    guard paged else { return try band(0, height) }
+    let builder = try PagedBuilder(width: width, height: height, depth: .f32, colorEncoding: .linearRGB)
+    for top in stride(from: 0, to: height, by: tileSide) {
+      let patch = try band(top, min(tileSide, height - top))
+      try builder.append(patch, atX: 0, atY: top)
+    }
+    return try builder.finish()
+  }
+
+  /// Borrow each tile once when a scanline algorithm needs consecutive samples.
+  package func linearRow(_ y: Int) -> [Pixel] {
+    precondition((0..<height).contains(y))
+    let side = Self.tileSide
+    let firstKey = y / side * columns
+    let offset = y % side * side
+    var row = [Pixel](repeating: linearDefaultPixel, count: width)
+    row.withUnsafeMutableBufferPointer { output in
+      for column in 0..<columns {
+        guard let tile = tiles[firstKey + column] else { continue }
+        let start = column * side
+        let count = min(side, width - start)
+        tile.withUnsafeBufferPointer { input in
+          if colorEncoding == .linearRGB {
+            output.baseAddress!.advanced(by: start).update(from: input.baseAddress!.advanced(by: offset), count: count)
+          } else {
+            for x in 0..<count { output[start + x] = SRGBTransfer.linear(input[offset + x]) }
+          }
+        }
+      }
+    }
+    return row
+  }
+
   /// Build a bounded linear RGB32 patch one tile at a time.
   package static func linearPatch(width: Int, height: Int, sampling: (Int, Int) throws -> Pixel) throws -> Self {
     guard width > 0, height > 0, width <= maximumDensePixels / height else {
