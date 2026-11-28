@@ -97,6 +97,11 @@ final class RawPanoramaWorkflowTests: XCTestCase {
       XCTAssertEqual(limits["maximumPixelsPerSource"], 96_000_000)
       XCTAssertEqual(limits["maximumTotalPixels"], 384_000_000)
       XCTAssertEqual(limits["maximumOutputPixels"], 96_000_000)
+      XCTAssertEqual(limits["maximumFillEdgesPixels"], limits["maximumOutputPixels"])
+      let summary = try XCTUnwrap(raw["panoramaMerge"] as? [String:Any])
+      XCTAssertEqual(summary["maximumPixelsPerPhoto"] as? Int, limits["maximumPixelsPerSource"])
+      XCTAssertEqual(summary["maximumCombinedPixels"] as? Int, limits["maximumTotalPixels"])
+      XCTAssertEqual(summary["maximumFillPixels"] as? Int, limits["maximumFillEdgesPixels"])
       XCTAssertEqual(limits["maximumDownloadBytes"], SmartObject.maximumCameraRawSourceBytes)
       let share = try XCTUnwrap(service.shares.last)
       let route = "/v1/documents/\(share.id)/commands"

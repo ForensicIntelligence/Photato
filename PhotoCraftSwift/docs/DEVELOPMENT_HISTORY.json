@@ -10989,6 +10989,13 @@
       "link": "DEVLOG.md#dev-step-819",
       "section_sha256": "175328642edb07926662509cff4b51c56c0e2ae59b0643c75f4cd814950e2d8a",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-820",
+      "title": "2026-11-28 \u2014 Step 820 \u2014 Fill edges on full-resolution Camera Raw panoramas",
+      "link": "DEVLOG.md#dev-step-820",
+      "section_sha256": "21f901490bcfe430543f01b77213c10d2df00d69ac81fc2c884152ad6f97b0a7",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13824,8 +13831,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "d67a8b49a2eec928e28a504b8023f32f183e00c418a89b91b15f52f9226ab344",
-      "bytes": 192571,
+      "sha256": "c320325e60b2517b249256f50ff713c766c630c0b425672843dbdb08c67f0eb3",
+      "bytes": 192700,
       "rolling_current_snapshot": false
     },
     {
@@ -15546,8 +15553,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "5ddef5f42b84719d6da1b56371d3dc0047b147012f7c1d57ced3e853c3a67d1b",
-      "bytes": 772390,
+      "sha256": "99fb36b49424cc18542f5974279c3ce87bf6ea87a4e32be25a8aac52b9627278",
+      "bytes": 772885,
       "rolling_current_snapshot": false
     },
     {
@@ -16116,8 +16123,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "25bf6f8ba05b12d5947068ff4c4c47f1c76f7af9d0793705d393ffaf70909eb6",
-      "bytes": 407649,
+      "sha256": "ede98053987ffc09e05e378a6f05b92e77e12d7cd188632a053e31b9c1bf1208",
+      "bytes": 407769,
       "rolling_current_snapshot": false
     },
     {
@@ -16236,8 +16243,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "9af629bdb02876f20496f6e05d3a0e582d62696ede6abecf71dc52ca53573808",
-      "bytes": 235893,
+      "sha256": "3ea8b6871a4609ecebfccda0fff7447b1845532be109ed8f4bc3c87f8d7ed025",
+      "bytes": 236098,
       "rolling_current_snapshot": false
     },
     {
@@ -16314,14 +16321,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "d32c60ef07a2f6f17044f485a2c0bd413452fa5351e57f6b101973483783941d",
-      "bytes": 1122779,
+      "sha256": "9da6bb7d6ce4d860b3b5ab72d6cc2e7c41cacbf5cbf8b1507af632b705916a21",
+      "bytes": 1124564,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "a7b9ace35c0bfbc3ca8f3c7638134f3be5a9bf393de5312b5126f1d19409d38b",
-      "bytes": 5281888,
+      "sha256": "779f90a9c9580d8bcbea6002ad6b419f07e8389e351e3a7ba2c8f73279f046b8",
+      "bytes": 5284235,
       "rolling_current_snapshot": false
     },
     {
@@ -24359,6 +24366,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_820.json",
+      "sha256": "416167a6199fae951d869b76f3ea7b4cab152fc63e8b95127918727b8ec9b217",
+      "bytes": 22857,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_820.md",
+      "sha256": "705e0cbafb5144fe07427a83137e9f9fbd386efb94302f3675bd6e5261f00295",
+      "bytes": 2023,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24918,8 +24937,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "dca08ad5ec78a3676dd1157354e1857dfcb792dd20b9aa72cc9fd282a88c38ca",
-      "bytes": 530148,
+      "sha256": "f3ce135eae97d65b713897ae17c4bd22c84a7b01de22ae417403f618f460e211",
+      "bytes": 530729,
       "rolling_current_snapshot": false
     },
     {
@@ -27432,8 +27451,8 @@
     }
   ],
   "counts": {
-    "milestones": 819,
-    "evidence_files": 2270,
+    "milestones": 820,
+    "evidence_files": 2272,
     "logs": 0,
     "missing_explicit_references": 704
   }

@@ -121,6 +121,41 @@ final class RawLinearDNGTests: XCTestCase {
     XCTAssertEqual(decoded.linearPixel(x: 13, y: 0).a, 1)
   }
 
+  func testLargePanoramaFillEdgesLiftsFineTextureAndKeepsCoveredSamples() throws {
+    let width = 2052, height = 2048
+    let dark = Pixel(0.125, 0.25, 1.25, 1)
+    let light = Pixel(0.875, 0.5, 1.5, 1)
+    let partial = Pixel(0.25, 0.375, 1, 0.5)
+    let source = try Surface.linearBands(width: width, height: height, paged: true) { top, rows in
+      try Surface.linearPatch(width: width, height: rows) { x, localY in
+        let y = top + localY
+        if x == 46 && y < 70 { return partial }
+        if x < 46 && y < 70 { return .clear }
+        return x.isMultiple(of: 2) ? dark : light
+      }
+    }
+    let settings = RawPanoramaSettings()
+    let registered = RawPanorama.Registration(name: "Fine donor pattern", projection: settings.projection,
+      pixels: source, matchedPoints: 20, rmsPixels: 0)
+    var options = settings
+    options.fillEdges = true
+    options.autoSettings = false
+    let filled = try RawPanorama.finish(registered, options: options, makePreview: false)
+    guard case .raster(let pixels) = try XCTUnwrap(filled.document.layers.first).content else {
+      return XCTFail("Missing filled panorama pixels")
+    }
+    XCTAssertNil(filled.crop)
+    XCTAssertEqual([pixels.width, pixels.height], [width, height])
+    XCTAssertGreaterThan(pixels.mappedBytes, 0)
+    XCTAssertTrue(try pixels.isOpaque())
+    XCTAssertEqual(pixels.linearPixel(x: 20, y: 20), dark)
+    XCTAssertEqual(pixels.linearPixel(x: 21, y: 20), light)
+    XCTAssertEqual(pixels.linearPixel(x: 46, y: 20), Pixel(0.1875, 0.3125, 1.125, 1))
+    XCTAssertEqual(pixels.linearPixel(x: 47, y: 20), light)
+    XCTAssertEqual(pixels.linearPixel(x: 1000, y: 1000), dark)
+    XCTAssertEqual(source.linearPixel(x: 20, y: 20), .clear)
+  }
+
   func testAutoCropIsEditableAndRetainsTheEntireSensorAndMask() throws {
     let (folder, url) = try destination()
     defer { try? FileManager.default.removeItem(at: folder) }

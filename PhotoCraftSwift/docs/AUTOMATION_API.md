@@ -1,3 +1,9 @@
+### Full-resolution Camera Raw Fill Edges (checkpoint 820)
+
+The Photato API commands `raw.mergePanorama` and `raw.mergeHDRPanorama` use the shared fill path. Fill Edges retains the whole canvas when the request also sets Auto Crop. The advertised limit is 96 MP.
+
+[Qualification](SOURCE_PUBLICATION_820.md).
+
 ### Full-resolution Camera Raw panorama merge (checkpoint 819)
 
 The existing `raw.mergePanorama` and `raw.mergeHDRPanorama` commands use the same paged registration pipeline. The authenticated download preserves document history and includes the exact Content-Length.
@@ -1674,7 +1680,7 @@ Send `raw.mergePanorama` to `POST /v1/documents/{id}/commands` with the current 
 
 `projection` accepts `spherical` (default), `cylindrical`, and `perspective`. `boundaryWarp` accepts 0–100 (default 0). `fillEdges` defaults to `false`; `autoCrop` and `autoSettings` default to `true`. Auto Crop records editable XMP settings and retains the full sensor and transparency data. Camera Raw's Reset Crop and `raw.develop` with `settings.crop: null` restore access to the uncropped scene. To set an axis-aligned crop through `raw.develop`, supply `settings.crop` with normalized `left`, `top`, `right`, and `bottom` coordinates.
 
-Working limits are 96 MP per source, 384 MP combined, 96 MP for the panorama and a 2 GiB download. Large projection and stitch rasters use scratch storage. The API streams the completed DNG with Content-Length. Fill Edges supports output up to 4 MP. The published Adobe v2 API has no dedicated RAW panorama endpoint.
+Working limits are 96 MP per source, 384 MP combined, 96 MP for the panorama and a 2 GiB download. Large projection and stitch rasters use scratch storage. The API streams the completed DNG with Content-Length. Fill Edges supports the same 96 MP output limit. Large fills estimate a bounded patch field and sample full-resolution donor pixels. When both Fill Edges and Auto Crop are requested, Fill Edges retains the full canvas. The published Adobe v2 API has no dedicated RAW panorama endpoint.
 
 ## Camera Raw HDR panorama merge
 
@@ -1682,7 +1688,7 @@ Send `raw.mergeHDRPanorama` to `POST /v1/documents/{id}/commands` with the curre
 
 `bracketSize` optionally specifies 2–16 exposures per position. Omit it to detect the smallest complete repeated pattern. Projection, Boundary Warp, Fill Edges, Auto Crop, and Auto Settings use the same parameters and defaults as `raw.mergePanorama`. The result is an `image/x-adobe-dng` download. The original layers and document history remain unchanged. Enable document transfers before requesting the download.
 
-HDR panoramas support up to 16 camera positions, up to 16 exposures per bracket, 96 MP per exposure and 384 MP per bracket. The fused positions have a separate 384 MP combined working limit. The panorama supports up to 96 MP. Fill Edges is available up to 4 MP. Adobe's published Firefly Photoshop API has no dedicated HDR panorama endpoint.
+HDR panoramas support up to 16 camera positions, up to 16 exposures per bracket, 96 MP per exposure and 384 MP per bracket. The fused positions have a separate 384 MP combined working limit. The panorama supports up to 96 MP. Fill Edges shares the 96 MP output limit. Adobe's published Firefly Photoshop API has no dedicated HDR panorama endpoint.
 
 ## Camera Raw Filter — step172
 

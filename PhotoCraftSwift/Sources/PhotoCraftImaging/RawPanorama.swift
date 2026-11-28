@@ -196,7 +196,7 @@ package enum RawPanorama {
     }
     if options.fillEdges { pixels = try fillEdges(pixels) }
     let rawDocument = try rasterDocument(pixels, name: registered.name)
-    let bounds = try options.autoCrop ? coverageBounds(pixels) : nil
+    let bounds = try options.autoCrop && !options.fillEdges ? coverageBounds(pixels) : nil
     let crop: RawCropBounds?
     let cropped: Surface
     if let bounds, bounds.width < pixels.width || bounds.height < pixels.height {
@@ -311,8 +311,8 @@ package enum RawPanorama {
 
   private static func fillEdges(_ source: Surface) throws -> Surface {
     let width = source.width, height = source.height
-    guard width <= PhotoBlend.maximumPixels / height else {
-      throw CraftError.unsupported("Fill Edges supports panoramas up to 4 megapixels. Auto Crop and Boundary Warp support larger results.")
+    if width > PhotoBlend.maximumPixels / height {
+      return try RawPanoramaEdgeFill.fill(source)
     }
     var rgba = [Float](), holes = [Bool](), samples = [Bool]()
     rgba.reserveCapacity(width * height * 4)

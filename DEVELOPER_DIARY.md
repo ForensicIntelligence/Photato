@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **819** · The 10 most recent entries, newest first.
+Source build **820** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 820 — Fill edges on full-resolution Camera Raw panoramas
+
+Camera Raw Fill Edges works on panoramas above the previous 4 MP limit, including results from HDR Panorama. Large scenes estimate donor patches from a bounded overview and sample the original detail into the gaps. The merge preview clears and disables Auto Crop while Fill Edges is on.
+
+The Camera Raw filmstrip merged two 4,320 × 4,224 exposures. It filled 1,406,976 transparent or partly transparent pixels and preserved 26,910,720 covered pixels at exact Float32 RGB values. The 170,001,420-byte desktop DNG matched the authenticated download byte for byte. Both originals kept their hashes. Six small Fill Edges DNGs matched the previous build.
+
+Adobe Camera Raw 18.1.1 cleared Auto Crop when Fill Edges was enabled and left it unchecked when the control became available again. Adobe merged the same sources at 6,142 × 4,606 and reopened the Photato DNG at 6,144 × 4,609. [Adobe Camera Raw panorama workflow](https://helpx.adobe.com/camera-raw/desktop/hdr-and-advanced-output/create-panoramas.html).
+
+Xcode built the app. All 70 focused checks passed, plus the large desktop and HTTP workflow. Both optimized architectures passed all 453 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The full-size comparison covers one pair of owned sources. Adobe geometry, patch placement, color and compressed DNG bytes still differ. The advertised ceiling and physical Intel and macOS 14 operation need further qualification.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-820) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_820.md).
 
 ## 2026-11-28 — Step 819 — Stitch full-resolution Camera Raw panoramas
 
@@ -129,17 +143,3 @@ Xcode built the app and all twenty-two focused application tests passed. Both op
 Open Image and Open as Object have their existing selected-photo behavior. Adobe’s persistence rules for deselected photos when opening images, and the dedicated Hide Photo controls, still need separate qualification.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-811) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_811.md).
-
-## 2026-11-28 — Step 810 — Refresh Camera Raw thumbnails from developed photos
-
-The filmstrip and Grid can show a thumbnail from the developed preview. Selecting a DNG with no usable embedded thumbnail fills both views after preview rendering. Thumbnails for the active draft update after an adjustment.
-
-A synthetic DNG whose red label was written in Adobe Camera Raw previously displayed a placeholder. The native Photato window now showed the image in both the filmstrip and Grid. Cancel left the original bytes intact.
-
-Camera Raw’s thumbnail browsing workflow is documented by Adobe. [Adobe Camera Raw Grid](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
-
-Xcode built the app and all twenty-one focused application tests passed. The new case checks bounded preview size, pixel change after an exposure edit, fallback after Undo and an exact source file. Both optimized architectures passed all 398 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
-
-The current photo’s render refreshes its thumbnail. Other photos use their embedded thumbnail until viewed or edited as the active photo. Automatic refresh of every non-active photo in a batch remains open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-810) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_810.md).

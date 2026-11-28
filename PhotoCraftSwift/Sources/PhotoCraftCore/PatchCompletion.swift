@@ -26,7 +26,29 @@ extension Inpainting {
     return try completion(g, p)
   }
   static func completion(_ g: Grid, _ p: Parameters = Parameters()) throws -> [Float]? {
-    guard let box = bbox(g.w, g.h, g.hole) else { return g.image }
+    try matchCompletion(g, p)?.image
+  }
+
+  /// Recover the patch coordinates from the same solver used for ordinary fills.
+  /// Empty entries represent cells that have no contributing patch.
+  package static func patchDonors(width: Int, height: Int, image: [Float], hole: [Bool]) throws -> [SIMD2<Int32>]? {
+    let grid = Grid(w: width, h: height, ch: 3, image: image, hole: hole)
+    try validate(grid)
+    guard let result = try matchCompletion(grid, Parameters()), !result.field.isEmpty else { return nil }
+    return result.field.indices.map { i in
+      let point = result.field[i]
+      return result.cost[i].isFinite ? SIMD2(Int32(point.x), Int32(point.y)) : SIMD2(repeating: -1)
+    }
+  }
+
+  private struct Completion {
+    let image: [Float]
+    let field: [Point]
+    let cost: [Float]
+  }
+
+  private static func matchCompletion(_ g: Grid, _ p: Parameters) throws -> Completion? {
+    guard let box = bbox(g.w, g.h, g.hole) else { return Completion(image: g.image, field: [], cost: []) }
     let r = p.patchRadius
     let size = 2 * r + 1
     var levels = [g]
@@ -40,6 +62,7 @@ extension Inpainting {
       extents.append(extent)
     }
     var field: [Point] = []
+    var finalCost: [Float] = []
     var previous: Grid?
     for li in levels.indices.reversed() {
       try Task.checkCancellation()
@@ -109,10 +132,11 @@ extension Inpainting {
         }
         try solver.vote(field, cost)
       }
+      if li == 0 { finalCost = cost }
       previous = solver.grid
     }
     try Task.checkCancellation()
-    return previous?.image
+    return previous.map { Completion(image: $0.image, field: field, cost: finalCost) }
   }
 
   struct PatchSolver {

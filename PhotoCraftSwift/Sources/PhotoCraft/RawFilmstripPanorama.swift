@@ -36,7 +36,9 @@ struct RawFilmstripPanoramaView: View {
   init(workspace: RawFilmstripWorkspace, request: RawFilmstripPanoramaRequest) {
     self.workspace = workspace
     self.request = request
-    _settings = State(initialValue: request.settings)
+    var settings = request.settings
+    if settings.fillEdges { settings.autoCrop = false }
+    _settings = State(initialValue: settings)
   }
 
   var body: some View {
@@ -71,8 +73,17 @@ struct RawFilmstripPanoramaView: View {
             Text("100").accessibilityHidden(true)
           }
           .accessibilityValue(settings.boundaryWarp.formatted(.number.precision(.fractionLength(0))))
-          Toggle("Fill Edges", isOn: $settings.fillEdges)
-          Toggle("Auto Crop", isOn: $settings.autoCrop).keyboardShortcut("c", modifiers: [])
+          Toggle("Fill Edges", isOn: Binding(
+            get: { settings.fillEdges },
+            set: { enabled in
+              var updated = settings
+              updated.fillEdges = enabled
+              if enabled { updated.autoCrop = false }
+              settings = updated
+            }))
+          Toggle("Auto Crop", isOn: $settings.autoCrop)
+            .keyboardShortcut("c", modifiers: [])
+            .disabled(settings.fillEdges)
           Toggle("Apply Auto Settings", isOn: $settings.autoSettings)
           if let bracketSize, let sources {
             Text("\(sources.count) brackets · \(bracketSize) exposures each")

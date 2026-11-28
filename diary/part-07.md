@@ -251,11 +251,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:819 -->
+<!-- current-status-step:820 -->
 
-Camera Raw panorama registration keeps its reduced feature analysis while projection, stitching and Boundary Warp process the original samples in disk-backed bands. Panoramas preserve full-canvas transparency and editable Auto Crop in DNG.
+Camera Raw Fill Edges works on panoramas above the previous 4 MP limit, including results from HDR Panorama. Large scenes estimate donor patches from a bounded overview and sample the original detail into the gaps. The merge preview clears and disables Auto Crop while Fill Edges is on.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-819) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_819.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-820) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_820.md).
 
 <!-- current-status:end -->
 
@@ -1281,5 +1281,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 817 | [Merge bracketed RAW photos into HDR panoramas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-817) |
 | 2026-11-28 | 818 | [Merge high-resolution Camera Raw HDR brackets](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-818) |
 | 2026-11-28 | 819 | [Stitch full-resolution Camera Raw panoramas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-819) |
+| 2026-11-28 | 820 | [Fill edges on full-resolution Camera Raw panoramas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-820) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
