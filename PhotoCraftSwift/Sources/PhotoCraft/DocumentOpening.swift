@@ -11,11 +11,12 @@ struct PreparedLocalDocument: Sendable {
   var colorPolicyChanged = false
   var rawSettingsSource: RawSettingsSource?
   var rawDNGStorage = RawDNGSettingsStorage.embedXMP
+  var rawDefaults = RawDefaults()
   static func read(_ url: URL, format selection: DocumentOpenFormat) throws -> Self {
     try read(url, format: selection, dngStorage: .embedXMP)
   }
   static func read(_ url: URL, format selection: DocumentOpenFormat,
-    dngStorage: RawDNGSettingsStorage) throws -> Self {
+    dngStorage: RawDNGSettingsStorage, rawDefaults: RawDefaults = .init()) throws -> Self {
     if (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true {
       try Task.checkCancellation()
       try selection.validate(PcraftImport.recognizes(url) ? .pcraft : nil)
@@ -30,12 +31,14 @@ struct PreparedLocalDocument: Sendable {
       let date = try url.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate
       let actual = DocumentOpenFormat.detect(url)
       try selection.validate(actual)
-      let raw = try actual == .raw ? RawSourceIO.prepareLocalSettings(url, dngStorage: dngStorage) : nil
+      let raw = try actual == .raw
+        ? RawSourceIO.prepareLocalSettings(url, dngStorage: dngStorage, rawDefaults: rawDefaults) : nil
       var model = try raw?.document ?? DocumentIO.read(url)
       if [.psd, .psb].contains(actual), model.sourceICC == nil { model.profileIsUntagged = true }
       let fingerprint = try reader.finish()
       return .init(model: model, format: actual?.persistenceFormat,
-        fingerprint: fingerprint, modificationDate: date, rawSettingsSource: raw?.source, rawDNGStorage: dngStorage)
+        fingerprint: fingerprint, modificationDate: date, rawSettingsSource: raw?.source,
+        rawDNGStorage: dngStorage, rawDefaults: actual == .raw ? rawDefaults : .init())
     }
   }
   @MainActor func makeDocument(url: URL, actions: ActionLibrary? = nil) -> CraftNSDocument {
@@ -43,6 +46,7 @@ struct PreparedLocalDocument: Sendable {
     doc.scriptEventOrigin = .openDocument
     doc.openRawDevelopmentOnDisplay = format == nil && model.layers.first?.smartObject?.rawDevelopment != nil
     doc.rawOpenDNGStorage = rawDNGStorage
+    doc.rawOpenDefaults = rawDefaults
     if let rawSettingsSource, let layer = model.layers.first, let bytes = layer.smartObject?.data {
       doc.localRawSource = (layer.id, rawSettingsSource, bytes)
     }
@@ -126,6 +130,7 @@ struct PreparedLocalDocument: Sendable {
     if showProgress { progress = DocumentOpeningProgress(opening: self); progress?.showWindow(nil) }
     let colorSettings = controller!.colorSettings.value
     let dngStorage = controller!.cameraRawPreferences.dngStorage
+    let rawDefaults = controller!.cameraRawPreferences.rawDefaults
     task = Task { [weak self] in
       guard let self, let controller else { return }
       defer {
@@ -169,7 +174,7 @@ struct PreparedLocalDocument: Sendable {
           let reader = self.reader
           let job = Task.detached(priority: .userInitiated) {
             if let reader { return try reader(url, format) }
-            return try PreparedLocalDocument.read(url, format: format, dngStorage: dngStorage)
+            return try PreparedLocalDocument.read(url, format: format, dngStorage: dngStorage, rawDefaults: rawDefaults)
           }
           worker = job
           var prepared = try await withTaskCancellationHandler(

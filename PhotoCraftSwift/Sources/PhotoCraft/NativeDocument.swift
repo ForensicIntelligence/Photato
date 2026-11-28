@@ -86,6 +86,7 @@ import SwiftUI
   var completedRawOpenMode: RawOpenMode?
   var completedRawWorkflow = RawWorkflowOutput()
   var rawOpenDNGStorage = RawDNGSettingsStorage.embedXMP
+  var rawOpenDefaults = RawDefaults()
   var localRawSource: (layerID: UUID, original: RawSettingsSource, retainedBytes: Data)?
   var rawSettingsSaveTask: Task<RawSettingsSource, Error>?
 
@@ -758,7 +759,8 @@ import SwiftUI
   }
   override func makeDocument(withContentsOf url: URL, ofType typeName: String) throws -> NSDocument
   {
-    try PreparedLocalDocument.read(url, format: .automatic).makeDocument(url: url)
+    try PreparedLocalDocument.read(url, format: .automatic, dngStorage: cameraRawPreferences.dngStorage,
+      rawDefaults: cameraRawPreferences.rawDefaults).makeDocument(url: url)
   }
   override func document(for url: URL) -> NSDocument? {
     if let existing = super.document(for: url) { return existing }

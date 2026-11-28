@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 798.** Set Camera Raw defaults by camera model and body. [Qualification](docs/SOURCE_PUBLICATION_798.md).
+
 **Source checkpoint 797.** Save a developed image directly from Camera Raw. [Qualification](docs/SOURCE_PUBLICATION_797.md).
 
 **Source checkpoint 796.** Speed up exact Camera Raw profile conversion. [Qualification](docs/SOURCE_PUBLICATION_796.md).

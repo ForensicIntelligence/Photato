@@ -12,6 +12,7 @@ extension AutomationService {
       "dngStorage": preferences.dngStorage.rawValue,
       "openAsSmartObject": preferences.openAsSmartObject,
       "workflow": preferences.workflowOutput.apiState,
+      "rawDefaults": preferences.rawDefaults.apiState,
       "canUpdate": photoshopPreferenceChangesEnabled,
     ]
   }
@@ -28,9 +29,9 @@ extension AutomationService {
     guard request.headers["content-type"]?.lowercased().split(separator: ";").first == "application/json" else {
       throw AutomationFailure(status: 415, message: "Content-Type must be application/json.")
     }
-    guard request.body.count <= 4096,
+    guard request.body.count <= RawDefaults.maximumEncodedBytes + 4096,
       let fields = try? JSONDecoder().decode([String: AutomationValue].self, from: request.body),
-      Set(fields.keys).isSubset(of: ["revision", "dngStorage", "openAsSmartObject", "workflow"]),
+      Set(fields.keys).isSubset(of: ["revision", "dngStorage", "openAsSmartObject", "workflow", "rawDefaults"]),
       fields.count >= 2,
       case .string(let revisionText) = fields["revision"], let revision = UUID(uuidString: revisionText) else {
       throw AutomationFailure(status: 400, message: "Provide a revision UUID and at least one Camera Raw preference.")
@@ -50,10 +51,12 @@ extension AutomationService {
       openAsSmartObject = choice
     }
     let workflow = try fields["workflow"].map { try RawWorkflowOutput.apiValue($0.jsonValue) }
+    let rawDefaults = try fields["rawDefaults"].map { try RawDefaults.apiValue($0.jsonValue) }
     let preferences = controller.cameraRawPreferences
     guard preferences.revision == revision else {
       throw AutomationFailure(status: 409, message: "Camera Raw preferences changed. Read their latest revision.")
     }
+    if let rawDefaults { try preferences.setRawDefaults(rawDefaults) }
     if let storage { preferences.dngStorage = storage }
     if let openAsSmartObject { preferences.openAsSmartObject = openAsSmartObject }
     if let workflow { preferences.workflowOutput = workflow }
@@ -66,6 +69,7 @@ extension AutomationService {
       "dngStorage": ["type": "string", "enum": RawDNGSettingsStorage.allCases.map(\.rawValue)],
       "openAsSmartObject": BrushAPI.flag,
       "workflow": RawWorkflowOutput.apiSchema,
+      "rawDefaults": RawDefaults.apiSchema,
     ]
     var stateFields = fields
     stateFields["canUpdate"] = BrushAPI.flag
@@ -73,12 +77,13 @@ extension AutomationService {
       "path": cameraRawPreferencesPath,
       "readMethod": "GET",
       "updateMethod": "POST",
-      "default": ["dngStorage": RawDNGSettingsStorage.embedXMP.rawValue, "openAsSmartObject": false, "workflow": [String: Any]()],
+      "default": ["dngStorage": RawDNGSettingsStorage.embedXMP.rawValue, "openAsSmartObject": false, "workflow": [String: Any](),
+        "rawDefaults": RawDefaults().apiState],
       "stateSchema": BrushAPI.object(stateFields, required: stateFields.keys.sorted()),
       "updateSchema": BrushAPI.object(fields, required: ["revision"]).merging(["minProperties": 2]) { _, new in new },
       "nativeMenu": "Photato > Settings… > Camera Raw…",
       "permission": "Allow Photoshop file preference changes in the native API window.",
-      "scope": "Sets desktop opening mode, output options and storage policy. The selected storage policy stays attached to each open source. Uploads default to object.",
+      "scope": "Sets desktop opening mode, output options, storage policy and defaults for unedited RAW sources. The policy stays attached to each open source. Uploads can opt in to the saved defaults.",
     ]
   }
 }
@@ -146,5 +151,55 @@ extension RawWorkflowOutput {
       throw AutomationFailure(status: 400, message: "X-Photato-Raw-Workflow must contain a base64-encoded JSON object.")
     }
     return try apiValue(raw)
+  }
+}
+
+
+extension RawDefaults {
+  static let header = "x-photato-raw-defaults"
+
+  var apiState: [String: Any] {
+    func state(_ choice: Choice) -> [String: Any] {
+      var result: [String: Any] = ["mode": choice.mode.rawValue]
+      if let name = choice.name { result["name"] = name }
+      if let data = choice.xmp { result["xmp"] = data.base64EncodedString() }
+      return result
+    }
+    let entries: [[String: Any]] = rules.map { rule in
+      var camera = ["make": rule.camera.make, "model": rule.camera.model]
+      if let serial = rule.camera.serial { camera["serial"] = serial }
+      return ["camera": camera, "choice": state(rule.choice)]
+    }
+    return ["master": state(master), "useOverrides": useOverrides, "rules": entries]
+  }
+
+  static var apiSchema: [String: Any] {
+    let label: [String: Any] = ["type": "string", "minLength": 1, "maxLength": 256]
+    let choice = BrushAPI.object(["mode": ["type": "string", "enum": Choice.Mode.allCases.map(\.rawValue)],
+      "name": label, "xmp": ["type": "string", "contentEncoding": "base64"]], required: ["mode"])
+    let camera = BrushAPI.object(["make": label, "model": label, "serial": label], required: ["make", "model"])
+    let rule = BrushAPI.object(["camera": camera, "choice": choice], required: ["camera", "choice"])
+    return BrushAPI.object(["master": choice, "useOverrides": BrushAPI.flag,
+      "rules": ["type": "array", "items": rule, "maxItems": maximumRules]],
+      required: ["master", "useOverrides", "rules"])
+  }
+
+  static func apiValue(_ object: Any) throws -> Self {
+    let policy: Self
+    do {
+      let bytes = try JSONSerialization.data(withJSONObject: object, options: [.fragmentsAllowed, .withoutEscapingSlashes])
+      guard bytes.count <= maximumEncodedBytes else {
+        throw CraftError.invalid("Camera Raw defaults exceed their storage limit.")
+      }
+      policy = try JSONDecoder().decode(Self.self, from: bytes)
+    } catch {
+      throw AutomationFailure(status: 400, message: "Provide Camera Raw defaults with master, useOverrides and rules.")
+    }
+    do {
+      try policy.validate()
+    } catch {
+      throw AutomationFailure(status: 400, message: error.localizedDescription)
+    }
+    return policy
   }
 }

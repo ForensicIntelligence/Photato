@@ -2,7 +2,23 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **797** · The 10 most recent entries, newest first.
+Source build **798** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 798 — Set Camera Raw defaults by camera model and body
+
+Camera Raw Settings can apply Photato Default, Camera Settings or an XMP preset to new RAWs. Rules can match a model or a specific body serial number. Open and Place use the saved choice. Existing sidecar and embedded adjustments take priority.
+
+The signed native app added a camera model from the synthetic Bayer DNG, loaded an XMP preset and opened the RAW with Exposure +1.25. The Sensor panel showed the camera decoder’s 0.9 shadow boost. Cancelling kept the original DNG bytes and created no companion XMP.
+
+Adobe Camera Raw’s documented Raw Defaults include master, model and body overrides, plus presets. Photato exposes the native decoder’s supported sensor defaults under Camera Settings. [Adobe Raw Defaults](https://helpx.adobe.com/camera-raw/desktop/dng-and-file-formats/acr-raw-defaults.html).
+
+Xcode built the app. All three new focused tests and six related tests passed, covering RAW Open and Place raster equivalence, stored settings, revision conflicts and authenticated upload precedence. Both optimized architectures passed all 371 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+Camera Settings still differs from the Adobe reference at 18,044,832 of 18,048,000 Nikon RGB16 samples. Both TIFFs use the same dimensions, RGB16 sRGB profile and 300 ppi and were exported without output sharpening.
+
+ISO-adaptive presets, Adobe camera profiles and byte-identical Adobe RAW output remain open. The built-in batch import workspaces still use their existing import policy.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-798) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_798.md).
 
 ## 2026-11-28 — Step 797 — Save a developed image directly from Camera Raw
 
@@ -115,15 +131,3 @@ Xcode built the app. Four focused imaging tests and one authenticated HTTP test 
 Camera Raw database and storage preferences, camera-specific defaults, RAW variants unsupported by Apple’s decoder, physical Intel testing and byte-for-byte Adobe render equivalence remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-789) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_789.md).
-
-## 2026-11-27 — Step 788 — Save Camera Raw settings in the original DNG
-
-Camera Raw’s Done button now saves changes into a locally opened DNG and closes the editor. If the image opened with an XMP sidecar, Photato embeds its metadata and backs up the sidecar before removing it when required by the sandbox. The source sensor bytes stay intact.
-
-Photato and Adobe Camera Raw 18.1.1 saved Exposure +1.75 in the DNG sidecar test and preserved all 393,216 sensor bytes. Adobe reopened the updated Photato DNG. Photato also retained the separate sensor exposure through its own embedded settings.
-
-Xcode built the app. Three focused imaging tests and one authenticated HTTP test passed. Both optimized architectures passed all 340 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-This covers the tested classic DNG settings. Other RAW sidecar writing, camera-specific defaults and settings databases, DNG preview regeneration, physical Intel testing, and pixel-level Adobe Camera Raw equivalence remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-788) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_788.md).

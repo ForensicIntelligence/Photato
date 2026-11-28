@@ -1,3 +1,5 @@
+**Camera Raw defaults.** Continue with baseline color rendering and output sharpening against the Adobe TIFF references. The Camera Settings comparison leaves the RAW color difference open. ISO-adaptive presets remain open. [Development record](DEVLOG.md#dev-step-798) · [Qualification](SOURCE_PUBLICATION_798.md).
+
 **Camera Raw RAW workflow.** Measure neutral-color input profiles and output sharpening against the independent Adobe exports. [Development record](DEVLOG.md#dev-step-797) · [Qualification](SOURCE_PUBLICATION_797.md).
 
 **Camera Raw RAW workflow.** Finish Save Image and use the matching Adobe references to narrow camera rendering and output sharpening differences. [Development record](DEVLOG.md#dev-step-796) · [Qualification](SOURCE_PUBLICATION_796.md).

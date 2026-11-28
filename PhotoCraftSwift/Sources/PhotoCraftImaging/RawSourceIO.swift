@@ -361,12 +361,18 @@ public enum RawSourceIO {
   public static func prepareLocalSettings(_ url: URL, depth: PixelDepth = .u16,
     dngStorage: RawDNGSettingsStorage = .embedXMP) throws
     -> (document: CraftDocument, source: RawSettingsSource?) {
+    try prepareLocalSettings(url, depth: depth, dngStorage: dngStorage, rawDefaults: .init())
+  }
+
+  package static func prepareLocalSettings(_ url: URL, depth: PixelDepth = .u16,
+    dngStorage: RawDNGSettingsStorage = .embedXMP, rawDefaults: RawDefaults) throws
+    -> (document: CraftDocument, source: RawSettingsSource?) {
     let input = try PSDFileSource(url, maximumBytes: SmartObject.maximumSourceBytes)
     let data = try input.bytes(at: 0, count: input.count)
     let ignoresSidecar = dngStorage == .ignoreSidecarXMP && type(data) == "com.adobe.raw-image"
     let related = try ignoresSidecar ? nil : relatedXMP(for: url)
     let settings = try related?.settings.map { try compatibleStoredSettings($0, in: data) }
-    let document = try open(data, fileName: url.lastPathComponent, settings: settings, depth: depth)
+    let document = try open(data, fileName: url.lastPathComponent, settings: settings, depth: depth, rawDefaults: rawDefaults)
     let safeSource = (try? url.resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink) == false
     let mediaType = document.layers.first?.smartObject?.mediaType
     let source: RawSettingsSource?
@@ -384,6 +390,11 @@ public enum RawSourceIO {
   }
   public static func open(_ data: Data, fileName: String, settings requested: RawDevelopment? = nil,
     depth: PixelDepth = .u16) throws -> CraftDocument {
+    try open(data, fileName: fileName, settings: requested, depth: depth, rawDefaults: .init())
+  }
+
+  package static func open(_ data: Data, fileName: String, settings requested: RawDevelopment? = nil,
+    depth: PixelDepth = .u16, rawDefaults: RawDefaults) throws -> CraftDocument {
     try Task.checkCancellation()
     guard !data.isEmpty, data.count <= SmartObject.maximumSourceBytes else {
       throw CraftError.invalid("Camera RAW source must contain 1 byte to 64 MiB.")
@@ -395,7 +406,10 @@ public enum RawSourceIO {
     if let source, let properties { metadata = try RasterMetadata.capture(source, properties: properties) }
     else { metadata = nil }
     let embedded = (metadata?[RasterMetadata.xmpKey]).flatMap { try? CameraRawXMP.readStored($0) }
-    let initial = try requested ?? compatibleStoredSettings(embedded ?? .init(), in: data)
+    let initial: RawDevelopment
+    if let requested { initial = requested }
+    else if let embedded { initial = try compatibleStoredSettings(embedded, in: data) }
+    else { initial = try defaultDevelopment(rawDefaults.choice(for: cameraIdentity(properties)), from: data) }
     let (workingPixels, settings, info) = try render(data, settings: initial, depth: depth == .u8 ? .u16 : depth)
     let pixels = try workingPixels.converted(to: depth)
     var name = URL(fileURLWithPath:fileName).lastPathComponent

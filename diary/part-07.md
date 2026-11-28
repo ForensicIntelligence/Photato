@@ -275,11 +275,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:797 -->
+<!-- current-status-step:798 -->
 
-Command–S opens Save Image from the local Camera Raw source workspace. The same native format controls can save TIFF, JPEG, PNG or PSD with the current adjustments and output settings. The source stays open for further adjustment.
+Camera Raw Settings can apply Photato Default, Camera Settings or an XMP preset to new RAWs. Rules can match a model or a specific body serial number. Open and Place use the saved choice. Existing sidecar and embedded adjustments take priority.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-797) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_797.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-798) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_798.md).
 
 <!-- current-status:end -->
 
@@ -1283,5 +1283,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 795 | [Set Camera Raw output profile, bit depth, resolution and size](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-795) |
 | 2026-11-28 | 796 | [Speed up exact Camera Raw profile conversion](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-796) |
 | 2026-11-28 | 797 | [Save a developed image directly from Camera Raw](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-797) |
+| 2026-11-28 | 798 | [Set Camera Raw defaults by camera model and body](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-798) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

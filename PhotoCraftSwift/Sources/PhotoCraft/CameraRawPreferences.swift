@@ -3,11 +3,13 @@ import Observation
 import PhotoCraftCore
 import PhotoCraftImaging
 import SwiftUI
+import UniformTypeIdentifiers
 
 @MainActor @Observable final class CameraRawPreferences {
   private static let storageKey = "Photato.CameraRaw.DNGStorage"
   private static let objectKey = "Photato.CameraRaw.OpenAsSmartObject"
   private static let outputKey = "Photato.CameraRaw.WorkflowOutput"
+  private static let defaultsKey = "Photato.CameraRaw.RawDefaults"
   private let defaults: UserDefaults?
   private(set) var revision = UUID()
   var dngStorage: RawDNGSettingsStorage {
@@ -36,8 +38,26 @@ import SwiftUI
     }
   }
 
+  private(set) var rawDefaults: RawDefaults
+
+  func setRawDefaults(_ value: RawDefaults) throws {
+    guard value != rawDefaults else { return }
+    try value.validate()
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.withoutEscapingSlashes]
+    defaults?.set(try encoder.encode(value), forKey: Self.defaultsKey)
+    rawDefaults = value
+    revision = UUID()
+  }
+
   init(defaults: UserDefaults? = nil) {
     self.defaults = defaults
+    if let data = defaults?.data(forKey: Self.defaultsKey), data.count <= RawDefaults.maximumEncodedBytes,
+      let decoded = try? JSONDecoder().decode(RawDefaults.self, from: data), (try? decoded.validate()) != nil {
+      rawDefaults = decoded
+    } else {
+      rawDefaults = .init()
+    }
     openAsSmartObject = defaults?.bool(forKey: Self.objectKey) ?? false
     let stored = defaults?.data(forKey: Self.outputKey).flatMap { try? JSONDecoder().decode(RawWorkflowOutput.self, from: $0) }
     if let stored, (try? stored.validate()) != nil {
@@ -70,12 +90,36 @@ private extension RawDNGSettingsStorage {
 
 private struct CameraRawPreferencesView: View {
   @Bindable var preferences: CameraRawPreferences
+  @State private var error: String?
 
   var body: some View {
     Form {
       Section("Opening Images") {
         Toggle("Open as Smart Object by default", isOn: $preferences.openAsSmartObject)
           .help("Hold Shift in Camera Raw to use the other opening mode. Hold Option to open a copy.")
+      }
+      Section("Raw Defaults") {
+        LabeledContent("Master") {
+          choiceMenu(preferences.rawDefaults.master, camera: nil)
+        }
+        Toggle("Override master settings for specific cameras", isOn: Binding(
+          get: { preferences.rawDefaults.useOverrides },
+          set: { enabled in update { $0.useOverrides = enabled } }))
+        if preferences.rawDefaults.useOverrides {
+          ForEach(preferences.rawDefaults.rules, id: \.camera) { rule in
+            LabeledContent(rule.camera.title) {
+              choiceMenu(rule.choice, camera: rule.camera)
+            }
+          }
+          Menu("Add Camera…") {
+            Button("Camera Model from RAW File…") { addCamera(matchSerial: false) }
+            Button("Camera Body from RAW File…") { addCamera(matchSerial: true) }
+          }
+          .disabled(preferences.rawDefaults.rules.count >= RawDefaults.maximumRules)
+        }
+        if let error {
+          Text(error).foregroundStyle(.red).accessibilityLabel("Camera Raw settings error: \(error)")
+        }
       }
       Section("DNG File Handling") {
         Picker("Sidecars", selection: $preferences.dngStorage) {
@@ -89,16 +133,96 @@ private struct CameraRawPreferencesView: View {
       }
     }
     .formStyle(.grouped)
-    .frame(width: 460, height: 244)
+    .frame(minWidth: 480, minHeight: 365)
+  }
+
+  private func choiceMenu(_ current: RawDefaults.Choice, camera: RawDefaults.Camera?) -> some View {
+    let label = current.name ?? (current.mode == .camera ? "Camera Settings" : "Photato Default")
+    return Menu(label) {
+      Button("Photato Default") { setChoice(.init(), camera: camera) }
+      Button("Camera Settings") { setChoice(.init(mode: .camera), camera: camera) }
+      Button("Choose XMP Preset…") { choosePreset(for: camera) }
+      if let camera {
+        Divider()
+        Button("Remove Camera Override", role: .destructive) {
+          update { $0.rules.removeAll { $0.camera == camera } }
+        }
+      }
+    }
+    .accessibilityLabel(camera.map { "RAW defaults for \($0.title)" } ?? "Master RAW defaults")
+    .accessibilityValue(label)
+  }
+
+  private func setChoice(_ choice: RawDefaults.Choice, camera: RawDefaults.Camera?) {
+    update { policy in
+      if let camera {
+        if let index = policy.rules.firstIndex(where: { $0.camera == camera }) {
+          policy.rules[index].choice = choice
+        }
+      } else {
+        policy.master = choice
+      }
+    }
+  }
+
+  private func update(_ change: (inout RawDefaults) -> Void) {
+    var policy = preferences.rawDefaults
+    change(&policy)
+    do {
+      try preferences.setRawDefaults(policy)
+      error = nil
+    } catch {
+      self.error = error.localizedDescription
+    }
+  }
+
+  private func choosePreset(for camera: RawDefaults.Camera?) {
+    let panel = NSOpenPanel()
+    panel.prompt = "Use Preset"
+    panel.allowedContentTypes = [UTType(filenameExtension: "xmp") ?? .xml]
+    panel.begin { result in
+      guard result == .OK, let url = panel.url else { return }
+      do {
+        let bytes = try RecoverySourceReader.snapshot(url, maximumBytes: { _ in CameraRawXMP.maximumBytes },
+          fileBackedAbove: CameraRawXMP.maximumBytes).data
+        setChoice(.init(mode: .preset, name: url.deletingPathExtension().lastPathComponent, xmp: bytes), camera: camera)
+      } catch {
+        self.error = error.localizedDescription
+      }
+    }
+  }
+
+  private func addCamera(matchSerial: Bool) {
+    let panel = NSOpenPanel()
+    panel.prompt = "Add Camera"
+    panel.allowedContentTypes = [RawSourceIO.contentType]
+    panel.begin { result in
+      guard result == .OK, let url = panel.url else { return }
+      do {
+        var camera = try RawSourceIO.cameraIdentity(at: url)
+        if matchSerial {
+          guard camera.serial != nil else { throw CraftError.invalid("This file does not record a camera body serial number.") }
+        } else {
+          camera = camera.withoutSerial
+        }
+        update { policy in
+          let inherited = policy.choice(for: camera)
+          policy.rules.append(.init(camera: camera, choice: inherited))
+        }
+      } catch {
+        self.error = error.localizedDescription
+      }
+    }
   }
 }
 
 @MainActor extension AppDelegate {
   @objc func cameraRawPreferences() {
     if cameraRawPreferencesWindow == nil {
-      let window = PhotatoWindow(contentRect: NSRect(x: 0, y: 0, width: 460, height: 244),
-        styleMask: [.titled, .closable], backing: .buffered, defer: false)
+      let window = PhotatoWindow(contentRect: NSRect(x: 0, y: 0, width: 530, height: 428),
+        styleMask: [.titled, .closable, .resizable], backing: .buffered, defer: false)
       window.title = "Settings — Camera Raw"
+      window.contentMinSize = NSSize(width: 480, height: 365)
       window.isReleasedWhenClosed = false
       window.contentViewController = NSHostingController(rootView: CameraRawPreferencesView(
         preferences: controller.cameraRawPreferences))
