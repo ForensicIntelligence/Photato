@@ -24,6 +24,7 @@ extension RawDevelopment {
      "panoramaMergeLimits":["maximumPixelsPerSource":RawPanorama.maximumSourcePixels,
        "maximumTotalPixels":RawPanorama.maximumTotalPixels,"maximumOutputPixels":RawPanorama.maximumOutputPixels,
        "maximumFillEdgesPixels":RawPanorama.maximumOutputPixels,"maximumDownloadBytes":SmartObject.maximumCameraRawSourceBytes],
+     "preservesJPEGXLDNGTransparency":JPEGXLInput.isAvailable,
      "maximumSensorPixels":RawSourceIO.maximumPixels,"maximumSensorSide":RawSourceIO.maximumDimension,
      "maximumSpatialAdjustmentPixels":RawSourceIO.maximumPixels,
      "limitedLargeAdjustments":[String](),

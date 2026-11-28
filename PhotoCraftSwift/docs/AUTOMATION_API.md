@@ -1,3 +1,9 @@
+### JPEG XL DNG transparency import (checkpoint 821)
+
+The Photato RAW import and Adobe-compatible edit use the same native decoder. The Photato capability `rawDevelopment.preservesJPEGXLDNGTransparency` reports decoder availability.
+
+[Qualification](SOURCE_PUBLICATION_821.md).
+
 ### Full-resolution Camera Raw Fill Edges (checkpoint 820)
 
 The Photato API commands `raw.mergePanorama` and `raw.mergeHDRPanorama` use the shared fill path. Fill Edges retains the whole canvas when the request also sets Auto Crop. The advertised limit is 96 MP.
@@ -1680,7 +1686,7 @@ Send `raw.mergePanorama` to `POST /v1/documents/{id}/commands` with the current 
 
 `projection` accepts `spherical` (default), `cylindrical`, and `perspective`. `boundaryWarp` accepts 0–100 (default 0). `fillEdges` defaults to `false`; `autoCrop` and `autoSettings` default to `true`. Auto Crop records editable XMP settings and retains the full sensor and transparency data. Camera Raw's Reset Crop and `raw.develop` with `settings.crop: null` restore access to the uncropped scene. To set an axis-aligned crop through `raw.develop`, supply `settings.crop` with normalized `left`, `top`, `right`, and `bottom` coordinates.
 
-Working limits are 96 MP per source, 384 MP combined, 96 MP for the panorama and a 2 GiB download. Large projection and stitch rasters use scratch storage. The API streams the completed DNG with Content-Length. Fill Edges supports the same 96 MP output limit. Large fills estimate a bounded patch field and sample full-resolution donor pixels. When both Fill Edges and Auto Crop are requested, Fill Edges retains the full canvas. The published Adobe v2 API has no dedicated RAW panorama endpoint.
+Working limits are 96 MP per source, 384 MP combined, 96 MP for the panorama and a 2 GiB download. Large projection and stitch rasters use scratch storage. The API streams the completed DNG with Content-Length. Fill Edges supports the same 96 MP output limit. Large fills estimate a bounded patch field and sample full-resolution donor pixels. When both Fill Edges and Auto Crop are requested, Fill Edges retains the full canvas. The published Adobe v2 API has no dedicated RAW panorama endpoint. Camera Raw opens a DNG with supported 8-bit JPEG XL transparency through the desktop, Photato RAW import and Adobe-compatible RAW edit routes. The current runtime reports JPEG XL transparency support in `rawDevelopment.preservesJPEGXLDNGTransparency`. Tiles below 65,536 pixels with an odd width or height require further decoder support.
 
 ## Camera Raw HDR panorama merge
 

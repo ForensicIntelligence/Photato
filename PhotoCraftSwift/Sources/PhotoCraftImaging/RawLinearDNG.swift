@@ -1,5 +1,6 @@
 // This product includes DNG technology under license by Adobe.
 import Foundation
+import ImageIO
 import PhotoCraftCore
 
 /// A scene-referred linear sRGB DNG with optional transparency.
@@ -137,8 +138,8 @@ package enum RawLinearDNG {
     }
   }
 
-  // Core Image does not expose the alpha of an uncompressed DNG mask IFD.
-  // Recognize the single-channel 8-bit strip layout and borrow rows from the original.
+  // The RAW decoder can omit the separate transparency image. Read its 8-bit
+  // samples directly, borrowing uncompressed rows or decoding JPEG XL tiles.
   static func transparencyMask(in data: Data, width: Int, height: Int) throws -> TransparencyMask? {
     guard width > 0, height > 0, width <= RawPanorama.maximumOutputPixels / height, TIFFContainer.isClassic(data),
       let file = try? TIFFContainer(data, metadata: false, additionalTags: [254], inspectSubIFDs: true,
@@ -151,10 +152,19 @@ package enum RawLinearDNG {
     }
     guard let mask = file.root.fields[330]?.children.first(where: { integers($0.fields[254]) == [4] }),
       integers(mask.fields[256]) == [width], integers(mask.fields[257]) == [height],
-      integers(mask.fields[258]) == [8], integers(mask.fields[259]) == [1],
-      integers(mask.fields[262]) == [4], integers(mask.fields[277]) == [1],
-      integers(mask.fields[274]) == [1], integers(file.root.fields[274]) == [1],
-      let rows = integers(mask.fields[278]).first, rows > 0 else { return nil }
+      integers(mask.fields[258]) == [8], integers(mask.fields[262]) == [4],
+      integers(mask.fields[277]) == [1],
+      (integers(mask.fields[274]).first ?? 1) == 1,
+      (integers(file.root.fields[274]).first ?? 1) == 1 else { return nil }
+    let compression = integers(mask.fields[259])
+    if compression == [52_546] {
+      let columns = integers(mask.fields[322]).first ?? 0
+      let rows = integers(mask.fields[323]).first ?? 0
+      let offsets = integers(mask.fields[324]), lengths = integers(mask.fields[325])
+      return try tiledJPEGXLMask(in: data, width: width, height: height,
+        tileWidth: columns, tileHeight: rows, offsets: offsets, lengths: lengths)
+    }
+    guard compression == [1], let rows = integers(mask.fields[278]).first, rows > 0 else { return nil }
     let offsets = integers(mask.fields[273]), lengths = integers(mask.fields[279])
     let strips = (height - 1) / rows + 1
     guard offsets.count == strips, lengths.count == strips else { return nil }
@@ -164,6 +174,64 @@ package enum RawLinearDNG {
       guard lengths[strip] == count, offsets[strip] >= 0, offsets[strip] <= data.count - count else { return nil }
     }
     return TransparencyMask(data: data, width: width, rowsPerStrip: rows, offsets: offsets)
+  }
+
+  private static func tiledJPEGXLMask(in data: Data, width: Int, height: Int,
+    tileWidth: Int, tileHeight: Int, offsets: [Int], lengths: [Int]) throws -> TransparencyMask {
+    guard JPEGXLInput.isAvailable else {
+      throw CraftError.unsupported("This version of macOS cannot decode JPEG XL transparency in this DNG.")
+    }
+    let invalid = CraftError.invalid("Invalid JPEG XL transparency tiles in the DNG.")
+    guard tileWidth > 0, tileHeight > 0,
+      tileWidth <= RawPanorama.maximumOutputPixels / tileHeight else { throw invalid }
+    // The small-image path in Image I/O can clear trailing samples at odd sizes.
+    if tileWidth * tileHeight < 65_536, !tileWidth.isMultiple(of: 2) || !tileHeight.isMultiple(of: 2) {
+      throw CraftError.unsupported("Small JPEG XL transparency tiles with odd dimensions are unavailable on this version of macOS.")
+    }
+    let columns = (width - 1) / tileWidth + 1
+    let rows = (height - 1) / tileHeight + 1
+    guard offsets.count == columns * rows, lengths.count == offsets.count else { throw invalid }
+    for (offset, length) in zip(offsets, lengths) {
+      guard offset >= 8, length > 0, length <= data.count, offset <= data.count - length else { throw invalid }
+    }
+
+    let url = FileManager.default.temporaryDirectory.appendingPathComponent("photato-dng-mask-\(UUID().uuidString)")
+    defer { try? FileManager.default.removeItem(at: url) }
+    let count = width * height
+    let scratch = try AtomicFileWriter(to: url, maximumBytes: count)
+    let chunk = Data(count: min(count, AtomicFileWriter.chunkBytes))
+    for start in stride(from: 0, to: count, by: chunk.count) {
+      try scratch.append(chunk.prefix(min(chunk.count, count - start)))
+    }
+    let hint = [kCGImageSourceTypeIdentifierHint: JPEGXLInput.typeIdentifier] as CFDictionary
+    for tile in offsets.indices {
+      try Task.checkCancellation()
+      let offset = data.startIndex + offsets[tile]
+      let encoded = data[offset..<(offset + lengths[tile])]
+      try JPEGXLInput.requireStill(encoded)
+      // TIFF pads right and bottom tiles. Copy only pixels inside the original mask.
+      let left = tile % columns * tileWidth, top = tile / columns * tileHeight
+      let visibleWidth = min(tileWidth, width - left), visibleHeight = min(tileHeight, height - top)
+      guard let source = CGImageSourceCreateWithData(encoded as CFData, hint),
+        CGImageSourceGetCount(source) == 1,
+        let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+        properties[kCGImagePropertyPixelWidth] as? Int == tileWidth,
+        properties[kCGImagePropertyPixelHeight] as? Int == tileHeight,
+        (properties[kCGImagePropertyOrientation] as? Int ?? 1) == 1,
+        let image = CGImageSourceCreateImageAtIndex(source, 0, nil),
+        image.width == tileWidth, image.height == tileHeight,
+        image.bitsPerComponent == 8, image.bitsPerPixel == 8, image.colorSpace?.model == .monochrome,
+        image.bytesPerRow >= tileWidth,
+        let bytes = image.dataProvider?.data, image.bytesPerRow <= CFDataGetLength(bytes) / tileHeight,
+        let samples = CFDataGetBytePtr(bytes) else { throw invalid }
+      for y in 0..<visibleHeight {
+        let row = Data(bytes: samples + y * image.bytesPerRow, count: visibleWidth)
+        try scratch.patch(row, at: (top + y) * width + left)
+      }
+    }
+    try scratch.commit()
+    let samples = try Data(contentsOf: url, options: .alwaysMapped)
+    return TransparencyMask(data: samples, width: width, rowsPerStrip: height, offsets: [0])
   }
 
   private static func transparencyDirectory(_ surface: Surface, writingTo file: AtomicFileWriter) throws -> TIFFContainer.Directory {

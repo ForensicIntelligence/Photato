@@ -10996,6 +10996,13 @@
       "link": "DEVLOG.md#dev-step-820",
       "section_sha256": "21f901490bcfe430543f01b77213c10d2df00d69ac81fc2c884152ad6f97b0a7",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-821",
+      "title": "2026-11-28 \u2014 Step 821 \u2014 Retain JPEG XL transparency in Camera Raw DNG imports",
+      "link": "DEVLOG.md#dev-step-821",
+      "section_sha256": "298bf43bb0a2cc95a2fe8c784250cfa1264c00fe7c04ad350bbdbaa25b11ecc7",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13831,8 +13838,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "c320325e60b2517b249256f50ff713c766c630c0b425672843dbdb08c67f0eb3",
-      "bytes": 192700,
+      "sha256": "bbc0579aadcc5b6a0525c6d482183a8512463deac55997a74c917562bd50cf93",
+      "bytes": 192832,
       "rolling_current_snapshot": false
     },
     {
@@ -15553,8 +15560,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "99fb36b49424cc18542f5974279c3ce87bf6ea87a4e32be25a8aac52b9627278",
-      "bytes": 772885,
+      "sha256": "e19676adcd999b533cab45b92d18da5f8a30a9dbe62d6f4f2e71d3a920ca23f7",
+      "bytes": 773503,
       "rolling_current_snapshot": false
     },
     {
@@ -16123,8 +16130,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "ede98053987ffc09e05e378a6f05b92e77e12d7cd188632a053e31b9c1bf1208",
-      "bytes": 407769,
+      "sha256": "d1d96860a08b95a2cd5f801162f83ced18ec4eea6de1a90f0bd78f5be51b9c8e",
+      "bytes": 407887,
       "rolling_current_snapshot": false
     },
     {
@@ -16243,8 +16250,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "3ea8b6871a4609ecebfccda0fff7447b1845532be109ed8f4bc3c87f8d7ed025",
-      "bytes": 236098,
+      "sha256": "c1ca78f627934243184f89c80057b90d0efa85ccde630d8c5c3116028beb23e6",
+      "bytes": 236332,
       "rolling_current_snapshot": false
     },
     {
@@ -16321,14 +16328,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "9da6bb7d6ce4d860b3b5ab72d6cc2e7c41cacbf5cbf8b1507af632b705916a21",
-      "bytes": 1124564,
+      "sha256": "8e18da7fa6eebe7855041261b38c221d6e64730beffd8d93da7cfd25da1cfcef",
+      "bytes": 1126001,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "779f90a9c9580d8bcbea6002ad6b419f07e8389e351e3a7ba2c8f73279f046b8",
-      "bytes": 5284235,
+      "sha256": "7aacc36ef5bf0543b61a0552f78c10c294a48e6895be089b7a6bfcbea764100f",
+      "bytes": 5286399,
       "rolling_current_snapshot": false
     },
     {
@@ -24378,6 +24385,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_821.json",
+      "sha256": "c96a34321f911602e65736d447c75e196019579744a7aa7176112111c92ced92",
+      "bytes": 18354,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_821.md",
+      "sha256": "814679285f63613db6392b39c1792a2aa5b1158d00c01d3596beca02400587ae",
+      "bytes": 1789,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24937,8 +24956,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "f3ce135eae97d65b713897ae17c4bd22c84a7b01de22ae417403f618f460e211",
-      "bytes": 530729,
+      "sha256": "6ebb3b886f352e44ef8177b55ccafc3e5a4c02658f8a8d85af0971ca6e89dbbf",
+      "bytes": 531208,
       "rolling_current_snapshot": false
     },
     {
@@ -27451,8 +27470,8 @@
     }
   ],
   "counts": {
-    "milestones": 820,
-    "evidence_files": 2272,
+    "milestones": 821,
+    "evidence_files": 2274,
     "logs": 0,
     "missing_explicit_references": 704
   }

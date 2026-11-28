@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **820** · The 10 most recent entries, newest first.
+Source build **821** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 821 — Retain JPEG XL transparency in Camera Raw DNG imports
+
+Camera Raw restores transparent edges from tiled 8-bit JPEG XL masks in supported panorama DNGs. Image I/O decodes the original grayscale samples. The full mask uses mapped scratch storage.
+
+The desktop RAW engine reopened a 6,135 × 4,509 Adobe panorama. All 27,662,715 alpha samples matched the reconstructed transparency plane. An additional 735 × 402 test retained all 295,470 samples through both authenticated API interfaces.
+
+The large reference came from Camera Raw 18.1.1 and used thirty 1,024 × 912 JPEG XL mask tiles. The Photato build before this change read the five sampled points as opaque. The new DNG import preserves their stored alpha. [Adobe DNG specification](https://helpx.adobe.com/camera-raw/desktop/dng-and-file-formats/digital-negative.html).
+
+Xcode built the app. All 58 focused checks passed, plus the two-interface API workflow. Both optimized architectures passed all 454 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+Image I/O cleared the trailing sample of some small odd-size fixtures. The current decoder rejects odd-size tiles below 65,536 pixels. The current evidence covers opacity. Adobe color, crop, RAW encoding and physical Intel and macOS 14 qualification remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-821) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_821.md).
 
 ## 2026-11-28 — Step 820 — Fill edges on full-resolution Camera Raw panoramas
 
@@ -129,17 +143,3 @@ Xcode built the app and all twenty-four focused application tests passed, includ
 The current installed Adobe Camera Raw predates these commands. Native controls were tested on owned files, with the Adobe documentation as the reference. Stacks and automatic grouping remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-812) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_812.md).
-
-## 2026-11-28 — Step 811 — Save deselected Camera Raw edits when closing with Done
-
-Done saves the changed photos across the Camera Raw session, including photos currently deselected or filtered out. Photato leaves files with unchanged settings and marks untouched.
-
-Adobe Camera Raw 18.1.1 wrote a four-star rating and a red label to an owned DNG after a different photo was selected. The selected, unedited original was byte-identical. A Photato test reproduced those XMP values when a filter left no visible selection and verified the original sensor payload and unedited file bytes.
-
-The live Adobe comparison tested Done and inspected both file hashes and XMP fields after closing the dialog. [Adobe Camera Raw save workflow](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
-
-Xcode built the app and all twenty-two focused application tests passed. Both optimized architectures passed all 399 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
-
-Open Image and Open as Object have their existing selected-photo behavior. Adobe’s persistence rules for deselected photos when opening images, and the dedicated Hide Photo controls, still need separate qualification.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-811) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_811.md).

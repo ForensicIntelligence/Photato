@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 821 — Retain JPEG XL transparency in Camera Raw DNG imports
+
+Camera Raw restores transparent edges from tiled 8-bit JPEG XL masks in supported panorama DNGs. Image I/O decodes the original grayscale samples. The full mask uses mapped scratch storage.
+
+The desktop RAW engine reopened a 6,135 × 4,509 Adobe panorama. All 27,662,715 alpha samples matched the reconstructed transparency plane. An additional 735 × 402 test retained all 295,470 samples through both authenticated API interfaces.
+
+The large reference came from Camera Raw 18.1.1 and used thirty 1,024 × 912 JPEG XL mask tiles. The Photato build before this change read the five sampled points as opaque. The new DNG import preserves their stored alpha. [Adobe DNG specification](https://helpx.adobe.com/camera-raw/desktop/dng-and-file-formats/digital-negative.html).
+
+Xcode built the app. All 58 focused checks passed, plus the two-interface API workflow. Both optimized architectures passed all 454 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+Image I/O cleared the trailing sample of some small odd-size fixtures. The current decoder rejects odd-size tiles below 65,536 pixels. The current evidence covers opacity. Adobe color, crop, RAW encoding and physical Intel and macOS 14 qualification remain open.
+
+[Development record](DEVLOG.md#dev-step-821) · [Qualification](SOURCE_PUBLICATION_821.md).
+
 ## 2026-11-28 — Step 820 — Fill edges on full-resolution Camera Raw panoramas
 
 Camera Raw Fill Edges works on panoramas above the previous 4 MP limit, including results from HDR Panorama. Large scenes estimate donor patches from a bounded overview and sample the original detail into the gaps. The merge preview clears and disables Auto Crop while Fill Edges is on.
@@ -2991,11 +3005,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:820 -->
+<!-- current-status-step:821 -->
 
-Camera Raw Fill Edges works on panoramas above the previous 4 MP limit, including results from HDR Panorama. Large scenes estimate donor patches from a bounded overview and sample the original detail into the gaps. The merge preview clears and disables Auto Crop while Fill Edges is on.
+Camera Raw restores transparent edges from tiled 8-bit JPEG XL masks in supported panorama DNGs. Image I/O decodes the original grayscale samples. The full mask uses mapped scratch storage.
 
-[Development record](DEVLOG.md#dev-step-820) · [Qualification](SOURCE_PUBLICATION_820.md).
+[Development record](DEVLOG.md#dev-step-821) · [Qualification](SOURCE_PUBLICATION_821.md).
 
 <!-- current-status:end -->
 
@@ -4022,6 +4036,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 818 | [Merge high-resolution Camera Raw HDR brackets](DEVLOG.md#dev-step-818) |
 | 2026-11-28 | 819 | [Stitch full-resolution Camera Raw panoramas](DEVLOG.md#dev-step-819) |
 | 2026-11-28 | 820 | [Fill edges on full-resolution Camera Raw panoramas](DEVLOG.md#dev-step-820) |
+| 2026-11-28 | 821 | [Retain JPEG XL transparency in Camera Raw DNG imports](DEVLOG.md#dev-step-821) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

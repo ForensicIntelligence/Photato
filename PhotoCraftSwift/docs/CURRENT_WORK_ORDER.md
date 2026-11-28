@@ -1,3 +1,5 @@
+**Camera Raw development.** Continue independent checks of the RAW renderer and DNG packing, including small odd JPEG XL transparency tiles. [Development record](DEVLOG.md#dev-step-821) · [Qualification](SOURCE_PUBLICATION_821.md).
+
 **Camera Raw development.** Compare Adobe DNG packing and continue checking independent geometry and RAW color. [Development record](DEVLOG.md#dev-step-820) · [Qualification](SOURCE_PUBLICATION_820.md).
 
 **Camera Raw development.** Raise the Camera Raw Fill Edges capacity and continue the independent geometry, RAW color and DNG encoding comparisons. [Development record](DEVLOG.md#dev-step-819) · [Qualification](SOURCE_PUBLICATION_819.md).

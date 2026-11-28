@@ -121,6 +121,50 @@ final class RawLinearDNGTests: XCTestCase {
     XCTAssertEqual(decoded.linearPixel(x: 13, y: 0).a, 1)
   }
 
+  func testTiledJPEGXLTransparencyPreservesMaskSamplesAndClipsPaddedTiles() throws {
+    try XCTSkipUnless(JPEGXLInput.isAvailable, "Image I/O JPEG XL decoding is unavailable.")
+    // Four independently encoded 4 × 2 Gray8 fixtures. The image is 7 × 3,
+    // so the right and bottom padding deliberately contains unrelated values.
+    let tiles = try [
+      "/woIcBAUFwIIAAEAPABLGIsVQhl2zNEm+gPSCgM=",
+      "/woIcBAUFwIIAAEASABLGIsVwgFsHNY1+QTuovHLBwM=",
+      "/woIcBAUFwIIAAEASABLGIsVwglsHMp57hMQoDOXBQA=",
+      "/woIcBAUFwIIAAEAPABLGIsVwkkPVZq9M9WwRwE=",
+    ].map { try XCTUnwrap(Data(base64Encoded: $0)) }
+    let width = 7, height = 3
+    let order = TIFFContainer.Order.little
+    let layout = TIFFContainer.Layout(bigTIFF: false)
+    let root = TIFFContainer(order: order)
+    let mask = TIFFContainer(order: order)
+    var data = layout.header(order: order)
+    var offsets: [Int] = []
+    for tile in tiles {
+      offsets.append(data.count)
+      data.append(tile)
+    }
+    mask.set(254, [4], type: 4)
+    mask.set(256, [width], type: 4)
+    mask.set(257, [height], type: 4)
+    mask.set(258, [8])
+    mask.set(259, [52_546])
+    mask.set(262, [4])
+    mask.set(277, [1])
+    mask.set(322, [4], type: 4)
+    mask.set(323, [2], type: 4)
+    mask.set(324, offsets, type: 4)
+    mask.set(325, tiles.map(\.count), type: 4)
+    root.root.fields[330] = .init(tag: 330, type: 4, count: 1, data: Data(), children: [mask.root])
+    let pointer = try root.writeDirectories(order: order, maximumOutput: 8192,
+      extent: { data.count }, emit: { data.append($0) },
+      patch: { value, offset in data.replaceSubrange(offset..<(offset + value.count), with: value) })
+    data.replaceSubrange(4..<8, with: pointer)
+    let decoded = try XCTUnwrap(RawLinearDNG.transparencyMask(in: data, width: width, height: height))
+    let expected: [[UInt8]] = [[0, 31, 63, 89, 95, 127, 150], [16, 47, 79, 93, 111, 143, 154], [159, 191, 223, 230, 239, 250, 255]]
+    XCTAssertEqual((0..<height).map { Array(decoded.row($0)) }, expected)
+    data[offsets[1]] = 0
+    XCTAssertThrowsError(try RawLinearDNG.transparencyMask(in: data, width: width, height: height))
+  }
+
   func testLargePanoramaFillEdgesLiftsFineTextureAndKeepsCoveredSamples() throws {
     let width = 2052, height = 2048
     let dark = Pixel(0.125, 0.25, 1.25, 1)
