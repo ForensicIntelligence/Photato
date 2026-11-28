@@ -23,7 +23,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 809.** Browse and edit photos in Camera Raw Grid. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_809.md).
+**Development alpha — source build 810.** Refresh Camera Raw thumbnails from developed photos. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_810.md).
 
 ## Project layout
 

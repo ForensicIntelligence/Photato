@@ -235,6 +235,11 @@ struct CameraRawSheet: View {
         store.filterDraft?.rawDevelopment = value
         if let filmstripPhoto { filmstrip?.apply(value, to: filmstripPhoto) }
       }
+      if let filmstrip, let filmstripPhoto {
+        model.onThumbnail = { image, settings in
+          filmstrip.updateThumbnail(image, settings: settings, photoID: filmstripPhoto)
+        }
+      }
       if draft.rawDevelopment != nil { group = "Sensor" }
       await model.prepare(document: store.document, draft: draft,
         retainRawOutput: store.initialRawDocument != nil || filmstrip != nil)

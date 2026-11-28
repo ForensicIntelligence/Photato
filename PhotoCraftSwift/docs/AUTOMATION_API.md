@@ -1,3 +1,9 @@
+### Camera Raw thumbnails (checkpoint 810)
+
+The thumbnail is a desktop preview. The existing RAW development API continues to use the same editing and rendering path.
+
+[Qualification](SOURCE_PUBLICATION_810.md).
+
 ### Camera Raw Grid (checkpoint 809)
 
 Grid uses the same Camera Raw adjustment and photo-marking code as the authenticated Photato API. Thumbnail presentation is local to the native dialog.

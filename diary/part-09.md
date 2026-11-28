@@ -1,5 +1,19 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-28 — Step 810 — Refresh Camera Raw thumbnails from developed photos
+
+The filmstrip and Grid can show a thumbnail from the developed preview. Selecting a DNG with no usable embedded thumbnail fills both views after preview rendering. Thumbnails for the active draft update after an adjustment.
+
+A synthetic DNG whose red label was written in Adobe Camera Raw previously displayed a placeholder. The native Photato window now showed the image in both the filmstrip and Grid. Cancel left the original bytes intact.
+
+Camera Raw’s thumbnail browsing workflow is documented by Adobe. [Adobe Camera Raw Grid](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
+
+Xcode built the app and all twenty-one focused application tests passed. The new case checks bounded preview size, pixel change after an exposure edit, fallback after Undo and an exact source file. Both optimized architectures passed all 398 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The current photo’s render refreshes its thumbnail. Other photos use their embedded thumbnail until viewed or edited as the active photo. Automatic refresh of every non-active photo in a batch remains open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-810) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_810.md).
+
 ## 2026-11-28 — Step 809 — Browse and edit photos in Camera Raw Grid
 
 Press G to switch the Camera Raw preview to Grid. Double-click a thumbnail to return to Loupe. Both views share selection, ratings, labels, filters and sorting. Grid keeps the adjustments and source information available.

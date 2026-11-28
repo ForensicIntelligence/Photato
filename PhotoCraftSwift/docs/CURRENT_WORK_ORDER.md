@@ -1,3 +1,5 @@
+**Camera Raw development.** Verify saving changes to photographs that are deselected or filtered out at the end of a Camera Raw session. [Development record](DEVLOG.md#dev-step-810) · [Qualification](SOURCE_PUBLICATION_810.md).
+
 **Camera Raw development.** Refresh developed thumbnails from the existing RAW preview and qualify photos with no embedded thumbnail. [Development record](DEVLOG.md#dev-step-809) · [Qualification](SOURCE_PUBLICATION_809.md).
 
 **Camera Raw development.** Extend the shared Camera Raw photo selection and inspector to Grid. [Development record](DEVLOG.md#dev-step-808) · [Qualification](SOURCE_PUBLICATION_808.md).

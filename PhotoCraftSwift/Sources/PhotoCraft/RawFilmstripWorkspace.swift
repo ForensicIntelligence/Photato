@@ -40,6 +40,9 @@ import SwiftUI
   @ObservationIgnored private var approvedFolders: [URL: URL] = [:]
   @ObservationIgnored private var onClose: (() -> Void)?
   private(set) var photos: [Photo] = []
+  private var developedThumbnails: [UUID: (image: CGImage, settings: RawDevelopment)] = [:]
+  @ObservationIgnored private var thumbnailOrder: [UUID] = []
+  private static let thumbnailCapacity = 48
   var order: RawFilmstripOrder = .opening
   var reverseOrder = false
   static let defaultGridSize = 150.0
@@ -114,6 +117,23 @@ import SwiftUI
   }
 
   func setWorkflow(_ output: RawWorkflowOutput) { controller?.cameraRawPreferences.workflowOutput = output }
+
+  func thumbnail(for photo: Photo) -> CGImage? {
+    if let cached = developedThumbnails[photo.id], cached.settings == photo.settings {
+      return cached.image
+    }
+    return photo.thumbnail
+  }
+
+  func updateThumbnail(_ image: CGImage, settings: RawDevelopment, photoID: UUID) {
+    guard !closed, activeID == photoID, settings == activeSettings else { return }
+    thumbnailOrder.removeAll { $0 == photoID }
+    thumbnailOrder.append(photoID)
+    developedThumbnails[photoID] = (image, settings)
+    if thumbnailOrder.count > Self.thumbnailCapacity {
+      developedThumbnails.removeValue(forKey: thumbnailOrder.removeFirst())
+    }
+  }
 
   func start(_ urls: [URL]) {
     guard operation == nil, let controller else { return }
@@ -540,6 +560,8 @@ import SwiftUI
     editor?.store.renderTask?.cancel()
     editor = nil
     photos.removeAll()
+    developedThumbnails.removeAll()
+    thumbnailOrder.removeAll()
     let callback = onClose
     onClose = nil
     callback?()

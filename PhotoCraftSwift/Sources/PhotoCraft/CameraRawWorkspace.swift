@@ -9,6 +9,7 @@ import PhotoCraftImaging
   var sensorSettings: RawDevelopment?
   var sensorInfo: RawSourceIO.Info?
   var onSensorChange: ((RawDevelopment) -> Void)?
+  @ObservationIgnored var onThumbnail: ((CGImage, RawDevelopment) -> Void)?
   private var snapshot: Snapshot { Snapshot(rgb:settings,sensor:sensorSettings) }
   var image: CGImage?
   var originalImage: CGImage?
@@ -119,6 +120,7 @@ import PhotoCraftImaging
     let request = draft, needsOriginal = originalImage == nil
     let cachedSensor = sensorRaster
     let retainRawOutput = self.retainRawOutput
+    let includesThumbnail = onThumbnail != nil
     developedRawPreview = nil
     rendering = true; error = nil
     task = Task {
@@ -154,13 +156,18 @@ import PhotoCraftImaging
           } }
           let maximum = max(1,bins.flatMap { $0 }.max() ?? 1)
           bins = bins.map { $0.map { $0/maximum } }
-          return (image: try display(pixels),
+          let image = try display(pixels)
+          let thumbnail = includesThumbnail ? Self.thumbnail(from: image) : nil
+          return (image: image, thumbnail: thumbnail,
             original: before, histogram: bins, sensor: renderedSensor,
             rawOutput: retainRawOutput && request.rawDevelopment != nil ? edited : nil)
         }
         let result = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
         try Task.checkCancellation(); guard !closed, token == generation else { return }
         image = result.image
+        if let thumbnail = result.thumbnail, let settings = request.rawDevelopment {
+          onThumbnail?(thumbnail, settings)
+        }
         if let before = result.original { originalImage = before }
         histogram = result.histogram
         sensorRaster = result.sensor
@@ -170,9 +177,22 @@ import PhotoCraftImaging
       } catch { guard !closed, token == generation else { return }; rendering = false; if !Task.isCancelled { self.error = error.localizedDescription } }
     }
   }
+  private nonisolated static func thumbnail(from image: CGImage) -> CGImage? {
+    let longest = max(image.width, image.height)
+    guard longest > 288 else { return image }
+    let width = max(1, image.width * 288 / longest)
+    let height = max(1, image.height * 288 / longest)
+    guard let color = CGColorSpace(name: CGColorSpace.sRGB),
+      let context = CGContext(data: nil, width: width, height: height, bitsPerComponent: 8,
+        bytesPerRow: 0, space: color, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+    context.interpolationQuality = .high
+    context.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
+    return context.makeImage()
+  }
+
   func canOpen(in current: CraftDocument) -> Bool {
     ready && developedRawPreview != nil && document == current
   }
 
-  func close() { closed = true; generation += 1; task?.cancel(); task = nil; sensorRaster = nil; developedRawPreview = nil; rendering = false; onChange = nil; onSensorChange = nil }
+  func close() { closed = true; generation += 1; task?.cancel(); task = nil; sensorRaster = nil; developedRawPreview = nil; rendering = false; onChange = nil; onSensorChange = nil; onThumbnail = nil }
 }

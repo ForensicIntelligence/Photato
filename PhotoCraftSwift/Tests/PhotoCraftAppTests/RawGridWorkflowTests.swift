@@ -84,6 +84,53 @@ final class RawGridWorkflowTests: XCTestCase {
     XCTAssertFalse(workspace.canUndo)
   }
 
+  @MainActor func testDevelopedFilmstripThumbnailTracksActiveDraftWithoutTouchingOriginal() async throws {
+    _ = NSApplication.shared
+    let controller = CraftDocumentController(workspaces: WorkspaceLibrary())
+    let directory = try makeFolder()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let url = directory.appendingPathComponent("Owned.dng")
+    let bytes = try fixture()
+    try bytes.write(to: url)
+    let workspace = RawFilmstripWorkspace(controller: controller)
+    defer { workspace.close() }
+    workspace.start([url])
+    await workspace.waitUntilIdle()
+    let editor = try XCTUnwrap(workspace.editor)
+    let draft = try XCTUnwrap(editor.store.filterDraft)
+    let model = CameraRawWorkspace()
+    defer { model.close() }
+    var madeThumbnails = [CGImage]()
+    model.onThumbnail = { image, settings in
+      madeThumbnails.append(image)
+      workspace.updateThumbnail(image, settings: settings, photoID: editor.id)
+    }
+    model.onSensorChange = { settings in workspace.apply(settings, to: editor.id) }
+    await model.prepare(document: editor.store.document, draft: draft, retainRawOutput: true)
+    XCTAssertTrue(model.ready)
+    let first = try XCTUnwrap(madeThumbnails.first)
+    XCTAssertEqual(first.width, 288)
+    XCTAssertEqual(first.height, 216)
+    let firstPhoto = try XCTUnwrap(workspace.photos.first)
+    XCTAssertTrue(workspace.thumbnail(for: firstPhoto) === first)
+
+    var edited = try XCTUnwrap(workspace.activeSettings)
+    edited.adjustments.exposure = 0.75
+    model.changeSensor(edited)
+    if let editorTask = model.task { await editorTask.value }
+    let second = try XCTUnwrap(madeThumbnails.last)
+    XCTAssertEqual(madeThumbnails.count, 2)
+    let current = try XCTUnwrap(workspace.photos.first)
+    XCTAssertTrue(workspace.thumbnail(for: current) === second)
+    XCTAssertNotEqual(first.dataProvider?.data as Data?, second.dataProvider?.data as Data?)
+
+    workspace.undoEdit()
+    let restored = try XCTUnwrap(workspace.photos.first)
+    XCTAssertEqual(restored.settings, firstPhoto.settings)
+    XCTAssertFalse(workspace.thumbnail(for: restored) === second)
+    XCTAssertEqual(try Data(contentsOf: url), bytes)
+  }
+
   private func makeFolder() throws -> URL {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)

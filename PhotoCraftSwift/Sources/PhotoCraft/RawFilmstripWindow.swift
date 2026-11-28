@@ -306,7 +306,7 @@ private struct RawFilmstripView: View {
     return VStack(spacing: 3) {
       ZStack(alignment: .bottomTrailing) {
         Color(nsColor: .windowBackgroundColor)
-        if let image = photo.thumbnail {
+        if let image = workspace.thumbnail(for: photo) {
           Image(decorative: image, scale: 1).resizable().scaledToFit()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {

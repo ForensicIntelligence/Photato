@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 810 — Refresh Camera Raw thumbnails from developed photos
+
+The filmstrip and Grid can show a thumbnail from the developed preview. Selecting a DNG with no usable embedded thumbnail fills both views after preview rendering. Thumbnails for the active draft update after an adjustment.
+
+A synthetic DNG whose red label was written in Adobe Camera Raw previously displayed a placeholder. The native Photato window now showed the image in both the filmstrip and Grid. Cancel left the original bytes intact.
+
+Camera Raw’s thumbnail browsing workflow is documented by Adobe. [Adobe Camera Raw Grid](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
+
+Xcode built the app and all twenty-one focused application tests passed. The new case checks bounded preview size, pixel change after an exposure edit, fallback after Undo and an exact source file. Both optimized architectures passed all 398 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The current photo’s render refreshes its thumbnail. Other photos use their embedded thumbnail until viewed or edited as the active photo. Automatic refresh of every non-active photo in a batch remains open.
+
+[Development record](DEVLOG.md#dev-step-810) · [Qualification](SOURCE_PUBLICATION_810.md).
+
 ## 2026-11-28 — Step 809 — Browse and edit photos in Camera Raw Grid
 
 Press G to switch the Camera Raw preview to Grid. Double-click a thumbnail to return to Loupe. Both views share selection, ratings, labels, filters and sorting. Grid keeps the adjustments and source information available.
@@ -2837,11 +2851,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:809 -->
+<!-- current-status-step:810 -->
 
-Press G to switch the Camera Raw preview to Grid. Double-click a thumbnail to return to Loupe. Both views share selection, ratings, labels, filters and sorting. Grid keeps the adjustments and source information available.
+The filmstrip and Grid can show a thumbnail from the developed preview. Selecting a DNG with no usable embedded thumbnail fills both views after preview rendering. Thumbnails for the active draft update after an adjustment.
 
-[Development record](DEVLOG.md#dev-step-809) · [Qualification](SOURCE_PUBLICATION_809.md).
+[Development record](DEVLOG.md#dev-step-810) · [Qualification](SOURCE_PUBLICATION_810.md).
 
 <!-- current-status:end -->
 
@@ -3857,6 +3871,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 807 | [Rate and filter Camera Raw photos](DEVLOG.md#dev-step-807) |
 | 2026-11-28 | 808 | [Inspect and sort Camera Raw photo metadata](DEVLOG.md#dev-step-808) |
 | 2026-11-28 | 809 | [Browse and edit photos in Camera Raw Grid](DEVLOG.md#dev-step-809) |
+| 2026-11-28 | 810 | [Refresh Camera Raw thumbnails from developed photos](DEVLOG.md#dev-step-810) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **809** · The 10 most recent entries, newest first.
+Source build **810** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 810 — Refresh Camera Raw thumbnails from developed photos
+
+The filmstrip and Grid can show a thumbnail from the developed preview. Selecting a DNG with no usable embedded thumbnail fills both views after preview rendering. Thumbnails for the active draft update after an adjustment.
+
+A synthetic DNG whose red label was written in Adobe Camera Raw previously displayed a placeholder. The native Photato window now showed the image in both the filmstrip and Grid. Cancel left the original bytes intact.
+
+Camera Raw’s thumbnail browsing workflow is documented by Adobe. [Adobe Camera Raw Grid](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
+
+Xcode built the app and all twenty-one focused application tests passed. The new case checks bounded preview size, pixel change after an exposure edit, fallback after Undo and an exact source file. Both optimized architectures passed all 398 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The current photo’s render refreshes its thumbnail. Other photos use their embedded thumbnail until viewed or edited as the active photo. Automatic refresh of every non-active photo in a batch remains open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-810) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_810.md).
 
 ## 2026-11-28 — Step 809 — Browse and edit photos in Camera Raw Grid
 
@@ -129,17 +143,3 @@ Xcode built the app. All three focused core tests passed. The new case compares 
 Sharpening, noise reduction, shadows, highlights, clarity, texture and dehaze still use the 36-megapixel limit in this build. Camera compatibility and full-resolution admission depend on the Apple decoder.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-801) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_801.md).
-
-## 2026-11-28 — Step 800 — Open and retain large Camera Raw originals
-
-Photato now opens larger camera RAW files and keeps their sensor pixels in disk-backed tiles. Local originals above 64 MiB are snapshotted into a mapped private file. Camera Raw keeps a reduced overview for the dialog and the full sensor data for Open, Place Embedded and edits.
-
-Photato opened both the uncompressed and packed versions of the 8,192 × 5,120 synthetic DNG. The uncompressed source retained all 83,886,726 original bytes. The signed app opened the same file in Camera Raw at full sensor dimensions. The synthetic archive test round-tripped the RAW Smart Object and matching edit samples.
-
-Adobe Camera Raw 18.1.1 opened the owned 42-megapixel reference. Adobe documents a 65,000-pixel side limit and a 512-megapixel area limit. [Adobe Camera Raw limits](https://helpx.adobe.com/in/camera-raw/desktop/get-started/overview-and-setup/introduction-camera-raw.html).
-
-Xcode built the app. All four new focused checks and twelve related checks passed. The tests covered mapped storage, large RAW Smart Object persistence, exact pointwise edit samples, bounded DNG XMP writes API discovery and rejection of reduced decoder output. Both optimized architectures passed all 381 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-The 65,000-pixel and 512-megapixel admission bounds still depend on the decoder. The signed app was verified at 41,943,040 pixels. At the published boundaries, Apple reported reduced dimensions for the canonical synthetic DNGs. Photato now rejects those reduced outputs. Spatial Camera Raw adjustments still use the 36-megapixel limit. Adobe RAW pixel and file-byte parity remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-800) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_800.md).
