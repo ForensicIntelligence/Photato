@@ -10,11 +10,11 @@ enum TIFFModeStorage {
     switch mode { case .rgb: 2; case .grayscale: 1; case .cmyk: 5; case .lab: 8; case .indexed: 3; case .bitmap: 0; case .duotone, .multichannel: -1 }
   }
   static func mode(_ photometric: Int) -> DocumentColorMode? {
-    switch photometric { case 0, 1: .grayscale; case 2: .rgb; case 5: .cmyk; case 8, 9: .lab; default: nil }
+    switch photometric { case 0, 1: .grayscale; case 2, 6: .rgb; case 5: .cmyk; case 8, 9: .lab; default: nil }
   }
   static func read(_ data: Data, name: String, forcePaged: Bool = false) throws -> CraftDocument? {
     guard TIFFContainer.isClassic(data) else { return nil }
-    let file = try TIFFContainer(data, metadata: false, additionalTags: [332, 34377, 34675, 37724])
+    let file = try TIFFContainer(data, metadata: false, additionalTags: inputTags)
     let largeLayerPayload = hasLargeLayerPayload(file)
     return try read(file, name: name, forcePaged: forcePaged || largeLayerPayload, metadataSource: {
       if largeLayerPayload { return try metadataSnapshot(.memory(data)) }
@@ -22,12 +22,14 @@ enum TIFFModeStorage {
     }, layers: { try TIFFLayers.read(file, composite: $0, backing: $1, storedAlpha: $2) })
   }
   static func read(_ source: PSDFileSource, url: URL, name: String) throws -> CraftDocument? {
-    let file = try TIFFContainer(file: source, metadata: false, additionalTags: [332, 34377, 34675, 37724])
+    let file = try TIFFContainer(file: source, metadata: false, additionalTags: inputTags)
     return try read(file, name: name, forcePaged: true, metadataSource: {
       if hasLargeLayerPayload(file) { return try metadataSnapshot(.file(source)) }
       return CGImageSourceCreateWithURL(url as CFURL, nil)
     }, layers: { try TIFFLayers.read(file, composite: $0, backing: $1, storedAlpha: $2) })
   }
+  private static let inputTags: Set<Int> = TIFFContainer.jpegFields.union([332, 34377, 34675, 37724])
+
   private static func hasLargeLayerPayload(_ file: TIFFContainer) -> Bool {
     (file.root.fields[37724]?.fileRange?.count ?? 0) > RasterMetadata.maximumBytes
   }
@@ -40,13 +42,16 @@ enum TIFFModeStorage {
     layers: (CraftDocument, RasterTileStore?, [Surface]?) throws -> CraftDocument?) throws -> CraftDocument? {
     let photo = try file.scalar(262)
     guard let mode = mode(photo) else { return nil }
-    if mode == .rgb, !forcePaged, file.root.fields[324] == nil, file.root.fields[325] == nil {
+    let jpeg = try file.scalar(259, default: 1) == 7
+    if mode == .rgb, !jpeg, !forcePaged, file.root.fields[324] == nil, file.root.fields[325] == nil {
       let width = try file.scalar(256), height = try file.scalar(257)
       guard width > 0, height > 0, width > Surface.maximumDensePixels / height else { return nil }
     }
-    if mode == .grayscale, try file.numbers(258).contains(where: { $0 < 8 }) { return nil }
+    if mode == .grayscale, !jpeg, try file.numbers(258).contains(where: { $0 < 8 }) { return nil }
     guard let g = try TIFFStorage.Geometry(file, allowAssociatedAlpha: true,
-      colorComponents: mode.componentCount, photometric: photo, allowSavedAlpha: mode == .rgb, allowTiles: true) else {
+      colorComponents: mode.componentCount, photometric: photo, allowSavedAlpha: mode == .rgb,
+      allowTiles: true, allowJPEG: true) else {
+      if jpeg { throw CraftError.unsupported("JPEG-compressed TIFF requires opaque 8-bit RGB or grayscale samples.") }
       if mode == .rgb { return nil }
       throw CraftError.unsupported("This TIFF color-mode storage variant is not supported yet; import cancelled to retain its components.")
     }
@@ -63,7 +68,8 @@ enum TIFFModeStorage {
     let original = file.root.fields[34675]?.data
     let rgbWorkingICC = mode == .rgb ? try ColorManagement.importedProfile(original, depth: depth) : nil
     let profile = try rgbWorkingICC ?? PSDModeStorage.profile(original, mode: mode, depth: depth)
-    let backing = forcePaged || g.tileWidth != nil || g.width > NativeModeRaster.maximumPixels / g.height ? try RasterTileStore() : nil
+    let backing = forcePaged || jpeg || g.tileWidth != nil || g.width > NativeModeRaster.maximumPixels / g.height
+      ? try RasterTileStore() : nil
     let orientation = try file.scalar(274, default: 1)
     guard (1...8).contains(orientation) else { throw CraftError.invalid("Invalid TIFF orientation.") }
     if !g.savedAlphaSamples.isEmpty, depth != .u8 || orientation != 1 {

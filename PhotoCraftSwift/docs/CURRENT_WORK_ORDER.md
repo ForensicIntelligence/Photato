@@ -1,3 +1,5 @@
+**TIFF interchange.** Add JPEG compression to TIFF Save and qualify Photoshop’s grayscale rounding and subsampled chroma. [Development record](DEVLOG.md#dev-step-776) · [Qualification](SOURCE_PUBLICATION_776.md).
+
 **TIFF interchange.** Qualify JPEG-compressed TIFF and additional Photoshop preview samples. [Development record](DEVLOG.md#dev-step-775) · [Qualification](SOURCE_PUBLICATION_775.md).
 
 **TIFF interchange.** Match the Save Image Pyramid controls and reduced-resolution TIFF previews. [Development record](DEVLOG.md#dev-step-774) · [Qualification](SOURCE_PUBLICATION_774.md).

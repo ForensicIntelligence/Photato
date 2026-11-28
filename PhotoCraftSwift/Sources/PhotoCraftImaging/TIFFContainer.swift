@@ -159,6 +159,57 @@ struct TIFFContainer {
     try file.appendDirectories(to: &bytes, order: order)
     return bytes
   }
+  /// Keep JPEG table and color context intact for the native TIFF decoder.
+  static let jpegFields: Set<Int> = [347, 529, 530, 531, 532]
+
+  private init(order: Order) {
+    self.order = order
+    storage = .memory(Data())
+    root = Directory()
+  }
+
+  func jpegStrip(offset: Int, count: Int, width: Int, rows: Int, components: Int) throws -> Data {
+    guard (1...65_535).contains(width), (1...65_535).contains(rows),
+      width * rows <= Self.byteLimit / (components == 1 ? 1 : 4),
+      (1...Self.byteLimit - 1_048_576).contains(count) else {
+      throw CraftError.invalid("Invalid or oversized TIFF JPEG block.")
+    }
+    let encoded = try bytes(at: offset, count: count)
+    guard Self.completeJPEGStream(encoded) else { throw CraftError.invalid("Truncated TIFF JPEG block.") }
+    let photo = try scalar(262)
+    let block = TIFFContainer(order: order)
+    var data = Data(order == .big ? [77, 77, 0, 42, 0, 0, 0, 0] : [73, 73, 42, 0, 0, 0, 0, 0])
+    data.append(encoded)
+    block.set(256, [width], type: 4)
+    block.set(257, [rows], type: 4)
+    block.set(258, [Int](repeating: 8, count: components))
+    block.set(259, [7])
+    block.set(262, [components == 1 ? (photo == 0 ? 0 : 1) : photo])
+    block.set(273, [8], type: 4)
+    block.set(277, [components])
+    block.set(278, [rows], type: 4)
+    block.set(279, [count], type: 4)
+    block.set(284, [1])
+    if let tables = root.fields[347] {
+      guard tables.type == 7, tables.data.count <= 65_535,
+        Self.completeJPEGStream(tables.data) else {
+        throw CraftError.invalid("Invalid TIFF JPEG tables.")
+      }
+      block.root.fields[347] = tables
+    }
+    if photo == 6 {
+      for tag in Self.jpegFields where tag != 347 {
+        block.root.fields[tag] = root.fields[tag]
+      }
+    }
+    try block.appendDirectories(to: &data, order: order)
+    return data
+  }
+
+  private static func completeJPEGStream(_ data: Data) -> Bool {
+    data.count >= 4 && data.starts(with: [0xff, 0xd8]) && data.suffix(2).elementsEqual([0xff, 0xd9])
+  }
+
   func numbers(_ tag: Int, default fallback: [Int]? = nil) throws -> [Int] {
     guard let field = root.fields[tag] else {
       if let fallback { return fallback }

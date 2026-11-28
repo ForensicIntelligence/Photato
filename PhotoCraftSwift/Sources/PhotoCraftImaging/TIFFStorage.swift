@@ -16,7 +16,7 @@ enum TIFFStorage {
     let tileWidth: Int?
     init?(_ file: TIFFContainer, allowAssociatedAlpha: Bool = false,
       colorComponents: Int = 3, photometric: Int = 2, allowSavedAlpha: Bool = false,
-      allowTiles: Bool = false) throws {
+      allowTiles: Bool = false, allowJPEG: Bool = false) throws {
       let tiled = file.root.fields[324] != nil || file.root.fields[325] != nil
       guard allowTiles || !tiled else { return nil }
       guard try file.scalar(262) == photometric else { return nil }
@@ -59,8 +59,13 @@ enum TIFFStorage {
       }
       compression = try file.scalar(259, default: 1)
       predictor = try file.scalar(317, default: 1)
-      guard [1, 5, 8, 32946].contains(compression), [1, 2, 3].contains(predictor),
-        predictor != 3 || bits == 32, predictor != 2 || bits != 32 else { return nil }
+      if compression == 7 {
+        guard allowJPEG, bits == 8, channels == colorComponents, predictor == 1,
+          [0, 1, 2, 6].contains(photometric), photometric != 6 || !planar else { return nil }
+      } else {
+        guard photometric != 6, [1, 5, 8, 32946].contains(compression), [1, 2, 3].contains(predictor),
+          predictor != 3 || bits == 32, predictor != 2 || bits != 32 else { return nil }
+      }
       guard width > 0, height > 0, width <= Surface.maxDimension,
         height <= Surface.maxDimension, width <= Surface.maxPixels / height, rows > 0 else {
         throw CraftError.invalid("Invalid TIFF sample geometry.")

@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-27 — Step 776 — Open JPEG-compressed TIFFs
+
+Photato opens opaque Gray8 and RGB8 JPEG-compressed classic TIFFs as editable images. The decoder handles strips, rectangular tiles and separate RGB channels and keeps the original resolution, profiles and supported editable TIFF layers.
+
+All 346,365 color samples from seven authored TIFFs matched the full-file ImageIO TIFF decoder. The five grayscale and explicit RGB fixtures also matched all 207,819 samples from an independent libtiff decode. Photoshop 27.2 opened the grayscale tile and subsampled YCbCr strip references. Against their lossless Photoshop copies, 484 of 23,091 gray samples differed by one code. 65,314 of 69,273 YCbCr-derived RGB samples differed, with a mean of 14.14 and maximum of 123 codes on the high-chroma pattern.
+
+Xcode built the native app. All 3 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 259 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+Photoshop color reconstruction and JPEG IDCT rounding still differ on the measured inputs. JPEG TIFF save, legacy JPEG compression and additional component, density and corruption cases remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-776) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_776.md).
+
 ## 2026-11-27 — Step 775 — Save TIFF image pyramids
 
 Save Image Pyramid is available for classic RGB, Grayscale, CMYK and Lab TIFFs. Photato saves three smaller previews alongside the original image and optional editable layers.

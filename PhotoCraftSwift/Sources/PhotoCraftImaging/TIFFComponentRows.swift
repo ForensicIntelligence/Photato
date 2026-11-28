@@ -1,4 +1,6 @@
+import CoreGraphics
 import Foundation
+import ImageIO
 import PhotoCraftCore
 
 /// Decodes classic TIFF numeric strips and tiles into bounded component rows.
@@ -111,6 +113,11 @@ enum TIFFComponentRows {
 
   private static func readBlock(_ file: TIFFContainer, _ g: TIFFStorage.Geometry, index: Int,
     rows: Int, width: Int, components: Int, consume: (_ row: Int, _ samples: [UInt8]) throws -> Void) throws {
+    if g.compression == 7 {
+      try readJPEG(file, geometry: g, index: index, rows: rows, width: width,
+        components: components, consume: consume)
+      return
+    }
     let rowBytes = width * components * (g.bits / 8)
     var source = try file.reader(at: g.offsets[index], count: g.counts[index])
     let nextRow: () throws -> [UInt8]
@@ -145,6 +152,45 @@ enum TIFFComponentRows {
       try consume(row, samples)
     }
     try finish()
+  }
+
+  private static func readJPEG(_ file: TIFFContainer, geometry: TIFFStorage.Geometry, index: Int,
+    rows: Int, width: Int, components: Int, consume: (_ row: Int, _ samples: [UInt8]) throws -> Void) throws {
+    try Task.checkCancellation()
+    let data = try file.jpegStrip(offset: geometry.offsets[index], count: geometry.counts[index],
+      width: width, rows: rows, components: components)
+    guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+      let image = CGImageSourceCreateImageAtIndex(source, 0, [kCGImageSourceShouldCacheImmediately: true] as CFDictionary),
+      image.width == width, image.height == rows, image.bitsPerComponent == 8,
+      let bytes = image.dataProvider?.data as Data?,
+      image.bytesPerRow <= bytes.count / rows,
+      CGImageSourceGetStatusAtIndex(source, 0) == .statusComplete else {
+      throw CraftError.invalid("Unable to decode TIFF JPEG block.")
+    }
+
+    let stride: Int, start: Int
+    switch (components, image.bitsPerPixel, image.alphaInfo) {
+      case (1, 8, .none) where image.colorSpace?.model == .monochrome: (stride, start) = (1, 0)
+      case (3, 24, .none) where image.colorSpace?.model == .rgb: (stride, start) = (3, 0)
+      case (3, 32, .noneSkipLast) where image.colorSpace?.model == .rgb: (stride, start) = (4, 0)
+      case (3, 32, .noneSkipFirst) where image.colorSpace?.model == .rgb: (stride, start) = (4, 1)
+      default: throw CraftError.invalid("Invalid TIFF JPEG color layout.")
+    }
+    let byteOrder = image.bitmapInfo.intersection(.byteOrderMask)
+    guard (byteOrder.isEmpty || (stride == 4 && [.byteOrder32Big, .byteOrder32Little].contains(byteOrder))),
+      image.bytesPerRow >= width * stride else { throw CraftError.invalid("Invalid TIFF JPEG row layout.") }
+    let reversed = byteOrder == .byteOrder32Little
+    let first = reversed ? stride - 1 - start : start
+    let step = reversed ? -1 : 1
+    var samples = [UInt8](repeating: 0, count: width * components)
+    for y in 0..<rows {
+      try Task.checkCancellation()
+      let row = y * image.bytesPerRow
+      for x in 0..<width {
+        for c in 0..<components { samples[x * components + c] = bytes[row + x * stride + first + c * step] }
+      }
+      try consume(y, samples)
+    }
   }
 
   static func oriented(_ source: NativeModeRaster, orientation: Int, backing: RasterTileStore) throws -> NativeModeRaster {

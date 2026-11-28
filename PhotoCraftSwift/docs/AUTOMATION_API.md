@@ -1,3 +1,9 @@
+### JPEG-compressed TIFF input (checkpoint 776)
+
+Native file Open, authenticated Photato uploads and Adobe-compatible action resource decoding share this TIFF reader. The API test compares all grayscale and opacity samples across these paths without changing Adobe request fields.
+
+[Qualification](SOURCE_PUBLICATION_776.md).
+
 ### TIFF image pyramids (checkpoint 775)
 
 The native save accessory and Photato encoding options share the pyramid writer. The HTTP download matched the expected TIFF. The Adobe wire schema retains its published fields.
