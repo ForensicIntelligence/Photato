@@ -8,6 +8,9 @@ public enum CameraRawXMP {
   public static let maximumBytes = 256 * 1024
   private static let namespace = "http://ns.adobe.com/camera-raw-settings/1.0/"
   private static let prefix = "crs"
+  private static let nativeNamespace = "https://forensicintelligence.ca/photato/ns/raw/1.0/"
+  private static let nativePrefix = "photatoRaw"
+  private static let nativeField = "Development"
 
   private static let scalars: [(String, String)] = [
     ("Exposure2012", "exposure"), ("Contrast2012", "contrast"),
@@ -60,7 +63,30 @@ public enum CameraRawXMP {
   }
 
   public static func read(_ data: Data, into base: RawDevelopment) throws -> RawDevelopment {
+    try readRaw(Packet(data), into: base)
+  }
+
+  static func readEmbeddedDNG(_ data: Data) throws -> RawDevelopment {
     let packet = try Packet(data)
+    var result = try readRaw(packet, into: RawDevelopment())
+    guard let native = packet.nativeDevelopment else { return result }
+    // Adobe fields remain authoritative after an external edit. The extra
+    // namespace carries only the controls with no equivalent portable field.
+    result.decoderVersion = native.decoderVersion
+    result.exposure = native.exposure
+    result.boost = native.boost
+    result.shadowBoost = native.shadowBoost
+    result.extendedRange = native.extendedRange
+    result.lensCorrection = native.lensCorrection
+    result.highlightRecovery = native.highlightRecovery
+    result.adjustments.temperature = native.adjustments.temperature
+    result.adjustments.tint = native.adjustments.tint
+    result.adjustments.seed = native.adjustments.seed
+    result.adjustments.pixelScale = native.adjustments.pixelScale
+    return result
+  }
+
+  private static func readRaw(_ packet: Packet, into base: RawDevelopment) throws -> RawDevelopment {
     var result = base
     result.adjustments = try read(packet, into: base.adjustments)
     if packet.string("WhiteBalance") == "As Shot" {
@@ -117,8 +143,42 @@ public enum CameraRawXMP {
     return try write(settings.adjustments, sensor: settings, replacing: original)
   }
 
+  static func writeEmbeddedDNG(_ settings: RawDevelopment, replacing original: Data?, including sidecar: Data?) throws -> Data {
+    try settings.validate()
+    return try write(settings.adjustments, sensor: settings, replacing: original,
+      including: sidecar, includeNativeDevelopment: true)
+  }
+
+  private static func tags(in metadata: CGImageMetadata) -> [CGImageMetadataTag] {
+    (CGImageMetadataCopyTags(metadata) as? [CGImageMetadataTag]) ?? []
+  }
+
+  private static func merge(_ data: Data, into metadata: CGMutableImageMetadata) throws {
+    guard (1...maximumBytes).contains(data.count),
+      let source = CGImageMetadataCreateFromXMPData(data as CFData) else {
+      throw CraftError.invalid("Could not preserve the source sidecar metadata.")
+    }
+    for tag in tags(in: metadata) where CGImageMetadataTagCopyNamespace(tag) as String? == namespace {
+      guard let prefix = CGImageMetadataTagCopyPrefix(tag) as String?,
+        let name = CGImageMetadataTagCopyName(tag) as String?,
+        CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):\(name)" as CFString) else {
+        throw CraftError.invalid("Could not replace the embedded Camera Raw settings with the sidecar.")
+      }
+    }
+    for tag in tags(in: source) {
+      guard let namespace = CGImageMetadataTagCopyNamespace(tag),
+        let prefix = CGImageMetadataTagCopyPrefix(tag),
+        let name = CGImageMetadataTagCopyName(tag) as String?,
+        CGImageMetadataRegisterNamespaceForPrefix(metadata, namespace, prefix, nil),
+        CGImageMetadataSetTagWithPath(metadata, nil, "\(prefix):\(name)" as CFString, tag) else {
+        throw CraftError.invalid("Could not merge a source sidecar metadata field.")
+      }
+    }
+  }
+
   private static func write(_ settings: CameraRawSettings, sensor: RawDevelopment?,
-    replacing original: Data? = nil) throws -> Data {
+    replacing original: Data? = nil, including sidecar: Data? = nil,
+    includeNativeDevelopment: Bool = false) throws -> Data {
     try settings.validate()
     let metadata: CGMutableImageMetadata
     if let original {
@@ -131,7 +191,8 @@ public enum CameraRawXMP {
     } else {
       metadata = CGImageMetadataCreateMutable()
     }
-    let originalTags = (CGImageMetadataCopyTags(metadata) as? [CGImageMetadataTag]) ?? []
+    if let sidecar { try merge(sidecar, into: metadata) }
+    let originalTags = tags(in: metadata)
     let cameraTag = originalTags.first { CGImageMetadataTagCopyNamespace($0) as String? == namespace }
     let prefix = cameraTag.flatMap { CGImageMetadataTagCopyPrefix($0) as String? } ?? Self.prefix
     guard CGImageMetadataRegisterNamespaceForPrefix(metadata, namespace as CFString, prefix as CFString, nil) else {
@@ -181,6 +242,19 @@ public enum CameraRawXMP {
     if let index = vignetteStyles.firstIndex(of: settings.vignetteStyle) {
       try setNumber("PostCropVignetteStyle", Float(index + 1))
     }
+    if includeNativeDevelopment, let sensor {
+      // Keep the portable controls in Adobe's namespace even though this
+      // supplemental record also uses the native settings representation.
+      let encoder = JSONEncoder()
+      encoder.outputFormatting = [.sortedKeys]
+      let value = try encoder.encode(sensor).base64EncodedString()
+      let tag = originalTags.first { CGImageMetadataTagCopyNamespace($0) as String? == nativeNamespace }
+      let alias = tag.flatMap { CGImageMetadataTagCopyPrefix($0) as String? } ?? nativePrefix
+      guard CGImageMetadataRegisterNamespaceForPrefix(metadata, nativeNamespace as CFString, alias as CFString, nil),
+        CGImageMetadataSetValueWithPath(metadata, nil, "\(alias):\(nativeField)" as CFString, value as CFString) else {
+        throw CraftError.invalid("Could not retain Photato’s native RAW settings in the DNG.")
+      }
+    }
     guard let data = CGImageMetadataCreateXMPData(metadata, nil) as Data?, data.count <= maximumBytes else {
       throw CraftError.invalid("Could not write the Camera Raw XMP settings.")
     }
@@ -189,6 +263,7 @@ public enum CameraRawXMP {
 
   private struct Packet {
     let fields: [String: CGImageMetadataTag]
+    let nativeDevelopment: RawDevelopment?
 
     init(_ data: Data) throws {
       guard !data.isEmpty, data.count <= maximumBytes,
@@ -205,6 +280,15 @@ public enum CameraRawXMP {
         throw CraftError.invalid("The XMP file has no supported Camera Raw adjustments.")
       }
       self.fields = fields
+      let native = tags.first { tag in
+        CGImageMetadataTagCopyNamespace(tag) as String? == nativeNamespace
+          && CGImageMetadataTagCopyName(tag) as String? == nativeField
+      }
+      let value = native.flatMap { CGImageMetadataTagCopyValue($0) as? String }
+      nativeDevelopment = value.flatMap { text in
+        guard text.utf8.count <= 43_692, let data = Data(base64Encoded: text) else { return nil }
+        return try? RawDevelopment.decodeJSON(data)
+      }
     }
 
     func string(_ name: String) -> String? {

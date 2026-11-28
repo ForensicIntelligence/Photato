@@ -6,6 +6,10 @@ extension RawSourceIO {
   /// Reuse the original TIFF addresses for all sensor, preview and metadata data.
   /// Only the first directory pointer changes in the copy of the original bytes.
   public static func dngWithSettings(_ data: Data, settings: RawDevelopment) throws -> Data {
+    try dngWithSettings(data, settings: settings, including: nil)
+  }
+
+  static func dngWithSettings(_ data: Data, settings: RawDevelopment, including sidecar: Data?) throws -> Data {
     try Task.checkCancellation()
     guard data.count <= SmartObject.maximumSourceBytes, TIFFContainer.isClassic(data) else {
       throw CraftError.unsupported("Choose a classic DNG file under 64 MiB.")
@@ -22,7 +26,7 @@ extension RawSourceIO {
         throw CraftError.invalid("The DNG’s existing XMP tag cannot be updated safely.")
       }
     }
-    let packet = try CameraRawXMP.write(settings, replacing: existing?.data)
+    let packet = try CameraRawXMP.writeEmbeddedDNG(settings, replacing: existing?.data, including: sidecar)
     if packet == existing?.data { return data }
 
     let order = container.order

@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **787** · The 10 most recent entries, newest first.
+Source build **788** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 788 — Save Camera Raw settings in the original DNG
+
+Camera Raw’s Done button now saves changes into a locally opened DNG and closes the editor. If the image opened with an XMP sidecar, Photato embeds its metadata and backs up the sidecar before removing it when required by the sandbox. The source sensor bytes stay intact.
+
+Photato and Adobe Camera Raw 18.1.1 saved Exposure +1.75 in the DNG sidecar test and preserved all 393,216 sensor bytes. Adobe reopened the updated Photato DNG. Photato also retained the separate sensor exposure through its own embedded settings.
+
+Xcode built the app. Three focused imaging tests and one authenticated HTTP test passed. Both optimized architectures passed all 340 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+This covers the tested classic DNG settings. Other RAW sidecar writing, camera-specific defaults and settings databases, DNG preview regeneration, physical Intel testing, and pixel-level Adobe Camera Raw equivalence remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-788) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_788.md).
 
 ## 2026-11-27 — Step 787 — Save editable Camera Raw settings in DNG copies
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 3 focused imaging and 1 focused app and HTTP tes
 The high-offset test used a sparse file. Dense multi-gigabyte composite and editable-layer output and broader Photoshop container comparisons remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-779) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_779.md).
-
-## 2026-11-27 — Step 778 — Open BigTIFF files with 64-bit offsets
-
-Photato opens supported BigTIFFs as editable documents. Its native reader uses 64-bit offsets to find strips, rectangular tiles, metadata and supported Photoshop layer records.
-
-Photato and Photoshop 27.2 decoded all 23,091 grayscale samples from a test strip stored at byte 4,295,032,832, beyond the classic TIFF offset limit. The standalone native reader peaked at 19.7 MiB of memory on that sparse file. A separate big-endian BigTIFF matched 141,932 individually authored CMYK16 samples. The tests also compared indexed, bitmap and editable layer records with their classic TIFF references.
-
-Xcode built the native app. All 4 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 268 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
-
-The >4 GiB test used a sparse file with a small image at a high offset. Dense multi-gigabyte pixel and Photoshop-layer payloads, BigTIFF output and broader format comparisons remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-778) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_778.md).

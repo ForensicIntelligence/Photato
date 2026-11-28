@@ -456,6 +456,7 @@ struct CanvasRenderRequest: Sendable {
   var colorBalanceDraft: ColorBalanceDraft?
   var gradientMapDraft: GradientMapDraft?
   var filterDraft: FilterDraft?
+  @ObservationIgnored weak var initialRawDocument: CraftNSDocument?
   var filterRecall = FilterRecall()
   @ObservationIgnored var cameraLensMetadataCache = CameraLensMetadataCache()
   @ObservationIgnored var repeatFilterPreparation: @Sendable (CraftDocument, FilterRepeatRequest) throws -> Command = { try $1.command(in: $0) }

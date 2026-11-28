@@ -13,7 +13,7 @@ extension RawDevelopment {
       "lensCorrection":["type":["boolean","null"]],"highlightRecovery":["type":["boolean","null"]],"adjustments":CameraRawSettings.apiSchema]]
   }
   static var apiCapabilities: [String:Any] {
-    ["commands":["raw.inspect","raw.develop",CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
+    ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
      "maximumSourceBytes":SmartObject.maximumSourceBytes,"maximumSensorPixels":RawSourceIO.maximumPixels,"nativeArchiveVersion":22,
      "import":"POST /v1/documents/import; optional X-Photato-Open-Format: raw. Upload retains existing4MP/64MiB API limits. File Open and Place Embedded accept supported camera RAW types and read their matching XMP sidecar or embedded settings. For HTTP import, X-Photato-Raw-XMP accepts up to 8 KiB of base64-decoded XMP with the sensor bytes.",
      "history":"raw.develop uses the desktop source-redevelopment transaction. Partial settings or XMP retain existing values where fields are omitted. Explicit null or XMP As Shot resets the applicable values to decoder defaults. allInstances defaults true.",
@@ -21,6 +21,8 @@ extension RawDevelopment {
      "developedDNGDownload":["method":"GET","path":"/v1/documents/{id}/smart-objects/{layerID}/source.dng",
        "contentType":"image/x-adobe-dng", "optionalRevisionHeader":"X-Photato-Revision",
        "behavior":"Returns a DNG copy with supported embedded Camera Raw settings. Retains sensor bytes and the original document. Requires native document transfers and an existing share."],
+     "sourceSettingsSave":["command":"raw.saveSourceSettings","parameters":["layerID":"UUID"],
+       "behavior":"Writes committed settings to the explicitly opened DNG. Requires local document saving, a shared document and current revision. A matching sidecar is retired after its settings are embedded, with a local backup if Trash is unavailable. The editor's state and history are preserved."],
      "availability":"Apple native camera/decoder support is checked per source. Highlight recovery requires supported macOS26+ hardware/decoder; no preview fallback, download or cloud call.",
      "limitations":"Default imports are RGB16. Sensor redevelop uses current document depth/profile. Save native Photato for editable source; PSD RAW descriptor interchange, general RAW-to-DNG encoding, Adobe white-balance preset rendering and all-camera parity remain unqualified. Camera Raw XMP settings convert through cameraRaw.settings.convert."]
   }
@@ -92,15 +94,49 @@ extension AutomationService {
       headers: ["X-Photato-Revision": expected])
   }
 
+  func saveRawSourceThroughAPI(_ command: AutomationCommand, document: CraftNSDocument,
+    shareID: UUID) async throws {
+    guard documentSavesEnabled else {
+      throw AutomationFailure(status: 403, message: "Allow local document saving in the native API window first.")
+    }
+    let (layerID, object) = try command.rawTarget(document.store.document)
+    guard document.canSaveRawSourceSettings(layerID: layerID), let settings = object.rawDevelopment else {
+      throw AutomationFailure(status: 422, message: "Select the original layer of a locally opened DNG.")
+    }
+    guard rawSourceSaveTasks[shareID] == nil else {
+      throw AutomationFailure(status: 409, message: "A DNG source save is already running.")
+    }
+    try Task.checkCancellation()
+    let task = Task { try await document.saveRawSourceSettings(layerID: layerID, settings: settings) }
+    rawSourceSaveTasks[shareID] = task
+    defer { rawSourceSaveTasks.removeValue(forKey: shareID) }
+    do {
+      try await withTaskCancellationHandler { try await task.value } onCancel: { task.cancel() }
+    } catch RawDNGSource.SaveError.sidecarAccessNeeded {
+      throw AutomationFailure(status: 403, message: "Authorize the DNG’s folder in Photato before retiring its XMP sidecar.")
+    } catch RawDNGSource.SaveError.sourceChanged {
+      throw AutomationFailure(status: 409, message: "The DNG or its sidecar changed. Reopen it before saving.")
+    } catch is CancellationError {
+      throw AutomationFailure(status: 409, message: "The DNG source save was cancelled or revoked.")
+    } catch {
+      throw AutomationFailure(status: 422, message: error.localizedDescription)
+    }
+    guard isRunning, shares.contains(where: { $0.id == shareID && $0.document === document }) else {
+      throw AutomationFailure(status: 409, message: "Sharing ended during the DNG source save.")
+    }
+  }
+
   func inspectRaw(_ command: AutomationCommand,document: CraftNSDocument,shareID: UUID) async throws -> [String:Any] {
     let expected = revision(document.store)
     guard command.revision == expected else { throw AutomationFailure(status:409,message:"Stale document revision.") }
-    let (_,object) = try command.rawTarget(document.store.document)
+    let (layerID,object) = try command.rawTarget(document.store.document)
     let worker = Task.detached { try RawSourceIO.inspect(object.data,decoderVersion:object.rawDevelopment?.decoderVersion) }
     let info = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
     guard isRunning,shares.contains(where: { $0.id == shareID && $0.document === document }),revision(document.store) == expected else { throw AutomationFailure(status:409,message:"RAW source changed or sharing ended.") }
     var result = try JSONSerialization.jsonObject(with:JSONEncoder().encode(info)) as! [String:Any]
-    result["settings"] = try JSONSerialization.jsonObject(with:JSONEncoder().encode(object.rawDevelopment!)); result["revision"] = expected
+    result["settings"] = try JSONSerialization.jsonObject(with:JSONEncoder().encode(object.rawDevelopment!))
+    result["revision"] = expected
+    result["canSaveSourceSettings"] = documentSavesEnabled && document.canSaveRawSourceSettings(layerID: layerID)
     return result
   }
 }

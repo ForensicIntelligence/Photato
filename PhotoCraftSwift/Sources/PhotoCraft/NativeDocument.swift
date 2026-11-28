@@ -83,9 +83,16 @@ import SwiftUI
     ownerController?.documentWindows.present(self)
   }
   var openRawDevelopmentOnDisplay = false
+  var localDNGSource: (layerID: UUID, original: RawDNGSource, retainedBytes: Data)?
+  var dngSaveTask: Task<RawDNGSource, Error>?
+
   override func showWindows() {
     ownerController?.documentWindows.present(self)
-    if openRawDevelopmentOnDisplay { openRawDevelopmentOnDisplay = false; store.beginRawDevelopment() }
+    if openRawDevelopmentOnDisplay {
+      openRawDevelopmentOnDisplay = false
+      store.beginRawDevelopment()
+      if store.filterDraft?.rawDevelopment != nil { store.initialRawDocument = self }
+    }
   }
   override func restoreWindow(
     withIdentifier identifier: NSUserInterfaceItemIdentifier, state: NSCoder,
@@ -530,6 +537,8 @@ import SwiftUI
     resetRecoverySource()
     store.invalidateHistory()
     fileOperationTask?.cancel()
+    dngSaveTask?.cancel()
+    store.initialRawDocument = nil
     copyPanel?.cancel(nil)
     store.cancelRemove(); store.cancelRegionRetouch(); store.cancelCrop(); store.clearContentAwareScale(); store.cancelEmbeddedPlacement(); store.closePDFSourceEditors(); store.cancelSelectionTransform();store.transformDraft = nil
     resetPrintWorkspace()

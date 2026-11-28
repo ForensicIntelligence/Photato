@@ -67,9 +67,20 @@ public enum RawSourceIO {
   }
   public static func inspect(_ data: Data,decoderVersion: String? = nil) throws -> Info { try decoder(data,version:decoderVersion).1 }
   public static func read(_ url: URL,depth: PixelDepth = .u16) throws -> CraftDocument {
-    let file = try FileHandle(forReadingFrom:url); defer { try? file.close() }
-    let data = try file.read(upToCount:SmartObject.maximumSourceBytes+1) ?? Data()
-    return try open(data, fileName: url.lastPathComponent, settings: relatedSettings(for: url), depth: depth)
+    try prepareLocal(url, depth: depth).document
+  }
+
+  public static func prepareLocal(_ url: URL, depth: PixelDepth = .u16) throws
+    -> (document: CraftDocument, dngSource: RawDNGSource?) {
+    let source = try PSDFileSource(url, maximumBytes: SmartObject.maximumSourceBytes)
+    let data = try source.bytes(at: 0, count: source.count)
+    let related = try relatedXMP(for: url)
+    let document = try open(data, fileName: url.lastPathComponent, settings: related?.settings, depth: depth)
+    try source.validateUnchanged()
+    let canSave = document.layers.first?.smartObject?.mediaType == "image/x-adobe-dng"
+      && TIFFContainer.isClassic(data) && (try? url.resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink) == false
+    let local = canSave ? RawDNGSource(url: url, original: data, sidecar: related) : nil
+    return (document, local)
   }
   public static func open(_ data: Data, fileName: String, settings requested: RawDevelopment? = nil,
     depth: PixelDepth = .u16) throws -> CraftDocument {
@@ -83,8 +94,16 @@ public enum RawSourceIO {
     let metadata: [String: Data]?
     if let source, let properties { metadata = try RasterMetadata.capture(source, properties: properties) }
     else { metadata = nil }
-    let embedded = (metadata?[RasterMetadata.xmpKey]).flatMap { try? CameraRawXMP.read($0, into: RawDevelopment()) }
-    let (pixels, settings, info) = try render(data, settings: requested ?? embedded ?? .init(), depth: depth)
+    var initial = requested
+      ?? (metadata?[RasterMetadata.xmpKey]).flatMap { try? CameraRawXMP.readEmbeddedDNG($0) }
+      ?? .init()
+    if requested == nil, initial.decoderVersion != nil || initial.highlightRecovery == true || initial.lensCorrection == true {
+      let available = try inspect(data)
+      if let version = initial.decoderVersion, !available.supportedDecoders.contains(version) { initial.decoderVersion = nil }
+      if !available.highlightRecoverySupported { initial.highlightRecovery = nil }
+      if !available.lensCorrectionSupported { initial.lensCorrection = nil }
+    }
+    let (pixels, settings, info) = try render(data, settings: initial, depth: depth)
     var name = URL(fileURLWithPath:fileName).lastPathComponent
     if (name as NSString).pathExtension.isEmpty { name += "." + (UTType(info.type)?.preferredFilenameExtension ?? "raw") }
     var document = try CraftDocument(width:pixels.width,height:pixels.height,depth:depth,name:(name as NSString).deletingPathExtension)

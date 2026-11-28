@@ -54,6 +54,7 @@ import UniformTypeIdentifiers
   @ObservationIgnored var linkedSourceWriteLeases:[UUID:UUID]=[:]
   var linkedSourceWriteOperations:[UUID:LinkedSourceWriteOperation]=[:]
   @ObservationIgnored var linkedSourceWriteTasks:[UUID:Task<Void,Never>]=[:]
+  @ObservationIgnored var rawSourceSaveTasks: [UUID: Task<Void, Error>] = [:]
   @ObservationIgnored var linkedSourceWritePreparation: @Sendable (Data,CraftDocument,[UUID:LinkedArtworkGrant],LinkedArtworkGrant,String) async throws -> PreparedLinkedSourceWrite = {
     try PreparedLinkedSourceWrite.prepare($0,in:$1,grants:$2,target:$3,expectedFingerprint:$4)
   }
@@ -247,7 +248,10 @@ import UniformTypeIdentifiers
   func setDocumentSavesEnabled(_ enabled: Bool) {
     documentSaveGeneration = UUID()
     documentSavesEnabled = enabled && isRunning
-    if !documentSavesEnabled { actionBatchTask?.cancel() }
+    if !documentSavesEnabled {
+      actionBatchTask?.cancel()
+      for task in rawSourceSaveTasks.values { task.cancel() }
+    }
   }
   func setWorkspacePanelChangesEnabled(_ enabled: Bool) {
     workspacePanelChangesEnabled = enabled && isRunning
@@ -321,6 +325,7 @@ import UniformTypeIdentifiers
   func revoke(_ id: UUID) {
     if mergeChannelsShareIDs.contains(id) { mergeChannelsTask?.cancel() }
     linkedSourceWriteTasks[id]?.cancel()
+    rawSourceSaveTasks[id]?.cancel()
     if imageProcessorSourceIDs.contains(id) {imageProcessorTask?.cancel()}
     if scanCropSourceID == id {scanCropTask?.cancel()}
     if contactSheetSourceIDs.contains(id) {contactSheetTask?.cancel()}
@@ -333,7 +338,7 @@ import UniformTypeIdentifiers
       let expired =
         !controller.documents.contains(where: { $0 === document })
         || document.store.layerPanelGeneration != share.generation
-      if expired { linkedSourceWriteTasks[share.id]?.cancel();cancelSharedHistory(share); cancelSharedPrint(share);cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedIllustratorPaths(share);cancelSharedLayerFiles(share);cancelSharedSmartObjectComp(share);cancelSharedLayerCompEdit(share);cancelSharedAudio(share) }
+      if expired { rawSourceSaveTasks[share.id]?.cancel(); linkedSourceWriteTasks[share.id]?.cancel();cancelSharedHistory(share); cancelSharedPrint(share);cancelSharedVideoRender(share);cancelSharedSequenceExport(share);cancelSharedVariableExport(share);cancelSharedLayerCompExport(share);cancelSharedImageExport(share);cancelSharedIllustratorPaths(share);cancelSharedLayerFiles(share);cancelSharedSmartObjectComp(share);cancelSharedLayerCompEdit(share);cancelSharedAudio(share) }
       return expired
     }
   }
@@ -1469,6 +1474,10 @@ import UniformTypeIdentifiers
       if command.name == "document.imageStack" { return try await executeImageStack(command,anchorID:id) }
       if command.name == "document.hdrMerge" { return try await executeHDRMerge(command,anchorID:id) }
       if command.name == "raw.inspect" { return .json(try await inspectRaw(command,document:document,shareID:id)) }
+      if command.name == "raw.saveSourceSettings" {
+        try await saveRawSourceThroughAPI(command, document: document, shareID: id)
+        return .json(state(share, document: document))
+      }
       if command.name == CameraRawXMPAPI.name { return .json(try CameraRawXMPAPI.convert(command)) }
       if command.name == "liquify.faces" { return .json(try await detectLiquifyFaces(command, document: document, shareID: id)) }
       if command.name == "document.autosave" {

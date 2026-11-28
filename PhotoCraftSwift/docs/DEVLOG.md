@@ -806,7 +806,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 785 | 2026-11-27 | [Read and write Camera Raw XMP settings](#dev-step-785) |
 | 786 | 2026-11-27 | [Open Camera Raw sidecar and embedded XMP settings](#dev-step-786) |
 | 787 | 2026-11-27 | [Save editable Camera Raw settings in DNG copies](#dev-step-787) |
+| 788 | 2026-11-27 | [Save Camera Raw settings in the original DNG](#dev-step-788) |
 <!-- history-index:end -->
+
+<a id="dev-step-788"></a>
+
+## 2026-11-27 — Step 788 — Save Camera Raw settings in the original DNG
+
+Camera Raw’s Done button now saves changes into a locally opened DNG and closes the editor. If the image opened with an XMP sidecar, Photato embeds its metadata and backs up the sidecar before removing it when required by the sandbox. The source sensor bytes stay intact.
+
+The DNG alone can be updated with its file grant. macOS allowed the matching XMP to be read but refused both a Trash move and unlink through a file grant. The test confirmed byte-exact DNG and sidecar rollback. Done offers a native chooser for the same folder when required. Photato retains Adobe adjustment fields and stores its native sensor controls in supplemental XMP. The source file writer and API keep the previously imported pixels editable and rely on the original-file association. [Apple App Sandbox](https://developer.apple.com/documentation/security/accessing-files-from-the-macos-app-sandbox) · [Adobe Camera Raw settings](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/camera-raw-settings.html).
+
+Photato and Adobe Camera Raw 18.1.1 saved Exposure +1.75 in the DNG sidecar test and preserved all 393,216 sensor bytes. Adobe reopened the updated Photato DNG. Photato also retained the separate sensor exposure through its own embedded settings.
+
+The authenticated `raw.saveSourceSettings` command requires the original DNG layer, a current revision and the native Allow local document saving option. It uses the same coordinated write, checks for external changes and retains editor history and source layer bytes. A sandbox denial returns an error and rolls back the DNG if the output still matches the staged version.
+
+Xcode built the app. Three focused imaging tests and one authenticated HTTP test passed. Both optimized architectures passed all 340 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+This covers the tested classic DNG settings. Other RAW sidecar writing, camera-specific defaults and settings databases, DNG preview regeneration, physical Intel testing, and pixel-level Adobe Camera Raw equivalence remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,450,774 bytes with SHA-256 `04eeada7fe6120a4269afe2aee09d9d6f0e03f26abd24b48ced9419e43350fe3`.
+
+[Qualification](SOURCE_PUBLICATION_788.md).
 
 <a id="dev-step-787"></a>
 

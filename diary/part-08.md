@@ -1428,4 +1428,12 @@ All 204 selected checks passed. The optimized Apple Silicon and Intel versions r
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-538) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_538.md).
 
+## 2026-11-17 — Step 537: record Pencil strokes in Actions
+
+The Pencil now plays back in Actions. A recorded stroke keeps the points, brush settings and destination. Auto Erase checks the first pixel in the playback document, so the same step can switch between foreground and background on different images.
+
+All 199 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. A new 24-dab Photoshop comparison measured the Brush's edge softness across six sizes. Exact brush pixels still differ.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-537) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_537.md).
+
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

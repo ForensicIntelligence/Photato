@@ -1,3 +1,9 @@
+### Local DNG source settings (checkpoint 788)
+
+The authenticated `raw.saveSourceSettings` command requires the original DNG layer, a current revision and the native Allow local document saving option. It uses the same coordinated write, checks for external changes and retains editor history and source layer bytes. A sandbox denial returns an error and rolls back the DNG if the output still matches the staged version.
+
+[Qualification](SOURCE_PUBLICATION_788.md).
+
 ### DNG copies with embedded Camera Raw settings (checkpoint 787)
 
 The authenticated `GET /v1/documents/{id}/smart-objects/{layerID}/source.dng` downloads a copy using the retained DNG and current committed settings. It requires native document transfers, supports the optional `X-Photato-Revision` header, and shares the native writer. The original source download stays byte-exact. The API reports a stale revision or revoked transfer without changing the document.

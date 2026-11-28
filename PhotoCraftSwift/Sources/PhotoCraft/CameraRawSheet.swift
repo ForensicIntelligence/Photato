@@ -18,6 +18,9 @@ struct CameraRawSheet: View {
   @State private var exportType = Self.xmpType
   @State private var exportName = "Camera Raw.xmp"
   @State private var dngTask: Task<Void, Never>?
+  @State private var savingSource = false
+  @State private var sourceSaveError: String?
+  @State private var sidecarAccessPanel: NSOpenPanel?
   private static let xmpType = UTType(filenameExtension: "xmp", conformingTo: .data) ?? .xml
   private static let dngType = UTType("com.adobe.raw-image") ?? .data
   private var groups: [String] { (model.sensorSettings == nil ? [] : ["Sensor"]) + ["Light","Color","Effects","Curve","Color Mixer","Color Grading","Detail"] }
@@ -34,7 +37,11 @@ struct CameraRawSheet: View {
       HStack {
         Text(model.sensorSettings == nil ? "Camera Raw Filter" : "Camera Raw — Source").font(.headline)
         Spacer()
-        if model.rendering { ProgressView().controlSize(.small).accessibilityLabel("Rendering Camera Raw preview") }
+        if savingSource {
+          ProgressView().controlSize(.small).accessibilityLabel("Saving Camera Raw settings")
+        } else if model.rendering {
+          ProgressView().controlSize(.small).accessibilityLabel("Rendering Camera Raw preview")
+        }
         Button("Load Settings…") { importing = true }
           .help("Load Camera Raw XMP or Photato JSON settings.")
         Menu("Save Settings") {
@@ -69,7 +76,9 @@ struct CameraRawSheet: View {
         }.padding(14).frame(width:310)
       }
       Divider()
-      if let error = model.error { Text(error).font(.caption).foregroundStyle(.red).padding(6) }
+      if let error = sourceSaveError ?? model.error {
+        Text(error).font(.caption).foregroundStyle(.red).padding(6)
+      }
       HStack {
         Toggle("Preview",isOn:$model.preview)
         Button("−") { model.zoom = max(0.25,model.zoom/1.25) }; Text("\(Int(model.zoom*100))% fit").monospacedDigit()
@@ -78,14 +87,24 @@ struct CameraRawSheet: View {
         Button("Reset") { model.reset() }
         Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty)
         Button("Redo") { model.redo() }.disabled(model.redoStates.isEmpty)
-        Button("Cancel") { if let placement {placement.cancel()} else {model.close(); store.cancelFilter()} }.keyboardShortcut(.cancelAction)
-        Button("OK") { guard model.ready else { return }; if let placement {placement.run();return}; store.filterDraft?.filter.cameraRaw = model.settings; store.filterDraft?.rawDevelopment = model.sensorSettings; model.close(); store.commitFilter() }.keyboardShortcut(.defaultAction).disabled(!model.ready)
+        Button("Cancel", action: cancel).keyboardShortcut(.cancelAction)
+        if let document = store.initialRawDocument, document.localDNGSource != nil {
+          Button("Done") { saveSource(document) }
+            .help("Save these settings to the source DNG and close Camera Raw.")
+            .disabled(!model.ready || dngTask != nil)
+        }
+        Button(store.initialRawDocument == nil ? "OK" : "Open", action: commit)
+          .keyboardShortcut(.defaultAction).disabled(!model.ready)
       }.padding(12)
-    }.frame(width:min(1180,(NSScreen.main?.visibleFrame.width ?? 1280)-80),height:min(780,(NSScreen.main?.visibleFrame.height ?? 900)-100))
+    }.disabled(savingSource)
+    .interactiveDismissDisabled(savingSource)
+    .frame(width:min(1180,(NSScreen.main?.visibleFrame.width ?? 1280)-80),height:min(780,(NSScreen.main?.visibleFrame.height ?? 900)-100))
     .task { guard let draft = store.filterDraft else { return }; model.onChange = { store.filterDraft?.filter.cameraRaw = $0 }; model.onSensorChange = { store.filterDraft?.rawDevelopment = $0 }; if draft.rawDevelopment != nil { group = "Sensor" }; await model.prepare(document:store.document,draft:draft) }
     .onDisappear {
       dngTask?.cancel()
       dngTask = nil
+      sidecarAccessPanel?.cancel(nil)
+      sidecarAccessPanel = nil
       model.close()
     }
     .fileImporter(isPresented: $importing, allowedContentTypes: [Self.xmpType, .json, .data]) { result in
@@ -106,6 +125,76 @@ struct CameraRawSheet: View {
       if case .failure(let error) = $0 { model.error = error.localizedDescription }
     }
   }
+  private func cancel() {
+    if let placement { placement.cancel(); return }
+    let sourceDocument = store.initialRawDocument
+    store.initialRawDocument = nil
+    model.close()
+    store.cancelFilter()
+    sourceDocument?.close()
+  }
+
+  private func commit() {
+    guard model.ready else { return }
+    if let placement { placement.run(); return }
+    store.initialRawDocument = nil
+    store.filterDraft?.filter.cameraRaw = model.settings
+    store.filterDraft?.rawDevelopment = model.sensorSettings
+    model.close()
+    store.commitFilter()
+  }
+
+  private func saveSource(_ document: CraftNSDocument, authorizedFolder: URL? = nil) {
+    guard !savingSource, let layerID = store.filterDraft?.id, let settings = model.sensorSettings else { return }
+    savingSource = true
+    sourceSaveError = nil
+    Task {
+      defer { savingSource = false }
+      do {
+        try await document.saveRawSourceSettings(layerID: layerID, settings: settings,
+          authorizedFolder: authorizedFolder)
+        guard store.initialRawDocument === document else { return }
+        store.initialRawDocument = nil
+        model.close()
+        store.cancelFilter()
+        document.close()
+      } catch RawDNGSource.SaveError.sidecarAccessNeeded where authorizedFolder == nil {
+        sourceSaveError = RawDNGSource.SaveError.sidecarAccessNeeded.localizedDescription
+        if let sidecar = document.localDNGSource?.original.matchingSidecarURL {
+          requestSourceFolderAccess(sidecar, document: document)
+        }
+      } catch is CancellationError {
+      } catch {
+        sourceSaveError = error.localizedDescription
+      }
+    }
+  }
+
+  private func requestSourceFolderAccess(_ sidecar: URL, document: CraftNSDocument) {
+    let panel = NSOpenPanel()
+    let folder = sidecar.deletingLastPathComponent()
+    panel.title = "Allow Access to the Source Folder"
+    panel.message = "Select \(folder.lastPathComponent) so Photato can retire \(sidecar.lastPathComponent) after embedding its settings in the DNG."
+    panel.prompt = "Allow Access"
+    panel.directoryURL = folder
+    panel.canChooseFiles = false
+    panel.canChooseDirectories = true
+    panel.canCreateDirectories = false
+    panel.allowsMultipleSelection = false
+    panel.resolvesAliases = false
+    sidecarAccessPanel = panel
+    let completion: (NSApplication.ModalResponse) -> Void = { response in
+      sidecarAccessPanel = nil
+      guard response == .OK, let selected = panel.url, store.initialRawDocument === document else { return }
+      saveSource(document, authorizedFolder: selected)
+    }
+    if let window = document.windowForSheet?.attachedSheet {
+      panel.beginSheetModal(for: window, completionHandler: completion)
+    } else {
+      panel.begin(completionHandler: completion)
+    }
+  }
+
   private func exportSettings(xmp: Bool) {
     do {
       exportFile = LUTDocument(data: try model.settingsData(xmp: xmp))

@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 788 — Save Camera Raw settings in the original DNG
+
+Camera Raw’s Done button now saves changes into a locally opened DNG and closes the editor. If the image opened with an XMP sidecar, Photato embeds its metadata and backs up the sidecar before removing it when required by the sandbox. The source sensor bytes stay intact.
+
+Photato and Adobe Camera Raw 18.1.1 saved Exposure +1.75 in the DNG sidecar test and preserved all 393,216 sensor bytes. Adobe reopened the updated Photato DNG. Photato also retained the separate sensor exposure through its own embedded settings.
+
+Xcode built the app. Three focused imaging tests and one authenticated HTTP test passed. Both optimized architectures passed all 340 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+This covers the tested classic DNG settings. Other RAW sidecar writing, camera-specific defaults and settings databases, DNG preview regeneration, physical Intel testing, and pixel-level Adobe Camera Raw equivalence remain open.
+
+[Development record](DEVLOG.md#dev-step-788) · [Qualification](SOURCE_PUBLICATION_788.md).
+
 ## 2026-11-27 — Step 787 — Save editable Camera Raw settings in DNG copies
 
 Camera Raw can export a DNG copy with supported adjustments embedded as XMP. The copy retains original sensor bytes, and the source stays unchanged.
@@ -2543,11 +2555,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:787 -->
+<!-- current-status-step:788 -->
 
-Camera Raw can export a DNG copy with supported adjustments embedded as XMP. The copy retains original sensor bytes, and the source stays unchanged.
+Camera Raw’s Done button now saves changes into a locally opened DNG and closes the editor. If the image opened with an XMP sidecar, Photato embeds its metadata and backs up the sidecar before removing it when required by the sandbox. The source sensor bytes stay intact.
 
-[Development record](DEVLOG.md#dev-step-787) · [Qualification](SOURCE_PUBLICATION_787.md).
+[Development record](DEVLOG.md#dev-step-788) · [Qualification](SOURCE_PUBLICATION_788.md).
 
 <!-- current-status:end -->
 
@@ -3541,6 +3553,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 785 | [Read and write Camera Raw XMP settings](DEVLOG.md#dev-step-785) |
 | 2026-11-27 | 786 | [Open Camera Raw sidecar and embedded XMP settings](DEVLOG.md#dev-step-786) |
 | 2026-11-27 | 787 | [Save editable Camera Raw settings in DNG copies](DEVLOG.md#dev-step-787) |
+| 2026-11-27 | 788 | [Save Camera Raw settings in the original DNG](DEVLOG.md#dev-step-788) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
