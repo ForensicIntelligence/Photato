@@ -100,8 +100,10 @@ enum AdobeActionAssets {
     if isPhotoshop {
       document = try PSDCodec.readPaged(data, name: "Action Input", heapByteLimit: maximumDocumentBytes)
     } else if width > maximumUnpagedInputPixels / height {
-      guard !isTIFF, let paged = try RasterIO.readPagedPalettePNG(data, name: "Action Input") else {
-        throw AdobeAPIError.invalid("Raster input exceeds the local 4,194,304 pixel decoder limit; use a supported paged resource for larger RGB documents.")
+      let paged = try isTIFF ? RasterIO.readPagedComponentTIFF(data, name: "Action Input")
+        : RasterIO.readPagedPalettePNG(data, name: "Action Input")
+      guard let paged else {
+        throw AdobeAPIError.invalid("Raster input exceeds the local 4,194,304 pixel decoder limit; choose a supported paged raster format.")
       }
       document = paged
     } else {

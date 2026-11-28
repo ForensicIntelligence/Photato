@@ -49,38 +49,102 @@ enum TIFFLZW {
     guard expected >= 0, expected <= TIFFContainer.byteLimit else {
       throw CraftError.invalid("Invalid TIFF LZW sample budget.")
     }
-    let input = [UInt8](data)
-    var bit = 0, width = 9, next = 258, previous: [UInt8]?
-    var table = (0..<256).map { [UInt8($0)] } + [[UInt8]](repeating: [], count: 3840)
-    var output: [UInt8] = [], cleared = false
-    output.reserveCapacity(expected)
-    while input.count * 8 - bit >= width {
-      try Task.checkCancellation()
-      var code = 0
-      for _ in 0..<width {
-        code = (code << 1) | Int((input[bit / 8] >> (7 - bit % 8)) & 1)
-        bit += 1
+    let reader = try RowReader(data, expected: expected)
+    let output = try reader.read(expected)
+    try reader.finish()
+    return output
+  }
+
+  final class RowReader {
+    private let data: Data
+    private let expected: Int
+    private var bit = 0
+    private var width = 9
+    private var next = 258
+    private var previous: [UInt8]?
+    private var table = (0..<256).map { [UInt8($0)] } + [[UInt8]](repeating: [], count: 3840)
+    private var pending: [UInt8] = []
+    private var cursor = 0
+    private var delivered = 0
+    private var cleared = false
+    private var ended = false
+
+    init(_ data: Data, expected: Int) throws {
+      guard expected >= 0, data.count <= Int.max / 8 else {
+        throw CraftError.invalid("Invalid TIFF LZW sample budget.")
       }
-      if code == 256 { width = 9; next = 258; previous = nil; cleared = true; continue }
-      guard cleared else { throw CraftError.invalid("Missing TIFF LZW clear code.") }
-      if code == 257 {
-        guard output.count == expected else { throw CraftError.invalid("Incomplete TIFF LZW samples.") }
-        return output
-      }
-      let word: [UInt8]
-      if code < next, code < 256 || code >= 258 { word = table[code] }
-      else if code == next, let previous, let first = previous.first { word = previous + [first] }
-      else { throw CraftError.invalid("Invalid TIFF LZW dictionary code.") }
-      guard !word.isEmpty, word.count <= expected - output.count else {
+      self.data = data
+      self.expected = expected
+    }
+
+    func read(_ count: Int) throws -> [UInt8] {
+      guard count >= 0, count <= expected - delivered else {
         throw CraftError.invalid("Excessive TIFF LZW sample stream.")
       }
-      output.append(contentsOf: word)
-      if let previous, next < 4096 {
-        table[next] = previous + [word[0]]; next += 1
-        if next == (1 << width) - 1 && width < 12 { width += 1 }
+      var output: [UInt8] = []
+      output.reserveCapacity(count)
+      while output.count < count {
+        if cursor == pending.count {
+          guard let word = try nextWord() else { throw CraftError.invalid("Incomplete TIFF LZW samples.") }
+          guard word.count <= expected - delivered else { throw CraftError.invalid("Excessive TIFF LZW sample stream.") }
+          pending = word
+          cursor = 0
+        }
+        let size = min(count - output.count, pending.count - cursor)
+        output.append(contentsOf: pending[cursor..<cursor + size])
+        cursor += size
+        delivered += size
       }
-      previous = word
+      return output
     }
-    throw CraftError.invalid("Missing TIFF LZW end code.")
+
+    func finish() throws {
+      guard delivered == expected, cursor == pending.count else {
+        throw CraftError.invalid("Incomplete TIFF LZW samples.")
+      }
+      guard try nextWord() == nil else { throw CraftError.invalid("Excessive TIFF LZW sample stream.") }
+    }
+
+    private func nextWord() throws -> [UInt8]? {
+      if ended { return nil }
+      while data.count * 8 - bit >= width {
+        try Task.checkCancellation()
+        var code = 0
+        for _ in 0..<width {
+          let byte = data[data.startIndex + bit / 8]
+          code = (code << 1) | Int((byte >> (7 - bit % 8)) & 1)
+          bit += 1
+        }
+        if code == 256 {
+          width = 9
+          next = 258
+          previous = nil
+          cleared = true
+          continue
+        }
+        guard cleared else { throw CraftError.invalid("Missing TIFF LZW clear code.") }
+        if code == 257 {
+          ended = true
+          return nil
+        }
+        let word: [UInt8]
+        if code < next, code < 256 || code >= 258 {
+          word = table[code]
+        } else if code == next, let previous, let first = previous.first {
+          word = previous + [first]
+        } else {
+          throw CraftError.invalid("Invalid TIFF LZW dictionary code.")
+        }
+        guard let first = word.first else { throw CraftError.invalid("Invalid TIFF LZW dictionary code.") }
+        if let previous, next < 4096 {
+          table[next] = previous + [first]
+          next += 1
+          if next == (1 << width) - 1, width < 12 { width += 1 }
+        }
+        previous = word
+        return word
+      }
+      throw CraftError.invalid("Missing TIFF LZW end code.")
+    }
   }
 }

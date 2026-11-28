@@ -241,6 +241,31 @@ final class AutomationOpeningTests: XCTestCase {
     }
   }
 
+  @MainActor func testLargeComponentTIFFOpensInBothResourcePaths() async throws {
+    let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+      .appendingPathComponent("PhotoCraftImagingTests/Fixtures/tiff-large-components/gray8-9mp-associated-planar.tif")
+    let input = try Data(contentsOf: fixture)
+    func check(_ document: CraftDocument) throws {
+      XCTAssertEqual(document.width, 2800)
+      XCTAssertEqual(document.height, 3001)
+      let raster = try XCTUnwrap(document.layers.first?.nativeMode)
+      XCTAssertEqual(raster.mode, .grayscale)
+      XCTAssertTrue(raster.requiresPagedArchive)
+      XCTAssertEqual(raster.residentComponentEditBytes, 0)
+      XCTAssertEqual(raster.rawWord(component: 0, index: 2799), 124)
+      XCTAssertEqual(raster.rawWord(component: 1, index: 2799), 64)
+    }
+    try check(AdobeActionAssets.decode(input))
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, original in
+      defer { for document in service.controller.documents where document !== original { document.close() } }
+      service.setDocumentTransfersEnabled(true)
+      let reply = try await upload(service, bytes: input, type: "image/tiff", format: "tiff")
+      XCTAssertEqual(reply.0.statusCode, 201, String(decoding: reply.1, as: UTF8.self))
+      try check(XCTUnwrap(service.shares.last?.document?.store.document))
+    }
+  }
+
   @MainActor func testNativeOpeningStatePrivacyPermissionsAndExactIDCancellation() async throws {
     let api = AutomationTests()
     try await api.withService { service, original in

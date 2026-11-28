@@ -6,7 +6,7 @@ import PhotoCraftCore
 enum TIFFLayers {
   static let signature = Data("Adobe Photoshop Document Data Block\0".utf8)
 
-  static func read(_ data: Data, composite: CraftDocument) throws -> CraftDocument? {
+  static func read(_ data: Data, composite: CraftDocument, backing: RasterTileStore? = nil) throws -> CraftDocument? {
     guard TIFFContainer.isClassic(data) else { return nil }
     let tiff = try TIFFContainer(data, metadata: false, additionalTags: [34377, 34675, 37724])
     guard let field = tiff.root.fields[37724] else { return nil }
@@ -114,7 +114,9 @@ enum TIFFLayers {
     guard adapter.data.count <= PSDCodec.maximumInputBytes else {
       throw CraftError.invalid("TIFF Photoshop structures exceed the input budget.")
     }
-    var result = try PSDCodec.read(PSDReader(data: adapter.data), name: composite.name, tiffComposite: pixels, tiffNativeComposite: composite.layers.first?.nativeMode)
+    let paging = try backing.map { try PSDRasterPaging.Context(sharedBacking: $0) }
+    var result = try PSDCodec.read(PSDReader(data: adapter.data), name: composite.name, tiffComposite: pixels,
+      tiffNativeComposite: composite.layers.first?.nativeMode, paging: paging)
     if let savedAlpha {
       let count = savedAlpha.savedAlphaSamples.count
       let reader = try TIFFStorage.savedAlphaReader(tiff, geometry: savedAlpha)

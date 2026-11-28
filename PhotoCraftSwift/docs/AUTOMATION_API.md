@@ -1,3 +1,9 @@
+### Paged component TIFF input (checkpoint 768)
+
+Desktop Open, authenticated Photato document uploads and action-job TIFF resource decoding use the same file-backed component reader. The optional API advertises the expanded classic strip input. Its existing HTTP transfer limits still apply.
+
+[Qualification](SOURCE_PUBLICATION_768.md).
+
 ### TIFF profile embedding (checkpoint 767)
 
 The native save panel, authenticated Photato TIFF downloads and Photato resource jobs share the optional `tiffEmbedProfile` setting. Omission uses the document’s profile choice. The published Adobe TIFF request schema is unchanged.

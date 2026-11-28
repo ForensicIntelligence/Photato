@@ -186,6 +186,12 @@ public enum RasterIO {
     return try TIFFLayers.read(data, composite: d) ?? d
   }
 
+  /// The resource server admits numerical TIFF samples using the same paged
+  /// strips and editable layer model as desktop Open.
+  package static func readPagedComponentTIFF(_ data: Data, name: String) throws -> CraftDocument? {
+    try TIFFModeStorage.read(data, name: name, forcePaged: true)
+  }
+
   /// The action-resource path uses this when the general unpaged PNG limit
   /// would reject an indexed source that can be expanded a tile at a time.
   package static func readPagedPalettePNG(_ data: Data, name: String) throws -> CraftDocument? {

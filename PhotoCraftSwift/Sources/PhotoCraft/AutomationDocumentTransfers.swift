@@ -111,6 +111,12 @@ extension AutomationService {
         "limits":
           "Metadata, selection and active document remain resident; full paging, crash-relaunch recovery, large-file and live platform qualification remain open",
       ],
+      "pagedComponentTIFF": [
+        "colorModes": ["grayscale": [8, 16, 32], "cmyk": [8, 16], "lab": [8, 16]],
+        "stripCompression": ["raw", "lzw", "zip"],
+        "strategy": "Supported classic TIFF strips open into editable file-backed numerical components and an RGB preview. Native Open, Photato uploads and action-job resource decoding share storage.",
+        "limits": "Encoded input, layer structure, scratch storage and editing operations retain their separate limits. The component reader accepts classic strips only."
+      ],
       "layeredTIFF": [
         "grayscaleMatte": "Explicit Save Transparency off writes the measured white-matted grayscale samples for aligned Normal Gray8 and Gray16 raster stacks. Editable TIFF retains the original gray and opacity words in its layers.",
         "input": true, "output": true,

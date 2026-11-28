@@ -1,0 +1,214 @@
+{
+  "gray16-36mp-zip": {
+    "width": 6000,
+    "height": 6000,
+    "bits": 16,
+    "photo": 1,
+    "orientation": 1,
+    "planar": false,
+    "rawDefaults": [
+      14911
+    ],
+    "rawChanges": [
+      [
+        0,
+        0,
+        4970
+      ],
+      [
+        5999,
+        0,
+        3727
+      ],
+      [
+        23,
+        3000,
+        2982
+      ],
+      [
+        5999,
+        5999,
+        2130
+      ]
+    ],
+    "alphaTag": 0,
+    "unpacked": 72000000,
+    "bytes": 82694,
+    "sha256": "d9eda4b8df97791f789730ed73a1e49f57842d8c7c8c46c81f99560e67d55864"
+  },
+  "gray8-9mp-associated-planar": {
+    "width": 3001,
+    "height": 2800,
+    "bits": 8,
+    "photo": 0,
+    "orientation": 6,
+    "planar": true,
+    "rawDefaults": [
+      215,
+      128
+    ],
+    "rawChanges": [
+      [
+        0,
+        0,
+        224,
+        64
+      ],
+      [
+        3000,
+        0,
+        255,
+        0
+      ],
+      [
+        23,
+        1400,
+        219,
+        110
+      ],
+      [
+        3000,
+        2799,
+        244,
+        22
+      ]
+    ],
+    "alphaTag": 1,
+    "unpacked": 16805600,
+    "bytes": 27342,
+    "sha256": "a0fdc55a5c2880005135327f1b6d2ac566d87dfbe9e8dfd4500c6d80c2792274"
+  },
+  "gray8-small-associated-planar": {
+    "width": 33,
+    "height": 21,
+    "bits": 8,
+    "photo": 0,
+    "orientation": 6,
+    "planar": true,
+    "rawDefaults": [
+      215,
+      128
+    ],
+    "rawChanges": [
+      [
+        0,
+        0,
+        224,
+        64
+      ],
+      [
+        32,
+        0,
+        255,
+        0
+      ],
+      [
+        23,
+        10,
+        219,
+        110
+      ],
+      [
+        32,
+        20,
+        244,
+        22
+      ]
+    ],
+    "alphaTag": 1,
+    "unpacked": 1386,
+    "bytes": 288,
+    "sha256": "5a7b42754e09e306130e9fe2622c341925db4e995cd00c170b07d034614ae338"
+  },
+  "cmyk16-9mp-zip-planar": {
+    "width": 3001,
+    "height": 2800,
+    "bits": 16,
+    "photo": 5,
+    "orientation": 1,
+    "planar": true,
+    "rawDefaults": [
+      2000,
+      55000,
+      32768,
+      12345
+    ],
+    "rawChanges": [
+      [
+        0,
+        0,
+        666,
+        18333,
+        10922,
+        4115
+      ],
+      [
+        3000,
+        0,
+        500,
+        13750,
+        8192,
+        3086
+      ],
+      [
+        23,
+        1400,
+        400,
+        11000,
+        6553,
+        2469
+      ],
+      [
+        3000,
+        2799,
+        285,
+        7857,
+        4681,
+        1763
+      ]
+    ],
+    "alphaTag": 0,
+    "unpacked": 67222400,
+    "bytes": 88668,
+    "sha256": "7e1dc485b93a41cd1884e6a193c0b8025d1a441315d4570309821b24e2f0db8b"
+  },
+  "gray16-36mp-lzw-predicted": {
+    "width": 6000,
+    "height": 6000,
+    "bits": 16,
+    "photo": 1,
+    "orientation": 1,
+    "planar": false,
+    "rawDefaults": [
+      14911
+    ],
+    "rawChanges": [
+      [
+        0,
+        0,
+        4970
+      ],
+      [
+        5999,
+        0,
+        3727
+      ],
+      [
+        23,
+        3000,
+        2982
+      ],
+      [
+        5999,
+        5999,
+        2130
+      ]
+    ],
+    "alphaTag": 0,
+    "unpacked": 72000000,
+    "bytes": 166460,
+    "sha256": "b514c744d7284fff224ee1c92087c8eb7b194991475a6521245cbcdc78669dd9",
+    "compression": "LZW, horizontal predictor 2, 61 rows per strip",
+    "encoder": "libtiff tiffcp -c lzw:2 -r 61 gray16-36mp-zip.tif gray16-36mp-lzw-predicted.tif"
+  }
+}

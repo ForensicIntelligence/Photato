@@ -12,7 +12,7 @@ enum TIFFModeStorage {
   static func mode(_ photometric: Int) -> DocumentColorMode? {
     switch photometric { case 0, 1: .grayscale; case 2: .rgb; case 5: .cmyk; case 8, 9: .lab; default: nil }
   }
-  static func read(_ data: Data, name: String) throws -> CraftDocument? {
+  static func read(_ data: Data, name: String, forcePaged: Bool = false) throws -> CraftDocument? {
     guard TIFFContainer.isClassic(data) else { return nil }
     let file = try TIFFContainer(data, metadata: false, additionalTags: [332, 34675])
     let photo = try file.scalar(262)
@@ -28,7 +28,6 @@ enum TIFFModeStorage {
         throw CraftError.unsupported("TIFF spot-ink separations are not supported yet.")
       }
     }
-    guard g.width <= NativeModeRaster.maximumPixels / g.height else { throw CraftError.unsupported("TIFF component decoding currently supports up to8,388,608pixels.") }
     let depth: PixelDepth = g.bits == 8 ? .u8 : g.bits == 16 ? .u16 : .f32
     guard mode.depths.contains(depth) else { throw CraftError.unsupported("Unsupported TIFF mode/depth combination.") }
     if let field = file.root.fields[34675], ![1, 7].contains(field.type) {
@@ -36,6 +35,40 @@ enum TIFFModeStorage {
     }
     let original = file.root.fields[34675]?.data
     let profile = try PSDModeStorage.profile(original, mode: mode, depth: depth)
+    let backing = forcePaged || g.width > NativeModeRaster.maximumPixels / g.height ? try RasterTileStore() : nil
+    var native: NativeModeRaster
+    if let backing {
+      native = try TIFFComponentRows.read(file, geometry: g, mode: mode, photometric: photo,
+        depth: depth, profile: profile, backing: backing)
+    } else {
+      native = try readDense(file, geometry: g, mode: mode, photometric: photo, depth: depth, profile: profile)
+    }
+    let orientation = try file.scalar(274, default: 1)
+    guard (1...8).contains(orientation) else { throw CraftError.invalid("Invalid TIFF orientation.") }
+    if orientation != 1 {
+      if let backing {
+        native = try TIFFComponentRows.oriented(native, orientation: orientation, backing: backing)
+      } else {
+        native = try oriented(native, orientation: orientation)
+      }
+    }
+    var document = try CraftDocument(width: native.width, height: native.height, depth: depth, name: name)
+    document.modeDescriptor = try .init(mode: mode, depth: depth, profile: profile)
+    document.sourceICC = original
+    document.profileIsUntagged = original == nil ? true : nil
+    if let source = CGImageSourceCreateWithData(data as CFData, nil),
+      let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any] {
+      document.sourceMetadata = try RasterMetadata.capture(source, properties: properties)
+      if let dpi = properties[kCGImagePropertyDPIWidth] as? Double, dpi.isFinite, (1...100_000).contains(dpi) { document.resolution = dpi }
+    }
+    var layer = Layer(name: name, content: .raster(try native.surface(backing: backing))); layer.nativeMode = native
+    document.layers = [layer]; document.activeLayerID = layer.id
+    try document.validate()
+    return try TIFFLayers.read(data, composite: document, backing: backing) ?? document
+  }
+
+  private static func readDense(_ file: TIFFContainer, geometry g: TIFFStorage.Geometry,
+    mode: DocumentColorMode, photometric photo: Int, depth: PixelDepth, profile: Data) throws -> NativeModeRaster {
     var native = try NativeModeRaster(width: g.width, height: g.height, mode: mode, depth: depth, profile: profile)
     let planes = g.planar ? g.channels : 1, components = g.planar ? 1 : g.channels
     let stripsPerPlane = (g.height - 1) / g.rows + 1, bps = g.bits / 8
@@ -94,23 +127,9 @@ enum TIFFModeStorage {
         }
       }
     }
-    let orientation = try file.scalar(274, default: 1)
-    guard (1...8).contains(orientation) else { throw CraftError.invalid("Invalid TIFF orientation.") }
-    if orientation != 1 { native = try oriented(native, orientation: orientation) }
-    var document = try CraftDocument(width: native.width, height: native.height, depth: depth, name: name)
-    document.modeDescriptor = try .init(mode: mode, depth: depth, profile: profile)
-    document.sourceICC = original
-    document.profileIsUntagged = original == nil ? true : nil
-    if let source = CGImageSourceCreateWithData(data as CFData, nil),
-      let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any] {
-      document.sourceMetadata = try RasterMetadata.capture(source, properties: properties)
-      if let dpi = properties[kCGImagePropertyDPIWidth] as? Double, dpi.isFinite, (1...100_000).contains(dpi) { document.resolution = dpi }
-    }
-    var layer = Layer(name: name, content: .raster(try native.surface())); layer.nativeMode = native
-    document.layers = [layer]; document.activeLayerID = layer.id
-    try document.validate()
-    return try TIFFLayers.read(data, composite: document) ?? document
+    return native
   }
+
   static func oriented(_ source: NativeModeRaster, orientation: Int) throws -> NativeModeRaster {
     let swapped = orientation >= 5
     var result = try NativeModeRaster(width: swapped ? source.height : source.width,

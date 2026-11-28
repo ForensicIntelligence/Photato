@@ -315,11 +315,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:767 -->
+<!-- current-status-step:768 -->
 
-The TIFF save panel now has an Embed Color Profile checkbox. It follows the document’s profile choice by default and accepts a per-file override. The TIFF writer preserves the sample values with either choice.
+Photato decodes supported classic TIFF strips into editable, file-backed color planes. Gray, CMYK and Lab data retain their original component values and supported precision as well as an RGB display preview.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-767) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_767.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-768) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_768.md).
 
 <!-- current-status:end -->
 
@@ -1293,5 +1293,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 765 | [Match grayscale PSD and PSB previews](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-765) |
 | 2026-11-27 | 766 | [Match grayscale TIFF output with transparency off](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-766) |
 | 2026-11-27 | 767 | [Preserve the TIFF color profile choice](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-767) |
+| 2026-11-27 | 768 | [Open larger grayscale, CMYK and Lab TIFFs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-768) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

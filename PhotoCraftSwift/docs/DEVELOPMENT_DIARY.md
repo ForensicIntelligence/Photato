@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 768 — Open larger grayscale, CMYK and Lab TIFFs
+
+Photato decodes supported classic TIFF strips into editable, file-backed color planes. Gray, CMYK and Lab data retain their original component values and supported precision as well as an RGB display preview.
+
+Independent libtiff comparisons matched 258,014,000 native 16-bit channel words across ZIP, predicted LZW and raw TIFF inputs, including a 6,000 × 6,000 grayscale image and a planar CMYK control. The measured opacity plane was fully opaque in those four comparisons. A rotated Gray8 fixture separately verified associated alpha. An edited 36-megapixel grayscale copy reopened from a Photato archive with its complete edited component data intact.
+
+The Xcode project built and all 44 selected imaging and 13 app and HTTP tests passed. Both optimized architectures passed all 233 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on each slice.
+
+This checkpoint changes supported classic strip input. The 512 MiB encoded desktop limit, large TIFF output, tiled component TIFF, BigTIFF, layered capacity and independent Photoshop transparency comparisons remain open.
+
+[Development record](DEVLOG.md#dev-step-768) · [Qualification](SOURCE_PUBLICATION_768.md).
+
 ## 2026-11-27 — Step 767 — Preserve the TIFF color profile choice
 
 The TIFF save panel now has an Embed Color Profile checkbox. It follows the document’s profile choice by default and accepts a per-file override. The TIFF writer preserves the sample values with either choice.
@@ -2303,11 +2315,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:767 -->
+<!-- current-status-step:768 -->
 
-The TIFF save panel now has an Embed Color Profile checkbox. It follows the document’s profile choice by default and accepts a per-file override. The TIFF writer preserves the sample values with either choice.
+Photato decodes supported classic TIFF strips into editable, file-backed color planes. Gray, CMYK and Lab data retain their original component values and supported precision as well as an RGB display preview.
 
-[Development record](DEVLOG.md#dev-step-767) · [Qualification](SOURCE_PUBLICATION_767.md).
+[Development record](DEVLOG.md#dev-step-768) · [Qualification](SOURCE_PUBLICATION_768.md).
 
 <!-- current-status:end -->
 
@@ -3281,6 +3293,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 765 | [Match grayscale PSD and PSB previews](DEVLOG.md#dev-step-765) |
 | 2026-11-27 | 766 | [Match grayscale TIFF output with transparency off](DEVLOG.md#dev-step-766) |
 | 2026-11-27 | 767 | [Preserve the TIFF color profile choice](DEVLOG.md#dev-step-767) |
+| 2026-11-27 | 768 | [Open larger grayscale, CMYK and Lab TIFFs](DEVLOG.md#dev-step-768) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

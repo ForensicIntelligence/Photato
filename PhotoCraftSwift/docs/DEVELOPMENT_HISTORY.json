@@ -10625,6 +10625,13 @@
       "link": "DEVLOG.md#dev-step-767",
       "section_sha256": "6ec53e23bbf399b8a9c058016d702e14b549fb5c923791b2f2430500ed0eb7b0",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-768",
+      "title": "2026-11-27 \u2014 Step 768 \u2014 Open larger grayscale, CMYK and Lab TIFFs",
+      "link": "DEVLOG.md#dev-step-768",
+      "section_sha256": "036bac92f46341e18d07b7a3996f8adfa36c58673a13b14ec9177752dd3275eb",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13460,8 +13467,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "20dd2d5a75ac882e71d3aefc3a66d7643174184461c148e8ac213ef7bda814eb",
-      "bytes": 186211,
+      "sha256": "dbd3f336706c198287b0555faa77403986a670f27d0e6b1141345e6894964582",
+      "bytes": 186331,
       "rolling_current_snapshot": false
     },
     {
@@ -15182,8 +15189,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "cfeda943e03950ca3e472281b38d9871d9d27139c3c8f5e310fb91390385ea34",
-      "bytes": 746794,
+      "sha256": "af8198286f2da752847a9a5f2423303a816e75d2e52bd71d4479fbc0d2f4cf8c",
+      "bytes": 747132,
       "rolling_current_snapshot": false
     },
     {
@@ -15752,8 +15759,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "41c6dee14549c2a3719b3c5aff1d91d1c1b6da68e0727725d12a1813bebb0df6",
-      "bytes": 395757,
+      "sha256": "595d82ab39b6b941a5b7f1e1fc70c99a59f0d4be99283004dcfd4eb934851654",
+      "bytes": 395874,
       "rolling_current_snapshot": false
     },
     {
@@ -15872,8 +15879,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "523d591e3137626167f4367bd75334687ef848b33516d0b5e6ba98333cc37067",
-      "bytes": 222966,
+      "sha256": "b80e3142614c7791d043ee3b3cb0cf85eae7d6ef67362e6efa2255a85f048a67",
+      "bytes": 223245,
       "rolling_current_snapshot": false
     },
     {
@@ -15950,14 +15957,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "757b00689a0691119b56ea77d8f03282ba74dc89ed1583fecb4f9c5fff563a4f",
-      "bytes": 1048498,
+      "sha256": "845c90f8d2f7eb3860cd6e5eec580ac7a73106749fb757102e2ad93a7a5e406a",
+      "bytes": 1049881,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "401cceb2a7c640a0b04c31a65f921be010b48ed9c40bfbad3b732a03b1ed419c",
-      "bytes": 5167462,
+      "sha256": "040c4121381e8ed23dc565f7a097bd81707c196708a1ae4a24a538cd8b856926",
+      "bytes": 5169516,
       "rolling_current_snapshot": false
     },
     {
@@ -23371,6 +23378,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_768.json",
+      "sha256": "6221b06ec5fbadf0ff6848af6ceee83ac4eac18b3839475670c6336d9874ac68",
+      "bytes": 15589,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_768.md",
+      "sha256": "b1162e92d77bac21e2276cd06a11ce56defc339b0f469521e626df8c790874b4",
+      "bytes": 1729,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -23930,8 +23949,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "a65ea7a534f613e30346d9a2fc9d03deb155833954f7cbf0cf486875f6446b0a",
-      "bytes": 500902,
+      "sha256": "431bec7cfc3c5ca4ac0dbf057c7c40e1ee1be71d953f53709c34a872ec16215d",
+      "bytes": 501431,
       "rolling_current_snapshot": false
     },
     {
@@ -26444,8 +26463,8 @@
     }
   ],
   "counts": {
-    "milestones": 767,
-    "evidence_files": 2166,
+    "milestones": 768,
+    "evidence_files": 2168,
     "logs": 0,
     "missing_explicit_references": 704
   }

@@ -1,3 +1,5 @@
+**TIFF interchange.** Stream supported components through classic TIFF output and reopen local files above the current encoded limit. Verify the separate Photoshop TIFF opacity samples. [Development record](DEVLOG.md#dev-step-768) · [Qualification](SOURCE_PUBLICATION_768.md).
+
 **TIFF interchange.** The tested TIFF profile choices preserve sample values. Qualify larger component TIFF input and verify Photoshop’s separate opacity sample. [Development record](DEVLOG.md#dev-step-767) · [Qualification](SOURCE_PUBLICATION_767.md).
 
 **Rendered file parity.** The tested white-matted grayscale TIFF samples match the Photoshop captures. Verify the TIFF opacity sample and preserve untagged TIFF output. [Development record](DEVLOG.md#dev-step-766) · [Qualification](SOURCE_PUBLICATION_766.md).
