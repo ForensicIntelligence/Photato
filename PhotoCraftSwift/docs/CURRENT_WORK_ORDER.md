@@ -1,3 +1,5 @@
+**TIFF interchange.** The tested TIFF profile choices preserve sample values. Qualify larger component TIFF input and verify Photoshop’s separate opacity sample. [Development record](DEVLOG.md#dev-step-767) · [Qualification](SOURCE_PUBLICATION_767.md).
+
 **Rendered file parity.** The tested white-matted grayscale TIFF samples match the Photoshop captures. Verify the TIFF opacity sample and preserve untagged TIFF output. [Development record](DEVLOG.md#dev-step-766) · [Qualification](SOURCE_PUBLICATION_766.md).
 
 **Rendered file parity.** The tested grayscale PSD and PSB merged previews match the Photoshop captures. Capture grayscale TIFF with a separate opacity channel and compare its saved samples. [Development record](DEVLOG.md#dev-step-765) · [Qualification](SOURCE_PUBLICATION_765.md).

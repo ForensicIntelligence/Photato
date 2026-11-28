@@ -24,6 +24,7 @@ enum DocumentPersistenceConflict: LocalizedError {
   let tiffPredictor = NSButton(checkboxWithTitle: "Use Predictor", target: nil, action: nil)
   let tiffLayers = NSButton(checkboxWithTitle: "Layers", target: nil, action: nil)
   let tiffTransparency = NSButton(checkboxWithTitle: "Save Transparency", target: nil, action: nil)
+  let tiffEmbedProfile = NSButton(checkboxWithTitle: "Embed Color Profile", target: nil, action: nil)
   let tiffLayerCompression = NSPopUpButton(frame: .zero, pullsDown: false)
   let tiffLayersRow = NSStackView()
   let tiffByteOrderRow = NSStackView(), tiffPixelOrderRow = NSStackView()
@@ -32,6 +33,7 @@ enum DocumentPersistenceConflict: LocalizedError {
   private var predictorExplicit = false
   private var layersExplicit = false
   private var transparencyExplicit = false
+  private var embedProfileExplicit = false
   let pngRow = NSStackView(), tiffRow = NSStackView()
   let psdLayerCompression = NSPopUpButton(frame: .zero, pullsDown: false)
   let psdCompositeCompression = NSPopUpButton(frame: .zero, pullsDown: false)
@@ -63,6 +65,7 @@ enum DocumentPersistenceConflict: LocalizedError {
         tiffPredictor: predictorExplicit || tiffPredictor.state == .on ? tiffPredictor.state == .on : nil,
         tiffLayers: mode.isRestricted ? false : (layersExplicit || tiffLayers.state == .on ? tiffLayers.state == .on : nil),
         tiffTransparency: mode == .bitmap || !transparencyExplicit ? nil : tiffTransparency.state == .on,
+        tiffEmbedProfile: mode == .bitmap || !embedProfileExplicit ? nil : tiffEmbedProfile.state == .on,
         tiffLayerCompression: tiffLayers.state != .on || tiffLayerCompression.indexOfSelectedItem <= 0 ? nil :
           RasterEncodingOptions.TIFFLayerCompression.allCases[tiffLayerCompression.indexOfSelectedItem - 1])
     case .psd, .psb: return photoshopEncodingOptions
@@ -74,7 +77,8 @@ enum DocumentPersistenceConflict: LocalizedError {
     panel: NSSavePanel, initial: DocumentIO.Format,
     availableFormats: [DocumentIO.Format] = DocumentIO.Format.allCases, saving: Bool = false,
     initialOptions: [DocumentIO.Format: RasterEncodingOptions] = [:],
-    uncompressedPhotoshopDefault: Bool = false, depth: PixelDepth = .u8, mode: DocumentColorMode = .rgb
+    uncompressedPhotoshopDefault: Bool = false, depth: PixelDepth = .u8, mode: DocumentColorMode = .rgb,
+    documentIsUntagged: Bool = false
   ) {
     self.panel = panel
     self.availableFormats = availableFormats.isEmpty ? [.native] : availableFormats
@@ -131,6 +135,11 @@ enum DocumentPersistenceConflict: LocalizedError {
     tiffTransparency.isEnabled = mode != .bitmap
     tiffTransparency.target = self; tiffTransparency.action = #selector(changeTIFFTransparency)
     tiffTransparency.toolTip = "Keeps transparency in the merged TIFF image. Turn off to use white behind the image. Editable layers retain their transparency."
+    embedProfileExplicit = tiffOptions.tiffEmbedProfile != nil
+    tiffEmbedProfile.state = mode != .bitmap && (tiffOptions.tiffEmbedProfile ?? !documentIsUntagged) ? .on : .off
+    tiffEmbedProfile.isEnabled = mode != .bitmap
+    tiffEmbedProfile.target = self; tiffEmbedProfile.action = #selector(changeTIFFEmbedProfile)
+    tiffEmbedProfile.toolTip = "Includes the document’s current ICC profile in the TIFF file."
     tiffLayerCompression.addItems(withTitles: ["Default (ZIP)", "RLE", "ZIP"])
     tiffLayerCompression.setAccessibilityLabel("TIFF layer compression")
     if let selected = tiffOptions.tiffLayerCompression,
@@ -172,6 +181,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     view.addArrangedSubview(tiffByteOrderRow); view.addArrangedSubview(tiffPixelOrderRow)
     view.addArrangedSubview(tiffLayersRow)
     view.addArrangedSubview(tiffTransparency)
+    view.addArrangedSubview(tiffEmbedProfile)
     view.addArrangedSubview(psdLayerRow); view.addArrangedSubview(psdCompositeRow)
     view.addArrangedSubview(explanation)
     view.widthAnchor.constraint(equalToConstant: 420).isActive = true
@@ -185,6 +195,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     layersExplicit = true; updateTIFFLayers()
   }
   @objc func changeTIFFTransparency() { transparencyExplicit = true }
+  @objc func changeTIFFEmbedProfile() { embedProfileExplicit = true }
   @objc func updateTIFFCompression() {
     tiffPredictor.isHidden = depth != .f32
     tiffPredictor.isEnabled = depth == .f32 && tiffCompression.indexOfSelectedItem >= 2
@@ -207,6 +218,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     tiffByteOrderRow.isHidden = format != .tiff; tiffPixelOrderRow.isHidden = format != .tiff
     tiffLayersRow.isHidden = format != .tiff
     tiffTransparency.isHidden = format != .tiff
+    tiffEmbedProfile.isHidden = format != .tiff
     psdLayerRow.isHidden = photoshopFormat == nil || mode.isRestricted || mode == .multichannel; psdCompositeRow.isHidden = photoshopFormat == nil
     psdCompositeCompression.autoenablesItems = false
     psdCompositeCompression.item(at: 4)?.isEnabled = mode != .bitmap
@@ -371,7 +383,8 @@ enum DocumentPersistenceConflict: LocalizedError {
     let accessory = DocumentCopyAccessory(panel: panel, initial: initial,
       availableFormats: dialogCopyFormats, initialOptions: compatibleRememberedEncodingOptions,
       uncompressedPhotoshopDefault: fileHandlingPreferences.disablePSDCompression
-        && store.document.depth != .u8, depth: store.document.depth, mode: store.document.colorMode)
+        && store.document.depth != .u8, depth: store.document.depth, mode: store.document.colorMode,
+      documentIsUntagged: store.document.profileIsUntagged == true)
     panel.accessoryView = accessory.view
     copyPanel = panel
     let finish: (NSApplication.ModalResponse) -> Void = { [weak self, accessory] response in

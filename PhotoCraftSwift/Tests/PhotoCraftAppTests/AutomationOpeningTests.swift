@@ -165,7 +165,7 @@ final class AutomationOpeningTests: XCTestCase {
         let adobe = try AdobeActionAssets.encode(request, document: layeredDocument)
         XCTAssertEqual(adobe.map(\.data), [try DocumentIO.encode(layeredDocument, format: .psd)])
 
-        let tiffOptions = RasterEncodingOptions(tiffTransparency: false)
+        let tiffOptions = RasterEncodingOptions(tiffTransparency: false, tiffEmbedProfile: false)
         let optionsFields = DocumentEncodingOptions.json(tiffOptions)
         let optionsHeader = String(decoding: try JSONSerialization.data(withJSONObject: optionsFields), as: UTF8.self)
         let tiff = try await helper.request(service, path: "/v1/documents/\(layeredShare.id)/file.tiff",
@@ -173,6 +173,7 @@ final class AutomationOpeningTests: XCTestCase {
         let expectedTIFF = try DocumentIO.encode(layeredDocument, format: .tiff, options: tiffOptions)
         XCTAssertEqual(tiff.0.statusCode, 200)
         XCTAssertEqual(tiff.1, expectedTIFF)
+        XCTAssertEqual(try RasterIO.read(tiff.1).profileIsUntagged, true)
         let job = encoding.body(outputs: [encoding.output("image/tiff", extra: ["encodingOptions": optionsFields])])
         let jobRequest = try AdobeActionsRequest(data: JSONSerialization.data(withJSONObject: job), allowPhotatoOptions: true)
         XCTAssertEqual(try AdobeActionAssets.encode(jobRequest, document: layeredDocument).map(\.data), [expectedTIFF])

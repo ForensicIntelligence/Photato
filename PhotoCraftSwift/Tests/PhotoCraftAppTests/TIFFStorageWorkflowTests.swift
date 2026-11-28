@@ -51,6 +51,17 @@ final class TIFFStorageWorkflowTests: XCTestCase {
     defer { doc.close(); _ = controller }
     let a = DocumentCopyAccessory(panel: NSSavePanel(), initial: .tiff)
     XCTAssertTrue(a.encodingOptions.isEmpty); XCTAssertTrue(a.tiffPredictor.isHidden)
+    XCTAssertEqual(a.tiffEmbedProfile.state, .on)
+    XCTAssertNil(a.encodingOptions.tiffEmbedProfile)
+    let untagged = DocumentCopyAccessory(panel: NSSavePanel(), initial: .tiff, mode: .grayscale, documentIsUntagged: true)
+    XCTAssertEqual(untagged.tiffEmbedProfile.state, .off)
+    XCTAssertNil(untagged.encodingOptions.tiffEmbedProfile)
+    untagged.tiffEmbedProfile.performClick(nil)
+    XCTAssertEqual(untagged.encodingOptions.tiffEmbedProfile, true)
+    untagged.formats.selectItem(at: try XCTUnwrap(untagged.availableFormats.firstIndex(of: .png)))
+    untagged.updateFormat()
+    XCTAssertTrue(untagged.tiffEmbedProfile.isHidden)
+    XCTAssertNil(untagged.encodingOptions.tiffEmbedProfile)
     a.tiffCompression.selectItem(at: 2); a.updateTIFFCompression()
     XCTAssertFalse(a.tiffPredictor.isEnabled)
     let target = folder.appendingPathComponent("preserve.tiff"), original = Data("Existing output".utf8)
@@ -88,6 +99,7 @@ final class TIFFStorageWorkflowTests: XCTestCase {
       for invalid in [
         "{\"tiffByteOrder\":\"middle\"}", "{\"tiffPixelOrder\":true}",
         "{\"tiffPredictor\":1}", "{\"tiffPredictor\":true}", "{\"tiffCompression\":\"none\",\"tiffPredictor\":true}",
+        "{\"tiffEmbedProfile\":\"false\"}",
       ] {
         let denied = try await helper.request(service, path: "/v1/documents/\(id)/file.tiff",
           headers: ["X-Photato-Export-Options": invalid])

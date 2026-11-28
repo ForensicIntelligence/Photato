@@ -287,9 +287,13 @@ public enum RasterIO {
     outputDepth: PixelDepth? = nil, sourceMetadata: [String: Data]? = nil,
     workingDocument: CraftDocument? = nil, options: RasterEncodingOptions = .init()
   ) throws -> Data {
+    var options = options
+    if type == .tiff, options.tiffEmbedProfile == nil, workingDocument?.profileIsUntagged == true {
+      options.tiffEmbedProfile = false
+    }
     let bytes = try encodedManaged(surface, type: type, resolution: resolution, outputDepth: outputDepth,
       sourceMetadata: sourceMetadata, workingDocument: workingDocument, options: options)
-    return try workingDocument?.profileIsUntagged == true ? UntaggedOutput.strip(bytes, type: type) : bytes
+    return try type != .tiff && workingDocument?.profileIsUntagged == true ? UntaggedOutput.strip(bytes, type: type) : bytes
   }
   private static func encodedManaged(
     _ surface: Surface, type: UTType = .png, resolution: Double = 72,
@@ -416,7 +420,7 @@ public enum RasterIO {
       try RasterMetadata.metadata(
         sourceMetadata, width: width, height: height, resolution: resolution,
         linear: floatTIFF, profileName: profileName,
-        isSRGB: isSRGB, photoshopMode: photoshopMode),
+        isSRGB: isSRGB, photoshopMode: photoshopMode, embedsProfile: options.tiffEmbedProfile != false),
       properties as CFDictionary)
     guard CGImageDestinationFinalize(dest) else {
       throw CraftError.invalid("Image encoding failed.")
@@ -492,6 +496,10 @@ public enum RasterIO {
   /// rather than accidentally promoting every RGB8 document to 16-bit output.
   public static func encoded(_ document: CraftDocument, type: UTType = .png,
     options: RasterEncodingOptions = .init()) throws -> Data {
+    var document = document
+    if type == .tiff, let embed = options.tiffEmbedProfile {
+      document.profileIsUntagged = embed ? nil : true
+    }
     if type == .tiff, document.inkMode != nil { throw CraftError.unsupported("Ink-mode TIFF interchange is still being implemented. Save as Photato to retain ink samples.") }
     if document.restrictedMode != nil, type == .png {
       try options.validate(for: type); return try PNGRestrictedStorage.write(document, options: options)

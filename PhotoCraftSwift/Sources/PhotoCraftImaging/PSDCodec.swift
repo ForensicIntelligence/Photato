@@ -1456,7 +1456,7 @@ public enum PSDCodec {
     if let metadata = try RasterMetadata.metadata(
       doc.sourceMetadata, width: doc.width, height: doc.height, resolution: doc.pixelsPerInch,
       linear: doc.depth == .f32, profileName: doc.hasNativeModeStorage ? doc.colorMode.title : ColorManagement.name(doc),
-      isSRGB: exportSpace == (try RasterIO.colorSpace())),
+      isSRGB: exportSpace == (try RasterIO.colorSpace()), embedsProfile: includeComposite || doc.profileIsUntagged != true),
       let xmp = CGImageMetadataCreateXMPData(metadata, nil) as Data?
     {
       resources.data.append(PSDImageResources.block(1060, data: xmp))

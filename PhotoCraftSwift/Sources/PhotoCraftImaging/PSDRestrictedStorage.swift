@@ -109,12 +109,12 @@ enum PSDRestrictedStorage {
     try PSDChannelWriter.write(width: rowBytes, height: document.height, depth: 8,
       compression: compression, format: format, to: output) { row in Array(bytes[row * rowBytes..<(row + 1) * rowBytes]) }
   }
-  static func resources(_ document: CraftDocument, includeResolution: Bool = true) throws -> Data {
+  static func resources(_ document: CraftDocument, includeResolution: Bool = true, embedsProfile: Bool = true) throws -> Data {
     var resources = try PSDImageResources.preserved(document.sourceMetadata?["psdResources"] ?? Data())
     if case .indexed(let r) = document.restrictedMode {
       var count = PSDWriter(); count.n(r.palette.count, 2); resources += PSDImageResources.block(1046, data: count.data)
       if let t = r.transparentIndex { var value = PSDWriter(); value.n(t, 2); resources += PSDImageResources.block(1047, data: value.data) }
-      resources += PSDImageResources.block(1039, data: r.profile)
+      if embedsProfile { resources += PSDImageResources.block(1039, data: r.profile) }
     }
     if includeResolution {
       guard document.pixelsPerInch < 65536 else { throw CraftError.invalid("Photoshop resource resolution exceeds16.16 range.") }
@@ -124,7 +124,8 @@ enum PSDRestrictedStorage {
     }
     if let metadata = try RasterMetadata.metadata(document.sourceMetadata, width: document.width, height: document.height,
       resolution: document.pixelsPerInch, linear: false, profileName: document.colorMode.title, isSRGB: false,
-      photoshopMode: PSDModeStorage.code(document.colorMode)), let xmp = CGImageMetadataCreateXMPData(metadata, nil) as Data? {
+      photoshopMode: PSDModeStorage.code(document.colorMode), embedsProfile: embedsProfile),
+      let xmp = CGImageMetadataCreateXMPData(metadata, nil) as Data? {
       resources += PSDImageResources.block(1060, data: xmp)
     }
     var pathID = 2000

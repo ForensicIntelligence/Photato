@@ -92,7 +92,7 @@ enum RasterMetadata {
   }
   static func metadata(
     _ source: [String: Data]?, width: Int, height: Int, resolution: Double, linear: Bool = false,
-    profileName: String? = nil, isSRGB: Bool = true, photoshopMode: Int = 3
+    profileName: String? = nil, isSRGB: Bool = true, photoshopMode: Int = 3, embedsProfile: Bool = true
   )
     throws -> CGImageMetadata?
   {
@@ -109,7 +109,7 @@ enum RasterMetadata {
       (kCGImagePropertyExifDictionary, kCGImagePropertyExifPixelYDimension, Double(height)),
       (
         kCGImagePropertyExifDictionary, kCGImagePropertyExifColorSpace,
-        linear || !isSRGB ? 65535.0 : 1.0
+        linear || !isSRGB || !embedsProfile ? 65535.0 : 1.0
       ),
     ] {
       _ = CGImageMetadataSetValueMatchingImageProperty(
@@ -125,6 +125,7 @@ enum RasterMetadata {
     for path in ["tiff:BitsPerSample", "xmp:Thumbnails"] {
       _ = CGImageMetadataRemoveTagWithPath(metadata, nil, path as CFString)
     }
+    if !embedsProfile { _ = CGImageMetadataRemoveTagWithPath(metadata, nil, "photoshop:ICCProfile" as CFString) }
     return metadata
   }
 }

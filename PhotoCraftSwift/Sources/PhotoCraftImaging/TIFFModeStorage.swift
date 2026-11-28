@@ -188,13 +188,18 @@ enum TIFFModeStorage {
     else { file.root.fields.removeValue(forKey: 338) }
     file.set(339, Array(repeating: depth == .f32 ? 3 : 1, count: channels))
     if mode == .cmyk { file.set(332, [1]); file.set(334, [4]) }
-    file.root.fields[34675] = .init(tag: 34675, type: 7, count: profile.count, data: profile)
+    let embedsProfile = options.tiffEmbedProfile ?? (document.profileIsUntagged != true)
+    if embedsProfile {
+      file.root.fields[34675] = .init(tag: 34675, type: 7, count: profile.count, data: profile)
+    } else {
+      UntaggedOutput.removeTIFFProfile(from: file)
+    }
     if let exif = file.root.fields[34665]?.children.first {
       exif.fields[40961] = .init(tag: 40961, type: 3, count: 1, data: file.order.bytes(65535, 2))
     }
     if let xmp = try RasterMetadata.metadata(metadata, width: width, height: height,
       resolution: resolution, linear: depth == .f32, profileName: mode.title,
-      isSRGB: false, photoshopMode: PSDModeStorage.code(mode)),
+      isSRGB: false, photoshopMode: PSDModeStorage.code(mode), embedsProfile: embedsProfile),
       let bytes = CGImageMetadataCreateXMPData(xmp, nil) as Data? {
       file.root.fields[700] = .init(tag: 700, type: 1, count: bytes.count, data: bytes)
     }

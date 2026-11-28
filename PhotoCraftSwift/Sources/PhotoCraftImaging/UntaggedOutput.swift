@@ -27,11 +27,7 @@ enum UntaggedOutput {
     if type == .jpeg { return try JPEGContainer.withoutICC(data) }
     if type == .tiff {
       let file = try TIFFContainer(data, metadata: true)
-      file.root.fields.removeValue(forKey: 34675)
-      file.root.fields.removeValue(forKey: 318); file.root.fields.removeValue(forKey: 319)
-      if let exif = file.root.fields[34665]?.children.first {
-        exif.fields[40961] = .init(tag: 40961, type: 3, count: 1, data: file.order.bytes(65535, 2))
-      }
+      removeTIFFProfile(from: file)
       var output = data; try file.appendDirectories(to: &output, order: file.order); return output
     }
     guard type == .png, data.count >= 8 else { throw CraftError.invalid("Unsupported untagged output format.") }
@@ -45,5 +41,12 @@ enum UntaggedOutput {
       at += length + 12
     }
     return output
+  }
+
+  static func removeTIFFProfile(from file: TIFFContainer) {
+    for tag in [318, 319, 34675] { file.root.fields.removeValue(forKey: tag) }
+    if let exif = file.root.fields[34665]?.children.first {
+      exif.fields[40961] = .init(tag: 40961, type: 3, count: 1, data: file.order.bytes(65535, 2))
+    }
   }
 }

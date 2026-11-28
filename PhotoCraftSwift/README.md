@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 767.** Preserve the TIFF color profile choice. [Qualification](docs/SOURCE_PUBLICATION_767.md).
+
 **Source checkpoint 766.** Match grayscale TIFF output with transparency off. [Qualification](docs/SOURCE_PUBLICATION_766.md).
 
 **Source checkpoint 765.** Match grayscale PSD and PSB previews. [Qualification](docs/SOURCE_PUBLICATION_765.md).

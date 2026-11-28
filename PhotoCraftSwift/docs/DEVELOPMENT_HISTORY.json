@@ -10618,6 +10618,13 @@
       "link": "DEVLOG.md#dev-step-766",
       "section_sha256": "5aa7bd65b293ef6cdd1aeb37f1a76ecbaadaf25bc8346ba5c44aff8f12cc5320",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-767",
+      "title": "2026-11-27 \u2014 Step 767 \u2014 Preserve the TIFF color profile choice",
+      "link": "DEVLOG.md#dev-step-767",
+      "section_sha256": "6ec53e23bbf399b8a9c058016d702e14b549fb5c923791b2f2430500ed0eb7b0",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13453,8 +13460,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "7b764f321864d3a8462cfffeb3b278a0a6016fc721160cbb46cfe0a68b11a182",
-      "bytes": 186094,
+      "sha256": "20dd2d5a75ac882e71d3aefc3a66d7643174184461c148e8ac213ef7bda814eb",
+      "bytes": 186211,
       "rolling_current_snapshot": false
     },
     {
@@ -15175,8 +15182,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "d5f0d63aa6c8bc99dd2fc08bd909dc5bfa5b0a70243387831bb5e2f1d924306d",
-      "bytes": 746469,
+      "sha256": "cfeda943e03950ca3e472281b38d9871d9d27139c3c8f5e310fb91390385ea34",
+      "bytes": 746794,
       "rolling_current_snapshot": false
     },
     {
@@ -15745,8 +15752,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "ae8a4059d7bb6428fecbdf3e3a42c1a4392e555e0d08d8e611ee4c2b8cdf0eac",
-      "bytes": 395373,
+      "sha256": "41c6dee14549c2a3719b3c5aff1d91d1c1b6da68e0727725d12a1813bebb0df6",
+      "bytes": 395757,
       "rolling_current_snapshot": false
     },
     {
@@ -15865,8 +15872,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "635b973096a580744bd47e22937698152e8a266c764aaaca67c70a7b4cfa3cca",
-      "bytes": 222709,
+      "sha256": "523d591e3137626167f4367bd75334687ef848b33516d0b5e6ba98333cc37067",
+      "bytes": 222966,
       "rolling_current_snapshot": false
     },
     {
@@ -15943,14 +15950,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "b011cfadeea47dad185246ca1703d19dc8fccf84a9ba9e2bc62ab42f9d4e09c6",
-      "bytes": 1047249,
+      "sha256": "757b00689a0691119b56ea77d8f03282ba74dc89ed1583fecb4f9c5fff563a4f",
+      "bytes": 1048498,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "14d9e0b20303819791d21c9c354644995de0031f96b250f9ead8472854ca9906",
-      "bytes": 5165211,
+      "sha256": "401cceb2a7c640a0b04c31a65f921be010b48ed9c40bfbad3b732a03b1ed419c",
+      "bytes": 5167462,
       "rolling_current_snapshot": false
     },
     {
@@ -23352,6 +23359,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_767.json",
+      "sha256": "04170df239cfa0e62adc89958d8f5356c4016c7d62d886476b5a65774e1ec5d2",
+      "bytes": 15370,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_767.md",
+      "sha256": "bc20283511fe401020b7a7e614f7b0dbb25ccdb715b4a1537dd50b84e7929ef7",
+      "bytes": 1587,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -23911,8 +23930,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "8e46af2c22af1141f66ef6cc89232fd48ab16842706efe6f4a6a527bd1bc9f95",
-      "bytes": 500377,
+      "sha256": "a65ea7a534f613e30346d9a2fc9d03deb155833954f7cbf0cf486875f6446b0a",
+      "bytes": 500902,
       "rolling_current_snapshot": false
     },
     {
@@ -26425,8 +26444,8 @@
     }
   ],
   "counts": {
-    "milestones": 766,
-    "evidence_files": 2164,
+    "milestones": 767,
+    "evidence_files": 2166,
     "logs": 0,
     "missing_explicit_references": 704
   }

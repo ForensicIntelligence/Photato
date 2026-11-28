@@ -21,6 +21,19 @@ final class TIFFRestrictedTests: XCTestCase {
           }
         }
       }
+      if case .indexed(let original) = document.restrictedMode {
+        let data = try RasterIO.encoded(document, type: .tiff, options: .init(tiffEmbedProfile: false))
+        let file = try TIFFContainer(data, metadata: false, additionalTags: [34377, 34675])
+        XCTAssertNil(file.root.fields[34675])
+        let resources = try PSDImageResources.blocks(file.root.fields[34377]?.data ?? Data())
+        XCTAssertFalse(resources.contains(where: { $0.id == 1039 }))
+        let reopened = try RasterIO.read(data)
+        XCTAssertEqual(reopened.profileIsUntagged, true)
+        guard case .indexed(let indexed) = reopened.restrictedMode else { return XCTFail("Expected indexed TIFF") }
+        XCTAssertEqual(indexed.indices, original.indices)
+        XCTAssertEqual(indexed.palette, original.palette)
+        XCTAssertEqual(indexed.transparentIndex, original.transparentIndex)
+      }
     }
   }
   func literal(width: Int, height: Int, bits: Int, photo: Int, samples: Data,

@@ -313,6 +313,7 @@ enum TIFFStorage {
       else { file.set(338, extra) }
       if file.root.fields[339] != nil { file.set(339,Array(repeating:g.bits == 32 ? 3 : 1,count:channelCount)) }
     }
+    if options.tiffEmbedProfile == false { UntaggedOutput.removeTIFFProfile(from: file) }
     try file.appendDirectories(to: &output, order: order)
     try Task.checkCancellation()
     return output

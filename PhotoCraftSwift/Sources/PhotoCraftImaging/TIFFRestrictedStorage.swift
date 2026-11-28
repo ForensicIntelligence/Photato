@@ -178,6 +178,7 @@ enum TIFFRestrictedStorage {
       document = try document.replacingRestrictedMode(.bitmap(BitmapRaster(width: w, height: h, bits: packed)))
     }
     document.sourceICC = profile
+    if indexed, profile == nil { document.profileIsUntagged = true }
     if let source = CGImageSourceCreateWithData(data as CFData, nil), let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any] {
       document.sourceMetadata = try RasterMetadata.capture(source, properties: properties)
     }
@@ -213,8 +214,13 @@ enum TIFFRestrictedStorage {
     }
     // ImageIO serializes descriptive EXIF/IPTC metadata; replace all color and
     // sample fields with the authoritative restricted raster below.
+    let embedsProfile = document.colorMode == .indexed && (options.tiffEmbedProfile ?? (document.profileIsUntagged != true))
+    if document.colorMode == .bitmap, options.tiffEmbedProfile == true {
+      throw CraftError.invalid("Bitmap TIFF does not embed a color profile.")
+    }
     let template = try RasterIO.encoded(raster.surface(), type: .tiff, resolution: document.pixelsPerInch,
-      sourceMetadata: document.sourceMetadata, options: .init(tiffCompression: RasterEncodingOptions.TIFFCompression.none))
+      sourceMetadata: document.sourceMetadata,
+      options: .init(tiffCompression: RasterEncodingOptions.TIFFCompression.none, tiffEmbedProfile: embedsProfile ? nil : false))
     let file = try TIFFContainer(template, metadata: true)
     for tag in [301, 318, 319, 320, 330, 332, 333, 334, 336, 338, 34377, 34675, 37724] { file.root.fields.removeValue(forKey: tag) }
     file.root.next = nil
@@ -226,12 +232,13 @@ enum TIFFRestrictedStorage {
     let compression = options.tiffCompression ?? .none
     let width = document.width, height = document.height, rowBytes = (width * components * bits + 7) / 8
     let rows = compression == .none ? height : max(1, min(height, 65536 / rowBytes))
-    var resources = try PSDRestrictedStorage.resources(document, includeResolution: document.pixelsPerInch < 65536)
+    var resources = try PSDRestrictedStorage.resources(document,
+      includeResolution: document.pixelsPerInch < 65536, embedsProfile: embedsProfile)
     if case .indexed(let r) = raster {
       var table = [Int](repeating: 0, count: 768)
       for (i, color) in r.palette.enumerated() { table[i] = Int(color.red) * 257; table[256 + i] = Int(color.green) * 257; table[512 + i] = Int(color.blue) * 257 }
       file.set(320, table)
-      file.root.fields[34675] = .init(tag: 34675, type: 7, count: r.profile.count, data: r.profile)
+      if embedsProfile { file.root.fields[34675] = .init(tag: 34675, type: 7, count: r.profile.count, data: r.profile) }
     }
     if !resources.isEmpty { file.root.fields[34377] = .init(tag: 34377, type: 7, count: resources.count, data: resources) }
     resources.removeAll()

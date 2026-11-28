@@ -4,6 +4,56 @@ import XCTest
 @testable import PhotoCraftImaging
 
 final class TIFFLayerOutputTests: XCTestCase {
+  func testTIFFProfileChoicePreservesCompositeAndEditableLayerSamples() throws {
+    for mode in [DocumentColorMode.rgb, .grayscale, .cmyk, .lab] {
+      let profile = try NativeModeProfile.standard(mode, depth: .u8)
+      var document = try CraftDocument(width: 3, height: 2)
+      if mode != .rgb { document.modeDescriptor = try .init(mode: mode, depth: .u8, profile: profile) }
+      document.layers = try (0..<2).map { ordinal in
+        var raster = try NativeModeRaster(width: 3, height: 2, mode: mode, depth: .u8, profile: profile)
+        for i in 0..<6 {
+          for component in 0...mode.componentCount {
+            let word = (19 + 51 * ordinal + 32 * i + 67 * component) % 256
+            try raster.set(Float(word) / 255, component: component, index: i)
+          }
+        }
+        var layer = Layer(name: "Layer \(ordinal + 1)", content: .raster(try raster.surface()))
+        if mode != .rgb { layer.nativeMode = raster }
+        return layer
+      }
+      document.activeLayerID = document.layers.last?.id
+      for layered in [false, true] {
+        var samples: Data?, layerBytes: Data?
+        let choices: [(sourceUntagged: Bool, override: Bool?, embedsProfile: Bool)] = [
+          (false, nil, true), (true, nil, false), (false, false, false), (true, true, true),
+        ]
+        for (sourceUntagged, override, embedsProfile) in choices {
+          document.profileIsUntagged = sourceUntagged ? true : nil
+          let options = RasterEncodingOptions(tiffCompression: RasterEncodingOptions.TIFFCompression.none,
+            tiffByteOrder: .bigEndian, tiffLayers: layered, tiffTransparency: false, tiffEmbedProfile: override)
+          let bytes = try RasterIO.encoded(document, type: .tiff, options: options)
+          let container = try TIFFContainer(bytes, metadata: false, additionalTags: [34377, 34675, 37724])
+          XCTAssertEqual(container.root.fields[34675] != nil, embedsProfile, "\(mode), layered: \(layered)")
+          let resources = try PSDImageResources.blocks(container.root.fields[34377]?.data ?? Data())
+          if !embedsProfile { XCTAssertFalse(resources.contains(where: { $0.id == 1039 })) }
+          let offsets = try container.numbers(273), counts = try container.numbers(279)
+          let merged = zip(offsets, counts).reduce(into: Data()) { result, strip in
+            result.append(bytes[strip.0..<(strip.0 + strip.1)])
+          }
+          if let samples { XCTAssertEqual(merged, samples) } else { samples = merged }
+          if layered {
+            let pixels = try XCTUnwrap(container.root.fields[37724]?.data)
+            if let layerBytes { XCTAssertEqual(pixels, layerBytes) } else { layerBytes = pixels }
+          }
+          let reopened = try RasterIO.read(bytes)
+          XCTAssertEqual(reopened.profileIsUntagged == true, !embedsProfile)
+          XCTAssertEqual(reopened.layers.count, layered ? 2 : 1)
+          XCTAssertEqual(document.profileIsUntagged == true, sourceUntagged)
+        }
+      }
+    }
+  }
+
   func testPhotoshopTIFFNormalCompositeMatchesMergedSamples() throws {
     let fixtures = TIFFLayerTests()
     let transparentReference = try fixtures.fixture("photoshop-transparent-be-fixture.tiff")

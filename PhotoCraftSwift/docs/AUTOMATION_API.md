@@ -1,3 +1,9 @@
+### TIFF profile embedding (checkpoint 767)
+
+The native save panel, authenticated Photato TIFF downloads and Photato resource jobs share the optional `tiffEmbedProfile` setting. Omission uses the document’s profile choice. The published Adobe TIFF request schema is unchanged.
+
+[Qualification](SOURCE_PUBLICATION_767.md).
+
 ### Grayscale TIFF with Save Transparency off (checkpoint 766)
 
 Native Save, authenticated TIFF downloads and Photato resource jobs use the same encoding option. The published Adobe API request keeps its existing TIFF contract.

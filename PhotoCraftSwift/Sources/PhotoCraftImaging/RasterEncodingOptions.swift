@@ -44,6 +44,7 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
   public var tiffPredictor: Bool?
   public var tiffLayers: Bool?
   public var tiffTransparency: Bool?
+  public var tiffEmbedProfile: Bool?
   public var tiffLayerCompression: TIFFLayerCompression?
   public var psdLayerCompression: PhotoshopCompression?
   public var psdCompositeCompression: PhotoshopCompression?
@@ -54,6 +55,7 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
     tiffByteOrder: TIFFByteOrder? = nil, tiffPixelOrder: TIFFPixelOrder? = nil,
     tiffPredictor: Bool? = nil, tiffLayers: Bool? = nil,
     tiffTransparency: Bool? = nil,
+    tiffEmbedProfile: Bool? = nil,
     tiffLayerCompression: TIFFLayerCompression? = nil,
     jpegQuality: Int? = nil, jpegFormat: JPEGFormat? = nil,
     jpegMatte: [Double]? = nil, jpegEmbedProfile: Bool? = nil,
@@ -73,6 +75,7 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
     self.tiffPredictor = tiffPredictor
     self.tiffLayers = tiffLayers
     self.tiffTransparency = tiffTransparency
+    self.tiffEmbedProfile = tiffEmbedProfile
     self.tiffLayerCompression = tiffLayerCompression
     self.psdLayerCompression = psdLayerCompression
     self.psdCompositeCompression = psdCompositeCompression
@@ -81,14 +84,15 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
   public var isEmpty: Bool {
     pngCompression == nil && pngInterlaced == nil && tiffCompression == nil
       && psdLayerCompression == nil && psdCompositeCompression == nil && psdMaximizeCompatibility == nil && !hasTIFFStorageOptions
-      && tiffLayers == nil && tiffTransparency == nil && tiffLayerCompression == nil
+      && tiffLayers == nil && tiffTransparency == nil && tiffEmbedProfile == nil && tiffLayerCompression == nil
       && !hasJPEGOptions && exrCompression == nil && exrSample == nil && exrTransparency == nil
   }
   public var hasJPEGOptions: Bool {
     jpegQuality != nil || jpegFormat != nil || jpegMatte != nil || jpegEmbedProfile != nil
   }
   public var hasTIFFStorageOptions: Bool {
-    tiffByteOrder != nil || tiffPixelOrder != nil || tiffPredictor != nil || tiffTransparency == false
+    tiffByteOrder != nil || tiffPixelOrder != nil || tiffPredictor != nil
+      || tiffTransparency == false || tiffEmbedProfile == false
   }
   public func validate(for type: UTType) throws {
     if let quality = jpegQuality, !(0...12).contains(quality) {
@@ -105,7 +109,7 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
       (type == .jpeg || !hasJPEGOptions),
       (type == OpenEXR.contentType || (exrCompression == nil && exrSample == nil && exrTransparency == nil)),
       (type == .tiff || (tiffCompression == nil && !hasTIFFStorageOptions
-        && tiffLayers == nil && tiffTransparency == nil && tiffLayerCompression == nil)),
+        && tiffLayers == nil && tiffTransparency == nil && tiffEmbedProfile == nil && tiffLayerCompression == nil)),
       (["com.adobe.photoshop-image", "com.adobe.photoshop-large-image"].contains(type.identifier)
         || (psdLayerCompression == nil && psdCompositeCompression == nil && psdMaximizeCompatibility == nil)) else {
       throw CraftError.invalid("Encoding options do not match the selected output format.")
