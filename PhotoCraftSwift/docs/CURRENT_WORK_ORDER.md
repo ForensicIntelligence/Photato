@@ -1,3 +1,5 @@
+**Camera Raw settings interchange.** Continue same-name XMP sidecar discovery and document-opening behavior using owned RAW fixtures. [Development record](DEVLOG.md#dev-step-785) · [Qualification](SOURCE_PUBLICATION_785.md).
+
 **Camera Raw settings interchange.** Implement XMP Load and Save Settings for supported Camera Raw adjustments in the native workspace and Photato API. Camera Raw 18.1.1 successfully loaded the initial native ImageIO probe. [Development record](DEVLOG.md#dev-step-784) · [Qualification](SOURCE_PUBLICATION_784.md).
 
 **TIFF interchange.** Qualify dense multi-gigabyte layered BigTIFF with editable layers and saved alpha and spot samples. [Development record](DEVLOG.md#dev-step-783) · [Qualification](SOURCE_PUBLICATION_783.md).

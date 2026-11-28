@@ -151,7 +151,11 @@ struct AutomationCommand: Sendable {
         if name == "document.imageStack",key == "settings" || key == "sources" { properties[key] = key == "settings" ? ImageStackSettings.apiSchema:PhotomergeSettings.sourcesSchema;continue }
         if name == SmartObjectLayerCompAPI.name { properties[key] = key == "compID" ? VariablesAPI.nullableUUID : VariablesAPI.uuid; continue }
         if name == "smartObject.stackMode",key == "mode" { properties[key] = ImageStackSettings.modeSchema;continue }
-        if name == "raw.develop", key == "settings" { properties[key] = RawDevelopment.apiSchema; continue }
+        if name == "raw.develop" {
+          if key == "settings" { properties[key] = RawDevelopment.apiSchema; continue }
+          if key == "xmp" { properties[key] = CameraRawXMPAPI.schema(key); continue }
+        }
+        if name == CameraRawXMPAPI.name { properties[key] = CameraRawXMPAPI.schema(key); continue }
         if name == "document.hdrMerge",key == "settings" || key == "sources" {
           properties[key] = key == "settings" ? HDRMergeSettings.apiSchema:PhotomergeSettings.sourcesSchema;continue
         }
@@ -236,6 +240,9 @@ struct AutomationCommand: Sendable {
         "properties":properties,"required":parameters.keys.filter { !optionalParameters.contains($0) }.sorted()]
       if name == RemoveToolAPI.name { parameterSchema["oneOf"] = RemoveToolAPI.branches }
       if name == RetouchStrokeAPI.name { parameterSchema["allOf"] = RetouchStrokeAPI.focusModeCondition }
+      if name == CameraRawXMPAPI.name || name == "raw.develop" {
+        parameterSchema["oneOf"] = [["required": ["xmp"]], ["required": ["settings"]]]
+      }
       if PixelPaintAPI.commands.contains(name) { parameterSchema["allOf"] = [PixelPaintAPI.inkCondition(for: name)] }
       if name == "retouch.patch" {
         let forbidden = ["dx","dy","mode","type","structure","color","sampleAllLayers","seed"]
@@ -487,8 +494,9 @@ struct AutomationCommand: Sendable {
     .init(name: SmartFilterTransferAPI.name, parameters: ["sourceLayerID":"Source Smart Object UUID", "targetLayerID":"Destination Smart Object UUID", "part":"stack or mask", "copy":"true copies; false moves"], description:"Copy or move a whole Smart Filter stack or its shared mask between Smart Objects in one undoable native transaction."),
     .init(name: "smartFilter.maskStroke", parameters: ["layerID": "uuid", "points": "Document-coordinate stroke", "size": "Brush diameter", "hardness": "0...1", "opacity": "0...1", "value": "Grayscale value"], description: "Paint the shared Smart Filter mask using the native brush and Undo."),
     .init(name: "smartFilter.maskFill", parameters: ["layerID": "uuid", "value": "Grayscale value"], description: "Fill the Smart Filter mask respecting selection coverage."),
+    CameraRawXMPAPI.definition,
     .init(name:"raw.inspect",parameters:["layerID":"RAW Smart Object UUID"],description:"Read sensor/decoder capabilities and retained settings without mutation."),
-    .init(name:"raw.develop",parameters:["layerID":"RAW Smart Object UUID","settings":"Partial RAW settings object","allInstances":"Optional boolean, default true"],description:"Redevelop original sensor bytes with shared native history.",optionalParameters:["allInstances"]),
+    .init(name:"raw.develop",parameters:["layerID":"RAW Smart Object UUID","settings":"Partial RAW settings object","xmp":"Camera Raw XMP text","allInstances":"Optional boolean, default true"],description:"Redevelop original sensor bytes using either partial settings or Camera Raw XMP, with shared native history.",optionalParameters:["settings","xmp","allInstances"]),
     .init(name: "liquify.faces", parameters: ["layerID": "Raster or Smart Object UUID", "filterID": "Optional existing filter UUID; detect on its input"], description: "Read on-device face geometry for Liquify. Returns revision,width,height,faces; no document mutation or history.", optionalParameters: ["filterID"]),
     .init(name: FilterRecallAPI.name, parameters: [:], description: "Repeat captured last-filter settings on the current native target in one Undo transaction; discover filterRecall state."),
     .init(name: "filter.apply", parameters: ["layerID": "uuid", "filter": "filter object: kind plus optional kind-specific parameters", "target":"pixels(default), layerMask or smartFilterMask"],

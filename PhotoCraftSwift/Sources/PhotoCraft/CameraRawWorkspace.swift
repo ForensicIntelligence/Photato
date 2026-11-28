@@ -44,6 +44,23 @@ import PhotoCraftImaging
     if remember && sliderStart == nil { rememberUndo(snapshot) }
     settings = value; sensorSettings?.adjustments = value; error = nil; notify(); refresh()
   }
+  func loadSettings(_ data: Data, xmp: Bool) throws {
+    if let sensorSettings {
+      let value = try xmp ? CameraRawXMP.read(data, into: sensorSettings) : RawDevelopment.decodeJSON(data)
+      error = nil
+      changeSensor(value)
+    } else {
+      let value = try xmp ? CameraRawXMP.read(data, into: settings) : CameraRawSettings.decodeJSON(data)
+      error = nil
+      change(value)
+    }
+  }
+  func settingsData(xmp: Bool) throws -> Data {
+    if let sensorSettings {
+      return try xmp ? CameraRawXMP.write(sensorSettings) : JSONEncoder().encode(sensorSettings)
+    }
+    return try xmp ? CameraRawXMP.write(settings) : JSONEncoder().encode(settings)
+  }
   func rememberUndo(_ value: Snapshot) {
     undoStates.append(value); if undoStates.count > 100 { undoStates.removeFirst() }; redoStates.removeAll()
   }

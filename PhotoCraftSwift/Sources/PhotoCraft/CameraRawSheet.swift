@@ -1,5 +1,6 @@
 import AppKit
 import PhotoCraftCore
+import PhotoCraftImaging
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -14,6 +15,8 @@ struct CameraRawSheet: View {
   @State private var importing = false
   @State private var exporting = false
   @State private var exportFile: LUTDocument?
+  @State private var exportXMP = true
+  private static let xmpType = UTType(filenameExtension: "xmp", conformingTo: .data) ?? .xml
   private var groups: [String] { (model.sensorSettings == nil ? [] : ["Sensor"]) + ["Light","Color","Effects","Curve","Color Mixer","Color Grading","Detail"] }
   init(store: EditorStore,workspace: CameraRawWorkspace? = nil,placement: RawPlacementWorkspace? = nil) { self.store = store; self.placement = placement; _model = State(initialValue:workspace ?? CameraRawWorkspace()) }
   private func binding(_ key: String) -> Binding<Double> { Binding(get:{ Double(model.settings[key]) },set:{ var value = model.settings; value[key] = Float($0); model.change(value) }) }
@@ -25,7 +28,19 @@ struct CameraRawSheet: View {
   }
   var body: some View {
     VStack(spacing:0) {
-      HStack { Text(model.sensorSettings == nil ? "Camera Raw Filter" : "Camera Raw — Source").font(.headline); Spacer(); if model.rendering { ProgressView().controlSize(.small) }; Button("Load Settings…") { importing = true }; Button("Save Settings…") { do { exportFile = LUTDocument(data:try model.sensorSettings.map { try JSONEncoder().encode($0) } ?? JSONEncoder().encode(model.settings)); exporting = true } catch { model.error = error.localizedDescription } } }.padding(12)
+      HStack {
+        Text(model.sensorSettings == nil ? "Camera Raw Filter" : "Camera Raw — Source").font(.headline)
+        Spacer()
+        if model.rendering { ProgressView().controlSize(.small).accessibilityLabel("Rendering Camera Raw preview") }
+        Button("Load Settings…") { importing = true }
+          .help("Load Camera Raw XMP or Photato JSON settings.")
+        Menu("Save Settings") {
+          Button("Camera Raw XMP…") { exportSettings(xmp: true) }
+            .help("Share supported adjustments with Adobe Camera Raw.")
+          Button("Photato JSON…") { exportSettings(xmp: false) }
+            .help("Save all Photato Camera Raw settings.")
+        }
+      }.padding(12)
       Divider()
       HStack(spacing:0) {
         GeometryReader { geo in
@@ -61,10 +76,31 @@ struct CameraRawSheet: View {
     }.frame(width:min(1180,(NSScreen.main?.visibleFrame.width ?? 1280)-80),height:min(780,(NSScreen.main?.visibleFrame.height ?? 900)-100))
     .task { guard let draft = store.filterDraft else { return }; model.onChange = { store.filterDraft?.filter.cameraRaw = $0 }; model.onSensorChange = { store.filterDraft?.rawDevelopment = $0 }; if draft.rawDevelopment != nil { group = "Sensor" }; await model.prepare(document:store.document,draft:draft) }
     .onDisappear { model.close() }
-    .fileImporter(isPresented:$importing,allowedContentTypes:[.json,.data]) { result in
-      do { let url = try result.get(), access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() } }; let file = try FileHandle(forReadingFrom:url); defer { try? file.close() }; let data = try file.read(upToCount:32769) ?? Data(); if model.sensorSettings != nil { model.changeSensor(try RawDevelopment.decodeJSON(data)) } else { model.change(try CameraRawSettings.decodeJSON(data)) } } catch { model.error = error.localizedDescription }
+    .fileImporter(isPresented: $importing, allowedContentTypes: [Self.xmpType, .json, .data]) { result in
+      do {
+        let url = try result.get()
+        let access = url.startAccessingSecurityScopedResource()
+        defer { if access { url.stopAccessingSecurityScopedResource() } }
+        let file = try FileHandle(forReadingFrom: url)
+        defer { try? file.close() }
+        let xmp = url.pathExtension.lowercased() == "xmp"
+        let limit = xmp ? CameraRawXMP.maximumBytes : 32_768
+        let data = try file.read(upToCount: limit + 1) ?? Data()
+        try model.loadSettings(data, xmp: xmp)
+      } catch { model.error = error.localizedDescription }
     }
-    .fileExporter(isPresented:$exporting,document:exportFile,contentType:.json,defaultFilename:"Camera Raw.photatoraw") { if case .failure(let error) = $0 { model.error = error.localizedDescription } }
+    .fileExporter(isPresented: $exporting, document: exportFile,
+      contentType: exportXMP ? Self.xmpType : .json,
+      defaultFilename: exportXMP ? "Camera Raw.xmp" : "Camera Raw.photatoraw") {
+      if case .failure(let error) = $0 { model.error = error.localizedDescription }
+    }
+  }
+  private func exportSettings(xmp: Bool) {
+    do {
+      exportFile = LUTDocument(data: try model.settingsData(xmp: xmp))
+      exportXMP = xmp
+      exporting = true
+    } catch { model.error = error.localizedDescription }
   }
   private var histogram: some View {
     Canvas { context,size in

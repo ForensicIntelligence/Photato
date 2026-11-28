@@ -803,7 +803,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 782 | 2026-11-27 | [Preserve selected channels in flat TIFF copies](#dev-step-782) |
 | 783 | 2026-11-27 | [Match Photoshop RGB16 TIFF white-matte samples](#dev-step-783) |
 | 784 | 2026-11-27 | [Keep active Quick Mask in layered TIFF](#dev-step-784) |
+| 785 | 2026-11-27 | [Read and write Camera Raw XMP settings](#dev-step-785) |
 <!-- history-index:end -->
+
+<a id="dev-step-785"></a>
+
+## 2026-11-27 — Step 785 — Read and write Camera Raw XMP settings
+
+Camera Raw Load Settings accepts XMP presets for sensor RAW and rendered RGB. Save Settings includes Camera Raw XMP and Photato JSON. XMP applies supported fields to the current draft, with preview and Undo. The sensor source remains editable and its original bytes are preserved.
+
+Camera Raw uses absolute Kelvin and tint in sensor XMP and separate increment fields for the rendered filter. The native codec resolves fields by namespace and uses the same preview and edit transaction as existing JSON settings. The live macOS export caught an exception in the shared file wrapper when the filename was nil. The wrapper now lets the save panel choose the filename. Portable XMP covers shared adjustments. Photato JSON retains Apple decoder and sensor-only options. [Adobe Camera Raw settings](https://helpx.adobe.com/in/camera-raw/desktop/get-started/overview-and-setup/camera-raw-settings.html). The first optimized run passed 328 of 329 tests on each architecture. The public build 784 reproduces the one catalogue failure. Its menu already included Prompt to Edit, which was missing from the inventory CSV. The documented inventory and test now include all 810 items.
+
+Adobe Camera Raw 18.1.1 loaded both Photato presets. On the DNG the sensor white balance was 6800 K with tint −4 and Exposure +1.25. The rendered example retained Exposure −0.35 and relative temperature +31 and tint −24. Adobe re-exported 75 matching fields, including a custom curve point and vignette style. It omitted eight inactive subcontrols.
+
+The authenticated Photato `cameraRaw.settings.convert` command converts XMP text and typed Photato settings in `raw` or `rendered` mode. `raw.develop` also applies XMP directly through the native redevelopment transaction. The Adobe Firefly input contract and the native document format are unchanged.
+
+Xcode built the native app. All 5 focused workspace and authenticated HTTP tests passed. Both optimized architectures passed all 329 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The comparison covers settings values. Adobe and Photato rendering, automatic same-name sidecars, DNG-embedded settings, color profiles and local masks need separate testing and support.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,272,381 bytes with SHA-256 `2dc3f788c08eb62af40e5ebea3f9aac5ef5cef2e532ce458eea15f8cc1974e1f`.
+
+[Qualification](SOURCE_PUBLICATION_785.md).
 
 <a id="dev-step-784"></a>
 

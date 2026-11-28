@@ -127,6 +127,7 @@ Edit > Stroke…,command,strokeSelectionDialog,,0,partial native operation
 Edit > Content-Aware Fill…,command,contentAwareFill,,0,partial native operation
 Edit > Generative Fill…,command,unavailable,,0,disabled placeholder
 Edit > Generate Image…,command,unavailable,,0,disabled placeholder
+Edit > Prompt to Edit…,command,promptToEdit,,0,partial native operation
 Edit > Create with Apple Intelligence…,command,ai,,0,partial native operation
 Edit > Content-Aware Scale,command,contentAwareScale,c,1703936,partial native operation
 Edit > Puppet Warp,command,rasterFilterDialog:,,0,partial native operation

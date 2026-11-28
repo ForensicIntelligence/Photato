@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 785 — Read and write Camera Raw XMP settings
+
+Camera Raw Load Settings accepts XMP presets for sensor RAW and rendered RGB. Save Settings includes Camera Raw XMP and Photato JSON. XMP applies supported fields to the current draft, with preview and Undo. The sensor source remains editable and its original bytes are preserved.
+
+Adobe Camera Raw 18.1.1 loaded both Photato presets. On the DNG the sensor white balance was 6800 K with tint −4 and Exposure +1.25. The rendered example retained Exposure −0.35 and relative temperature +31 and tint −24. Adobe re-exported 75 matching fields, including a custom curve point and vignette style. It omitted eight inactive subcontrols.
+
+Xcode built the native app. All 5 focused workspace and authenticated HTTP tests passed. Both optimized architectures passed all 329 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The comparison covers settings values. Adobe and Photato rendering, automatic same-name sidecars, DNG-embedded settings, color profiles and local masks need separate testing and support.
+
+[Development record](DEVLOG.md#dev-step-785) · [Qualification](SOURCE_PUBLICATION_785.md).
+
 ## 2026-11-27 — Step 784 — Keep active Quick Mask in layered TIFF
 
 Lossless layered TIFF and BigTIFF now reopen in Quick Mask mode when the mask was active at Save. The temporary mask stays editable. Composite opacity, saved alpha and spots retain their independent controls.
@@ -2507,11 +2519,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:784 -->
+<!-- current-status-step:785 -->
 
-Lossless layered TIFF and BigTIFF now reopen in Quick Mask mode when the mask was active at Save. The temporary mask stays editable. Composite opacity, saved alpha and spots retain their independent controls.
+Camera Raw Load Settings accepts XMP presets for sensor RAW and rendered RGB. Save Settings includes Camera Raw XMP and Photato JSON. XMP applies supported fields to the current draft, with preview and Undo. The sensor source remains editable and its original bytes are preserved.
 
-[Development record](DEVLOG.md#dev-step-784) · [Qualification](SOURCE_PUBLICATION_784.md).
+[Development record](DEVLOG.md#dev-step-785) · [Qualification](SOURCE_PUBLICATION_785.md).
 
 <!-- current-status:end -->
 
@@ -3502,6 +3514,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 782 | [Preserve selected channels in flat TIFF copies](DEVLOG.md#dev-step-782) |
 | 2026-11-27 | 783 | [Match Photoshop RGB16 TIFF white-matte samples](DEVLOG.md#dev-step-783) |
 | 2026-11-27 | 784 | [Keep active Quick Mask in layered TIFF](DEVLOG.md#dev-step-784) |
+| 2026-11-27 | 785 | [Read and write Camera Raw XMP settings](DEVLOG.md#dev-step-785) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

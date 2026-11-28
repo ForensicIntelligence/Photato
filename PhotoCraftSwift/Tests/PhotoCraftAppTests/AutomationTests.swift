@@ -7,7 +7,7 @@ import XCTest
 @testable import PhotoCraft
 
 final class AutomationTests: XCTestCase {
-  static let expectedCommandCount = 294
+  static let expectedCommandCount = 295
   static let expectedActionVersion = 81
   func parse(_ text: String) throws -> AutomationRequest? {
     try AutomationRequest.parse(Data(text.utf8))
@@ -156,7 +156,7 @@ final class AutomationTests: XCTestCase {
       let catalogue = try XCTUnwrap(
         JSONSerialization.jsonObject(with: sameOrigin.1) as? [String: Any])
       XCTAssertEqual((catalogue["commands"] as? [Any])?.count, AutomationTests.expectedCommandCount)
-      XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 809)
+      XCTAssertEqual((catalogue["menuInventory"] as? [Any])?.count, 810)
       let channels = try XCTUnwrap(catalogue["alphaChannels"] as? [String: Any])
       let nativeDrag = try XCTUnwrap(channels["nativeDrag"] as? [String: String])
       XCTAssertTrue(nativeDrag["duplicate"]?.contains("channel.duplicate") == true)

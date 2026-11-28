@@ -1,5 +1,6 @@
 import Foundation
 import PhotoCraftCore
+import PhotoCraftImaging
 
 extension CameraRawSettings {
   static var apiSchema: [String:Any] {
@@ -17,11 +18,68 @@ extension CameraRawSettings {
     return ["type":"object","additionalProperties":false,"properties":properties]
   }
   static var apiCapabilities: [String:Any] {
-    ["schema":apiSchema,"commands":["filter.apply","smartFilter.set"],"nativeArchiveVersion":21,
-     "preset":"Bounded UTF-8 JSON settings, .photatoraw; partial keys merge neutral defaults.",
+    ["schema":apiSchema,"commands":["filter.apply","smartFilter.set",CameraRawXMPAPI.name],"nativeArchiveVersion":21,
+     "preset":"Load or save standard Camera Raw XMP for supported controls. Photato JSON presets retain all native values. XMP conversion is available through cameraRaw.settings.convert.",
      "controls":controls.map { ["key":$0.key,"title":$0.title,"group":$0.group] },
      "workflow":"RGB Camera Raw Filter with editable Smart Filters; sensor RAW decoding is not provided by this filter.",
      "adobe":"Published /v2/edit light, color saturation/vibrance, effects, noiseReduction, sharpness and sharpen subsets share this engine. Other edits and Camera Raw action descriptors fail explicitly.",
      "limits":"8,388,608 layer pixels, RGB image target; no Adobe pixel/model equivalence or PSD/PSB editable Camera Raw descriptor interchange."]
+  }
+}
+
+
+enum CameraRawXMPAPI {
+  static let name = "cameraRaw.settings.convert"
+  static let definition = AutomationCommand.Definition(name: name,
+    parameters: ["mode": "raw or rendered", "xmp": "Camera Raw XMP text", "settings": "Photato Camera Raw settings"],
+    description: "Convert Camera Raw XMP and Photato settings without changing the shared document.",
+    optionalParameters: ["xmp", "settings"])
+
+  static func schema(_ key: String) -> [String: Any] {
+    switch key {
+    case "mode": return ["type": "string", "enum": ["raw", "rendered"]]
+    case "xmp": return ["type": "string", "minLength": 1, "maxLength": CameraRawXMP.maximumBytes]
+    default: return ["anyOf": [RawDevelopment.apiSchema, CameraRawSettings.apiSchema]]
+    }
+  }
+
+  static func packet(_ value: AutomationValue?) throws -> Data {
+    guard case .string(let text) = value, !text.isEmpty, text.utf8.count <= CameraRawXMP.maximumBytes else {
+      throw AutomationFailure(status: 400, message: "Camera Raw XMP must be text under 256 KiB.")
+    }
+    return Data(text.utf8)
+  }
+
+  static func convert(_ command: AutomationCommand) throws -> [String: Any] {
+    let mode = try command.string("mode")
+    guard mode == "raw" || mode == "rendered" else {
+      throw AutomationFailure(status: 400, message: "Camera Raw settings mode must be raw or rendered.")
+    }
+    let xmp = command.parameters["xmp"]
+    let settings = command.parameters["settings"]
+    guard (xmp == nil) != (settings == nil) else {
+      throw AutomationFailure(status: 400, message: "Supply either XMP text or a settings object.")
+    }
+    do {
+      if xmp != nil {
+        let data = try packet(xmp)
+        let decoded = try mode == "raw"
+          ? JSONEncoder().encode(CameraRawXMP.read(data, into: RawDevelopment()))
+          : JSONEncoder().encode(CameraRawXMP.read(data))
+        var object = try JSONSerialization.jsonObject(with: decoded) as! [String: Any]
+        if mode == "raw" {
+          object["temperature"] = object["temperature"] ?? NSNull()
+          object["tint"] = object["tint"] ?? NSNull()
+        }
+        return ["mode": mode, "settings": object]
+      }
+      guard let settings else { throw CraftError.invalid("Missing Camera Raw settings.") }
+      let data = try JSONSerialization.data(withJSONObject: settings.jsonValue, options: .fragmentsAllowed)
+      let output = try mode == "raw"
+        ? CameraRawXMP.write(RawDevelopment.decodeJSON(data))
+        : CameraRawXMP.write(CameraRawSettings.decodeJSON(data))
+      return ["mode": mode, "xmp": String(decoding: output, as: UTF8.self)]
+    } catch let failure as AutomationFailure { throw failure }
+    catch { throw AutomationFailure(status: 400, message: error.localizedDescription) }
   }
 }

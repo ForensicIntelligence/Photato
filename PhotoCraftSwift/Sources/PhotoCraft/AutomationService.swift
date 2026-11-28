@@ -1465,6 +1465,7 @@ import UniformTypeIdentifiers
       if command.name == "document.imageStack" { return try await executeImageStack(command,anchorID:id) }
       if command.name == "document.hdrMerge" { return try await executeHDRMerge(command,anchorID:id) }
       if command.name == "raw.inspect" { return .json(try await inspectRaw(command,document:document,shareID:id)) }
+      if command.name == CameraRawXMPAPI.name { return .json(try CameraRawXMPAPI.convert(command)) }
       if command.name == "liquify.faces" { return .json(try await detectLiquifyFaces(command, document: document, shareID: id)) }
       if command.name == "document.autosave" {
         try await document.writeRecoverySnapshot()

@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **784** · The 10 most recent entries, newest first.
+Source build **785** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 785 — Read and write Camera Raw XMP settings
+
+Camera Raw Load Settings accepts XMP presets for sensor RAW and rendered RGB. Save Settings includes Camera Raw XMP and Photato JSON. XMP applies supported fields to the current draft, with preview and Undo. The sensor source remains editable and its original bytes are preserved.
+
+Adobe Camera Raw 18.1.1 loaded both Photato presets. On the DNG the sensor white balance was 6800 K with tint −4 and Exposure +1.25. The rendered example retained Exposure −0.35 and relative temperature +31 and tint −24. Adobe re-exported 75 matching fields, including a custom curve point and vignette style. It omitted eight inactive subcontrols.
+
+Xcode built the native app. All 5 focused workspace and authenticated HTTP tests passed. Both optimized architectures passed all 329 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The comparison covers settings values. Adobe and Photato rendering, automatic same-name sidecars, DNG-embedded settings, color profiles and local masks need separate testing and support.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-785) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_785.md).
 
 ## 2026-11-27 — Step 784 — Keep active Quick Mask in layered TIFF
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 3 focused imaging and 1 focused app and HTTP tes
 Photoshop color reconstruction and JPEG IDCT rounding still differ on the measured inputs. JPEG TIFF save, legacy JPEG compression and additional component, density and corruption cases remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-776) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_776.md).
-
-## 2026-11-27 — Step 775 — Save TIFF image pyramids
-
-Save Image Pyramid is available for classic RGB, Grayscale, CMYK and Lab TIFFs. Photato saves three smaller previews alongside the original image and optional editable layers.
-
-The native compact writer matched all 3,945,867 reduced RGB8 samples in three Photoshop 27.2 references, with matching dimensions, density and primary pixels. The staged writer separately matched all 776,832 preview samples on its reference. An Adobe two-pixel control also kept three one-pixel previews. Photoshop opened the Photato wide output at full document dimensions.
-
-Xcode built the native app. All 2 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 255 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
-
-Direct Photoshop sample comparisons cover opaque RGB8. Wider HDR, profile, alpha and component-mode comparisons, Indexed/Bitmap pyramids and complete file-layout equivalence remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-775) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_775.md).

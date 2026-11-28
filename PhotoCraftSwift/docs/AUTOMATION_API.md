@@ -1,3 +1,9 @@
+### Camera Raw XMP settings (checkpoint 785)
+
+The authenticated Photato `cameraRaw.settings.convert` command converts XMP text and typed Photato settings in `raw` or `rendered` mode. `raw.develop` also applies XMP directly through the native redevelopment transaction. The Adobe Firefly input contract and the native document format are unchanged.
+
+[Qualification](SOURCE_PUBLICATION_785.md).
+
 ### Active Quick Mask in layered TIFF (checkpoint 784)
 
 Native open and save, both TIFF import paths and authenticated Photato download share the codec. The existing `tiffLayers` option selects layered output. Adobe v2 TIFF output fields remain unchanged.
