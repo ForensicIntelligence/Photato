@@ -12,18 +12,19 @@ import SwiftUI
       lensDefaults: .shared, scriptEvents: .shared,
       workflowGuidePreferences: WorkflowGuidePreferences(defaults: .standard),
       printPreferences: PrintPreferences(defaults: .standard),
-      artworkPlacementPreferences: ArtworkPlacementPreferences(defaults: .standard))
+      artworkPlacementPreferences: ArtworkPlacementPreferences(defaults: .standard),
+      cameraRawPreferences: CameraRawPreferences(defaults: .standard))
   }
   init(workspaces: WorkspaceLibrary, recoveryPreferences: RecoveryPreferencesStore? = nil,
     recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil, paintPalette: PaintPalette? = nil, eyedropperPreferences:EyedropperPreferences? = nil,
     liquifyMeshes: LiquifyMeshLibrary? = nil, lensDefaults: LensDefaultLibrary? = nil, scriptEvents: ScriptEventsStore? = nil,
     workflowGuidePreferences: WorkflowGuidePreferences? = nil, printPreferences: PrintPreferences? = nil,
-    artworkPlacementPreferences: ArtworkPlacementPreferences? = nil) {
+    artworkPlacementPreferences: ArtworkPlacementPreferences? = nil, cameraRawPreferences: CameraRawPreferences? = nil) {
     controller = CraftDocumentController(
       workspaces: workspaces, recoveryPreferences: recoveryPreferences, recoveryIndex: recoveryIndex,
       colorSettings: colorSettings, paintPalette: paintPalette, eyedropperPreferences: eyedropperPreferences,
       scriptEvents: scriptEvents, workflowGuidePreferences: workflowGuidePreferences, printPreferences: printPreferences,
-      artworkPlacementPreferences: artworkPlacementPreferences)
+      artworkPlacementPreferences: artworkPlacementPreferences, cameraRawPreferences: cameraRawPreferences)
     super.init()
     controller.filterRecall.liquifyMeshes = liquifyMeshes ?? LiquifyMeshLibrary()
     controller.filterRecall.lensDefaults = lensDefaults ?? LensDefaultLibrary()
@@ -38,6 +39,7 @@ import SwiftUI
   var workflowGuideWindow: WorkflowGuideWindow?
   var workflowGuidePreferencesWindow: NSWindowController?
   var generalPlacementPreferencesWindow: NSWindowController?
+  var cameraRawPreferencesWindow: NSWindowController?
   var scriptEventsWindow: ScriptEventsWindow?
   var layerCompsWindow: NSWindowController?
   var brushSettingsWindow: NSWindowController?
@@ -197,7 +199,7 @@ import SwiftUI
     if let result = validateArtboardMenu(item) { return result }
     if let result = validateRecentMenu(item) { return result }
     if let result = validateDocumentClosingMenu(item) { return result }
-    if [#selector(generalPlacementPreferences), #selector(fileHandlingPreferences), #selector(colorSettingsDialog)].contains(item.action) { return true }
+    if [#selector(generalPlacementPreferences), #selector(fileHandlingPreferences), #selector(cameraRawPreferences), #selector(colorSettingsDialog)].contains(item.action) { return true }
     if [#selector(save), #selector(saveAs), #selector(saveCopy)].contains(item.action) {
       return (controller.currentDocument as? CraftNSDocument)?.canRunFileCommand == true
     }

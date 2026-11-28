@@ -664,6 +664,7 @@ import UniformTypeIdentifiers
       if let response = try await handleLinkedSourceFile(request) {return response}
       if let response = try handleRecoveryPreferences(request) { return response }
       if let response = try handlePhotoshopFilePreferences(request) { return response }
+      if let response = try handleCameraRawPreferences(request) { return response }
       if let response = try handlePlacementPreferences(request) { return response }
       if let response = try handleColorSettings(request) { return response }
       if let response = try await handleRecoveryDiscovery(request) { return response }
@@ -2105,6 +2106,7 @@ import UniformTypeIdentifiers
       "apiVersion": 1, "transport": "loopback HTTP; bearer token; same origin",
       "recoveryPreferences": recoveryPreferencesCapabilities,
       "photoshopFilePreferences": photoshopFilePreferencesCapabilities,
+      "cameraRawPreferences": cameraRawPreferencesCapabilities,
       "placementPreferences": placementPreferencesCapabilities,
       "recoveryDiscovery": recoveryDiscoveryCapabilities,
       "recoveryBackups": recoveryBackupsCapabilities,

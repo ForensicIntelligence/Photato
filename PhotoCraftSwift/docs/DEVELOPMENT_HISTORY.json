@@ -10779,6 +10779,13 @@
       "link": "DEVLOG.md#dev-step-789",
       "section_sha256": "62cf30d5d965ecd2d8bdb528a0910d79709651d1a4265fd1fbba34903cc03b41",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-790",
+      "title": "2026-11-28 \u2014 Step 790 \u2014 Camera Raw DNG storage preferences",
+      "link": "DEVLOG.md#dev-step-790",
+      "section_sha256": "f6be716f5275ec48734f8df32628ef4cbb7534134452906a56ba3644f746616d",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13614,8 +13621,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "e14b17c4df6befdecb0e95c6e7f030895e3da9d63a4ee57f5690a735854b1dc3",
-      "bytes": 188840,
+      "sha256": "7d00767c31dfe9a229a86782f1d435a2b9f268f6ad5b169434ff3b08f92f3f88",
+      "bytes": 188953,
       "rolling_current_snapshot": false
     },
     {
@@ -15336,8 +15343,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "e43679d173e9a84f812efd8e8219f970a5f2e08bf0e3f36c63eaadf39c92b4e8",
-      "bytes": 754652,
+      "sha256": "5f81f526aa7f7cf5ce4763172435c45547c5c76fd8ef57078028c2fc84ad758b",
+      "bytes": 755147,
       "rolling_current_snapshot": false
     },
     {
@@ -15906,8 +15913,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "bce30569e9eb27f3878d0e67aaa3be47b3e5a5a5509e65cda313129dbd636542",
-      "bytes": 401626,
+      "sha256": "3159d1170b570c175f389cf040901a577a71827e0b0760be2b5901055ffb5c69",
+      "bytes": 401736,
       "rolling_current_snapshot": false
     },
     {
@@ -16026,8 +16033,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "9289318dfc87c1348c36d5f1708f66f4e06b8a5b8e97d8fd1a14475698392802",
-      "bytes": 228124,
+      "sha256": "b3c76f1b364e170cb79616697e9321f8b262a2441ab12e57d80e8439c6b81766",
+      "bytes": 228403,
       "rolling_current_snapshot": false
     },
     {
@@ -16104,14 +16111,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "9f9502be3e083a8b2f6a747cadc970909f666332a7e42cfabc733564c17b52cc",
-      "bytes": 1076850,
+      "sha256": "18acfdfd1b918eaf3949cef50f56a9c71d5ed26ff1b5d156c9c3718be81343b5",
+      "bytes": 1078160,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "469f9e987ef6bfca7565de4a87b4301bf1c98bb29495bda61845b94c0673adfa",
-      "bytes": 5215884,
+      "sha256": "65e5c0ff03f73eed5b78e8a19e0a634d6076e4874cd66ff98a152efa668cd972",
+      "bytes": 5218128,
       "rolling_current_snapshot": false
     },
     {
@@ -19026,8 +19033,8 @@
     },
     {
       "path": "docs/MENU_PARITY.csv",
-      "sha256": "ba5640363dd62061e87dbb2f1fb7278eb481ad2ad7e658d4a5bf22413644346f",
-      "bytes": 64713,
+      "sha256": "06e3c37c2941a9b210ace1df650aea02cb947ec87c1a3b6bb63eae391b94722b",
+      "bytes": 64726,
       "rolling_current_snapshot": false
     },
     {
@@ -23789,6 +23796,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_790.json",
+      "sha256": "d95c1a00e51fd24e9d20dce7fb02a334b5cdaa7e433394f949d9170810c097b4",
+      "bytes": 16218,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_790.md",
+      "sha256": "18d7aa34a5cb393cef6ab27d0bf00ccf605de53995c459bea0d5a1f7f56be650",
+      "bytes": 1848,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24348,8 +24367,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "cb0656560348feceeb0b0f3bf5dd9ffc6e31b581b17890b7f2d4265d77a5557e",
-      "bytes": 512540,
+      "sha256": "12e5c453c815fc896ba2a69fd74ca9cc68be84697b019e009a51700f4c8877b0",
+      "bytes": 513078,
       "rolling_current_snapshot": false
     },
     {
@@ -26862,8 +26881,8 @@
     }
   ],
   "counts": {
-    "milestones": 789,
-    "evidence_files": 2210,
+    "milestones": 790,
+    "evidence_files": 2212,
     "logs": 0,
     "missing_explicit_references": 704
   }

@@ -118,7 +118,7 @@ struct AutomationView: View {
           get: { service.photoshopPreferenceChangesEnabled },
           set: { service.setPhotoshopPreferenceChangesEnabled($0) }
         )).disabled(!service.isRunning)
-        Text("Allows clients to change the default compression of 16-bit and 32-bit PSD/PSB saves. Explicit output choices still apply. This permission turns off when the API stops.")
+        Text("Allows clients to change PSD and PSB save defaults and the DNG settings storage choice. This permission turns off when the API stops.")
           .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         Divider()
         Toggle("Allow placement preference changes", isOn: Binding(

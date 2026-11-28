@@ -4,6 +4,13 @@ import ImageIO
 import UniformTypeIdentifiers
 import PhotoCraftCore
 
+/// Storage policy for adjustments attached to original Digital Negative files.
+public enum RawDNGSettingsStorage: String, CaseIterable, Codable, Sendable {
+  case embedXMP
+  case sidecarXMP
+  case ignoreSidecarXMP
+}
+
 /// Native Apple sensor decoder. Never substitutes CGImageSource previews for RAW output.
 public enum RawSourceIO {
   public static let maximumPixels = Surface.maximumDensePixels
@@ -111,18 +118,22 @@ public enum RawSourceIO {
     return (prepared.document, nil)
   }
 
-  public static func prepareLocalSettings(_ url: URL, depth: PixelDepth = .u16) throws
+  public static func prepareLocalSettings(_ url: URL, depth: PixelDepth = .u16,
+    dngStorage: RawDNGSettingsStorage = .embedXMP) throws
     -> (document: CraftDocument, source: RawSettingsSource?) {
     let input = try PSDFileSource(url, maximumBytes: SmartObject.maximumSourceBytes)
     let data = try input.bytes(at: 0, count: input.count)
-    let related = try relatedXMP(for: url)
+    let ignoresSidecar = dngStorage == .ignoreSidecarXMP && type(data) == "com.adobe.raw-image"
+    let related = try ignoresSidecar ? nil : relatedXMP(for: url)
     let settings = try related?.settings.map { try compatibleStoredSettings($0, in: data) }
     let document = try open(data, fileName: url.lastPathComponent, settings: settings, depth: depth)
     let safeSource = (try? url.resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink) == false
+    let mediaType = document.layers.first?.smartObject?.mediaType
     let source: RawSettingsSource?
-    if safeSource, document.layers.first?.smartObject?.mediaType == "image/x-adobe-dng", TIFFContainer.isClassic(data) {
-      source = .embeddedDNG(RawDNGSource(url: url, original: data, sidecar: related))
-    } else if safeSource, document.layers.first?.smartObject?.mediaType == "image/x-camera-raw" {
+    if safeSource, mediaType == "image/x-adobe-dng", dngStorage != .sidecarXMP, TIFFContainer.isClassic(data) {
+      source = .embeddedDNG(RawDNGSource(url: url, original: data, sidecar: related, ignoresSidecar: ignoresSidecar))
+    } else if safeSource, mediaType == "image/x-camera-raw"
+      || (mediaType == "image/x-adobe-dng" && dngStorage == .sidecarXMP) {
       let existing = try related ?? relatedXMP(for: url, requireAdjustments: false)
       source = .sidecar(RawSidecarSource(url: url, original: data, existing: existing))
     } else {

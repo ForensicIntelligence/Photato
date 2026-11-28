@@ -283,11 +283,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:789 -->
+<!-- current-status-step:790 -->
 
-Camera Raw’s Done button now writes or updates the companion XMP for supported non-DNG originals. Photato keeps the camera file unchanged and retains unrelated XMP metadata. Nikon files with a verified sensor directory decode at full size from both Finder and retained bytes.
+Camera Raw settings now control whether a local DNG writes XMP inside the source, writes a sibling, or opens and saves embedded settings while leaving the sibling alone. The default honors an existing companion before saving settings in the DNG.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-789) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_789.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-790) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_790.md).
 
 <!-- current-status:end -->
 
@@ -1283,5 +1283,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 787 | [Save editable Camera Raw settings in DNG copies](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-787) |
 | 2026-11-27 | 788 | [Save Camera Raw settings in the original DNG](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-788) |
 | 2026-11-28 | 789 | [Save camera RAW adjustments in XMP sidecars](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-789) |
+| 2026-11-28 | 790 | [Camera Raw DNG storage preferences](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-790) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

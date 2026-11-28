@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-28 — Step 790 — Camera Raw DNG storage preferences
+
+Camera Raw settings now control whether a local DNG writes XMP inside the source, writes a sibling, or opens and saves embedded settings while leaving the sibling alone. The default honors an existing companion before saving settings in the DNG.
+
+The installed Adobe Camera Raw 18.1.1 File Handling panel exposed the three DNG Sidecars choices and selected embedded XMP by default. The signed Photato replay wrote +1.75 to a new sibling and kept the DNG byte-identical. The embedded-only mode read +0.75 from the DNG despite a sidecar at +2.50. After saving +0.50 in the DNG, the companion and source sensor payload stayed byte-identical. Adobe read Photato’s DNG sidecar at +1.75 and the embedded-only copy at +0.50.
+
+Xcode built the app. Nine focused imaging cases and two app and HTTP cases passed. Both optimized architectures passed all 349 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+Embedded preview regeneration, camera-specific defaults, Camera Raw database routing, physical Intel testing and exact Adobe render equivalence remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-790) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_790.md).
+
 ## 2026-11-28 — Step 789 — Save camera RAW adjustments in XMP sidecars
 
 Camera Raw’s Done button now writes or updates the companion XMP for supported non-DNG originals. Photato keeps the camera file unchanged and retains unrelated XMP metadata. Nikon files with a verified sensor directory decode at full size from both Finder and retained bytes.

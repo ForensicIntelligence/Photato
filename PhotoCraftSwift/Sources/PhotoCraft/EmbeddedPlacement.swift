@@ -8,12 +8,12 @@ struct PreparedEmbeddedSource: Sendable {
   let fileName: String
   let document: CraftDocument?
   var isPDF: Bool {document == nil}
-  static func read(_ url: URL) throws -> Self {
+  static func read(_ url: URL, dngStorage: RawDNGSettingsStorage = .embedXMP) throws -> Self {
     let access = url.startAccessingSecurityScopedResource()
     defer {if access {url.stopAccessingSecurityScopedResource()}}
     let original = try RecoverySourceReader.snapshot(url, maximumBytes: SmartObject.maximumLocalEmbeddedBytes(forHeader:),
       fileBackedAbove: SmartObject.maximumSourceBytes)
-    let model = PDFImport.recognizes(original.data) ? nil : try SmartObjectIO.decode(original, fileName: url.lastPathComponent, sourceURL: url)
+    let model = PDFImport.recognizes(original.data) ? nil : try SmartObjectIO.decode(original, fileName: url.lastPathComponent, sourceURL: url, dngStorage: dngStorage)
     return Self(original:original,fileName:url.lastPathComponent,document:model)
   }
 }
@@ -38,6 +38,7 @@ extension EditorStore {
     guard clipboardTargetAvailable else {return}
     let original = document,lifecycle = layerPanelGeneration,sessionID = sessionGeneration,operation = UUID()
     let preferences = artworkPlacementPreferences.settings
+    let dngStorage = documentController?.cameraRawPreferences.dngStorage ?? .embedXMP
     let newLayer = layerID == nil && frameID == nil
     let rasterize = newLayer && linkedGrant == nil && !preferences.alwaysCreateSmartObjectsWhenPlacing
     geometryBusy = true;embeddedPlacementOperationID = operation;embeddedPlacementSourceName = url.lastPathComponent
@@ -57,7 +58,7 @@ extension EditorStore {
             let decoded=PDFImport.recognizes(file.data) ? nil:try SmartObjectIO.decode(file.original,fileName:file.fileName)
             return (.init(original:file.original,fileName:file.fileName,document:decoded),file)
           }
-          return (try PreparedEmbeddedSource.read(url),nil)
+          return (try PreparedEmbeddedSource.read(url, dngStorage: dngStorage),nil)
         }
         let (source,linkedFile) = try await withTaskCancellationHandler {try await reader.value} onCancel:{reader.cancel()}
         try Task.checkCancellation()

@@ -46,7 +46,8 @@ public enum SmartObjectIO {
   public static func decode(_ data: Data, fileName: String) throws -> CraftDocument {
     try decode(.memory(data), fileName: fileName)
   }
-  public static func decode(_ sourceBytes: EmbeddedSourceBytes, fileName: String, sourceURL: URL? = nil) throws -> CraftDocument {
+  public static func decode(_ sourceBytes: EmbeddedSourceBytes, fileName: String, sourceURL: URL? = nil,
+    dngStorage: RawDNGSettingsStorage = .embedXMP) throws -> CraftDocument {
     let data = sourceBytes.data
     return try withNesting {
       guard data.count <= SmartObject.maximumEmbeddedBytes(for: sourceBytes) else {
@@ -60,8 +61,9 @@ public enum SmartObjectIO {
         let document=try PcraftImport.read(data,rasterByteLimit:256*1024*1024)
         try check(document);return document
       }
-      if RawSourceIO.recognizes(data) {
-        let settings = try sourceURL.flatMap { try RawSourceIO.relatedSettings(for: $0, rawData: data) }
+      if let type = RawSourceIO.type(data) {
+        let readsSidecar = type != "com.adobe.raw-image" || dngStorage != .ignoreSidecarXMP
+        let settings = try readsSidecar ? sourceURL.flatMap { try RawSourceIO.relatedSettings(for: $0, rawData: data) } : nil
         return try RawSourceIO.open(data, fileName: fileName, settings: settings)
       }
       if let name = try photoshopDocumentName(sourceBytes, fileName: fileName) {

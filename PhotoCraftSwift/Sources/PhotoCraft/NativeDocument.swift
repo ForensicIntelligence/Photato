@@ -594,6 +594,7 @@ import SwiftUI
   private(set) var paintPalette = PaintPalette()
   private(set) var printPreferences = PrintPreferences()
   private(set) var artworkPlacementPreferences = ArtworkPlacementPreferences()
+  private(set) var cameraRawPreferences = CameraRawPreferences()
   private(set) var eyedropperPreferences=EyedropperPreferences()
   let filterRecall = FilterRecall()
   var movieFramesWorkspace: MovieFramesWorkspace?
@@ -631,7 +632,8 @@ import SwiftUI
     recoveryIndex: RecoveryIndexStore? = nil, colorSettings: ColorSettingsStore? = nil,
     paintPalette: PaintPalette? = nil, eyedropperPreferences:EyedropperPreferences? = nil,
     scriptEvents: ScriptEventsStore? = nil, workflowGuidePreferences: WorkflowGuidePreferences? = nil,
-    printPreferences: PrintPreferences? = nil, artworkPlacementPreferences: ArtworkPlacementPreferences? = nil
+    printPreferences: PrintPreferences? = nil, artworkPlacementPreferences: ArtworkPlacementPreferences? = nil,
+    cameraRawPreferences: CameraRawPreferences? = nil
   ) {
     self.init()
     // AppKit may return its existing document-controller singleton from init().
@@ -641,6 +643,7 @@ import SwiftUI
     self.paintPalette = paintPalette ?? PaintPalette()
     self.printPreferences = printPreferences ?? PrintPreferences()
     self.artworkPlacementPreferences = artworkPlacementPreferences ?? ArtworkPlacementPreferences()
+    self.cameraRawPreferences = cameraRawPreferences ?? CameraRawPreferences()
     self.eyedropperPreferences=eyedropperPreferences ?? EyedropperPreferences()
     self.recoveryPreferences = recoveryPreferences ?? RecoveryPreferencesStore()
     self.colorSettings = colorSettings ?? ColorSettingsStore()

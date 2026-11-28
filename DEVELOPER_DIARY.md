@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **789** · The 10 most recent entries, newest first.
+Source build **790** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 790 — Camera Raw DNG storage preferences
+
+Camera Raw settings now control whether a local DNG writes XMP inside the source, writes a sibling, or opens and saves embedded settings while leaving the sibling alone. The default honors an existing companion before saving settings in the DNG.
+
+The installed Adobe Camera Raw 18.1.1 File Handling panel exposed the three DNG Sidecars choices and selected embedded XMP by default. The signed Photato replay wrote +1.75 to a new sibling and kept the DNG byte-identical. The embedded-only mode read +0.75 from the DNG despite a sidecar at +2.50. After saving +0.50 in the DNG, the companion and source sensor payload stayed byte-identical. Adobe read Photato’s DNG sidecar at +1.75 and the embedded-only copy at +0.50.
+
+Xcode built the app. Nine focused imaging cases and two app and HTTP cases passed. Both optimized architectures passed all 349 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+Embedded preview regeneration, camera-specific defaults, Camera Raw database routing, physical Intel testing and exact Adobe render equivalence remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-790) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_790.md).
 
 ## 2026-11-28 — Step 789 — Save camera RAW adjustments in XMP sidecars
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 5 focused imaging and 2 focused app and HTTP tes
 Flattened TIFF alpha and spot output, Quick Mask, very large layered files and byte identity for complete Photoshop files remain open. Some rich Photoshop blocks still require big-endian TIFF or PSD.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-781) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_781.md).
-
-## 2026-11-27 — Step 780 — Open dense RGB TIFFs without intermediate planes
-
-Eligible opaque RGB8 and RGB16 TIFFs now stream directly into editable tiles. The same path reads classic TIFF and BigTIFF while keeping the original document bit depth.
-
-A 27,000 × 27,000 uncompressed RGB16 BigTIFF was opened and saved through the native codec. The output directory was beyond 4 GiB. An independent libtiff read verified all 2,187,000,000 components against the quantization measured in Photoshop. All 53,055 TIFF samples in the separate Photoshop 27.2 reference matched Photato exactly. The 4,099 × 521 output files from builds 779 and 780 were byte-identical.
-
-Xcode built the native app. All 5 focused imaging and 2 focused app and HTTP tests passed. Both optimized architectures passed all 274 selected tests, with Intel running under Rosetta. Both slices of the Universal preview rendered offscreen.
-
-The dense test covers a flattened, untagged, interleaved RGB16 image without transparency. Dense layered files, other color modes and profiles, and full-format byte equality remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-780) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_780.md).

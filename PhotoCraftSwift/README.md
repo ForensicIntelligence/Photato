@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 790.** Camera Raw DNG storage preferences. [Qualification](docs/SOURCE_PUBLICATION_790.md).
+
 **Source checkpoint 789.** Save camera RAW adjustments in XMP sidecars. [Qualification](docs/SOURCE_PUBLICATION_789.md).
 
 **Source checkpoint 788.** Save Camera Raw settings in the original DNG. [Qualification](docs/SOURCE_PUBLICATION_788.md).

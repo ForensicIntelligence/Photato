@@ -1,3 +1,9 @@
+### Camera Raw DNG storage preferences (checkpoint 790)
+
+Authenticated clients can read `GET /v1/preferences/camera-raw` and update it with a revision and `dngStorage` by POST. The values are `embedXMP`, `sidecarXMP` and `ignoreSidecarXMP`. Updates use the existing native file-preference permission. A local source captures the choice when it opens, and `raw.saveSourceSettings` honors that choice even if the application preference later changes.
+
+[Qualification](SOURCE_PUBLICATION_790.md).
+
 ### Camera RAW source files and XMP sidecars (checkpoint 789)
 
 The authenticated `raw.saveSourceSettings` command now selects the XMP destination automatically for the original layer of a locally opened non-DNG RAW. It shares the native coordinated writer and requires local document saving and the current revision. The editor history and original source bytes remain intact.

@@ -11,6 +11,10 @@ struct PreparedLocalDocument: Sendable {
   var colorPolicyChanged = false
   var rawSettingsSource: RawSettingsSource?
   static func read(_ url: URL, format selection: DocumentOpenFormat) throws -> Self {
+    try read(url, format: selection, dngStorage: .embedXMP)
+  }
+  static func read(_ url: URL, format selection: DocumentOpenFormat,
+    dngStorage: RawDNGSettingsStorage) throws -> Self {
     if (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true {
       try Task.checkCancellation()
       try selection.validate(PcraftImport.recognizes(url) ? .pcraft : nil)
@@ -25,7 +29,7 @@ struct PreparedLocalDocument: Sendable {
       let date = try url.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate
       let actual = DocumentOpenFormat.detect(url)
       try selection.validate(actual)
-      let raw = try actual == .raw ? RawSourceIO.prepareLocalSettings(url) : nil
+      let raw = try actual == .raw ? RawSourceIO.prepareLocalSettings(url, dngStorage: dngStorage) : nil
       var model = try raw?.document ?? DocumentIO.read(url)
       if [.psd, .psb].contains(actual), model.sourceICC == nil { model.profileIsUntagged = true }
       let fingerprint = try reader.finish()
@@ -73,7 +77,7 @@ struct PreparedLocalDocument: Sendable {
   private(set) var state: State?
   @ObservationIgnored private(set) var task: Task<Void, Never>?
   @ObservationIgnored private var worker: Task<PreparedLocalDocument, Error>?
-  @ObservationIgnored var reader: Reader = PreparedLocalDocument.read
+  @ObservationIgnored var reader: Reader?
   @ObservationIgnored var colorPolicyReviewer: ColorPolicyReviewer = ColorPolicyDialog.present
   @ObservationIgnored var progress: NSWindowController?
   var pdfWorkspace: PDFImportWorkspace?
@@ -119,6 +123,7 @@ struct PreparedLocalDocument: Sendable {
     state = .init(id: id, total: requests.count, format: format)
     if showProgress { progress = DocumentOpeningProgress(opening: self); progress?.showWindow(nil) }
     let colorSettings = controller!.colorSettings.value
+    let dngStorage = controller!.cameraRawPreferences.dngStorage
     task = Task { [weak self] in
       guard let self, let controller else { return }
       defer {
@@ -160,7 +165,10 @@ struct PreparedLocalDocument: Sendable {
             continue
           }
           let reader = self.reader
-          let job = Task.detached(priority: .userInitiated) { try reader(url, format) }
+          let job = Task.detached(priority: .userInitiated) {
+            if let reader { return try reader(url, format) }
+            return try PreparedLocalDocument.read(url, format: format, dngStorage: dngStorage)
+          }
           worker = job
           var prepared = try await withTaskCancellationHandler(
             operation: { try await job.value }, onCancel: { job.cancel() })

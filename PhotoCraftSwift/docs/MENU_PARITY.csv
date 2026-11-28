@@ -24,7 +24,7 @@ Photato > Settings… > Type…,command,unavailable,,0,disabled placeholder
 Photato > Settings… > Enhanced Controls…,command,unavailable,,0,disabled placeholder
 Photato > Settings… > Technology Previews…,command,unavailable,,0,disabled placeholder
 Photato > Settings… > Product Improvement…,command,unavailable,,0,disabled placeholder
-Photato > Settings… > Camera Raw…,command,unavailable,,0,disabled placeholder
+Photato > Settings… > Camera Raw…,command,cameraRawPreferences,,0,partial native operation
 Photato > Services,submenu,submenuAction:,,0,structure only
 Photato > Hide Photato,command,hide,h,1310720,partial native operation
 Photato > Hide Others,command,hideOthers,h,1572864,partial native operation

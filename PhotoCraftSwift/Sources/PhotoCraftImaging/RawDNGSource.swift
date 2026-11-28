@@ -8,6 +8,14 @@ public struct RawDNGSource: Sendable {
   public let url: URL
   let original: Data
   let sidecar: RawSourceIO.RelatedXMP?
+  private let ignoresSidecar: Bool
+
+  init(url: URL, original: Data, sidecar: RawSourceIO.RelatedXMP?, ignoresSidecar: Bool = false) {
+    self.url = url
+    self.original = original
+    self.sidecar = sidecar
+    self.ignoresSidecar = ignoresSidecar
+  }
 
   public var hasSidecar: Bool { sidecar != nil }
   public var matchingSidecarURL: URL? { sidecar?.url }
@@ -73,7 +81,7 @@ public struct RawDNGSource: Sendable {
     let access = url.startAccessingSecurityScopedResource()
     defer { if access { url.stopAccessingSecurityScopedResource() } }
 
-    guard try RawSourceIO.relatedXMP(for: url) == sidecar else { throw SaveError.sourceChanged }
+    if !ignoresSidecar, try RawSourceIO.relatedXMP(for: url) != sidecar { throw SaveError.sourceChanged }
     let updated = try RawSourceIO.dngWithSettings(original, settings: settings, including: sidecar?.data)
     var coordinationError: NSError?
     var operation: Result<Void, Error>?
@@ -130,7 +138,7 @@ public struct RawDNGSource: Sendable {
       throw SaveError.sourceChanged
     }
     try operation.get()
-    return RawDNGSource(url: url, original: updated, sidecar: nil)
+    return RawDNGSource(url: url, original: updated, sidecar: nil, ignoresSidecar: ignoresSidecar)
   }
 
   static func accessSourceFolder(_ folder: URL?, source: URL) throws -> Bool {

@@ -87,6 +87,57 @@ final class RawDNGSourceTests: XCTestCase {
     }
   }
 
+  func testDNGSidecarPolicyCreatesAndUpdatesSiblingWithoutWritingOriginal() throws {
+    try withDNG { fixture in
+      let prepared = try RawSourceIO.prepareLocalSettings(fixture.url, dngStorage: .sidecarXMP)
+      let captured = try XCTUnwrap(prepared.source)
+      XCTAssertFalse(captured.savesInsideDNG)
+      XCTAssertEqual(captured.sidecarURL, fixture.sidecar)
+      var settings = try XCTUnwrap(prepared.document.layers.first?.smartObject?.rawDevelopment)
+      let originalExposure = settings.adjustments.exposure
+      XCTAssertFalse(FileManager.default.fileExists(atPath: fixture.sidecar.path))
+
+      settings.adjustments.exposure = 1.75
+      _ = try captured.save(settings: settings)
+      XCTAssertEqual(try Data(contentsOf: fixture.url), fixture.original)
+      let reopened = try RawSourceIO.prepareLocalSettings(fixture.url, dngStorage: .sidecarXMP)
+      XCTAssertEqual(reopened.document.layers.first?.smartObject?.rawDevelopment, settings)
+      let embedded = try RawSourceIO.prepareLocalSettings(fixture.url, dngStorage: .ignoreSidecarXMP)
+      XCTAssertEqual(embedded.document.layers.first?.smartObject?.rawDevelopment?.adjustments.exposure,
+        originalExposure)
+      var updated = settings
+      updated.adjustments.exposure = 2
+      _ = try XCTUnwrap(reopened.source).save(settings: updated)
+      XCTAssertEqual(try RawSourceIO.relatedSettings(for: fixture.url), updated)
+      XCTAssertEqual(try Data(contentsOf: fixture.url), fixture.original)
+    }
+  }
+
+  func testDNGIgnoreSidecarPolicyOnlyReadsAndWritesEmbeddedSettings() throws {
+    try withDNG { fixture in
+      let unaccompanied = try RawSourceIO.read(fixture.url)
+      let original = try XCTUnwrap(unaccompanied.layers.first?.smartObject?.rawDevelopment)
+      let sidecar = packet(exposure: 2.25)
+      try sidecar.write(to: fixture.sidecar)
+      let prepared = try RawSourceIO.prepareLocalSettings(fixture.url, dngStorage: .ignoreSidecarXMP)
+      let captured = try XCTUnwrap(prepared.source)
+      XCTAssertTrue(captured.savesInsideDNG)
+      XCTAssertNil(captured.sidecarURL)
+      XCTAssertEqual(prepared.document.layers.first?.smartObject?.rawDevelopment, original)
+
+      var settings = original
+      settings.adjustments.exposure = 0.75
+      _ = try captured.save(settings: settings)
+      let bytes = try Data(contentsOf: fixture.url)
+      XCTAssertEqual(bytes[8..<fixture.original.count], fixture.original[8..<fixture.original.count])
+      XCTAssertEqual(try Data(contentsOf: fixture.sidecar), sidecar)
+      let ignored = try RawSourceIO.prepareLocalSettings(fixture.url, dngStorage: .ignoreSidecarXMP)
+      XCTAssertEqual(ignored.document.layers.first?.smartObject?.rawDevelopment, settings)
+      let sidecarPreferred = try RawSourceIO.prepareLocalSettings(fixture.url, dngStorage: .sidecarXMP)
+      XCTAssertEqual(sidecarPreferred.document.layers.first?.smartObject?.rawDevelopment?.adjustments.exposure, 2.25)
+    }
+  }
+
   func testRetirementFailureRollsBackTheDNGAndExternalSidecarChangeBlocksWriting() throws {
     struct Refused: Error {}
     try withDNG { fixture in
