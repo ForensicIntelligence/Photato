@@ -40,7 +40,7 @@ final class RawHDRMergeWorkflowTests: XCTestCase {
     options.align = false
     options.deghost = .medium
     let preview = try RawHDRMerge.prepare(sources, options: options, name: request.name)
-    XCTAssertEqual(preview.merged.exposureEV, [0, 1, 2])
+    XCTAssertEqual(preview.exposureEV, [0, 1, 2])
     XCTAssertNotNil(preview.preview)
     XCTAssertNotNil(preview.overlayPreview)
     let expectedExposure = try XCTUnwrap(preview.settings?.exposure)
@@ -79,7 +79,12 @@ final class RawHDRMergeWorkflowTests: XCTestCase {
     var settings = RawHDRMergeSettings()
     settings.align = false
     settings.autoSettings = false
-    let nativeResult = try RawHDRMerge.prepare(originals, options: settings, name: "Native HDR")
+    let brackets = try sourceLayers.map { layer -> RawHDRMerge.Source in
+      let object = try XCTUnwrap(layer.smartObject)
+      return .init(bytes: object.sourceBytes, fileName: object.fileName, settings: try XCTUnwrap(object.rawDevelopment))
+    }
+    let exposures = try RawHDRMerge.prepareSources(brackets)
+    let nativeResult = try RawHDRMerge.prepare(exposures, options: settings, name: "Native HDR")
     let nativeURL = folder.appendingPathComponent("Native-HDR.dng")
     try nativeResult.write(to: nativeURL)
     let expected = try Data(contentsOf: nativeURL)

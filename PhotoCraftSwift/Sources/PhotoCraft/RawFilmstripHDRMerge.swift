@@ -25,7 +25,7 @@ struct RawFilmstripHDRMergeView: View {
   let workspace: RawFilmstripWorkspace
   let request: RawFilmstripHDRRequest
   @State private var settings: RawHDRMergeSettings
-  @State private var sources: [CraftDocument]?
+  @State private var sources: [RawHDRMerge.Exposure]?
   @State private var result: RawHDRMerge.Result?
   @State private var renderedSettings: RawHDRMergeSettings?
   @State private var preparing = true

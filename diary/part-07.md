@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 533: start the first Brush frame sooner
-
-On a ready canvas, Photato starts preparing the first Brush mark when the input arrives. The following frames still collect every sample. In the 24-megapixel AppKit test, median time from input to preparation fell from 18.12 ms to 0.20 ms. The median time through software drawing was 29.45 ms to 29.14 ms.
-
-All 100 selected checks passed in Debug, optimized Apple Silicon and Intel under Rosetta. The measured stroke matches the full native command before and after commit, with one Undo. Physical display timing and Photoshop Brush pixel comparisons remain open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-533) · [Measurements](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_533.md).
-
 ## 2026-11-17 — Step 532: reuse tiles after recompositing
 
 A small edit used to write every pixel in the composited patch back into the canvas. Photato can now reuse complete tiles and copy just the affected rows at an edge. On the 24-megapixel Brush test, p95 for installing the patch fell from 0.96 ms to 0.16 ms. The composite and preview hashes matched build 531.
@@ -259,11 +251,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:813 -->
+<!-- current-status-step:814 -->
 
-Select two or more RAW brackets and use Merge to HDR. The preview supports alignment, automatic exposure, three deghost strengths and an overlay. The result returns to the filmstrip as an editable DNG.
+Camera Raw merges linear sensor samples using shutter time, aperture and ISO. The middle exposure supplies the reference frame and white balance. Reliable samples recover highlight detail while the deghost mask can restore the reference where subjects move.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-813) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_813.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-814) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_814.md).
 
 <!-- current-status:end -->
 
@@ -1283,5 +1275,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 811 | [Save deselected Camera Raw edits when closing with Done](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-811) |
 | 2026-11-28 | 812 | [Hide and reveal photos in Camera Raw sessions](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-812) |
 | 2026-11-28 | 813 | [Merge Camera Raw exposures into editable HDR DNGs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-813) |
+| 2026-11-28 | 814 | [Fuse scene-linear HDR exposure brackets](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-814) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

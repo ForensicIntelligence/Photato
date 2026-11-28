@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 814 — Fuse scene-linear HDR exposure brackets
+
+Camera Raw merges linear sensor samples using shutter time, aperture and ISO. The middle exposure supplies the reference frame and white balance. Reliable samples recover highlight detail while the deghost mask can restore the reference where subjects move.
+
+On one stationary synthetic bracket, the mean decoded RGB difference from Adobe fell from 0.08634 to 0.04297. On a textured bracket with known translations and motion, it fell from 0.08420 to 0.06289, and the merge corrected both known translations. A separate test confirmed that alignment keeps the stationary bracket stationary.
+
+Adobe Camera Raw 18.1.1 produced the two reference DNGs from owned synthetic input. Decode comparison used the same Apple 8.dng decoder for both outputs. [Adobe Camera Raw HDR shortcuts](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/default-keyboard-shortcuts.html).
+
+Xcode and 43 focused application and imaging tests passed, including the existing HDR Pro cases and three new radiance, alignment and deghost cases. Both optimized architectures passed all 418 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The tested Adobe files and decoded pixels still differ. The shifted fixture tests translation rather than perspective changes. Adobe deghost masks, the full Auto Settings recipe and higher-capacity HDR merges remain open.
+
+[Development record](DEVLOG.md#dev-step-814) · [Qualification](SOURCE_PUBLICATION_814.md).
+
 ## 2026-11-28 — Step 813 — Merge Camera Raw exposures into editable HDR DNGs
 
 Select two or more RAW brackets and use Merge to HDR. The preview supports alignment, automatic exposure, three deghost strengths and an overlay. The result returns to the filmstrip as an editable DNG.
@@ -2893,11 +2907,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:813 -->
+<!-- current-status-step:814 -->
 
-Select two or more RAW brackets and use Merge to HDR. The preview supports alignment, automatic exposure, three deghost strengths and an overlay. The result returns to the filmstrip as an editable DNG.
+Camera Raw merges linear sensor samples using shutter time, aperture and ISO. The middle exposure supplies the reference frame and white balance. Reliable samples recover highlight detail while the deghost mask can restore the reference where subjects move.
 
-[Development record](DEVLOG.md#dev-step-813) · [Qualification](SOURCE_PUBLICATION_813.md).
+[Development record](DEVLOG.md#dev-step-814) · [Qualification](SOURCE_PUBLICATION_814.md).
 
 <!-- current-status:end -->
 
@@ -3917,6 +3931,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 811 | [Save deselected Camera Raw edits when closing with Done](DEVLOG.md#dev-step-811) |
 | 2026-11-28 | 812 | [Hide and reveal photos in Camera Raw sessions](DEVLOG.md#dev-step-812) |
 | 2026-11-28 | 813 | [Merge Camera Raw exposures into editable HDR DNGs](DEVLOG.md#dev-step-813) |
+| 2026-11-28 | 814 | [Fuse scene-linear HDR exposure brackets](DEVLOG.md#dev-step-814) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -1,3 +1,9 @@
+### Scene-linear Camera Raw HDR merge (checkpoint 814)
+
+The native workflow and authenticated `raw.mergeHDR` call the same scene-linear merge and DNG writer. The regression test reproduced the DNG bytes across both entry points using the same inputs.
+
+[Qualification](SOURCE_PUBLICATION_814.md).
+
 ### Camera Raw HDR merge (checkpoint 813)
 
 Authenticated `raw.mergeHDR` takes distinct shared RAW Smart Object layer IDs plus optional `align`, `autoSettings` and `deghost`. It downloads `image/x-adobe-dng` and leaves source documents and Undo unchanged.

@@ -11,7 +11,6 @@ public enum HDRMergeMath {
     public let ghostBase: Int
     public let ghostFraction: Double
     public let stops: Double
-    package let ghostMask: [Float]?
   }
   static func luma(_ q: Sample) -> Float { 0.2126*q.x+0.7152*q.y+0.0722*q.z }
   static func hat(_ z: Double) -> Double { max(0,min(z,255-z)) }
@@ -97,15 +96,12 @@ public enum HDRMergeMath {
     for k in (0..<128).reversed() { g[k] = min(g[k],g[k+1]-1e-4) }
     for k in 129..<256 { g[k] = max(g[k],g[k-1]+1e-4) };return g
   }
-  public static func merge(width w: Int,height h: Int,images: [[Sample]],exposures: [Double],removeGhosts: Bool,ghostBase: Int?) throws -> Result {
-    try merge(width: w, height: h, images: images, exposures: exposures,
-      removeGhosts: removeGhosts, ghostBase: ghostBase, ghostThreshold: 0.35, retainGhostMask: false)
+  package static func featherGhostMask(_ mask: [Float], width: Int, height: Int) throws -> [Float] {
+    try CameraRawMath.gaussian(mask, width, height, max(2, Float(max(width, height)) / 200)).map { min(1, $0 * 3) }
   }
 
-  package static func merge(width w: Int, height h: Int, images: [[Sample]], exposures: [Double],
-    removeGhosts: Bool, ghostBase: Int?, ghostThreshold: Double, retainGhostMask: Bool) throws -> Result {
-    guard ghostThreshold.isFinite, ghostThreshold > 0,
-       w > 0,h > 0,w <= 16_000_000/h,(2...16).contains(images.count),images.allSatisfy({$0.count == w*h}),exposures.count == images.count,exposures.allSatisfy({$0.isFinite && $0 > 0}),ghostBase == nil || images.indices.contains(ghostBase!) else { throw CraftError.invalid("Invalid HDR merge inputs.") }
+  public static func merge(width w: Int,height h: Int,images: [[Sample]],exposures: [Double],removeGhosts: Bool,ghostBase: Int?) throws -> Result {
+    guard w > 0,h > 0,w <= 16_000_000/h,(2...16).contains(images.count),images.allSatisfy({$0.count == w*h}),exposures.count == images.count,exposures.allSatisfy({$0.isFinite && $0 > 0}),ghostBase == nil || images.indices.contains(ghostBase!) else { throw CraftError.invalid("Invalid HDR merge inputs.") }
     try Task.checkCancellation();let count = w*h,logs = exposures.map(log),order = images.indices.sorted{exposures[$0] < exposures[$1]}
     let well = images.map { image in stride(from:0,to:count,by:3).filter{image[$0].w > 0.99 && (0.1..<0.9).contains(luma(image[$0]))}.count }
     let base = ghostBase ?? images.indices.max(by:{well[$0] < well[$1]})!,samples = sampleIndices(w,h,images[order[order.count/2]])
@@ -130,12 +126,12 @@ public enum HDRMergeMath {
         for j in available { let q = images[j][i],wt = hat(Double(luma(q))*255);if wt < 20 { continue }
           var lr = 0.0;for c in 0..<3 { lr += 0.33*(at(response[c],q[c])-logs[j]) };s += wt*lr;s2 += wt*lr*lr;sw += wt
         }
-        if sw > 0 { let mean = s/sw;ghost[i] = sqrt(max(0,s2/sw-mean*mean)) > ghostThreshold ? 1:0 }
+        if sw > 0 { let mean = s/sw;ghost[i] = sqrt(max(0,s2/sw-mean*mean)) > 0.35 ? 1:0 }
       }
     } }
     var fraction = 0.0
     if removeGhosts {
-      ghost = try CameraRawMath.gaussian(ghost,w,h,max(2,Float(max(w,h))/200)).map{min(1,$0*3)}
+      ghost = try featherGhostMask(ghost, width: w, height: h)
       fraction = Double(ghost.filter{$0 > 0.5}.count)/Double(count)
       for y in 0..<h { try Task.checkCancellation();for x in 0..<w { let i = y*w+x
         if ghost[i] > 0,images[base][i].w > 0.99 { for c in 0..<3 { let e = Float(exp(at(response[c],images[base][i][c])-logs[base]));output[i][c] = output[i][c]*(1-ghost[i])+e*ghost[i] } }
@@ -151,7 +147,6 @@ public enum HDRMergeMath {
     guard output.allSatisfy({$0.x.isFinite && $0.y.isFinite && $0.z.isFinite}) else { throw CraftError.invalid("HDR response could not be recovered. Try different exposure values or source images.") }
     let luminance = stride(from:0,to:count,by:13).filter{output[$0].w > 0}.map{max(1e-9,luma(output[$0]))}.sorted()
     let stops = luminance.isEmpty ? 0:log2(Double(luminance[min(luminance.count-1,Int(Double(luminance.count)*0.999))])/Double(luminance[luminance.count/100]))
-    return Result(pixels:output,response:response,ghostBase:base,ghostFraction:fraction,stops:stops,
-      ghostMask: retainGhostMask && removeGhosts ? ghost : nil)
+    return Result(pixels:output,response:response,ghostBase:base,ghostFraction:fraction,stops:stops)
   }
 }

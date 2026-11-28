@@ -578,13 +578,28 @@ public enum RawSourceIO {
     return (pixels, settings, sensor)
   }
 
-  private static func readSensor(_ key: SensorKey, settings: RawDevelopment) throws -> SensorRaster {
+  static func hdrExposureFactor(_ data: Data, sourceType: String) -> Double? {
+    let options = [kCGImageSourceTypeIdentifierHint: sourceType] as CFDictionary
+    guard let source = CGImageSourceCreateWithData(data as CFData, options),
+      let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [String: Any]
+    else { return nil }
+    return HDRMerge.exposureFactor(in: properties)
+  }
+
+  static func renderSceneExposure(_ data: Data, settings: RawDevelopment) throws -> Surface {
+    try settings.validate()
+    let key = SensorKey(data: data, depth: .f32, settings: settings)
+    return try readSensor(key, settings: settings, disableToneMap: true).pixels
+  }
+
+  private static func readSensor(_ key: SensorKey, settings: RawDevelopment, disableToneMap: Bool = false) throws -> SensorRaster {
     let (raw, info) = try decoder(key.data, version: key.decoderVersion)
     let depth = key.depth
     if let temperature = settings.temperature { raw.neutralTemperature = temperature }
     if let tint = settings.tint { raw.neutralTint = tint }
     raw.exposure = settings.exposure; raw.boostAmount = settings.boost; raw.boostShadowAmount = settings.shadowBoost
     raw.extendedDynamicRangeAmount = settings.extendedRange
+    if disableToneMap { raw.localToneMapAmount = 0 }
     if let value = settings.lensCorrection {
       guard info.lensCorrectionSupported || !value else { throw CraftError.unsupported("Lens correction is not supported for this RAW source.") }; raw.isLensCorrectionEnabled = value
     }

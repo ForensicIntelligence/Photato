@@ -38,19 +38,25 @@ package enum RawHDRMerge {
   }
 
   package struct Result: Sendable {
-    package let merged: HDRMerge.Result
+    package let document: CraftDocument
+    package let exposureEV: [Double]
+    package let offsets: [SIMD2<Int>]
     package let settings: CameraRawSettings?
     package let preview: CGImage?
     package let overlayPreview: CGImage?
 
     package func write(to url: URL) throws {
-      try RawLinearDNG.write(merged.document, to: url, settings: settings)
+      try RawLinearDNG.write(document, to: url, settings: settings)
     }
   }
 
   package static let sourceCount = 2...16
 
-  package static func prepareSources(_ sources: [Source]) throws -> [CraftDocument] {
+  package struct Exposure: Sendable {
+    let bracket: RawHDRSceneFusion.Bracket
+  }
+
+  package static func prepareSources(_ sources: [Source]) throws -> [Exposure] {
     guard sourceCount.contains(sources.count) else {
       throw CraftError.invalid("Select two to sixteen RAW exposures to merge.")
     }
@@ -65,26 +71,52 @@ package enum RawHDRMerge {
     guard width <= HDRMerge.maximumPixels / height, width * height <= HDRMerge.maximumTotalPixels / sources.count else {
       throw CraftError.unsupported("HDR merge supports up to 16 megapixels per photo and 32 megapixels combined.")
     }
-    return try sources.map { source in
+    let factors = try sources.indices.map { index in
+      let source = sources[index]
+      guard let factor = RawSourceIO.hdrExposureFactor(source.bytes.data, sourceType: dimensions[index].type) else {
+        throw CraftError.invalid("The RAW exposure “\(source.fileName)” needs recorded shutter time, aperture and ISO.")
+      }
+      return factor
+    }
+    let order = factors.indices.sorted { factors[$0] < factors[$1] }
+    let reference = order[order.count / 2]
+    let neutral = sources[reference].settings
+    let temperature = neutral.temperature ?? dimensions[reference].temperature
+    let tint = neutral.tint ?? dimensions[reference].tint
+    return try sources.indices.map { index in
       try Task.checkCancellation()
-      return try RawSourceIO.open(source.bytes, fileName: source.fileName, settings: source.settings, depth: .u16)
+      let source = sources[index]
+      var settings = source.settings
+      settings.temperature = (2_000...50_000).contains(temperature) ? temperature : nil
+      settings.tint = (-150...150).contains(tint) ? tint : nil
+      settings.exposure = 0
+      settings.boost = 0
+      settings.shadowBoost = 0
+      settings.extendedRange = 0
+      settings.highlightRecovery = false
+      settings.adjustments = .init()
+      let pixels = try RawSourceIO.renderSceneExposure(source.bytes.data, settings: settings)
+      return Exposure(bracket: .init(pixels: pixels, exposure: factors[index]))
     }
   }
 
-  package static func prepare(_ sources: [CraftDocument], options: RawHDRMergeSettings,
+  package static func prepare(_ sources: [Exposure], options: RawHDRMergeSettings,
     name: String, makePreview: Bool = true) throws -> Result {
-    var settings = HDRMergeSettings()
-    settings.align = options.align
-    settings.removeGhosts = options.deghost != .off
-    let result = try HDRMerge.prepare(sources, settings: settings, name: name,
-      ghostThreshold: options.deghost.threshold, retainGhostMask: makePreview)
-    let pixels = try Renderer.composite(result.document)
+    let result = try RawHDRSceneFusion.merge(sources.map(\.bracket), options: options)
+    let pixels = result.pixels
+    var document = try CraftDocument(width: pixels.width, height: pixels.height, depth: .f32, name: name)
+    let layer = Layer(name: "HDR Merge", content: .raster(pixels))
+    document.layers = [layer]
+    document.activeLayerID = layer.id
     let adjustments = options.autoSettings ? automaticExposure(pixels) : nil
-    guard makePreview else { return Result(merged: result, settings: adjustments, preview: nil, overlayPreview: nil) }
+    guard makePreview else {
+      return Result(document: document, exposureEV: result.exposureEV, offsets: result.offsets, settings: adjustments,
+        preview: nil, overlayPreview: nil)
+    }
     let request = try RasterPreviewRequest.overview(width: pixels.width, height: pixels.height, maximumSide: 900)
     let overview = try request.reducing(pixels)
     let adjusted = try adjustments.map { try CameraRawEngine.develop(overview, settings: $0) } ?? overview
-    let preview = try ColorManagement.displayImage(adjusted, in: result.document)
+    let preview = try ColorManagement.displayImage(adjusted, in: document)
     let overlay: CGImage?
     if let mask = result.ghostMask {
       var marked = adjusted
@@ -100,9 +132,10 @@ package enum RawHDRMerge {
           }
         }
       }
-      overlay = try ColorManagement.displayImage(marked, in: result.document)
+      overlay = try ColorManagement.displayImage(marked, in: document)
     } else { overlay = nil }
-    return Result(merged: result, settings: adjustments, preview: preview, overlayPreview: overlay)
+    return Result(document: document, exposureEV: result.exposureEV, offsets: result.offsets, settings: adjustments,
+      preview: preview, overlayPreview: overlay)
   }
 
   private static func automaticExposure(_ surface: Surface) -> CameraRawSettings {
