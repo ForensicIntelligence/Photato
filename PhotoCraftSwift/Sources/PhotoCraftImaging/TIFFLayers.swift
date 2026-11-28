@@ -179,8 +179,21 @@ enum TIFFLayers {
     return result
   }
 
-  static func attach(_ document: CraftDocument, to tiff: TIFFContainer, order: TIFFContainer.Order,
+  static func write(_ document: CraftDocument, composite: Data, to url: URL,
     compression: RasterEncodingOptions.TIFFLayerCompression) throws {
+    let tiff = try TIFFContainer(composite, metadata: true)
+    try attach(document, to: tiff, order: tiff.order, compression: compression, fileBacked: true)
+    let limit = TIFFContainer.classicFileMaximumBytes
+    let output = try AtomicFileWriter(to: url, maximumBytes: limit)
+    try output.append(composite)
+    let offset = try tiff.writeDirectories(order: tiff.order, maximumOutput: limit,
+      extent: { output.count }, emit: output.append, patch: output.patch)
+    try output.patch(offset, at: 4)
+    try output.commit()
+  }
+
+  static func attach(_ document: CraftDocument, to tiff: TIFFContainer, order: TIFFContainer.Order,
+    compression: RasterEncodingOptions.TIFFLayerCompression, fileBacked: Bool = false) throws {
     try Task.checkCancellation()
     guard document.layers.count + document.layers.filter({ $0.group != nil }).count <= 1024 else {
       throw CraftError.invalid("TIFF exceeds the layer record limit.")
@@ -204,10 +217,26 @@ enum TIFFLayers {
       // The PSD intermediate contributes layer records. The TIFF carries the saved samples.
       layerDocument.alphaChannels = nil
     }
-    let psd = PSDOutput()
-    try PSDCodec.writeRasterLayers(layerDocument, compression: compression.codec, format: .psd,
-      output: psd, includeComposite: false)
-    var reader = PSDReader(data: psd.data, offset: 26)
+    func serializeLayers(_ output: PSDOutput) throws {
+      try PSDCodec.writeRasterLayers(layerDocument, compression: compression.codec, format: .psd,
+        output: output, includeComposite: false)
+    }
+    let layerBytes: Data
+    if fileBacked {
+      let limit = TIFFContainer.classicFileMaximumBytes
+      let intermediate = try FileBackedSource.writing(maximumBytes: limit) { url in
+        let file = try AtomicFileWriter(to: url, maximumBytes: limit)
+        try serializeLayers(PSDOutput(file: file, maximumBytes: limit))
+        try file.commit()
+      }
+      layerBytes = intermediate.data
+    } else {
+      let output = PSDOutput()
+      try serializeLayers(output)
+      layerBytes = output.data
+    }
+    let payloadSource = PSDReader(data: layerBytes, offset: 26)
+    var reader = payloadSource
     _ = try reader.section()
     var resources = try reader.section().data
     if !savedAlpha.isEmpty {
@@ -215,45 +244,56 @@ enum TIFFLayers {
         leadingTransparency:hasTransparency))
     }
     var section = try reader.section()
-    let directLayers = try section.section().data
+    let directLayers = try section.section()
     _ = try section.section()
     guard reader.remaining == 0 else { throw CraftError.invalid("Unexpected TIFF layer intermediate.") }
-    var blocks = signature
-    func append(_ key: String, _ payload: Data) throws {
+    var blocks = [PSDReader(data: signature)], payloadBytes = signature.count
+    let limit = fileBacked ? TIFFContainer.classicFileMaximumBytes : TIFFContainer.byteLimit
+    func append(_ key: String, _ payload: [PSDReader]) throws {
       try Task.checkCancellation()
-      guard payload.count <= TIFFContainer.byteLimit - blocks.count - 16 else {
-        throw CraftError.invalid("TIFF layers exceed the memory budget.")
+      let length = payload.reduce(0) { $0 + $1.remaining }
+      let tail = (4 - length % 4) % 4
+      guard payloadBytes <= limit - 12 - tail, length <= limit - payloadBytes - 12 - tail else {
+        throw CraftError.invalid("TIFF layers exceed the selected output size limit.")
       }
-      blocks.append(Data(order == .big ? "8BIM".utf8 : "MIB8".utf8))
       let tag = Data(key.utf8)
-      blocks.append(order == .big ? tag : Data(tag.reversed()))
-      blocks.append(order.bytes(payload.count, 4)); blocks.append(payload)
-      blocks.append(Data(repeating: 0, count: (4 - payload.count % 4) % 4))
+      var header = Data(order == .big ? "8BIM".utf8 : "MIB8".utf8)
+      header.append(order == .big ? tag : Data(tag.reversed()))
+      header.append(order.bytes(length, 4))
+      blocks.append(PSDReader(data: header))
+      blocks.append(contentsOf: payload)
+      blocks.append(PSDReader(data: Data(repeating: 0, count: tail)))
+      payloadBytes += header.count + length + tail
     }
     // TIFF's transparency marker is distinct from PSD's Mtrn and precedes layers.
-    if hasTransparency { try append("MTrn", Data()) }
-    if !directLayers.isEmpty {
-      try append("Layr", TIFFLayerEndian.layers(directLayers, order: .big, target: order))
+    if hasTransparency { try append("MTrn", []) }
+    if directLayers.remaining > 0 {
+      try append("Layr", TIFFLayerEndian.layerViews(directLayers, order: .big, target: order))
     }
-    var count = directLayers.isEmpty ? 0 : 1
+    var count = directLayers.remaining == 0 ? 0 : 1
     while section.remaining >= 12 {
       guard try section.string(4) == "8BIM", count < 4095 else {
         throw CraftError.invalid("Invalid TIFF layer intermediate framing.")
       }
       let key = try section.string(4)
-      let payload = try section.section().data
-      _ = try section.bytes((4 - payload.count % 4) % 4)
-      let converted: Data
+      var payload = try section.section()
+      _ = try section.bytes((4 - payload.remaining % 4) % 4)
       if ["Layr", "Lr16", "Lr32"].contains(key) {
-        converted = try TIFFLayerEndian.layers(payload, order: .big, target: order)
-      } else {
-        converted = order == .big ? payload
-          : try TIFFLayerEndian.payload(payload, tag: key, global: true, order: .big)
-      }
-      try append(key, converted); count += 1
+        try append(key, TIFFLayerEndian.layerViews(payload, order: .big, target: order))
+      } else if order == .little {
+        let bytes = try TIFFLayerEndian.payload(payload.retainedBytes(payload.remaining),
+          tag: key, global: true, order: .big)
+        try append(key, [PSDReader(data: bytes)])
+      } else { try append(key, [payload]) }
+      count += 1
     }
     guard try section.consumePadding(0) else { throw CraftError.invalid("Invalid TIFF layer tail.") }
     tiff.root.fields[34377] = .init(tag: 34377, type: 7, count: resources.count, data: resources)
-    tiff.root.fields[37724] = .init(tag: 37724, type: 7, count: blocks.count, data: blocks)
+    let payload = try PSDReader.joining(blocks, validating: payloadSource)
+    if fileBacked {
+      tiff.root.fields[37724] = .init(tag: 37724, type: 7, count: payloadBytes, data: Data(), serialized: payload)
+    } else {
+      tiff.root.fields[37724] = .init(tag: 37724, type: 7, count: payloadBytes, data: try payload.data)
+    }
   }
 }

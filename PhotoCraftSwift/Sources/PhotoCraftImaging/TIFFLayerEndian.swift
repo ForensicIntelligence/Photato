@@ -191,8 +191,9 @@ enum TIFFLayerEndian {
 
 
   /// Convert only framing. The encoded channel rows remain in the original TIFF.
-  static func layerViews(_ view: PSDReader, order: TIFFContainer.Order) throws -> [PSDReader] {
-    if order == .big { return [view] }
+  static func layerViews(_ view: PSDReader, order: TIFFContainer.Order,
+    target: TIFFContainer.Order = .big) throws -> [PSDReader] {
+    if order == target { return [view] }
     let budget = PSDMetadataBudget()
     var source = view, scan = view
     let count = abs(Int(Int16(bitPattern: UInt16(order.number(try scan.bytes(2), 0, 2)))))
@@ -217,7 +218,7 @@ enum TIFFLayerEndian {
       var pixels = try source.view(channel.length)
       let compression = order.number(try pixels.bytes(2), 0, 2)
       guard compression <= 3 else { throw CraftError.unsupported("Unsupported TIFF layer compression.") }
-      var header = TIFFContainer.Order.big.bytes(compression, 2)
+      var header = target.bytes(compression, 2)
       try budget.reserve(2)
       if compression == 1 {
         let tableSize = channel.height * 2

@@ -99,7 +99,7 @@ extension DocumentIO {
       throw CraftError.unsupported(issue)
     }
     if format == .native || format == .psd || format == .psb
-      || (format == .tiff && RasterIO.supportsPagedComponentTIFFOutput(document)) {
+      || (format == .tiff && RasterIO.supportsFileBackedTIFFOutput(document, options: options)) {
       return .file(try PreparedDocumentFile(document, format: format, options: options))
     }
     return .data(try encode(document, format: format, options: options))

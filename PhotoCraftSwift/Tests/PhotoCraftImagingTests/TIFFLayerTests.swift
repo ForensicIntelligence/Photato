@@ -96,6 +96,34 @@ final class TIFFLayerTests: XCTestCase {
       XCTAssertEqual(actual.layers[1].maskProperties, expected.layers[1].maskProperties)
     }
   }
+  func testSmallLayeredTIFFFileSaveMatchesDataAcrossByteOrdersAndCompression() throws {
+    let original = try RasterIO.read(fixture("photoshop-transparent-be-fixture.tiff"))
+    XCTAssertNotNil(original.alphaChannels?.first)
+    XCTAssertLessThan(original.width * original.height, Surface.maximumDensePixels)
+    let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: false)
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let location = folder.appendingPathComponent("editable.tiff")
+    for byteOrder in RasterEncodingOptions.TIFFByteOrder.allCases {
+      for layout in RasterEncodingOptions.TIFFPixelOrder.allCases {
+        for compression in RasterEncodingOptions.TIFFLayerCompression.allCases {
+          for opacity in [false, true] {
+            let options = RasterEncodingOptions(tiffCompression: .zip, tiffByteOrder: byteOrder,
+              tiffPixelOrder: layout, tiffLayers: true, tiffTransparency: opacity,
+              tiffLayerCompression: compression)
+            let encoded = try RasterIO.encoded(original, type: .tiff, options: options)
+            try RasterIO.write(original, to: location, type: .tiff, options: options)
+            XCTAssertEqual(try Data(contentsOf: location), encoded)
+            let restored = try RasterIO.read(location)
+            XCTAssertEqual(restored.layers.map(\.name), original.layers.map(\.name))
+            XCTAssertEqual(restored.layers.map(\.mask), original.layers.map(\.mask))
+            XCTAssertEqual(restored.alphaChannels?.first?.pixels, original.alphaChannels?.first?.pixels)
+          }
+        }
+      }
+    }
+  }
+
   func testLargeEditableTagRetainsTIFFMetadataInFileAndDataReaders() throws {
     let original = try fixture("8-big-0.tiff")
     let normal = try RasterIO.read(original)

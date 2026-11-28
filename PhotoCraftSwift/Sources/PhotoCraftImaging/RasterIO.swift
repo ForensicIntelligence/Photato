@@ -545,40 +545,45 @@ public enum RasterIO {
         sourceMetadata: document.sourceMetadata, options: options, photoshopMode: 1)
       return try document.profileIsUntagged == true ? UntaggedOutput.strip(data, type: type) : data
     }
+    if type == .tiff {
+      if supportsPagedComponentTIFFOutput(document) {
+        return try TIFFComponentExport.encoded(document, options: options)
+      }
+      let composite = try renderedTIFF(document, options: options)
+      return options.tiffLayers == true
+        ? try TIFFLayers.write(document, composite: composite, compression: options.tiffLayerCompression ?? .zip)
+        : composite
+    }
+    return try encoded(
+      type == .png ? pngComposite(document) : Renderer.composite(document), type: type,
+      resolution: document.pixelsPerInch, outputDepth: document.depth,
+      sourceMetadata: document.sourceMetadata, workingDocument: document, options: options)
+  }
+
+  private static func renderedTIFF(_ document: CraftDocument, options: RasterEncodingOptions) throws -> Data {
     var compositeOptions = options
     compositeOptions.tiffLayers = nil; compositeOptions.tiffLayerCompression = nil
     if options.tiffLayers == true, compositeOptions.tiffByteOrder == nil {
       compositeOptions.tiffByteOrder = .bigEndian
-    }
-    if type == .tiff, supportsPagedComponentTIFFOutput(document) {
-      return try TIFFComponentExport.encoded(document, options: options)
     }
     if options.tiffLayers == true, document.hasAuxiliaryChannels {
       guard supportsLayeredTIFFSavedAlpha(document) else {
         throw CraftError.unsupported("Layered TIFF auxiliary output supports RGB8 saved alpha channels.")
       }
       try document.validate()
-      let raw = try encoded(Renderer.composite(document),type:.tiff,
-        resolution:document.pixelsPerInch,outputDepth:document.depth,
-        sourceMetadata:document.sourceMetadata,workingDocument:document,options:.init(tiffCompression:.none))
-      let composite = try TIFFStorage.rewrite(raw,options:compositeOptions,savedAlpha:document.alphaChannels ?? [])
-      return try TIFFLayers.write(document,composite:composite,compression:options.tiffLayerCompression ?? .zip)
+      let raw = try encoded(Renderer.composite(document), type: .tiff,
+        resolution: document.pixelsPerInch, outputDepth: document.depth,
+        sourceMetadata: document.sourceMetadata, workingDocument: document, options: .init(tiffCompression: .none))
+      return try TIFFStorage.rewrite(raw, options: compositeOptions, savedAlpha: document.alphaChannels ?? [])
     }
-    if type == .tiff, document.hasNativeModeStorage {
-      let composite = try TIFFModeStorage.write(Renderer.composite(document), document: document,
+    if document.hasNativeModeStorage {
+      return try TIFFModeStorage.write(Renderer.composite(document), document: document,
         resolution: document.pixelsPerInch, depth: document.depth, metadata: document.sourceMetadata,
         options: compositeOptions, useDocumentSamples: true)
-      return options.tiffLayers == true
-        ? try TIFFLayers.write(document, composite: composite, compression: options.tiffLayerCompression ?? .zip)
-        : composite
     }
-    let composite = try encoded(
-      type == .png ? pngComposite(document) : Renderer.composite(document), type: type,
+    return try encoded(Renderer.composite(document), type: .tiff,
       resolution: document.pixelsPerInch, outputDepth: document.depth,
       sourceMetadata: document.sourceMetadata, workingDocument: document, options: compositeOptions)
-    return options.tiffLayers == true
-      ? try TIFFLayers.write(document, composite: composite, compression: options.tiffLayerCompression ?? .zip)
-      : composite
   }
   package static func supportsPagedComponentTIFFOutput(_ document: CraftDocument) -> Bool {
     guard document.inkMode == nil, document.restrictedMode == nil else { return false }
@@ -588,12 +593,24 @@ public enum RasterIO {
     return document.hasNativeModeStorage && document.colorMode != .rgb
       && document.width > NativeModeRaster.maximumPixels / document.height
   }
+  package static func supportsFileBackedTIFFOutput(_ document: CraftDocument, options: RasterEncodingOptions) -> Bool {
+    supportsPagedComponentTIFFOutput(document)
+      || (options.tiffLayers == true && document.inkMode == nil && document.restrictedMode == nil)
+  }
   public static func write(_ document: CraftDocument, to url: URL, type: UTType = .png,
     options: RasterEncodingOptions = .init()) throws {
     if type == .tiff, supportsPagedComponentTIFFOutput(document) {
       try TIFFComponentExport.write(document, to: url, options: options)
-    } else {
-      try encoded(document, type: type, options: options).write(to: url, options: .atomic)
+      return
     }
+    if type == .tiff, supportsFileBackedTIFFOutput(document, options: options) {
+      try options.validate(for: type)
+      var source = document
+      if let embed = options.tiffEmbedProfile { source.profileIsUntagged = embed ? nil : true }
+      let composite = try renderedTIFF(source, options: options)
+      try TIFFLayers.write(source, composite: composite, to: url, compression: options.tiffLayerCompression ?? .zip)
+      return
+    }
+    try encoded(document, type: type, options: options).write(to: url, options: .atomic)
   }
 }

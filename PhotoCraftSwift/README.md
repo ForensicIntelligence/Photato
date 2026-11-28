@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 773.** Stream editable TIFF layers when saving. [Qualification](docs/SOURCE_PUBLICATION_773.md).
+
 **Source checkpoint 772.** Open larger editable TIFF layer data. [Qualification](docs/SOURCE_PUBLICATION_772.md).
 
 **Source checkpoint 771.** Keep named selections in large layered TIFFs. [Qualification](docs/SOURCE_PUBLICATION_771.md).

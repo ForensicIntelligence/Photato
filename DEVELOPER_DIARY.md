@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **772** · The 10 most recent entries, newest first.
+Source build **773** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 773 — Stream editable TIFF layers when saving
+
+Photato writes editable TIFF layers to disk past the former 512 MiB layer limit. Native Save and Save a Copy use the staged writer with either small or paged merged images.
+
+Two little-endian RLE TIFF saves retained 40 editable layers. Each carried 628 MB of editable layer data. An independent reader matched all 614.4 million authored RGB and opacity samples on each file, and Photato reopened both with layer names, positions and visibility intact. Sixteen small layered TIFF variants were identical between file and Data output and reopened with their saved selections.
+
+Xcode built the native app. All 12 focused imaging and 8 app and HTTP tests passed. Both optimized architectures passed all 248 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+The capacity controls cover classic TIFF with editable RGB8 layers. Near-limit files, unsupported Photoshop descriptors, tiled input and broader direct Photoshop comparisons still need qualification.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-773) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_773.md).
 
 ## 2026-11-27 — Step 772 — Open larger editable TIFF layer data
 
@@ -111,15 +123,3 @@ Photato had rejected the 8,389,632-pixel palette control. Photoshop 27.2.0 opene
 The new path applies to palettes that require RGB expansion. Editable Indexed Color and Bitmap still use their existing size limit. Maximum-size dense imports and animated PNG remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-764) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_764.md).
-
-## 2026-11-27 — Step 763 — Open indexed PNGs with complex transparency
-
-Open now creates an editable RGB8 layer from a PNG palette with partial opacity or multiple transparent entries. The decoder retains straight RGB and all per-pixel opacity. A palette with one or zero fully transparent entries and no partial opacity stays editable as Indexed Color.
-
-All 35 focused imaging tests and ten app and HTTP tests passed in Xcode Debug. Both optimized architectures passed all 223 selected tests. Intel ran under Rosetta.
-
-Photoshop 27.2.0 opened all five owned controls in the same modes as Photato. Independent decoding matched 748 straight RGBA imports and 187 retained indices. The graded-palette Photoshop PNG copy matched all 187 source RGBA samples, including hidden RGB. The second Photoshop PNG copy verified all 187 rendered samples for the unused-opacity control, including the fully transparent pixels outside the visible bounds.
-
-The comparisons cover the tested palette tables and exact decoded samples. Complete PNG container equality and animated indexed PNG import remain open. Photoshop also opened an owned 8,389,632-pixel palette PNG beyond the current Photato restricted PNG limit.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-763) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_763.md).

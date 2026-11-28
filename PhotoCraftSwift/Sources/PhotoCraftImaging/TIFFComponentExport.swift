@@ -12,6 +12,7 @@ enum TIFFComponentExport {
     private let file: AtomicFileWriter?
     let maximumBytes: Int
     var count: Int { file?.count ?? buffer.count }
+    var isFileBacked: Bool { file != nil }
     var data: Data { buffer }
     init(file: AtomicFileWriter?) {
       self.file = file
@@ -23,9 +24,9 @@ enum TIFFComponentExport {
       }
       if let file { try file.append(bytes) } else { buffer.append(bytes) }
     }
-    func finish(_ headerOffset: Data) throws {
-      if let file { try file.patch(headerOffset, at: 4) }
-      else { buffer.replaceSubrange(4..<8, with: headerOffset) }
+    func patch(_ bytes: Data, at offset: Int) throws {
+      if let file { try file.patch(bytes, at: offset) }
+      else { buffer.replaceSubrange(offset..<offset + bytes.count, with: bytes) }
     }
   }
 
@@ -165,11 +166,12 @@ enum TIFFComponentExport {
     container.set(278, [rowsPerStrip], type: 4); container.set(279, counts, type: 4)
     container.set(284, [planar ? 2 : 1]); container.set(317, [predictor ? 3 : 1])
     if options.tiffLayers == true {
-      try TIFFLayers.attach(document, to: container, order: order, compression: options.tiffLayerCompression ?? .zip)
+      try TIFFLayers.attach(document, to: container, order: order,
+        compression: options.tiffLayerCompression ?? .zip, fileBacked: output.isFileBacked)
     }
-    let directory = try container.detachedDirectories(start: output.count, order: order, maximumOutput: output.maximumBytes)
-    try output.append(directory.payload)
-    try output.finish(directory.offset)
+    let offset = try container.writeDirectories(order: order, maximumOutput: output.maximumBytes,
+      extent: { output.count }, emit: output.append, patch: output.patch)
+    try output.patch(offset, at: 4)
   }
 
   private static func directoryTemplate(_ document: CraftDocument, options: RasterEncodingOptions,

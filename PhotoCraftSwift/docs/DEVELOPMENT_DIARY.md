@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 773 — Stream editable TIFF layers when saving
+
+Photato writes editable TIFF layers to disk past the former 512 MiB layer limit. Native Save and Save a Copy use the staged writer with either small or paged merged images.
+
+Two little-endian RLE TIFF saves retained 40 editable layers. Each carried 628 MB of editable layer data. An independent reader matched all 614.4 million authored RGB and opacity samples on each file, and Photato reopened both with layer names, positions and visibility intact. Sixteen small layered TIFF variants were identical between file and Data output and reopened with their saved selections.
+
+Xcode built the native app. All 12 focused imaging and 8 app and HTTP tests passed. Both optimized architectures passed all 248 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+The capacity controls cover classic TIFF with editable RGB8 layers. Near-limit files, unsupported Photoshop descriptors, tiled input and broader direct Photoshop comparisons still need qualification.
+
+[Development record](DEVLOG.md#dev-step-773) · [Qualification](SOURCE_PUBLICATION_773.md).
+
 ## 2026-11-27 — Step 772 — Open larger editable TIFF layer data
 
 Photato can open classic TIFF files with editable Photoshop layer data above the previous 512 MiB limit. It reads the layer samples in bounded ranges and keeps the original layers editable.
@@ -2363,11 +2375,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:772 -->
+<!-- current-status-step:773 -->
 
-Photato can open classic TIFF files with editable Photoshop layer data above the previous 512 MiB limit. It reads the layer samples in bounded ranges and keeps the original layers editable.
+Photato writes editable TIFF layers to disk past the former 512 MiB layer limit. Native Save and Save a Copy use the staged writer with either small or paged merged images.
 
-[Development record](DEVLOG.md#dev-step-772) · [Qualification](SOURCE_PUBLICATION_772.md).
+[Development record](DEVLOG.md#dev-step-773) · [Qualification](SOURCE_PUBLICATION_773.md).
 
 <!-- current-status:end -->
 
@@ -3346,6 +3358,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 770 | [Stream larger RGB TIFF files through Open and Save](DEVLOG.md#dev-step-770) |
 | 2026-11-27 | 771 | [Keep named selections in large layered TIFFs](DEVLOG.md#dev-step-771) |
 | 2026-11-27 | 772 | [Open larger editable TIFF layer data](DEVLOG.md#dev-step-772) |
+| 2026-11-27 | 773 | [Stream editable TIFF layers when saving](DEVLOG.md#dev-step-773) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

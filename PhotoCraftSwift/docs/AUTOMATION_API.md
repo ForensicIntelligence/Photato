@@ -1,3 +1,9 @@
+### Streamed editable TIFF output (checkpoint 773)
+
+Photato save commands use the native staged output. Authenticated TIFF downloads still use bounded Data and can retain layers when requested. The Adobe-compatible TIFF output schema stays flat and keeps its documented options.
+
+[Qualification](SOURCE_PUBLICATION_773.md).
+
 ### Bounded editable TIFF input (checkpoint 772)
 
 The authenticated Photato upload and Adobe-compatible action resource decoder use the same bounded layer and metadata paths. Both restored the editable layer and XMP from the same 17 MB TIFF. Existing HTTP input limits still apply.

@@ -26,6 +26,7 @@ struct TIFFContainer {
     var data: Data
     var children: [Directory] = []
     var fileRange: Range<Int>?
+    var serialized: PSDReader?
   }
   final class Directory {
     var fields: [Int: Field] = [:]
@@ -188,27 +189,38 @@ struct TIFFContainer {
   /// Serialize absolute classic-TIFF IFD offsets while accumulating only the directory payload.
   func detachedDirectories(start: Int, order target: Order,
     maximumOutput: Int) throws -> (offset: Data, payload: Data) {
-    guard (8...Self.classicFileMaximumBytes).contains(maximumOutput), (8...maximumOutput).contains(start) else {
+    var payload = Data()
+    let pointer = try writeDirectories(order: target, maximumOutput: maximumOutput,
+      extent: { start + payload.count }, emit: { payload.append($0) },
+      patch: { bytes, offset in
+        let position = offset - start
+        payload.replaceSubrange(position..<position + bytes.count, with: bytes)
+      })
+    return (pointer, payload)
+  }
+
+  /// Writes IFDs in the same order for memory and file sinks. A staged layer
+  /// payload stays streamed at its ordinary field position in the TIFF.
+  func writeDirectories(order target: Order, maximumOutput: Int, extent: () -> Int,
+    emit: (Data) throws -> Void, patch: (Data, Int) throws -> Void) throws -> Data {
+    guard (8...Self.classicFileMaximumBytes).contains(maximumOutput), (8...maximumOutput).contains(extent()) else {
       throw CraftError.invalid("Invalid classic TIFF directory offset.")
     }
-    var output = Data()
     func require(_ count: Int) throws {
-      guard count <= maximumOutput - start - output.count else {
+      guard count <= maximumOutput - extent() else {
         throw CraftError.invalid("TIFF exceeds its output size limit.")
       }
     }
     func align() throws {
-      if (start + output.count) % 2 != 0 {
-        try require(1); output.append(0)
-      }
+      if extent() % 2 != 0 { try require(1); try emit(Data([0])) }
     }
     func append(_ node: Directory) throws -> Int {
       try Task.checkCancellation()
       try align()
-      let local = output.count, fields = node.fields.values.sorted { $0.tag < $1.tag }
+      let origin = extent(), fields = node.fields.values.sorted { $0.tag < $1.tag }
       try require(fields.count * 12 + 6)
-      output.append(target.bytes(fields.count, 2))
-      output.append(Data(repeating: 0, count: fields.count * 12 + 4))
+      try emit(target.bytes(fields.count, 2))
+      try emit(Data(repeating: 0, count: fields.count * 12 + 4))
       for (i, field) in fields.enumerated() {
         var payload = field.data
         if !field.children.isEmpty {
@@ -228,27 +240,36 @@ struct TIFFContainer {
             })
           }
         }
-        let at = local + 2 + i * 12
+        let at = origin + 2 + i * 12
         var entry = target.bytes(field.tag, 2) + target.bytes(field.type, 2) + target.bytes(field.count, 4)
-        if payload.count <= 4 {
+        if var serialized = field.serialized {
+          guard field.type == 7, field.count == serialized.remaining, serialized.remaining > 4 else {
+            throw CraftError.invalid("Invalid TIFF serialized field extent.")
+          }
+          try align()
+          try require(serialized.remaining)
+          entry.append(target.bytes(extent(), 4))
+          while serialized.remaining > 0 {
+            try emit(serialized.bytes(min(serialized.remaining, AtomicFileWriter.chunkBytes)))
+          }
+        } else if payload.count <= 4 {
           entry.append(payload)
           entry.append(Data(repeating: 0, count: 4 - payload.count))
         } else {
           try align()
           try require(payload.count)
-          entry.append(target.bytes(start + output.count, 4))
-          output.append(payload)
+          entry.append(target.bytes(extent(), 4))
+          try emit(payload)
         }
-        output.replaceSubrange(at..<at + 12, with: entry)
+        try patch(entry, at)
       }
       if let next = node.next {
         let pointer = try append(next)
-        let position = local + 2 + fields.count * 12
-        output.replaceSubrange(position..<position+4, with: target.bytes(pointer, 4))
+        let position = origin + 2 + fields.count * 12
+        try patch(target.bytes(pointer, 4), position)
       }
-      return start + local
+      return origin
     }
-    let offset = try append(root)
-    return (target.bytes(offset, 4), output)
+    return target.bytes(try append(root), 4)
   }
 }

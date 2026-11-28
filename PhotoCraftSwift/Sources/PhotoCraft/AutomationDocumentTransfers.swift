@@ -77,7 +77,7 @@ extension AutomationService {
         "maxBytes": DocumentIO.maximumDownloadBytes,
         "revisionHeader": "Optional X-Photato-Revision must equal the current document revision.",
         "result":
-          "Binary snapshot; native archives retain editable structure, PSD/PSB retain supported structures, raster outputs flatten.",
+          "Binary snapshot. Native archives and PSD/PSB retain supported editable structure. TIFF can retain layers through TIFF encoding options.",
       ],
       "auxiliaryPhotoshop":ChannelAPI.photoshopCapabilities,
       "multichannelPhotoshop": [
@@ -128,8 +128,9 @@ extension AutomationService {
         "layerCompression": ["raw", "rle", "zip", "zipPrediction"],
         "outputLayerCompression": ["rle", "zip"],
         "largeEditableInput": "Supported classic TIFF reads the editable layer block by range, retaining RGB and component channel rows without staging the encoded payload. Both byte orders share PSD channel paging. Existing HTTP upload and resource limits apply.",
+        "largeEditableOutput": "Native Save, Save a Copy and Photato save commands write editable layer data in bounded chunks up to the classic TIFF offset limit. The layer output depends on its own encoded size, independently of the merged raster dimensions.",
         "scope": "Classic TIFF Photoshop ImageSourceData: RGB/Gray/CMYK/Lab raster layers, groups, masks and Unicode names in both byte orders. RGB additionally supports numeric adjustments and vector masks, and editable RGB8 TIFF retains named saved alpha in separate TIFF samples. Retained global mask-display metadata survives TIFF/PSD/PSB output. Big-endian records share supported PSD rich-layer decoding.",
-        "limits": "Little-endian fill/path descriptors and opaque blocks, PSB-style ImageSourceData, non-default layered orientation, non-RGB rich content, spot inks, Quick Mask, saved alpha outside RGB8, indexed/bitmap modes and native-mode tiled/JPEG-compressed input remain unsupported. Unsupported records reject instead of flattening. Classic output is bounded to512MiB and1024 layer records including group markers. Flattened Gray/CMYK components remain numerical; Lab16 composite chroma is quantized to the TIFF signed 1/256 scale (up to one native code step). Layer planes remain exact. Multi-layer mode previews still use RGB composition/reseparation. Full Photoshop byte parity remains unqualified.",
+        "limits": "Little-endian fill/path descriptors and opaque blocks, PSB-style ImageSourceData, non-default layered orientation, non-RGB rich content, spot inks, Quick Mask, saved alpha outside RGB8, indexed/bitmap modes and native-mode tiled/JPEG-compressed input remain unsupported. Unsupported records reject instead of flattening. Classic file output supports UInt32 offsets and up to 1,024 layer records including group markers. In-memory output keeps its 512 MiB budget, and HTTP routes keep their advertised limits. Flattened Gray/CMYK components remain numerical; Lab16 composite chroma is quantized to the TIFF signed 1/256 scale (up to one native code step). Layer planes remain exact. Multi-layer mode previews still use RGB composition/reseparation. Full Photoshop byte parity remains unqualified.",
         "api": "Native Open, Photato import, and both action-job inputs share the decoder. Native Save and Photato save commands default to preserving layers. Copy/download and Photato jobs preserve layers with encodingOptions.tiffLayers=true; default exports remain flattened. TIFF layer compression is rle or zip and requires tiffLayers=true. Omitted layered byte order is bigEndian. The Adobe TiffOutput contract has no preservation field; its flattened output stays unchanged.",
       ],
       "grayscalePNG": [

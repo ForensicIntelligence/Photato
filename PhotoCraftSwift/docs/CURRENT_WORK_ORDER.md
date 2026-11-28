@@ -1,3 +1,5 @@
+**TIFF interchange.** Add native tiled component input and verify Photoshop’s separate grayscale opacity. [Development record](DEVLOG.md#dev-step-773) · [Qualification](SOURCE_PUBLICATION_773.md).
+
 **TIFF interchange.** Keep editable layers through TIFF saves with large embedded layer payloads and verify Photoshop’s separate grayscale opacity. [Development record](DEVLOG.md#dev-step-772) · [Qualification](SOURCE_PUBLICATION_772.md).
 
 **TIFF interchange.** Keep editable layers through TIFF saves with large embedded layer payloads and verify Photoshop’s separate grayscale opacity. [Development record](DEVLOG.md#dev-step-771) · [Qualification](SOURCE_PUBLICATION_771.md).

@@ -21,6 +21,24 @@ final class TIFFLayerWorkflowTests: XCTestCase {
       XCTAssertEqual(a.layers.firstIndex { $0.id == left.parentID }, b.layers.firstIndex { $0.id == right.parentID })
     }
   }
+  func testLayeredTIFFUsesPreparedFileForOrdinaryCanvas() throws {
+    var document = try CraftDocument(width: 8, height: 6, depth: .u8)
+    var detail = Layer(name: "Detail", content: .raster(try Surface(width: 4, height: 2, depth: .u8, fill: .white)))
+    detail.x = 2; detail.y = 3
+    detail.mask = try Surface(width: 4, height: 2, depth: .u8, fill: Pixel(0.5, 0.5, 0.5))
+    document.layers.append(detail)
+    let prepared = try DocumentIO.prepareOutput(document, format: .tiff, persistence: true)
+    guard case .file(let staged) = prepared else {
+      return XCTFail("The native Save should stage its editable TIFF in a file.")
+    }
+    let expected = try DocumentIO.encode(document, format: .tiff,
+      options: DocumentIO.persistenceOptions(.init(), format: .tiff, document: document))
+    XCTAssertEqual(try Data(contentsOf: staged.url), expected)
+    let reopened = try RasterIO.read(staged.url)
+    XCTAssertEqual(reopened.layers.map(\.name), document.layers.map(\.name))
+    XCTAssertEqual(reopened.layers.map(\.mask), document.layers.map(\.mask))
+  }
+
   @MainActor func testNativeOpenEditUndoAndEditableSavePreserveLayersAndOriginalTIFF() async throws {
     let controller = CraftDocumentController(workspaces: WorkspaceLibrary())
     let folder = try DocumentPersistenceTests().directory()
