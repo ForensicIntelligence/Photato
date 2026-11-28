@@ -61,6 +61,13 @@ import PhotoCraftImaging
     }
     return try xmp ? CameraRawXMP.write(settings) : JSONEncoder().encode(settings)
   }
+  var dngSource: SmartObject? {
+    guard let draft, let document,
+      let object = document.layers.first(where: { $0.id == draft.id })?.smartObject,
+      object.mediaType == "image/x-adobe-dng", !object.data.isEmpty else { return nil }
+    return object
+  }
+
   func rememberUndo(_ value: Snapshot) {
     undoStates.append(value); if undoStates.count > 100 { undoStates.removeFirst() }; redoStates.removeAll()
   }

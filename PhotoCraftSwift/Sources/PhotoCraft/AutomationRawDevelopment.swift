@@ -18,8 +18,11 @@ extension RawDevelopment {
      "import":"POST /v1/documents/import; optional X-Photato-Open-Format: raw. Upload retains existing4MP/64MiB API limits. File Open and Place Embedded accept supported camera RAW types and read their matching XMP sidecar or embedded settings. For HTTP import, X-Photato-Raw-XMP accepts up to 8 KiB of base64-decoded XMP with the sensor bytes.",
      "history":"raw.develop uses the desktop source-redevelopment transaction. Partial settings or XMP retain existing values where fields are omitted. Explicit null or XMP As Shot resets the applicable values to decoder defaults. allInstances defaults true.",
      "sourceDownload":"Existing smart-objects/{layerID}/source route returns original bytes. Raw settings and decoder are exposed in Smart Object state; revision includes settings.",
+     "developedDNGDownload":["method":"GET","path":"/v1/documents/{id}/smart-objects/{layerID}/source.dng",
+       "contentType":"image/x-adobe-dng", "optionalRevisionHeader":"X-Photato-Revision",
+       "behavior":"Returns a DNG copy with supported embedded Camera Raw settings. Retains sensor bytes and the original document. Requires native document transfers and an existing share."],
      "availability":"Apple native camera/decoder support is checked per source. Highlight recovery requires supported macOS26+ hardware/decoder; no preview fallback, download or cloud call.",
-     "limitations":"Default imports are RGB16. Sensor redevelop uses current document depth/profile. Save native Photato for editable source; PSD RAW descriptor interchange, DNG output, Adobe white-balance preset rendering and all-camera parity remain unqualified. Camera Raw XMP settings convert through cameraRaw.settings.convert."]
+     "limitations":"Default imports are RGB16. Sensor redevelop uses current document depth/profile. Save native Photato for editable source; PSD RAW descriptor interchange, general RAW-to-DNG encoding, Adobe white-balance preset rendering and all-camera parity remain unqualified. Camera Raw XMP settings convert through cameraRaw.settings.convert."]
   }
 }
 extension AutomationCommand {
@@ -49,6 +52,46 @@ extension AutomationCommand {
   }
 }
 extension AutomationService {
+  func downloadDevelopedDNG(_ source: SmartObject, request: AutomationRequest,
+    document: CraftNSDocument, shareID: UUID) async throws -> AutomationResponse {
+    guard documentTransfersEnabled else {
+      throw AutomationFailure(status: 403, message: "Enable document downloads in the native API window.")
+    }
+    guard !documentTransferBusy else {
+      throw AutomationFailure(status: 429, message: "A document transfer is already in progress.")
+    }
+    let expected = revision(document.store)
+    if let requested = request.headers["x-photato-revision"], requested != expected {
+      throw AutomationFailure(status: 409, message: "Stale document revision.")
+    }
+    guard source.mediaType == "image/x-adobe-dng", let settings = source.rawDevelopment,
+      !source.data.isEmpty else {
+      throw AutomationFailure(status: 422, message: "Select a Smart Object with a retained DNG source.")
+    }
+    let generation = documentTransferGeneration
+    let authorization = token
+    documentTransferBusy = true
+    defer { documentTransferBusy = false }
+    let worker = Task.detached(priority: .utility) {
+      try RawSourceIO.dngWithSettings(source.data, settings: settings)
+    }
+    let output: Data
+    do {
+      output = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+    } catch is CancellationError {
+      throw AutomationFailure(status: 409, message: "DNG download was cancelled.")
+    } catch {
+      throw AutomationFailure(status: 422, message: error.localizedDescription)
+    }
+    guard !Task.isCancelled, isRunning, token == authorization, documentTransfersEnabled,
+      documentTransferGeneration == generation, revision(document.store) == expected,
+      shares.contains(where: { $0.id == shareID && $0.document === document }) else {
+      throw AutomationFailure(status: 409, message: "The document changed or sharing ended.")
+    }
+    return .init(status: 200, contentType: "image/x-adobe-dng", body: output,
+      headers: ["X-Photato-Revision": expected])
+  }
+
   func inspectRaw(_ command: AutomationCommand,document: CraftNSDocument,shareID: UUID) async throws -> [String:Any] {
     let expected = revision(document.store)
     guard command.revision == expected else { throw AutomationFailure(status:409,message:"Stale document revision.") }

@@ -43,6 +43,10 @@ No Adobe, Photoshop, ArtCraft or third-party brand artwork is bundled.
 
 The Photato application icon is the project maintainer's supplied `../PhotatoIcon.png`, copied unchanged to `Assets/PhotatoIcon.png`. The build produces macOS icon sizes from this artwork. This is Photato branding, separate from the upstream authors' artwork and notices.
 
+## Digital Negative
+
+This product includes DNG technology under license by Adobe. The Swift metadata writer uses the public [DNG format specification](https://helpx.adobe.com/camera-raw/desktop/dng-and-file-formats/digital-negative.html).
+
 ## Test material
 
 Layer alignment/distribution uses an independent Swift implementation informed by PhotoCraft `crates/engine/src/layer_multi_cmds.rs` and original Photoshop 2026 experiments. The 26 single-operation input/reference pairs and one consecutive-command reference in `Tests/PhotoCraftImagingTests/Fixtures/layout` contain only original procedural rectangles, licensed MIT OR Apache-2.0. Their generators, source hashes and limits are recorded in `docs/LAYER_LAYOUT_REFERENCES.json` and development steps 053–054. The core expected-position fixture is independently decoded from those saved files. These fixtures are excluded from the app bundle; no Adobe code, preset or artwork is included.

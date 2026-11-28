@@ -10758,6 +10758,13 @@
       "link": "DEVLOG.md#dev-step-786",
       "section_sha256": "a2a0311aa4c11a56385048cc82114bbcb473c9243744edb61af665725e73f5af",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-787",
+      "title": "2026-11-27 \u2014 Step 787 \u2014 Save editable Camera Raw settings in DNG copies",
+      "link": "DEVLOG.md#dev-step-787",
+      "section_sha256": "bec0394aed3b8968160fd9b824f10104e08b1b21786979ba762c75cb77919f7c",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13593,8 +13600,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "b5b97abadb7afcb69a1322046f462d74919ff56f6e8fd16b3077a999e0157680",
-      "bytes": 188469,
+      "sha256": "e626c9426fb0e000e7d027b2b30d8a86d0c6deea5e76b61e8dc8156faa929a2b",
+      "bytes": 188595,
       "rolling_current_snapshot": false
     },
     {
@@ -15315,8 +15322,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "25fa67c3f5ad1789af99e0113dc356847f6d287a07a528ebb59ee6f3f5cee175",
-      "bytes": 753247,
+      "sha256": "023c25784b99e272016066783a27fa65cf9cb3832a7f3ef0e79822c1f172b9aa",
+      "bytes": 753761,
       "rolling_current_snapshot": false
     },
     {
@@ -15885,8 +15892,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "0f2a8b80a1b83bf7d873a806404e9d976c5d8018cc08d0f39c8d82e61ad28376",
-      "bytes": 401305,
+      "sha256": "5b5655f0236dff132d048fad44dd15616dffceecff142de5dfa274a1b9d92dc8",
+      "bytes": 401405,
       "rolling_current_snapshot": false
     },
     {
@@ -16005,8 +16012,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "06ec080105696a06b2f93787a9ef3929a84701979eeef8ae90dce51529ee53a7",
-      "bytes": 227310,
+      "sha256": "8f435ecc337a613644320cd3eab2b5c7c37e107542599f029aef36fa7cdec99f",
+      "bytes": 227589,
       "rolling_current_snapshot": false
     },
     {
@@ -16083,14 +16090,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "eca15cb879b8b2fbcee0eb4f3ca9de1cbe4ca2e54095c64fc2c40d9363c9b824",
-      "bytes": 1073121,
+      "sha256": "ca3fd20e46551c1ea8aed44121032cddf94535d8d84ba4f73802cc8064848f2f",
+      "bytes": 1074130,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "7c2a7fdd1f33d3fba1e4423122f99387987a3a4b5dc0beecb88120a770cb3634",
-      "bytes": 5208377,
+      "sha256": "81e8adb92885533c3a5bf74e27dc85bdd87b69d34dec8175fd141e2e703f0419",
+      "bytes": 5210659,
       "rolling_current_snapshot": false
     },
     {
@@ -23732,6 +23739,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_787.json",
+      "sha256": "5f24e19b6cff08dc4cda1d0625bc5cb369d300cfc537ab394704145f2b7a6138",
+      "bytes": 16911,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_787.md",
+      "sha256": "eeb2eb42975daeff7d8c4fd8cbb3bfae068ec5fcead5a878ccfad570da1035fb",
+      "bytes": 1593,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24291,8 +24310,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "1da6df58c18c2e49342369846e186474039a9ffb62350c7114dbf2c3442768d0",
-      "bytes": 510941,
+      "sha256": "ea7b027fa42508addf12f9f976782790baf254fd087230cb7f1ac89bddffd8d8",
+      "bytes": 511393,
       "rolling_current_snapshot": false
     },
     {
@@ -26805,8 +26824,8 @@
     }
   ],
   "counts": {
-    "milestones": 786,
-    "evidence_files": 2204,
+    "milestones": 787,
+    "evidence_files": 2206,
     "logs": 0,
     "missing_explicit_references": 704
   }

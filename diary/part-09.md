@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-27 — Step 787 — Save editable Camera Raw settings in DNG copies
+
+Camera Raw can export a DNG copy with supported adjustments embedded as XMP. The copy retains original sensor bytes, and the source stays unchanged.
+
+Camera Raw 18.1.1 opened the Photato copy with Exposure +1.50, Contrast +21, Highlights −17 and Vibrance +9. All 393,216 sensor bytes matched the original and the Adobe-saved file. The sandboxed Photato export matched the tested copy byte for byte.
+
+Xcode built the app. Three focused imaging tests and one real authenticated HTTP test passed. Both optimized architectures passed all 336 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+In-place Done, importing sidecar-only metadata into edited DNGs, general RAW-to-DNG conversion, preview regeneration, Apple-only sensor controls in XMP and exact Photoshop pixel rendering remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-787) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_787.md).
+
 ## 2026-11-27 — Step 786 — Open Camera Raw sidecar and embedded XMP settings
 
 File Open and Place Embedded now read a same-name RAW XMP sidecar. If there is no usable sibling, Photato uses supported settings embedded in the source. The resulting RAW Smart Object retains the original sensor bytes and the chosen settings.

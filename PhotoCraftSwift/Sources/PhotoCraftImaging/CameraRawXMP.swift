@@ -112,14 +112,28 @@ public enum CameraRawXMP {
     try write(settings, sensor: nil)
   }
 
-  public static func write(_ settings: RawDevelopment) throws -> Data {
+  public static func write(_ settings: RawDevelopment, replacing original: Data? = nil) throws -> Data {
     try settings.validate()
-    return try write(settings.adjustments, sensor: settings)
+    return try write(settings.adjustments, sensor: settings, replacing: original)
   }
 
-  private static func write(_ settings: CameraRawSettings, sensor: RawDevelopment?) throws -> Data {
+  private static func write(_ settings: CameraRawSettings, sensor: RawDevelopment?,
+    replacing original: Data? = nil) throws -> Data {
     try settings.validate()
-    let metadata = CGImageMetadataCreateMutable()
+    let metadata: CGMutableImageMetadata
+    if let original {
+      guard (1...maximumBytes).contains(original.count),
+        let source = CGImageMetadataCreateFromXMPData(original as CFData),
+        let copy = CGImageMetadataCreateMutableCopy(source) else {
+        throw CraftError.invalid("Could not preserve the original XMP metadata.")
+      }
+      metadata = copy
+    } else {
+      metadata = CGImageMetadataCreateMutable()
+    }
+    let originalTags = (CGImageMetadataCopyTags(metadata) as? [CGImageMetadataTag]) ?? []
+    let cameraTag = originalTags.first { CGImageMetadataTagCopyNamespace($0) as String? == namespace }
+    let prefix = cameraTag.flatMap { CGImageMetadataTagCopyPrefix($0) as String? } ?? Self.prefix
     guard CGImageMetadataRegisterNamespaceForPrefix(metadata, namespace as CFString, prefix as CFString, nil) else {
       throw CraftError.invalid("Could not register the Camera Raw XMP namespace.")
     }
@@ -140,7 +154,9 @@ public enum CameraRawXMP {
       else { settings.temperature != 0 || settings.tint != 0 }
     try set("WhiteBalance", (whiteBalance ? "Custom" : "As Shot") as CFString)
     if let temperature = sensor?.temperature { try setNumber("Temperature", temperature) }
+    else if sensor != nil { CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):Temperature" as CFString) }
     if let tint = sensor?.tint { try setNumber("Tint", tint) }
+    else if sensor != nil { CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):Tint" as CFString) }
     for (field, control) in scalars {
       if sensor != nil && (control == "temperature" || control == "tint") { continue }
       try setNumber(field, settings[control])

@@ -805,7 +805,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 784 | 2026-11-27 | [Keep active Quick Mask in layered TIFF](#dev-step-784) |
 | 785 | 2026-11-27 | [Read and write Camera Raw XMP settings](#dev-step-785) |
 | 786 | 2026-11-27 | [Open Camera Raw sidecar and embedded XMP settings](#dev-step-786) |
+| 787 | 2026-11-27 | [Save editable Camera Raw settings in DNG copies](#dev-step-787) |
 <!-- history-index:end -->
+
+<a id="dev-step-787"></a>
+
+## 2026-11-27 — Step 787 — Save editable Camera Raw settings in DNG copies
+
+Camera Raw can export a DNG copy with supported adjustments embedded as XMP. The copy retains original sensor bytes, and the source stays unchanged.
+
+Adobe Camera Raw Done updated embedded XMP on both owned DNGs. It removed the valid sibling in the second test. The Swift copy writer preserves original TIFF addresses and writes a new first directory with the adjustment packet. It retains metadata from the old packet and supports both classic TIFF byte orders. The initial imaging test runner omitted the GuernikaKit object and the first app attempt encountered an icon build-script sandbox error. The repaired Swift 6 runner and existing local Xcode script settings passed. [Adobe DNG format specification](https://helpx.adobe.com/camera-raw/desktop/dng-and-file-formats/digital-negative.html).
+
+Camera Raw 18.1.1 opened the Photato copy with Exposure +1.50, Contrast +21, Highlights −17 and Vibrance +9. All 393,216 sensor bytes matched the original and the Adobe-saved file. The sandboxed Photato export matched the tested copy byte for byte.
+
+The authenticated `GET /v1/documents/{id}/smart-objects/{layerID}/source.dng` downloads a copy using the retained DNG and current committed settings. It requires native document transfers, supports the optional `X-Photato-Revision` header, and shares the native writer. The original source download stays byte-exact. The API reports a stale revision or revoked transfer without changing the document.
+
+Xcode built the app. Three focused imaging tests and one real authenticated HTTP test passed. Both optimized architectures passed all 336 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+In-place Done, importing sidecar-only metadata into edited DNGs, general RAW-to-DNG conversion, preview regeneration, Apple-only sensor controls in XMP and exact Photoshop pixel rendering remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,327,625 bytes with SHA-256 `255d235efd263b4654cea4cd3755c3336c3e8f489797f497eba7f9b8eef0bec1`.
+
+[Qualification](SOURCE_PUBLICATION_787.md).
 
 <a id="dev-step-786"></a>
 

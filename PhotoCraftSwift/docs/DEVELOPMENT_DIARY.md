@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 787 — Save editable Camera Raw settings in DNG copies
+
+Camera Raw can export a DNG copy with supported adjustments embedded as XMP. The copy retains original sensor bytes, and the source stays unchanged.
+
+Camera Raw 18.1.1 opened the Photato copy with Exposure +1.50, Contrast +21, Highlights −17 and Vibrance +9. All 393,216 sensor bytes matched the original and the Adobe-saved file. The sandboxed Photato export matched the tested copy byte for byte.
+
+Xcode built the app. Three focused imaging tests and one real authenticated HTTP test passed. Both optimized architectures passed all 336 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+In-place Done, importing sidecar-only metadata into edited DNGs, general RAW-to-DNG conversion, preview regeneration, Apple-only sensor controls in XMP and exact Photoshop pixel rendering remain open.
+
+[Development record](DEVLOG.md#dev-step-787) · [Qualification](SOURCE_PUBLICATION_787.md).
+
 ## 2026-11-27 — Step 786 — Open Camera Raw sidecar and embedded XMP settings
 
 File Open and Place Embedded now read a same-name RAW XMP sidecar. If there is no usable sibling, Photato uses supported settings embedded in the source. The resulting RAW Smart Object retains the original sensor bytes and the chosen settings.
@@ -2531,11 +2543,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:786 -->
+<!-- current-status-step:787 -->
 
-File Open and Place Embedded now read a same-name RAW XMP sidecar. If there is no usable sibling, Photato uses supported settings embedded in the source. The resulting RAW Smart Object retains the original sensor bytes and the chosen settings.
+Camera Raw can export a DNG copy with supported adjustments embedded as XMP. The copy retains original sensor bytes, and the source stays unchanged.
 
-[Development record](DEVLOG.md#dev-step-786) · [Qualification](SOURCE_PUBLICATION_786.md).
+[Development record](DEVLOG.md#dev-step-787) · [Qualification](SOURCE_PUBLICATION_787.md).
 
 <!-- current-status:end -->
 
@@ -3528,6 +3540,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 784 | [Keep active Quick Mask in layered TIFF](DEVLOG.md#dev-step-784) |
 | 2026-11-27 | 785 | [Read and write Camera Raw XMP settings](DEVLOG.md#dev-step-785) |
 | 2026-11-27 | 786 | [Open Camera Raw sidecar and embedded XMP settings](DEVLOG.md#dev-step-786) |
+| 2026-11-27 | 787 | [Save editable Camera Raw settings in DNG copies](DEVLOG.md#dev-step-787) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

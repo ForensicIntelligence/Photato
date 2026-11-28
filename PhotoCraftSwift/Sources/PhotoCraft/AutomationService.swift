@@ -748,10 +748,14 @@ import UniformTypeIdentifiers
       if request.method == "GET", parts.count == 4 {
         return .json(state(share, document: document))
       }
-      if request.method == "GET", parts.count == 7, parts[4] == "smart-objects", parts[6] == "source" {
+      if request.method == "GET", parts.count == 7, parts[4] == "smart-objects",
+        parts[6] == "source" || parts[6] == "source.dng" {
         guard let layerID = UUID(uuidString: String(parts[5])),
           let source = store.document.layers.first(where: { $0.id == layerID })?.smartObject else {
           throw AutomationFailure(status: 404, message: "Smart Object not found.")
+        }
+        if parts[6] == "source.dng" {
+          return try await downloadDevelopedDNG(source, request: request, document: document, shareID: id)
         }
         guard !source.data.isEmpty else{throw AutomationFailure(status:422,message:"The original linked source is unavailable. Authorize and update or relink it first.")}
         if source.linkedSource != nil, source.data.count > SmartObject.maximumSourceBytes {

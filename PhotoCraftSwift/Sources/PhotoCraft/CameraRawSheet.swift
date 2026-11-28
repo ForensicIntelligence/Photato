@@ -15,8 +15,11 @@ struct CameraRawSheet: View {
   @State private var importing = false
   @State private var exporting = false
   @State private var exportFile: LUTDocument?
-  @State private var exportXMP = true
+  @State private var exportType = Self.xmpType
+  @State private var exportName = "Camera Raw.xmp"
+  @State private var dngTask: Task<Void, Never>?
   private static let xmpType = UTType(filenameExtension: "xmp", conformingTo: .data) ?? .xml
+  private static let dngType = UTType("com.adobe.raw-image") ?? .data
   private var groups: [String] { (model.sensorSettings == nil ? [] : ["Sensor"]) + ["Light","Color","Effects","Curve","Color Mixer","Color Grading","Detail"] }
   init(store: EditorStore,workspace: CameraRawWorkspace? = nil,placement: RawPlacementWorkspace? = nil) { self.store = store; self.placement = placement; _model = State(initialValue:workspace ?? CameraRawWorkspace()) }
   private func binding(_ key: String) -> Binding<Double> { Binding(get:{ Double(model.settings[key]) },set:{ var value = model.settings; value[key] = Float($0); model.change(value) }) }
@@ -39,7 +42,12 @@ struct CameraRawSheet: View {
             .help("Share supported adjustments with Adobe Camera Raw.")
           Button("Photato JSON…") { exportSettings(xmp: false) }
             .help("Save all Photato Camera Raw settings.")
-        }
+          if model.dngSource != nil {
+            Divider()
+            Button("DNG Copy…", action: exportDNG)
+              .help("Save a copy of the RAW sensor data with embedded Camera Raw settings.")
+          }
+        }.disabled(dngTask != nil)
       }.padding(12)
       Divider()
       HStack(spacing:0) {
@@ -75,7 +83,11 @@ struct CameraRawSheet: View {
       }.padding(12)
     }.frame(width:min(1180,(NSScreen.main?.visibleFrame.width ?? 1280)-80),height:min(780,(NSScreen.main?.visibleFrame.height ?? 900)-100))
     .task { guard let draft = store.filterDraft else { return }; model.onChange = { store.filterDraft?.filter.cameraRaw = $0 }; model.onSensorChange = { store.filterDraft?.rawDevelopment = $0 }; if draft.rawDevelopment != nil { group = "Sensor" }; await model.prepare(document:store.document,draft:draft) }
-    .onDisappear { model.close() }
+    .onDisappear {
+      dngTask?.cancel()
+      dngTask = nil
+      model.close()
+    }
     .fileImporter(isPresented: $importing, allowedContentTypes: [Self.xmpType, .json, .data]) { result in
       do {
         let url = try result.get()
@@ -90,18 +102,39 @@ struct CameraRawSheet: View {
       } catch { model.error = error.localizedDescription }
     }
     .fileExporter(isPresented: $exporting, document: exportFile,
-      contentType: exportXMP ? Self.xmpType : .json,
-      defaultFilename: exportXMP ? "Camera Raw.xmp" : "Camera Raw.photatoraw") {
+      contentType: exportType, defaultFilename: exportName) {
       if case .failure(let error) = $0 { model.error = error.localizedDescription }
     }
   }
   private func exportSettings(xmp: Bool) {
     do {
       exportFile = LUTDocument(data: try model.settingsData(xmp: xmp))
-      exportXMP = xmp
+      exportType = xmp ? Self.xmpType : .json
+      exportName = xmp ? "Camera Raw.xmp" : "Camera Raw.photatoraw"
       exporting = true
     } catch { model.error = error.localizedDescription }
   }
+  private func exportDNG() {
+    guard dngTask == nil, let object = model.dngSource, let settings = model.sensorSettings else { return }
+    dngTask = Task {
+      defer { dngTask = nil }
+      let worker = Task.detached(priority: .userInitiated) {
+        try RawSourceIO.dngWithSettings(object.data, settings: settings)
+      }
+      do {
+        let data = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+        try Task.checkCancellation()
+        exportFile = LUTDocument(data: data)
+        exportType = Self.dngType
+        exportName = (object.fileName as NSString).deletingPathExtension + " Settings.dng"
+        exporting = true
+      } catch is CancellationError {
+      } catch {
+        model.error = error.localizedDescription
+      }
+    }
+  }
+
   private var histogram: some View {
     Canvas { context,size in
       for channel in 0..<3 {

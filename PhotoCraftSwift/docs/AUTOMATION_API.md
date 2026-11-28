@@ -1,3 +1,9 @@
+### DNG copies with embedded Camera Raw settings (checkpoint 787)
+
+The authenticated `GET /v1/documents/{id}/smart-objects/{layerID}/source.dng` downloads a copy using the retained DNG and current committed settings. It requires native document transfers, supports the optional `X-Photato-Revision` header, and shares the native writer. The original source download stays byte-exact. The API reports a stale revision or revoked transfer without changing the document.
+
+[Qualification](SOURCE_PUBLICATION_787.md).
+
 ### Opening RAW with sidecar XMP (checkpoint 786)
 
 Authenticated Photato RAW upload accepts base64 XMP through `X-Photato-Raw-XMP` up to 8 KiB decoded. An explicit packet supplies the initial settings. A RAW upload without that header uses embedded settings if present. The Adobe Firefly request contract is unchanged.

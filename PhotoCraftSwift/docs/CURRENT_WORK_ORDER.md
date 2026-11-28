@@ -1,3 +1,5 @@
+**Camera Raw RAW workflow.** Qualify in-place Done, including sidecar handling and user-selected App Sandbox writes. Use the verified DNG writer and captured Camera Raw 18.1.1 settings. [Development record](DEVLOG.md#dev-step-787) · [Qualification](SOURCE_PUBLICATION_787.md).
+
 **Camera Raw RAW workflow.** Continue source settings persistence and camera defaults using owned DNG and sensor references. [Development record](DEVLOG.md#dev-step-786) · [Qualification](SOURCE_PUBLICATION_786.md).
 
 **Camera Raw settings interchange.** Continue same-name XMP sidecar discovery and document-opening behavior using owned RAW fixtures. [Development record](DEVLOG.md#dev-step-785) · [Qualification](SOURCE_PUBLICATION_785.md).
