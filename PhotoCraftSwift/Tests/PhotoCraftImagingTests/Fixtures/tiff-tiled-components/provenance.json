@@ -1,0 +1,70 @@
+{
+  "source": "Independently authored by the project with libtiff TIFFWriteTile. Pixel formulas are recorded in the test.",
+  "fixtures": {
+    "planar-cmyk16-lzw-tiled.tiff": {
+      "mode": "CMYK16",
+      "size": [
+        259,
+        137
+      ],
+      "dpi": 225,
+      "byteOrder": "little",
+      "tileSize": [
+        32,
+        48
+      ],
+      "layout": "planar",
+      "compression": "LZW",
+      "predictor": "horizontal",
+      "artificialEdgePadding": 43329,
+      "sha256": "52abcb9ce29d6892f9032e807320ca2000eef058cfe73f7bf12bb181f6a6138f"
+    },
+    "rgb8-contig-raw-be.tiff": {
+      "mode": "RGB8 with straight opacity",
+      "size": [
+        65,
+        73
+      ],
+      "byteOrder": "big",
+      "tileSize": [
+        32,
+        48
+      ],
+      "layout": "interleaved",
+      "compression": "None",
+      "sha256": "afe5cf7e250346728b6d39a36c7c748d39a3baf77dac5959244c1534beaf48f1"
+    },
+    "gray16-planar-deflate-le.tiff": {
+      "mode": "Gray16 with straight opacity",
+      "size": [
+        65,
+        73
+      ],
+      "byteOrder": "little",
+      "tileSize": [
+        32,
+        48
+      ],
+      "layout": "planar",
+      "compression": "Deflate",
+      "predictor": "horizontal",
+      "sha256": "8fc4ffd0ec6c9d54796923cb6ef9b0ed2a32e4daa1620ab65a65dc2a21d5b5e0"
+    },
+    "rgb32-planar-deflate-be.tiff": {
+      "mode": "linear RGB32 with straight opacity",
+      "size": [
+        65,
+        73
+      ],
+      "byteOrder": "big",
+      "tileSize": [
+        32,
+        48
+      ],
+      "layout": "planar",
+      "compression": "Deflate",
+      "predictor": "floating point",
+      "sha256": "0ee35aafa3dd0277addef93637a54692be56a6672e67bffd831f6b6378bcfefd"
+    }
+  }
+}

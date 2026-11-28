@@ -32,7 +32,8 @@ enum TIFFLayers {
       savedAlpha = nil
     } else {
       guard composite.colorMode == .rgb, depth == 8,
-        let geometry = try TIFFStorage.Geometry(tiff, allowAssociatedAlpha: true, allowSavedAlpha: true),
+        let geometry = try TIFFStorage.Geometry(tiff, allowAssociatedAlpha: true, allowSavedAlpha: true,
+          allowTiles: storedAlpha != nil),
         !geometry.savedAlphaSamples.isEmpty else {
         throw CraftError.unsupported("Unsupported layered TIFF auxiliary sample layout.")
       }

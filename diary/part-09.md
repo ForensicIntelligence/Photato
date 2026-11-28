@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-27 — Step 774 — Open tiled TIFFs with native components
+
+Photato opens supported tiled classic TIFFs as editable images. The native decoder retains color components, opacity and profiles and trims the physical tile padding at the image edges.
+
+Independently authored rectangular CMYK16 tiles matched all 141,932 color words and retained 225 ppi. Six more RGB8, Gray16 and RGB32 controls matched all 94,900 authored samples across raw, LZW and ZIP. The checks include both byte orders, interleaved and planar layouts, straight opacity and floating-point prediction.
+
+Xcode built the native app. All 15 selected imaging and 8 app and HTTP tests passed. Both optimized architectures passed all 252 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+TIFF output continues to use strips. Further layered or associated-alpha tile combinations, JPEG-compressed component TIFFs, BigTIFF and wider Photoshop byte comparisons remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-774) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_774.md).
+
 ## 2026-11-27 — Step 773 — Stream editable TIFF layers when saving
 
 Photato writes editable TIFF layers to disk past the former 512 MiB layer limit. Native Save and Save a Copy use the staged writer with either small or paged merged images.

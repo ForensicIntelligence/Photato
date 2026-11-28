@@ -307,11 +307,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:773 -->
+<!-- current-status-step:774 -->
 
-Photato writes editable TIFF layers to disk past the former 512 MiB layer limit. Native Save and Save a Copy use the staged writer with either small or paged merged images.
+Photato opens supported tiled classic TIFFs as editable images. The native decoder retains color components, opacity and profiles and trims the physical tile padding at the image edges.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-773) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_773.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-774) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_774.md).
 
 <!-- current-status:end -->
 
@@ -1291,5 +1291,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 771 | [Keep named selections in large layered TIFFs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-771) |
 | 2026-11-27 | 772 | [Open larger editable TIFF layer data](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-772) |
 | 2026-11-27 | 773 | [Stream editable TIFF layers when saving](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-773) |
+| 2026-11-27 | 774 | [Open tiled TIFFs with native components](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-774) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

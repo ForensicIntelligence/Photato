@@ -1,7 +1,7 @@
 import Foundation
 import PhotoCraftCore
 
-/// Decodes classic TIFF numeric strips with one working row per physical plane.
+/// Decodes classic TIFF numeric strips and tiles into bounded component rows.
 enum TIFFComponentRows {
   static func read(_ file: TIFFContainer, geometry g: TIFFStorage.Geometry,
     mode: DocumentColorMode, photometric: Int, depth: PixelDepth, profile: Data,
@@ -11,9 +11,7 @@ enum TIFFComponentRows {
     let colorCount = mode.componentCount
     let bytesPerSample = g.bits / 8
     let integerMaximum: UInt32 = g.bits == 8 ? 255 : 65535
-    let strips = (g.height - 1) / g.rows + 1
     let rowComponents = g.planar ? 1 : g.channels
-    let rowBytes = g.width * rowComponents * bytesPerSample
     if g.opacitySample == nil {
       try builder.fill(component: colorCount, word: depth == .f32 ? Float(1).bitPattern : integerMaximum)
     }
@@ -41,59 +39,23 @@ enum TIFFComponentRows {
       }
       return word
     }
-    for plane in 0..<(g.planar ? g.channels : 1) {
-      for strip in 0..<strips {
-        let rows = min(g.rows, g.height - strip * g.rows)
-        let index = plane * strips + strip
-        var source = try file.reader(at: g.offsets[index], count: g.counts[index])
-        let nextRow: () throws -> [UInt8]
-        let finish: () throws -> Void
-        switch g.compression {
-        case 1:
-          guard source.remaining == rows * rowBytes else { throw CraftError.invalid("Truncated TIFF strip.") }
-          nextRow = { Array(try source.bytes(rowBytes)) }
-          finish = {}
-        case 5:
-          let reader = try TIFFLZW.RowReader(source, expected: rows * rowBytes)
-          nextRow = { try reader.read(rowBytes) }
-          finish = { try reader.finish() }
-        default:
-          let reader = try PSDZIPReader(source, expected: rows * rowBytes, largeStream: true)
-          nextRow = {
-            if rowBytes <= Surface.maxDimension * 4 { return try reader.read(rowBytes) }
-            var row: [UInt8] = []
-            row.reserveCapacity(rowBytes)
-            while row.count < rowBytes {
-              row.append(contentsOf: try reader.read(min(Surface.maxDimension * 4, rowBytes - row.count)))
-            }
-            return row
+    var words = [UInt32](repeating: 0, count: g.width)
+    try packedRows(file, g, components: rowComponents) { plane, samples in
+      for channel in 0..<rowComponents {
+        let sample = g.planar ? plane : channel
+        let savedPlane = savedBySample[sample]
+        let component = sample < colorCount ? sample : colorCount
+        for x in 0..<g.width {
+          let start = (x * rowComponents + channel) * bytesPerSample
+          var word: UInt32 = 0
+          for b in 0..<bytesPerSample {
+            let offset = file.order == .big ? b : bytesPerSample - 1 - b
+            word = word << 8 | UInt32(samples[start + offset])
           }
-          finish = { try reader.finish() }
+          words[x] = savedPlane != nil ? word : try nativeWord(word, component: component)
         }
-        var words = [UInt32](repeating: 0, count: g.width)
-        for _ in 0..<rows {
-          try Task.checkCancellation()
-          let input = try nextRow()
-          let samples = g.predictor == 1 ? input : TIFFStorage.restore(input, bits: g.bits,
-            components: rowComponents, order: file.order, predictor: g.predictor)
-          for channel in 0..<rowComponents {
-            let sample = g.planar ? plane : channel
-            let savedPlane = savedBySample[sample]
-            let component = sample < colorCount ? sample : colorCount
-            for x in 0..<g.width {
-              let start = (x * rowComponents + channel) * bytesPerSample
-              var word: UInt32 = 0
-              for b in 0..<bytesPerSample {
-                let offset = file.order == .big ? b : bytesPerSample - 1 - b
-                word = word << 8 | UInt32(samples[start + offset])
-              }
-              words[x] = savedPlane != nil ? word : try nativeWord(word, component: component)
-            }
-            if let savedPlane { try savedPlane.appendRow(words, component: 0) }
-            else { try builder.appendRow(words, component: component) }
-          }
-        }
-        try finish()
+        if let savedPlane { try savedPlane.appendRow(words, component: 0) }
+        else { try builder.appendRow(words, component: component) }
       }
     }
     var raster = try builder.finish()
@@ -106,6 +68,83 @@ enum TIFFComponentRows {
       }
     }
     return (raster, try saved.map { try $0.finish().channel(0) })
+  }
+
+  private static func packedRows(_ file: TIFFContainer, _ g: TIFFStorage.Geometry, components: Int,
+    consume: (_ plane: Int, _ samples: [UInt8]) throws -> Void) throws {
+    let bands = (g.height - 1) / g.rows + 1
+    let planeCount = g.planar ? g.channels : 1
+    let bytesPerPixel = g.bits / 8 * components
+    if let tileWidth = g.tileWidth {
+      let across = (g.width - 1) / tileWidth + 1
+      let staged = try PSDPlaneScratch(width: g.width, height: min(g.rows, g.height),
+        depth: g.bits, components: components, interleaved: true)
+      for plane in 0..<planeCount {
+        for band in 0..<bands {
+          let rows = min(g.rows, g.height - band * g.rows)
+          for column in 0..<across {
+            let x = column * tileWidth
+            let validBytes = min(tileWidth, g.width - x) * bytesPerPixel
+            let index = (plane * bands + band) * across + column
+            try readBlock(file, g, index: index, rows: g.rows, width: tileWidth, components: components) { row, samples in
+              if row < rows {
+                try staged.writeSegment(samples.prefix(validBytes), row: row, component: 0, byteOffset: x * bytesPerPixel)
+              }
+            }
+          }
+          for row in 0..<rows {
+            try Task.checkCancellation()
+            try consume(plane, staged.rawRow(row, plane: 0))
+          }
+        }
+      }
+    } else {
+      for plane in 0..<planeCount {
+        for band in 0..<bands {
+          let rows = min(g.rows, g.height - band * g.rows)
+          try readBlock(file, g, index: plane * bands + band, rows: rows, width: g.width,
+            components: components) { _, samples in try consume(plane, samples) }
+        }
+      }
+    }
+  }
+
+  private static func readBlock(_ file: TIFFContainer, _ g: TIFFStorage.Geometry, index: Int,
+    rows: Int, width: Int, components: Int, consume: (_ row: Int, _ samples: [UInt8]) throws -> Void) throws {
+    let rowBytes = width * components * (g.bits / 8)
+    var source = try file.reader(at: g.offsets[index], count: g.counts[index])
+    let nextRow: () throws -> [UInt8]
+    let finish: () throws -> Void
+    switch g.compression {
+    case 1:
+      guard source.remaining == rows * rowBytes else { throw CraftError.invalid("Truncated TIFF sample block.") }
+      nextRow = { Array(try source.bytes(rowBytes)) }
+      finish = {}
+    case 5:
+      let reader = try TIFFLZW.RowReader(source, expected: rows * rowBytes)
+      nextRow = { try reader.read(rowBytes) }
+      finish = { try reader.finish() }
+    default:
+      let reader = try PSDZIPReader(source, expected: rows * rowBytes, largeStream: true)
+      nextRow = {
+        if rowBytes <= Surface.maxDimension * 4 { return try reader.read(rowBytes) }
+        var data: [UInt8] = []
+        data.reserveCapacity(rowBytes)
+        while data.count < rowBytes {
+          data.append(contentsOf: try reader.read(min(Surface.maxDimension * 4, rowBytes - data.count)))
+        }
+        return data
+      }
+      finish = { try reader.finish() }
+    }
+    for row in 0..<rows {
+      try Task.checkCancellation()
+      let input = try nextRow()
+      let samples = g.predictor == 1 ? input : TIFFStorage.restore(input, bits: g.bits,
+        components: components, order: file.order, predictor: g.predictor)
+      try consume(row, samples)
+    }
+    try finish()
   }
 
   static func oriented(_ source: NativeModeRaster, orientation: Int, backing: RasterTileStore) throws -> NativeModeRaster {

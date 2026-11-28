@@ -1,3 +1,9 @@
+### Tiled TIFF component input (checkpoint 774)
+
+Authenticated Photato uploads and Adobe-compatible action resources use the same native tile decoder. The exercised CMYK input retained all raw component values and resolution through both entry points.
+
+[Qualification](SOURCE_PUBLICATION_774.md).
+
 ### Streamed editable TIFF output (checkpoint 773)
 
 Photato save commands use the native staged output. Authenticated TIFF downloads still use bounded Data and can retain layers when requested. The Adobe-compatible TIFF output schema stays flat and keeps its documented options.

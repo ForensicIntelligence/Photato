@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **773** · The 10 most recent entries, newest first.
+Source build **774** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 774 — Open tiled TIFFs with native components
+
+Photato opens supported tiled classic TIFFs as editable images. The native decoder retains color components, opacity and profiles and trims the physical tile padding at the image edges.
+
+Independently authored rectangular CMYK16 tiles matched all 141,932 color words and retained 225 ppi. Six more RGB8, Gray16 and RGB32 controls matched all 94,900 authored samples across raw, LZW and ZIP. The checks include both byte orders, interleaved and planar layouts, straight opacity and floating-point prediction.
+
+Xcode built the native app. All 15 selected imaging and 8 app and HTTP tests passed. Both optimized architectures passed all 252 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+TIFF output continues to use strips. Further layered or associated-alpha tile combinations, JPEG-compressed component TIFFs, BigTIFF and wider Photoshop byte comparisons remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-774) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_774.md).
 
 ## 2026-11-27 — Step 773 — Stream editable TIFF layers when saving
 
@@ -111,15 +123,3 @@ The Xcode project built and all 37 focused imaging and 11 app and HTTP tests pas
 The Adobe comparisons cover the merged previews of the tested layer stacks. Whole-file equality, Adobe’s layer bounds and Gray16 rounding on re-save, and grayscale TIFF opacity remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-765) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_765.md).
-
-## 2026-11-27 — Step 764 — Open larger PNG palettes as editable RGB
-
-Open can now expand larger PNG palettes with partial opacity or multiple transparent entries into editable RGB8. The importer streams packed scanlines to scratch storage and builds file-backed RGB tiles. It handles standard and Adam7 layouts and applies EXIF rotations.
-
-All 36 focused imaging cases and eleven app and HTTP cases passed in Xcode Debug. Both optimized architectures passed all 225 selected tests. Intel ran under Rosetta.
-
-Photato had rejected the 8,389,632-pixel palette control. Photoshop 27.2.0 opened it in RGB8. The revised Photato reader matched all 8,389,632 original straight RGBA samples in an independent replay. The sparse 36,006,000-pixel Adam7 test retained all sampled colors and opacity. The EXIF rotation test kept the canvas file-backed and moved the tested pixels to their expected positions. Photoshop’s PNG copy preserved all visible color and opacity in the 8.39-megapixel control. Its save normalized hidden RGB at 8,192 fully transparent positions. Export container equality remains open.
-
-The new path applies to palettes that require RGB expansion. Editable Indexed Color and Bitmap still use their existing size limit. Maximum-size dense imports and animated PNG remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-764) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_764.md).

@@ -40,13 +40,13 @@ enum TIFFModeStorage {
     layers: (CraftDocument, RasterTileStore?, [Surface]?) throws -> CraftDocument?) throws -> CraftDocument? {
     let photo = try file.scalar(262)
     guard let mode = mode(photo) else { return nil }
-    if mode == .rgb, !forcePaged {
+    if mode == .rgb, !forcePaged, file.root.fields[324] == nil, file.root.fields[325] == nil {
       let width = try file.scalar(256), height = try file.scalar(257)
       guard width > 0, height > 0, width > Surface.maximumDensePixels / height else { return nil }
     }
     if mode == .grayscale, try file.numbers(258).contains(where: { $0 < 8 }) { return nil }
     guard let g = try TIFFStorage.Geometry(file, allowAssociatedAlpha: true,
-      colorComponents: mode.componentCount, photometric: photo, allowSavedAlpha: mode == .rgb) else {
+      colorComponents: mode.componentCount, photometric: photo, allowSavedAlpha: mode == .rgb, allowTiles: true) else {
       if mode == .rgb { return nil }
       throw CraftError.unsupported("This TIFF color-mode storage variant is not supported yet; import cancelled to retain its components.")
     }
@@ -63,7 +63,7 @@ enum TIFFModeStorage {
     let original = file.root.fields[34675]?.data
     let rgbWorkingICC = mode == .rgb ? try ColorManagement.importedProfile(original, depth: depth) : nil
     let profile = try rgbWorkingICC ?? PSDModeStorage.profile(original, mode: mode, depth: depth)
-    let backing = forcePaged || g.width > NativeModeRaster.maximumPixels / g.height ? try RasterTileStore() : nil
+    let backing = forcePaged || g.tileWidth != nil || g.width > NativeModeRaster.maximumPixels / g.height ? try RasterTileStore() : nil
     let orientation = try file.scalar(274, default: 1)
     guard (1...8).contains(orientation) else { throw CraftError.invalid("Invalid TIFF orientation.") }
     if !g.savedAlphaSamples.isEmpty, depth != .u8 || orientation != 1 {

@@ -792,7 +792,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 771 | 2026-11-27 | [Keep named selections in large layered TIFFs](#dev-step-771) |
 | 772 | 2026-11-27 | [Open larger editable TIFF layer data](#dev-step-772) |
 | 773 | 2026-11-27 | [Stream editable TIFF layers when saving](#dev-step-773) |
+| 774 | 2026-11-27 | [Open tiled TIFFs with native components](#dev-step-774) |
 <!-- history-index:end -->
+
+<a id="dev-step-774"></a>
+
+## 2026-11-27 — Step 774 — Open tiled TIFFs with native components
+
+Photato opens supported tiled classic TIFFs as editable images. The native decoder retains color components, opacity and profiles and trims the physical tile padding at the image edges.
+
+Build 772 opened the independently authored strip control and rejected its tiled counterpart. The new decoder applies the existing compression and predictor logic tile by tile. One staged tile band reassembles the valid samples into component rows for the same paged raster builder used by strips.
+
+Independently authored rectangular CMYK16 tiles matched all 141,932 color words and retained 225 ppi. Six more RGB8, Gray16 and RGB32 controls matched all 94,900 authored samples across raw, LZW and ZIP. The checks include both byte orders, interleaved and planar layouts, straight opacity and floating-point prediction.
+
+Authenticated Photato uploads and Adobe-compatible action resources use the same native tile decoder. The exercised CMYK input retained all raw component values and resolution through both entry points.
+
+Xcode built the native app. All 15 selected imaging and 8 app and HTTP tests passed. Both optimized architectures passed all 252 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+TIFF output continues to use strips. Further layered or associated-alpha tile combinations, JPEG-compressed component TIFFs, BigTIFF and wider Photoshop byte comparisons remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,131,745 bytes with SHA-256 `09cb052c1e00b2034f1c03e256822107424f6f5e1d7e36d2b23e75d597f508b3`.
+
+[Qualification](SOURCE_PUBLICATION_774.md).
 
 <a id="dev-step-773"></a>
 

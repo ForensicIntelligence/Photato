@@ -259,12 +259,14 @@ final class PSDPlaneScratch {
   let width:Int,height:Int,depth:Int,components:Int
   let byteCount:Int
   private let rowBytes:Int
+  private let planeCount: Int
+  private let interleaved: Bool
   private let fd:Int32
   private let address:UnsafeMutableRawPointer
-  init(width:Int,height:Int,depth:Int,components:Int,directory:URL? = nil) throws {
+  init(width:Int,height:Int,depth:Int,components:Int,directory:URL? = nil, interleaved: Bool = false) throws {
     try Task.checkCancellation()
     let count=try PSDChannelCodec.streamByteCount(width:width,height:height,depth:depth,channels:components)
-    guard [1,3,4].contains(components),count <= RasterTileStore.defaultMaximumBytes else {throw CraftError.invalid("Photoshop raw-plane staging exceeds its disk budget.")}
+    guard interleaved || [1,3,4].contains(components),count <= RasterTileStore.defaultMaximumBytes else {throw CraftError.invalid("Photoshop raw-plane staging exceeds its disk budget.")}
     let folder=directory ?? FileManager.default.temporaryDirectory
     guard folder.isFileURL else {throw CraftError.invalid("Photoshop staging requires a local directory.")}
     let url=folder.appendingPathComponent("photato-photoshop-planes-\(UUID().uuidString).tmp")
@@ -275,29 +277,47 @@ final class PSDPlaneScratch {
     let mapping=mmap(nil,count,PROT_READ,MAP_SHARED,descriptor,0)
     guard let mapping,mapping != MAP_FAILED else {let code=errno;close(descriptor);throw RasterScratchFailure.io(operation:"Photoshop staging mapping",code:code)}
     self.width=width;self.height=height;self.depth=depth;self.components=components
-    byteCount=count;rowBytes=width*(depth/8);fd=descriptor;address=mapping
+    planeCount = interleaved ? 1 : components
+    self.interleaved = interleaved
+    byteCount=count;rowBytes=width*(depth/8)*(interleaved ? components : 1);fd=descriptor;address=mapping
     _ = madvise(mapping,count,MADV_SEQUENTIAL)
   }
   deinit {munmap(address,byteCount);close(fd)}
   func write(_ bytes:[UInt8],row:Int,component:Int) throws {
     try Task.checkCancellation()
     guard (0..<height).contains(row),(0..<components).contains(component),bytes.count == rowBytes else {throw CraftError.invalid("Invalid Photoshop staging row.")}
-    if depth == 32 {for x in 0..<width {_ = try PSDChannelCodec.sample(bytes,x,depth:depth)}}
+    if depth == 32 {for x in 0..<rowBytes/4 {_ = try PSDChannelCodec.sample(bytes,x,depth:depth)}}
+    try writeSegment(bytes[...], row: row, component: component, byteOffset: 0)
+  }
+  func writeSegment(_ bytes: ArraySlice<UInt8>, row: Int, component: Int, byteOffset: Int) throws {
+    try Task.checkCancellation()
+    guard (0..<height).contains(row), (0..<planeCount).contains(component),
+      (0...rowBytes).contains(byteOffset), bytes.count <= rowBytes - byteOffset else {
+      throw CraftError.invalid("Invalid Photoshop staging row segment.")
+    }
     try bytes.withUnsafeBytes { buffer in
       var done=0
       while done < buffer.count {
         try Task.checkCancellation()
         let size=min(65536,buffer.count-done)
-        let n=pwrite(fd,buffer.baseAddress!.advanced(by:done),size,off_t((component*height+row)*rowBytes+done))
+        let n=pwrite(fd,buffer.baseAddress!.advanced(by:done),size,off_t((component*height+row)*rowBytes+byteOffset+done))
         if n < 0 && errno == EINTR {continue}
         guard n > 0 else {throw RasterScratchFailure.io(operation:"Photoshop staging write",code:n == 0 ? EIO:errno)}
         done += n
       }
     }
   }
+  func rawRow(_ row: Int, plane: Int) throws -> [UInt8] {
+    guard (0..<height).contains(row), (0..<planeCount).contains(plane) else {
+      throw CraftError.invalid("Invalid Photoshop staging row.")
+    }
+    let offset = (plane * height + row) * rowBytes
+    return Array(UnsafeRawBufferPointer(start: address.advanced(by: offset), count: rowBytes))
+  }
   func sample(x:Int,y:Int,component:Int) throws -> Float {
     guard (0..<width).contains(x),(0..<height).contains(y),(0..<components).contains(component) else {throw CraftError.invalid("Invalid Photoshop staging sample.")}
-    let offset=(component*height+y)*rowBytes+x*(depth/8)
+    let offset = interleaved ? y * rowBytes + (x * components + component) * (depth / 8)
+      : (component * height + y) * rowBytes + x * (depth / 8)
     switch depth {
     case 8:return Float(address.load(fromByteOffset:offset,as:UInt8.self))/255
     case 16:return Float(UInt16(bigEndian:address.loadUnaligned(fromByteOffset:offset,as:UInt16.self)))/65535

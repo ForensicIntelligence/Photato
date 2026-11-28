@@ -13,10 +13,12 @@ enum TIFFStorage {
     let offsets: [Int], counts: [Int]
     let savedAlphaSamples: [Int]
     let opacitySample: Int?
+    let tileWidth: Int?
     init?(_ file: TIFFContainer, allowAssociatedAlpha: Bool = false,
-      colorComponents: Int = 3, photometric: Int = 2, allowSavedAlpha: Bool = false) throws {
-      // Tile decoding remains with ImageIO; the strip path must not reject it.
-      guard file.root.fields[324] == nil, file.root.fields[325] == nil else { return nil }
+      colorComponents: Int = 3, photometric: Int = 2, allowSavedAlpha: Bool = false,
+      allowTiles: Bool = false) throws {
+      let tiled = file.root.fields[324] != nil || file.root.fields[325] != nil
+      guard allowTiles || !tiled else { return nil }
       guard try file.scalar(262) == photometric else { return nil }
       width = try file.scalar(256); height = try file.scalar(257)
       channels = try file.scalar(277)
@@ -45,7 +47,16 @@ enum TIFFStorage {
       let layout = try file.scalar(284, default: 1)
       guard [1, 2].contains(layout) else { return nil }
       planar = layout == 2
-      rows = try file.scalar(278, default: height)
+      if tiled {
+        let columns = try file.scalar(322), tileRows = try file.scalar(323)
+        guard (16...Surface.maxDimension).contains(columns), (16...Surface.maxDimension).contains(tileRows),
+          columns.isMultiple(of: 16), tileRows.isMultiple(of: 16) else {
+          throw CraftError.invalid("Invalid TIFF tile dimensions.")
+        }
+        tileWidth = columns; rows = tileRows
+      } else {
+        tileWidth = nil; rows = try file.scalar(278, default: height)
+      }
       compression = try file.scalar(259, default: 1)
       predictor = try file.scalar(317, default: 1)
       guard [1, 5, 8, 32946].contains(compression), [1, 2, 3].contains(predictor),
@@ -54,14 +65,15 @@ enum TIFFStorage {
         height <= Surface.maxDimension, width <= Surface.maxPixels / height, rows > 0 else {
         throw CraftError.invalid("Invalid TIFF sample geometry.")
       }
-      offsets = try file.numbers(273); counts = try file.numbers(279)
-      let stripCount = ((height - 1) / rows + 1) * (planar ? channels : 1)
-      guard offsets.count == stripCount, counts.count == stripCount else {
-        throw CraftError.invalid("Invalid TIFF strip table.")
+      offsets = try file.numbers(tiled ? 324 : 273); counts = try file.numbers(tiled ? 325 : 279)
+      let across = tileWidth.map { (width - 1) / $0 + 1 } ?? 1
+      let blockCount = across * ((height - 1) / rows + 1) * (planar ? channels : 1)
+      guard offsets.count == blockCount, counts.count == blockCount else {
+        throw CraftError.invalid("Invalid TIFF sample block table.")
       }
       for (offset, count) in zip(offsets, counts) {
         guard offset >= 8, offset <= file.byteCount, count <= file.byteCount - offset else {
-          throw CraftError.invalid("Invalid TIFF strip extent.")
+          throw CraftError.invalid("Invalid TIFF sample block extent.")
         }
       }
     }
