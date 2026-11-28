@@ -57,7 +57,7 @@ enum TIFFStorage {
         throw CraftError.invalid("Invalid TIFF strip table.")
       }
       for (offset, count) in zip(offsets, counts) {
-        guard offset >= 8, offset <= file.data.count, count <= file.data.count - offset else {
+        guard offset >= 8, offset <= file.byteCount, count <= file.byteCount - offset else {
           throw CraftError.invalid("Invalid TIFF strip extent.")
         }
       }
@@ -67,7 +67,7 @@ enum TIFFStorage {
     index: Int, rows: Int, components: Int) throws -> [UInt8]
   {
     let bps = g.bits / 8
-    let packed = Data(file.data[g.offsets[index]..<g.offsets[index] + g.counts[index]])
+    let packed = try file.bytes(at: g.offsets[index], count: g.counts[index])
     let rowBytes = g.width * components * bps, expected = rows * rowBytes
     guard expected <= TIFFContainer.byteLimit else {
       throw CraftError.invalid("TIFF strip exceeds the sample budget.")
@@ -195,9 +195,10 @@ enum TIFFStorage {
     }
     return output
   }
-  static func rewrite(_ data: Data, options: RasterEncodingOptions,
+  static func rewrite(_ input: Data, options: RasterEncodingOptions,
     colorComponents: Int = 3, photometric: Int = 2, savedAlpha: [AlphaChannel] = []) throws -> Data {
     try options.validate(for: .tiff)
+    let data = Data(input)
     let file = try TIFFContainer(data, metadata: true)
     guard let g = try Geometry(file, allowAssociatedAlpha: true,
       colorComponents: colorComponents, photometric: photometric),
@@ -258,7 +259,7 @@ enum TIFFStorage {
           }
           for x in 0..<g.width {
             let pixel = sourceRow + x * g.channels * bps
-            let alpha = matte ? file.order.number(file.data, pixel + colorComponents * bps, bps) : 0
+            let alpha = matte ? file.order.number(data, pixel + colorComponents * bps, bps) : 0
             for channel in 0..<components {
               let index = planar ? plane : channel
               if index >= imageChannels {
@@ -267,7 +268,7 @@ enum TIFFStorage {
               }
               let at = pixel + index * bps
               if matte {
-                let sample = file.order.number(file.data, at, bps)
+                let sample = file.order.number(data, at, bps)
                 let white = photometric != 5 && (photometric != 8 || index == 0)
                 let word = whiteMatteSample(sample, alpha: alpha, bits: g.bits,
                   associated: g.associated, white: white, signedChroma: photometric == 8 && index > 0)
@@ -276,7 +277,7 @@ enum TIFFStorage {
                 }
               } else {
                 for byte in 0..<bps {
-                  row.append(file.data[at + (order == file.order ? byte : bps - 1 - byte)])
+                  row.append(data[at + (order == file.order ? byte : bps - 1 - byte)])
                 }
               }
             }
@@ -318,7 +319,7 @@ enum TIFFStorage {
     try Task.checkCancellation()
     return output
   }
-  private static func whiteMatteSample(_ sample: Int, alpha: Int, bits: Int,
+  static func whiteMatteSample(_ sample: Int, alpha: Int, bits: Int,
     associated: Bool, white: Bool, signedChroma: Bool) -> Int {
     // Associated samples already carry the light from the image. Supply only
     // the missing white contribution, or neutral zero ink/chroma.

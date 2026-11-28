@@ -66,7 +66,7 @@ final class TIFFLayerOutputTests: XCTestCase {
       XCTAssertEqual(layout.compression, 1)
       XCTAssertEqual(layout.bits, 8)
       let strips = zip(layout.offsets, layout.counts).map { offset, count in
-        Array(file.data[offset..<offset + count])
+        Array(bytes[offset..<offset + count])
       }
       if layout.planar {
         let stripsPerPlane = strips.count / layout.channels
@@ -119,15 +119,15 @@ final class TIFFLayerOutputTests: XCTestCase {
       XCTAssertNil(try XCTUnwrap(b.root.fields[37724]).data.range(of: Data("nrTM".utf8)))
       let offsetsA = try a.numbers(273), offsetsB = try b.numbers(273)
       let planar = layout == .perChannel
-      func sample(_ file: TIFFContainer, _ offsets: [Int], _ pixel: Int, _ channel: Int, _ count: Int) -> Int {
-        Int(file.data[planar ? offsets[channel] + pixel : offsets[0] + pixel * count + channel])
+      func sample(_ bytes: Data, _ offsets: [Int], _ pixel: Int, _ channel: Int, _ count: Int) -> Int {
+        Int(bytes[planar ? offsets[channel] + pixel : offsets[0] + pixel * count + channel])
       }
       for pixel in 0..<source.width * source.height {
-        let opacity = sample(a, offsetsA, pixel, 3, 5)
+        let opacity = sample(transparent, offsetsA, pixel, 3, 5)
         for color in 0..<3 {
-          XCTAssertEqual(sample(b, offsetsB, pixel, color, 4), sample(a, offsetsA, pixel, color, 5) + 255 - opacity)
+          XCTAssertEqual(sample(matted, offsetsB, pixel, color, 4), sample(transparent, offsetsA, pixel, color, 5) + 255 - opacity)
         }
-        XCTAssertEqual(sample(b, offsetsB, pixel, 3, 4), sample(a, offsetsA, pixel, 4, 5))
+        XCTAssertEqual(sample(matted, offsetsB, pixel, 3, 4), sample(transparent, offsetsA, pixel, 4, 5))
       }
       let reopened = try RasterIO.read(matted)
       XCTAssertEqual(reopened.layers.map(\.content), source.layers.map(\.content))

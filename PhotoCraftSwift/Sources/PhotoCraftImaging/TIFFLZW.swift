@@ -56,9 +56,12 @@ enum TIFFLZW {
   }
 
   final class RowReader {
-    private let data: Data
+    private var source: PSDReader
+    private var bytes = Data()
+    private var inputIndex = 0
+    private var bitBuffer: UInt32 = 0
+    private var bufferedBits = 0
     private let expected: Int
-    private var bit = 0
     private var width = 9
     private var next = 258
     private var previous: [UInt8]?
@@ -69,12 +72,30 @@ enum TIFFLZW {
     private var cleared = false
     private var ended = false
 
-    init(_ data: Data, expected: Int) throws {
-      guard expected >= 0, data.count <= Int.max / 8 else {
-        throw CraftError.invalid("Invalid TIFF LZW sample budget.")
-      }
-      self.data = data
+    convenience init(_ data: Data, expected: Int) throws {
+      try self.init(PSDReader(data: data), expected: expected)
+    }
+    init(_ source: PSDReader, expected: Int) throws {
+      guard expected >= 0 else { throw CraftError.invalid("Invalid TIFF LZW sample budget.") }
+      self.source = source
       self.expected = expected
+    }
+
+    private func readCode() throws -> Int? {
+      while bufferedBits < width {
+        if inputIndex == bytes.count {
+          guard source.remaining > 0 else { return nil }
+          bytes = try source.bytes(min(PSDFileSource.pageBytes, source.remaining))
+          inputIndex = 0
+        }
+        bitBuffer = (bitBuffer << 8) | UInt32(bytes[inputIndex])
+        inputIndex += 1
+        bufferedBits += 8
+      }
+      bufferedBits -= width
+      let code = Int(bitBuffer >> bufferedBits)
+      bitBuffer &= (1 << bufferedBits) - 1
+      return code
     }
 
     func read(_ count: Int) throws -> [UInt8] {
@@ -107,14 +128,8 @@ enum TIFFLZW {
 
     private func nextWord() throws -> [UInt8]? {
       if ended { return nil }
-      while data.count * 8 - bit >= width {
+      while let code = try readCode() {
         try Task.checkCancellation()
-        var code = 0
-        for _ in 0..<width {
-          let byte = data[data.startIndex + bit / 8]
-          code = (code << 1) | Int((byte >> (7 - bit % 8)) & 1)
-          bit += 1
-        }
         if code == 256 {
           width = 9
           next = 258

@@ -38,8 +38,7 @@ enum TIFFComponentRows {
       for strip in 0..<strips {
         let rows = min(g.rows, g.height - strip * g.rows)
         let index = plane * strips + strip
-        var input = PSDReader(data: file.data, offset: g.offsets[index])
-        var source = try input.view(g.counts[index])
+        var source = try file.reader(at: g.offsets[index], count: g.counts[index])
         let nextRow: () throws -> [UInt8]
         let finish: () throws -> Void
         switch g.compression {
@@ -48,8 +47,7 @@ enum TIFFComponentRows {
           nextRow = { Array(try source.bytes(rowBytes)) }
           finish = {}
         case 5:
-          let packed = file.data[g.offsets[index]..<g.offsets[index] + g.counts[index]]
-          let reader = try TIFFLZW.RowReader(packed, expected: rows * rowBytes)
+          let reader = try TIFFLZW.RowReader(source, expected: rows * rowBytes)
           nextRow = { try reader.read(rowBytes) }
           finish = { try reader.finish() }
         default:

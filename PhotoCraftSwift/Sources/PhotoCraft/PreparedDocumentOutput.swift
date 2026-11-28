@@ -68,6 +68,7 @@ final class PreparedDocumentFile: Sendable {
     let url = directory.appendingPathComponent("document")
     switch format {
     case .native: try NativeArchive.write(model, to: url)
+    case .tiff: try RasterIO.write(model, to: url, type: .tiff, options: options)
     case .psd, .psb:
       try PSDCodec.writeRasterLayers(model, to: url,
         compression: options.psdLayerCompression?.codec ?? .zipPrediction,
@@ -97,7 +98,8 @@ extension DocumentIO {
     if persistence, let issue = persistenceIssue(document, format: format, options: options) {
       throw CraftError.unsupported(issue)
     }
-    if format == .native || format == .psd || format == .psb {
+    if format == .native || format == .psd || format == .psb
+      || (format == .tiff && RasterIO.supportsPagedComponentTIFFOutput(document)) {
       return .file(try PreparedDocumentFile(document, format: format, options: options))
     }
     return .data(try encode(document, format: format, options: options))

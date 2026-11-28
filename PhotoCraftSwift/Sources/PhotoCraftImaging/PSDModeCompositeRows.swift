@@ -13,11 +13,21 @@ final class PSDModeCompositeRows {
     guard let descriptor=document.modeDescriptor else {throw CraftError.invalid("Missing native mode descriptor.")}
     self.document=document;self.descriptor=descriptor
   }
-  func row(_ y:Int,channel:Int,depth:Int) throws -> [UInt8] {
-    guard (0..<document.height).contains(y),(0...descriptor.mode.componentCount).contains(channel),
-      depth == (document.depth == .u8 ? 8:document.depth == .u16 ? 16:32) else {
+  func row(_ y: Int, channel: Int, depth: Int) throws -> [UInt8] {
+    guard (0...descriptor.mode.componentCount).contains(channel),
+      depth == (document.depth == .u8 ? 8 : document.depth == .u16 ? 16 : 32) else {
       throw CraftError.invalid("Invalid Photoshop native composite row.")
     }
+    var bytes: [UInt8] = []
+    bytes.reserveCapacity(document.width * (depth / 8))
+    try forEachSample(inRow: y) { patch, index in
+      try PSDChannelCodec.append(PSDModeStorage.mergedSample(patch, component: channel, index: index), depth: depth, to: &bytes)
+    }
+    return bytes
+  }
+
+  func forEachSample(inRow y: Int, _ process: (NativeModeRaster, Int) throws -> Void) throws {
+    guard (0..<document.height).contains(y) else { throw CraftError.invalid("Invalid native component row.") }
     if y<firstRow || y>=firstRow+height {
       firstRow=y;height=min(document.height-y,max(1,min(64,PSDCompositeRows.preferredBandPixels/document.width)))
       patches=[]
@@ -30,14 +40,11 @@ final class PSDModeCompositeRows {
           profile:descriptor.profile,intent:descriptor.intent))
       }
     }
-    var bytes:[UInt8]=[];bytes.reserveCapacity(document.width*(depth/8))
     for patch in patches {
       try Task.checkCancellation()
-      for x in 0..<patch.width {
-        try PSDChannelCodec.append(PSDModeStorage.mergedSample(patch,component:channel,index:(y-firstRow)*patch.width+x),depth:depth,to:&bytes)
-      }
+      let rowStart = (y - firstRow) * patch.width
+      for x in 0..<patch.width { try process(patch, rowStart + x) }
     }
-    return bytes
   }
 }
 

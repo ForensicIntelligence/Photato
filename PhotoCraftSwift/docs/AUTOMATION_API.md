@@ -1,3 +1,9 @@
+### File-backed classic TIFF input and output (checkpoint 769)
+
+Authenticated TIFF downloads and Save As use the same strip serializer through their existing options. The selected HTTP save and download produced identical files, with exact gray and opacity samples after reopening. HTTP transfer and individual layer payload limits still apply.
+
+[Qualification](SOURCE_PUBLICATION_769.md).
+
 ### Paged component TIFF input (checkpoint 768)
 
 Desktop Open, authenticated Photato document uploads and action-job TIFF resource decoding use the same file-backed component reader. The optional API advertises the expanded classic strip input. Its existing HTTP transfer limits still apply.

@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 769 — Save and reopen larger classic TIFF files
+
+Supported Grayscale, CMYK and Lab TIFF strips stream through local file Open and Save. Photato keeps the original numerical channels and uses bounded strips for the copy or composite.
+
+A 16,384 × 17,408 Gray16 file opened, saved and reopened through the native file APIs. The source exceeded 512 MiB and libtiff compared all 285,212,672 samples against the rewritten output. The reopened copy retained its embedded color profile. The Xcode tests include a 36-megapixel Gray16 copy, editable CMYK layers and a separate sparse file above 512 MiB.
+
+The Xcode project built and all 47 selected imaging and 14 app and HTTP tests passed. Both optimized architectures passed all 237 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on each slice.
+
+Supported local classic TIFFs use 32-bit offsets. Larger RGB TIFF streams, tiled component TIFF, BigTIFF, some specialized layered blocks and more Photoshop sample comparisons remain open.
+
+[Development record](DEVLOG.md#dev-step-769) · [Qualification](SOURCE_PUBLICATION_769.md).
+
 ## 2026-11-27 — Step 768 — Open larger grayscale, CMYK and Lab TIFFs
 
 Photato decodes supported classic TIFF strips into editable, file-backed color planes. Gray, CMYK and Lab data retain their original component values and supported precision as well as an RGB display preview.
@@ -2315,11 +2327,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:768 -->
+<!-- current-status-step:769 -->
 
-Photato decodes supported classic TIFF strips into editable, file-backed color planes. Gray, CMYK and Lab data retain their original component values and supported precision as well as an RGB display preview.
+Supported Grayscale, CMYK and Lab TIFF strips stream through local file Open and Save. Photato keeps the original numerical channels and uses bounded strips for the copy or composite.
 
-[Development record](DEVLOG.md#dev-step-768) · [Qualification](SOURCE_PUBLICATION_768.md).
+[Development record](DEVLOG.md#dev-step-769) · [Qualification](SOURCE_PUBLICATION_769.md).
 
 <!-- current-status:end -->
 
@@ -3294,6 +3306,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 766 | [Match grayscale TIFF output with transparency off](DEVLOG.md#dev-step-766) |
 | 2026-11-27 | 767 | [Preserve the TIFF color profile choice](DEVLOG.md#dev-step-767) |
 | 2026-11-27 | 768 | [Open larger grayscale, CMYK and Lab TIFFs](DEVLOG.md#dev-step-768) |
+| 2026-11-27 | 769 | [Save and reopen larger classic TIFF files](DEVLOG.md#dev-step-769) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

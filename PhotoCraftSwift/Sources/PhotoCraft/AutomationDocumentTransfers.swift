@@ -115,7 +115,9 @@ extension AutomationService {
         "colorModes": ["grayscale": [8, 16, 32], "cmyk": [8, 16], "lab": [8, 16]],
         "stripCompression": ["raw", "lzw", "zip"],
         "strategy": "Supported classic TIFF strips open into editable file-backed numerical components and an RGB preview. Native Open, Photato uploads and action-job resource decoding share storage.",
-        "limits": "Encoded input, layer structure, scratch storage and editing operations retain their separate limits. The component reader accepts classic strips only."
+        "desktopClassicTIFFMaximumBytes": Int(UInt32.max),
+        "pagedOutput": "Supported component images can write strips to a classic TIFF file or same-encoder API Data. TIFF layers use the supported Photoshop layer-record codec.",
+        "limits": "The higher classic TIFF limit applies to local file Open and Save. Web transfer, image processing, embedded layers and decoded scratch budgets remain independent. BigTIFF and component tiles are outside this option."
       ],
       "layeredTIFF": [
         "grayscaleMatte": "Explicit Save Transparency off writes the measured white-matted grayscale samples for aligned Normal Gray8 and Gray16 raster stacks. Editable TIFF retains the original gray and opacity words in its layers.",

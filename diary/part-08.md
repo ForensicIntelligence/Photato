@@ -1414,4 +1414,12 @@ All 266 selected tests passed. The compiled builds reproduced all 32 brush outpu
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-541) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_541.md).
 
+## 2026-11-17 — Step 540: get the same linear Brush pixels on Apple Silicon and Intel
+
+A single-precision power calculation in the sRGB transfer caused six Brush cases to disagree across the two builds. The transfer now calculates that step at higher precision and rounds to Float32. All 32 tested Brush outputs agree across architectures. The compiled transfer also agrees on every nonnegative finite Float32 input, and all 251 selected tests passed.
+
+The 5,000 px Brush still takes 3.70 seconds to draw its first preview in the 24 MP hosted test. The smaller 64 px Brush drew 119 times during two seconds of input.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-540) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_540.md).
+
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

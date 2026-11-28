@@ -92,8 +92,16 @@ public enum RasterIO {
     }
     return try PSDFileSource.withStableMetadata(url) { source in
       let name = url.deletingPathExtension().lastPathComponent
-      if try source.bytes(at: 0, count: min(4, source.count)) == Data("8BPS".utf8) {
+      let header = try source.bytes(at: 0, count: min(4, source.count))
+      if header == Data("8BPS".utf8) {
         return try PSDCodec.read(PSDReader(file: source), name: name, paging: PSDRasterPaging.Context())
+      }
+      if source.count > TIFFContainer.byteLimit, TIFFContainer.isClassic(header) {
+        guard let result = try TIFFModeStorage.read(source, url: url, name: name) else {
+          throw CraftError.unsupported("Large classic TIFF files currently require supported Grayscale, CMYK or Lab strips.")
+        }
+        try source.validateUnchanged()
+        return result
       }
       // Preserve ImageIO's existing mapped-Data path. The bounded channel reader
       // above handles Photoshop containers; other formats keep their own pipeline.
@@ -553,6 +561,9 @@ public enum RasterIO {
       let composite = try TIFFStorage.rewrite(raw,options:compositeOptions,savedAlpha:document.alphaChannels ?? [])
       return try TIFFLayers.write(document,composite:composite,compression:options.tiffLayerCompression ?? .zip)
     }
+    if type == .tiff, supportsPagedComponentTIFFOutput(document) {
+      return try TIFFComponentExport.encoded(document, options: options)
+    }
     if type == .tiff, document.hasNativeModeStorage {
       let composite = try TIFFModeStorage.write(Renderer.composite(document), document: document,
         resolution: document.pixelsPerInch, depth: document.depth, metadata: document.sourceMetadata,
@@ -569,7 +580,17 @@ public enum RasterIO {
       ? try TIFFLayers.write(document, composite: composite, compression: options.tiffLayerCompression ?? .zip)
       : composite
   }
-  public static func write(_ document: CraftDocument, to url: URL, type: UTType = .png) throws {
-    try encoded(document, type: type).write(to: url, options: .atomic)
+  package static func supportsPagedComponentTIFFOutput(_ document: CraftDocument) -> Bool {
+    document.hasNativeModeStorage && document.colorMode != .rgb && document.inkMode == nil
+      && document.restrictedMode == nil && !document.hasAuxiliaryChannels
+      && document.width > NativeModeRaster.maximumPixels / document.height
+  }
+  public static func write(_ document: CraftDocument, to url: URL, type: UTType = .png,
+    options: RasterEncodingOptions = .init()) throws {
+    if type == .tiff, supportsPagedComponentTIFFOutput(document) {
+      try TIFFComponentExport.write(document, to: url, options: options)
+    } else {
+      try encoded(document, type: type, options: options).write(to: url, options: .atomic)
+    }
   }
 }

@@ -9,6 +9,9 @@ enum TIFFLayers {
   static func read(_ data: Data, composite: CraftDocument, backing: RasterTileStore? = nil) throws -> CraftDocument? {
     guard TIFFContainer.isClassic(data) else { return nil }
     let tiff = try TIFFContainer(data, metadata: false, additionalTags: [34377, 34675, 37724])
+    return try read(tiff, composite: composite, backing: backing)
+  }
+  static func read(_ tiff: TIFFContainer, composite: CraftDocument, backing: RasterTileStore?) throws -> CraftDocument? {
     guard let field = tiff.root.fields[37724] else { return nil }
     guard [1, 7].contains(field.type), field.data.starts(with: signature) else {
       throw CraftError.unsupported("Unrecognized Photoshop TIFF layer container. Import cancelled to preserve its contents.")
@@ -141,11 +144,21 @@ enum TIFFLayers {
 
   static func write(_ document: CraftDocument, composite: Data,
     compression: RasterEncodingOptions.TIFFLayerCompression) throws -> Data {
+    let tiff = try TIFFContainer(composite, metadata: true)
+    try attach(document, to: tiff, order: tiff.order, compression: compression)
+    // Existing raster offsets stay valid. The header points to the new complete IFD.
+    var result = composite
+    try tiff.appendDirectories(to: &result, order: tiff.order)
+    try Task.checkCancellation()
+    return result
+  }
+
+  static func attach(_ document: CraftDocument, to tiff: TIFFContainer, order: TIFFContainer.Order,
+    compression: RasterEncodingOptions.TIFFLayerCompression) throws {
     try Task.checkCancellation()
     guard document.layers.count + document.layers.filter({ $0.group != nil }).count <= 1024 else {
       throw CraftError.invalid("TIFF exceeds the layer record limit.")
     }
-    let tiff = try TIFFContainer(composite, metadata: true)
     let savedAlpha = document.alphaChannels ?? []
     var layerDocument = document
     let componentCount = try tiff.scalar(277)
@@ -185,16 +198,16 @@ enum TIFFLayers {
       guard payload.count <= TIFFContainer.byteLimit - blocks.count - 16 else {
         throw CraftError.invalid("TIFF layers exceed the memory budget.")
       }
-      blocks.append(Data(tiff.order == .big ? "8BIM".utf8 : "MIB8".utf8))
+      blocks.append(Data(order == .big ? "8BIM".utf8 : "MIB8".utf8))
       let tag = Data(key.utf8)
-      blocks.append(tiff.order == .big ? tag : Data(tag.reversed()))
-      blocks.append(tiff.order.bytes(payload.count, 4)); blocks.append(payload)
+      blocks.append(order == .big ? tag : Data(tag.reversed()))
+      blocks.append(order.bytes(payload.count, 4)); blocks.append(payload)
       blocks.append(Data(repeating: 0, count: (4 - payload.count % 4) % 4))
     }
     // TIFF's transparency marker is distinct from PSD's Mtrn and precedes layers.
     if hasTransparency { try append("MTrn", Data()) }
     if !directLayers.isEmpty {
-      try append("Layr", TIFFLayerEndian.layers(directLayers, order: .big, target: tiff.order))
+      try append("Layr", TIFFLayerEndian.layers(directLayers, order: .big, target: order))
     }
     var count = directLayers.isEmpty ? 0 : 1
     while section.remaining >= 12 {
@@ -206,9 +219,9 @@ enum TIFFLayers {
       _ = try section.bytes((4 - payload.count % 4) % 4)
       let converted: Data
       if ["Layr", "Lr16", "Lr32"].contains(key) {
-        converted = try TIFFLayerEndian.layers(payload, order: .big, target: tiff.order)
+        converted = try TIFFLayerEndian.layers(payload, order: .big, target: order)
       } else {
-        converted = tiff.order == .big ? payload
+        converted = order == .big ? payload
           : try TIFFLayerEndian.payload(payload, tag: key, global: true, order: .big)
       }
       try append(key, converted); count += 1
@@ -216,10 +229,5 @@ enum TIFFLayers {
     guard try section.consumePadding(0) else { throw CraftError.invalid("Invalid TIFF layer tail.") }
     tiff.root.fields[34377] = .init(tag: 34377, type: 7, count: resources.count, data: resources)
     tiff.root.fields[37724] = .init(tag: 37724, type: 7, count: blocks.count, data: blocks)
-    // Existing raster offsets stay valid. The header points to the new complete IFD.
-    var result = composite
-    try tiff.appendDirectories(to: &result, order: tiff.order)
-    try Task.checkCancellation()
-    return result
   }
 }

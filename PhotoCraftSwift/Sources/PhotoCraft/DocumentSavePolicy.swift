@@ -40,7 +40,9 @@ extension DocumentIO {
     if document.layers.contains(where:{$0.sourceTags?[GeneratedImageStorage.recordKey] != nil || $0.sourceTags?[GeneratedImageStorage.originalKey] != nil || $0.sourceTags?[GeneratedVariations.key] != nil}) {
       return "Save as Photato to retain generated-image records and original results. Use Save a Copy for other formats."
     }
-    if format != .psd,format != .psb,document.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }) {
+    let pagedTIFF = format == .tiff && RasterIO.supportsPagedComponentTIFFOutput(document)
+    if format != .psd, format != .psb, !pagedTIFF,
+      document.layers.contains(where: { $0.nativeMode?.requiresPagedArchive == true }) {
       return "Save this large component document as Photato, PSD or PSB. Other component-format encoders retain separate limits."
     }
     if document.isChannelOnly {
@@ -56,7 +58,8 @@ extension DocumentIO {
       if (try? ColorManagement.space(for:document)) != CGColorSpace(name:CGColorSpace.linearSRGB) {return "Use Save a Copy to convert the working profile to scene-linear sRGB."}
       if document.layers.contains(where:{$0.smartObject != nil || $0.smartFilters != nil || $0.style != nil || $0.warp != nil || $0.sourceProjection != nil}) {return "Use Save a Copy to flatten editable layer content."}
     }
-    if document.width * document.height > Surface.maximumDensePixels, format != .psd, format != .psb, format != .exr {
+    if document.width * document.height > Surface.maximumDensePixels, format != .psd,
+      format != .psb, format != .exr, !pagedTIFF {
       return "Save this large canvas as Photato. Streamed full-size raster and PSD/PSB output is not yet available."
     }
     if document.variables != nil { return "Save as Photato to retain variables, data sets and replacement images. Export a data-set variation for other formats." }

@@ -80,9 +80,9 @@ enum TIFFRestrictedStorage {
       let rows = tiled ? segmentHeight : min(segmentHeight, height - y0)
       let rowBytes = (segmentWidth * components * bits + 7) / 8, expected = rowBytes * rows
       let i = plane * across * down + segment, offset = offsets[i], count = counts[i]
-      guard expected <= TIFFContainer.byteLimit, offset >= 8, offset <= file.data.count,
-        count > 0, count <= file.data.count - offset else { throw CraftError.invalid("Invalid TIFF segment extent.") }
-      let packed = Data(file.data[offset..<offset + count])
+      guard expected <= TIFFContainer.byteLimit, offset >= 8, offset <= file.byteCount,
+        count > 0, count <= file.byteCount - offset else { throw CraftError.invalid("Invalid TIFF segment extent.") }
+      let packed = try file.bytes(at: offset, count: count)
       var samples: Data
       switch compression {
       case 1: guard packed.count == expected else { throw CraftError.invalid("Truncated TIFF segment.") }; samples = packed

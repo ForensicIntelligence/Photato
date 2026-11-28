@@ -1,3 +1,5 @@
+**TIFF interchange.** Extend bounded TIFF input to large RGB files and qualify its alpha and profile choices. Verify the separate Photoshop TIFF opacity samples. [Development record](DEVLOG.md#dev-step-769) · [Qualification](SOURCE_PUBLICATION_769.md).
+
 **TIFF interchange.** Stream supported components through classic TIFF output and reopen local files above the current encoded limit. Verify the separate Photoshop TIFF opacity samples. [Development record](DEVLOG.md#dev-step-768) · [Qualification](SOURCE_PUBLICATION_768.md).
 
 **TIFF interchange.** The tested TIFF profile choices preserve sample values. Qualify larger component TIFF input and verify Photoshop’s separate opacity sample. [Development record](DEVLOG.md#dev-step-767) · [Qualification](SOURCE_PUBLICATION_767.md).

@@ -15,6 +15,22 @@ enum TIFFModeStorage {
   static func read(_ data: Data, name: String, forcePaged: Bool = false) throws -> CraftDocument? {
     guard TIFFContainer.isClassic(data) else { return nil }
     let file = try TIFFContainer(data, metadata: false, additionalTags: [332, 34675])
+    return try read(file, name: name, forcePaged: forcePaged,
+      metadataSource: { CGImageSourceCreateWithData(data as CFData, nil) },
+      layers: { try TIFFLayers.read(data, composite: $0, backing: $1) })
+  }
+  static func read(_ source: PSDFileSource, url: URL, name: String) throws -> CraftDocument? {
+    let file = try TIFFContainer(file: source, metadata: false, additionalTags: [332, 34675])
+    return try read(file, name: name, forcePaged: true,
+      metadataSource: { CGImageSourceCreateWithURL(url as CFURL, nil) },
+      layers: {
+        let layerFile = try TIFFContainer(file: source, metadata: false, additionalTags: [34377, 34675, 37724])
+        return try TIFFLayers.read(layerFile, composite: $0, backing: $1)
+      })
+  }
+  private static func read(_ file: TIFFContainer, name: String, forcePaged: Bool,
+    metadataSource: () -> CGImageSource?,
+    layers: (CraftDocument, RasterTileStore?) throws -> CraftDocument?) throws -> CraftDocument? {
     let photo = try file.scalar(262)
     // Keep the qualified legacy RGB/tiled/ImageIO path unchanged.
     guard let mode = mode(photo), mode != .rgb else { return nil }
@@ -56,7 +72,7 @@ enum TIFFModeStorage {
     document.modeDescriptor = try .init(mode: mode, depth: depth, profile: profile)
     document.sourceICC = original
     document.profileIsUntagged = original == nil ? true : nil
-    if let source = CGImageSourceCreateWithData(data as CFData, nil),
+    if let source = metadataSource(),
       let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any] {
       document.sourceMetadata = try RasterMetadata.capture(source, properties: properties)
       if let dpi = properties[kCGImagePropertyDPIWidth] as? Double, dpi.isFinite, (1...100_000).contains(dpi) { document.resolution = dpi }
@@ -64,7 +80,7 @@ enum TIFFModeStorage {
     var layer = Layer(name: name, content: .raster(try native.surface(backing: backing))); layer.nativeMode = native
     document.layers = [layer]; document.activeLayerID = layer.id
     try document.validate()
-    return try TIFFLayers.read(data, composite: document, backing: backing) ?? document
+    return try layers(document, backing) ?? document
   }
 
   private static func readDense(_ file: TIFFContainer, geometry g: TIFFStorage.Geometry,
@@ -78,7 +94,7 @@ enum TIFFModeStorage {
       let index = plane * stripsPerPlane + strip, rowBytes = g.width * components * bps
       let expected = rows * rowBytes
       guard expected <= TIFFContainer.byteLimit else { throw CraftError.invalid("TIFF strip exceeds sample budget.") }
-      let packed = Data(file.data[g.offsets[index]..<g.offsets[index] + g.counts[index]])
+      let packed = try file.bytes(at: g.offsets[index], count: g.counts[index])
       var bytes: [UInt8]
       switch g.compression {
       case 1:
