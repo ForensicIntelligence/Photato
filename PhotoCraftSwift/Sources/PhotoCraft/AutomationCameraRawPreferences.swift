@@ -9,6 +9,7 @@ extension AutomationService {
     return [
       "revision": preferences.revision.uuidString,
       "dngStorage": preferences.dngStorage.rawValue,
+      "openAsSmartObject": preferences.openAsSmartObject,
       "canUpdate": photoshopPreferenceChangesEnabled,
     ]
   }
@@ -27,16 +28,31 @@ extension AutomationService {
     }
     guard request.body.count <= 4096,
       let fields = try? JSONDecoder().decode([String: AutomationValue].self, from: request.body),
-      fields.count == 2,
-      case .string(let revisionText) = fields["revision"], let revision = UUID(uuidString: revisionText),
-      case .string(let storageText) = fields["dngStorage"], let storage = RawDNGSettingsStorage(rawValue: storageText) else {
-      throw AutomationFailure(status: 400, message: "Provide a revision UUID and a supported dngStorage value.")
+      Set(fields.keys).isSubset(of: ["revision", "dngStorage", "openAsSmartObject"]),
+      fields.count >= 2,
+      case .string(let revisionText) = fields["revision"], let revision = UUID(uuidString: revisionText) else {
+      throw AutomationFailure(status: 400, message: "Provide a revision UUID and at least one Camera Raw preference.")
+    }
+    var storage: RawDNGSettingsStorage?
+    if let value = fields["dngStorage"] {
+      guard case .string(let text) = value, let choice = RawDNGSettingsStorage(rawValue: text) else {
+        throw AutomationFailure(status: 400, message: "Choose a supported dngStorage value.")
+      }
+      storage = choice
+    }
+    var openAsSmartObject: Bool?
+    if let value = fields["openAsSmartObject"] {
+      guard case .bool(let choice) = value else {
+        throw AutomationFailure(status: 400, message: "openAsSmartObject must be a boolean.")
+      }
+      openAsSmartObject = choice
     }
     let preferences = controller.cameraRawPreferences
     guard preferences.revision == revision else {
       throw AutomationFailure(status: 409, message: "Camera Raw preferences changed. Read their latest revision.")
     }
-    preferences.dngStorage = storage
+    if let storage { preferences.dngStorage = storage }
+    if let openAsSmartObject { preferences.openAsSmartObject = openAsSmartObject }
     return .json(cameraRawPreferencesState)
   }
 
@@ -44,6 +60,7 @@ extension AutomationService {
     let fields: [String: [String: Any]] = [
       "revision": ["type": "string", "format": "uuid"],
       "dngStorage": ["type": "string", "enum": RawDNGSettingsStorage.allCases.map(\.rawValue)],
+      "openAsSmartObject": BrushAPI.flag,
     ]
     var stateFields = fields
     stateFields["canUpdate"] = BrushAPI.flag
@@ -51,12 +68,12 @@ extension AutomationService {
       "path": cameraRawPreferencesPath,
       "readMethod": "GET",
       "updateMethod": "POST",
-      "default": ["dngStorage": RawDNGSettingsStorage.embedXMP.rawValue],
+      "default": ["dngStorage": RawDNGSettingsStorage.embedXMP.rawValue, "openAsSmartObject": false],
       "stateSchema": BrushAPI.object(stateFields, required: stateFields.keys.sorted()),
-      "updateSchema": BrushAPI.object(fields, required: fields.keys.sorted()),
+      "updateSchema": BrushAPI.object(fields, required: ["revision"]).merging(["minProperties": 2]) { _, new in new },
       "nativeMenu": "Photato > Settings… > Camera Raw…",
       "permission": "Allow Photoshop file preference changes in the native API window.",
-      "scope": "Persistent DNG storage policy for future local opens. The selected policy stays attached to each open source.",
+      "scope": "Sets the desktop opening mode and storage policy. The selected storage policy stays attached to each open source. Uploads default to object.",
     ]
   }
 }

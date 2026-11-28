@@ -1436,4 +1436,12 @@ All 199 selected tests passed in Debug, optimized Apple Silicon and Intel under 
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-537) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_537.md).
 
+## 2026-11-17 — Step 536: Shift-click with Brush and Pencil
+
+Paint a point, then Shift-click to draw a straight connection. The pointer shows when there's a point to connect to. One Undo removes the connection.
+
+All 178 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The desktop and API produced the same Photato document for both tools. A Brush Action also replayed the connection. Photoshop's brush left different alpha samples in the test sheet, so exact Brush output still needs work.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-536) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_536.md).
+
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

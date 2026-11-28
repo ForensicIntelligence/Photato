@@ -32,6 +32,10 @@ import PhotoCraftImaging
       )
     }
     guard url.isFileURL else { throw CraftError.invalid("Choose a local file.") }
+    if completedRawOpenMode != nil, let raw = importedSourceURL,
+      url.standardizedFileURL.resolvingSymlinksInPath() == raw {
+      throw CraftError.invalid("Choose a different destination to keep the original Camera Raw file.")
+    }
     if let other = ownerController?.document(for: url), other !== self {
       throw CraftError.invalid("This destination is already open in another document.")
     }

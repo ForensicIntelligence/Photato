@@ -1,3 +1,9 @@
+### Camera Raw opening modes (checkpoint 794)
+
+Send `X-Photato-Raw-Open-Mode: image|object|copy` to `POST /v1/documents/import`. Image and Copy create a Background. Object remains the upload default so existing clients retain embedded source data. All upload modes keep their inputs in memory. `GET /v1/preferences/camera-raw` exposes `openAsSmartObject`, and authorized revisioned POST can update it on its own or with `dngStorage`.
+
+[Qualification](SOURCE_PUBLICATION_794.md).
+
 ### Camera Raw sensor reuse (checkpoint 793)
 
 The editor uses the same native RAW development transaction as the Photato API. Adobe-compatible and Photato requests retain their existing results and contracts. The cache belongs to the Camera Raw workspace and is not persisted or shared across API requests.

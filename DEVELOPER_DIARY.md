@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **793** · The 10 most recent entries, newest first.
+Source build **794** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 794 — Open Camera Raw files as images, Smart Objects or copies
+
+Camera Raw offers Open Image, Open Object and Open Copy. Image and Copy create an editable Background. Object retains the embedded sensor data and editable development settings. Image and Object save source settings using the current file policy. Copy leaves the original and its sidecar intact.
+
+Photoshop 2026 with Camera Raw 18.1.1 and the signed Photato test app opened identical Nikon inputs as 3,008 × 2,000 RGB16 documents. Command–O and Shift–Command–O saved +1.00 and +0.75 Exposure to matching sidecars. Option–Command–O opened +1.50 with no sidecar. All original NEF bytes stayed identical.
+
+Xcode built the app and all five focused tests passed. Coverage includes exact stored RGB16 samples, current integer raster rounding, aborting a stale source write, protected original files, and authenticated API behavior. Both optimized architectures passed all 361 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+Photoshop output ICC, dimensions, sharpening, and full pixel/file equivalence remain open. Photato’s current RGB16 compositor applies integer Normal rounding to Background layers, while eligible RAW objects can retain the original decoded values.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-794) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_794.md).
 
 ## 2026-11-28 — Step 793 — Reuse the decoded sensor in Camera Raw
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 5 focused workspace and authenticated HTTP tests
 The comparison covers settings values. Adobe and Photato rendering, automatic same-name sidecars, DNG-embedded settings, color profiles and local masks need separate testing and support.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-785) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_785.md).
-
-## 2026-11-27 — Step 784 — Keep active Quick Mask in layered TIFF
-
-Lossless layered TIFF and BigTIFF now reopen in Quick Mask mode when the mask was active at Save. The temporary mask stays editable. Composite opacity, saved alpha and spots retain their independent controls.
-
-All 20,962 independent RGB16 auxiliary samples matched the Adobe references through both classic and BigTIFF saves. In a separate test, both apps opened a 19,000 × 19,000, 4.34 GB layered RGB16 BigTIFF with two editable raster layers, one saved alpha and one spot channel. LibTIFF verified distant strip samples and a first directory beyond 4 GiB.
-
-Xcode built the native app. All 8 focused imaging and 5 focused app and HTTP tests passed. Both optimized architectures passed all 303 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-The active Quick Mask comparisons cover owned RGB16 references with and without composite opacity. Flattened copies omit the temporary mask. Whole-file equality, other Photoshop color and depth combinations, and a multi-gigabyte editable layer payload still need independent comparison.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-784) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_784.md).

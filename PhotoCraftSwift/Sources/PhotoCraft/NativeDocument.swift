@@ -83,6 +83,8 @@ import SwiftUI
     ownerController?.documentWindows.present(self)
   }
   var openRawDevelopmentOnDisplay = false
+  var completedRawOpenMode: RawOpenMode?
+  var rawOpenDNGStorage = RawDNGSettingsStorage.embedXMP
   var localRawSource: (layerID: UUID, original: RawSettingsSource, retainedBytes: Data)?
   var rawSettingsSaveTask: Task<RawSettingsSource, Error>?
 
@@ -703,7 +705,7 @@ import SwiftUI
     (document as? CraftNSDocument)?.store.filterRecall = filterRecall
     (document as? CraftNSDocument)?.store.workspaceLibrary = workspaces
     (document as? CraftNSDocument)?.store.synchronizeLinkedArtwork()
-    if !alreadyRegistered, let document = document as? CraftNSDocument {
+    if !alreadyRegistered, let document = document as? CraftNSDocument, !document.openRawDevelopmentOnDisplay {
       let event = document.scriptEventOrigin ?? ((document.fileURL != nil || document.importedSourceURL != nil) ? .openDocument : .newDocument)
       scriptEventsDispatcher.enqueue(event, document: document)
     }
@@ -761,7 +763,8 @@ import SwiftUI
     if let existing = super.document(for: url) { return existing }
     let canonical = url.standardizedFileURL.resolvingSymlinksInPath()
     return documents.first {
-      guard let document = $0 as? CraftNSDocument else { return false }
+      guard let document = $0 as? CraftNSDocument,
+        document.fileURL != nil || document.completedRawOpenMode == nil else { return false }
       return document.revertSourceURL?.standardizedFileURL.resolvingSymlinksInPath() == canonical
     }
   }

@@ -1,3 +1,5 @@
+**Camera Raw RAW workflow.** Add output color space, resolution and dimensions, and compare the file pixels produced by the same reference setting. [Development record](DEVLOG.md#dev-step-794) · [Qualification](SOURCE_PUBLICATION_794.md).
+
 **Camera Raw RAW workflow.** Verify Camera Raw defaults, Camera Raw Open routing and support for opening a batch of originals. [Development record](DEVLOG.md#dev-step-793) · [Qualification](SOURCE_PUBLICATION_793.md).
 
 **Camera Raw RAW workflow.** Avoid redundant sensor processing between Camera Raw previews and verify Camera Raw defaults and Open routing. [Development record](DEVLOG.md#dev-step-792) · [Qualification](SOURCE_PUBLICATION_792.md).

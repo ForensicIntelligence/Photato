@@ -12,6 +12,37 @@ public enum RawDNGSettingsStorage: String, CaseIterable, Codable, Sendable {
 }
 
 /// Native Apple sensor decoder. Never substitutes CGImageSource previews for RAW output.
+package enum RawOpenMode: String, CaseIterable, Sendable {
+  case image, object, copy
+
+  package var savesSourceSettings: Bool { self != .copy }
+
+  /// The initial RAW import is a single, full-canvas rendered source. Retain
+  /// the document's color coordinates and metadata when making a pixel layer.
+  package func output(from developed: CraftDocument) throws -> CraftDocument {
+    guard developed.colorMode == .rgb, developed.layers.count == 1, let layer = developed.layers.first,
+      layer.smartObject?.rawDevelopment != nil, case .raster(let raster) = layer.content,
+      layer.visible, layer.opacity == 1, layer.blendMode == .normal,
+      layer.mask == nil, layer.vectorMask == nil, layer.smartFilters == nil,
+      layer.style == nil, layer.warp == nil, layer.sourceProjection == nil else {
+      throw CraftError.invalid("Choose a single full-canvas Camera Raw source to open.")
+    }
+    guard self != .object else { return developed }
+    let bounds = IntRect(x: 0, y: 0, width: developed.width, height: developed.height)
+    let aligned = (layer.coordinateTransform == .identity && raster.width == bounds.width && raster.height == bounds.height)
+      ? raster
+      : try RasterGeometry.render(raster, transform: layer.coordinateTransform, bounds: bounds, method: .bilinear)
+    var output = developed
+    var background = Layer(name: "Background", content: .raster(try BackgroundLayer.opaque(aligned, over: .white)))
+    background.id = layer.id
+    background.background = true
+    background.sourceTags = ["lyid": Data(repeating: 0, count: 4)]
+    output.layers = [background]
+    try output.validate()
+    return output
+  }
+}
+
 public enum RawSourceIO {
   public static let maximumPixels = Surface.maximumDensePixels
   public static let mediaTypes = ["image/x-camera-raw","image/x-adobe-dng"]

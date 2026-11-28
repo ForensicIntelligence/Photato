@@ -22,14 +22,17 @@ import PhotoCraftImaging
   var task: Task<Void,Never>?
   var onChange: ((CameraRawSettings) -> Void)?
   @ObservationIgnored private(set) var sensorRaster: RawSourceIO.SensorRaster?
+  @ObservationIgnored private(set) var developedRawPreview: CraftDocument?
   private var document: CraftDocument?
   private var draft: FilterDraft?
+  private var retainRawOutput = false
   private var generation = 0
   private var closed = false
   private var sliderStart: Snapshot?
   var ready: Bool { !closed && image != nil && !rendering && error == nil }
 
-  func prepare(document: CraftDocument, draft: FilterDraft) async {
+  func prepare(document: CraftDocument, draft: FilterDraft, retainRawOutput: Bool = false) async {
+    self.retainRawOutput = retainRawOutput
     task?.cancel()
     generation += 1
     let token = generation
@@ -40,6 +43,7 @@ import PhotoCraftImaging
     sensorSettings = draft.rawDevelopment
     sensorInfo = nil
     sensorRaster = nil
+    developedRawPreview = nil
     image = nil
     originalImage = nil
     if let object = document.layers.first(where: { $0.id == draft.id })?.smartObject,
@@ -114,6 +118,8 @@ import PhotoCraftImaging
     draft.filter.cameraRaw = settings; draft.rawDevelopment = sensorSettings
     let request = draft, needsOriginal = originalImage == nil
     let cachedSensor = sensorRaster
+    let retainRawOutput = self.retainRawOutput
+    developedRawPreview = nil
     rendering = true; error = nil
     task = Task {
       do {
@@ -133,7 +139,8 @@ import PhotoCraftImaging
           let maximum = max(1,bins.flatMap { $0 }.max() ?? 1)
           bins = bins.map { $0.map { $0/maximum } }
           return (image: try ColorManagement.displayImage(pixels, in: document),
-            original: before, histogram: bins, sensor: prepared.sensor)
+            original: before, histogram: bins, sensor: prepared.sensor,
+            rawOutput: retainRawOutput && request.rawDevelopment != nil ? edited : nil)
         }
         let result = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
         try Task.checkCancellation(); guard !closed, token == generation else { return }
@@ -141,10 +148,15 @@ import PhotoCraftImaging
         if let before = result.original { originalImage = before }
         histogram = result.histogram
         sensorRaster = result.sensor
+        developedRawPreview = result.rawOutput
         if let sensor = result.sensor { sensorInfo = sensor.info }
         rendering = false
       } catch { guard !closed, token == generation else { return }; rendering = false; if !Task.isCancelled { self.error = error.localizedDescription } }
     }
   }
-  func close() { closed = true; generation += 1; task?.cancel(); task = nil; sensorRaster = nil; rendering = false; onChange = nil; onSensorChange = nil }
+  func canOpen(in current: CraftDocument) -> Bool {
+    ready && developedRawPreview != nil && document == current
+  }
+
+  func close() { closed = true; generation += 1; task?.cancel(); task = nil; sensorRaster = nil; developedRawPreview = nil; rendering = false; onChange = nil; onSensorChange = nil }
 }

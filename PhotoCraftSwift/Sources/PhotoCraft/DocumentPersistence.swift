@@ -324,7 +324,10 @@ enum DocumentPersistenceConflict: LocalizedError {
       && !store.showImagePlayground && store.error == nil
       && windowForSheet?.attachedSheet == nil && NSApp?.modalWindow == nil
   }
-  var canRevertDocument: Bool { revertSourceURL != nil && canRunFileCommand }
+  var hasRevertSource: Bool {
+    revertSourceURL != nil && (fileURL != nil || completedRawOpenMode != .copy)
+  }
+  var canRevertDocument: Bool { hasRevertSource && canRunFileCommand }
 
   /// Encodes the same snapshot as API file downloads; the copy never takes ownership
   /// of the document, clears its dirty state, or alters its history.
@@ -403,10 +406,18 @@ enum DocumentPersistenceConflict: LocalizedError {
     let generation = store.layerPanelGeneration
     fileOperationBusy = true
     defer { fileOperationBusy = false }
+    let rawMode = fileURL == nil ? completedRawOpenMode : nil
+    let storage = rawOpenDNGStorage
     let worker = Task.detached(priority: .userInitiated) {
       try RecoverySourceReader.withStableMetadata {
         let identity = try? RecoverySourceReader(source)
-        let saved = try reader(source)
+        let saved: CraftDocument
+        if let rawMode {
+          let decoded = try PreparedLocalDocument.read(source, format: .raw, dngStorage: storage).model
+          saved = try rawMode.output(from: decoded)
+        } else {
+          saved = try reader(source)
+        }
         let format = DocumentIO.sourceFormat(source)
         return (saved, try identity?.finish(), format)
       }

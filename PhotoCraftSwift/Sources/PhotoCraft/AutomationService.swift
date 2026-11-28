@@ -480,7 +480,7 @@ import UniformTypeIdentifiers
         && document.closeWorkflowID == nil,
       "canSaveAs": documentSavesEnabled && saveDirectoryURL != nil && document.canRunFileCommand
         && document.closeWorkflowID == nil,
-      "hasRevertSource": document.revertSourceURL != nil,
+      "hasRevertSource": document.hasRevertSource,
       "fileOperationBusy": document.fileOperationBusy,
       "recovery": document.recoveryState,
       "recoverySource": document.recoverySourceState,
@@ -1497,7 +1497,7 @@ import UniformTypeIdentifiers
           throw AutomationFailure(
             status: 403, message: "Enable document transfers and Revert in the native API window.")
         }
-        guard document.revertSourceURL != nil else {
+        guard document.hasRevertSource else {
           throw AutomationFailure(
             status: 409, message: "This document has no saved file to revert to.")
         }

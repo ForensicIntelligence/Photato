@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 536: Shift-click with Brush and Pencil
-
-Paint a point, then Shift-click to draw a straight connection. The pointer shows when there's a point to connect to. One Undo removes the connection.
-
-All 178 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The desktop and API produced the same Photato document for both tools. A Brush Action also replayed the connection. Photoshop's brush left different alpha samples in the test sheet, so exact Brush output still needs work.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-536) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_536.md).
-
 ## 2026-11-17 — Step 535: set the ordinary Brush to 10% smoothing
 
 The Brush opens at 10% smoothing. You can still set it to 0%, and your choice follows the workspace across document tabs. Saved Actions and presets use their recorded settings.
@@ -283,11 +275,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:793 -->
+<!-- current-status-step:794 -->
 
-Repeated RGB adjustments can reuse the native sensor raster from the current Camera Raw workspace. Open and OK can reuse those samples before applying the same development command and document color conversion.
+Camera Raw offers Open Image, Open Object and Open Copy. Image and Copy create an editable Background. Object retains the embedded sensor data and editable development settings. Image and Object save source settings using the current file policy. Copy leaves the original and its sidecar intact.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-793) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_793.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-794) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_794.md).
 
 <!-- current-status:end -->
 
@@ -1287,5 +1279,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 791 | [Faster Camera Raw preview compositing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-791) |
 | 2026-11-28 | 792 | [Faster Camera Raw exposure and color temperature](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-792) |
 | 2026-11-28 | 793 | [Reuse the decoded sensor in Camera Raw](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-793) |
+| 2026-11-28 | 794 | [Open Camera Raw files as images, Smart Objects or copies](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-794) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

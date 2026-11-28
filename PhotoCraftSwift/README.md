@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 794.** Open Camera Raw files as images, Smart Objects or copies. [Qualification](docs/SOURCE_PUBLICATION_794.md).
+
 **Source checkpoint 793.** Reuse the decoded sensor in Camera Raw. [Qualification](docs/SOURCE_PUBLICATION_793.md).
 
 **Source checkpoint 792.** Faster Camera Raw exposure and color temperature. [Qualification](docs/SOURCE_PUBLICATION_792.md).

@@ -6,6 +6,7 @@ import PhotoCraftImaging
 
 extension DocumentIO {
   static let rawSidecarHeader = "x-photato-raw-xmp"
+  static let rawOpenModeHeader = "x-photato-raw-open-mode"
   static let maximumRawSidecarHeaderBytes = 8 * 1024
 
   static func decodeUpload(_ data: Data, native: Bool, name: String, rawXMP: Data? = nil) throws -> CraftDocument {
@@ -72,6 +73,9 @@ extension AutomationService {
         "rawXMPHeader": ["name": "X-Photato-Raw-XMP", "required": false,
           "maxDecodedBytes": DocumentIO.maximumRawSidecarHeaderBytes, "encoding": "base64",
           "scope": "Camera RAW uploads. An explicit XMP packet supplies the initial sensor development settings instead of embedded XMP."],
+        "rawOpenModeHeader": ["name": "X-Photato-Raw-Open-Mode", "required": false,
+          "schema": ["type": "string", "enum": RawOpenMode.allCases.map(\.rawValue), "default": RawOpenMode.object.rawValue],
+          "scope": "For Camera RAW uploads. Image and copy create a Background. Object retains the original sensor data. Uploads never write local settings."],
         "bodySchema": [
           "type": "string", "format": "binary", "minLength": 1,
           "maxLength": DocumentIO.maximumUploadBytes,
@@ -400,10 +404,26 @@ extension AutomationService {
       if selection == .pdf {
         throw AutomationFailure(status:422,message:"Use POST /v1/documents/import/pdf with X-Photato-PDF-Options to select PDF pages; ordinary import returns a single document.")
       }
+      let rawUpload = RawSourceIO.mediaTypes.contains(contentType)
+        || (contentType == "application/octet-stream" && selection == .raw)
+      let rawOpenMode: RawOpenMode?
+      if let mode = request.headers[DocumentIO.rawOpenModeHeader] {
+        guard rawUpload else {
+          throw AutomationFailure(status: 415, message: "X-Photato-Raw-Open-Mode requires a Camera RAW upload.")
+        }
+        guard let value = RawOpenMode(rawValue: mode) else {
+          throw AutomationFailure(status: 400, message: "Unknown X-Photato-Raw-Open-Mode. Choose image, object or copy.")
+        }
+        guard RawSourceIO.recognizes(request.body) else {
+          throw AutomationFailure(status: 422, message: "Expected supported camera RAW sensor data.")
+        }
+        rawOpenMode = value
+      } else {
+        rawOpenMode = nil
+      }
       var rawXMP: Data?
       if let header = request.headers[DocumentIO.rawSidecarHeader] {
-        guard RawSourceIO.mediaTypes.contains(contentType)
-          || (contentType == "application/octet-stream" && selection == .raw) else {
+        guard rawUpload else {
           throw AutomationFailure(status: 415, message: "X-Photato-Raw-XMP requires a Camera RAW upload.")
         }
         let limit = DocumentIO.maximumRawSidecarHeaderBytes
@@ -441,7 +461,9 @@ extension AutomationService {
           return decoded
         }
         if [.psd, .psb].contains(DocumentOpenFormat.detect(request.body)), decoded.sourceICC == nil { decoded.profileIsUntagged = true }
-        return try ColorPolicyInput.opening(decoded, settings: colorSettings, choice: colorChoice)
+        let adjusted = try ColorPolicyInput.opening(decoded, settings: colorSettings, choice: colorChoice)
+        if let rawOpenMode { return try rawOpenMode.output(from: adjusted) }
+        return adjusted
       }
       let frameOperation = frameOptions == nil ? nil:UUID()
       if let frameOperation {movieFramesImportOperationID = frameOperation;movieFramesImportTask = worker}

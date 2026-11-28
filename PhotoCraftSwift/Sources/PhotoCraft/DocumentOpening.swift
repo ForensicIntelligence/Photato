@@ -10,6 +10,7 @@ struct PreparedLocalDocument: Sendable {
   let modificationDate: Date?
   var colorPolicyChanged = false
   var rawSettingsSource: RawSettingsSource?
+  var rawDNGStorage = RawDNGSettingsStorage.embedXMP
   static func read(_ url: URL, format selection: DocumentOpenFormat) throws -> Self {
     try read(url, format: selection, dngStorage: .embedXMP)
   }
@@ -34,13 +35,14 @@ struct PreparedLocalDocument: Sendable {
       if [.psd, .psb].contains(actual), model.sourceICC == nil { model.profileIsUntagged = true }
       let fingerprint = try reader.finish()
       return .init(model: model, format: actual?.persistenceFormat,
-        fingerprint: fingerprint, modificationDate: date, rawSettingsSource: raw?.source)
+        fingerprint: fingerprint, modificationDate: date, rawSettingsSource: raw?.source, rawDNGStorage: dngStorage)
     }
   }
   @MainActor func makeDocument(url: URL, actions: ActionLibrary? = nil) -> CraftNSDocument {
     let doc = CraftNSDocument(model: model, actions: actions)
     doc.scriptEventOrigin = .openDocument
     doc.openRawDevelopmentOnDisplay = format == nil && model.layers.first?.smartObject?.rawDevelopment != nil
+    doc.rawOpenDNGStorage = rawDNGStorage
     if let rawSettingsSource, let layer = model.layers.first, let bytes = layer.smartObject?.data {
       doc.localRawSource = (layer.id, rawSettingsSource, bytes)
     }
@@ -183,7 +185,7 @@ struct PreparedLocalDocument: Sendable {
               let model = try ColorPolicyInput.opening(snapshot.model, settings: colorSettings, choice: choice)
               return PreparedLocalDocument(model: model, format: snapshot.format, fingerprint: snapshot.fingerprint,
                 modificationDate: snapshot.modificationDate, colorPolicyChanged: model != snapshot.model,
-                rawSettingsSource: snapshot.rawSettingsSource)
+                rawSettingsSource: snapshot.rawSettingsSource, rawDNGStorage: snapshot.rawDNGStorage)
             }
             worker = conversion
             prepared = try await withTaskCancellationHandler { try await conversion.value } onCancel: { conversion.cancel() }

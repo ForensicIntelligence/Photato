@@ -18,11 +18,14 @@ struct CameraRawSheet: View {
   @State private var exportType = Self.xmpType
   @State private var exportName = "Camera Raw.xmp"
   @State private var dngTask: Task<Void, Never>?
-  @State private var savingSource = false
+  @State private var sourceTask: Task<Void, Never>?
+  @State private var openModifiers: NSEvent.ModifierFlags = []
+  private var savingSource: Bool { sourceTask != nil }
   @State private var sourceSaveError: String?
   @State private var sidecarAccessPanel: NSOpenPanel?
   private static let xmpType = UTType(filenameExtension: "xmp", conformingTo: .data) ?? .xml
   private static let dngType = UTType("com.adobe.raw-image") ?? .data
+  private var defaultOpenAsObject: Bool { store.documentController?.cameraRawPreferences.openAsSmartObject ?? false }
   private var groups: [String] { (model.sensorSettings == nil ? [] : ["Sensor"]) + ["Light","Color","Effects","Curve","Color Mixer","Color Grading","Detail"] }
   init(store: EditorStore,workspace: CameraRawWorkspace? = nil,placement: RawPlacementWorkspace? = nil) { self.store = store; self.placement = placement; _model = State(initialValue:workspace ?? CameraRawWorkspace()) }
   private func binding(_ key: String) -> Binding<Double> { Binding(get:{ Double(model.settings[key]) },set:{ var value = model.settings; value[key] = Float($0); model.change(value) }) }
@@ -38,7 +41,7 @@ struct CameraRawSheet: View {
         Text(model.sensorSettings == nil ? "Camera Raw Filter" : "Camera Raw — Source").font(.headline)
         Spacer()
         if savingSource {
-          ProgressView().controlSize(.small).accessibilityLabel("Saving Camera Raw settings")
+          ProgressView().controlSize(.small).accessibilityLabel("Finishing Camera Raw")
         } else if model.rendering {
           ProgressView().controlSize(.small).accessibilityLabel("Rendering Camera Raw preview")
         }
@@ -88,19 +91,60 @@ struct CameraRawSheet: View {
         Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty)
         Button("Redo") { model.redo() }.disabled(model.redoStates.isEmpty)
         Button("Cancel", action: cancel).keyboardShortcut(.cancelAction)
-        if let document = store.initialRawDocument, document.localRawSource != nil {
-          Button("Done") { saveSource(document) }
-            .help("Save these settings to the RAW file or its XMP sidecar and close Camera Raw.")
-            .disabled(!model.ready || dngTask != nil)
+        if let document = store.initialRawDocument {
+          if document.localRawSource != nil {
+            Button("Done") { finishSource(document, mode: nil) }
+              .help("Save these settings to the RAW file or its XMP sidecar and close Camera Raw.")
+              .disabled(!model.ready || dngTask != nil)
+          }
+          let mode = RawOpenShortcuts.mode(for: openModifiers, defaultAsObject: defaultOpenAsObject)
+          HStack(spacing: 4) {
+            Button(mode.title) {
+              let flags = NSApp.currentEvent?.modifierFlags ?? openModifiers
+              finishSource(document, mode: RawOpenShortcuts.mode(for: flags, defaultAsObject: defaultOpenAsObject))
+            }
+              .keyboardShortcut(.defaultAction)
+              .help(mode.openHelp)
+            Menu {
+              Button(RawOpenMode.image.title) { finishSource(document, mode: .image) }
+                .keyboardShortcut("o", modifiers: defaultOpenAsObject ? [.command, .shift] : .command)
+              Button(RawOpenMode.object.title) { finishSource(document, mode: .object) }
+                .keyboardShortcut("o", modifiers: defaultOpenAsObject ? .command : [.command, .shift])
+              Button(RawOpenMode.copy.title) { finishSource(document, mode: .copy) }
+                .keyboardShortcut("o", modifiers: [.command, .option])
+            } label: {
+              Image(systemName: "chevron.down")
+            }
+            .accessibilityLabel("Camera Raw opening options")
+            .help("Choose how to open this RAW image.")
+            .fixedSize()
+          }
+          .disabled(!model.ready || dngTask != nil)
+          .background(RawOpenKeyMonitor(onFlags: { openModifiers = $0 }, onOpen: { flags in
+            let selected = RawOpenShortcuts.mode(for: flags, defaultAsObject: defaultOpenAsObject)
+            finishSource(document, mode: selected)
+          }))
+        } else {
+          Button("OK", action: commit).keyboardShortcut(.defaultAction).disabled(!model.ready)
         }
-        Button(store.initialRawDocument == nil ? "OK" : "Open", action: commit)
-          .keyboardShortcut(.defaultAction).disabled(!model.ready)
       }.padding(12)
     }.disabled(savingSource)
     .interactiveDismissDisabled(savingSource)
+    .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
+      openModifiers = NSEvent.modifierFlags
+    }
     .frame(width:min(1180,(NSScreen.main?.visibleFrame.width ?? 1280)-80),height:min(780,(NSScreen.main?.visibleFrame.height ?? 900)-100))
-    .task { guard let draft = store.filterDraft else { return }; model.onChange = { store.filterDraft?.filter.cameraRaw = $0 }; model.onSensorChange = { store.filterDraft?.rawDevelopment = $0 }; if draft.rawDevelopment != nil { group = "Sensor" }; await model.prepare(document:store.document,draft:draft) }
+    .task {
+      guard let draft = store.filterDraft else { return }
+      model.onChange = { store.filterDraft?.filter.cameraRaw = $0 }
+      model.onSensorChange = { store.filterDraft?.rawDevelopment = $0 }
+      if draft.rawDevelopment != nil { group = "Sensor" }
+      await model.prepare(document: store.document, draft: draft,
+        retainRawOutput: store.initialRawDocument != nil)
+    }
     .onDisappear {
+      sourceTask?.cancel()
+      sourceTask = nil
       dngTask?.cancel()
       dngTask = nil
       sidecarAccessPanel?.cancel(nil)
@@ -145,24 +189,30 @@ struct CameraRawSheet: View {
     store.commitFilter(reusingRawSensor: sensor)
   }
 
-  private func saveSource(_ document: CraftNSDocument, authorizedFolder: URL? = nil) {
-    guard !savingSource, let layerID = store.filterDraft?.id, let settings = model.sensorSettings else { return }
-    savingSource = true
+  private func finishSource(_ document: CraftNSDocument, mode: RawOpenMode?, authorizedFolder: URL? = nil) {
+    guard !savingSource, sidecarAccessPanel == nil, dngTask == nil,
+      store.initialRawDocument === document, let layerID = store.filterDraft?.id,
+      let settings = model.sensorSettings, model.canOpen(in: store.document),
+      let output = model.developedRawPreview else { return }
     sourceSaveError = nil
-    Task {
-      defer { savingSource = false }
+    sourceTask = Task {
+      defer { sourceTask = nil }
       do {
-        try await document.saveRawSourceSettings(layerID: layerID, settings: settings,
-          authorizedFolder: authorizedFolder)
-        guard store.initialRawDocument === document else { return }
-        store.initialRawDocument = nil
-        model.close()
-        store.cancelFilter()
-        document.close()
+        if let mode {
+          try await document.finishRawOpen(mode, from: output, layerID: layerID,
+            authorizedFolder: authorizedFolder)
+        } else {
+          try await document.saveRawSourceSettings(layerID: layerID, settings: settings,
+            authorizedFolder: authorizedFolder)
+          guard store.initialRawDocument === document else { return }
+          store.initialRawDocument = nil
+          store.cancelFilter()
+          document.close()
+        }
       } catch RawDNGSource.SaveError.sidecarAccessNeeded where authorizedFolder == nil {
         sourceSaveError = RawDNGSource.SaveError.sidecarAccessNeeded.localizedDescription
         if let source = document.localRawSource?.original {
-          requestSourceFolderAccess(source, document: document)
+          requestSourceFolderAccess(source, document: document, mode: mode)
         }
       } catch is CancellationError {
       } catch {
@@ -171,7 +221,7 @@ struct CameraRawSheet: View {
     }
   }
 
-  private func requestSourceFolderAccess(_ source: RawSettingsSource, document: CraftNSDocument) {
+  private func requestSourceFolderAccess(_ source: RawSettingsSource, document: CraftNSDocument, mode: RawOpenMode?) {
     let panel = NSOpenPanel()
     let folder = source.url.deletingLastPathComponent()
     panel.title = "Allow Access to the Source Folder"
@@ -191,7 +241,7 @@ struct CameraRawSheet: View {
     let completion: (NSApplication.ModalResponse) -> Void = { response in
       sidecarAccessPanel = nil
       guard response == .OK, let selected = panel.url, store.initialRawDocument === document else { return }
-      saveSource(document, authorizedFolder: selected)
+      finishSource(document, mode: mode, authorizedFolder: selected)
     }
     if let window = document.windowForSheet?.attachedSheet {
       panel.beginSheetModal(for: window, completionHandler: completion)
@@ -337,5 +387,69 @@ private struct CameraRawCurve: View {
         if let i = selected { let lower: Float = i == 0 ? 0 : values[i-1][0]+1, upper: Float = i == values.count-1 ? 255 : values[i+1][0]-1; values[i] = [min(upper,max(lower,x)),y]; points = values }
       }.onEnded { _ in selected = nil; editing(false) })
     }.accessibilityLabel("Point curve editor")
+  }
+}
+
+
+private extension RawOpenMode {
+  var title: String {
+    switch self {
+    case .image: "Open Image"
+    case .object: "Open Object"
+    case .copy: "Open Copy"
+    }
+  }
+
+  var openHelp: String {
+    switch self {
+    case .image: "Open as a Background layer and save Camera Raw settings to the source."
+    case .object: "Open as a Smart Object and save Camera Raw settings to the source."
+    case .copy: "Open as a Background layer without saving settings to the source."
+    }
+  }
+}
+
+enum RawOpenShortcuts {
+  static func mode(for flags: NSEvent.ModifierFlags, defaultAsObject: Bool) -> RawOpenMode {
+    if flags.contains(.option) { return .copy }
+    return flags.contains(.shift) != defaultAsObject ? .object : .image
+  }
+}
+
+private struct RawOpenKeyMonitor: NSViewRepresentable {
+  var onFlags: (NSEvent.ModifierFlags) -> Void
+  var onOpen: (NSEvent.ModifierFlags) -> Void
+
+  func makeNSView(context: Context) -> MonitorView { MonitorView() }
+
+  func updateNSView(_ view: MonitorView, context: Context) {
+    view.onFlags = onFlags
+    view.onOpen = onOpen
+  }
+
+  final class MonitorView: NSView {
+    var onFlags: ((NSEvent.ModifierFlags) -> Void)?
+    var onOpen: ((NSEvent.ModifierFlags) -> Void)?
+    private var monitor: Any?
+
+    override func viewWillMove(toWindow newWindow: NSWindow?) {
+      if let monitor { NSEvent.removeMonitor(monitor); self.monitor = nil }
+      if newWindow != nil {
+        monitor = NSEvent.addLocalMonitorForEvents(matching: [.flagsChanged, .keyDown]) { [weak self] event in
+          guard let self, let window, window.isKeyWindow, event.window === window else { return event }
+          let modifiers: NSEvent.ModifierFlags = [.command, .shift, .option, .control]
+          let flags = event.modifierFlags.intersection(modifiers)
+          if event.type == .flagsChanged {
+            onFlags?(flags)
+          } else if flags.contains(.command), !flags.contains(.control),
+            event.charactersIgnoringModifiers?.lowercased() == "o" {
+            if !event.isARepeat { onOpen?(flags) }
+            return nil
+          }
+          return event
+        }
+      }
+      super.viewWillMove(toWindow: newWindow)
+    }
   }
 }
