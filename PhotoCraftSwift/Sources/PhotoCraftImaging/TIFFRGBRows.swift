@@ -12,14 +12,21 @@ final class TIFFRGBRows {
   private let channels: Int
   private let bytesPerSample: Int
   private let requiresOpaque: Bool
+  private let useRGB16WhiteMatte: Bool
   let associated: Bool
   private var start = -1
   private var height = 0
   private var packedRows: [[UInt8]] = []
 
+  static func supportsWhiteMatte(_ document: CraftDocument) -> Bool {
+    document.depth == .u16 && document.artboardOrigin == nil && Renderer.usesIntegerNormalRasterComposite(document)
+      && document.layers.contains { $0.visible && $0.opacity > 0 }
+  }
+
   init(_ document: CraftDocument, transparency: Bool, requiresOpaque: Bool = false) throws {
     self.document = document
     self.requiresOpaque = requiresOpaque
+    useRGB16WhiteMatte = !transparency && !requiresOpaque && Self.supportsWhiteMatte(document)
     (prepared, video) = try Renderer.preparedSources(document)
     facts = document.width > Surface.maximumDensePixels / document.height ? CompositionFacts(prepared) : nil
     bytesPerSample = document.depth == .u8 ? 1 : document.depth == .u16 ? 2 : 4
@@ -56,6 +63,20 @@ final class TIFFRGBRows {
     for left in stride(from: 0, to: document.width, by: 2048) {
       try Task.checkCancellation()
       let bounds = IntRect(x: left, y: firstRow, width: min(2048, document.width - left), height: height)
+      if useRGB16WhiteMatte, let patch = try LayerMerge.integerModeComposite(prepared,
+        region: bounds, promoteRGB16Opacity: true) {
+        for y in 0..<height {
+          try Task.checkCancellation()
+          for x in 0..<bounds.width {
+            let rgb = NormalLayerComposite.whiteMattedRGB16(patch.pixel(x: x, y: y))
+            for channel in 0..<3 {
+              packedRows[y].append(UInt8(rgb[channel] >> 8))
+              packedRows[y].append(UInt8(truncatingIfNeeded: rgb[channel]))
+            }
+          }
+        }
+        continue
+      }
       let rendered = try Renderer.compositePrepared(prepared, region: bounds, video: video, facts: facts)
       let patch = try rendered.cropped(to: bounds)
       if requiresOpaque, try !patch.isOpaque() {

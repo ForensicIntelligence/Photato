@@ -154,7 +154,7 @@ public enum LayerMerge {
   /// Use the measured integer Normal merge for ordinary working-coordinate data.
   /// Keep the full canvas for the subsequent color-mode conversion.
   public static func integerModeComposite(_ document: CraftDocument, region: IntRect? = nil,
-    emptySample: Pixel = .clear) throws -> Surface?
+    emptySample: Pixel = .clear, promoteRGB16Opacity: Bool = false) throws -> Surface?
   {
     let bounds = region ?? IntRect(x: 0, y: 0, width: document.width, height: document.height)
     guard document.depth != .f32, bounds.width > 0, bounds.height > 0,
@@ -166,11 +166,12 @@ public enum LayerMerge {
       }
       return false
     }) else { return nil }
-    return try compositeNormalPixels(layers, depth: document.depth, bounds: bounds, fill: emptySample)
+    return try compositeNormalPixels(layers, depth: document.depth, bounds: bounds, fill: emptySample,
+      promoteRGB16Opacity: promoteRGB16Opacity)
   }
 
   private static func compositeNormalPixels(_ layers: [Layer], depth: PixelDepth, bounds: IntRect,
-    fill: Pixel = Pixel(1, 1, 1, 0)) throws -> Surface
+    fill: Pixel = Pixel(1, 1, 1, 0), promoteRGB16Opacity: Bool = false) throws -> Surface
   {
     // Keep Float32 input, arithmetic and committed pixels in linear storage.
     var pixels = try Surface(
@@ -184,6 +185,7 @@ public enum LayerMerge {
       let x1 = min(bounds.x + bounds.width, layer.x + surface.width)
       let y1 = min(bounds.y + bounds.height, layer.y + surface.height)
       guard x0 < x1, y0 < y1 else { continue }
+      let promotedOpacity = promoteRGB16Opacity && depth == .u16 ? NormalLayerComposite.clippingOpacity(layer.opacity, depth: depth) : nil
       for y in y0..<y1 {
         try Task.checkCancellation()
         for x in x0..<x1 {
@@ -198,8 +200,12 @@ public enum LayerMerge {
             depth == .f32
             ? pixels.linearPixel(x: px, y: py) : pixels.pixel(x: px, y: py)
           let backdrop = occupied[index] ? storedBackdrop : Pixel(source.r, source.g, source.b, 0)
-          let result = NormalLayerComposite.composite(
-            backdrop: backdrop, source: source, opacity: layer.opacity, depth: depth)
+          let result: Pixel
+          if let promotedOpacity {
+            result = NormalLayerComposite.compositeWithRGB16Opacity(backdrop: backdrop, source: source, opacity: promotedOpacity)
+          } else {
+            result = NormalLayerComposite.composite(backdrop: backdrop, source: source, opacity: layer.opacity, depth: depth)
+          }
           guard result.isFinite else {
             throw CraftError.invalid("Merged colors exceed the floating-point range.")
           }

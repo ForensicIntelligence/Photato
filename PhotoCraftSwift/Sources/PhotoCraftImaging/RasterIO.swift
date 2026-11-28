@@ -590,8 +590,7 @@ public enum RasterIO {
       return try document.profileIsUntagged == true ? UntaggedOutput.strip(data, type: type) : data
     }
     if type == .tiff {
-      if options.tiffCompression == .jpeg || options.tiffBigTIFF == true || supportsPagedComponentTIFFOutput(document)
-        || (options.tiffLayers == true && document.quickMask != nil) || !options.tiffSavedChannels(document).isEmpty {
+      if usesComponentTIFFWriter(document, options: options) {
         return try TIFFComponentExport.encoded(document, options: options)
       }
       let composite = try renderedTIFF(document, options: options)
@@ -632,18 +631,19 @@ public enum RasterIO {
     return document.hasNativeModeStorage && document.colorMode != .rgb
       && document.width > NativeModeRaster.maximumPixels / document.height
   }
+  private static func usesComponentTIFFWriter(_ document: CraftDocument, options: RasterEncodingOptions) -> Bool {
+    guard document.inkMode == nil, document.restrictedMode == nil else { return false }
+    return supportsPagedComponentTIFFOutput(document) || options.tiffCompression == .jpeg || options.tiffBigTIFF == true
+      || (options.tiffTransparency == false && TIFFRGBRows.supportsWhiteMatte(document))
+      || (options.tiffLayers == true && document.quickMask != nil) || !options.tiffSavedChannels(document).isEmpty
+  }
   package static func supportsFileBackedTIFFOutput(_ document: CraftDocument, options: RasterEncodingOptions) -> Bool {
-    supportsPagedComponentTIFFOutput(document)
-      || ((options.tiffLayers == true || options.tiffImagePyramid == true
-            || options.tiffBigTIFF == true || options.tiffCompression == .jpeg)
-          && document.inkMode == nil && document.restrictedMode == nil)
+    guard document.inkMode == nil, document.restrictedMode == nil else { return false }
+    return options.tiffLayers == true || options.tiffImagePyramid == true || usesComponentTIFFWriter(document, options: options)
   }
   public static func write(_ document: CraftDocument, to url: URL, type: UTType = .png,
     options: RasterEncodingOptions = .init()) throws {
-    if type == .tiff, (supportsPagedComponentTIFFOutput(document)
-      || ((options.tiffCompression == .jpeg || options.tiffBigTIFF == true
-            || (options.tiffLayers == true && document.quickMask != nil) || !options.tiffSavedChannels(document).isEmpty)
-          && document.inkMode == nil && document.restrictedMode == nil)) {
+    if type == .tiff, usesComponentTIFFWriter(document, options: options) {
       try TIFFComponentExport.write(document, to: url, options: options)
       return
     }

@@ -291,11 +291,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:782 -->
+<!-- current-status-step:783 -->
 
-Native TIFF Save and Save a Copy offer separate Alpha Channels and Spot Colors checkboxes. Both start checked when present, and either channel type can survive a flattened TIFF or BigTIFF.
+Save Transparency off now uses Photoshop’s RGB16 working grid for aligned Normal raster layers. Layer opacity is promoted before compositing. The white matte is applied to the merged image, and layered output keeps the original editable RGB16 pixels and opacity.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-782) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_782.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-783) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_783.md).
 
 <!-- current-status:end -->
 
@@ -1284,5 +1284,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 780 | [Open dense RGB TIFFs without intermediate planes](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-780) |
 | 2026-11-27 | 781 | [Keep saved alpha and spot channels in layered TIFF](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-781) |
 | 2026-11-27 | 782 | [Preserve selected channels in flat TIFF copies](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-782) |
+| 2026-11-27 | 783 | [Match Photoshop RGB16 TIFF white-matte samples](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-783) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

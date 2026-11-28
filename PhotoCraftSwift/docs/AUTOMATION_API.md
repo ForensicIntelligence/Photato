@@ -1,3 +1,9 @@
+### RGB16 TIFF white matte (checkpoint 783)
+
+The native TIFF Save Transparency control and the existing Photato `tiffTransparency: false` option share the calculation. Authenticated downloads match native file bytes. Adobe-compatible resource input uses the existing TIFF reader. Adobe v2 output fields remain unchanged.
+
+[Qualification](SOURCE_PUBLICATION_783.md).
+
 ### Flat TIFF alpha and spot channels (checkpoint 782)
 
 Lossless Photato TIFF output accepts independent `tiffAlphaChannels` and `tiffSpotColors` booleans. When omitted, their defaults still follow `tiffLayers`. Both existing API input paths decode named channels in flat or layered TIFF. Adobe v2 output retains its published options.

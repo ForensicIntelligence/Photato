@@ -283,4 +283,71 @@ final class TIFFBigOutputTests: XCTestCase {
     }
   }
 
+
+  func testRGB16TIFFWhiteMatteMatchesPhotoshopForSingleAndOffsetLayers() throws {
+    struct Fixture: Decodable {
+      let width: Int
+      let height: Int
+      let sourcePSDSHA256: String
+      let rgb16BigEndianSHA256: String
+    }
+    struct Manifest: Decodable { let fixtures: [String: Fixture] }
+    func digest(_ bytes: Data) -> String { SHA256.hash(data: bytes).map { String(format: "%02x", $0) }.joined() }
+    let folder = fixtures.appendingPathComponent("tiff-rgb16-matte")
+    let manifest = try JSONDecoder().decode(Manifest.self,
+      from: Data(contentsOf: folder.appendingPathComponent("provenance.json")))
+    let output = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".tiff")
+    defer { try? FileManager.default.removeItem(at: output) }
+    let settings: [RasterEncodingOptions] = [
+      .init(tiffTransparency: false),
+      .init(tiffCompression: .lzw, tiffByteOrder: .bigEndian, tiffTransparency: false, tiffImagePyramid: true),
+      .init(tiffCompression: .zip, tiffByteOrder: .littleEndian, tiffPixelOrder: .perChannel,
+        tiffLayers: true, tiffTransparency: false, tiffBigTIFF: true),
+    ]
+    for (name, facts) in manifest.fixtures.sorted(by: { $0.key < $1.key }) {
+      let source = try Data(contentsOf: folder.appendingPathComponent(name + ".psd"))
+      let expected = try Data(contentsOf: folder.appendingPathComponent(name + ".rgb16be"))
+      XCTAssertEqual(digest(source), facts.sourcePSDSHA256)
+      XCTAssertEqual(digest(expected), facts.rgb16BigEndianSHA256)
+      let document = try PSDCodec.read(source)
+      for options in settings {
+        let encoded = try RasterIO.encoded(document, type: .tiff, options: options)
+        try RasterIO.write(document, to: output, type: .tiff, options: options)
+        XCTAssertEqual(try Data(contentsOf: output), encoded)
+        let file = try TIFFContainer(encoded, metadata: false, additionalTags: [37724])
+        let geometry = try XCTUnwrap(TIFFStorage.Geometry(file))
+        XCTAssertEqual(geometry.width, facts.width)
+        XCTAssertEqual(geometry.height, facts.height)
+        XCTAssertEqual(geometry.bits, 16)
+        XCTAssertEqual(geometry.channels, 3)
+        XCTAssertEqual(file.root.fields[37724] != nil, options.tiffLayers == true)
+        var actual = Data(count: facts.width * facts.height * 6)
+        var y = Array(repeating: 0, count: geometry.planar ? 3 : 1)
+        let components = geometry.planar ? 1 : 3
+        try TIFFComponentRows.packedRows(file, geometry, components: components) { plane, samples in
+          for x in 0..<geometry.width {
+            for component in 0..<components {
+              let source = (x * components + component) * 2
+              let target = ((y[plane] * geometry.width + x) * 3 + plane + component) * 2
+              actual[target] = samples[source + (file.order == .big ? 0 : 1)]
+              actual[target + 1] = samples[source + (file.order == .big ? 1 : 0)]
+            }
+          }
+          y[plane] += 1
+        }
+        XCTAssertEqual(actual, expected, "\(name) \(file.order) \(geometry.planar)")
+        if options.tiffLayers == true {
+          let reopened = try RasterIO.read(output)
+          XCTAssertEqual(reopened.layers.map(\.name), document.layers.map(\.name))
+          for (before, after) in zip(document.layers, reopened.layers) {
+            guard case .raster(let a) = before.content, case .raster(let b) = after.content else {
+              return XCTFail("Expected editable RGB16 layers.")
+            }
+            XCTAssertEqual(try a.rgbaData(depth: .u16), try b.rgbaData(depth: .u16))
+          }
+        }
+      }
+    }
+  }
+
 }

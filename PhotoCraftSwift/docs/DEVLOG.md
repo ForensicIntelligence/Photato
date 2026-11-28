@@ -801,7 +801,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 780 | 2026-11-27 | [Open dense RGB TIFFs without intermediate planes](#dev-step-780) |
 | 781 | 2026-11-27 | [Keep saved alpha and spot channels in layered TIFF](#dev-step-781) |
 | 782 | 2026-11-27 | [Preserve selected channels in flat TIFF copies](#dev-step-782) |
+| 783 | 2026-11-27 | [Match Photoshop RGB16 TIFF white-matte samples](#dev-step-783) |
 <!-- history-index:end -->
+
+<a id="dev-step-783"></a>
+
+## 2026-11-27 — Step 783 — Match Photoshop RGB16 TIFF white-matte samples
+
+Save Transparency off now uses Photoshop’s RGB16 working grid for aligned Normal raster layers. Layer opacity is promoted before compositing. The white matte is applied to the merged image, and layered output keeps the original editable RGB16 pixels and opacity.
+
+The first working-grid model missed seven Photoshop words in the single-layer pattern and 509 in the offset-layer pattern. Rounding the remaining darkness resolved the RGB16 half ties. Promoting the 8-bit layer-opacity setting to the 0–32,768 grid before applying pixel opacity resolved the second pattern. The existing Normal layer merge now supplies that mode to TIFF output.
+
+Independent libtiff decoding matched all 82,557 distinct RGB16 samples in two Photoshop 27.2 patterned files and the earlier spot-only copy. The latter also matched all 2,881 spot samples. The patterned files match through classic and BigTIFF output, including the tested planar ZIP variant. A separate opaque Debug benchmark saved byte-identical files and took 15.60 seconds versus 25.62 seconds on the same host.
+
+The native TIFF Save Transparency control and the existing Photato `tiffTransparency: false` option share the calculation. Authenticated downloads match native file bytes. Adobe-compatible resource input uses the existing TIFF reader. Adobe v2 output fields remain unchanged.
+
+Xcode built the native app. All 7 focused imaging and 4 focused app and HTTP tests passed. Both optimized architectures passed all 301 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The measured path covers aligned Normal RGB16 raster layers without masks. Other blend modes, masks, transformed or grouped layers, and full Photoshop file serialization still require independent comparison.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,225,407 bytes with SHA-256 `a20857b499ed90a57b1807d9dcbbaaa4c7cf190de0ee1e7e4fdf746dd33fe265`.
+
+[Qualification](SOURCE_PUBLICATION_783.md).
 
 <a id="dev-step-782"></a>
 

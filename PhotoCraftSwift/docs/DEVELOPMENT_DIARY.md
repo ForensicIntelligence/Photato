@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 783 — Match Photoshop RGB16 TIFF white-matte samples
+
+Save Transparency off now uses Photoshop’s RGB16 working grid for aligned Normal raster layers. Layer opacity is promoted before compositing. The white matte is applied to the merged image, and layered output keeps the original editable RGB16 pixels and opacity.
+
+Independent libtiff decoding matched all 82,557 distinct RGB16 samples in two Photoshop 27.2 patterned files and the earlier spot-only copy. The latter also matched all 2,881 spot samples. The patterned files match through classic and BigTIFF output, including the tested planar ZIP variant. A separate opaque Debug benchmark saved byte-identical files and took 15.60 seconds versus 25.62 seconds on the same host.
+
+Xcode built the native app. All 7 focused imaging and 4 focused app and HTTP tests passed. Both optimized architectures passed all 301 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The measured path covers aligned Normal RGB16 raster layers without masks. Other blend modes, masks, transformed or grouped layers, and full Photoshop file serialization still require independent comparison.
+
+[Development record](DEVLOG.md#dev-step-783) · [Qualification](SOURCE_PUBLICATION_783.md).
+
 ## 2026-11-27 — Step 782 — Preserve selected channels in flat TIFF copies
 
 Native TIFF Save and Save a Copy offer separate Alpha Channels and Spot Colors checkboxes. Both start checked when present, and either channel type can survive a flattened TIFF or BigTIFF.
@@ -2483,11 +2495,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:782 -->
+<!-- current-status-step:783 -->
 
-Native TIFF Save and Save a Copy offer separate Alpha Channels and Spot Colors checkboxes. Both start checked when present, and either channel type can survive a flattened TIFF or BigTIFF.
+Save Transparency off now uses Photoshop’s RGB16 working grid for aligned Normal raster layers. Layer opacity is promoted before compositing. The white matte is applied to the merged image, and layered output keeps the original editable RGB16 pixels and opacity.
 
-[Development record](DEVLOG.md#dev-step-782) · [Qualification](SOURCE_PUBLICATION_782.md).
+[Development record](DEVLOG.md#dev-step-783) · [Qualification](SOURCE_PUBLICATION_783.md).
 
 <!-- current-status:end -->
 
@@ -3476,6 +3488,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 780 | [Open dense RGB TIFFs without intermediate planes](DEVLOG.md#dev-step-780) |
 | 2026-11-27 | 781 | [Keep saved alpha and spot channels in layered TIFF](DEVLOG.md#dev-step-781) |
 | 2026-11-27 | 782 | [Preserve selected channels in flat TIFF copies](DEVLOG.md#dev-step-782) |
+| 2026-11-27 | 783 | [Match Photoshop RGB16 TIFF white-matte samples](DEVLOG.md#dev-step-783) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

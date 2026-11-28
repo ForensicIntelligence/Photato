@@ -125,6 +125,7 @@ extension AutomationService {
         "limits": "The higher classic TIFF limit applies to local file Open and Save. Web transfer, image processing, embedded layers and decoded scratch budgets remain independent. BigTIFF input and output use 64-bit offsets. Output uses strips."
       ],
       "layeredTIFF": [
+        "rgb16Matte": "Save Transparency off uses Photoshop’s RGB16 working-grid opacity and white-matte rounding for aligned Normal raster layers without masks. The merged image uses that calculation in TIFF and BigTIFF. Editable layers retain their alpha.",
         "grayscaleMatte": "Explicit Save Transparency off writes the measured white-matted grayscale samples for aligned Normal Gray8 and Gray16 raster stacks. Editable TIFF retains the original gray and opacity words in its layers.",
         "input": true, "output": true,
         "colorModes": ["rgb": [8, 16, 32], "grayscale": [8, 16, 32], "cmyk": [8, 16], "lab": [8, 16]],

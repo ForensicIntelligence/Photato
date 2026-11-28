@@ -19,11 +19,31 @@ public enum NormalLayerComposite {
         b.g.addingProduct(s.g - b.g, ratio),
         b.b.addingProduct(s.b - b.b, ratio), alpha)
     }
+    let opacityByte = Int((unit(opacity) * 255).rounded())
+    let sourceAlpha = (working(s.a, depth: depth) * opacityByte + 127) / 255
+    return integerComposite(backdrop: b, source: s, sourceAlpha: sourceAlpha, depth: depth)
+  }
+
+  package static func compositeWithRGB16Opacity(backdrop: Pixel, source: Pixel, opacity: Int) -> Pixel {
+    let alpha = clippingAlpha(source.a, opacity: opacity, depth: .u16)
+    return integerComposite(backdrop: backdrop, source: source, sourceAlpha: alpha, depth: .u16)
+  }
+
+  package static func whiteMattedRGB16(_ sample: Pixel) -> SIMD3<UInt16> {
+    let maximum = 32_768, half = maximum / 2
+    let alpha = working(sample.a, depth: .u16)
+    func channel(_ source: Float) -> UInt16 {
+      let color = working(source, depth: .u16)
+      let remainingDarkness = ((maximum - color) * alpha + half) / maximum
+      return UInt16(((maximum - remainingDarkness) * 65_535 + half) / maximum)
+    }
+    return SIMD3(channel(sample.r), channel(sample.g), channel(sample.b))
+  }
+
+  private static func integerComposite(backdrop b: Pixel, source s: Pixel, sourceAlpha sa: Int, depth: PixelDepth) -> Pixel {
     let maximum = depth == .u8 ? 255 : 32768
     func working(_ value: Float) -> Int { Self.working(value, depth: depth) }
     func normalized(_ value: Int) -> Float { Self.normalized(value, depth: depth) }
-    let opacityByte = Int((unit(opacity) * 255).rounded())
-    let sa = (working(s.a) * opacityByte + 127) / 255
     let ba = working(b.a)
     // a+b-round(a*b) differs from a+round(b*(1-a)) at exact RGB16 half ties.
     let alpha = sa + ba - (ba * sa + maximum / 2) / maximum

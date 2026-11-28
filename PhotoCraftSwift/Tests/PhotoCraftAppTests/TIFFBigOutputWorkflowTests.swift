@@ -161,4 +161,35 @@ final class TIFFBigOutputWorkflowTests: XCTestCase {
     }
   }
 
+
+  @MainActor func testRGB16TIFFMatteMatchesAuthenticatedDownload() async throws {
+    let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+      .appendingPathComponent("PhotoCraftImagingTests/Fixtures/tiff-rgb16-matte/stack.psd")
+    let original = try DocumentIO.read(fixture)
+    let accessory = DocumentCopyAccessory(panel: NSSavePanel(), initial: .tiff, depth: .u16)
+    accessory.tiffTransparency.performClick(nil)
+    let options = accessory.encodingOptions
+    XCTAssertEqual(options.tiffTransparency, false)
+    let header = String(decoding: try JSONSerialization.data(withJSONObject: DocumentEncodingOptions.json(options)), as: UTF8.self)
+    let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".tiff")
+    defer { try? FileManager.default.removeItem(at: url) }
+    try RasterIO.write(original, to: url, type: .tiff, options: options)
+    let native = try Data(contentsOf: url)
+    let automation = AutomationTests()
+    try await automation.withService(pressedMouseButtons: { 0 }) { service, shared in
+      shared.store.session = EditorSession(document: original)
+      service.setDocumentTransfersEnabled(true)
+      try service.share(shared)
+      let share = try XCTUnwrap(service.shares.first)
+      let download = try await automation.request(service, path: "/v1/documents/\(share.id)/file.tiff",
+        headers: ["X-Photato-Export-Options": header])
+      XCTAssertEqual(download.0.statusCode, 200, String(decoding: download.1, as: UTF8.self))
+      XCTAssertEqual(download.1, native)
+      let opened = try AdobeActionAssets.decode(download.1)
+      XCTAssertEqual(opened.depth, .u16)
+      XCTAssertEqual(opened.layers.count, 1)
+      XCTAssertEqual(shared.store.document.layers.map(\.name), original.layers.map(\.name))
+    }
+  }
+
 }
