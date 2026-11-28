@@ -21,6 +21,13 @@ public enum CameraRawEngine {
       usesOnlyLightGains(s) {
       return try applyLightGains(source, gains: lightGains(s))
     }
+    var pixels = try prepareRGB(source, settings: s)
+    if hasDetailAdjustments(s) { try detail(&pixels, source.width, source.height, s) }
+    return try finishBand(&pixels, source: source, settings: s, canvasHeight: canvasHeight, top: top)
+  }
+
+  static func prepareRGB(_ source: Surface, settings s: CameraRawSettings) throws -> [RGB] {
+    let adjustsLightGains = s.temperature != 0 || s.tint != 0 || s.exposure != 0
     let w = source.width, h = source.height, n = w*h
     var pixels = [RGB](); pixels.reserveCapacity(n)
     for y in 0..<h { try Task.checkCancellation(); for x in 0..<w {
@@ -57,8 +64,13 @@ public enum CameraRawEngine {
       }
     }
     try color(&pixels,s,w)
-    if s.sharpenAmount != 0 || s.noiseLuminance != 0 || s.noiseColor != 0 { try detail(&pixels,w,h,s) }
-    try effects(&pixels, w, h, s, canvasHeight: canvasHeight, top: top)
+    return pixels
+  }
+
+  static func finishBand(_ pixels: inout [RGB], source: Surface, settings: CameraRawSettings,
+    canvasHeight: Int, top: Int) throws -> Surface {
+    let w = source.width, h = source.height
+    try effects(&pixels, w, h, settings, canvasHeight: canvasHeight, top: top)
     var result = source
     for y in 0..<h { try Task.checkCancellation(); for x in 0..<w {
       let p = pixels[y*w+x], alpha = source.pixel(x:x,y:y).a
@@ -69,9 +81,10 @@ public enum CameraRawEngine {
   }
   package static func developPaged(_ source: Surface, settings: CameraRawSettings) throws -> Surface {
     guard settings.highlights == 0, settings.shadows == 0, settings.texture == 0, settings.clarity == 0,
-      settings.dehaze == 0, settings.sharpenAmount == 0, settings.noiseLuminance == 0, settings.noiseColor == 0 else {
+      settings.dehaze == 0 else {
       throw CraftError.unsupported("These Camera Raw spatial adjustments currently support up to 36 megapixels.")
     }
+    if hasDetailAdjustments(settings) { return try developPagedDetail(source, settings: settings) }
     let paged = try Surface.PagedBuilder(width: source.width, height: source.height,
       depth: source.depth, fill: source.defaultPixel, colorEncoding: source.colorEncoding)
     let side = Surface.tileSide

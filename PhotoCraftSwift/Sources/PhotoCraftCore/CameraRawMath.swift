@@ -46,12 +46,14 @@ enum CameraRawMath {
     }
     return out
   }
-  static func gaussian(_ a: [Float],_ w: Int,_ h: Int,_ sigma: Float) throws -> [Float] {
-    var lower = max(1,Int(floor(sqrt(4*sigma*sigma+1)))); if lower%2 == 0 { lower -= 1 }
+  static func gaussianRadii(_ sigma: Float) -> [Int] {
+    var lower = max(1, Int(floor(sqrt(4*sigma*sigma+1))))
+    if lower % 2 == 0 { lower -= 1 }
     let l = Float(lower), m = Int(((12*sigma*sigma-3*l*l-12*l-9)/(-4*l-4)).rounded())
-    var out = a
-    for i in 0..<3 { out = try box(out,w,h,((i < m ? lower : lower+2)-1)/2) }
-    return out
+    return (0..<3).map { (($0 < m ? lower : lower + 2) - 1) / 2 }
+  }
+  static func gaussian(_ a: [Float],_ w: Int,_ h: Int,_ sigma: Float) throws -> [Float] {
+    try gaussianRadii(sigma).reduce(a) { try box($0, w, h, $1) }
   }
   static func guided(_ i: [Float],_ p: [Float],_ w: Int,_ h: Int,_ r: Int,_ eps: Float) throws -> [Float] {
     let mi = try box(i,w,h,r), mp = try box(p,w,h,r)

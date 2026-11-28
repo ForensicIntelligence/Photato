@@ -111,3 +111,58 @@ extension CameraRawLightTests {
     }
   }
 }
+
+extension CameraRawLightTests {
+  func testPagedDetailScalarPassesPreserveDenseFloatWords() throws {
+    let w = 131, h = 183
+    let input = (0..<(w * h)).map { i in
+      Float((i * 109 + i / w * 57) % 2047 - 1023) * pow(Float(2), Float(i % 31 - 26))
+    }
+    let plane = try CameraRawScalarPlane(width: w, height: h, values: { input[$0] })
+    for radius in [1, 9, 133] {
+      let dense = try CameraRawMath.box(input, w, h, radius)
+      let paged = try plane.box(radius: radius)
+      XCTAssertEqual(paged.withSamples { $0.map(\.bitPattern) }, dense.map(\.bitPattern))
+    }
+    let dense = try CameraRawMath.guided(input, input, w, h, 7, 0.001)
+    let paged = try plane.guidedSelf(radius: 7, epsilon: 0.001)
+    XCTAssertEqual(paged.withSamples { $0.map(\.bitPattern) }, dense.map(\.bitPattern))
+  }
+
+  func testPagedDetailMatchesDenseSamplesAcrossEveryBand() throws {
+    for depth in [PixelDepth.u16, .f32] {
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var source = try Surface(width: 131, height: 183, depth: depth, colorEncoding: encoding)
+      for y in 0..<source.height {
+        for x in 0..<source.width {
+          let p = Pixel(Float((x * 5 + y * 19) % 193) / 160, Float((x * 23 + y * 3) % 139) / 144,
+            Float((x * 11 + y * 29) % 229) / 183, Float((x + y * 3) % 11) / 10)
+          if depth == .f32 { source.setLinearPixel(x: x, y: y, p) }
+          else { source.setPixel(x: x, y: y, p) }
+        }
+      }
+      for masking: Float in [0, 74] {
+        var settings = CameraRawSettings()
+        settings.exposure = 0.42
+        settings.contrast = -31
+        settings.vibrance = 22
+        settings.noiseLuminance = 53
+        settings.noiseLuminanceDetail = 67
+        settings.noiseColor = 81
+        settings.noiseColorDetail = 39
+        settings.sharpenAmount = 92
+        settings.sharpenRadius = 1.9
+        settings.sharpenDetail = 76
+        settings.sharpenMasking = masking
+        settings.vignetteAmount = -47
+        settings.grainAmount = 17
+        settings.pixelScale = 1.75
+        let dense = try CameraRawEngine.develop(source, settings: settings)
+        let paged = try CameraRawEngine.developPaged(source, settings: settings)
+        XCTAssertGreaterThan(paged.mappedTileCount, 0)
+        XCTAssertNotEqual(paged, source)
+        XCTAssertEqual(paged, dense)
+      }
+    }
+  }
+}

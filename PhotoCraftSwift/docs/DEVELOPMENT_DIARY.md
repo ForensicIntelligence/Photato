@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 802 — Sharpen and reduce noise in full-size Camera Raw images
+
+The Camera Raw Detail controls can sharpen and reduce luminance and color noise in eligible images above 36 megapixels. The app filters native Float32 scratch planes on disk, using the same edge handling as the dense renderer.
+
+An offscreen run through the RAW development command processed the owned 8,192 × 5,120 DNG with all three Detail controls into 10,240 mapped tiles. Five inspected RGB samples changed, including adjacent rows across a band boundary. The sampled alpha and all source-file bytes were retained. Apple Silicon Release processed the adjustments in 23.46 seconds and reproduced every inspected Debug sample.
+
+The exact comparisons use Photato’s dense renderer as the reference. Adobe comparison remains open.
+
+Xcode built the app. All five focused core tests passed. The new cases compare filter-stage Float32 words and every stored sample of the RGB16 and linear Float32 result. Both optimized architectures passed all 384 selected cases, including authenticated capability discovery. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+Shadows, highlights, clarity, texture and dehaze still use the 36-megapixel limit. The source must be supported at full size by the Apple decoder. Adobe output sharpening is separate from the Detail Sharpening control.
+
+[Development record](DEVLOG.md#dev-step-802) · [Qualification](SOURCE_PUBLICATION_802.md).
+
 ## 2026-11-28 — Step 801 — Apply vignette and grain to full-size Camera Raw images
 
 Camera Raw can apply Post Crop Vignetting and Grain to images above 36 megapixels. The workspace and Photato API use the same adjustment pipeline.
@@ -2725,11 +2739,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:801 -->
+<!-- current-status-step:802 -->
 
-Camera Raw can apply Post Crop Vignetting and Grain to images above 36 megapixels. The workspace and Photato API use the same adjustment pipeline.
+The Camera Raw Detail controls can sharpen and reduce luminance and color noise in eligible images above 36 megapixels. The app filters native Float32 scratch planes on disk, using the same edge handling as the dense renderer.
 
-[Development record](DEVLOG.md#dev-step-801) · [Qualification](SOURCE_PUBLICATION_801.md).
+[Development record](DEVLOG.md#dev-step-802) · [Qualification](SOURCE_PUBLICATION_802.md).
 
 <!-- current-status:end -->
 
@@ -3737,6 +3751,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 799 | [Apply ISO-adaptive Camera Raw defaults](DEVLOG.md#dev-step-799) |
 | 2026-11-28 | 800 | [Open and retain large Camera Raw originals](DEVLOG.md#dev-step-800) |
 | 2026-11-28 | 801 | [Apply vignette and grain to full-size Camera Raw images](DEVLOG.md#dev-step-801) |
+| 2026-11-28 | 802 | [Sharpen and reduce noise in full-size Camera Raw images](DEVLOG.md#dev-step-802) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

@@ -1,3 +1,9 @@
+### Camera Raw Detail (checkpoint 802)
+
+The authenticated Photato capabilities list these controls in `rawDevelopment.pagedDetail` and identify the remaining `limitedLargeAdjustments`. The `raw.develop` command shares the desktop processing path.
+
+[Qualification](SOURCE_PUBLICATION_802.md).
+
 ### Camera Raw vignette and grain (checkpoint 801)
 
 The authenticated Photato capabilities publish vignette and grain under `rawDevelopment.pagedEffects`. The same controls are used by `raw.develop`.

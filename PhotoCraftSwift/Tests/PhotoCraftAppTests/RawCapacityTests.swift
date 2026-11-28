@@ -107,6 +107,11 @@ final class RawCapacityTests: XCTestCase {
       XCTAssertEqual(raw["maximumSensorPixels"] as? Int, 512_000_000)
       XCTAssertEqual(raw["maximumSensorSide"] as? Int, 65_000)
       XCTAssertEqual(raw["maximumSpatialAdjustmentPixels"] as? Int, 36_000_000)
+      XCTAssertEqual(raw["limitedLargeAdjustments"] as? [String],
+        ["highlights", "shadows", "texture", "clarity", "dehaze"])
+      XCTAssertEqual(raw["pagedDetail"] as? [String],
+        ["sharpening", "luminanceNoiseReduction", "colorNoiseReduction"])
+      XCTAssertEqual(raw["pagedEffects"] as? [String], ["vignette", "grain"])
     }
   }
 

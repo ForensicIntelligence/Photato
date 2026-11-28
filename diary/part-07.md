@@ -267,11 +267,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:801 -->
+<!-- current-status-step:802 -->
 
-Camera Raw can apply Post Crop Vignetting and Grain to images above 36 megapixels. The workspace and Photato API use the same adjustment pipeline.
+The Camera Raw Detail controls can sharpen and reduce luminance and color noise in eligible images above 36 megapixels. The app filters native Float32 scratch planes on disk, using the same edge handling as the dense renderer.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-801) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_801.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-802) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_802.md).
 
 <!-- current-status:end -->
 
@@ -1279,5 +1279,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 799 | [Apply ISO-adaptive Camera Raw defaults](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-799) |
 | 2026-11-28 | 800 | [Open and retain large Camera Raw originals](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-800) |
 | 2026-11-28 | 801 | [Apply vignette and grain to full-size Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-801) |
+| 2026-11-28 | 802 | [Sharpen and reduce noise in full-size Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-802) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

@@ -10863,6 +10863,13 @@
       "link": "DEVLOG.md#dev-step-801",
       "section_sha256": "084d45d77a6a858d231e2a038bf7558932ba0672a63341d38ad19a91b4cd84db",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-802",
+      "title": "2026-11-28 \u2014 Step 802 \u2014 Sharpen and reduce noise in full-size Camera Raw images",
+      "link": "DEVLOG.md#dev-step-802",
+      "section_sha256": "4314fd5538bdd402421c290f91f2d81ba6428cd3e51e9246ff15acd0fe7c1792",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13698,8 +13705,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "6f3828d0af793606a8df22220fe4e0e2f837b4df2a6e7136d0e88e69755520bb",
-      "bytes": 190336,
+      "sha256": "e808c9c7be70eaf24525a678af7f7215d868a5114dc70816c72e6dc2d03d4254",
+      "bytes": 190470,
       "rolling_current_snapshot": false
     },
     {
@@ -15420,8 +15427,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "9e3be08548b1c125adb6c6b5db36134d24711b556a71c37c9d266dff403b5aa9",
-      "bytes": 759417,
+      "sha256": "75a0aa7ae9712215426596aee79042f6778c8a8ace1be8905cf0ff1248e5a040",
+      "bytes": 759710,
       "rolling_current_snapshot": false
     },
     {
@@ -15990,8 +15997,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "f0ec1bf502d5212137cc5590ff30a6f8a7f655cb9a31642577f6d580ba4ee3ea",
-      "bytes": 404853,
+      "sha256": "7992a84966a700f2c3ebe91de81c318ac840c9419e473814f1539fe2db38eef9",
+      "bytes": 405161,
       "rolling_current_snapshot": false
     },
     {
@@ -16110,8 +16117,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "e6a9460b23a0dad8b230f4e82743884441fe06e4e3b0ff22bed9a3b632eadcce",
-      "bytes": 231391,
+      "sha256": "e2606a2a2cc4b29796fa73c78efb2f6bfbf2f1e361b8a1447856223984c05b39",
+      "bytes": 231709,
       "rolling_current_snapshot": false
     },
     {
@@ -16188,14 +16195,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "756381f0e308115ecaa56135b55db9d4954bc9341df61a832e5ac9e8573c4c19",
-      "bytes": 1094195,
+      "sha256": "c3334e92f174e8b95345014161eafd0d37a437e0dbcf2464ef0f88dde1de2d9a",
+      "bytes": 1095866,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "aafe946e37ba187ea679d894d170f944b3d056bdd9c8a201a6b50cf17b016cc6",
-      "bytes": 5242567,
+      "sha256": "fc32cb909c0532e52b2da5bfd7a2e19cb02ad6d23dfc92dbbd08db7cb6f229e0",
+      "bytes": 5244694,
       "rolling_current_snapshot": false
     },
     {
@@ -24017,6 +24024,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_802.json",
+      "sha256": "6f94007518c06d44797136986d9d95783c5a3b5b0d37dbab4309179e329f3111",
+      "bytes": 20005,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_802.md",
+      "sha256": "dc793bd4253d57fea971d56b62dff6fe3562538be00fe894067dc728867369f7",
+      "bytes": 1870,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24576,8 +24595,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "b2781a027ec7633d10d868c01fced957409fb238626e99e55b691239e39696c7",
-      "bytes": 519772,
+      "sha256": "186b6e65fde1fdb22280232af412bd9667c5a7f4216f69cebad7de4099262c90",
+      "bytes": 520423,
       "rolling_current_snapshot": false
     },
     {
@@ -27090,8 +27109,8 @@
     }
   ],
   "counts": {
-    "milestones": 801,
-    "evidence_files": 2234,
+    "milestones": 802,
+    "evidence_files": 2236,
     "logs": 0,
     "missing_explicit_references": 704
   }
