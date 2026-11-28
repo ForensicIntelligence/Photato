@@ -315,11 +315,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:765 -->
+<!-- current-status-step:766 -->
 
-PSD and PSB now compose the merged preview from native gray samples on aligned Normal layers at 8 and 16 bits per channel. The preview is white-matted when the composite has transparency. Opaque composites omit the merged opacity plane. Save retains the original editable layer samples and opacities.
+TIFF Save Transparency off writes the measured white-matted grayscale samples for aligned Normal layers at 8 and 16 bits per channel. Layered TIFF copies keep their editable layer samples and opacities.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-765) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_765.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-766) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_766.md).
 
 <!-- current-status:end -->
 
@@ -1291,5 +1291,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 763 | [Open indexed PNGs with complex transparency](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-763) |
 | 2026-11-27 | 764 | [Open larger PNG palettes as editable RGB](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-764) |
 | 2026-11-27 | 765 | [Match grayscale PSD and PSB previews](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-765) |
+| 2026-11-27 | 766 | [Match grayscale TIFF output with transparency off](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-766) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

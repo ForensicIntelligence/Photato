@@ -1,3 +1,9 @@
+### Grayscale TIFF with Save Transparency off (checkpoint 766)
+
+Native Save, authenticated TIFF downloads and Photato resource jobs use the same encoding option. The published Adobe API request keeps its existing TIFF contract.
+
+[Qualification](SOURCE_PUBLICATION_766.md).
+
 ### Grayscale PSD and PSB previews (checkpoint 765)
 
 Desktop Save, authenticated Photato PSD and PSB downloads and the Adobe-compatible PSD output encoder share the writer. The hosted Photato and Adobe-compatible action routes matched the four Photoshop preview references.

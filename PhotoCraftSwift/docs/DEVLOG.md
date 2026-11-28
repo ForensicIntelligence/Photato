@@ -784,7 +784,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 763 | 2026-11-27 | [Open indexed PNGs with complex transparency](#dev-step-763) |
 | 764 | 2026-11-27 | [Open larger PNG palettes as editable RGB](#dev-step-764) |
 | 765 | 2026-11-27 | [Match grayscale PSD and PSB previews](#dev-step-765) |
+| 766 | 2026-11-27 | [Match grayscale TIFF output with transparency off](#dev-step-766) |
 <!-- history-index:end -->
+
+<a id="dev-step-766"></a>
+
+## 2026-11-27 — Step 766 — Match grayscale TIFF output with transparency off
+
+TIFF Save Transparency off writes the measured white-matted grayscale samples for aligned Normal layers at 8 and 16 bits per channel. Layered TIFF copies keep their editable layer samples and opacities.
+
+Photoshop Save a Copy produced flattened 64 × 32 Gray8 and Gray16 TIFFs with Save Transparency off, uncompressed interleaved samples and Macintosh byte order. The TIFF reader found a single gray sample per pixel and no extra opacity plane. Both apps wrote the same ICC profile and 300-pixel-per-inch resolution. The TIFF directory positions, field encodings and metadata differ. The first Xcode test compilation needed the reader’s explicit metadata argument. The rerun passed the imaging case, and independent raw decoding matched all 2,048 grayscale samples in each comparison.
+
+TIFFModeStorage writes the shared integer grayscale matte when the document’s Save Transparency option is off. ImageIO still supplies the metadata template, and the existing TIFF encoder retains compression and byte-order behavior. The separately written editable layer data stays intact.
+
+Independent decoding matched every grayscale sample in two flattened Photoshop 27.2.0 references. All four flattened and layered Photato comparisons match across Debug, Apple Silicon and translated Intel. The 16 PSD and PSB regression files also agree across those builds.
+
+Native Save, authenticated TIFF downloads and Photato resource jobs use the same encoding option. The published Adobe API request keeps its existing TIFF contract.
+
+The Xcode project built and all 37 focused imaging and 11 app and HTTP tests passed. Both optimized architectures passed all 226 selected tests. The extracted Universal preview rendered offscreen on each slice. Intel ran under Rosetta.
+
+The independent TIFF comparison covers decoded grayscale samples. TIFF with Save Transparency on, complex blends, very large component output and whole-file equality with Photoshop remain open.
+
+The signed Universal ZIP targets macOS 14 and later. It contains 77,982,498 bytes with SHA-256 `d51493e28b5559d2020b1aa55b39e264ac1fe05aaa0250ee7d06a7da4a384d38`.
+
+[Qualification](SOURCE_PUBLICATION_766.md).
 
 <a id="dev-step-765"></a>
 

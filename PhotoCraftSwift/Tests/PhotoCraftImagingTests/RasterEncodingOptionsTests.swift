@@ -239,6 +239,33 @@ final class RasterEncodingOptionsTests: XCTestCase {
         XCTAssertEqual(saved.layers.map(\.nativeMode), reopened.layers.map(\.nativeMode))
         XCTAssertEqual(saved.layers.map(\.opacity), reopened.layers.map(\.opacity))
       }
+      // Independent Photoshop TIFF Save a Copy, with Save Transparency disabled.
+      let transparentTIFF = depth == .u8
+        ? "63cf83a4e1b49d674f6ade903c3eec437a57636c00c8ddf3e3b0ed698dc59eb7"
+        : "4988f3502d09b4eabdb0333f6caa838637b57639238386f7f502fa089bd7498e"
+      let expectedTIFF = opaqueBase ? expectedPhotoshop : transparentTIFF
+      for layers in [false, true] {
+        let options = RasterEncodingOptions(tiffCompression: RasterEncodingOptions.TIFFCompression.none,
+          tiffByteOrder: .bigEndian, tiffLayers: layers, tiffTransparency: false)
+        let encoded = try RasterIO.encoded(reopened, type: .tiff, options: options)
+        let file = try TIFFContainer(encoded, metadata: false)
+        XCTAssertEqual(try file.scalar(277), 1)
+        XCTAssertNil(file.root.fields[338])
+        let offsets = try file.numbers(273), counts = try file.numbers(279)
+        XCTAssertEqual(offsets.count, counts.count)
+        let words = zip(offsets, counts).reduce(into: Data()) { bytes, strip in
+          bytes.append(encoded[strip.0..<(strip.0 + strip.1)])
+        }
+        let digest = SHA256.hash(data: words).map { String(format: "%02x", $0) }.joined()
+        XCTAssertEqual(digest, expectedTIFF, "TIFF, \(depth), opaque base: \(opaqueBase), layers: \(layers)")
+        let saved = try RasterIO.read(encoded)
+        if layers {
+          XCTAssertEqual(saved.layers.map(\.nativeMode), reopened.layers.map(\.nativeMode))
+          XCTAssertEqual(saved.layers.map(\.opacity), reopened.layers.map(\.opacity))
+        } else {
+          XCTAssertEqual(saved.layers.count, 1)
+        }
+      }
     }
   }
 

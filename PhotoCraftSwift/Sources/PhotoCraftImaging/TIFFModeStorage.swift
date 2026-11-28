@@ -133,57 +133,76 @@ enum TIFFModeStorage {
   }
   static func write(_ surface: Surface, document: CraftDocument, resolution: Double,
     depth: PixelDepth, metadata: [String: Data]?, options: RasterEncodingOptions,
-    preserveSingleLayer: Bool = false) throws -> Data {
+    useDocumentSamples: Bool = false) throws -> Data {
     guard let descriptor = document.modeDescriptor, depth == document.depth,
       resolution.isFinite, (1...100_000).contains(resolution) else {
       throw CraftError.invalid("Native TIFF export requires the document depth and a valid resolution.")
     }
     guard document.width <= NativeModeRaster.maximumPixels / document.height else { throw CraftError.unsupported("TIFF component output currently supports up to8,388,608pixels; use native86 to retain this document.") }
-    let native: NativeModeRaster
-    if preserveSingleLayer, let stored = RasterIO.retainedFlatRaster(in: document,
-      width: surface.width, height: surface.height) {
-      native = stored
+    let width = surface.width, height = surface.height
+    let matted = try useDocumentSamples && options.tiffTransparency == false
+      ? GrayscaleNormalComposite(document, descriptor: descriptor) : nil
+    let mode: DocumentColorMode
+    let bytesPerSample: Int
+    let profile: Data
+    let sampleWord: (Int, Int) -> Int
+    if let matted {
+      try document.validate()
+      mode = .grayscale
+      bytesPerSample = depth == .u8 ? 1 : 2
+      profile = descriptor.profile
+      sampleWord = { index, _ in Int(matted.whiteMattedSample(at: index)) }
     } else {
-      // Existing merged previews still use RGB composition/reseparation; exact
-      // native ink blending remains a separate, explicitly tracked requirement.
-      native = try NativeModeRaster.converting(surface, to: descriptor.mode, depth: depth,
+      let retained = useDocumentSamples ? RasterIO.retainedFlatRaster(in: document,
+        width: width, height: height) : nil
+      let native = try retained ?? NativeModeRaster.converting(surface, to: descriptor.mode, depth: depth,
         profile: descriptor.profile, intent: descriptor.intent)
+      try native.validate()
+      mode = native.mode
+      bytesPerSample = native.bytesPerSample
+      profile = native.profile
+      sampleWord = { index, component in
+        if native.mode == .lab, component == 1 || component == 2 {
+          let value = (Double(native.value(component: component, index: index)) * 255 - 128)
+            * (native.bytesPerSample == 1 ? 1 : 256)
+          return Int(value.rounded())
+        }
+        return Int(native.rawWord(component: component, index: index))
+      }
     }
-    try native.validate()
+    let colors = mode.componentCount
+    let channels = colors + (matted == nil ? 1 : 0)
+    let bits = bytesPerSample * 8
     // ImageIO supplies established EXIF/IPTC metadata serialization. Its sample
     // payload and color-dependent fields are replaced with the native planes.
     let template = try RasterIO.encoded(surface, type: .tiff, resolution: resolution,
       outputDepth: depth, sourceMetadata: metadata, options: .init(tiffCompression: RasterEncodingOptions.TIFFCompression.none))
-    let file = try TIFFContainer(template, metadata: true), colors = native.mode.componentCount
-    let channels = colors + 1, bits = native.bytesPerSample * 8, photo = photometric(native.mode)
+    let file = try TIFFContainer(template, metadata: true), photo = photometric(mode)
     for tag in [301, 318, 319, 320, 330, 332, 333, 334, 336, 34377, 37724] { file.root.fields.removeValue(forKey: tag) }
     file.root.next = nil
-    file.set(256, [native.width], type: 4); file.set(257, [native.height], type: 4)
+    file.set(256, [width], type: 4); file.set(257, [height], type: 4)
     file.set(258, Array(repeating: bits, count: channels)); file.set(262, [photo])
-    file.set(277, [channels]); file.set(278, [native.height], type: 4)
-    file.set(259, [1]); file.set(284, [1]); file.set(317, [1]); file.set(338, [2])
+    file.set(277, [channels]); file.set(278, [height], type: 4)
+    file.set(259, [1]); file.set(284, [1]); file.set(317, [1])
+    if channels > colors { file.set(338, [2]) }
+    else { file.root.fields.removeValue(forKey: 338) }
     file.set(339, Array(repeating: depth == .f32 ? 3 : 1, count: channels))
-    if native.mode == .cmyk { file.set(332, [1]); file.set(334, [4]) }
-    file.root.fields[34675] = .init(tag: 34675, type: 7, count: native.profile.count, data: native.profile)
+    if mode == .cmyk { file.set(332, [1]); file.set(334, [4]) }
+    file.root.fields[34675] = .init(tag: 34675, type: 7, count: profile.count, data: profile)
     if let exif = file.root.fields[34665]?.children.first {
       exif.fields[40961] = .init(tag: 40961, type: 3, count: 1, data: file.order.bytes(65535, 2))
     }
-    if let xmp = try RasterMetadata.metadata(metadata, width: native.width, height: native.height,
-      resolution: resolution, linear: depth == .f32, profileName: native.mode.title,
-      isSRGB: false, photoshopMode: PSDModeStorage.code(native.mode)),
+    if let xmp = try RasterMetadata.metadata(metadata, width: width, height: height,
+      resolution: resolution, linear: depth == .f32, profileName: mode.title,
+      isSRGB: false, photoshopMode: PSDModeStorage.code(mode)),
       let bytes = CGImageMetadataCreateXMPData(xmp, nil) as Data? {
       file.root.fields[700] = .init(tag: 700, type: 1, count: bytes.count, data: bytes)
     }
     var output = Data(template.prefix(8))
-    for i in 0..<native.width * native.height {
+    for i in 0..<width * height {
       if i % 4096 == 0 { try Task.checkCancellation() }
       for c in 0..<channels {
-        if native.mode == .lab, c == 1 || c == 2 {
-          let value = (Double(native.value(component: c, index: i)) * 255 - 128) * (bits == 8 ? 1 : 256)
-          output.append(file.order.bytes(Int(value.rounded()), native.bytesPerSample))
-        } else {
-          output.append(file.order.bytes(Int(native.rawWord(component: c, index: i)), native.bytesPerSample))
-        }
+        output.append(file.order.bytes(sampleWord(i, c), bytesPerSample))
       }
     }
     file.set(273, [8], type: 4); file.set(279, [output.count - 8], type: 4)

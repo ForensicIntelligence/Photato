@@ -112,6 +112,7 @@ extension AutomationService {
           "Metadata, selection and active document remain resident; full paging, crash-relaunch recovery, large-file and live platform qualification remain open",
       ],
       "layeredTIFF": [
+        "grayscaleMatte": "Explicit Save Transparency off writes the measured white-matted grayscale samples for aligned Normal Gray8 and Gray16 raster stacks. Editable TIFF retains the original gray and opacity words in its layers.",
         "input": true, "output": true,
         "colorModes": ["rgb": [8, 16, 32], "grayscale": [8, 16, 32], "cmyk": [8, 16], "lab": [8, 16]],
         "depths": [8, 16, 32], "byteOrders": ["bigEndian", "littleEndian"],

@@ -79,6 +79,14 @@ struct GrayscaleNormalComposite {
     return (stored(pixel.gray), stored(pixel.alpha))
   }
 
+  private func whiteMattedGray(_ pixel: (gray: Int, alpha: Int)) -> Int {
+    maximum - ((maximum - pixel.gray) * pixel.alpha + midpoint) / maximum
+  }
+
+  func whiteMattedSample(at index: Int) -> UInt32 {
+    stored(whiteMattedGray(sample(index)))
+  }
+
   func hasTransparency() throws -> Bool {
     if entries.contains(where: { $0.opacity == maximum && $0.raster.isOpaque }) { return false }
     if let support { return try support.containsSample { sample($0).alpha != maximum } }
@@ -98,7 +106,7 @@ struct GrayscaleNormalComposite {
     func word(_ index: Int) -> Float {
       let pixel = sample(index)
       if channel == 1 { return Float(stored(pixel.alpha)) / denominator }
-      let gray = transparency ? maximum - ((maximum - pixel.gray) * pixel.alpha + midpoint) / maximum : pixel.gray
+      let gray = transparency ? whiteMattedGray(pixel) : pixel.gray
       return Float(stored(gray)) / denominator
     }
     if let support { return try support.row(y, depth: depth, sample: word) }

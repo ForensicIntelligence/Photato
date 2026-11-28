@@ -542,7 +542,7 @@ public enum RasterIO {
     if type == .tiff, document.hasNativeModeStorage {
       let composite = try TIFFModeStorage.write(Renderer.composite(document), document: document,
         resolution: document.pixelsPerInch, depth: document.depth, metadata: document.sourceMetadata,
-        options: compositeOptions, preserveSingleLayer: true)
+        options: compositeOptions, useDocumentSamples: true)
       return options.tiffLayers == true
         ? try TIFFLayers.write(document, composite: composite, compression: options.tiffLayerCompression ?? .zip)
         : composite
