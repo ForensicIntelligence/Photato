@@ -19,14 +19,28 @@ public enum RawSourceIO {
     public let lensCorrectionEnabled: Bool, highlightRecoveryEnabled: Bool
   }
   public static func type(_ data: Data) -> String? {
-    guard let source = CGImageSourceCreateWithData(data as CFData,[kCGImageSourceShouldCache:false] as CFDictionary),
-      let type = CGImageSourceGetType(source) as String?,UTType(type)?.conforms(to:contentType) == true else { return nil }
-    return type
+    guard let source = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary),
+      let type = CGImageSourceGetType(source) as String? else { return nil }
+    if UTType(type)?.conforms(to: contentType) == true { return type }
+    // ImageIO can report TIFF for byte-backed DNG files with a distant first IFD.
+    // Adobe's required DNGVersion tag admits the input to the real RAW decoder.
+    guard type == UTType.tiff.identifier, data.count <= SmartObject.maximumSourceBytes, TIFFContainer.isClassic(data),
+      let tiff = try? TIFFContainer(data, metadata: false, additionalTags: [50706]), isDNG(tiff) else { return nil }
+    return "com.adobe.raw-image"
   }
   public static func recognizes(_ data: Data) -> Bool { type(data) != nil }
   public static func recognizes(_ url: URL) -> Bool {
-    guard let source = CGImageSourceCreateWithURL(url as CFURL,[kCGImageSourceShouldCache:false] as CFDictionary),let type = CGImageSourceGetType(source) as String? else { return false }
-    return UTType(type)?.conforms(to:contentType) == true
+    guard let source = CGImageSourceCreateWithURL(url as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary),
+      let type = CGImageSourceGetType(source) as String? else { return false }
+    if UTType(type)?.conforms(to: contentType) == true { return true }
+    guard type == UTType.tiff.identifier,
+      let source = try? PSDFileSource(url, maximumBytes: SmartObject.maximumSourceBytes),
+      let tiff = try? TIFFContainer(file: source, metadata: false, additionalTags: [50706]), !tiff.isBigTIFF else { return false }
+    return isDNG(tiff)
+  }
+  private static func isDNG(_ tiff: TIFFContainer) -> Bool {
+    guard let version = tiff.root.fields[50706] else { return false }
+    return version.type == 1 && version.count == 4 && version.data.first == 1
   }
   static func decoder(_ data: Data,version: String? = nil) throws -> (CIRAWFilter,Info) {
     try Task.checkCancellation()
@@ -55,16 +69,28 @@ public enum RawSourceIO {
   public static func read(_ url: URL,depth: PixelDepth = .u16) throws -> CraftDocument {
     let file = try FileHandle(forReadingFrom:url); defer { try? file.close() }
     let data = try file.read(upToCount:SmartObject.maximumSourceBytes+1) ?? Data()
-    return try open(data,fileName:url.lastPathComponent,depth:depth)
+    return try open(data, fileName: url.lastPathComponent, settings: relatedSettings(for: url), depth: depth)
   }
-  public static func open(_ data: Data,fileName: String,settings requested: RawDevelopment = .init(),depth: PixelDepth = .u16) throws -> CraftDocument {
-    let (pixels,settings,info) = try render(data,settings:requested,depth:depth)
+  public static func open(_ data: Data, fileName: String, settings requested: RawDevelopment? = nil,
+    depth: PixelDepth = .u16) throws -> CraftDocument {
+    try Task.checkCancellation()
+    guard !data.isEmpty, data.count <= SmartObject.maximumSourceBytes else {
+      throw CraftError.invalid("Camera RAW source must contain 1 byte to 64 MiB.")
+    }
+    let options = type(data).map { [kCGImageSourceTypeIdentifierHint: $0] as CFDictionary }
+    let source = CGImageSourceCreateWithData(data as CFData, options)
+    let properties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) as? [CFString: Any] }
+    let metadata: [String: Data]?
+    if let source, let properties { metadata = try RasterMetadata.capture(source, properties: properties) }
+    else { metadata = nil }
+    let embedded = (metadata?[RasterMetadata.xmpKey]).flatMap { try? CameraRawXMP.read($0, into: RawDevelopment()) }
+    let (pixels, settings, info) = try render(data, settings: requested ?? embedded ?? .init(), depth: depth)
     var name = URL(fileURLWithPath:fileName).lastPathComponent
     if (name as NSString).pathExtension.isEmpty { name += "." + (UTType(info.type)?.preferredFilenameExtension ?? "raw") }
     var document = try CraftDocument(width:pixels.width,height:pixels.height,depth:depth,name:(name as NSString).deletingPathExtension)
-    if let source = CGImageSourceCreateWithData(data as CFData,nil),let properties = CGImageSourceCopyPropertiesAtIndex(source,0,nil) as? [CFString:Any] {
-      document.sourceMetadata = try RasterMetadata.capture(source,properties:properties)
-      if let dpi = properties[kCGImagePropertyDPIWidth] as? Double,dpi.isFinite,(1...100_000).contains(dpi) { document.resolution = dpi }
+    document.sourceMetadata = metadata
+    if let dpi = properties?[kCGImagePropertyDPIWidth] as? Double, dpi.isFinite, (1...100_000).contains(dpi) {
+      document.resolution = dpi
     }
     var object = try SmartObject(fileName:name.isEmpty ? "Source.raw" : name,mediaType:info.type == "com.adobe.raw-image" ? "image/x-adobe-dng" : "image/x-camera-raw",data:data,width:pixels.width,height:pixels.height,rawDevelopment:settings)
     object.resolution = document.pixelsPerInch

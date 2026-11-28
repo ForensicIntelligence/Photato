@@ -15,7 +15,7 @@ extension RawDevelopment {
   static var apiCapabilities: [String:Any] {
     ["commands":["raw.inspect","raw.develop",CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
      "maximumSourceBytes":SmartObject.maximumSourceBytes,"maximumSensorPixels":RawSourceIO.maximumPixels,"nativeArchiveVersion":22,
-     "import":"POST /v1/documents/import; optional X-Photato-Open-Format: raw. Upload retains existing4MP/64MiB API limits. File Open and Place Embedded accept native supported camera RAW types.",
+     "import":"POST /v1/documents/import; optional X-Photato-Open-Format: raw. Upload retains existing4MP/64MiB API limits. File Open and Place Embedded accept supported camera RAW types and read their matching XMP sidecar or embedded settings. For HTTP import, X-Photato-Raw-XMP accepts up to 8 KiB of base64-decoded XMP with the sensor bytes.",
      "history":"raw.develop uses the desktop source-redevelopment transaction. Partial settings or XMP retain existing values where fields are omitted. Explicit null or XMP As Shot resets the applicable values to decoder defaults. allInstances defaults true.",
      "sourceDownload":"Existing smart-objects/{layerID}/source route returns original bytes. Raw settings and decoder are exposed in Smart Object state; revision includes settings.",
      "availability":"Apple native camera/decoder support is checked per source. Highlight recovery requires supported macOS26+ hardware/decoder; no preview fallback, download or cloud call.",

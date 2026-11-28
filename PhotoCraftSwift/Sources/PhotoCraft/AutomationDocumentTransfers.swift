@@ -5,7 +5,10 @@ import PhotoCraftCore
 import PhotoCraftImaging
 
 extension DocumentIO {
-  static func decodeUpload(_ data: Data, native: Bool, name: String) throws -> CraftDocument {
+  static let rawSidecarHeader = "x-photato-raw-xmp"
+  static let maximumRawSidecarHeaderBytes = 8 * 1024
+
+  static func decodeUpload(_ data: Data, native: Bool, name: String, rawXMP: Data? = nil) throws -> CraftDocument {
     guard !data.isEmpty, data.count <= maximumUploadBytes else {
       throw AutomationFailure(status: 413, message: "Upload must contain 1 byte to 64 MiB.")
     }
@@ -27,7 +30,8 @@ extension DocumentIO {
       }
       (width, height) = (number(18), number(14))
     } else {
-      guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+      let options = RawSourceIO.type(data).map { [kCGImageSourceTypeIdentifierHint: $0] as CFDictionary }
+      guard let source = CGImageSourceCreateWithData(data as CFData, options),
         let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
         let w = properties[kCGImagePropertyPixelWidth] as? Int,
         let h = properties[kCGImagePropertyPixelHeight] as? Int
@@ -39,6 +43,13 @@ extension DocumentIO {
     }
     if !native, JPEGXLInput.recognizes(data), width > (128 * 1_024 * 1_024) / MemoryLayout<Pixel>.stride / height {
       throw AutomationFailure(status: 413, message: "Decoded JPEG XL raster exceeds the 128 MiB API budget.")
+    }
+    if let rawXMP {
+      guard RawSourceIO.recognizes(data) else {
+        throw AutomationFailure(status: 422, message: "Expected supported camera RAW sensor data.")
+      }
+      let settings = try CameraRawXMP.read(rawXMP, into: RawDevelopment())
+      return try RawSourceIO.open(data, fileName: name, settings: settings)
     }
     return try decode(data, native: native, name: name, rasterByteLimit: 128 * 1_024 * 1_024)
   }
@@ -58,6 +69,9 @@ extension AutomationService {
         "formatHeader": ["name": "X-Photato-Open-Format", "required": false,
           "schema": ["type": "string", "enum": DocumentOpenFormat.availableCases.filter{$0 != .pdf}.map(\.rawValue)],
           "untypedBody": "application/octet-stream is accepted only when the format header is present"],
+        "rawXMPHeader": ["name": "X-Photato-Raw-XMP", "required": false,
+          "maxDecodedBytes": DocumentIO.maximumRawSidecarHeaderBytes, "encoding": "base64",
+          "scope": "Camera RAW uploads. An explicit XMP packet supplies the initial sensor development settings instead of embedded XMP."],
         "bodySchema": [
           "type": "string", "format": "binary", "minLength": 1,
           "maxLength": DocumentIO.maximumUploadBytes,
@@ -386,6 +400,19 @@ extension AutomationService {
       if selection == .pdf {
         throw AutomationFailure(status:422,message:"Use POST /v1/documents/import/pdf with X-Photato-PDF-Options to select PDF pages; ordinary import returns a single document.")
       }
+      var rawXMP: Data?
+      if let header = request.headers[DocumentIO.rawSidecarHeader] {
+        guard RawSourceIO.mediaTypes.contains(contentType)
+          || (contentType == "application/octet-stream" && selection == .raw) else {
+          throw AutomationFailure(status: 415, message: "X-Photato-Raw-XMP requires a Camera RAW upload.")
+        }
+        let limit = DocumentIO.maximumRawSidecarHeaderBytes
+        guard header.utf8.count <= (limit + 2) / 3 * 4, let packet = Data(base64Encoded: header),
+          !packet.isEmpty, packet.count <= limit else {
+          throw AutomationFailure(status: 400, message: "X-Photato-Raw-XMP must contain base64-encoded XMP up to 8 KiB.")
+        }
+        rawXMP = packet
+      }
       let frameOptions = try MovieFramesAPI.options(request.headers[MovieFramesAPI.header])
       if frameOptions != nil {
         guard MovieIO.mediaTypes.contains(contentType) || (contentType == "application/octet-stream" && selection == .movie),MovieIO.recognizes(request.body) else {throw AutomationFailure(status:415,message:"Movie-frame import requires a supported movie Content-Type and container.")}
@@ -395,7 +422,7 @@ extension AutomationService {
       let decoder = documentDecoder
       let colorSettings = controller.colorSettings.value
       let colorChoice = try ColorPolicyAPI.choice(request.headers["x-photato-color-decision"], opening: true)
-      let worker = Task.detached(priority: .utility) {
+      let worker = Task.detached(priority: .utility) { [rawXMP] in
         let usesNative: Bool
         if let selection {
           let actual = DocumentOpenFormat.detect(request.body)
@@ -407,7 +434,8 @@ extension AutomationService {
           guard colorChoice == nil else {throw AutomationFailure(status:400,message:"Movie-frame import creates sRGB layers; omit X-Photato-Color-Decision.")}
           return try MovieFrames.decode(request.body,name:name,options:frameOptions,maximumBytes:128*1024*1024,maximumPixels:4_194_304,maximumLayers:64)
         }
-        var decoded = try decoder(request.body, usesNative, name)
+        var decoded = try rawXMP.map { try DocumentIO.decodeUpload(request.body, native: false, name: name, rawXMP: $0) }
+          ?? decoder(request.body, usesNative, name)
         if usesNative {
           guard colorChoice == nil else { throw AutomationFailure(status: 400, message: "Native Photato imports retain their saved interpretation; omit X-Photato-Color-Decision.") }
           return decoded

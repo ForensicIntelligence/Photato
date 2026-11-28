@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **785** · The 10 most recent entries, newest first.
+Source build **786** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 786 — Open Camera Raw sidecar and embedded XMP settings
+
+File Open and Place Embedded now read a same-name RAW XMP sidecar. If there is no usable sibling, Photato uses supported settings embedded in the source. The resulting RAW Smart Object retains the original sensor bytes and the chosen settings.
+
+Photoshop Camera Raw 18.1.1 loaded the embedded DNG at Exposure +0.75 and Contrast +21. With a partial sibling it loaded Exposure +1.25 and left Contrast at the default 0. The sandboxed Photato app opened the same RAW file, selected by itself in the file picker, and reproduced that settings precedence.
+
+Xcode built the native app. All 3 focused workflow and authenticated HTTP tests passed. Both optimized architectures passed all 332 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+This compares opening settings and retained RAW source bytes. Pixel-level Camera Raw equivalence, writing settings back to DNG, automatic sidecar writes, and broader sensor models remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-786) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_786.md).
 
 ## 2026-11-27 — Step 785 — Read and write Camera Raw XMP settings
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 3 focused imaging and 1 focused app and HTTP tes
 JPEG changes the composite samples. Choose lossless compression to keep named selection channels. The exact Photoshop quality curve, JPEG output bytes and decoding differences remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-777) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_777.md).
-
-## 2026-11-27 — Step 776 — Open JPEG-compressed TIFFs
-
-Photato opens opaque Gray8 and RGB8 JPEG-compressed classic TIFFs as editable images. The decoder handles strips, rectangular tiles and separate RGB channels and keeps the original resolution, profiles and supported editable TIFF layers.
-
-All 346,365 color samples from seven authored TIFFs matched the full-file ImageIO TIFF decoder. The five grayscale and explicit RGB fixtures also matched all 207,819 samples from an independent libtiff decode. Photoshop 27.2 opened the grayscale tile and subsampled YCbCr strip references. Against their lossless Photoshop copies, 484 of 23,091 gray samples differed by one code. 65,314 of 69,273 YCbCr-derived RGB samples differed, with a mean of 14.14 and maximum of 123 codes on the high-chroma pattern.
-
-Xcode built the native app. All 3 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 259 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
-
-Photoshop color reconstruction and JPEG IDCT rounding still differ on the measured inputs. JPEG TIFF save, legacy JPEG compression and additional component, density and corruption cases remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-776) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_776.md).

@@ -1,3 +1,9 @@
+### Opening RAW with sidecar XMP (checkpoint 786)
+
+Authenticated Photato RAW upload accepts base64 XMP through `X-Photato-Raw-XMP` up to 8 KiB decoded. An explicit packet supplies the initial settings. A RAW upload without that header uses embedded settings if present. The Adobe Firefly request contract is unchanged.
+
+[Qualification](SOURCE_PUBLICATION_786.md).
+
 ### Camera Raw XMP settings (checkpoint 785)
 
 The authenticated Photato `cameraRaw.settings.convert` command converts XMP text and typed Photato settings in `raw` or `rendered` mode. `raw.develop` also applies XMP directly through the native redevelopment transaction. The Adobe Firefly input contract and the native document format are unchanged.

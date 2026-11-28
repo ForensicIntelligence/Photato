@@ -804,7 +804,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 783 | 2026-11-27 | [Match Photoshop RGB16 TIFF white-matte samples](#dev-step-783) |
 | 784 | 2026-11-27 | [Keep active Quick Mask in layered TIFF](#dev-step-784) |
 | 785 | 2026-11-27 | [Read and write Camera Raw XMP settings](#dev-step-785) |
+| 786 | 2026-11-27 | [Open Camera Raw sidecar and embedded XMP settings](#dev-step-786) |
 <!-- history-index:end -->
+
+<a id="dev-step-786"></a>
+
+## 2026-11-27 — Step 786 — Open Camera Raw sidecar and embedded XMP settings
+
+File Open and Place Embedded now read a same-name RAW XMP sidecar. If there is no usable sibling, Photato uses supported settings embedded in the source. The resulting RAW Smart Object retains the original sensor bytes and the chosen settings.
+
+The app declares XMP as a supporting file type and uses NSFileCoordinator for the exact matching sibling. A valid sibling replaces embedded adjustment settings, so omitted values begin at RAW defaults. The test also caught file URLs and memory buffers classifying a distant DNG directory differently. The app verifies the DNGVersion tag and uses a native ImageIO hint so embedded settings are retained in both paths. Photato uses the native renderer and preserves both source and settings. [Apple App Sandbox related files](https://developer.apple.com/documentation/security/accessing-files-from-the-macos-app-sandbox) · [Adobe Camera Raw settings](https://helpx.adobe.com/in/camera-raw/desktop/get-started/overview-and-setup/camera-raw-settings.html).
+
+Photoshop Camera Raw 18.1.1 loaded the embedded DNG at Exposure +0.75 and Contrast +21. With a partial sibling it loaded Exposure +1.25 and left Contrast at the default 0. The sandboxed Photato app opened the same RAW file, selected by itself in the file picker, and reproduced that settings precedence.
+
+Authenticated Photato RAW upload accepts base64 XMP through `X-Photato-Raw-XMP` up to 8 KiB decoded. An explicit packet supplies the initial settings. A RAW upload without that header uses embedded settings if present. The Adobe Firefly request contract is unchanged.
+
+Xcode built the native app. All 3 focused workflow and authenticated HTTP tests passed. Both optimized architectures passed all 332 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+This compares opening settings and retained RAW source bytes. Pixel-level Camera Raw equivalence, writing settings back to DNG, automatic sidecar writes, and broader sensor models remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,279,671 bytes with SHA-256 `aaf9a6b5f8bd14bd3d64f492b6b3283fcafd827aad8227645bc014d711be5d52`.
+
+[Qualification](SOURCE_PUBLICATION_786.md).
 
 <a id="dev-step-785"></a>
 

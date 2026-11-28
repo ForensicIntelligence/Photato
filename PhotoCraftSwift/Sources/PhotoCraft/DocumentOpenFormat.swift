@@ -89,7 +89,9 @@ enum DocumentOpenFormat: String, CaseIterable, Sendable {
   static func detect(_ data: Data) -> Self? {
     if let value = signature(data) { return value }
     if PcraftImport.recognizes(data) { return .pcraft }
-    if let image = CGImageSourceCreateWithData(data as CFData, nil).flatMap({imageType(CGImageSourceGetType($0))}) {return image}
+    if let image = CGImageSourceCreateWithData(data as CFData, nil).flatMap({ imageType(CGImageSourceGetType($0)) }) {
+      return image == .tiff && RawSourceIO.recognizes(data) ? .raw : image
+    }
     return PDFImport.recognizes(data) ? .pdf:nil
   }
   static func detect(_ url: URL) -> Self? {
@@ -98,7 +100,9 @@ enum DocumentOpenFormat: String, CaseIterable, Sendable {
     defer { try? file.close() }
     let header = (try? file.read(upToCount:1024)) ?? Data()
     if let value = signature(header) {return value}
-    if let image = CGImageSourceCreateWithURL(url as CFURL, nil).flatMap({imageType(CGImageSourceGetType($0))}) {return image}
+    if let image = CGImageSourceCreateWithURL(url as CFURL, nil).flatMap({ imageType(CGImageSourceGetType($0)) }) {
+      return image == .tiff && RawSourceIO.recognizes(url) ? .raw : image
+    }
     // A misleading .pdf suffix can make ImageIO's URL reader refuse a PNG.
     // Its bounded byte-header reader still identifies the actual container.
     if let image = CGImageSourceCreateWithData(header as CFData,nil).flatMap({imageType(CGImageSourceGetType($0))}) {return image}

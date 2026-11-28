@@ -1,3 +1,5 @@
+**Camera Raw RAW workflow.** Continue source settings persistence and camera defaults using owned DNG and sensor references. [Development record](DEVLOG.md#dev-step-786) · [Qualification](SOURCE_PUBLICATION_786.md).
+
 **Camera Raw settings interchange.** Continue same-name XMP sidecar discovery and document-opening behavior using owned RAW fixtures. [Development record](DEVLOG.md#dev-step-785) · [Qualification](SOURCE_PUBLICATION_785.md).
 
 **Camera Raw settings interchange.** Implement XMP Load and Save Settings for supported Camera Raw adjustments in the native workspace and Photato API. Camera Raw 18.1.1 successfully loaded the initial native ImageIO probe. [Development record](DEVLOG.md#dev-step-784) · [Qualification](SOURCE_PUBLICATION_784.md).

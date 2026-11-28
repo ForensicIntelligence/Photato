@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 786.** Open Camera Raw sidecar and embedded XMP settings. [Qualification](docs/SOURCE_PUBLICATION_786.md).
+
 **Source checkpoint 785.** Read and write Camera Raw XMP settings. [Qualification](docs/SOURCE_PUBLICATION_785.md).
 
 **Source checkpoint 784.** Keep active Quick Mask in layered TIFF. [Qualification](docs/SOURCE_PUBLICATION_784.md).

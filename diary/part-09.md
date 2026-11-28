@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-27 — Step 786 — Open Camera Raw sidecar and embedded XMP settings
+
+File Open and Place Embedded now read a same-name RAW XMP sidecar. If there is no usable sibling, Photato uses supported settings embedded in the source. The resulting RAW Smart Object retains the original sensor bytes and the chosen settings.
+
+Photoshop Camera Raw 18.1.1 loaded the embedded DNG at Exposure +0.75 and Contrast +21. With a partial sibling it loaded Exposure +1.25 and left Contrast at the default 0. The sandboxed Photato app opened the same RAW file, selected by itself in the file picker, and reproduced that settings precedence.
+
+Xcode built the native app. All 3 focused workflow and authenticated HTTP tests passed. Both optimized architectures passed all 332 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+This compares opening settings and retained RAW source bytes. Pixel-level Camera Raw equivalence, writing settings back to DNG, automatic sidecar writes, and broader sensor models remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-786) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_786.md).
+
 ## 2026-11-27 — Step 785 — Read and write Camera Raw XMP settings
 
 Camera Raw Load Settings accepts XMP presets for sensor RAW and rendered RGB. Save Settings includes Camera Raw XMP and Photato JSON. XMP applies supported fields to the current draft, with preview and Undo. The sensor source remains editable and its original bytes are preserved.

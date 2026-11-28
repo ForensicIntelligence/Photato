@@ -8,13 +8,14 @@ import XCTest
 
 final class AutomationOpeningTests: XCTestCase {
   @MainActor func upload(_ service: AutomationService, bytes: Data, type: String,
-    format: String? = nil) async throws -> (HTTPURLResponse, Data)
+    format: String? = nil, headers: [String: String] = [:]) async throws -> (HTTPURLResponse, Data)
   {
     var request = URLRequest(url: URL(string: try XCTUnwrap(service.endpoint) + "/v1/documents/import")!)
     request.httpMethod = "POST"; request.httpBody = bytes
     request.setValue("Bearer \(try XCTUnwrap(service.token))", forHTTPHeaderField: "Authorization")
     request.setValue(type, forHTTPHeaderField: "Content-Type")
     if let format { request.setValue(format, forHTTPHeaderField: "X-Photato-Open-Format") }
+    for (name, value) in headers { request.setValue(value, forHTTPHeaderField: name) }
     let (data, response) = try await URLSession.shared.data(for: request)
     return (try XCTUnwrap(response as? HTTPURLResponse), data)
   }

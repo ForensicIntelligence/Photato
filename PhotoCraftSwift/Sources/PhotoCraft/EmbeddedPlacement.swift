@@ -13,7 +13,7 @@ struct PreparedEmbeddedSource: Sendable {
     defer {if access {url.stopAccessingSecurityScopedResource()}}
     let original = try RecoverySourceReader.snapshot(url, maximumBytes: SmartObject.maximumLocalEmbeddedBytes(forHeader:),
       fileBackedAbove: SmartObject.maximumSourceBytes)
-    let model = PDFImport.recognizes(original.data) ? nil : try SmartObjectIO.decode(original,fileName:url.lastPathComponent)
+    let model = PDFImport.recognizes(original.data) ? nil : try SmartObjectIO.decode(original, fileName: url.lastPathComponent, sourceURL: url)
     return Self(original:original,fileName:url.lastPathComponent,document:model)
   }
 }
