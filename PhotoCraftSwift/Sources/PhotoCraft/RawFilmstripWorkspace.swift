@@ -12,6 +12,7 @@ import SwiftUI
     var settings: RawDevelopment
     var marking: RawPhotoMarking
     var name: String { original.url.lastPathComponent }
+    var hasChanges: Bool { settings != original.settings || marking != original.marking }
   }
 
   struct Editor {
@@ -108,7 +109,7 @@ import SwiftUI
   var workflowOutput: RawWorkflowOutput { controller?.cameraRawPreferences.workflowOutput ?? .init() }
   var canFinish: Bool { !selection.isEmpty && !busy && !closed }
   var canWrite: Bool {
-    canFinish && photos.filter { selection.contains($0.id) }.allSatisfy { $0.original.settingsSource != nil }
+    !photos.isEmpty && !busy && !closed && photos.allSatisfy { !$0.hasChanges || $0.original.settingsSource != nil }
   }
 
   init(controller: CraftDocumentController, onClose: (() -> Void)? = nil) {
@@ -387,9 +388,10 @@ import SwiftUI
   }
 
   func finish(_ mode: RawOpenMode?) {
-    guard canFinish, let controller, mode != nil || canWrite else { return }
+    guard let controller, mode == nil ? canWrite : canFinish else { return }
     let output = workflowOutput
-    let batch = displayedPhotos.filter { selection.contains($0.id) }
+    let batch = mode == nil ? photos.filter(\.hasChanges) : displayedPhotos.filter { selection.contains($0.id) }
+    if batch.isEmpty { close(); return }
     busy = true
     finishing = true
     error = nil
@@ -416,12 +418,8 @@ import SwiftUI
           else if let original = photo.original.settingsSource {
             let settingsChanged = photo.settings != photo.original.settings
             let markingChanged = photo.marking != photo.original.marking
-            if mode == nil, !settingsChanged, !markingChanged {
-              source = original
-            } else {
-              let markingOnly = markingChanged && !settingsChanged
-              source = try await save(markingOnly ? nil : photo.settings, marking: photo.marking, to: original)
-            }
+            let markingOnly = markingChanged && !settingsChanged
+            source = try await save(markingOnly ? nil : photo.settings, marking: photo.marking, to: original)
           } else { source = nil }
           try Task.checkCancellation()
           if let mode, let developed {

@@ -259,11 +259,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:810 -->
+<!-- current-status-step:811 -->
 
-The filmstrip and Grid can show a thumbnail from the developed preview. Selecting a DNG with no usable embedded thumbnail fills both views after preview rendering. Thumbnails for the active draft update after an adjustment.
+Done saves the changed photos across the Camera Raw session, including photos currently deselected or filtered out. Photato leaves files with unchanged settings and marks untouched.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-810) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_810.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-811) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_811.md).
 
 <!-- current-status:end -->
 
@@ -1280,5 +1280,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 808 | [Inspect and sort Camera Raw photo metadata](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-808) |
 | 2026-11-28 | 809 | [Browse and edit photos in Camera Raw Grid](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-809) |
 | 2026-11-28 | 810 | [Refresh Camera Raw thumbnails from developed photos](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-810) |
+| 2026-11-28 | 811 | [Save deselected Camera Raw edits when closing with Done](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-811) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

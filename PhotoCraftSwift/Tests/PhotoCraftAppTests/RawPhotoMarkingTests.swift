@@ -98,6 +98,44 @@ final class RawPhotoMarkingTests: XCTestCase {
     for file in files { XCTAssertEqual(try Data(contentsOf: file), raw) }
   }
 
+  @MainActor func testDoneSavesChangedPhotosEvenWhenFiltersLeaveNoSelection() async throws {
+    _ = NSApplication.shared
+    let preferences = CameraRawPreferences()
+    preferences.dngStorage = .embedXMP
+    let controller = CraftDocumentController(workspaces: WorkspaceLibrary(), cameraRawPreferences: preferences)
+    let directory = try folder()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let raw = try original()
+    let edited = directory.appendingPathComponent("01-Edited.dng")
+    let unedited = directory.appendingPathComponent("02-Unedited.dng")
+    try raw.write(to: edited)
+    try raw.write(to: unedited)
+
+    let workspace = RawFilmstripWorkspace(controller: controller)
+    defer { workspace.close() }
+    workspace.start([edited, unedited])
+    await workspace.waitUntilIdle()
+    workspace.setRating(4)
+    workspace.setLabel(.red)
+    let second = try XCTUnwrap(workspace.photos.last)
+    workspace.select(second.id)
+    XCTAssertEqual(workspace.activeID, second.id)
+    workspace.toggleLabelFilter(.blue)
+    XCTAssertTrue(workspace.selection.isEmpty)
+    XCTAssertFalse(workspace.canFinish)
+    XCTAssertTrue(workspace.canWrite)
+    workspace.finish(nil)
+    await workspace.waitUntilIdle()
+    XCTAssertTrue(workspace.closed)
+    XCTAssertNil(workspace.error)
+    let changed = try Data(contentsOf: edited)
+    let packet = try XCTUnwrap(RawSourceIO.embeddedDNGXMP(changed))
+    XCTAssertEqual(RawPhotoMarking.read(packet), .init(rating: 4, label: "Red"))
+    XCTAssertEqual(changed[8..<raw.count], raw[8..<raw.count])
+    XCTAssertEqual(try Data(contentsOf: unedited), raw)
+    XCTAssertTrue(controller.documents.isEmpty)
+  }
+
   func testMarkingOnlySidecarOverridesEmbeddedTagsWithoutResettingDevelopment() throws {
     let directory = try folder()
     defer { try? FileManager.default.removeItem(at: directory) }

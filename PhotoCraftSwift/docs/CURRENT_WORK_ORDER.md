@@ -1,3 +1,5 @@
+**Camera Raw development.** Add session-only Hide Photo and Show Only commands, with Show All recovery and focused save checks. [Development record](DEVLOG.md#dev-step-811) · [Qualification](SOURCE_PUBLICATION_811.md).
+
 **Camera Raw development.** Verify saving changes to photographs that are deselected or filtered out at the end of a Camera Raw session. [Development record](DEVLOG.md#dev-step-810) · [Qualification](SOURCE_PUBLICATION_810.md).
 
 **Camera Raw development.** Refresh developed thumbnails from the existing RAW preview and qualify photos with no embedded thumbnail. [Development record](DEVLOG.md#dev-step-809) · [Qualification](SOURCE_PUBLICATION_809.md).

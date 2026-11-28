@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 811 — Save deselected Camera Raw edits when closing with Done
+
+Done saves the changed photos across the Camera Raw session, including photos currently deselected or filtered out. Photato leaves files with unchanged settings and marks untouched.
+
+Adobe Camera Raw 18.1.1 wrote a four-star rating and a red label to an owned DNG after a different photo was selected. The selected, unedited original was byte-identical. A Photato test reproduced those XMP values when a filter left no visible selection and verified the original sensor payload and unedited file bytes.
+
+The live Adobe comparison tested Done and inspected both file hashes and XMP fields after closing the dialog. [Adobe Camera Raw save workflow](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
+
+Xcode built the app and all twenty-two focused application tests passed. Both optimized architectures passed all 399 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+Open Image and Open as Object have their existing selected-photo behavior. Adobe’s persistence rules for deselected photos when opening images, and the dedicated Hide Photo controls, still need separate qualification.
+
+[Development record](DEVLOG.md#dev-step-811) · [Qualification](SOURCE_PUBLICATION_811.md).
+
 ## 2026-11-28 — Step 810 — Refresh Camera Raw thumbnails from developed photos
 
 The filmstrip and Grid can show a thumbnail from the developed preview. Selecting a DNG with no usable embedded thumbnail fills both views after preview rendering. Thumbnails for the active draft update after an adjustment.
@@ -2851,11 +2865,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:810 -->
+<!-- current-status-step:811 -->
 
-The filmstrip and Grid can show a thumbnail from the developed preview. Selecting a DNG with no usable embedded thumbnail fills both views after preview rendering. Thumbnails for the active draft update after an adjustment.
+Done saves the changed photos across the Camera Raw session, including photos currently deselected or filtered out. Photato leaves files with unchanged settings and marks untouched.
 
-[Development record](DEVLOG.md#dev-step-810) · [Qualification](SOURCE_PUBLICATION_810.md).
+[Development record](DEVLOG.md#dev-step-811) · [Qualification](SOURCE_PUBLICATION_811.md).
 
 <!-- current-status:end -->
 
@@ -3872,6 +3886,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 808 | [Inspect and sort Camera Raw photo metadata](DEVLOG.md#dev-step-808) |
 | 2026-11-28 | 809 | [Browse and edit photos in Camera Raw Grid](DEVLOG.md#dev-step-809) |
 | 2026-11-28 | 810 | [Refresh Camera Raw thumbnails from developed photos](DEVLOG.md#dev-step-810) |
+| 2026-11-28 | 811 | [Save deselected Camera Raw edits when closing with Done](DEVLOG.md#dev-step-811) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

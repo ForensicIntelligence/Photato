@@ -614,7 +614,7 @@ struct RawFilmstripFinishControls: View {
       Button("Redo", action: workspace.redoEdit).keyboardShortcut("z", modifiers: [.command, .shift]).disabled(!workspace.canRedo)
       Button("Cancel", action: workspace.close).keyboardShortcut(.cancelAction).disabled(workspace.finishing)
       Button("Done") { workspace.finish(nil) }.disabled(!workspace.canWrite)
-        .help("Save the selected photos’ Camera Raw settings.")
+        .help("Save changes to the originals or their XMP sidecars and close Camera Raw.")
       let mode = RawOpenShortcuts.mode(for: modifiers, defaultAsObject: workspace.defaultOpenAsObject)
       HStack(spacing: 4) {
         Button(mode.title) { workspace.finish(mode) }.keyboardShortcut(.defaultAction)

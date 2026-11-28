@@ -172,10 +172,15 @@ private struct RawFilmstripView: View {
               Button("Clear Filters") { workspace.clearFilters() }
             } else { Text("Select a photo") }
           }
-          Button("Cancel") { workspace.close() }.keyboardShortcut(.cancelAction)
-            .disabled(workspace.finishing)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        Divider()
+        HStack {
+          Spacer()
+          RawFilmstripFinishControls(workspace: workspace, openingEnabled: false, showsSave: false)
+        }
+        .controlSize(.small)
+        .padding(10)
       }
       if let progress = workspace.progress, workspace.editor != nil {
         ProgressView(progress).controlSize(.small).padding(.bottom, 8)

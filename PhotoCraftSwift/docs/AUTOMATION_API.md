@@ -1,3 +1,9 @@
+### Camera Raw session save (checkpoint 811)
+
+The authenticated source-settings API continues to save the explicitly authorized single RAW source. The change applies to Done in the native multi-photo workspace.
+
+[Qualification](SOURCE_PUBLICATION_811.md).
+
 ### Camera Raw thumbnails (checkpoint 810)
 
 The thumbnail is a desktop preview. The existing RAW development API continues to use the same editing and rendering path.
