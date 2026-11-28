@@ -25,6 +25,39 @@ public enum RawSourceIO {
     public let lensCorrectionSupported: Bool, highlightRecoverySupported: Bool
     public let lensCorrectionEnabled: Bool, highlightRecoveryEnabled: Bool
   }
+  fileprivate struct SensorKey: Equatable, Sendable {
+    let data: Data
+    let depth: PixelDepth
+    let decoderVersion: String?
+    let values: [UInt32?]
+    let lensCorrection: Bool?
+    let highlightRecovery: Bool?
+
+    init(data: Data, depth: PixelDepth, settings: RawDevelopment) {
+      self.data = data
+      self.depth = depth
+      decoderVersion = settings.decoderVersion
+      values = [settings.temperature?.bitPattern, settings.tint?.bitPattern,
+        settings.exposure.bitPattern, settings.boost.bitPattern, settings.shadowBoost.bitPattern,
+        settings.extendedRange.bitPattern]
+      lensCorrection = settings.lensCorrection
+      highlightRecovery = settings.highlightRecovery
+    }
+  }
+
+  /// Immutable samples before the RGB adjustments and document profile conversion.
+  package final class SensorRaster: Sendable {
+    fileprivate let key: SensorKey
+    fileprivate let pixels: Surface
+    package let info: Info
+
+    fileprivate init(key: SensorKey, pixels: Surface, info: Info) {
+      self.key = key
+      self.pixels = pixels
+      self.info = info
+    }
+  }
+
   public static func type(_ data: Data) -> String? {
     guard let source = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary),
       let type = CGImageSourceGetType(source) as String? else { return nil }
@@ -185,9 +218,26 @@ public enum RawSourceIO {
   }
 
   public static func render(_ data: Data,settings requested: RawDevelopment,depth: PixelDepth) throws -> (Surface,RawDevelopment,Info) {
+    let (pixels, settings, sensor) = try develop(data, settings: requested, depth: depth, reusing: nil)
+    return (pixels, settings, sensor.info)
+  }
+
+  private static func develop(_ data: Data, settings requested: RawDevelopment, depth: PixelDepth,
+    reusing previous: SensorRaster?) throws -> (Surface, RawDevelopment, SensorRaster) {
     try requested.validate()
-    let (raw,info) = try decoder(data,version:requested.decoderVersion)
-    var settings = requested; settings.decoderVersion = info.decoderVersion
+    try Task.checkCancellation()
+    let key = SensorKey(data: data, depth: depth, settings: requested)
+    let sensor = try (previous?.key == key ? previous : nil) ?? readSensor(key, settings: requested)
+    var settings = requested
+    settings.decoderVersion = sensor.info.decoderVersion
+    let pixels = try CameraRawEngine.develop(sensor.pixels, settings: settings.adjustments,
+      maximumPixels: maximumPixels)
+    return (pixels, settings, sensor)
+  }
+
+  private static func readSensor(_ key: SensorKey, settings: RawDevelopment) throws -> SensorRaster {
+    let (raw, info) = try decoder(key.data, version: key.decoderVersion)
+    let depth = key.depth
     if let temperature = settings.temperature { raw.neutralTemperature = temperature }
     if let tint = settings.tint { raw.neutralTint = tint }
     raw.exposure = settings.exposure; raw.boostAmount = settings.boost; raw.boostShadowAmount = settings.shadowBoost
@@ -223,18 +273,25 @@ public enum RawSourceIO {
       } }
     }
     try Task.checkCancellation()
-    pixels = try CameraRawEngine.develop(pixels,settings:settings.adjustments,maximumPixels:maximumPixels)
-    return (pixels,settings,info)
+    return SensorRaster(key: key, pixels: pixels, info: info)
   }
+
   public static func command(in document: CraftDocument,layerID: UUID,settings: RawDevelopment,allInstances: Bool = true) throws -> Command {
+    try developmentCommand(in: document, layerID: layerID, settings: settings,
+      allInstances: allInstances, reusing: nil).command
+  }
+
+  package static func developmentCommand(in document: CraftDocument, layerID: UUID, settings: RawDevelopment,
+    allInstances: Bool = true, reusing previous: SensorRaster?) throws -> (command: Command, sensor: SensorRaster) {
     guard let layer = document.layers.first(where: { $0.id == layerID }),var object = layer.smartObject,object.rawDevelopment != nil,
       !document.isImageLocked(layerID) else { throw CraftError.invalid("Select an unlocked RAW Smart Object.") }
-    let (decoded,resolved,_) = try render(object.data,settings:settings,depth:document.depth)
+    let (decoded, resolved, sensor) = try develop(object.data, settings: settings,
+      depth: document.depth, reusing: previous)
     var source = try CraftDocument(width:decoded.width,height:decoded.height,depth:document.depth)
     source.layers[0].content = .raster(decoded)
     let pixels = try ColorManagement.converted(decoded,from:source,to:document)
     if !allInstances { object.sourceID = UUID() }
     object.rawDevelopment = resolved; object.width = decoded.width; object.height = decoded.height
-    return .replaceSmartObject(layerID,object,pixels,preserveSize:true,allInstances:allInstances)
+    return (.replaceSmartObject(layerID, object, pixels, preserveSize: true, allInstances: allInstances), sensor)
   }
 }

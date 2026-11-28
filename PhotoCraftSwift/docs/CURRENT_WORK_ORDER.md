@@ -1,3 +1,5 @@
+**Camera Raw RAW workflow.** Verify Camera Raw defaults, Camera Raw Open routing and support for opening a batch of originals. [Development record](DEVLOG.md#dev-step-793) · [Qualification](SOURCE_PUBLICATION_793.md).
+
 **Camera Raw RAW workflow.** Avoid redundant sensor processing between Camera Raw previews and verify Camera Raw defaults and Open routing. [Development record](DEVLOG.md#dev-step-792) · [Qualification](SOURCE_PUBLICATION_792.md).
 
 **Camera Raw RAW workflow.** Improve preview responsiveness while Camera Raw develops exposure changes, and verify Camera Raw defaults and Open routing. [Development record](DEVLOG.md#dev-step-791) · [Qualification](SOURCE_PUBLICATION_791.md).

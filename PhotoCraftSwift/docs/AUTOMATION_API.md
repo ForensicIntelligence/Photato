@@ -1,3 +1,9 @@
+### Camera Raw sensor reuse (checkpoint 793)
+
+The editor uses the same native RAW development transaction as the Photato API. Adobe-compatible and Photato requests retain their existing results and contracts. The cache belongs to the Camera Raw workspace and is not persisted or shared across API requests.
+
+[Qualification](SOURCE_PUBLICATION_793.md).
+
 ### Camera Raw light adjustment performance (checkpoint 792)
 
 Camera Raw Filter, the Photato RAW development command, and applicable Adobe-compatible edits use the same native kernel. The optimized path preserves stored samples, alpha, and HTTP contracts.

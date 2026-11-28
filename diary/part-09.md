@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-28 — Step 793 — Reuse the decoded sensor in Camera Raw
+
+Repeated RGB adjustments can reuse the native sensor raster from the current Camera Raw workspace. Open and OK can reuse those samples before applying the same development command and document color conversion.
+
+Three full Nikon D70s arm64 Debug trials measured median command preparation of 2.64 seconds with the same sensor raster and 6.38 seconds with a fresh decode. The processed command output, Float32 composite, and RGBA8 display bytes matched. The signed app made two exposure changes and opened the result as a 3,008 × 2,000 RGB16 document with the original NEF embedded.
+
+Xcode built the app and all three focused app tests passed, including color-managed masked output, exact cache key requirements, cancellation and history. Both optimized architectures passed all 356 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The benchmark covers command preparation in Debug. The first sensor decode and edits to sensor controls still require Core Image processing. Rendered Adobe equivalence and the 60 fps editing target remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-793) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_793.md).
+
 ## 2026-11-28 — Step 792 — Faster Camera Raw exposure and color temperature
 
 The Camera Raw engine applies exposure, relative color temperature and tint together in one tile pass for eligible RGB8 and RGB16 images. It reuses exact gain calculations for integer sample codes and evaluates other retained samples with the original arithmetic.

@@ -140,8 +140,9 @@ struct CameraRawSheet: View {
     store.initialRawDocument = nil
     store.filterDraft?.filter.cameraRaw = model.settings
     store.filterDraft?.rawDevelopment = model.sensorSettings
+    let sensor = model.sensorRaster
     model.close()
-    store.commitFilter()
+    store.commitFilter(reusingRawSensor: sensor)
   }
 
   private func saveSource(_ document: CraftNSDocument, authorizedFolder: URL? = nil) {

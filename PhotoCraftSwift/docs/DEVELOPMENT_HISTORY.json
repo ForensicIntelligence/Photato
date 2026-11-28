@@ -10800,6 +10800,13 @@
       "link": "DEVLOG.md#dev-step-792",
       "section_sha256": "058d0221e14896cefe1ae157eb7561266a3e303271c6a6458016eae20ccdb0e0",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-793",
+      "title": "2026-11-28 \u2014 Step 793 \u2014 Reuse the decoded sensor in Camera Raw",
+      "link": "DEVLOG.md#dev-step-793",
+      "section_sha256": "7ffb8f868b6b4124b85c1dc1b79f68f79eab11d883d30b246cd770f76519b018",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13635,8 +13642,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "e16b5df2b045e99899a7cf7125db98b022be6820ae54d0c734dec7b9ad340ed5",
-      "bytes": 189196,
+      "sha256": "e1755334851eaa57cf5b698ac6f216ed5677f4d9f46efba37295d49eb3b3f6ec",
+      "bytes": 189313,
       "rolling_current_snapshot": false
     },
     {
@@ -15357,8 +15364,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "e58b4796c6122a98f774d0c5021d5d0bd8d99bbf425c6effd31ba4c4c3c8ddb7",
-      "bytes": 755737,
+      "sha256": "b85503af29d4722b9f29328c5c8335a8dd2e001905ee1d64ccbd93ca6a448e56",
+      "bytes": 756090,
       "rolling_current_snapshot": false
     },
     {
@@ -15927,8 +15934,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "8b0b20b249e540440f47a20f3d97b8646f7bd6d4ef6890d630d45955fe6a881c",
-      "bytes": 401975,
+      "sha256": "a953de15e403c54ea3c87394cabe772750c49ab83d9d852d7775be603b9482cb",
+      "bytes": 402109,
       "rolling_current_snapshot": false
     },
     {
@@ -16047,8 +16054,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "709c694fe0f9819e2a28040a7b65505cfa8b71cdbf64f869ebfbd7d5be7283b8",
-      "bytes": 228882,
+      "sha256": "279914a2a9977490bbf4bef37f20ab3a0b225b00cc5dd5ddfbf2318be3383c97",
+      "bytes": 229102,
       "rolling_current_snapshot": false
     },
     {
@@ -16125,14 +16132,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "a8afd422109ea0963ac328b8a452f97b64bbffb9d5f5a1ba22e6e84c11622d28",
-      "bytes": 1080762,
+      "sha256": "4208de7a83ac3e23ee4a77df2ad066bcedfbc650e067aefee8138919df399afe",
+      "bytes": 1082048,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "f5775351f488643cbeb9003c62c1a5062f6547118706b8868e94a95c34c6c596",
-      "bytes": 5222194,
+      "sha256": "0bed6fb16eae00077d1fb35bc380241cf91aa12a427989a3690147c7a9e0a4c8",
+      "bytes": 5224295,
       "rolling_current_snapshot": false
     },
     {
@@ -23846,6 +23853,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_793.json",
+      "sha256": "b02c4bf38bdf4bac93cf31c040a6520ead53a7ee738e6e3fd22e42404f5d3d2b",
+      "bytes": 15556,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_793.md",
+      "sha256": "a0dc48cfff655c96da7a989335f639625963484a999799d951434f2f30c38603",
+      "bytes": 1706,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24405,8 +24424,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "be1babc9902c37cade8ed4c3b10d54f63952c76c1192e41832d49ea79b18eaaf",
-      "bytes": 514167,
+      "sha256": "6bedc2339217bc79581a2b1d387586ee7574810ed560c873beef189f10efb556",
+      "bytes": 514742,
       "rolling_current_snapshot": false
     },
     {
@@ -26919,8 +26938,8 @@
     }
   ],
   "counts": {
-    "milestones": 792,
-    "evidence_files": 2216,
+    "milestones": 793,
+    "evidence_files": 2218,
     "logs": 0,
     "missing_explicit_references": 704
   }

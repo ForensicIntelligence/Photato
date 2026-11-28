@@ -21,22 +21,44 @@ import PhotoCraftImaging
   var error: String?
   var task: Task<Void,Never>?
   var onChange: ((CameraRawSettings) -> Void)?
+  @ObservationIgnored private(set) var sensorRaster: RawSourceIO.SensorRaster?
   private var document: CraftDocument?
   private var draft: FilterDraft?
   private var generation = 0
   private var closed = false
   private var sliderStart: Snapshot?
-  var ready: Bool { image != nil && !rendering && error == nil }
-  func prepare(document: CraftDocument,draft: FilterDraft) async {
-    self.document = document; self.draft = draft; closed = false; settings = draft.filter.cameraRaw ?? .init()
+  var ready: Bool { !closed && image != nil && !rendering && error == nil }
+
+  func prepare(document: CraftDocument, draft: FilterDraft) async {
+    task?.cancel()
+    generation += 1
+    let token = generation
+    self.document = document
+    self.draft = draft
+    closed = false
+    settings = draft.filter.cameraRaw ?? .init()
     sensorSettings = draft.rawDevelopment
-    if let object = document.layers.first(where: { $0.id == draft.id })?.smartObject,object.rawDevelopment != nil {
+    sensorInfo = nil
+    sensorRaster = nil
+    image = nil
+    originalImage = nil
+    if let object = document.layers.first(where: { $0.id == draft.id })?.smartObject,
+      object.rawDevelopment != nil {
       do {
-        let worker = Task.detached { try RawSourceIO.inspect(object.data,decoderVersion:object.rawDevelopment?.decoderVersion) }
-        sensorInfo = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
-      } catch { self.error = error.localizedDescription; return }
+        let worker = Task.detached { try RawSourceIO.inspect(object.data, decoderVersion: object.rawDevelopment?.decoderVersion) }
+        let info = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+        try Task.checkCancellation()
+        guard !closed, token == generation else { return }
+        sensorInfo = info
+      } catch {
+        guard !closed, token == generation, !Task.isCancelled else { return }
+        self.error = error.localizedDescription
+        rendering = false
+        return
+      }
     }
-    refresh(); await task?.value
+    refresh()
+    await task?.value
   }
   func change(_ value: CameraRawSettings,remember: Bool = true) {
     do { try value.validate() } catch { self.error = error.localizedDescription; return }
@@ -91,12 +113,15 @@ import PhotoCraftImaging
     task?.cancel(); generation += 1; let token = generation
     draft.filter.cameraRaw = settings; draft.rawDevelopment = sensorSettings
     let request = draft, needsOriginal = originalImage == nil
+    let cachedSensor = sensorRaster
     rendering = true; error = nil
     task = Task {
       do {
         try await Task.sleep(for:.milliseconds(80))
-        let worker = Task.detached(priority:.userInitiated) { () throws -> (CGImage,CGImage?,[[Float]],RawSourceIO.Info?) in
-          var edited = document; try request.command(in:document).apply(to:&edited)
+        let worker = Task.detached(priority: .userInitiated) {
+          let prepared = try request.preparedCommand(in: document, reusing: cachedSensor)
+          var edited = document
+          try prepared.command.apply(to: &edited)
           let pixels = try Renderer.composite(edited)
           let before = needsOriginal ? try ColorManagement.displayImage(Renderer.composite(document),in:document) : nil
           var bins = [[Float]](repeating:[Float](repeating:0,count:256),count:3)
@@ -107,15 +132,19 @@ import PhotoCraftImaging
           } }
           let maximum = max(1,bins.flatMap { $0 }.max() ?? 1)
           bins = bins.map { $0.map { $0/maximum } }
-          let object = edited.layers.first(where: { $0.id == request.id })?.smartObject
-          let info = request.rawDevelopment != nil && object != nil ? try RawSourceIO.inspect(object!.data,decoderVersion:object?.rawDevelopment?.decoderVersion) : nil
-          return (try ColorManagement.displayImage(pixels,in:document),before,bins,info)
+          return (image: try ColorManagement.displayImage(pixels, in: document),
+            original: before, histogram: bins, sensor: prepared.sensor)
         }
         let result = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
         try Task.checkCancellation(); guard !closed, token == generation else { return }
-        image = result.0; if let before = result.1 { originalImage = before }; histogram = result.2; if let info = result.3 { sensorInfo = info }; rendering = false
+        image = result.image
+        if let before = result.original { originalImage = before }
+        histogram = result.histogram
+        sensorRaster = result.sensor
+        if let sensor = result.sensor { sensorInfo = sensor.info }
+        rendering = false
       } catch { guard !closed, token == generation else { return }; rendering = false; if !Task.isCancelled { self.error = error.localizedDescription } }
     }
   }
-  func close() { closed = true; generation += 1; task?.cancel(); task = nil; rendering = false; onChange = nil; onSensorChange = nil }
+  func close() { closed = true; generation += 1; task?.cancel(); task = nil; sensorRaster = nil; rendering = false; onChange = nil; onSensorChange = nil }
 }

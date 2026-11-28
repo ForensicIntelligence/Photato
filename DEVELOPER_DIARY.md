@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **792** · The 10 most recent entries, newest first.
+Source build **793** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 793 — Reuse the decoded sensor in Camera Raw
+
+Repeated RGB adjustments can reuse the native sensor raster from the current Camera Raw workspace. Open and OK can reuse those samples before applying the same development command and document color conversion.
+
+Three full Nikon D70s arm64 Debug trials measured median command preparation of 2.64 seconds with the same sensor raster and 6.38 seconds with a fresh decode. The processed command output, Float32 composite, and RGBA8 display bytes matched. The signed app made two exposure changes and opened the result as a 3,008 × 2,000 RGB16 document with the original NEF embedded.
+
+Xcode built the app and all three focused app tests passed, including color-managed masked output, exact cache key requirements, cancellation and history. Both optimized architectures passed all 356 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The benchmark covers command preparation in Debug. The first sensor decode and edits to sensor controls still require Core Image processing. Rendered Adobe equivalence and the 60 fps editing target remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-793) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_793.md).
 
 ## 2026-11-28 — Step 792 — Faster Camera Raw exposure and color temperature
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 8 focused imaging and 5 focused app and HTTP tes
 The active Quick Mask comparisons cover owned RGB16 references with and without composite opacity. Flattened copies omit the temporary mask. Whole-file equality, other Photoshop color and depth combinations, and a multi-gigabyte editable layer payload still need independent comparison.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-784) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_784.md).
-
-## 2026-11-27 — Step 783 — Match Photoshop RGB16 TIFF white-matte samples
-
-Save Transparency off now uses Photoshop’s RGB16 working grid for aligned Normal raster layers. Layer opacity is promoted before compositing. The white matte is applied to the merged image, and layered output keeps the original editable RGB16 pixels and opacity.
-
-Independent libtiff decoding matched all 82,557 distinct RGB16 samples in two Photoshop 27.2 patterned files and the earlier spot-only copy. The latter also matched all 2,881 spot samples. The patterned files match through classic and BigTIFF output, including the tested planar ZIP variant. A separate opaque Debug benchmark saved byte-identical files and took 15.60 seconds versus 25.62 seconds on the same host.
-
-Xcode built the native app. All 7 focused imaging and 4 focused app and HTTP tests passed. Both optimized architectures passed all 301 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-The measured path covers aligned Normal RGB16 raster layers without masks. Other blend modes, masks, transformed or grouped layers, and full Photoshop file serialization still require independent comparison.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-783) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_783.md).
