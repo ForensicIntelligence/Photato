@@ -19,7 +19,7 @@ extension RawSourceIO {
     return try rawData.map { try compatibleStoredSettings(settings, in: $0) } ?? settings
   }
 
-  static func relatedXMP(for rawURL: URL, requireAdjustments: Bool = true) throws -> RelatedXMP? {
+  static func relatedXMP(for rawURL: URL, requireAdjustments: Bool = true, includeMarking: Bool = false) throws -> RelatedXMP? {
     guard rawURL.isFileURL, rawURL.pathExtension.lowercased() != "xmp" else { return nil }
     let stem = rawURL.deletingPathExtension()
     for fileExtension in ["xmp", "XMP"] {
@@ -34,7 +34,7 @@ extension RawSourceIO {
             let packet = try? source.bytes(at: 0, count: source.count),
             (try? source.validateUnchanged()) != nil else { return }
           let settings = try? CameraRawXMP.readStored(packet)
-          if requireAdjustments, settings == nil { return }
+          if requireAdjustments, settings == nil, !includeMarking || RawPhotoMarking.read(packet).isEmpty { return }
           result = RelatedXMP(url: url, data: packet, settings: settings)
         }
         if let error { throw error }

@@ -65,14 +65,15 @@ extension CraftNSDocument {
     return object.data == localRawSource.retainedBytes
   }
 
-  func saveRawSourceSettings(layerID: UUID, settings: RawDevelopment, authorizedFolder: URL? = nil) async throws {
+  func saveRawSourceSettings(layerID: UUID, settings: RawDevelopment, authorizedFolder: URL? = nil, markingOnly: Bool = false) async throws {
     guard !fileOperationBusy, closeWorkflowID == nil, !recoveryWriteBusy,
       let localRawSource, canSaveRawSourceSettings(layerID: layerID)
     else { throw CraftError.invalid("Choose the original layer of a locally opened Camera Raw document.") }
     try Task.checkCancellation()
+    let marking = try RawPhotoMarking.read(in: store.document)
     fileOperationBusy = true
     let worker = Task.detached(priority: .userInitiated) {
-      try localRawSource.original.save(settings: settings, authorizedFolder: authorizedFolder)
+      try localRawSource.original.save(settings: markingOnly ? nil : settings, marking: marking, authorizedFolder: authorizedFolder)
     }
     rawSettingsSaveTask = worker
     defer {

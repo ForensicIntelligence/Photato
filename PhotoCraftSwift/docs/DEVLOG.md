@@ -825,7 +825,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 804 | 2026-11-28 | [Apply Dehaze to full-size Camera Raw images](#dev-step-804) |
 | 805 | 2026-11-28 | [Open and synchronize multiple Camera Raw photos](#dev-step-805) |
 | 806 | 2026-11-28 | [Save multiple developed Camera Raw images](#dev-step-806) |
+| 807 | 2026-11-28 | [Rate and filter Camera Raw photos](#dev-step-807) |
 <!-- history-index:end -->
+
+<a id="dev-step-807"></a>
+
+## 2026-11-28 — Step 807 — Rate and filter Camera Raw photos
+
+The Camera Raw filmstrip can rate, label, sort and filter its photos. Number keys assign stars and color labels. A rating or label can use the existing XMP sidecar or an embedded DNG packet. Rating-only saves preserve Camera Raw adjustments.
+
+Use the two XMP Basic properties. Preserve the explicit empty label when a sidecar clears an embedded label. A rating-only save bypasses the Camera Raw settings writer.
+
+Adobe Camera Raw 18.1.1 stored four stars and Red on both selected DNGs. Photato’s native window displayed those marks and filtered out the unmarked photo. A separate embedded DNG round trip wrote the same XMP values and preserved the sensor payload and every developed Photato sample.
+
+The tested XMP values agree with the live Adobe reference. [Adobe Camera Raw keyboard shortcuts](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/default-keyboard-shortcuts.html).
+
+Authenticated `raw.markPhoto` edits a single-original shared document’s XMP rating or label through native Undo. `raw.inspect` reports it, and `raw.saveSourceSettings` accepts `photoMarkingOnly` for an authorized metadata-only write.
+
+Xcode built the app. All sixteen focused application tests passed. The new cases cover filtering, Undo and Redo, clearing an inherited label, retaining unrelated metadata, and the authenticated source-settings save. Both optimized architectures passed all 393 selected cases. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+The native test checked reopening and filtering. The embedded save was verified separately through the native RAW engine. Grid, Stacks and the full Adobe renderer and export-byte comparison remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 79,484,079 bytes with SHA-256 `cce5a596a62d3bc3042d717d3d507dcc6fec32a6ae6fcb447941fb12ae61463d`.
+
+[Qualification](SOURCE_PUBLICATION_807.md).
 
 <a id="dev-step-806"></a>
 

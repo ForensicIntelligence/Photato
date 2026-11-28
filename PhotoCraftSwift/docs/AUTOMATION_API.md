@@ -1,3 +1,9 @@
+### Camera Raw rating and color labels (checkpoint 807)
+
+Authenticated `raw.markPhoto` edits a single-original shared document’s XMP rating or label through native Undo. `raw.inspect` reports it, and `raw.saveSourceSettings` accepts `photoMarkingOnly` for an authorized metadata-only write.
+
+[Qualification](SOURCE_PUBLICATION_807.md).
+
 ### Camera Raw batch export (checkpoint 806)
 
 Authenticated `raw.exportBatch` develops the selected embedded RAW layers and returns a ZIP. It uses the same output and encoding options as the desktop and keeps the shared document and its Undo history intact. The API checks transfer permission, revision and the ZIP budget.

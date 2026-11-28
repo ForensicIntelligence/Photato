@@ -10,6 +10,7 @@ import SwiftUI
     let original: RawSourceIO.LocalOriginal
     let thumbnail: CGImage?
     var settings: RawDevelopment
+    var marking: RawPhotoMarking
     var name: String { original.url.lastPathComponent }
   }
 
@@ -18,8 +19,18 @@ import SwiftUI
     let store: EditorStore
   }
 
+  private struct Draft: Equatable {
+    let settings: RawDevelopment
+    let marking: RawPhotoMarking
+
+    init(_ photo: Photo) {
+      settings = photo.settings
+      marking = photo.marking
+    }
+  }
+
   private struct Edit {
-    let settings: [UUID: RawDevelopment]
+    let values: [UUID: Draft]
   }
 
   @ObservationIgnored private weak var controller: CraftDocumentController?
@@ -29,6 +40,10 @@ import SwiftUI
   @ObservationIgnored private var approvedFolders: [URL: URL] = [:]
   @ObservationIgnored private var onClose: (() -> Void)?
   private(set) var photos: [Photo] = []
+  var order: RawFilmstripOrder = .opening
+  var reverseOrder = false
+  private(set) var ratingFilter = RawFilmstripRatingFilter.all
+  private(set) var labelFilters: Set<RawFilmstripLabel> = []
   private(set) var activeID: UUID?
   private(set) var selection: Set<UUID> = []
   private var anchor: UUID?
@@ -43,6 +58,24 @@ import SwiftUI
   var error: String?
   var progress: String?
   private(set) var exportStatus: String?
+  var displayedPhotos: [Photo] {
+    let matching = photos.filter { photo in
+      ratingFilter.includes(photo.marking.rating) &&
+        (labelFilters.isEmpty || labelFilters.contains(RawFilmstripLabel(marking: photo.marking)))
+    }
+    let sorted: [Photo]
+    switch order {
+    case .opening: sorted = matching
+    case .name: sorted = matching.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+    case .rating: sorted = matching.sorted { ($0.marking.rating ?? 0) < ($1.marking.rating ?? 0) }
+    case .label:
+      sorted = matching.sorted {
+        ($0.marking.label ?? "").localizedStandardCompare($1.marking.label ?? "") == .orderedAscending
+      }
+    }
+    return reverseOrder ? Array(sorted.reversed()) : sorted
+  }
+
   var canUndo: Bool { !undo.isEmpty }
   var canRedo: Bool { !redo.isEmpty }
   var activeSettings: RawDevelopment? { photos.first { $0.id == activeID }?.settings }
@@ -77,7 +110,8 @@ import SwiftUI
           let access = url.startAccessingSecurityScopedResource()
           defer { if access { url.stopAccessingSecurityScopedResource() } }
           let original = try RawSourceIO.prepareLocalOriginal(url, dngStorage: storage, rawDefaults: defaults)
-          return Photo(id: UUID(), original: original, thumbnail: original.thumbnail(), settings: original.settings)
+          return Photo(id: UUID(), original: original, thumbnail: original.thumbnail(),
+            settings: original.settings, marking: original.marking)
         }
         do {
           let photo = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
@@ -97,9 +131,10 @@ import SwiftUI
   }
 
   func select(_ id: UUID, extending: Bool = false, toggling: Bool = false) {
-    guard !busy, !closed, let index = photos.firstIndex(where: { $0.id == id }) else { return }
-    if extending, let anchor, let start = photos.firstIndex(where: { $0.id == anchor }) {
-      let range = Set(photos[min(index, start)...max(index, start)].map(\.id))
+    let displayed = displayedPhotos
+    guard !busy, !closed, let index = displayed.firstIndex(where: { $0.id == id }) else { return }
+    if extending, let anchor, let start = displayed.firstIndex(where: { $0.id == anchor }) {
+      let range = Set(displayed[min(index, start)...max(index, start)].map(\.id))
       selection = toggling ? selection.union(range) : range
     } else if toggling {
       anchor = id
@@ -118,7 +153,7 @@ import SwiftUI
 
   func selectAll() {
     guard !busy else { return }
-    selection = Set(photos.map(\.id))
+    selection = Set(displayedPhotos.map(\.id))
   }
 
   func selectActive() {
@@ -128,12 +163,78 @@ import SwiftUI
 
   func navigate(_ step: Int) {
     guard !busy, let activeID else { return }
-    let candidates = selection.count > 1 ? photos.filter { selection.contains($0.id) } : photos
+    let displayed = displayedPhotos
+    let candidates = selection.count > 1 ? displayed.filter { selection.contains($0.id) } : displayed
     guard let index = candidates.firstIndex(where: { $0.id == activeID }),
       candidates.indices.contains(index + step) else { return }
     let id = candidates[index + step].id
     if selection.count == 1 { select(id) }
     else { activate(id) }
+  }
+
+  func selectRated() {
+    guard !busy, !closed else { return }
+    let rated = displayedPhotos.filter { ($0.marking.rating ?? 0) > 0 }
+    selection = Set(rated.map(\.id))
+    reconcileFilter(selectFirst: false)
+  }
+
+  func setRating(_ rating: Int) {
+    guard (0...5).contains(rating) else { return }
+    editMarking { $0.rating = rating }
+  }
+
+  func changeRating(_ step: Int) {
+    editMarking { $0.rating = min(5, max(0, ($0.rating ?? 0) + step)) }
+  }
+
+  func setLabel(_ label: RawFilmstripLabel) {
+    guard label != .other else { return }
+    editMarking { $0.label = label == .none ? "" : label.rawValue }
+  }
+
+  private func editMarking(_ change: (inout RawPhotoMarking) -> Void) {
+    guard !busy, !closed, !selection.isEmpty else { return }
+    let snapshot = selectedEdit
+    for index in photos.indices where selection.contains(photos[index].id) {
+      change(&photos[index].marking)
+    }
+    record(snapshot)
+    reconcileFilter()
+  }
+
+  func setRatingFilter(_ filter: RawFilmstripRatingFilter) {
+    ratingFilter = filter
+    reconcileFilter()
+  }
+
+  func toggleLabelFilter(_ label: RawFilmstripLabel) {
+    if labelFilters.contains(label) { labelFilters.remove(label) } else { labelFilters.insert(label) }
+    reconcileFilter()
+  }
+
+  func clearFilters() {
+    ratingFilter = .all
+    labelFilters.removeAll()
+    reconcileFilter()
+  }
+
+  private func reconcileFilter(selectFirst: Bool = true) {
+    let displayed = displayedPhotos
+    selection.formIntersection(displayed.map(\.id))
+    if let activeID, selection.contains(activeID) { return }
+    if let next = displayed.first(where: { selection.contains($0.id) }) ?? (selectFirst ? displayed.first : nil) {
+      selection.insert(next.id)
+      anchor = next.id
+      activate(next.id)
+    } else {
+      activeID = nil
+      anchor = nil
+      editor?.store.renderTask?.cancel()
+      previewTask?.cancel()
+      editor = nil
+      loadingPreview = false
+    }
   }
 
   func waitUntilIdle() async {
@@ -149,7 +250,7 @@ import SwiftUI
     editor = nil
     loadingPreview = true
     previewTask = Task { [weak self] in
-      let worker = Task.detached(priority: .userInitiated) { try photo.original.document(settings: photo.settings) }
+      let worker = Task.detached(priority: .userInitiated) { try photo.original.document(settings: photo.settings, marking: photo.marking) }
       do {
         let document = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
         try Task.checkCancellation()
@@ -170,8 +271,8 @@ import SwiftUI
   }
 
   private var selectedEdit: Edit {
-    Edit(settings: Dictionary(uniqueKeysWithValues:
-      photos.filter { selection.contains($0.id) }.map { ($0.id, $0.settings) }))
+    Edit(values: Dictionary(uniqueKeysWithValues:
+      photos.filter { selection.contains($0.id) }.map { ($0.id, Draft($0)) }))
   }
 
   func slider(_ editing: Bool) {
@@ -213,7 +314,7 @@ import SwiftUI
   }
 
   private func record(_ previous: Edit) {
-    guard photos.contains(where: { photo in previous.settings[photo.id].map { $0 != photo.settings } ?? false }) else { return }
+    guard photos.contains(where: { photo in previous.values[photo.id].map { $0 != Draft(photo) } ?? false }) else { return }
     undo.append(previous)
     if undo.count > 100 { undo.removeFirst() }
     redo.removeAll()
@@ -222,29 +323,32 @@ import SwiftUI
   func undoEdit() {
     guard !busy, let edit = undo.popLast() else { return }
     redo.append(restore(edit))
+    reconcileFilter()
   }
 
   func redoEdit() {
     guard !busy, let edit = redo.popLast() else { return }
     undo.append(restore(edit))
+    reconcileFilter()
   }
 
   private func restore(_ edit: Edit) -> Edit {
-    var inverse: [UUID: RawDevelopment] = [:]
+    var inverse: [UUID: Draft] = [:]
     for index in photos.indices {
       let id = photos[index].id
-      if let previous = edit.settings[id] {
-        inverse[id] = photos[index].settings
-        photos[index].settings = previous
+      if let previous = edit.values[id] {
+        inverse[id] = Draft(photos[index])
+        photos[index].settings = previous.settings
+        photos[index].marking = previous.marking
       }
     }
-    return Edit(settings: inverse)
+    return Edit(values: inverse)
   }
 
   func finish(_ mode: RawOpenMode?) {
     guard canFinish, let controller, mode != nil || canWrite else { return }
     let output = workflowOutput
-    let batch = photos.filter { selection.contains($0.id) }
+    let batch = displayedPhotos.filter { selection.contains($0.id) }
     busy = true
     finishing = true
     error = nil
@@ -261,7 +365,7 @@ import SwiftUI
           let developed: CraftDocument?
           if let mode {
             let worker = Task.detached(priority: .userInitiated) {
-              let input = try photo.original.document(settings: photo.settings)
+              let input = try photo.original.document(settings: photo.settings, marking: photo.marking)
               return try mode.output(from: input, workflow: output)
             }
             developed = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
@@ -269,7 +373,14 @@ import SwiftUI
           let source: RawSettingsSource?
           if mode == .copy { source = nil }
           else if let original = photo.original.settingsSource {
-            source = try await save(photo.settings, to: original)
+            let settingsChanged = photo.settings != photo.original.settings
+            let markingChanged = photo.marking != photo.original.marking
+            if mode == nil, !settingsChanged, !markingChanged {
+              source = original
+            } else {
+              let markingOnly = markingChanged && !settingsChanged
+              source = try await save(markingOnly ? nil : photo.settings, marking: photo.marking, to: original)
+            }
           } else { source = nil }
           try Task.checkCancellation()
           if let mode, let developed {
@@ -300,10 +411,7 @@ import SwiftUI
       if completed == Set(batch.map(\.id)), failures.isEmpty { close(); return }
       photos.removeAll { completed.contains($0.id) }
       selection.subtract(completed)
-      if let activeID, completed.contains(activeID), let first = photos.first {
-        selection.insert(first.id)
-        activate(first.id)
-      }
+      reconcileFilter()
       if !failures.isEmpty { error = failures.joined(separator: "\n") }
     }
   }
@@ -341,7 +449,7 @@ import SwiftUI
 
   func exportImages(to folder: URL, format: DocumentIO.Format, options: RasterEncodingOptions = .init()) {
     guard canFinish, RawBatchExport.formats.contains(format), folder.isFileURL else { return }
-    let batch = photos.filter { selection.contains($0.id) }
+    let batch = displayedPhotos.filter { selection.contains($0.id) }
     let workflow = workflowOutput
     busy = true
     finishing = true
@@ -357,7 +465,7 @@ import SwiftUI
         let names = batch.map { RawBatchExport.name($0.name, format: format) }
         let staged = try PreparedImageProcessorFiles.stage(parent: folder, names: names) { index, url in
           let photo = batch[index]
-          let input = try photo.original.document(settings: photo.settings)
+          let input = try photo.original.document(settings: photo.settings, marking: photo.marking)
           let prepared = try RawBatchExport.prepare(input, format: format, workflow: workflow, options: options)
           try prepared.write(to: url)
         }
@@ -374,10 +482,10 @@ import SwiftUI
     }
   }
 
-  private func save(_ settings: RawDevelopment, to original: RawSettingsSource) async throws -> RawSettingsSource {
+  private func save(_ settings: RawDevelopment?, marking: RawPhotoMarking, to original: RawSettingsSource) async throws -> RawSettingsSource {
     let parent = original.url.deletingLastPathComponent().standardizedFileURL
     func write(_ folder: URL?) async throws -> RawSettingsSource {
-      let worker = Task.detached(priority: .userInitiated) { try original.save(settings: settings, authorizedFolder: folder) }
+      let worker = Task.detached(priority: .userInitiated) { try original.save(settings: settings, marking: marking, authorizedFolder: folder) }
       return try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
     }
     do { return try await write(approvedFolders[parent]) }

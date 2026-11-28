@@ -159,16 +159,18 @@ public enum CameraRawXMP {
     return try write(settings.adjustments, sensor: settings, replacing: original)
   }
 
-  static func writeStored(_ settings: RawDevelopment, replacing original: Data?, including sidecar: Data?) throws -> Data {
+  static func writeStored(_ settings: RawDevelopment, replacing original: Data?, including sidecar: Data?,
+    marking: RawPhotoMarking? = nil) throws -> Data {
     try settings.validate()
     return try write(settings.adjustments, sensor: settings, replacing: original,
-      including: sidecar, includeNativeDevelopment: true)
+      including: sidecar, includeNativeDevelopment: true, marking: marking)
   }
 
-  static func writeStoredSidecar(_ settings: RawDevelopment, replacing previous: RawSourceIO.RelatedXMP?) throws -> Data {
+  static func writeStoredSidecar(_ settings: RawDevelopment, replacing previous: RawSourceIO.RelatedXMP?,
+    marking: RawPhotoMarking? = nil) throws -> Data {
     try settings.validate()
     return try write(settings.adjustments, sensor: settings, replacing: previous?.data,
-      includeNativeDevelopment: true, preserving: previous?.settings)
+      includeNativeDevelopment: true, preserving: previous?.settings, marking: marking)
   }
 
   private static func tags(in metadata: CGImageMetadata) -> [CGImageMetadataTag] {
@@ -180,14 +182,17 @@ public enum CameraRawXMP {
       let source = CGImageMetadataCreateFromXMPData(data as CFData) else {
       throw CraftError.invalid("Could not preserve the source sidecar metadata.")
     }
-    for tag in tags(in: metadata) where CGImageMetadataTagCopyNamespace(tag) as String? == namespace {
-      guard let prefix = CGImageMetadataTagCopyPrefix(tag) as String?,
-        let name = CGImageMetadataTagCopyName(tag) as String?,
-        CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):\(name)" as CFString) else {
-        throw CraftError.invalid("Could not replace the embedded Camera Raw settings with the sidecar.")
+    let copied = tags(in: source)
+    if copied.contains(where: { CGImageMetadataTagCopyNamespace($0) as String? == namespace }) {
+      for tag in tags(in: metadata) where CGImageMetadataTagCopyNamespace(tag) as String? == namespace {
+        guard let prefix = CGImageMetadataTagCopyPrefix(tag) as String?,
+          let name = CGImageMetadataTagCopyName(tag) as String?,
+          CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):\(name)" as CFString) else {
+          throw CraftError.invalid("Could not replace the embedded Camera Raw settings with the sidecar.")
+        }
       }
     }
-    for tag in tags(in: source) {
+    for tag in copied {
       guard let namespace = CGImageMetadataTagCopyNamespace(tag),
         let prefix = CGImageMetadataTagCopyPrefix(tag),
         let name = CGImageMetadataTagCopyName(tag) as String?,
@@ -196,12 +201,19 @@ public enum CameraRawXMP {
         throw CraftError.invalid("Could not merge a source sidecar metadata field.")
       }
     }
+    if RawPhotoMarking.read(data).label == "" { try RawPhotoMarking(label: "").write(into: metadata) }
   }
 
-  private static func write(_ settings: CameraRawSettings, sensor: RawDevelopment?,
-    replacing original: Data? = nil, including sidecar: Data? = nil,
-    includeNativeDevelopment: Bool = false, preserving previous: RawDevelopment? = nil) throws -> Data {
-    try settings.validate()
+  static func writeMarking(_ marking: RawPhotoMarking, replacing original: Data?, including sidecar: Data? = nil) throws -> Data {
+    let metadata = try writableMetadata(replacing: original, including: sidecar)
+    try marking.write(into: metadata)
+    guard let packet = CGImageMetadataCreateXMPData(metadata, nil) as Data?, packet.count <= maximumBytes else {
+      throw CraftError.invalid("Could not write the photo’s XMP rating or color label.")
+    }
+    return packet
+  }
+
+  private static func writableMetadata(replacing original: Data?, including sidecar: Data?) throws -> CGMutableImageMetadata {
     let metadata: CGMutableImageMetadata
     if let original {
       guard (1...maximumBytes).contains(original.count),
@@ -210,10 +222,21 @@ public enum CameraRawXMP {
         throw CraftError.invalid("Could not preserve the original XMP metadata.")
       }
       metadata = copy
+      if RawPhotoMarking.read(original).label == "" { try RawPhotoMarking(label: "").write(into: metadata) }
     } else {
       metadata = CGImageMetadataCreateMutable()
     }
     if let sidecar { try merge(sidecar, into: metadata) }
+    return metadata
+  }
+
+  private static func write(_ settings: CameraRawSettings, sensor: RawDevelopment?,
+    replacing original: Data? = nil, including sidecar: Data? = nil,
+    includeNativeDevelopment: Bool = false, preserving previous: RawDevelopment? = nil,
+    marking: RawPhotoMarking? = nil) throws -> Data {
+    try settings.validate()
+    let metadata = try writableMetadata(replacing: original, including: sidecar)
+    if let marking { try marking.write(into: metadata) }
     let originalTags = tags(in: metadata)
     let cameraTag = originalTags.first { CGImageMetadataTagCopyNamespace($0) as String? == namespace }
     let prefix = cameraTag.flatMap { CGImageMetadataTagCopyPrefix($0) as String? } ?? Self.prefix

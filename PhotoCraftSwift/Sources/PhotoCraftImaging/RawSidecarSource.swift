@@ -27,11 +27,15 @@ public enum RawSettingsSource: Sendable {
   }
 
   public func save(settings: RawDevelopment, authorizedFolder: URL? = nil) throws -> RawSettingsSource {
+    try save(settings: settings, marking: nil, authorizedFolder: authorizedFolder)
+  }
+
+  package func save(settings: RawDevelopment?, marking: RawPhotoMarking?, authorizedFolder: URL? = nil) throws -> RawSettingsSource {
     switch self {
     case .embeddedDNG(let source):
-      return .embeddedDNG(try source.save(settings: settings, authorizedFolder: authorizedFolder))
+      return .embeddedDNG(try source.save(settings: settings, marking: marking, authorizedFolder: authorizedFolder))
     case .sidecar(let source):
-      return .sidecar(try source.save(settings: settings, authorizedFolder: authorizedFolder))
+      return .sidecar(try source.save(settings: settings, marking: marking, authorizedFolder: authorizedFolder))
     }
   }
 }
@@ -46,12 +50,21 @@ public struct RawSidecarSource: Sendable {
   }
 
   public func save(settings: RawDevelopment, authorizedFolder: URL? = nil) throws -> RawSidecarSource {
+    try save(settings: settings, marking: nil, authorizedFolder: authorizedFolder)
+  }
+
+  func save(settings: RawDevelopment?, marking: RawPhotoMarking?, authorizedFolder: URL?) throws -> RawSidecarSource {
     let folderAccess = try RawDNGSource.accessSourceFolder(authorizedFolder, source: url)
     defer { if folderAccess { authorizedFolder?.stopAccessingSecurityScopedResource() } }
     let sourceAccess = url.startAccessingSecurityScopedResource()
     defer { if sourceAccess { url.stopAccessingSecurityScopedResource() } }
 
-    let data = try CameraRawXMP.writeStoredSidecar(settings, replacing: existing)
+    let data: Data
+    if let settings {
+      data = try CameraRawXMP.writeStoredSidecar(settings, replacing: existing, marking: marking)
+    } else if let marking {
+      data = try CameraRawXMP.writeMarking(marking, replacing: existing?.data)
+    } else { return self }
     let destination = sidecarURL
     var coordinationError: NSError?
     var operation: Result<Void, Error>?
@@ -100,7 +113,7 @@ public struct RawSidecarSource: Sendable {
       }
       throw error
     }
-    let refreshed = RawSourceIO.RelatedXMP(url: destination, data: data, settings: settings)
+    let refreshed = RawSourceIO.RelatedXMP(url: destination, data: data, settings: settings ?? existing?.settings)
     return RawSidecarSource(url: url, original: original, existing: refreshed)
   }
 

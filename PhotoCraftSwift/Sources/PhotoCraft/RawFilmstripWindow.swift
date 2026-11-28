@@ -21,6 +21,7 @@ extension CraftDocumentController {
 
 @MainActor final class RawFilmstripWindow: NSWindowController, NSWindowDelegate {
   let workspace: RawFilmstripWorkspace
+  private var keyMonitor: Any?
 
   init(workspace: RawFilmstripWorkspace) {
     self.workspace = workspace
@@ -34,17 +35,26 @@ extension CraftDocumentController {
     super.init(window: window)
     window.delegate = self
     window.center()
+    keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak window, weak workspace] event in
+      guard let window, window.isKeyWindow, event.window === window,
+        workspace?.handleMarkingKey(event) == true else { return event }
+      return nil
+    }
   }
 
   required init?(coder: NSCoder) { nil }
   func windowShouldClose(_ sender: NSWindow) -> Bool { !workspace.finishing }
-  func windowWillClose(_ notification: Notification) { Task { workspace.close() } }
+  func windowWillClose(_ notification: Notification) {
+    if let keyMonitor { NSEvent.removeMonitor(keyMonitor); self.keyMonitor = nil }
+    Task { workspace.close() }
+  }
 }
 
 private struct RawFilmstripView: View {
   let workspace: RawFilmstripWorkspace
   @State private var visible = true
   @State private var showingSync = false
+  @State private var showingFilters = false
   @State private var groups = Set(RawSettingsGroup.allCases)
 
   var body: some View {
@@ -54,8 +64,21 @@ private struct RawFilmstripView: View {
           .keyboardShortcut("/", modifiers: [])
         Button("Previous Photo", systemImage: "chevron.left") { workspace.navigate(-1) }.labelStyle(.iconOnly)
         Button("Next Photo", systemImage: "chevron.right") { workspace.navigate(1) }.labelStyle(.iconOnly)
+        Menu("Sort") {
+          Picker("Sort by", selection: Bindable(workspace).order) {
+            ForEach(RawFilmstripOrder.allCases, id: \.self) { order in Text(order.rawValue).tag(order) }
+          }
+          Toggle("Reverse Order", isOn: Bindable(workspace).reverseOrder)
+        }
+        Button("Filter", systemImage: "line.3.horizontal.decrease.circle") { showingFilters = true }
+          .popover(isPresented: $showingFilters) { filters }
+        Menu("Photo") {
+          markingCommands()
+          Divider()
+          Button("Select Rated") { workspace.selectRated() }
+        }
         Spacer()
-        Text("\(workspace.selection.count) of \(workspace.photos.count) selected").monospacedDigit()
+        Text("\(workspace.selection.count) of \(workspace.displayedPhotos.count) selected").monospacedDigit()
         Button("Select All") { workspace.selectAll() }.keyboardShortcut("a", modifiers: .command)
         Button("Deselect Others") { workspace.selectActive() }.keyboardShortcut("d", modifiers: .command)
         Button("Synchronize…") { showingSync = true }
@@ -72,7 +95,7 @@ private struct RawFilmstripView: View {
         ScrollViewReader { proxy in
           ScrollView(.horizontal) {
             LazyHStack(spacing: 8) {
-              ForEach(workspace.photos) { photo in
+              ForEach(workspace.displayedPhotos) { photo in
                 Button {
                   let flags = NSApp.currentEvent?.modifierFlags ?? []
                   workspace.select(photo.id, extending: flags.contains(.shift), toggling: flags.contains(.command))
@@ -81,14 +104,15 @@ private struct RawFilmstripView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(photo.name)
-                .accessibilityValue(workspace.activeID == photo.id ? "Active" : "")
+                .accessibilityValue(accessibilityMarking(photo))
                 .accessibilityAddTraits(workspace.selection.contains(photo.id) ? .isSelected : [])
+                .contextMenu { markingCommands(for: photo.id) }
                 .id(photo.id)
               }
             }
             .padding(8)
           }
-          .frame(height: 105)
+          .frame(height: 120)
           .onChange(of: workspace.activeID) { _, id in
             if let id { proxy.scrollTo(id, anchor: .center) }
           }
@@ -105,7 +129,12 @@ private struct RawFilmstripView: View {
           if workspace.busy || workspace.loadingPreview {
             ProgressView(workspace.progress ?? "Preparing photo preview…")
           } else {
-            Text(workspace.error == nil ? "Select a photo" : "The preview could not be opened.")
+            if workspace.error != nil {
+              Text("The preview could not be opened.")
+            } else if workspace.displayedPhotos.isEmpty, !workspace.photos.isEmpty {
+              Text("No photos match the filters.")
+              Button("Clear Filters") { workspace.clearFilters() }
+            } else { Text("Select a photo") }
           }
           Button("Cancel") { workspace.close() }.keyboardShortcut(.cancelAction)
             .disabled(workspace.finishing)
@@ -141,11 +170,87 @@ private struct RawFilmstripView: View {
       }
       .frame(height: 57)
       Text(photo.name).font(.caption).lineLimit(1).truncationMode(.middle)
+      HStack(spacing: 4) {
+        if let rating = photo.marking.rating, rating > 0 {
+          Image(systemName: "star.fill")
+          Text(String(rating))
+        } else if photo.marking.rating == -1 {
+          Text("Rejected")
+        }
+        if let label = photo.marking.label, !label.isEmpty {
+          let color = RawFilmstripLabel(marking: photo.marking)
+          Circle().fill(labelColor(color)).frame(width: 8, height: 8)
+          Text(label).lineLimit(1)
+        }
+      }
+      .font(.caption2)
+      .foregroundStyle(.secondary)
+      .frame(height: 14)
+      .accessibilityHidden(true)
     }
     .frame(width: 111)
     .padding(5)
     .background(selected ? Color.accentColor.opacity(0.19) : .clear, in: RoundedRectangle(cornerRadius: 5))
     .overlay(RoundedRectangle(cornerRadius: 5).strokeBorder(active ? Color.accentColor : .clear, lineWidth: 2))
+  }
+
+  private func accessibilityMarking(_ photo: RawFilmstripWorkspace.Photo) -> String {
+    var parts = [String]()
+    if workspace.activeID == photo.id { parts.append("Active") }
+    if let rating = photo.marking.rating {
+      parts.append(rating < 0 ? "Rejected" : (rating == 1 ? "1 star" : "\(rating) stars"))
+    }
+    if let label = photo.marking.label, !label.isEmpty { parts.append(label) }
+    return parts.joined(separator: ", ")
+  }
+
+  private func labelColor(_ label: RawFilmstripLabel) -> Color {
+    switch label {
+    case .red: .red
+    case .yellow: .yellow
+    case .green: .green
+    case .blue: .blue
+    case .purple: .purple
+    case .none, .other: .secondary
+    }
+  }
+
+  @ViewBuilder private func markingCommands(for photo: UUID? = nil) -> some View {
+    Menu("Rating") {
+      Button("Unrated") { mark(photo) { workspace.setRating(0) } }
+      ForEach(1...5, id: \.self) { rating in
+        Button(rating == 1 ? "1 Star" : "\(rating) Stars") { mark(photo) { workspace.setRating(rating) } }
+      }
+    }
+    .disabled(workspace.selection.isEmpty && photo == nil)
+    Menu("Color Label") {
+      ForEach(RawFilmstripLabel.allCases.dropLast(), id: \.self) { label in
+        Button(label.rawValue) { mark(photo) { workspace.setLabel(label) } }
+      }
+    }
+    .disabled(workspace.selection.isEmpty && photo == nil)
+  }
+
+  private func mark(_ photo: UUID?, _ change: () -> Void) {
+    if let photo, !workspace.selection.contains(photo) { workspace.select(photo) }
+    change()
+  }
+
+  private var filters: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Picker("Rating", selection: Binding(get: { workspace.ratingFilter }, set: workspace.setRatingFilter)) {
+        ForEach(RawFilmstripRatingFilter.allCases, id: \.self) { filter in Text(filter.rawValue).tag(filter) }
+      }
+      Text("Color Labels").font(.subheadline).fontWeight(.medium)
+      ForEach(RawFilmstripLabel.allCases, id: \.self) { label in
+        Toggle(label.rawValue, isOn: Binding(get: { workspace.labelFilters.contains(label) },
+          set: { enabled in if enabled != workspace.labelFilters.contains(label) { workspace.toggleLabelFilter(label) } }))
+      }
+      Button("Clear Filters") { workspace.clearFilters() }
+        .disabled(workspace.ratingFilter == .all && workspace.labelFilters.isEmpty)
+    }
+    .padding(14)
+    .frame(width: 225)
   }
 
   private var synchronization: some View {

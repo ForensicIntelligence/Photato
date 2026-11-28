@@ -158,6 +158,8 @@ struct AutomationCommand: Sendable {
         if name == CameraRawXMPAPI.name { properties[key] = CameraRawXMPAPI.schema(key); continue }
         if name == RawSynchronizationAPI.name { properties[key] = RawSynchronizationAPI.schema(key); continue }
         if name == RawBatchExportAPI.name { properties[key] = RawBatchExportAPI.schema(key); continue }
+        if name == RawMarkingAPI.name { properties[key] = RawMarkingAPI.schema(key); continue }
+        if name == "raw.saveSourceSettings", key == "photoMarkingOnly" { properties[key] = BrushAPI.flag; continue }
         if name == "document.hdrMerge",key == "settings" || key == "sources" {
           properties[key] = key == "settings" ? HDRMergeSettings.apiSchema:PhotomergeSettings.sourcesSchema;continue
         }
@@ -499,9 +501,11 @@ struct AutomationCommand: Sendable {
     CameraRawXMPAPI.definition,
     RawSynchronizationAPI.definition,
     RawBatchExportAPI.definition,
+    RawMarkingAPI.definition,
     .init(name:"raw.inspect",parameters:["layerID":"RAW Smart Object UUID"],description:"Read sensor/decoder capabilities and retained settings without mutation."),
-    .init(name: "raw.saveSourceSettings", parameters: ["layerID": "Original local RAW layer UUID"],
-      description: "Save the original layer's Camera Raw settings in the local RAW file or its XMP sidecar. Requires local document saving."),
+    .init(name: "raw.saveSourceSettings", parameters: ["layerID": "Original local RAW layer UUID", "photoMarkingOnly": "Save only the rating and color label"],
+      description: "Save the original layer’s Camera Raw settings in the local RAW file or its XMP sidecar. Requires local document saving.",
+      optionalParameters: ["photoMarkingOnly"]),
     .init(name:"raw.develop",parameters:["layerID":"RAW Smart Object UUID","settings":"Partial RAW settings object","xmp":"Camera Raw XMP text","allInstances":"Optional boolean, default true"],description:"Redevelop original sensor bytes using either partial settings or Camera Raw XMP, with shared native history.",optionalParameters:["settings","xmp","allInstances"]),
     .init(name: "liquify.faces", parameters: ["layerID": "Raster or Smart Object UUID", "filterID": "Optional existing filter UUID; detect on its input"], description: "Read on-device face geometry for Liquify. Returns revision,width,height,faces; no document mutation or history.", optionalParameters: ["filterID"]),
     .init(name: FilterRecallAPI.name, parameters: [:], description: "Repeat captured last-filter settings on the current native target in one Undo transaction; discover filterRecall state."),

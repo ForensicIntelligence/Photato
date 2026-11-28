@@ -47,9 +47,13 @@ public struct RawDNGSource: Sendable {
   }
 
   public func save(settings: RawDevelopment, authorizedFolder: URL? = nil) throws -> RawDNGSource {
+    try save(settings: settings, marking: nil, authorizedFolder: authorizedFolder)
+  }
+
+  func save(settings: RawDevelopment?, marking: RawPhotoMarking?, authorizedFolder: URL?) throws -> RawDNGSource {
     let access = try Self.accessSourceFolder(authorizedFolder, source: url)
     defer { if access { authorizedFolder?.stopAccessingSecurityScopedResource() } }
-    return try save(settings: settings) { url in
+    return try save(settings: settings, marking: marking) { url in
       let files = FileManager.default
       do {
         try files.trashItem(at: url, resultingItemURL: nil)
@@ -76,13 +80,21 @@ public struct RawDNGSource: Sendable {
     }
   }
 
-  func save(settings: RawDevelopment, retireSidecar: (URL) throws -> Void) throws -> RawDNGSource {
+  func save(settings: RawDevelopment?, marking: RawPhotoMarking? = nil,
+    retireSidecar: (URL) throws -> Void) throws -> RawDNGSource {
     try Task.checkCancellation()
     let access = url.startAccessingSecurityScopedResource()
     defer { if access { url.stopAccessingSecurityScopedResource() } }
 
-    if !ignoresSidecar, try RawSourceIO.relatedXMP(for: url) != sidecar { throw SaveError.sourceChanged }
-    let updated = try RawSourceIO.dngWithSettings(original, settings: settings, including: sidecar?.data)
+    if !ignoresSidecar, try RawSourceIO.relatedXMP(for: url, includeMarking: true) != sidecar { throw SaveError.sourceChanged }
+    let updated: Data
+    if let settings {
+      updated = try RawSourceIO.dngWithSettings(original, settings: settings, including: sidecar?.data, marking: marking)
+    } else if let marking {
+      updated = try RawSourceIO.replacingDNGXMP(original) { packet in
+        try CameraRawXMP.writeMarking(marking, replacing: packet, including: sidecar?.data)
+      }
+    } else { return self }
     var coordinationError: NSError?
     var operation: Result<Void, Error>?
     if let sidecar {

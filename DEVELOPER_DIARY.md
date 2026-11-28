@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **806** · The 10 most recent entries, newest first.
+Source build **807** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 807 — Rate and filter Camera Raw photos
+
+The Camera Raw filmstrip can rate, label, sort and filter its photos. Number keys assign stars and color labels. A rating or label can use the existing XMP sidecar or an embedded DNG packet. Rating-only saves preserve Camera Raw adjustments.
+
+Adobe Camera Raw 18.1.1 stored four stars and Red on both selected DNGs. Photato’s native window displayed those marks and filtered out the unmarked photo. A separate embedded DNG round trip wrote the same XMP values and preserved the sensor payload and every developed Photato sample.
+
+The tested XMP values agree with the live Adobe reference. [Adobe Camera Raw keyboard shortcuts](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/default-keyboard-shortcuts.html).
+
+Xcode built the app. All sixteen focused application tests passed. The new cases cover filtering, Undo and Redo, clearing an inherited label, retaining unrelated metadata, and the authenticated source-settings save. Both optimized architectures passed all 393 selected cases. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+The native test checked reopening and filtering. The embedded save was verified separately through the native RAW engine. Grid, Stacks and the full Adobe renderer and export-byte comparison remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-807) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_807.md).
 
 ## 2026-11-28 — Step 806 — Save multiple developed Camera Raw images
 
@@ -131,17 +145,3 @@ Camera Settings still differs from the Adobe reference at 18,044,832 of 18,048,0
 ISO-adaptive presets, Adobe camera profiles and byte-identical Adobe RAW output remain open. The built-in batch import workspaces still use their existing import policy.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-798) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_798.md).
-
-## 2026-11-28 — Step 797 — Save a developed image directly from Camera Raw
-
-Command–S opens Save Image from the local Camera Raw source workspace. The same native format controls can save TIFF, JPEG, PNG or PSD with the current adjustments and output settings. The source stays open for further adjustment.
-
-The signed native app saved a 512 × 384 RGB16 sRGB TIFF with Exposure set to +0.75. Cancelling a second save kept the adjustment visible. Closing Camera Raw preserved the DNG and left the directory without an XMP sidecar.
-
-Adobe’s Camera Raw Save Options also exposed JPEG XL, AVIF and DNG. Photato keeps sensor-preserving DNG Copy in the existing settings menu.
-
-Xcode built the app and the focused test verified all four file formats through the native encoder and authenticated API. Both optimized architectures passed all 368 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-Rendered JPEG XL and AVIF destinations, output sharpening, installed ICC choices and Adobe RAW pixel and file-byte parity remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-797) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_797.md).

@@ -13,7 +13,7 @@ extension RawDevelopment {
       "lensCorrection":["type":["boolean","null"]],"highlightRecovery":["type":["boolean","null"]],"adjustments":CameraRawSettings.apiSchema]]
   }
   static var apiCapabilities: [String:Any] {
-    ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",RawSynchronizationAPI.name,RawBatchExportAPI.name,CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
+    ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",RawSynchronizationAPI.name,RawBatchExportAPI.name,RawMarkingAPI.name,CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
      "maximumSourceBytes":DocumentIO.maximumUploadBytes,"maximumLocalSourceBytes":SmartObject.maximumCameraRawSourceBytes,
      "maximumSensorPixels":RawSourceIO.maximumPixels,"maximumSensorSide":RawSourceIO.maximumDimension,
      "maximumSpatialAdjustmentPixels":RawSourceIO.maximumPixels,
@@ -23,14 +23,15 @@ extension RawDevelopment {
      "pagedEffects":["vignette", "grain"],"nativeArchiveVersion":22,
      "batchExport":["formats":RawBatchExport.formats.map(\.rawValue),"maximumZIPBytes":RawBatchExportAPI.maximumBytes,
        "maximumLayers":RawBatchExportAPI.maximumLayers],
-     "inspectOptionalFields":["iso":["type":"number","exclusiveMinimum":0,"description":"EXIF ISO when recorded."]],
+     "inspectOptionalFields":["iso":["type":"number","exclusiveMinimum":0,"description":"EXIF ISO when recorded."],
+       "photoMarking":["description":"XMP rating and label for a document containing a single original RAW layer."]],
      "import":"POST /v1/documents/import; optional X-Photato-Open-Format: raw. Upload retains existing4MP/64MiB API limits. File Open and Place Embedded accept supported camera RAW types and read their matching XMP sidecar or embedded settings. For HTTP import, X-Photato-Raw-XMP accepts up to 8 KiB of base64-decoded XMP with the sensor bytes. X-Photato-Raw-Open-Mode supports image, object (default), or copy.",
      "history":"raw.develop uses the desktop source-redevelopment transaction. Partial settings or XMP retain existing values where fields are omitted. Explicit null or XMP As Shot resets the applicable values to decoder defaults. allInstances defaults true.",
      "sourceDownload":"Existing smart-objects/{layerID}/source route returns original bytes. Raw settings and decoder are exposed in Smart Object state; revision includes settings.",
      "developedDNGDownload":["method":"GET","path":"/v1/documents/{id}/smart-objects/{layerID}/source.dng",
        "contentType":"image/x-adobe-dng", "optionalRevisionHeader":"X-Photato-Revision",
        "behavior":"Returns a DNG copy with supported embedded Camera Raw settings. Retains sensor bytes and the original document. Requires native document transfers and an existing share."],
-     "sourceSettingsSave":["command":"raw.saveSourceSettings","parameters":["layerID":"UUID"],
+     "sourceSettingsSave":["command":"raw.saveSourceSettings","parameters":["layerID":"UUID","photoMarkingOnly":"Optional boolean"],
        "behavior":"Writes committed settings to the explicitly opened DNG. Requires local document saving, a shared document and current revision. A matching sidecar is retired after its settings are embedded, with a local backup if Trash is unavailable. The editor's state and history are preserved."],
      "availability":"Apple native camera/decoder support is checked per source. Highlight recovery requires supported macOS26+ hardware/decoder; no preview fallback, download or cloud call.",
      "limitations":"Default imports are RGB16. Sensor redevelop uses current document depth/profile. Save native Photato for editable source; PSD RAW descriptor interchange, general RAW-to-DNG encoding, Adobe white-balance preset rendering and all-camera parity remain unqualified. Camera Raw XMP settings convert through cameraRaw.settings.convert."]
@@ -116,7 +117,12 @@ extension AutomationService {
       throw AutomationFailure(status: 409, message: "A RAW settings save is already running.")
     }
     try Task.checkCancellation()
-    let task = Task { try await document.saveRawSourceSettings(layerID: layerID, settings: settings) }
+    let markingOnly: Bool
+    if let value = command.parameters["photoMarkingOnly"] {
+      guard case .bool(let flag) = value else { throw AutomationFailure(status: 400, message: "photoMarkingOnly must be boolean.") }
+      markingOnly = flag
+    } else { markingOnly = false }
+    let task = Task { try await document.saveRawSourceSettings(layerID: layerID, settings: settings, markingOnly: markingOnly) }
     rawSourceSaveTasks[shareID] = task
     defer { rawSourceSaveTasks.removeValue(forKey: shareID) }
     do {
@@ -145,6 +151,9 @@ extension AutomationService {
     var result = try JSONSerialization.jsonObject(with:JSONEncoder().encode(info)) as! [String:Any]
     result["settings"] = try JSONSerialization.jsonObject(with:JSONEncoder().encode(object.rawDevelopment!))
     result["revision"] = expected
+    if RawMarkingAPI.isSingleOriginal(layerID, in: document.store.document) {
+      result["photoMarking"] = try RawPhotoMarking.read(in: document.store.document).apiValue
+    }
     result["canSaveSourceSettings"] = documentSavesEnabled && document.canSaveRawSourceSettings(layerID: layerID)
     if document.canSaveRawSourceSettings(layerID: layerID), let source = document.localRawSource?.original {
       result["sourceSettingsStorage"] = source.savesInsideDNG ? "embeddedDNG" : "sidecar"

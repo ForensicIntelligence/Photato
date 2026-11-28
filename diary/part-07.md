@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 534: start the Brush worker during input
-
-Photato now queues work for the first mark during input. The worker starts a median 0.23 ms after input. Across two rounds of the 24-megapixel test, the median time through the first AppKit draw was 27.52 ms to 20.77 ms.
-
-All 114 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The preview and the committed stroke matched the complete native command. Undo restored the original. Physical editing cadence and Photoshop Brush pixel comparisons remain open.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-534) · [Measurements](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_534.md).
-
 ## 2026-11-17 — Step 533: start the first Brush frame sooner
 
 On a ready canvas, Photato starts preparing the first Brush mark when the input arrives. The following frames still collect every sample. In the 24-megapixel AppKit test, median time from input to preparation fell from 18.12 ms to 0.20 ms. The median time through software drawing was 29.45 ms to 29.14 ms.
@@ -267,11 +259,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:806 -->
+<!-- current-status-step:807 -->
 
-Save Images exports selected photos from the Camera Raw filmstrip to TIFF, JPEG, PNG or PSD. It uses each photo’s saved draft, the current Camera Raw output and the native encoding settings.
+The Camera Raw filmstrip can rate, label, sort and filter its photos. Number keys assign stars and color labels. A rating or label can use the existing XMP sidecar or an embedded DNG packet. Rating-only saves preserve Camera Raw adjustments.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-806) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_806.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-807) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_807.md).
 
 <!-- current-status:end -->
 
@@ -1284,5 +1276,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 804 | [Apply Dehaze to full-size Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-804) |
 | 2026-11-28 | 805 | [Open and synchronize multiple Camera Raw photos](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-805) |
 | 2026-11-28 | 806 | [Save multiple developed Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-806) |
+| 2026-11-28 | 807 | [Rate and filter Camera Raw photos](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-807) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

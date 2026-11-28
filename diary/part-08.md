@@ -1442,4 +1442,12 @@ All 167 selected tests passed in Debug, optimized Apple Silicon and Intel under 
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-535) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_535.md).
 
+## 2026-11-17 — Step 534: start the Brush worker during input
+
+Photato now queues work for the first mark during input. The worker starts a median 0.23 ms after input. Across two rounds of the 24-megapixel test, the median time through the first AppKit draw was 27.52 ms to 20.77 ms.
+
+All 114 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. The preview and the committed stroke matched the complete native command. Undo restored the original. Physical editing cadence and Photoshop Brush pixel comparisons remain open.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-534) · [Measurements](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_534.md).
+
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

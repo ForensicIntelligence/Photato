@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 807 — Rate and filter Camera Raw photos
+
+The Camera Raw filmstrip can rate, label, sort and filter its photos. Number keys assign stars and color labels. A rating or label can use the existing XMP sidecar or an embedded DNG packet. Rating-only saves preserve Camera Raw adjustments.
+
+Adobe Camera Raw 18.1.1 stored four stars and Red on both selected DNGs. Photato’s native window displayed those marks and filtered out the unmarked photo. A separate embedded DNG round trip wrote the same XMP values and preserved the sensor payload and every developed Photato sample.
+
+The tested XMP values agree with the live Adobe reference. [Adobe Camera Raw keyboard shortcuts](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/default-keyboard-shortcuts.html).
+
+Xcode built the app. All sixteen focused application tests passed. The new cases cover filtering, Undo and Redo, clearing an inherited label, retaining unrelated metadata, and the authenticated source-settings save. Both optimized architectures passed all 393 selected cases. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+The native test checked reopening and filtering. The embedded save was verified separately through the native RAW engine. Grid, Stacks and the full Adobe renderer and export-byte comparison remain open.
+
+[Development record](DEVLOG.md#dev-step-807) · [Qualification](SOURCE_PUBLICATION_807.md).
+
 ## 2026-11-28 — Step 806 — Save multiple developed Camera Raw images
 
 Save Images exports selected photos from the Camera Raw filmstrip to TIFF, JPEG, PNG or PSD. It uses each photo’s saved draft, the current Camera Raw output and the native encoding settings.
@@ -2795,11 +2809,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:806 -->
+<!-- current-status-step:807 -->
 
-Save Images exports selected photos from the Camera Raw filmstrip to TIFF, JPEG, PNG or PSD. It uses each photo’s saved draft, the current Camera Raw output and the native encoding settings.
+The Camera Raw filmstrip can rate, label, sort and filter its photos. Number keys assign stars and color labels. A rating or label can use the existing XMP sidecar or an embedded DNG packet. Rating-only saves preserve Camera Raw adjustments.
 
-[Development record](DEVLOG.md#dev-step-806) · [Qualification](SOURCE_PUBLICATION_806.md).
+[Development record](DEVLOG.md#dev-step-807) · [Qualification](SOURCE_PUBLICATION_807.md).
 
 <!-- current-status:end -->
 
@@ -3812,6 +3826,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 804 | [Apply Dehaze to full-size Camera Raw images](DEVLOG.md#dev-step-804) |
 | 2026-11-28 | 805 | [Open and synchronize multiple Camera Raw photos](DEVLOG.md#dev-step-805) |
 | 2026-11-28 | 806 | [Save multiple developed Camera Raw images](DEVLOG.md#dev-step-806) |
+| 2026-11-28 | 807 | [Rate and filter Camera Raw photos](DEVLOG.md#dev-step-807) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

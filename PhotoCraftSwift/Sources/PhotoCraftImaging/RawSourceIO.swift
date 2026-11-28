@@ -384,11 +384,14 @@ public enum RawSourceIO {
     package let url: URL
     package let settingsSource: RawSettingsSource?
     package let sensorInfo: Info?
+    package let marking: RawPhotoMarking
     package var settings: RawDevelopment { description.initial }
 
-    package func document(settings: RawDevelopment? = nil, depth: PixelDepth = .u16) throws -> CraftDocument {
-      try RawSourceIO.makeDocument(bytes, fileName: url.lastPathComponent, description: description,
+    package func document(settings: RawDevelopment? = nil, marking draft: RawPhotoMarking? = nil,
+      depth: PixelDepth = .u16) throws -> CraftDocument {
+      let document = try RawSourceIO.makeDocument(bytes, fileName: url.lastPathComponent, description: description,
         settings: settings ?? description.initial, depth: depth)
+      return try (draft ?? marking).applying(to: document)
     }
 
     package func thumbnail() -> CGImage? {
@@ -419,7 +422,7 @@ public enum RawSourceIO {
     }
     let data = bytes.data
     let ignoresSidecar = dngStorage == .ignoreSidecarXMP && type(data) == "com.adobe.raw-image"
-    let related = try ignoresSidecar ? nil : relatedXMP(for: url)
+    let related = try ignoresSidecar ? nil : relatedXMP(for: url, includeMarking: true)
     let settings = try related?.settings.map { try compatibleStoredSettings($0, in: data) }
     let description = try describeSource(data, requested: settings, rawDefaults: rawDefaults)
     let info = mapped ? try inspect(data, decoderVersion: description.initial.decoderVersion) : nil
@@ -436,7 +439,9 @@ public enum RawSourceIO {
       source = nil
     }
     try input.validateUnchanged()
-    return LocalOriginal(bytes: bytes, description: description, url: url, settingsSource: source, sensorInfo: info)
+    let marking = RawPhotoMarking.read(description.metadata?[RasterMetadata.xmpKey]).overlay(RawPhotoMarking.read(related?.data))
+    return LocalOriginal(bytes: bytes, description: description, url: url, settingsSource: source,
+      sensorInfo: info, marking: marking)
   }
   public static func open(_ data: Data, fileName: String, settings requested: RawDevelopment? = nil,
     depth: PixelDepth = .u16) throws -> CraftDocument {

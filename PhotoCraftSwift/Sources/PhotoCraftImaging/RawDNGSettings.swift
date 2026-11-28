@@ -42,7 +42,14 @@ extension RawSourceIO {
     try dngWithSettings(data, settings: settings, including: nil)
   }
 
-  static func dngWithSettings(_ data: Data, settings: RawDevelopment, including sidecar: Data?) throws -> Data {
+  static func dngWithSettings(_ data: Data, settings: RawDevelopment, including sidecar: Data?,
+    marking: RawPhotoMarking? = nil) throws -> Data {
+    try replacingDNGXMP(data) { packet in
+      try CameraRawXMP.writeStored(settings, replacing: packet, including: sidecar, marking: marking)
+    }
+  }
+
+  static func replacingDNGXMP(_ data: Data, packet makePacket: (Data?) throws -> Data) throws -> Data {
     try Task.checkCancellation()
     guard data.count <= SmartObject.maximumCameraRawSourceBytes, TIFFContainer.isClassic(data) else {
       throw CraftError.unsupported("Choose a classic DNG file under 2 GiB.")
@@ -59,7 +66,7 @@ extension RawSourceIO {
         throw CraftError.invalid("The DNG’s existing XMP tag cannot be updated safely.")
       }
     }
-    let packet = try CameraRawXMP.writeStored(settings, replacing: existing?.data, including: sidecar)
+    let packet = try makePacket(existing?.data)
     if packet == existing?.data { return data }
 
     let order = container.order

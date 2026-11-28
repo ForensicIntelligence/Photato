@@ -1476,6 +1476,11 @@ import UniformTypeIdentifiers
       if command.name == "document.hdrMerge" { return try await executeHDRMerge(command,anchorID:id) }
       if command.name == "raw.inspect" { return .json(try await inspectRaw(command,document:document,shareID:id)) }
       if command.name == RawBatchExportAPI.name { return try await exportRawBatch(command, document: document, shareID: id) }
+      if command.name == RawMarkingAPI.name {
+        let edit = try RawMarkingAPI.edit(command, document: store.document)
+        if let edit { try store.executeEditorCommand(edit) }
+        return .json(state(share, document: document))
+      }
       if command.name == RawSynchronizationAPI.name {
         let request = try RawSynchronizationAPI.Request(command)
         try await executePreparedOperation(document: document, shareID: id, revision: command.revision) {

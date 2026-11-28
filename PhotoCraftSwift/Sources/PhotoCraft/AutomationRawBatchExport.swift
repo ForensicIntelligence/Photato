@@ -70,14 +70,17 @@ enum RawBatchExportAPI {
           let settings = object.rawDevelopment else {
           throw AutomationFailure(status: 422, message: "Choose embedded Camera Raw layers.")
         }
-        return (object, settings)
+        return (id, object, settings)
       }
       var files: [StoredZIP.File] = []
       var names = Set<String>()
       var bytes = 0
-      for (object, settings) in objects {
+      for (id, object, settings) in objects {
         try Task.checkCancellation()
-        let input = try RawSourceIO.open(object.sourceBytes, fileName: object.fileName, settings: settings, depth: document.depth)
+        var input = try RawSourceIO.open(object.sourceBytes, fileName: object.fileName, settings: settings, depth: document.depth)
+        if RawMarkingAPI.isSingleOriginal(id, in: document) {
+          input = try RawPhotoMarking.read(in: document).applying(to: input)
+        }
         let output = try RawBatchExport.prepare(input, format: format, workflow: workflow, options: options)
         guard output.count <= maximumBytes - bytes else {
           throw AutomationFailure(status: 413, message: "The RAW batch exceeds the download limit.")

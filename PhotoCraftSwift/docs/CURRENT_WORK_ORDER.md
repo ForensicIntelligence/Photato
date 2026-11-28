@@ -1,3 +1,5 @@
+**Camera Raw development.** Add source metadata inspection and sorting by capture details, then extend the shared Camera Raw photo selection to Grid. [Development record](DEVLOG.md#dev-step-807) · [Qualification](SOURCE_PUBLICATION_807.md).
+
 **Camera Raw development.** Continue Camera Raw filmstrip organization, including sorting, metadata, ratings and filtering. Adobe RAW rendering and output sharpening remain open. [Development record](DEVLOG.md#dev-step-806) · [Qualification](SOURCE_PUBLICATION_806.md).
 
 **Camera Raw development.** Add developed-image export for selected Camera Raw photos, including safe naming and settings parity. Adobe RAW rendering and the remaining filmstrip controls are still open. [Development record](DEVLOG.md#dev-step-805) · [Qualification](SOURCE_PUBLICATION_805.md).
