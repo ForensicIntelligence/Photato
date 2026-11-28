@@ -42,6 +42,7 @@ import SwiftUI
   private var sliderStart: Edit?
   var error: String?
   var progress: String?
+  private(set) var exportStatus: String?
   var canUndo: Bool { !undo.isEmpty }
   var canRedo: Bool { !redo.isEmpty }
   var activeSettings: RawDevelopment? { photos.first { $0.id == activeID }?.settings }
@@ -304,6 +305,72 @@ import SwiftUI
         activate(first.id)
       }
       if !failures.isEmpty { error = failures.joined(separator: "\n") }
+    }
+  }
+
+  func chooseExportDestination() {
+    guard canFinish, folderPanel == nil,
+      let model = editor?.store.document else { return }
+    let panel = NSOpenPanel()
+    panel.title = "Save Developed Images"
+    panel.message = "Choose a folder for the selected photos. Existing files retain their names and contents."
+    panel.prompt = "Save Images"
+    panel.canChooseFiles = false
+    panel.canChooseDirectories = true
+    panel.canCreateDirectories = true
+    panel.allowsMultipleSelection = false
+    panel.directoryURL = photos.first { $0.id == activeID }?.original.url.deletingLastPathComponent()
+    let workflow = workflowOutput
+    let accessory = DocumentCopyAccessory(panel: nil, initial: .tiff, availableFormats: RawBatchExport.formats,
+      depth: workflow.depth ?? model.depth, mode: model.colorMode,
+      documentIsUntagged: model.profileIsUntagged == true, width: model.width, height: model.height)
+    panel.accessoryView = accessory.view
+    panel.isAccessoryViewDisclosed = true
+    folderPanel = panel
+    let completion: (NSApplication.ModalResponse) -> Void = { [weak self] response in
+      guard let self else { return }
+      self.folderPanel = nil
+      if response == .OK, let folder = panel.url {
+        self.exportImages(to: folder, format: accessory.format, options: accessory.encodingOptions)
+      }
+    }
+    if let window = controller?.rawFilmstripWindow?.window {
+      panel.beginSheetModal(for: window, completionHandler: completion)
+    } else { panel.begin(completionHandler: completion) }
+  }
+
+  func exportImages(to folder: URL, format: DocumentIO.Format, options: RasterEncodingOptions = .init()) {
+    guard canFinish, RawBatchExport.formats.contains(format), folder.isFileURL else { return }
+    let batch = photos.filter { selection.contains($0.id) }
+    let workflow = workflowOutput
+    busy = true
+    finishing = true
+    progress = "Preparing \(batch.count) developed images…"
+    exportStatus = nil
+    error = nil
+    operation = Task { [weak self] in
+      guard let self else { return }
+      defer { finishing = false; busy = false; progress = nil; operation = nil }
+      let worker = Task.detached(priority: .userInitiated) {
+        let access = folder.startAccessingSecurityScopedResource()
+        defer { if access { folder.stopAccessingSecurityScopedResource() } }
+        let names = batch.map { RawBatchExport.name($0.name, format: format) }
+        let staged = try PreparedImageProcessorFiles.stage(parent: folder, names: names) { index, url in
+          let photo = batch[index]
+          let input = try photo.original.document(settings: photo.settings)
+          let prepared = try RawBatchExport.prepare(input, format: format, workflow: workflow, options: options)
+          try prepared.write(to: url)
+        }
+        defer { staged.discard() }
+        return try staged.commit(to: folder)
+      }
+      do {
+        let files = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+        if !closed { exportStatus = "Saved \(files.count) images." }
+      } catch is CancellationError {
+      } catch {
+        if !closed { self.error = error.localizedDescription }
+      }
     }
   }
 

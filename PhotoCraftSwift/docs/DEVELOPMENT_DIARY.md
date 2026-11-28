@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 806 — Save multiple developed Camera Raw images
+
+Save Images exports selected photos from the Camera Raw filmstrip to TIFF, JPEG, PNG or PSD. It uses each photo’s saved draft, the current Camera Raw output and the native encoding settings.
+
+Command-S opened the native Save Developed Images chooser. The selected owned RAWs produced two 512 × 384 RGB16 TIFFs. The existing TIFF kept its bytes and the new file received a numbered name. The two original DNGs kept their hashes.
+
+The format bytes were compared with separately encoded Photato files. [Adobe Camera Raw processing and export workflow](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
+
+Xcode built the app. Thirteen focused application checks passed. The new cases verify collision-safe desktop output and byte-for-byte TIFF comparisons between the authenticated download and separately encoded outputs. Both optimized architectures passed all 390 selected cases. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+RAW filmstrip ratings, Grid, Stacks and Adobe output comparisons remain open. The authenticated ZIP uses the advertised transfer budget. Desktop export stages each file on disk.
+
+[Development record](DEVLOG.md#dev-step-806) · [Qualification](SOURCE_PUBLICATION_806.md).
+
 ## 2026-11-28 — Step 805 — Open and synchronize multiple Camera Raw photos
 
 Select several Camera RAW files in File → Open to edit them together. The filmstrip keeps an independent settings draft for each source, applies changed controls to the selection, and copies chosen settings groups from the active photo.
@@ -2781,11 +2795,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:805 -->
+<!-- current-status-step:806 -->
 
-Select several Camera RAW files in File → Open to edit them together. The filmstrip keeps an independent settings draft for each source, applies changed controls to the selection, and copies chosen settings groups from the active photo.
+Save Images exports selected photos from the Camera Raw filmstrip to TIFF, JPEG, PNG or PSD. It uses each photo’s saved draft, the current Camera Raw output and the native encoding settings.
 
-[Development record](DEVLOG.md#dev-step-805) · [Qualification](SOURCE_PUBLICATION_805.md).
+[Development record](DEVLOG.md#dev-step-806) · [Qualification](SOURCE_PUBLICATION_806.md).
 
 <!-- current-status:end -->
 
@@ -3797,6 +3811,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 803 | [Apply local tone to full-size Camera Raw images](DEVLOG.md#dev-step-803) |
 | 2026-11-28 | 804 | [Apply Dehaze to full-size Camera Raw images](DEVLOG.md#dev-step-804) |
 | 2026-11-28 | 805 | [Open and synchronize multiple Camera Raw photos](DEVLOG.md#dev-step-805) |
+| 2026-11-28 | 806 | [Save multiple developed Camera Raw images](DEVLOG.md#dev-step-806) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

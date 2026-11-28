@@ -13,7 +13,7 @@ extension RawDevelopment {
       "lensCorrection":["type":["boolean","null"]],"highlightRecovery":["type":["boolean","null"]],"adjustments":CameraRawSettings.apiSchema]]
   }
   static var apiCapabilities: [String:Any] {
-    ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",RawSynchronizationAPI.name,CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
+    ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",RawSynchronizationAPI.name,RawBatchExportAPI.name,CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
      "maximumSourceBytes":DocumentIO.maximumUploadBytes,"maximumLocalSourceBytes":SmartObject.maximumCameraRawSourceBytes,
      "maximumSensorPixels":RawSourceIO.maximumPixels,"maximumSensorSide":RawSourceIO.maximumDimension,
      "maximumSpatialAdjustmentPixels":RawSourceIO.maximumPixels,
@@ -21,6 +21,8 @@ extension RawDevelopment {
      "pagedTone":["highlights","shadows","texture","clarity","dehaze"],
      "pagedDetail":["sharpening","luminanceNoiseReduction","colorNoiseReduction"],
      "pagedEffects":["vignette", "grain"],"nativeArchiveVersion":22,
+     "batchExport":["formats":RawBatchExport.formats.map(\.rawValue),"maximumZIPBytes":RawBatchExportAPI.maximumBytes,
+       "maximumLayers":RawBatchExportAPI.maximumLayers],
      "inspectOptionalFields":["iso":["type":"number","exclusiveMinimum":0,"description":"EXIF ISO when recorded."]],
      "import":"POST /v1/documents/import; optional X-Photato-Open-Format: raw. Upload retains existing4MP/64MiB API limits. File Open and Place Embedded accept supported camera RAW types and read their matching XMP sidecar or embedded settings. For HTTP import, X-Photato-Raw-XMP accepts up to 8 KiB of base64-decoded XMP with the sensor bytes. X-Photato-Raw-Open-Mode supports image, object (default), or copy.",
      "history":"raw.develop uses the desktop source-redevelopment transaction. Partial settings or XMP retain existing values where fields are omitted. Explicit null or XMP As Shot resets the applicable values to decoder defaults. allInstances defaults true.",

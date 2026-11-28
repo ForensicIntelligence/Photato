@@ -1475,6 +1475,7 @@ import UniformTypeIdentifiers
       if command.name == "document.imageStack" { return try await executeImageStack(command,anchorID:id) }
       if command.name == "document.hdrMerge" { return try await executeHDRMerge(command,anchorID:id) }
       if command.name == "raw.inspect" { return .json(try await inspectRaw(command,document:document,shareID:id)) }
+      if command.name == RawBatchExportAPI.name { return try await exportRawBatch(command, document: document, shareID: id) }
       if command.name == RawSynchronizationAPI.name {
         let request = try RawSynchronizationAPI.Request(command)
         try await executePreparedOperation(document: document, shareID: id, revision: command.revision) {

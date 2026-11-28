@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **805** · The 10 most recent entries, newest first.
+Source build **806** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 806 — Save multiple developed Camera Raw images
+
+Save Images exports selected photos from the Camera Raw filmstrip to TIFF, JPEG, PNG or PSD. It uses each photo’s saved draft, the current Camera Raw output and the native encoding settings.
+
+Command-S opened the native Save Developed Images chooser. The selected owned RAWs produced two 512 × 384 RGB16 TIFFs. The existing TIFF kept its bytes and the new file received a numbered name. The two original DNGs kept their hashes.
+
+The format bytes were compared with separately encoded Photato files. [Adobe Camera Raw processing and export workflow](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
+
+Xcode built the app. Thirteen focused application checks passed. The new cases verify collision-safe desktop output and byte-for-byte TIFF comparisons between the authenticated download and separately encoded outputs. Both optimized architectures passed all 390 selected cases. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+RAW filmstrip ratings, Grid, Stacks and Adobe output comparisons remain open. The authenticated ZIP uses the advertised transfer budget. Desktop export stages each file on disk.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-806) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_806.md).
 
 ## 2026-11-28 — Step 805 — Open and synchronize multiple Camera Raw photos
 
@@ -131,17 +145,3 @@ Xcode built the app and the focused test verified all four file formats through 
 Rendered JPEG XL and AVIF destinations, output sharpening, installed ICC choices and Adobe RAW pixel and file-byte parity remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-797) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_797.md).
-
-## 2026-11-28 — Step 796 — Speed up exact Camera Raw profile conversion
-
-Photato packs the same opaque RGB input for ColorSync without copying the source raster tile by tile. Hidden RGB and source alpha survive conversion. Opaque output avoids a second pass to restore alpha.
-
-The full Nikon RGB8 Display P3 conversion took 5.71 seconds, down from 11.91 seconds in three alternating arm64 Debug trials. The stored samples and RGBA8 bytes matched the prior Photato path.
-
-Twelve lossless Adobe Camera Raw TIFFs captured the nine synthetic sharpening variants, their baseline, and a separate Nikon pair. An independent TIFF reader found 16,562,956 changed RGB samples in Adobe’s Nikon Screen Standard export. The unsharpened Photato and Adobe Nikon exports differed at 18,044,936 of 18,048,000 RGB samples with the same visible sRGB16, 300 ppi and sizing choices.
-
-Xcode built the app and two focused imaging tests passed, covering historical samples, signed float values, and hidden color. Four workflow and five opening regressions also passed. Both optimized architectures passed all 367 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-The timing covers profile conversion in Debug. The Adobe comparison leaves sensor development, sharpening and file-byte equivalence open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-796) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_796.md).

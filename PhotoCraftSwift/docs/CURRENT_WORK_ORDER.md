@@ -1,3 +1,5 @@
+**Camera Raw development.** Continue Camera Raw filmstrip organization, including sorting, metadata, ratings and filtering. Adobe RAW rendering and output sharpening remain open. [Development record](DEVLOG.md#dev-step-806) · [Qualification](SOURCE_PUBLICATION_806.md).
+
 **Camera Raw development.** Add developed-image export for selected Camera Raw photos, including safe naming and settings parity. Adobe RAW rendering and the remaining filmstrip controls are still open. [Development record](DEVLOG.md#dev-step-805) · [Qualification](SOURCE_PUBLICATION_805.md).
 
 **Camera Raw development.** Compare larger RAW sensor extent, then continue the independent Adobe baseline rendering and output sharpening references. The RAW filmstrip remains open. [Development record](DEVLOG.md#dev-step-804) · [Qualification](SOURCE_PUBLICATION_804.md).

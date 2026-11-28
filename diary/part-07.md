@@ -267,11 +267,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:805 -->
+<!-- current-status-step:806 -->
 
-Select several Camera RAW files in File → Open to edit them together. The filmstrip keeps an independent settings draft for each source, applies changed controls to the selection, and copies chosen settings groups from the active photo.
+Save Images exports selected photos from the Camera Raw filmstrip to TIFF, JPEG, PNG or PSD. It uses each photo’s saved draft, the current Camera Raw output and the native encoding settings.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-805) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_805.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-806) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_806.md).
 
 <!-- current-status:end -->
 
@@ -1283,5 +1283,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 803 | [Apply local tone to full-size Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-803) |
 | 2026-11-28 | 804 | [Apply Dehaze to full-size Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-804) |
 | 2026-11-28 | 805 | [Open and synchronize multiple Camera Raw photos](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-805) |
+| 2026-11-28 | 806 | [Save multiple developed Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-806) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

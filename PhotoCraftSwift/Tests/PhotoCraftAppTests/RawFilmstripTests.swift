@@ -128,3 +128,120 @@ final class RawFilmstripTests: XCTestCase {
     }
   }
 }
+
+extension RawFilmstripTests {
+  @MainActor func testFilmstripBatchExportKeepsOriginalsAndNumbersCollidingNames() async throws {
+    _ = NSApplication.shared
+    let preferences = CameraRawPreferences()
+    var workflow = RawWorkflowOutput()
+    workflow.depth = .u8
+    preferences.workflowOutput = workflow
+    let controller = CraftDocumentController(workspaces: WorkspaceLibrary(), cameraRawPreferences: preferences)
+    let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    let output = folder.appendingPathComponent("Exports")
+    try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let raw = try fixture()
+    let urls = try ["A", "B"].map { name in
+      let source = folder.appendingPathComponent(name)
+      try FileManager.default.createDirectory(at: source, withIntermediateDirectories: false)
+      let file = source.appendingPathComponent("Capture.dng")
+      try raw.write(to: file)
+      return file
+    }
+    let reserved = output.appendingPathComponent("Capture.png")
+    let previous = Data("Existing file".utf8)
+    try previous.write(to: reserved)
+    let workspace = RawFilmstripWorkspace(controller: controller)
+    defer { workspace.close() }
+    workspace.start(urls)
+    await workspace.waitUntilIdle()
+    XCTAssertNil(workspace.error)
+    workspace.selectAll()
+    let active = try XCTUnwrap(workspace.activeID)
+    var settings = try XCTUnwrap(workspace.activeSettings)
+    settings.adjustments.exposure = 0.75
+    workspace.apply(settings, to: active)
+    let drafts = workspace.photos
+    workspace.exportImages(to: output, format: .png)
+    await workspace.waitUntilIdle()
+    XCTAssertNil(workspace.error)
+    XCTAssertEqual(workspace.exportStatus, "Saved 2 images.")
+    XCTAssertEqual(try Data(contentsOf: reserved), previous)
+    XCTAssertTrue(controller.documents.isEmpty)
+    for (index, photo) in drafts.enumerated() {
+      let photoURL = output.appendingPathComponent("Capture_\(index + 1).png")
+      let expected = try RawOpenMode.copy.output(from: photo.original.document(settings: photo.settings), workflow: workflow)
+      XCTAssertEqual(try Data(contentsOf: photoURL), try DocumentIO.encode(expected, format: .png))
+      XCTAssertEqual(try Data(contentsOf: photo.original.url), raw)
+    }
+    let files = try FileManager.default.contentsOfDirectory(atPath: output.path)
+    XCTAssertEqual(Set(files), ["Capture.png", "Capture_1.png", "Capture_2.png"])
+    XCTAssertEqual(workspace.selection.count, 2)
+  }
+
+  @MainActor func testAuthenticatedBatchDownloadKeepsSourceAndMatchesSeparateExports() async throws {
+    let raw = try fixture()
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, _ in
+      var source = try RawSourceIO.open(raw, fileName: "Capture.dng")
+      var other = RawDevelopment()
+      other.adjustments.exposure = 0.5
+      let second = try RawSourceIO.open(raw, fileName: "Capture.dng", settings: other)
+      source.layers.append(try XCTUnwrap(second.layers.first))
+      let document = CraftNSDocument(model: source)
+      service.controller.addDocument(document)
+      defer { document.close() }
+      try service.share(document)
+      let share = try XCTUnwrap(service.shares.last)
+      let path = "/v1/documents/\(share.id)/commands"
+      let command: [String: Any] = [
+        "command": "raw.exportBatch", "revision": service.revision(document.store),
+        "parameters": ["layerIDs": source.layers.map { $0.id.uuidString }, "format": "tiff",
+                       "workflow": ["depth": PixelDepth.u8.rawValue], "options": ["tiffCompression": "none"]],
+      ]
+      let disabled = try await helper.request(service, path: path, body: command)
+      XCTAssertEqual(disabled.0.statusCode, 403)
+      service.setDocumentTransfersEnabled(true)
+      let result = try await helper.request(service, path: path, body: command)
+      XCTAssertEqual(result.0.statusCode, 200, String(decoding: result.1.prefix(400), as: UTF8.self))
+      XCTAssertEqual(result.0.value(forHTTPHeaderField: "Content-Type"), "application/zip")
+      let items = try rawArchiveItems(result.1)
+      XCTAssertEqual(items.map(\.0), ["Capture.tiff", "Capture_1.tiff"])
+      var workflow = RawWorkflowOutput()
+      workflow.depth = .u8
+      for (index, item) in items.enumerated() {
+        let settings = try XCTUnwrap(source.layers[index].smartObject?.rawDevelopment)
+        let existing = try RawSourceIO.open(raw, fileName: "Capture.dng", settings: settings)
+        let expected = try RawOpenMode.copy.output(from: existing, workflow: workflow)
+        let encoded = try DocumentIO.prepareOutput(expected, format: .tiff, persistence: false,
+          options: RasterEncodingOptions(tiffCompression: .some(.none)))
+        switch encoded {
+        case .data(let bytes): XCTAssertEqual(item.1, bytes)
+        case .file(let file): XCTAssertEqual(item.1, try Data(contentsOf: file.url))
+        }
+      }
+      XCTAssertEqual(document.store.document, source)
+      XCTAssertTrue(document.store.session.undoStack.isEmpty)
+    }
+  }
+
+  private func rawArchiveItems(_ archive: Data) throws -> [(String, Data)] {
+    func word<T: FixedWidthInteger>(at offset: Int, _ type: T.Type) -> Int {
+      archive.withUnsafeBytes { Int(T(littleEndian: $0.loadUnaligned(fromByteOffset: offset, as: type))) }
+    }
+    var cursor = 0
+    var files: [(String, Data)] = []
+    while archive.count - cursor >= 30 && word(at: cursor, UInt32.self) == 0x04034b50 {
+      let count = word(at: cursor + 18, UInt32.self)
+      let nameCount = word(at: cursor + 26, UInt16.self)
+      let extraCount = word(at: cursor + 28, UInt16.self)
+      let start = cursor + 30 + nameCount + extraCount
+      guard start + count <= archive.count else { throw CocoaError(.fileReadCorruptFile) }
+      let name = String(decoding: archive[(cursor + 30)..<(cursor + 30 + nameCount)], as: UTF8.self)
+      files.append((name, archive.subdata(in: start..<(start + count))))
+      cursor = start + count
+    }
+    return files
+  }
+}

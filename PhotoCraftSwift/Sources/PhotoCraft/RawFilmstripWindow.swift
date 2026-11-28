@@ -118,6 +118,8 @@ private struct RawFilmstripView: View {
       if let error = workspace.error {
         Text(error).font(.caption).foregroundStyle(.red).lineLimit(4)
           .textSelection(.enabled).padding(8)
+      } else if let status = workspace.exportStatus {
+        Text(status).font(.caption).foregroundStyle(.secondary).padding(8)
       }
     }
   }

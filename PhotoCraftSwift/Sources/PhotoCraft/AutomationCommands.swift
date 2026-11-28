@@ -157,6 +157,7 @@ struct AutomationCommand: Sendable {
         }
         if name == CameraRawXMPAPI.name { properties[key] = CameraRawXMPAPI.schema(key); continue }
         if name == RawSynchronizationAPI.name { properties[key] = RawSynchronizationAPI.schema(key); continue }
+        if name == RawBatchExportAPI.name { properties[key] = RawBatchExportAPI.schema(key); continue }
         if name == "document.hdrMerge",key == "settings" || key == "sources" {
           properties[key] = key == "settings" ? HDRMergeSettings.apiSchema:PhotomergeSettings.sourcesSchema;continue
         }
@@ -497,6 +498,7 @@ struct AutomationCommand: Sendable {
     .init(name: "smartFilter.maskFill", parameters: ["layerID": "uuid", "value": "Grayscale value"], description: "Fill the Smart Filter mask respecting selection coverage."),
     CameraRawXMPAPI.definition,
     RawSynchronizationAPI.definition,
+    RawBatchExportAPI.definition,
     .init(name:"raw.inspect",parameters:["layerID":"RAW Smart Object UUID"],description:"Read sensor/decoder capabilities and retained settings without mutation."),
     .init(name: "raw.saveSourceSettings", parameters: ["layerID": "Original local RAW layer UUID"],
       description: "Save the original layer's Camera Raw settings in the local RAW file or its XMP sidecar. Requires local document saving."),

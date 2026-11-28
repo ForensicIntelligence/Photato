@@ -68,7 +68,11 @@ struct CameraRawSheet: View {
         } else if model.rendering {
           ProgressView().controlSize(.small).accessibilityLabel("Rendering Camera Raw preview")
         }
-        if let document = store.initialRawDocument {
+        if let filmstrip {
+          Button("Save Images…", action: filmstrip.chooseExportDestination)
+            .help("Develop the selected photos and save TIFF, JPEG, PNG or Photoshop files.")
+            .disabled(!filmstrip.canFinish)
+        } else if let document = store.initialRawDocument {
           Button("Save Image…") { saveDevelopedImage(from: document) }
             .keyboardShortcut("s", modifiers: .command)
             .help("Save a TIFF, JPEG, PNG or Photoshop file using these Camera Raw settings.")
@@ -158,13 +162,14 @@ struct CameraRawSheet: View {
               Button(RawOpenMode.object.title) { filmstrip.finish(.object) }
               Button(RawOpenMode.copy.title) { filmstrip.finish(.copy) }
             } label: { Image(systemName: "chevron.down") }
+            .menuIndicator(.hidden)
             .accessibilityLabel("Camera Raw opening options")
           }
           .disabled(!filmstrip.canFinish || importing || exporting || showingWorkflow)
           .background(RawSourceKeyMonitor(onFlags: { openModifiers = $0 }, onOpen: { flags in
             guard !showingWorkflow, !importing, !exporting else { return }
             filmstrip.finish(RawOpenShortcuts.mode(for: flags, defaultAsObject: defaultOpenAsObject))
-          }, onSave: {}))
+          }, onSave: filmstrip.chooseExportDestination))
         } else if let document = store.initialRawDocument {
           if document.localRawSource != nil {
             Button("Done") { finishSource(document, mode: nil) }

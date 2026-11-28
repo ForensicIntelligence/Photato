@@ -98,7 +98,7 @@ enum DocumentPersistenceConflict: LocalizedError {
   }
 
   init(
-    panel: NSSavePanel, initial: DocumentIO.Format,
+    panel: NSSavePanel?, initial: DocumentIO.Format,
     availableFormats: [DocumentIO.Format] = DocumentIO.Format.allCases, saving: Bool = false,
     initialOptions: [DocumentIO.Format: RasterEncodingOptions] = [:],
     uncompressedPhotoshopDefault: Bool = false, depth: PixelDepth = .u8, mode: DocumentColorMode = .rgb,
