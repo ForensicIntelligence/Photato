@@ -1,3 +1,9 @@
+### Camera Raw composition performance (checkpoint 791)
+
+The desktop, Photato API preview and supported Adobe-compatible operations share the optimized compositor. The HTTP contracts, rendered samples and stored RAW settings remain the same.
+
+[Qualification](SOURCE_PUBLICATION_791.md).
+
 ### Camera Raw DNG storage preferences (checkpoint 790)
 
 Authenticated clients can read `GET /v1/preferences/camera-raw` and update it with a revision and `dngStorage` by POST. The values are `embedXMP`, `sidecarXMP` and `ignoreSidecarXMP`. Updates use the existing native file-preference permission. A local source captures the choice when it opens, and `raw.saveSourceSettings` honors that choice even if the application preference later changes.

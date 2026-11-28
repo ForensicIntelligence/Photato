@@ -1,3 +1,15 @@
+## 2026-11-28 — Step 791 — Faster Camera Raw preview compositing
+
+Camera Raw reuses the decoded pixel tiles when an opaque, full-canvas RAW layer has an identity transform and Normal blending. The native compositor preserves the same Float32 sRGB values.
+
+The adjusted 3,008 × 2,000 Nikon preview’s composite stage took 0.54 seconds versus 11.35 seconds with the prior full compositor in one arm64 Debug probe. The comparison covered every Float32 sample and the complete RGBA8 display buffer. Native testing opened the Nikon, changed Exposure, generated a preview and cancelled without altering the original file.
+
+Xcode built the app and both focused imaging tests passed. Both optimized architectures passed all 351 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The measurement isolates compositing. Native decoding, exposure processing, display conversion and end-to-end interactive latency still need improvement. Exact Adobe output and physical Intel qualification remain open.
+
+[Development record](DEVLOG.md#dev-step-791) · [Qualification](SOURCE_PUBLICATION_791.md).
+
 ## 2026-11-28 — Step 790 — Camera Raw DNG storage preferences
 
 Camera Raw settings now control whether a local DNG writes XMP inside the source, writes a sibling, or opens and saves embedded settings while leaving the sibling alone. The default honors an existing companion before saving settings in the DNG.
@@ -2579,11 +2591,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:790 -->
+<!-- current-status-step:791 -->
 
-Camera Raw settings now control whether a local DNG writes XMP inside the source, writes a sibling, or opens and saves embedded settings while leaving the sibling alone. The default honors an existing companion before saving settings in the DNG.
+Camera Raw reuses the decoded pixel tiles when an opaque, full-canvas RAW layer has an identity transform and Normal blending. The native compositor preserves the same Float32 sRGB values.
 
-[Development record](DEVLOG.md#dev-step-790) · [Qualification](SOURCE_PUBLICATION_790.md).
+[Development record](DEVLOG.md#dev-step-791) · [Qualification](SOURCE_PUBLICATION_791.md).
 
 <!-- current-status:end -->
 
@@ -3580,6 +3592,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 788 | [Save Camera Raw settings in the original DNG](DEVLOG.md#dev-step-788) |
 | 2026-11-28 | 789 | [Save camera RAW adjustments in XMP sidecars](DEVLOG.md#dev-step-789) |
 | 2026-11-28 | 790 | [Camera Raw DNG storage preferences](DEVLOG.md#dev-step-790) |
+| 2026-11-28 | 791 | [Faster Camera Raw preview compositing](DEVLOG.md#dev-step-791) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

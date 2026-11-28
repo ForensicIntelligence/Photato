@@ -235,10 +235,31 @@ public enum Renderer {
       return try PagedCanvasRenderer.composite(d, region: requested, inputTarget: inputTarget,
         video: videoTransitions, forLayerOutput: forLayerOutput)
     }
+    if !forLayerOutput, inputTarget == nil, videoTransitions == nil,
+      requested == IntRect(x: 0, y: 0, width: d.width, height: d.height),
+      let opaque = try opaqueRawComposite(d) {
+      return opaque
+    }
     return try compositePrepared(d, region: requested, inputTarget: inputTarget, video: videoTransitions,
       facts:d.width>Surface.maximumDensePixels/d.height ? CompositionFacts(d, vectorViewport: requested):nil,
       forLayerOutput: forLayerOutput)
   }
+
+  private static func opaqueRawComposite(_ document: CraftDocument) throws -> Surface? {
+    // RAW open and development already supply the correctly developed raster.
+    // At identity this Normal, opaque layer over a clear canvas has the same samples.
+    guard document.colorMode == .rgb, document.depth != .f32, document.videoTimeline == nil,
+      document.inkMode == nil, document.restrictedMode == nil, document.layers.count == 1,
+      let layer = document.layers.first, layer.visible, layer.opacity == 1, layer.blendMode == .normal,
+      layer.parentID == nil, !layer.isClipped, layer.coordinateTransform == .identity,
+      layer.style == nil, layer.mask == nil, layer.vectorMask == nil, layer.smartFilters == nil,
+      layer.warp == nil, layer.sourceProjection == nil, layer.importedSmartAppearance == nil,
+      let object = layer.smartObject, object.rawDevelopment != nil, object.linkedSource == nil,
+      case .raster(let pixels) = layer.content, pixels.depth == document.depth,
+      pixels.width == document.width, pixels.height == document.height else { return nil }
+    return try pixels.opaqueFloatComposite()
+  }
+
   static func requiresFullComposition(_ document: CraftDocument) -> Bool {
     document.layers.contains { layer in
       if case .adjustment(.modern(let settings)) = layer.content { return settings.needsNeighborhood }

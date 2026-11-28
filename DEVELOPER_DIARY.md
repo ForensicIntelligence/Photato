@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **790** · The 10 most recent entries, newest first.
+Source build **791** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 791 — Faster Camera Raw preview compositing
+
+Camera Raw reuses the decoded pixel tiles when an opaque, full-canvas RAW layer has an identity transform and Normal blending. The native compositor preserves the same Float32 sRGB values.
+
+The adjusted 3,008 × 2,000 Nikon preview’s composite stage took 0.54 seconds versus 11.35 seconds with the prior full compositor in one arm64 Debug probe. The comparison covered every Float32 sample and the complete RGBA8 display buffer. Native testing opened the Nikon, changed Exposure, generated a preview and cancelled without altering the original file.
+
+Xcode built the app and both focused imaging tests passed. Both optimized architectures passed all 351 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The measurement isolates compositing. Native decoding, exposure processing, display conversion and end-to-end interactive latency still need improvement. Exact Adobe output and physical Intel qualification remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-791) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_791.md).
 
 ## 2026-11-28 — Step 790 — Camera Raw DNG storage preferences
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 6 focused imaging and 3 focused app and HTTP tes
 In the live RGB16 comparison, 5,474 of 8,643 process-color words differed by one code. Quick Mask and dense multi-gigabyte layered interchange also remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-782) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_782.md).
-
-## 2026-11-27 — Step 781 — Keep saved alpha and spot channels in layered TIFF
-
-Layered TIFF and BigTIFF now keep saved alpha and spot plates in RGB, Grayscale, CMYK and Lab. Associated or straight composite opacity stays separate from the named channels. Names, display colors, spot solidity and channel IDs survive Open and lossless Save.
-
-Photoshop 27.2 opened the final Photato RGB8, RGB16 and RGB32 BigTIFFs with both Proof ink and Alpha 2 visible in Channels and with Coating selected in the editable layer stack. LibTIFF independently matched all 17,286 alpha and spot samples, including the Float32 words. Native tests also round-tripped RGB, Grayscale, CMYK and Lab fixtures.
-
-Xcode built the native app. All 5 focused imaging and 2 focused app and HTTP tests passed. Both optimized architectures passed all 297 selected tests, including PSD channel and spot operations. Intel ran under Rosetta. Both slices of the Universal preview rendered offscreen.
-
-Flattened TIFF alpha and spot output, Quick Mask, very large layered files and byte identity for complete Photoshop files remain open. Some rich Photoshop blocks still require big-endian TIFF or PSD.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-781) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_781.md).

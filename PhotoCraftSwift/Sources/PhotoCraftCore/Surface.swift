@@ -144,6 +144,43 @@ public struct Surface: Codable, Equatable, Sendable {
     }
     return covered == lhs.width * lhs.height
   }
+  /// Retain the exact normalized samples of a fully opaque integer raster
+  /// when it becomes the entire Float32 sRGB composite.
+  package func opaqueFloatComposite() throws -> Surface? {
+    guard colorEncoding == .sRGB, depth != .f32 else { return nil }
+    func isOpaqueSample(_ pixel: Pixel) -> Bool {
+      // Normal source-over can fold a signed RGB zero when adding the empty backdrop.
+      let negativeZero = Float(-0.0).bitPattern
+      return pixel.a == 1 && pixel.r.bitPattern != negativeZero
+        && pixel.g.bitPattern != negativeZero && pixel.b.bitPattern != negativeZero
+    }
+    let side = Self.tileSide
+    let columns = self.columns
+    let capacity = columns * ((height + side - 1) / side)
+    if tiles.count < capacity, !isOpaqueSample(storedDefaultPixel) { return nil }
+    for (key, tile) in tiles {
+      try Task.checkCancellation()
+      guard key >= 0, key < capacity else { throw CraftError.invalid("Invalid composite tile index.") }
+      let visibleWidth = min(side, width - (key % columns) * side)
+      let visibleHeight = min(side, height - (key / columns) * side)
+      let eligible = tile.withUnsafeBufferPointer { samples in
+        for row in 0..<visibleHeight {
+          let offset = row * side
+          for index in offset..<(offset + visibleWidth) where !isOpaqueSample(samples[index]) {
+            return false
+          }
+        }
+        return true
+      }
+      if !eligible { return nil }
+    }
+    var output = try Surface(width: width, height: height, depth: .f32, fill: storedDefaultPixel)
+    output.tiles = tiles
+    output.tilesAreKnownFinite = tilesAreKnownFinite
+    output.opaqueProof.establish()
+    return output
+  }
+
   /// Scan allocated samples once; proof survives writes whose alpha remains one.
   /// Virtual padding is not a document pixel, and implicit planes need no dense allocation.
   public func isOpaque() throws -> Bool {

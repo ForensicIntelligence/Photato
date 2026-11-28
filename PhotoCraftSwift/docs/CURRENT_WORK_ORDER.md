@@ -1,3 +1,5 @@
+**Camera Raw RAW workflow.** Improve preview responsiveness while Camera Raw develops exposure changes, and verify Camera Raw defaults and Open routing. [Development record](DEVLOG.md#dev-step-791) · [Qualification](SOURCE_PUBLICATION_791.md).
+
 **Camera Raw RAW workflow.** Compare Camera Raw defaults, Open routing, and image preview responsiveness. The installed DNG storage options are covered by the new native settings panel. [Development record](DEVLOG.md#dev-step-790) · [Qualification](SOURCE_PUBLICATION_790.md).
 
 **Camera Raw RAW workflow.** Implement the Camera Raw storage preference and a content-addressed local settings database, then compare Camera Raw defaults and Open modes. [Development record](DEVLOG.md#dev-step-789) · [Qualification](SOURCE_PUBLICATION_789.md).
