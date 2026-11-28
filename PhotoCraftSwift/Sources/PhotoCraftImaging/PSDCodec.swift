@@ -1526,7 +1526,9 @@ public enum PSDCodec {
     let recordsLength = try output.reserveLength(format.sectionLengthBytes)
     let recordsStart = output.count
     var channelLengthOffsets: [[Int]] = []
-    try records.n(mergedTransparency ? -entries.count:entries.count, 2)  // Negative count declares merged transparency.
+    // TIFF's external merged raster describes transparency with ExtraSamples and MTrn.
+    // A negative PSD layer count would consume its first extra sample as opacity.
+    try records.n(includeComposite && mergedTransparency ? -entries.count : entries.count, 2)
     for (layer, section) in entries {
       let shapeTags = try layer.shape == nil ? [] : PSDLiveShape.write(layer, document: doc)
       let shapeBounds = try layer.shape?.renderBounds()

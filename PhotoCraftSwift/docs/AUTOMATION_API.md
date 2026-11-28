@@ -1,3 +1,9 @@
+### Layered TIFF alpha and spot channels (checkpoint 781)
+
+Native Save, Photato import, download and Save As, and Adobe-compatible asset input share the same channel handling. Lossless copy and download retain editable channels with `tiffLayers: true`. The published Adobe output schema and existing transfer size limits remain in effect.
+
+[Qualification](SOURCE_PUBLICATION_781.md).
+
 ### Direct paged RGB TIFF import (checkpoint 780)
 
 File Open and the existing authenticated Photato import and supported Adobe-compatible asset input share the optimized decoder. Existing request schemas and HTTP size limits apply.

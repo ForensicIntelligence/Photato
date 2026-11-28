@@ -10716,6 +10716,13 @@
       "link": "DEVLOG.md#dev-step-780",
       "section_sha256": "cd0075feef401b19711ea9e424f3a58fab3d3c4f9ac5ad2e644e629257aaaac9",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-781",
+      "title": "2026-11-27 \u2014 Step 781 \u2014 Keep saved alpha and spot channels in layered TIFF",
+      "link": "DEVLOG.md#dev-step-781",
+      "section_sha256": "32cfe16db9821be764138ac0d4430c07116dcbe44e8d2271be584142b672a0e0",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13551,8 +13558,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "69a6c2498e5d58eda580dd40e99e2b63402b06df6eec2f1d46ce676d33ad8f3b",
-      "bytes": 187728,
+      "sha256": "793929e94670a1e84f2c5f94219acddbdde67ee2cdb1e169d3245d0068d777dd",
+      "bytes": 187857,
       "rolling_current_snapshot": false
     },
     {
@@ -15273,8 +15280,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "dd37de44509e3305ee0b6a722f79b7571c83b335082285211f3550baade3895a",
-      "bytes": 751052,
+      "sha256": "e6b24e74235b8c4f4a20cfbe4ed1dc3194f1fac9db83ca5309864cf51bea94d5",
+      "bytes": 751437,
       "rolling_current_snapshot": false
     },
     {
@@ -15843,8 +15850,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "60260351d130eaa68ff754793735b21e60a6390a9cdbf6c5284abfe131ada179",
-      "bytes": 399283,
+      "sha256": "bb66ac283277c16608ec624a1a828649b15c991f306a162ae82efbaf2d8d0ab1",
+      "bytes": 399867,
       "rolling_current_snapshot": false
     },
     {
@@ -15963,8 +15970,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "318c69f9ca9a9271b82928e46fb302e52de3ca6a5ee949791d4362e1512435c3",
-      "bytes": 225881,
+      "sha256": "313c757dd85b3f1cad9c698134664dcb2fa3440e9ff9f42d18b51333d1e718f4",
+      "bytes": 226105,
       "rolling_current_snapshot": false
     },
     {
@@ -16041,14 +16048,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "42172c57dfc18d429ce312ab86ddabfd82ea72834cdee087c4ae3bb0beb3a130",
-      "bytes": 1065252,
+      "sha256": "65fd5c9bd7f5134c8535a4a4eff15f5b9f670708dae4bf4c95f7e1ca10e6739c",
+      "bytes": 1066703,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "8e10ff9530e15b19ef0f3420e823fc6991fdffe5da804b3fdab48a692f8a1b59",
-      "bytes": 5195060,
+      "sha256": "90370c142c1b0f3edcdde1f89a38290217ec6f19fa44a47809bd5f1c44c66b52",
+      "bytes": 5197255,
       "rolling_current_snapshot": false
     },
     {
@@ -23618,6 +23625,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_781.json",
+      "sha256": "5c33c561a2b6bdc120cfa99b0b5f803f0d0747cfb26731e3c001c06a290b6de1",
+      "bytes": 17421,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_781.md",
+      "sha256": "14b56b35a5369d22ee6c08834a01712ceef40f7b0e5ac2853d76c218bfeb4427",
+      "bytes": 1722,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24177,8 +24196,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "3356661bb87da3c3376b4160ac440d89d6fb623065164db722a263efa298170d",
-      "bytes": 507647,
+      "sha256": "778304c143df500dadc657c49e7b1197b903be19dc43f39a30ba9a622c6a909f",
+      "bytes": 508258,
       "rolling_current_snapshot": false
     },
     {
@@ -26691,8 +26710,8 @@
     }
   ],
   "counts": {
-    "milestones": 780,
-    "evidence_files": 2192,
+    "milestones": 781,
+    "evidence_files": 2194,
     "logs": 0,
     "missing_explicit_references": 704
   }

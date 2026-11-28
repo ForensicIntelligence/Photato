@@ -20,7 +20,7 @@ enum TIFFComponentRows {
     let saved = try g.savedAlphaSamples.map { _ in
       let builder = try NativeModeRaster.RowBuilder(width: g.width, height: g.height,
         mode: .grayscale, depth: depth, backing: backing)
-      try builder.fill(component: 1, word: 255)
+      try builder.fill(component: 1, word: depth == .f32 ? Float(1).bitPattern : integerMaximum)
       return builder
     }
     let savedBySample = Dictionary(uniqueKeysWithValues: zip(g.savedAlphaSamples, saved))

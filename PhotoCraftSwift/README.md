@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 781.** Keep saved alpha and spot channels in layered TIFF. [Qualification](docs/SOURCE_PUBLICATION_781.md).
+
 **Source checkpoint 780.** Open dense RGB TIFFs without intermediate planes. [Qualification](docs/SOURCE_PUBLICATION_780.md).
 
 **Source checkpoint 779.** Save BigTIFF files with 64-bit offsets. [Qualification](docs/SOURCE_PUBLICATION_779.md).

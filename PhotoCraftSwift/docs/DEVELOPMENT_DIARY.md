@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 781 — Keep saved alpha and spot channels in layered TIFF
+
+Layered TIFF and BigTIFF now keep saved alpha and spot plates in RGB, Grayscale, CMYK and Lab. Associated or straight composite opacity stays separate from the named channels. Names, display colors, spot solidity and channel IDs survive Open and lossless Save.
+
+Photoshop 27.2 opened the final Photato RGB8, RGB16 and RGB32 BigTIFFs with both Proof ink and Alpha 2 visible in Channels and with Coating selected in the editable layer stack. LibTIFF independently matched all 17,286 alpha and spot samples, including the Float32 words. Native tests also round-tripped RGB, Grayscale, CMYK and Lab fixtures.
+
+Xcode built the native app. All 5 focused imaging and 2 focused app and HTTP tests passed. Both optimized architectures passed all 297 selected tests, including PSD channel and spot operations. Intel ran under Rosetta. Both slices of the Universal preview rendered offscreen.
+
+Flattened TIFF alpha and spot output, Quick Mask, very large layered files and byte identity for complete Photoshop files remain open. Some rich Photoshop blocks still require big-endian TIFF or PSD.
+
+[Development record](DEVLOG.md#dev-step-781) · [Qualification](SOURCE_PUBLICATION_781.md).
+
 ## 2026-11-27 — Step 780 — Open dense RGB TIFFs without intermediate planes
 
 Eligible opaque RGB8 and RGB16 TIFFs now stream directly into editable tiles. The same path reads classic TIFF and BigTIFF while keeping the original document bit depth.
@@ -2459,11 +2471,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:780 -->
+<!-- current-status-step:781 -->
 
-Eligible opaque RGB8 and RGB16 TIFFs now stream directly into editable tiles. The same path reads classic TIFF and BigTIFF while keeping the original document bit depth.
+Layered TIFF and BigTIFF now keep saved alpha and spot plates in RGB, Grayscale, CMYK and Lab. Associated or straight composite opacity stays separate from the named channels. Names, display colors, spot solidity and channel IDs survive Open and lossless Save.
 
-[Development record](DEVLOG.md#dev-step-780) · [Qualification](SOURCE_PUBLICATION_780.md).
+[Development record](DEVLOG.md#dev-step-781) · [Qualification](SOURCE_PUBLICATION_781.md).
 
 <!-- current-status:end -->
 
@@ -3450,6 +3462,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 778 | [Open BigTIFF files with 64-bit offsets](DEVLOG.md#dev-step-778) |
 | 2026-11-27 | 779 | [Save BigTIFF files with 64-bit offsets](DEVLOG.md#dev-step-779) |
 | 2026-11-27 | 780 | [Open dense RGB TIFFs without intermediate planes](DEVLOG.md#dev-step-780) |
+| 2026-11-27 | 781 | [Keep saved alpha and spot channels in layered TIFF](DEVLOG.md#dev-step-781) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

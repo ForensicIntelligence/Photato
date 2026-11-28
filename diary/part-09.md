@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-27 — Step 781 — Keep saved alpha and spot channels in layered TIFF
+
+Layered TIFF and BigTIFF now keep saved alpha and spot plates in RGB, Grayscale, CMYK and Lab. Associated or straight composite opacity stays separate from the named channels. Names, display colors, spot solidity and channel IDs survive Open and lossless Save.
+
+Photoshop 27.2 opened the final Photato RGB8, RGB16 and RGB32 BigTIFFs with both Proof ink and Alpha 2 visible in Channels and with Coating selected in the editable layer stack. LibTIFF independently matched all 17,286 alpha and spot samples, including the Float32 words. Native tests also round-tripped RGB, Grayscale, CMYK and Lab fixtures.
+
+Xcode built the native app. All 5 focused imaging and 2 focused app and HTTP tests passed. Both optimized architectures passed all 297 selected tests, including PSD channel and spot operations. Intel ran under Rosetta. Both slices of the Universal preview rendered offscreen.
+
+Flattened TIFF alpha and spot output, Quick Mask, very large layered files and byte identity for complete Photoshop files remain open. Some rich Photoshop blocks still require big-endian TIFF or PSD.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-781) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_781.md).
+
 ## 2026-11-27 — Step 780 — Open dense RGB TIFFs without intermediate planes
 
 Eligible opaque RGB8 and RGB16 TIFFs now stream directly into editable tiles. The same path reads classic TIFF and BigTIFF while keeping the original document bit depth.

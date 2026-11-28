@@ -146,8 +146,8 @@ enum TIFFComponentExport {
     let imageChannels = colors + (preserveAlpha ? 1 : 0)
     let savedAlpha: [AlphaChannel]
     if options.tiffLayers == true, document.hasAuxiliaryChannels {
-      guard rgb, RasterIO.supportsLayeredTIFFSavedAlpha(document) else {
-        throw CraftError.unsupported("Layered TIFF auxiliary output supports RGB8 saved alpha channels.")
+      guard RasterIO.supportsLayeredTIFFSavedAlpha(document) else {
+        throw CraftError.unsupported("Layered TIFF can retain saved alpha and spot channels in component color modes. Save Quick Mask in Photato, PSD or PSB.")
       }
       savedAlpha = document.alphaChannels ?? []
     } else { savedAlpha = [] }
@@ -200,10 +200,17 @@ enum TIFFComponentExport {
       return Int(raster.rawWord(component: component, index: index))
     }
     func savedAlphaRow(_ channel: Int, y: Int) throws -> [UInt8] {
-      if let rows = savedRows[channel] { return try rows.row(y, channel: 0, depth: 8) }
-      return try PSDAuxiliaryChannels.row(savedAlpha[channel], y: y, depth: 8)
+      var samples: [UInt8]
+      if let rows = savedRows[channel] { samples = try rows.row(y, channel: 0, depth: bits) }
+      else { samples = try PSDAuxiliaryChannels.row(savedAlpha[channel], y: y, depth: bits) }
+      if order == .little, bytesPerSample > 1 {
+        for offset in stride(from: 0, to: samples.count, by: bytesPerSample) {
+          samples[offset..<offset + bytesPerSample].reverse()
+        }
+      }
+      return samples
     }
-    func makeRow(y: Int, first: Int, end: Int) throws -> [UInt8] {
+    func imageRow(y: Int, first: Int, end: Int) throws -> [UInt8] {
       try Task.checkCancellation()
       var row: [UInt8] = []
       row.reserveCapacity(rowBytes)
@@ -221,25 +228,29 @@ enum TIFFComponentExport {
         }
       }
       if let rgbRows {
-        if end <= imageChannels {
-          row = try rgbRows.row(y, components: first..<end, order: order)
-        } else if first >= imageChannels {
-          row = try savedAlphaRow(first - imageChannels, y: y)
-        } else {
-          let image = try rgbRows.row(y, components: first..<imageChannels, order: order)
-          let alpha = try savedAlpha.indices.map { try savedAlphaRow($0, y: y) }
-          for x in 0..<width {
-            let offset = x * imageChannels
-            row.append(contentsOf: image[offset..<offset + imageChannels])
-            for plane in alpha { row.append(plane[x]) }
-          }
-        }
+        row = try rgbRows.row(y, components: first..<end, order: order)
       } else if let matted {
         for x in 0..<width { append(Int(matted.whiteMattedSample(at: y * width + x)), to: &row) }
       } else if let retained {
         for x in 0..<width { try appendPixel(retained, y * width + x) }
       } else if let renderer {
         try renderer.forEachSample(inRow: y, appendPixel)
+      }
+      return row
+    }
+    func makeRow(y: Int, first: Int, end: Int) throws -> [UInt8] {
+      if first >= imageChannels { return try savedAlphaRow(first - imageChannels, y: y) }
+      let image = try imageRow(y: y, first: first, end: min(end, imageChannels))
+      if end <= imageChannels { return image }
+      let alpha = try savedAlpha.indices.map { try savedAlphaRow($0, y: y) }
+      let imagePixelBytes = imageChannels * bytesPerSample
+      var row: [UInt8] = []
+      row.reserveCapacity(rowBytes)
+      for x in 0..<width {
+        let offset = x * imagePixelBytes
+        row.append(contentsOf: image[offset..<offset + imagePixelBytes])
+        let sample = x * bytesPerSample
+        for plane in alpha { row.append(contentsOf: plane[sample..<sample + bytesPerSample]) }
       }
       return row
     }

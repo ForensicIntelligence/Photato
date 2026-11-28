@@ -97,9 +97,13 @@ enum PSDAuxiliaryChannels {
       switch planes {
       case .stored(let surfaces):
         let gray = surfaces[index]
-        guard depth == 8, gray.width == document.width, gray.height == document.height,
-          gray.depth == document.depth else { throw CraftError.invalid("Invalid stored TIFF selection plane.") }
+        guard gray.width == document.width, gray.height == document.height,
+          gray.depth == document.depth else { throw CraftError.invalid("Invalid stored TIFF channel plane.") }
         if inverted {
+          if depth == 32 {
+            sourceGray = gray
+            try context.admitRaster(bytes: tiles * 65536)
+          }
           let coverage = try gray.mappedStoredSamples(backing: context.backing) { pixel in
             let value = sample(pixel.r, inverted: true, depth: depth, original: nil)
             return Pixel(value, value, value)

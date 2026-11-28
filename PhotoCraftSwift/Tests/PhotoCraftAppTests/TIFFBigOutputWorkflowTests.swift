@@ -57,4 +57,53 @@ final class TIFFBigOutputWorkflowTests: XCTestCase {
       XCTAssertEqual(bad.0.statusCode, 400)
     }
   }
+
+  @MainActor func testRGB16SpotAndAlphaTIFFOpenAndSaveThroughNativeAndAPIs() async throws {
+    let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+      .appendingPathComponent("PhotoCraftImagingTests/Fixtures/tiff-aux/photoshop-rgb16-alpha-spot.tiff")
+    let original = try DocumentIO.read(fixture)
+    XCTAssertNil(DocumentIO.persistenceIssue(original, format: .tiff))
+    XCTAssertEqual(original.alphaChannels?.map(\.name), ["Proof ink", "Alpha 2"])
+    let input = try Data(contentsOf: fixture)
+    func check(_ reopened: CraftDocument) throws {
+      XCTAssertEqual(reopened.depth, .u16)
+      XCTAssertEqual(reopened.alphaChannels?.map(\.name), original.alphaChannels?.map(\.name))
+      XCTAssertEqual(reopened.alphaChannels?.map(\.spot), original.alphaChannels?.map(\.spot))
+      for (a, b) in zip(try XCTUnwrap(reopened.alphaChannels), try XCTUnwrap(original.alphaChannels)) {
+        XCTAssertEqual(try a.pixels.rgbaData(depth: .u16), try b.pixels.rgbaData(depth: .u16))
+      }
+    }
+    try check(AdobeActionAssets.decode(input))
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let options = RasterEncodingOptions(tiffCompression: .zip, tiffLayers: true,
+      tiffTransparency: false, tiffBigTIFF: true)
+    let native = directory.appendingPathComponent("native.tiff")
+    try RasterIO.write(original, to: native, type: .tiff, options: options)
+    let fields = DocumentEncodingOptions.json(options)
+    let header = String(decoding: try JSONSerialization.data(withJSONObject: fields), as: UTF8.self)
+    let automation = AutomationTests()
+    try await automation.withService(pressedMouseButtons: { 0 }) { service, shared in
+      defer { for document in service.controller.documents where document !== shared { document.close() } }
+      service.setDocumentTransfersEnabled(true)
+      service.setDocumentSavesEnabled(true)
+      service.setSaveDirectory(directory)
+      let upload = try await AutomationOpeningTests().upload(service, bytes: input,
+        type: "image/tiff", format: "tiff")
+      XCTAssertEqual(upload.0.statusCode, 201, String(decoding: upload.1, as: UTF8.self))
+      let share = try XCTUnwrap(service.shares.last)
+      let imported = try XCTUnwrap(share.document)
+      try check(imported.store.document)
+      let download = try await automation.request(service, path: "/v1/documents/\(share.id)/file.tiff",
+        headers: ["X-Photato-Export-Options": header])
+      XCTAssertEqual(download.0.statusCode, 200, String(decoding: download.1, as: UTF8.self))
+      XCTAssertEqual(download.1, try Data(contentsOf: native))
+      let saved = try await automation.edit(service, imported, "document.saveAs",
+        ["name": "channels", "format": "tiff", "replace": false, "options": fields])
+      XCTAssertEqual(saved, 200)
+      try check(DocumentIO.read(directory.appendingPathComponent("channels.tiff")))
+    }
+  }
+
 }

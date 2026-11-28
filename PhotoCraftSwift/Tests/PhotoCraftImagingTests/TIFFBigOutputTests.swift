@@ -1,3 +1,4 @@
+import CryptoKit
 import Foundation
 import PhotoCraftCore
 import XCTest
@@ -118,4 +119,109 @@ final class TIFFBigOutputTests: XCTestCase {
     XCTAssertEqual(range.map { exported.rawWord(component: 0, index: $0) },
       range.map { control.rawWord(component: 0, index: $0) })
   }
+
+  func testTIFFKeepsAllAdobeAlphaAndSpotSamplesAtEachRGBDepth() throws {
+    struct Fixture: Decodable {
+      let fixtureSHA256: String
+      let names: [String]
+      let identifiers: [UInt32]
+      let sampleSHA256: [String]
+    }
+    struct Provenance: Decodable { let fixtures: [String: Fixture] }
+    func hex(_ data: Data) -> String { SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined() }
+    let folder = fixtures.appendingPathComponent("tiff-aux")
+    let provenance = try JSONDecoder().decode(Provenance.self,
+      from: Data(contentsOf: folder.appendingPathComponent("provenance.json")))
+    let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".tiff")
+    defer { try? FileManager.default.removeItem(at: url) }
+    for bits in [8, 16, 32] {
+      let filename = "photoshop-rgb\(bits)-alpha-spot.tiff"
+      let reference = folder.appendingPathComponent(filename)
+      let oracle = try XCTUnwrap(provenance.fixtures[filename])
+      XCTAssertEqual(hex(try Data(contentsOf: reference)), oracle.fixtureSHA256)
+      let original = try RasterIO.read(reference)
+      func check(_ restored: CraftDocument) throws {
+        XCTAssertEqual(restored.colorMode, .rgb)
+        XCTAssertEqual(restored.resolution, 144)
+        XCTAssertEqual(restored.layers.map(\.name), ["Base", "Coating"])
+        XCTAssertEqual(restored.layers.map(\.x), [0, 8])
+        XCTAssertEqual(restored.layers.map(\.y), [0, 10])
+        let channels = try XCTUnwrap(restored.alphaChannels)
+        XCTAssertEqual(channels.map(\.name), oracle.names)
+        XCTAssertEqual(channels.compactMap(\.psdIdentifier), oracle.identifiers)
+        XCTAssertEqual(channels.first?.spot?.solidity, 0.63)
+        XCTAssertNil(channels.last?.spot)
+        for (channel, expected) in zip(channels, oracle.sampleSHA256) {
+          let raw = try (0..<restored.height).flatMap { try PSDAuxiliaryChannels.row(channel, y: $0, depth: bits) }
+          XCTAssertEqual(hex(Data(raw)), expected)
+        }
+      }
+      try check(original)
+      for big in [false, true] {
+        let options = RasterEncodingOptions(tiffCompression: .zip,
+          tiffByteOrder: big ? .littleEndian : .bigEndian,
+          tiffPixelOrder: big ? .perChannel : .interleaved,
+          tiffPredictor: bits == 32, tiffLayers: true, tiffTransparency: big, tiffBigTIFF: big,
+          tiffLayerCompression: .zip)
+        let data = try RasterIO.encoded(original, type: .tiff, options: options)
+        try RasterIO.write(original, to: url, type: .tiff, options: options)
+        XCTAssertEqual(try Data(contentsOf: url), data)
+        let tiff = try TIFFContainer(data, metadata: false)
+        XCTAssertEqual(tiff.isBigTIFF, big)
+        XCTAssertEqual(try tiff.scalar(277), big ? 6 : 5)
+        XCTAssertEqual(Array(try tiff.numbers(338).suffix(2)), [0, 0])
+        let layerFile = try TIFFContainer(data, metadata: false, additionalTags: [37724])
+        var layers = try layerFile.reader(for: XCTUnwrap(layerFile.root.fields[37724]))
+        _ = try layers.bytes(TIFFLayers.signature.count)
+        let tag = try layers.bytes(8)
+        if big {
+          XCTAssertEqual(String(decoding: tag.suffix(4).reversed(), as: UTF8.self), "MTrn")
+          XCTAssertEqual(layerFile.order.number(try layers.bytes(4), 0, 4), 0)
+          _ = try layers.bytes(8)
+        }
+        _ = try layers.bytes(4)
+        XCTAssertEqual(layerFile.order.number(try layers.bytes(2), 0, 2), 2)
+        try check(RasterIO.read(url))
+      }
+    }
+  }
+
+  func testComponentModeTIFFRetainsSavedChannelsAndNativeColor() throws {
+    for mode in [DocumentColorMode.grayscale, .cmyk, .lab] {
+      let profile = try NativeModeProfile.standard(mode, depth: .u16)
+      var document = try CraftDocument(width: 39, height: 21, depth: .u16)
+      document.modeDescriptor = try .init(mode: mode, depth: .u16, profile: profile)
+      let baseBuilder = try NativeModeRaster.RowBuilder(width: 39, height: 21, mode: mode, depth: .u16, profile: profile)
+      let color: [UInt32] = mode == .lab ? [39321, 32896, 32896] : Array(repeating: 13107, count: mode.componentCount)
+      for (component, word) in (color + [65535]).enumerated() { try baseBuilder.fill(component: component, word: word) }
+      let base = try baseBuilder.finish()
+      var layer = Layer(name: "Native color", content: .raster(try base.surface()))
+      layer.nativeMode = base
+      document.layers = [layer]
+      document.activeLayerID = layer.id
+      var mask = try Surface(width: 39, height: 21, depth: .u16, fill: .white)
+      mask.setPixel(x: 4, y: 6, Pixel(0.21, 0.21, 0.21))
+      document.alphaChannels = [AlphaChannel(name: "Saved mask", pixels: mask),
+        AlphaChannel(name: "Plate", pixels: mask, spot: .init(color: .black, solidity: 0.25))]
+      let options = RasterEncodingOptions(tiffCompression: .zip, tiffByteOrder: .littleEndian,
+        tiffPixelOrder: .perChannel, tiffLayers: true, tiffTransparency: false, tiffBigTIFF: true,
+        tiffLayerCompression: .zip)
+      let data = try RasterIO.encoded(document, type: .tiff, options: options)
+      let restored = try RasterIO.read(data)
+      XCTAssertEqual(restored.colorMode, mode)
+      XCTAssertEqual(restored.layers.first?.name, layer.name)
+      XCTAssertEqual(restored.layers.first?.nativeMode?.profile, profile)
+      XCTAssertEqual(restored.alphaChannels?.map(\.name), ["Saved mask", "Plate"])
+      XCTAssertEqual(restored.alphaChannels?.last?.spot?.solidity, 0.25)
+      XCTAssertEqual(try restored.alphaChannels?.first?.pixels.rgbaData(depth: .u16), try mask.rgbaData(depth: .u16))
+      XCTAssertEqual(try restored.alphaChannels?.last?.pixels.rgbaData(depth: .u16), try mask.rgbaData(depth: .u16))
+      if mode != .lab {
+        let kept = try XCTUnwrap(restored.layers.first?.nativeMode)
+        for component in 0...mode.componentCount {
+          XCTAssertEqual(kept.rawWord(component: component, index: 124), base.rawWord(component: component, index: 124))
+        }
+      }
+    }
+  }
+
 }

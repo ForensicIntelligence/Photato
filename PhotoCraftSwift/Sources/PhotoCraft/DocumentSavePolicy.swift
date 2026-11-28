@@ -96,7 +96,7 @@ extension DocumentIO {
     }
     if document.hasAuxiliaryChannels, format != .psd, format != .psb {
       guard format == .tiff, options.tiffLayers != false, RasterIO.supportsLayeredTIFFSavedAlpha(document) else {
-        return "Save as Photato to retain alpha channels and Quick Mask. Save a Copy can export a flattened image."
+        return "Save as Photato, PSD or PSB to retain alpha channels, spot channels or Quick Mask. Save a Copy can export a flattened image."
       }
     }
     if document.restrictedMode != nil {

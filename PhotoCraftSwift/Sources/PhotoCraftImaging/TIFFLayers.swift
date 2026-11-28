@@ -31,9 +31,10 @@ enum TIFFLayers {
     if ordinarySamples {
       savedAlpha = nil
     } else {
-      guard composite.colorMode == .rgb, depth == 8,
-        let geometry = try TIFFStorage.Geometry(tiff, allowAssociatedAlpha: true, allowSavedAlpha: true,
-          allowTiles: storedAlpha != nil),
+      let photometric = try tiff.scalar(262)
+      guard let geometry = try TIFFStorage.Geometry(tiff, allowAssociatedAlpha: true,
+        colorComponents: colors, photometric: photometric, allowSavedAlpha: true,
+        allowTiles: storedAlpha != nil),
         !geometry.savedAlphaSamples.isEmpty else {
         throw CraftError.unsupported("Unsupported layered TIFF auxiliary sample layout.")
       }
@@ -147,18 +148,11 @@ enum TIFFLayers {
       // describe only saved channels, while Photoshop also names that sample.
       let transparencyRecord = seen.contains("MTrn") && (extra.first == 1 || extra.first == 2)
         && (try? PSDAuxiliaryChannels.names(blocks, count: count + 1)) != nil
-      if let storedAlpha {
-        guard storedAlpha.count == count else { throw CraftError.invalid("TIFF saved-selection planes disagree with the layer metadata.") }
-        try PSDAuxiliaryChannels.read(storedAlpha, first: components-count, blocks: blocks,
-          document: &result, paging: paging, leadingTransparency: transparencyRecord)
-      } else {
-        let reader = try TIFFStorage.savedAlphaReader(tiff, geometry: savedAlpha)
-        try PSDAuxiliaryChannels.read(reader, first: components-count, count: count,
-          blocks: blocks, document: &result, paging: nil, leadingTransparency: transparencyRecord)
+      guard let storedAlpha, storedAlpha.count == count else {
+        throw CraftError.invalid("TIFF channel samples disagree with the layer metadata.")
       }
-      guard result.alphaChannels?.allSatisfy({ $0.spot == nil }) == true else {
-        throw CraftError.unsupported("Layered TIFF spot channels are not yet supported.")
-      }
+      try PSDAuxiliaryChannels.read(storedAlpha, first: components-count, blocks: blocks,
+        document: &result, paging: paging, leadingTransparency: transparencyRecord)
     }
     result.resolution = composite.resolution
     result.sourceICC = composite.sourceICC
@@ -179,13 +173,14 @@ enum TIFFLayers {
     var layerDocument = document
     let componentCount = try tiff.scalar(277)
     let hasTransparency: Bool
+    let colors = document.colorMode.componentCount
     if savedAlpha.isEmpty {
-      hasTransparency = componentCount == document.colorMode.componentCount+1
+      hasTransparency = componentCount == colors+1
     } else {
       let extra = try tiff.numbers(338)
       let remaining = extra.dropLast(savedAlpha.count)
-      guard document.colorMode == .rgb, document.depth == .u8, document.quickMask == nil,
-        savedAlpha.allSatisfy({ $0.spot == nil }), extra.count == componentCount-3, extra.count >= savedAlpha.count,
+      guard RasterIO.supportsLayeredTIFFSavedAlpha(document),
+        extra.count == componentCount - colors, extra.count >= savedAlpha.count,
         extra.suffix(savedAlpha.count).allSatisfy({ $0 == 0 }),
         remaining.isEmpty || remaining == [1] || remaining == [2] else {
         throw CraftError.invalid("TIFF saved-alpha samples disagree with the selected channels.")

@@ -1,0 +1,83 @@
+{
+  "authoring": "Owned RGB PSD fixtures opened in Adobe Photoshop 27.2 (Photoshop 2026) and saved as layered, uncompressed, interleaved Macintosh TIFF. No composite transparency sample. All numeric samples, the original layer records and the original channel resources were retained in these sanitized fixtures. EXIF, XMP, auxiliary IFDs, and unrelated Photoshop resources and blocks were omitted.",
+  "fixtures": {
+    "photoshop-rgb8-alpha-spot.tiff": {
+      "originalSHA256": "e4e73a38ee39ae79eecbf8843bcd645b6d859aee796b398515a50fb913bcf1dd",
+      "fixtureSHA256": "b632546db963184df73ac06892743fdda56fa41649878cc1842d92f237922622",
+      "resolution": [
+        144,
+        144
+      ],
+      "dimensions": [
+        67,
+        43
+      ],
+      "depth": 8,
+      "samplesPerPlane": 2881,
+      "names": [
+        "Proof ink",
+        "Alpha 2"
+      ],
+      "identifiers": [
+        2,
+        5
+      ],
+      "sampleSHA256": [
+        "665358beaaf028b4bada9a95c00c568d735005e83cf53850df737b6f8e3a88ae",
+        "4d048781d447e05f11ac0325f4817af2934681081734997b09b5009541c0e06a"
+      ]
+    },
+    "photoshop-rgb16-alpha-spot.tiff": {
+      "originalSHA256": "78dd96a76866ab1be2c696197e8e0752a8c89669c0df1f3aa49ec866aefa99d8",
+      "fixtureSHA256": "710f151444383cc09860fc5644f2a1a097bbb5734fa2b1fe6c274288faaf4daa",
+      "resolution": [
+        144,
+        144
+      ],
+      "dimensions": [
+        67,
+        43
+      ],
+      "depth": 16,
+      "samplesPerPlane": 2881,
+      "names": [
+        "Proof ink",
+        "Alpha 2"
+      ],
+      "identifiers": [
+        2,
+        5
+      ],
+      "sampleSHA256": [
+        "161d22753cab6f77c8a557272cd957f4eb27d41d715ecb3ca9d5a61b62c954a8",
+        "632635a140f739cff630424fb414c2ea26a5f4326b34920af6de7bba5a656b99"
+      ]
+    },
+    "photoshop-rgb32-alpha-spot.tiff": {
+      "originalSHA256": "1a108d187ebcd7b6727d002bda081d01eeb24fdf3fabe29601a5cc44077843d3",
+      "fixtureSHA256": "f01f68d566a790e1950a7cce19404cd1a14243966120baa6da803a3fe3ab5c9c",
+      "resolution": [
+        144,
+        144
+      ],
+      "dimensions": [
+        67,
+        43
+      ],
+      "depth": 32,
+      "samplesPerPlane": 2881,
+      "names": [
+        "Proof ink",
+        "Alpha 2"
+      ],
+      "identifiers": [
+        2,
+        5
+      ],
+      "sampleSHA256": [
+        "787273a73954faaa029b31715ca54e2a11e68e83c77f3cc5740891f6c871e9ea",
+        "ee2be7c6c8070225b791d346134496a4fb8698075e55a8afa5503273e8909e9c"
+      ]
+    }
+  }
+}

@@ -112,40 +112,6 @@ enum TIFFStorage {
     return samples
   }
 
-  /// Copy TIFF's named mask samples into a raw Photoshop channel stream.
-  static func savedAlphaReader(_ file: TIFFContainer, geometry g: Geometry) throws -> PSDChannelReader {
-    let count = g.savedAlphaSamples.count
-    let planeBytes = g.width * g.height
-    guard g.bits == 8, count > 0, planeBytes <= (TIFFContainer.byteLimit-2)/count else {
-      throw CraftError.unsupported("Layered TIFF saved alpha exceeds the supported RGB8 input budget.")
-    }
-    var planes = Data(count:2+planeBytes*count)
-    let strips = (g.height-1)/g.rows+1
-    let components = g.planar ? 1 : g.channels
-    try planes.withUnsafeMutableBytes { (out: UnsafeMutableRawBufferPointer) in
-      let physicalPlanes = g.planar ? g.savedAlphaSamples : [0]
-      for (ordinal,sample) in physicalPlanes.enumerated() {
-        for strip in 0..<strips {
-          try Task.checkCancellation()
-          let y0 = strip*g.rows, rows = min(g.rows,g.height-y0)
-          let bytes = try decodedStrip(file,geometry:g,index:sample*strips+strip,rows:rows,components:components)
-          if g.planar {
-            let destination = 2+ordinal*planeBytes+y0*g.width
-            for pixel in bytes.indices { out[destination+pixel] = bytes[pixel] }
-          } else {
-            for (plane,channel) in g.savedAlphaSamples.enumerated() {
-              let destination = 2+plane*planeBytes+y0*g.width
-              for pixel in 0..<rows*g.width {
-                out[destination+pixel] = bytes[pixel*components+channel]
-              }
-            }
-          }
-        }
-      }
-    }
-    return try PSDChannelReader(PSDReader(data:planes),width:g.width,height:g.height,depth:g.bits,channels:count)
-  }
-
   static func surface(_ data: Data, depth: PixelDepth,
     encoding: SurfaceColorEncoding, space: CGColorSpace? = nil) throws -> Surface? {
     guard TIFFContainer.isClassic(data) else { return nil }
@@ -216,7 +182,7 @@ enum TIFFStorage {
     return output
   }
   static func rewrite(_ input: Data, options: RasterEncodingOptions,
-    colorComponents: Int = 3, photometric: Int = 2, savedAlpha: [AlphaChannel] = []) throws -> Data {
+    colorComponents: Int = 3, photometric: Int = 2) throws -> Data {
     try options.validate(for: .tiff)
     let data = Data(input)
     let file = try TIFFContainer(data, metadata: true)
@@ -224,11 +190,6 @@ enum TIFFStorage {
       colorComponents: colorComponents, photometric: photometric),
       !g.planar, g.compression == 1, g.predictor == 1 else {
       throw CraftError.invalid("Expected uncompressed interleaved TIFF intermediate.")
-    }
-    guard savedAlpha.isEmpty || (g.bits == 8 && savedAlpha.allSatisfy({
-      $0.pixels.width == g.width && $0.pixels.height == g.height && $0.pixels.depth == .u8
-    })) else {
-      throw CraftError.invalid("TIFF saved alpha must match the RGB8 image.")
     }
     let predictor = options.tiffPredictor == true
     guard !predictor || g.bits == 32 else {
@@ -243,8 +204,7 @@ enum TIFFStorage {
     let planar = options.tiffPixelOrder == .perChannel
     let compression = options.tiffCompression ?? .none
     let matte = options.tiffTransparency == false && g.channels == colorComponents + 1
-    let imageChannels = matte ? colorComponents : g.channels
-    let channelCount = imageChannels + savedAlpha.count
+    let channelCount = matte ? colorComponents : g.channels
     let components = planar ? 1 : channelCount, bps = g.bits / 8
     let rowBytes = g.width * components * bps
     let rowsPerStrip = compression == .none ? g.height : max(1, min(g.height, 65536 / rowBytes))
@@ -271,21 +231,11 @@ enum TIFFStorage {
             throw CraftError.invalid("Incomplete uncompressed TIFF row.")
           }
           var row: [UInt8] = []; row.reserveCapacity(rowBytes)
-          let alphaRows: [[UInt8]]
-          if planar {
-            alphaRows = plane < imageChannels ? [] : [try PSDAuxiliaryChannels.row(savedAlpha[plane-imageChannels],y:y,depth:8)]
-          } else {
-            alphaRows = try savedAlpha.map { try PSDAuxiliaryChannels.row($0,y:y,depth:8) }
-          }
           for x in 0..<g.width {
             let pixel = sourceRow + x * g.channels * bps
             let alpha = matte ? file.order.number(data, pixel + colorComponents * bps, bps) : 0
             for channel in 0..<components {
               let index = planar ? plane : channel
-              if index >= imageChannels {
-                row.append(alphaRows[planar ? 0 : index-imageChannels][x])
-                continue
-              }
               let at = pixel + index * bps
               if matte {
                 let sample = file.order.number(data, at, bps)
@@ -327,12 +277,10 @@ enum TIFFStorage {
     file.set(273, offsets, type: 4); file.set(279, counts, type: 4)
     file.set(278, [rowsPerStrip], type: 4)
     file.set(284, [planar ? 2 : 1]); file.set(317, [predictor ? 3 : 1])
-    if matte || !savedAlpha.isEmpty {
+    if matte {
       file.set(277,[channelCount])
       file.set(258,Array(repeating:g.bits,count:channelCount))
-      let extra = (matte ? [] : try file.numbers(338,default:[])) + Array(repeating:0,count:savedAlpha.count)
-      if extra.isEmpty { file.root.fields.removeValue(forKey: 338) }
-      else { file.set(338, extra) }
+      file.root.fields.removeValue(forKey: 338)
       if file.root.fields[339] != nil { file.set(339,Array(repeating:g.bits == 32 ? 3 : 1,count:channelCount)) }
     }
     if options.tiffEmbedProfile == false { UntaggedOutput.removeTIFFProfile(from: file) }

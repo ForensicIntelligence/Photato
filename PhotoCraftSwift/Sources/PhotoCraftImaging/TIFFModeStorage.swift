@@ -43,13 +43,15 @@ enum TIFFModeStorage {
     let photo = try file.scalar(262)
     guard let mode = mode(photo) else { return nil }
     let jpeg = try file.scalar(259, default: 1) == 7
-    if mode == .rgb, !jpeg, !forcePaged, file.root.fields[324] == nil, file.root.fields[325] == nil {
+    let hasNamedExtras = try file.root.fields[37724] != nil && file.numbers(338, default: []).contains(0)
+    if mode == .rgb, !jpeg, !forcePaged, !hasNamedExtras,
+      file.root.fields[324] == nil, file.root.fields[325] == nil {
       let width = try file.scalar(256), height = try file.scalar(257)
       guard width > 0, height > 0, width > Surface.maximumDensePixels / height else { return nil }
     }
     if mode == .grayscale, !jpeg, try file.numbers(258).contains(where: { $0 < 8 }) { return nil }
     guard let g = try TIFFStorage.Geometry(file, allowAssociatedAlpha: true,
-      colorComponents: mode.componentCount, photometric: photo, allowSavedAlpha: mode == .rgb,
+      colorComponents: mode.componentCount, photometric: photo, allowSavedAlpha: hasNamedExtras,
       allowTiles: true, allowJPEG: true) else {
       if jpeg { throw CraftError.unsupported("JPEG-compressed TIFF requires opaque 8-bit RGB or grayscale samples.") }
       if mode == .rgb { return nil }
@@ -68,12 +70,12 @@ enum TIFFModeStorage {
     let original = file.root.fields[34675]?.data
     let rgbWorkingICC = mode == .rgb ? try ColorManagement.importedProfile(original, depth: depth) : nil
     let profile = try rgbWorkingICC ?? PSDModeStorage.profile(original, mode: mode, depth: depth)
-    let backing = forcePaged || jpeg || g.tileWidth != nil || g.width > NativeModeRaster.maximumPixels / g.height
+    let backing = forcePaged || jpeg || hasNamedExtras || g.tileWidth != nil || g.width > NativeModeRaster.maximumPixels / g.height
       ? try RasterTileStore() : nil
     let orientation = try file.scalar(274, default: 1)
     guard (1...8).contains(orientation) else { throw CraftError.invalid("Invalid TIFF orientation.") }
-    if !g.savedAlphaSamples.isEmpty, depth != .u8 || orientation != 1 {
-      throw CraftError.unsupported("Saved selections in paged TIFF require unrotated RGB8 layer data.")
+    if !g.savedAlphaSamples.isEmpty, orientation != 1 {
+      throw CraftError.unsupported("TIFF saved alpha and spot channels require unrotated Photoshop layer data.")
     }
     let pixels: Surface
     let nativeMode: NativeModeRaster?

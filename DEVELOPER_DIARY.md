@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **780** · The 10 most recent entries, newest first.
+Source build **781** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 781 — Keep saved alpha and spot channels in layered TIFF
+
+Layered TIFF and BigTIFF now keep saved alpha and spot plates in RGB, Grayscale, CMYK and Lab. Associated or straight composite opacity stays separate from the named channels. Names, display colors, spot solidity and channel IDs survive Open and lossless Save.
+
+Photoshop 27.2 opened the final Photato RGB8, RGB16 and RGB32 BigTIFFs with both Proof ink and Alpha 2 visible in Channels and with Coating selected in the editable layer stack. LibTIFF independently matched all 17,286 alpha and spot samples, including the Float32 words. Native tests also round-tripped RGB, Grayscale, CMYK and Lab fixtures.
+
+Xcode built the native app. All 5 focused imaging and 2 focused app and HTTP tests passed. Both optimized architectures passed all 297 selected tests, including PSD channel and spot operations. Intel ran under Rosetta. Both slices of the Universal preview rendered offscreen.
+
+Flattened TIFF alpha and spot output, Quick Mask, very large layered files and byte identity for complete Photoshop files remain open. Some rich Photoshop blocks still require big-endian TIFF or PSD.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-781) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_781.md).
 
 ## 2026-11-27 — Step 780 — Open dense RGB TIFFs without intermediate planes
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 10 focused imaging and 7 app and HTTP tests pass
 This checkpoint removes the input limit for the tested layer container. Larger layer payloads when saving, unsupported Photoshop descriptors, additional TIFF layouts and broader byte comparisons remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-772) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_772.md).
-
-## 2026-11-27 — Step 771 — Keep named selections in large layered TIFFs
-
-Large layered RGB8 TIFFs now keep named selections alongside editable layers, layer masks and composite opacity. A saved channel can be loaded as a selection after reopening the file.
-
-Photato reopened an 11,000 × 10,000, 660 MB TIFF with both named selections, their channel IDs, two editable layers and a local layer mask. An independent parser checked all 220 million saved-selection bytes and all 110 million opacity bytes. In two Photoshop captures, all 6,144 authored selection samples matched, with and without a separate opacity sample.
-
-Xcode built the native app. All 10 focused imaging and 6 app and HTTP tests passed. Both optimized architectures passed all 245 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on each slice.
-
-The new evidence covers classic stripped RGB8 TIFFs with named non-spot channels. Larger embedded layer payloads, additional channel types and depths, tile layouts, JPEG-in-TIFF and BigTIFF still need qualification.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-771) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_771.md).
