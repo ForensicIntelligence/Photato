@@ -70,7 +70,7 @@ enum TIFFComponentRows {
     return (raster, try saved.map { try $0.finish().channel(0) })
   }
 
-  private static func packedRows(_ file: TIFFContainer, _ g: TIFFStorage.Geometry, components: Int,
+  static func packedRows(_ file: TIFFContainer, _ g: TIFFStorage.Geometry, components: Int,
     consume: (_ plane: Int, _ samples: [UInt8]) throws -> Void) throws {
     let bands = (g.height - 1) / g.rows + 1
     let planeCount = g.planar ? g.channels : 1

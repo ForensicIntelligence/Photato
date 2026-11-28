@@ -1,3 +1,5 @@
+**TIFF interchange.** Qualify JPEG-compressed TIFF and additional Photoshop preview samples. [Development record](DEVLOG.md#dev-step-775) · [Qualification](SOURCE_PUBLICATION_775.md).
+
 **TIFF interchange.** Match the Save Image Pyramid controls and reduced-resolution TIFF previews. [Development record](DEVLOG.md#dev-step-774) · [Qualification](SOURCE_PUBLICATION_774.md).
 
 **TIFF interchange.** Add native tiled component input and verify Photoshop’s separate grayscale opacity. [Development record](DEVLOG.md#dev-step-773) · [Qualification](SOURCE_PUBLICATION_773.md).

@@ -23,6 +23,7 @@ enum DocumentPersistenceConflict: LocalizedError {
   let tiffPixelOrder = NSPopUpButton(frame: .zero, pullsDown: false)
   let tiffPredictor = NSButton(checkboxWithTitle: "Use Predictor", target: nil, action: nil)
   let tiffLayers = NSButton(checkboxWithTitle: "Layers", target: nil, action: nil)
+  let tiffImagePyramid = NSButton(checkboxWithTitle: "Save Image Pyramid", target: nil, action: nil)
   let tiffTransparency = NSButton(checkboxWithTitle: "Save Transparency", target: nil, action: nil)
   let tiffEmbedProfile = NSButton(checkboxWithTitle: "Embed Color Profile", target: nil, action: nil)
   let tiffLayerCompression = NSPopUpButton(frame: .zero, pullsDown: false)
@@ -33,6 +34,7 @@ enum DocumentPersistenceConflict: LocalizedError {
   private var predictorExplicit = false
   private var layersExplicit = false
   private var transparencyExplicit = false
+  private var pyramidExplicit = false
   private var embedProfileExplicit = false
   let pngRow = NSStackView(), tiffRow = NSStackView()
   let psdLayerCompression = NSPopUpButton(frame: .zero, pullsDown: false)
@@ -65,6 +67,7 @@ enum DocumentPersistenceConflict: LocalizedError {
         tiffPredictor: predictorExplicit || tiffPredictor.state == .on ? tiffPredictor.state == .on : nil,
         tiffLayers: mode.isRestricted ? false : (layersExplicit || tiffLayers.state == .on ? tiffLayers.state == .on : nil),
         tiffTransparency: mode == .bitmap || !transparencyExplicit ? nil : tiffTransparency.state == .on,
+        tiffImagePyramid: !tiffImagePyramid.isEnabled || !pyramidExplicit ? nil : tiffImagePyramid.state == .on,
         tiffEmbedProfile: mode == .bitmap || !embedProfileExplicit ? nil : tiffEmbedProfile.state == .on,
         tiffLayerCompression: tiffLayers.state != .on || tiffLayerCompression.indexOfSelectedItem <= 0 ? nil :
           RasterEncodingOptions.TIFFLayerCompression.allCases[tiffLayerCompression.indexOfSelectedItem - 1])
@@ -130,6 +133,11 @@ enum DocumentPersistenceConflict: LocalizedError {
     tiffLayers.isEnabled = !mode.isRestricted
     tiffLayers.setAccessibilityLabel("TIFF layers")
     tiffLayers.target = self; tiffLayers.action = #selector(changeTIFFLayers)
+    pyramidExplicit = tiffOptions.tiffImagePyramid != nil
+    tiffImagePyramid.isEnabled = [.rgb, .grayscale, .cmyk, .lab].contains(mode)
+    tiffImagePyramid.state = tiffImagePyramid.isEnabled && tiffOptions.tiffImagePyramid == true ? .on : .off
+    tiffImagePyramid.target = self; tiffImagePyramid.action = #selector(changeTIFFImagePyramid)
+    tiffImagePyramid.toolTip = "Includes smaller previews that page-layout apps can display without decoding the full image."
     transparencyExplicit = tiffOptions.tiffTransparency != nil
     tiffTransparency.state = mode != .bitmap && (tiffOptions.tiffTransparency ?? true) ? .on : .off
     tiffTransparency.isEnabled = mode != .bitmap
@@ -180,6 +188,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     view.addArrangedSubview(pngRow); view.addArrangedSubview(tiffRow)
     view.addArrangedSubview(tiffByteOrderRow); view.addArrangedSubview(tiffPixelOrderRow)
     view.addArrangedSubview(tiffLayersRow)
+    view.addArrangedSubview(tiffImagePyramid)
     view.addArrangedSubview(tiffTransparency)
     view.addArrangedSubview(tiffEmbedProfile)
     view.addArrangedSubview(psdLayerRow); view.addArrangedSubview(psdCompositeRow)
@@ -194,6 +203,7 @@ enum DocumentPersistenceConflict: LocalizedError {
   @objc func changeTIFFLayers() {
     layersExplicit = true; updateTIFFLayers()
   }
+  @objc func changeTIFFImagePyramid() { pyramidExplicit = true }
   @objc func changeTIFFTransparency() { transparencyExplicit = true }
   @objc func changeTIFFEmbedProfile() { embedProfileExplicit = true }
   @objc func updateTIFFCompression() {
@@ -217,6 +227,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     exrControls.view.isHidden = format != .exr
     tiffByteOrderRow.isHidden = format != .tiff; tiffPixelOrderRow.isHidden = format != .tiff
     tiffLayersRow.isHidden = format != .tiff
+    tiffImagePyramid.isHidden = format != .tiff
     tiffTransparency.isHidden = format != .tiff
     tiffEmbedProfile.isHidden = format != .tiff
     psdLayerRow.isHidden = photoshopFormat == nil || mode.isRestricted || mode == .multichannel; psdCompositeRow.isHidden = photoshopFormat == nil

@@ -26,7 +26,8 @@ enum DocumentEncodingOptions {
        "tiffPredictor": ["type": "boolean"],
        "tiffLayers": ["type": "boolean"],
        "tiffTransparency": ["type": "boolean"],
-       "tiffEmbedProfile": ["type": "boolean"],
+       "tiffImagePyramid": ["type": "boolean"],
+     "tiffEmbedProfile": ["type": "boolean"],
        "tiffLayerCompression": ["type": "string", "enum": RasterEncodingOptions.TIFFLayerCompression.allCases.map(\.rawValue)],
        "psdLayerCompression": ["type": "string", "enum": RasterEncodingOptions.PhotoshopCompression.allCases.map(\.rawValue)],
        "psdCompositeCompression": ["type": "string", "enum": RasterEncodingOptions.PhotoshopCompression.allCases.map(\.rawValue)],
@@ -36,7 +37,7 @@ enum DocumentEncodingOptions {
   static var capabilities: [String: Any] {
     ["schema": schema,
      "formats": ["exr":["exrCompression","exrSample","exrTransparency"], "jpeg": ["jpegQuality", "jpegFormat", "jpegMatte", "jpegEmbedProfile"], "png": ["pngCompression", "pngInterlaced"],
-       "tiff": ["tiffCompression", "tiffByteOrder", "tiffPixelOrder", "tiffPredictor", "tiffLayers", "tiffTransparency", "tiffEmbedProfile", "tiffLayerCompression"],
+       "tiff": ["tiffCompression", "tiffByteOrder", "tiffPixelOrder", "tiffPredictor", "tiffLayers", "tiffTransparency", "tiffImagePyramid", "tiffEmbedProfile", "tiffLayerCompression"],
        "psd": ["psdLayerCompression", "psdCompositeCompression", "psdMaximizeCompatibility"],
        "psb": ["psdLayerCompression", "psdCompositeCompression", "psdMaximizeCompatibility"]],
      "jpeg": "Quality0...12 maps to ImageIO quality/12; omitted quality retains0.95. Baseline uses platform coding; optimized recodes only Huffman entropy in native Swift; progressive uses the platform scan schedule. Matte is three sRGB values0...1, default white. jpegEmbedProfile=false removes ICC APP2 records without converting samples; True explicitly embeds the working ICC; omitted preserves platform profile signaling, which may use EXIF sRGB without an ICC segment. JPEG always flattens to opaque8-bit (HDR uses SDR sRGB). Photoshop quantization,3–5 progressive scan choice, dialog/default and byte parity remain unqualified.",
@@ -56,8 +57,9 @@ enum DocumentEncodingOptions {
      "nativeState": "Successful Save/Save As remembers requested options for that format in the open document, retaining omitted fields so future default saves follow File Handling. saveEncodingOptions reports requested choices; effectiveSaveEncodingOptions applies current preferences and defaults TIFF layer preservation to true. Save a Copy and downloads do not change remembered save settings. Cancel/failure does not adopt settings. Per-document options are session state, not document content; application defaults persist separately.",
      "tiffStorage": "Explicit bigEndian/littleEndian and interleaved/perChannel choices use native Swift TIFF strip layout. tiffPredictor=true requires a32-bit document and explicit lzw or zip compression. False disables prediction. Omitted storage fields preserve platform defaults; when a storage field is explicit and compression is omitted, compression is None. Supported import decodes unassociated RGB/RGBA8/16/Float32 None/LZW/ZIP strips and integer/float predictors directly when the embedded and working profiles match. Planar associated-alpha samples are assembled natively before the established CoreGraphics conversion; other supported layouts use ImageIO/ColorSync.",
      "tiffTransparency": "False composites the merged TIFF image over white and omits its opacity sample. Editable TIFF layer alpha and saved selections are preserved when layers are enabled. True or omission retains the existing opacity behavior. Native Save, Save a Copy, authenticated downloads and Photato jobs share the encoder. The published Adobe output schema has no transparency field.",
+     "tiffImagePyramid": "True embeds three reduced-resolution previews in RGB, Grayscale, CMYK and Lab TIFF output. The full-resolution image and editable layers retain their normal save settings. Omission or false uses the ordinary save. Photato commands, downloads and action jobs share this option.",
      "tiffEmbedProfile": "Omission follows the document’s color profile policy. True includes the current ICC profile. False writes an untagged TIFF with the same pixel samples. Bitmap TIFF is untagged. Photato’s native save panel and local encoding options share this setting.",
-     "limits": "Lossless compression retains the rendering/color/depth/metadata path; it is not a claim of complete Photoshop file-byte equivalence. TIFF supports RGB/Gray8/16/32, CMYK/Lab8/16 and flat Indexed8/Bitmap1 with supported transparency and profiles, bounded to512MiB encoded data. Explicit tiffLayers=true retains supported PSD layers/masks/groups/paths using big-endian structures by default; both byte orders support numeric adjustments and vector masks. Little-endian fill/path descriptors and opaque records remain guarded. tiffLayerCompression is rle or zip (default zip), requires tiffLayers=true, and is independent of composite compression. Ordinary Save defaults to preserving layers except for inherently flat Indexed/Bitmap documents; explicit false cannot flatten editable layered content in ordinary Save. Copy/download/job defaults remain flattened. Pyramids, JPEG compression,16/24-bit floating point, Duotone/Multichannel and full TIFF workflows remain unimplemented. Restricted storage limits are listed in documentTransfers.restrictedFormats. Photoshop JPEG quantization/scans and full format-specific workflows remain open.",
+     "limits": "Lossless compression retains the rendering/color/depth/metadata path; it is not a claim of complete Photoshop file-byte equivalence. TIFF supports RGB/Gray8/16/32, CMYK/Lab8/16 and flat Indexed8/Bitmap1 with supported transparency and profiles, bounded to512MiB encoded data. Explicit tiffLayers=true retains supported PSD layers/masks/groups/paths using big-endian structures by default; both byte orders support numeric adjustments and vector masks. Little-endian fill/path descriptors and opaque records remain guarded. tiffLayerCompression is rle or zip (default zip), requires tiffLayers=true, and is independent of composite compression. Ordinary Save defaults to preserving layers except for inherently flat Indexed/Bitmap documents; explicit false cannot flatten editable layered content in ordinary Save. Copy/download/job defaults remain flattened. JPEG compression,16/24-bit floating point, Duotone/Multichannel and full TIFF workflows remain unimplemented. Restricted storage limits are listed in documentTransfers.restrictedFormats. Photoshop JPEG quantization/scans and full format-specific workflows remain open.",
      "adobe": "PNG compression and JPEG quality use pinned v2 named fields. JPEG seven quality names map locally to0/2/4/6/8/10/12; Adobe-equivalent quantization is unqualified. Execute-actions excludes scan (400); omitted quality retains the local0.95 default, not an asserted Adobe default. Photato action jobs additionally accept encodingOptions. Adobe output fields are not extended with Photato-only interlace or TIFF compression options."]
   }
   static func json(_ options: RasterEncodingOptions) -> [String: Any] {
@@ -77,6 +79,7 @@ enum DocumentEncodingOptions {
     if let value = options.tiffPredictor { result["tiffPredictor"] = value }
     if let value = options.tiffLayers { result["tiffLayers"] = value }
     if let value = options.tiffTransparency { result["tiffTransparency"] = value }
+    if let value = options.tiffImagePyramid { result["tiffImagePyramid"] = value }
     if let value = options.tiffEmbedProfile { result["tiffEmbedProfile"] = value }
     if let value = options.tiffLayerCompression { result["tiffLayerCompression"] = value.rawValue }
     if let value = options.psdLayerCompression { result["psdLayerCompression"] = value.rawValue }
@@ -88,7 +91,7 @@ enum DocumentEncodingOptions {
     guard let value else { return nil }
     guard case .object(let fields) = value,
       Set(fields.keys).isSubset(of: ["exrCompression","exrSample","exrTransparency","jpegQuality", "jpegFormat", "jpegMatte", "jpegEmbedProfile", "pngCompression", "pngInterlaced", "tiffCompression",
-        "tiffByteOrder", "tiffPixelOrder", "tiffPredictor", "tiffLayers", "tiffTransparency", "tiffEmbedProfile", "tiffLayerCompression",
+        "tiffByteOrder", "tiffPixelOrder", "tiffPredictor", "tiffLayers", "tiffTransparency", "tiffImagePyramid", "tiffEmbedProfile", "tiffLayerCompression",
         "psdLayerCompression", "psdCompositeCompression", "psdMaximizeCompatibility"]) else {
       throw AutomationFailure(status: 400, message: "Expected supported encoding options.")
     }
@@ -183,6 +186,12 @@ enum DocumentEncodingOptions {
         throw AutomationFailure(status: 400, message: "tiffTransparency must be boolean.")
       }
       result.tiffTransparency = value
+    }
+    if let raw = fields["tiffImagePyramid"] {
+      guard case .bool(let value) = raw else {
+        throw AutomationFailure(status: 400, message: "tiffImagePyramid must be boolean.")
+      }
+      result.tiffImagePyramid = value
     }
     if let raw = fields["tiffEmbedProfile"] {
       guard case .bool(let value) = raw else {

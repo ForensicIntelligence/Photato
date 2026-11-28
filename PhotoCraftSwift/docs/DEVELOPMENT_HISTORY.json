@@ -10674,6 +10674,13 @@
       "link": "DEVLOG.md#dev-step-774",
       "section_sha256": "4805e7f6ea36ab9e1d3262f3375ed3596ad4e0185afc1e445e386fbd6ff7b5a2",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-775",
+      "title": "2026-11-27 \u2014 Step 775 \u2014 Save TIFF image pyramids",
+      "link": "DEVLOG.md#dev-step-775",
+      "section_sha256": "0461718404d82c398b71c03323cb7474a6fd686ecac611e5c2fd6168f6b37edc",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13509,8 +13516,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "ae58e61cfec8a574b2ef9db584ca8d9e7851659d01075a7878b4578877a1ed29",
-      "bytes": 187054,
+      "sha256": "b157cfd8f5521ccf4d3ef0b0daf0701c814b1c67ffff69016451a5cfd5526d0b",
+      "bytes": 187157,
       "rolling_current_snapshot": false
     },
     {
@@ -15231,8 +15238,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "d29de6bb26d985b46ec1297a267218f3802ff401ef72cc42b678f55c33e626c0",
-      "bytes": 749188,
+      "sha256": "765f183568ef9b953e554f9dd87e432b359bad8e6534b5d8c2ef41daf811e167",
+      "bytes": 749454,
       "rolling_current_snapshot": false
     },
     {
@@ -15801,8 +15808,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "4b4497906142df27b3bb52c900ed20e869f84c5a39d018fb60f82cb0fc0e32f2",
-      "bytes": 397754,
+      "sha256": "dec30d00f4c85a23685160bda0f20845de57f050d9c976763251421f7115525f",
+      "bytes": 398033,
       "rolling_current_snapshot": false
     },
     {
@@ -15921,8 +15928,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "9dea2469a18b6323f8cc2649c1708c95165927e85a684192d12325085baecc6d",
-      "bytes": 224613,
+      "sha256": "b307a01e7440c842c5d88c22161fab6a19a9bc89002b9f36c419a397ee936a9f",
+      "bytes": 224799,
       "rolling_current_snapshot": false
     },
     {
@@ -15999,14 +16006,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "3aacb1b34694fd7c73d28e58e346bef1afe8591e8f3a1a3e0d5620e7dc02de6d",
-      "bytes": 1057524,
+      "sha256": "d0eca0afa21aa051cddc895b6a899b6502bc50ddb8091dca6f0828b59dabc453",
+      "bytes": 1058732,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "c0ac71e87c1ee01b2c2f35af7b453c9b6b19202537c534d20811e7f5395b9093",
-      "bytes": 5182084,
+      "sha256": "6fb8821787e69785c6c383bf780766469371bdb431cdc2f6a647177854236ae1",
+      "bytes": 5184138,
       "rolling_current_snapshot": false
     },
     {
@@ -23504,6 +23511,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_775.json",
+      "sha256": "33ca34fcd66e336aef3fcf3fcaf21cd1b1e4d91ed59566563a13de696c387c3b",
+      "bytes": 16266,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_775.md",
+      "sha256": "f9f9380638a15af8532afa9d8f9668a67fb7e09e334ae1a4e829ddf7e2575f43",
+      "bytes": 1530,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24063,8 +24082,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "6c7d2d3f473ce8f9508ff650d27048dac72551a6ac67c53ed55ad3cfd5af5f65",
-      "bytes": 504502,
+      "sha256": "53f641467219701b8efeee810e47701a27b85fd180ef6ba3cd40e319da0d23fd",
+      "bytes": 505004,
       "rolling_current_snapshot": false
     },
     {
@@ -26577,8 +26596,8 @@
     }
   ],
   "counts": {
-    "milestones": 774,
-    "evidence_files": 2180,
+    "milestones": 775,
+    "evidence_files": 2182,
     "logs": 0,
     "missing_explicit_references": 704
   }

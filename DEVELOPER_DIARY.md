@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **774** · The 10 most recent entries, newest first.
+Source build **775** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 775 — Save TIFF image pyramids
+
+Save Image Pyramid is available for classic RGB, Grayscale, CMYK and Lab TIFFs. Photato saves three smaller previews alongside the original image and optional editable layers.
+
+The native compact writer matched all 3,945,867 reduced RGB8 samples in three Photoshop 27.2 references, with matching dimensions, density and primary pixels. The staged writer separately matched all 776,832 preview samples on its reference. An Adobe two-pixel control also kept three one-pixel previews. Photoshop opened the Photato wide output at full document dimensions.
+
+Xcode built the native app. All 2 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 255 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+Direct Photoshop sample comparisons cover opaque RGB8. Wider HDR, profile, alpha and component-mode comparisons, Indexed/Bitmap pyramids and complete file-layout equivalence remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-775) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_775.md).
 
 ## 2026-11-27 — Step 774 — Open tiled TIFFs with native components
 
@@ -111,15 +123,3 @@ The Xcode project built and all 37 focused imaging and 11 app and HTTP tests pas
 The independent TIFF comparison covers decoded grayscale samples. TIFF with Save Transparency on, complex blends, very large component output and whole-file equality with Photoshop remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-766) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_766.md).
-
-## 2026-11-27 — Step 765 — Match grayscale PSD and PSB previews
-
-PSD and PSB now compose the merged preview from native gray samples on aligned Normal layers at 8 and 16 bits per channel. The preview is white-matted when the composite has transparency. Opaque composites omit the merged opacity plane. Save retains the original editable layer samples and opacities.
-
-Four Photoshop 27.2.0 PSD saves cover opaque and transparent stacks at both depths. An independent decoder matched every merged sample in the Photato PSD and PSB files with Raw and RLE encoding. The 16 comparison files match byte for byte across Debug, optimized Apple Silicon and translated Intel.
-
-The Xcode project built and all 37 focused imaging and 11 app and HTTP tests passed. Both optimized architectures passed all 226 selected tests. The extracted Universal preview rendered offscreen on each slice. Intel ran under Rosetta.
-
-The Adobe comparisons cover the merged previews of the tested layer stacks. Whole-file equality, Adobe’s layer bounds and Gray16 rounding on re-save, and grayscale TIFF opacity remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-765) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_765.md).

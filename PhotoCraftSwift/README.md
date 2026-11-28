@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 775.** Save TIFF image pyramids. [Qualification](docs/SOURCE_PUBLICATION_775.md).
+
 **Source checkpoint 774.** Open tiled TIFFs with native components. [Qualification](docs/SOURCE_PUBLICATION_774.md).
 
 **Source checkpoint 773.** Stream editable TIFF layers when saving. [Qualification](docs/SOURCE_PUBLICATION_773.md).

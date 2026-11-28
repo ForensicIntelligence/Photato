@@ -307,6 +307,9 @@ public enum RasterIO {
     }
     let bytes = try encodedManaged(surface, type: type, resolution: resolution, outputDepth: outputDepth,
       sourceMetadata: sourceMetadata, workingDocument: workingDocument, options: options)
+    if type == .tiff, options.tiffImagePyramid == true {
+      return try TIFFComponentExport.encodedComposite(bytes, document: nil, resolution: resolution, options: options)
+    }
     return try type != .tiff && workingDocument?.profileIsUntagged == true ? UntaggedOutput.strip(bytes, type: type) : bytes
   }
   private static func encodedManaged(
@@ -519,6 +522,9 @@ public enum RasterIO {
       try options.validate(for: type); return try PNGRestrictedStorage.write(document, options: options)
     }
     if document.restrictedMode != nil, type == .tiff {
+      guard options.tiffImagePyramid != true else {
+        throw CraftError.unsupported("Save Image Pyramid requires RGB, Grayscale, CMYK or Lab TIFF output.")
+      }
       return try TIFFRestrictedStorage.write(document, options: options)
     }
     try options.validate(for: type)
@@ -550,9 +556,11 @@ public enum RasterIO {
         return try TIFFComponentExport.encoded(document, options: options)
       }
       let composite = try renderedTIFF(document, options: options)
-      return options.tiffLayers == true
-        ? try TIFFLayers.write(document, composite: composite, compression: options.tiffLayerCompression ?? .zip)
-        : composite
+      if options.tiffLayers == true || options.tiffImagePyramid == true {
+        return try TIFFComponentExport.encodedComposite(composite, document: document,
+          resolution: document.pixelsPerInch, options: options)
+      }
+      return composite
     }
     return try encoded(
       type == .png ? pngComposite(document) : Renderer.composite(document), type: type,
@@ -563,6 +571,7 @@ public enum RasterIO {
   private static func renderedTIFF(_ document: CraftDocument, options: RasterEncodingOptions) throws -> Data {
     var compositeOptions = options
     compositeOptions.tiffLayers = nil; compositeOptions.tiffLayerCompression = nil
+    compositeOptions.tiffImagePyramid = nil
     if options.tiffLayers == true, compositeOptions.tiffByteOrder == nil {
       compositeOptions.tiffByteOrder = .bigEndian
     }
@@ -595,7 +604,8 @@ public enum RasterIO {
   }
   package static func supportsFileBackedTIFFOutput(_ document: CraftDocument, options: RasterEncodingOptions) -> Bool {
     supportsPagedComponentTIFFOutput(document)
-      || (options.tiffLayers == true && document.inkMode == nil && document.restrictedMode == nil)
+      || ((options.tiffLayers == true || options.tiffImagePyramid == true)
+          && document.inkMode == nil && document.restrictedMode == nil)
   }
   public static func write(_ document: CraftDocument, to url: URL, type: UTType = .png,
     options: RasterEncodingOptions = .init()) throws {
@@ -608,7 +618,7 @@ public enum RasterIO {
       var source = document
       if let embed = options.tiffEmbedProfile { source.profileIsUntagged = embed ? nil : true }
       let composite = try renderedTIFF(source, options: options)
-      try TIFFLayers.write(source, composite: composite, to: url, compression: options.tiffLayerCompression ?? .zip)
+      try TIFFComponentExport.writeComposite(composite, document: source, to: url, options: options)
       return
     }
     try encoded(document, type: type, options: options).write(to: url, options: .atomic)

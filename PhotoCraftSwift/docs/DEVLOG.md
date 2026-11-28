@@ -793,7 +793,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 772 | 2026-11-27 | [Open larger editable TIFF layer data](#dev-step-772) |
 | 773 | 2026-11-27 | [Stream editable TIFF layers when saving](#dev-step-773) |
 | 774 | 2026-11-27 | [Open tiled TIFFs with native components](#dev-step-774) |
+| 775 | 2026-11-27 | [Save TIFF image pyramids](#dev-step-775) |
 <!-- history-index:end -->
+
+<a id="dev-step-775"></a>
+
+## 2026-11-27 — Step 775 — Save TIFF image pyramids
+
+Save Image Pyramid is available for classic RGB, Grayscale, CMYK and Lab TIFFs. Photato saves three smaller previews alongside the original image and optional editable layers.
+
+Adobe emits a single SubIFD pointer to a chain of three reduced images. Each level uses edge-replicated 2 × 2 samples from the previous level, rounded half up in the opaque RGB8 references. Photato uses the serialized composite rows as input, with bounded row and strip buffers. A first two-pixel model stopped at one pixel. The Adobe capture showed three repeated one-pixel levels, and the corrected test checks all three. The initial HTTP test used a literal route placeholder. The corrected test uses the shared document ID.
+
+The native compact writer matched all 3,945,867 reduced RGB8 samples in three Photoshop 27.2 references, with matching dimensions, density and primary pixels. The staged writer separately matched all 776,832 preview samples on its reference. An Adobe two-pixel control also kept three one-pixel previews. Photoshop opened the Photato wide output at full document dimensions.
+
+The native save accessory and Photato encoding options share the pyramid writer. The HTTP download matched the expected TIFF. The Adobe wire schema retains its published fields.
+
+Xcode built the native app. All 2 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 255 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+Direct Photoshop sample comparisons cover opaque RGB8. Wider HDR, profile, alpha and component-mode comparisons, Indexed/Bitmap pyramids and complete file-layout equivalence remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,158,212 bytes with SHA-256 `4725bcc41aceb44cd98d75212a7f5a1387fd37fc1a12b0f425547821fdb0f9bd`.
+
+[Qualification](SOURCE_PUBLICATION_775.md).
 
 <a id="dev-step-774"></a>
 

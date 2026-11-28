@@ -169,30 +169,6 @@ enum TIFFLayers {
     return result
   }
 
-  static func write(_ document: CraftDocument, composite: Data,
-    compression: RasterEncodingOptions.TIFFLayerCompression) throws -> Data {
-    let tiff = try TIFFContainer(composite, metadata: true)
-    try attach(document, to: tiff, order: tiff.order, compression: compression)
-    // Existing raster offsets stay valid. The header points to the new complete IFD.
-    var result = composite
-    try tiff.appendDirectories(to: &result, order: tiff.order)
-    try Task.checkCancellation()
-    return result
-  }
-
-  static func write(_ document: CraftDocument, composite: Data, to url: URL,
-    compression: RasterEncodingOptions.TIFFLayerCompression) throws {
-    let tiff = try TIFFContainer(composite, metadata: true)
-    try attach(document, to: tiff, order: tiff.order, compression: compression, fileBacked: true)
-    let limit = TIFFContainer.classicFileMaximumBytes
-    let output = try AtomicFileWriter(to: url, maximumBytes: limit)
-    try output.append(composite)
-    let offset = try tiff.writeDirectories(order: tiff.order, maximumOutput: limit,
-      extent: { output.count }, emit: output.append, patch: output.patch)
-    try output.patch(offset, at: 4)
-    try output.commit()
-  }
-
   static func attach(_ document: CraftDocument, to tiff: TIFFContainer, order: TIFFContainer.Order,
     compression: RasterEncodingOptions.TIFFLayerCompression, fileBacked: Bool = false) throws {
     try Task.checkCancellation()

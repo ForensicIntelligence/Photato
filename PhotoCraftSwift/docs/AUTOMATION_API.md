@@ -1,3 +1,9 @@
+### TIFF image pyramids (checkpoint 775)
+
+The native save accessory and Photato encoding options share the pyramid writer. The HTTP download matched the expected TIFF. The Adobe wire schema retains its published fields.
+
+[Qualification](SOURCE_PUBLICATION_775.md).
+
 ### Tiled TIFF component input (checkpoint 774)
 
 Authenticated Photato uploads and Adobe-compatible action resources use the same native tile decoder. The exercised CMYK input retained all raw component values and resolution through both entry points.

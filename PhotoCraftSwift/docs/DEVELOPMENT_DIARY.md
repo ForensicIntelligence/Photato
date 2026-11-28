@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 775 — Save TIFF image pyramids
+
+Save Image Pyramid is available for classic RGB, Grayscale, CMYK and Lab TIFFs. Photato saves three smaller previews alongside the original image and optional editable layers.
+
+The native compact writer matched all 3,945,867 reduced RGB8 samples in three Photoshop 27.2 references, with matching dimensions, density and primary pixels. The staged writer separately matched all 776,832 preview samples on its reference. An Adobe two-pixel control also kept three one-pixel previews. Photoshop opened the Photato wide output at full document dimensions.
+
+Xcode built the native app. All 2 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 255 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+Direct Photoshop sample comparisons cover opaque RGB8. Wider HDR, profile, alpha and component-mode comparisons, Indexed/Bitmap pyramids and complete file-layout equivalence remain open.
+
+[Development record](DEVLOG.md#dev-step-775) · [Qualification](SOURCE_PUBLICATION_775.md).
+
 ## 2026-11-27 — Step 774 — Open tiled TIFFs with native components
 
 Photato opens supported tiled classic TIFFs as editable images. The native decoder retains color components, opacity and profiles and trims the physical tile padding at the image edges.
@@ -2387,11 +2399,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:774 -->
+<!-- current-status-step:775 -->
 
-Photato opens supported tiled classic TIFFs as editable images. The native decoder retains color components, opacity and profiles and trims the physical tile padding at the image edges.
+Save Image Pyramid is available for classic RGB, Grayscale, CMYK and Lab TIFFs. Photato saves three smaller previews alongside the original image and optional editable layers.
 
-[Development record](DEVLOG.md#dev-step-774) · [Qualification](SOURCE_PUBLICATION_774.md).
+[Development record](DEVLOG.md#dev-step-775) · [Qualification](SOURCE_PUBLICATION_775.md).
 
 <!-- current-status:end -->
 
@@ -3372,6 +3384,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 772 | [Open larger editable TIFF layer data](DEVLOG.md#dev-step-772) |
 | 2026-11-27 | 773 | [Stream editable TIFF layers when saving](DEVLOG.md#dev-step-773) |
 | 2026-11-27 | 774 | [Open tiled TIFFs with native components](DEVLOG.md#dev-step-774) |
+| 2026-11-27 | 775 | [Save TIFF image pyramids](DEVLOG.md#dev-step-775) |
 
 
 ## 2026-10-26 — Step158: editable layer effects
