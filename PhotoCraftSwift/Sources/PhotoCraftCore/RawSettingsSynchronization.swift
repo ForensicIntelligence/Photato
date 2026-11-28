@@ -9,6 +9,7 @@ package enum RawSettingsGroup: String, CaseIterable, Sendable {
   case mixer = "Color Mixer"
   case grading = "Color Grading"
   case detail = "Detail"
+  case geometry = "Geometry"
 }
 
 extension RawDevelopment {
@@ -28,6 +29,20 @@ extension RawDevelopment {
       transfer(\.temperature); transfer(\.tint); transfer(\.exposure)
       transfer(\.boost); transfer(\.shadowBoost); transfer(\.extendedRange)
       transfer(\.lensCorrection); transfer(\.highlightRecovery)
+    }
+
+    if groups.contains(.geometry) {
+      var geometry = result.geometry ?? .init()
+      let incoming = source.geometry ?? .init()
+      let original = before?.geometry ?? .init()
+      for control in RawGeometrySettings.controls {
+        let key = control.key
+        if before == nil || incoming[keyPath: key] != original[keyPath: key] {
+          geometry[keyPath: key] = incoming[keyPath: key]
+        }
+      }
+      if before == nil || incoming.constrainCrop != original.constrainCrop { geometry.constrainCrop = incoming.constrainCrop }
+      result.geometry = geometry.isIdentity && !geometry.constrainCrop ? nil : geometry
     }
 
     let rgb = source.adjustments

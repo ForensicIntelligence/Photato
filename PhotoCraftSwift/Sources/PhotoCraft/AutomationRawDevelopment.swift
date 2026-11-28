@@ -8,8 +8,14 @@ extension RawDevelopment {
     let coordinate: [String:Any] = ["type":"number","minimum":0,"maximum":1]
     let bounds: [String:Any] = ["type":"object","additionalProperties":false,"required":["left","top","right","bottom"],
       "properties":["left":coordinate,"top":coordinate,"right":coordinate,"bottom":coordinate]]
+    var geometryFields = Dictionary(uniqueKeysWithValues: RawGeometrySettings.controls.map { control in
+      (control.id, ["type": "number", "minimum": control.range.lowerBound, "maximum": control.range.upperBound] as [String:Any])
+    })
+    geometryFields["constrainCrop"] = ["type": "boolean"]
+    let geometry: [String:Any] = ["type": "object", "additionalProperties": false, "properties": geometryFields]
     return ["type":"object","additionalProperties":false,"properties":[
       "crop":["anyOf":[["type":"null"],bounds]],
+      "geometry":["anyOf":[["type":"null"],geometry]],
       "decoderVersion":["type":["string","null"],"maxLength":64],
       "temperature":nullableNumber(2000,50000),"tint":nullableNumber(-150,150),
       "exposure":["type":"number","minimum":-5,"maximum":5],"boost":["type":"number","minimum":0,"maximum":1],

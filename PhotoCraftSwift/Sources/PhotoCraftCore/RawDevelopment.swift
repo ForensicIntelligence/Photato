@@ -43,6 +43,7 @@ public struct RawDevelopment: Codable, Equatable, Sendable {
   public var lensCorrection: Bool?
   public var highlightRecovery: Bool?
   public var crop: RawCropBounds?
+  public var geometry: RawGeometrySettings?
   public var adjustments = CameraRawSettings()
   public init() {}
   public func validate() throws {
@@ -51,15 +52,18 @@ public struct RawDevelopment: Codable, Equatable, Sendable {
     }
     if let decoderVersion { guard !decoderVersion.isEmpty,decoderVersion.utf8.count <= 64,decoderVersion.utf8.allSatisfy({ (32...126).contains($0) }) else { throw CraftError.invalid("Invalid RAW decoder version.") } }
     try crop?.validate()
+    try geometry?.validate()
     try adjustments.validate()
   }
   public static func decodeJSON(_ data: Data, base: Self = .init()) throws -> Self {
     guard data.count <= 32768, let values = try JSONSerialization.jsonObject(with:data) as? [String:Any],
-      Set(values.keys).isSubset(of:["decoderVersion","temperature","tint","exposure","boost","shadowBoost","extendedRange","lensCorrection","highlightRecovery","crop","adjustments"]) else { throw CraftError.invalid("Invalid RAW development settings.") }
+      Set(values.keys).isSubset(of:["decoderVersion","temperature","tint","exposure","boost","shadowBoost","extendedRange","lensCorrection","highlightRecovery","crop","geometry","adjustments"]) else { throw CraftError.invalid("Invalid RAW development settings.") }
     var result = base
     for (key,value) in values {
       switch key {
       case "adjustments": result.adjustments = try CameraRawSettings.decodeJSON(JSONSerialization.data(withJSONObject:value,options:.fragmentsAllowed))
+      case "geometry":
+        result.geometry = value is NSNull ? nil : try RawGeometrySettings.decode(value, base: result.geometry ?? .init())
       case "crop":
         if value is NSNull { result.crop = nil }
         else {

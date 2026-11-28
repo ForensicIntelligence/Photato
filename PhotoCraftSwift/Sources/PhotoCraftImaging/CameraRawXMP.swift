@@ -53,7 +53,8 @@ public enum CameraRawXMP {
     names.formUnion(splits)
     names.formUnion(curves.map(\.0))
     names.formUnion(["WhiteBalance", "Temperature", "Tint", "PostCropVignetteStyle", "HasCrop",
-      "CropLeft", "CropTop", "CropRight", "CropBottom", "CropAngle"])
+      "CropLeft", "CropTop", "CropRight", "CropBottom", "CropAngle", "CropConstrainToWarp"])
+    names.formUnion(RawGeometrySettings.controls.map(\.xmp))
     for (field, _) in mixer { names.formUnion(colors.map { field + $0 }) }
     for (_, hue, saturation, luminance) in grading { names.formUnion([hue, saturation, luminance]) }
     return names
@@ -113,6 +114,18 @@ public enum CameraRawXMP {
       result.temperature = try packet.float("Temperature") ?? result.temperature
       result.tint = try packet.float("Tint") ?? result.tint
     }
+    var geometry = result.geometry ?? .init()
+    for control in RawGeometrySettings.controls {
+      if let value = try packet.float(control.xmp) { geometry[keyPath: control.key] = value }
+    }
+    if let constrain = packet.string("CropConstrainToWarp")?.lowercased() {
+      switch constrain {
+      case "1", "true": geometry.constrainCrop = true
+      case "0", "false": geometry.constrainCrop = false
+      default: throw CraftError.invalid("Invalid Camera Raw XMP Constrain Crop value.")
+      }
+    }
+    result.geometry = geometry.isIdentity && !geometry.constrainCrop ? nil : geometry
     let hasCrop = packet.string("HasCrop")?.lowercased()
     if hasCrop == "false" { result.crop = nil }
     else if hasCrop == "true", try (packet.float("CropAngle") ?? 0) == 0,
@@ -277,6 +290,17 @@ public enum CameraRawXMP {
       if let tint = sensor?.tint { try setNumber("Tint", tint) }
       else if sensor != nil { CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):Tint" as CFString) }
     }
+    if let sensor {
+      let originalGeometry = previous?.geometry ?? original.flatMap { try? read($0, into: RawDevelopment()).geometry }
+      if sensor.geometry != originalGeometry {
+        let geometry = sensor.geometry ?? .init()
+        for control in RawGeometrySettings.controls {
+          try setNumber(control.xmp, geometry[keyPath: control.key], previous: originalGeometry?[keyPath: control.key])
+        }
+        try setNumber("CropConstrainToWarp", geometry.constrainCrop ? 1 : 0)
+        try setNumber("CropConstrainToUnitSquare", geometry.constrainCrop ? 1 : 0)
+      }
+    }
     if let crop = sensor?.crop, crop != previous?.crop {
       try set("HasCrop", "True" as CFString)
       try setNumber("CropLeft", crop.left)
@@ -424,7 +448,7 @@ public enum CameraRawXMP {
       }
       // Adobe writes one resource per ISO. Curves and categorical values do
       // not use the numeric interpolator; their top-level values still apply.
-      let numericFields = supportedFields.subtracting(curves.map(\.0)).subtracting(["WhiteBalance", "PostCropVignetteStyle"])
+      let numericFields = supportedFields.subtracting(curves.map(\.0)).subtracting(["WhiteBalance", "PostCropVignetteStyle", "CropConstrainToWarp"])
       var speeds = Set<Double>()
       var series: [String: [ISOSettings.Point]] = [:]
       for entry in entries {

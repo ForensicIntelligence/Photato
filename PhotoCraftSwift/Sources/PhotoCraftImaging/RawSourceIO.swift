@@ -580,9 +580,9 @@ public enum RawSourceIO {
       residentPixelLimit: residentPixelLimit)
     var settings = requested
     settings.decoderVersion = sensor.info.decoderVersion
-    var pixels = try CameraRawEngine.develop(sensor.pixels, settings: settings.adjustments,
+    let developed = try CameraRawEngine.develop(sensor.pixels, settings: settings.adjustments,
       maximumPixels: maximumPixels)
-    if let crop = settings.crop { pixels = try pixels.cropped(to: crop.rectangle(width: pixels.width, height: pixels.height)) }
+    let pixels = try RawGeometryRenderer.develop(developed, geometry: settings.geometry, crop: settings.crop)
     return (pixels, settings, sensor)
   }
 

@@ -137,6 +137,16 @@ import PhotoCraftImaging
           } else {
             let prepared = try request.preparedCommand(in: document, reusing: cachedSensor)
             try prepared.command.apply(to: &edited)
+            if retainRawOutput, request.rawDevelopment != nil, edited.layers.count == 1,
+              case .raster(let raster) = edited.layers[0].content,
+              raster.width != edited.width || raster.height != edited.height {
+              edited.width = raster.width
+              edited.height = raster.height
+              edited.layers[0].x = 0
+              edited.layers[0].y = 0
+              edited.layers[0].affine = nil
+              try edited.validate()
+            }
             renderedSensor = prepared.sensor
           }
           let pixels = try Renderer.composite(edited)

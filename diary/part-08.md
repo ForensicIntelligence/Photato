@@ -1448,4 +1448,12 @@ All 100 selected checks passed in Debug, optimized Apple Silicon and Intel under
 
 [Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-533) · [Measurements](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_533.md).
 
+## 2026-11-17 — Step 532: reuse tiles after recompositing
+
+A small edit used to write every pixel in the composited patch back into the canvas. Photato can now reuse complete tiles and copy just the affected rows at an edge. On the 24-megapixel Brush test, p95 for installing the patch fell from 0.96 ms to 0.16 ms. The composite and preview hashes matched build 531.
+
+All 99 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The retained Photoshop 2026 files cover 20 owned RGB32 examples. Their represented merged pixels match. The first input driver showed a longer delay before preparation. The independently scheduled test recorded a lower end-to-end p95. Physical display timing and the broader Photoshop workflows still need verification.
+
+[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-532) · [Measurements](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_532.md).
+
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-09.md) · [Next page](part-07.md)

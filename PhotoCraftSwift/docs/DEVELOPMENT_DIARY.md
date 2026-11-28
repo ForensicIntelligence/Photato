@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 822 — Add manual Camera Raw Geometry
+
+Camera Raw can correct Vertical and Horizontal perspective, Rotate, change Aspect and Scale, and move the photo with Offset X and Offset Y. Constrain Crop trims geometry borders within the photo aspect. The native workspace saves the original sensor data and can Undo the corrections.
+
+The native panel imported the seven Adobe XMP values. Editing Offset X to 11.25 and pressing Undo restored 7.5. Reset Geometry restored the neutral values. The Adobe and Photato TIFFs both measured 325 × 318. The mean absolute difference across 310,050 linear RGB components was 0.02608.
+
+Camera Raw 18.1.1 exported eleven controlled transformations of an owned Bayer photo. Its saved crop constrained the photo at its original aspect ratio. [Adobe Camera Raw Geometry controls](https://helpx.adobe.com/in/camera-raw/desktop/edit-and-enhance-images/crop-rotate-and-geometry/automatic-perspective-correction-camera-raw.html).
+
+Xcode built the app. All 62 focused checks and the separate authenticated interchange workflow passed. Both optimized architectures passed all 458 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The manual renderer uses a projective approximation. Adobe geometry and file bytes still differ. The automatic and Guided Upright tools, RAW Crop workspace and physical-platform checks remain open.
+
+[Development record](DEVLOG.md#dev-step-822) · [Qualification](SOURCE_PUBLICATION_822.md).
+
 ## 2026-11-28 — Step 821 — Retain JPEG XL transparency in Camera Raw DNG imports
 
 Camera Raw restores transparent edges from tiled 8-bit JPEG XL masks in supported panorama DNGs. Image I/O decodes the original grayscale samples. The full mask uses mapped scratch storage.
@@ -3005,11 +3019,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:821 -->
+<!-- current-status-step:822 -->
 
-Camera Raw restores transparent edges from tiled 8-bit JPEG XL masks in supported panorama DNGs. Image I/O decodes the original grayscale samples. The full mask uses mapped scratch storage.
+Camera Raw can correct Vertical and Horizontal perspective, Rotate, change Aspect and Scale, and move the photo with Offset X and Offset Y. Constrain Crop trims geometry borders within the photo aspect. The native workspace saves the original sensor data and can Undo the corrections.
 
-[Development record](DEVLOG.md#dev-step-821) · [Qualification](SOURCE_PUBLICATION_821.md).
+[Development record](DEVLOG.md#dev-step-822) · [Qualification](SOURCE_PUBLICATION_822.md).
 
 <!-- current-status:end -->
 
@@ -4037,6 +4051,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 819 | [Stitch full-resolution Camera Raw panoramas](DEVLOG.md#dev-step-819) |
 | 2026-11-28 | 820 | [Fill edges on full-resolution Camera Raw panoramas](DEVLOG.md#dev-step-820) |
 | 2026-11-28 | 821 | [Retain JPEG XL transparency in Camera Raw DNG imports](DEVLOG.md#dev-step-821) |
+| 2026-11-28 | 822 | [Add manual Camera Raw Geometry](DEVLOG.md#dev-step-822) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

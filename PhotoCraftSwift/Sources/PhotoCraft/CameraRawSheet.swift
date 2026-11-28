@@ -36,7 +36,7 @@ struct CameraRawSheet: View {
   private static let xmpType = UTType(filenameExtension: "xmp", conformingTo: .data) ?? .xml
   private static let dngType = UTType("com.adobe.raw-image") ?? .data
   private var defaultOpenAsObject: Bool { filmstrip?.defaultOpenAsObject ?? store.documentController?.cameraRawPreferences.openAsSmartObject ?? false }
-  private var groups: [String] { (model.sensorSettings == nil ? [] : ["Sensor"]) + ["Light","Color","Effects","Curve","Color Mixer","Color Grading","Detail"] }
+  private var groups: [String] { (model.sensorSettings == nil ? [] : ["Sensor"]) + ["Light","Color","Effects","Curve","Color Mixer","Color Grading","Detail"] + (model.sensorSettings == nil ? [] : ["Geometry"]) }
   init(store: EditorStore, workspace: CameraRawWorkspace? = nil, placement: RawPlacementWorkspace? = nil,
     filmstrip: RawFilmstripWorkspace? = nil, filmstripPhoto: UUID? = nil, gridInspectorOnly: Bool = false) {
     self.store = store
@@ -473,6 +473,7 @@ struct CameraRawSheet: View {
     VStack(alignment:.leading,spacing:8) {
       ForEach(CameraRawSettings.controls.filter { $0.group == group }) { c in control(c.title,binding(c.key),Double(c.minimum)...Double(c.maximum)) }
       if group == "Sensor" { sensorControls }
+      if group == "Geometry" { geometryControls }
       if group == "Effects" {
         Picker("Vignette style",selection:Binding(get:{ model.settings.vignetteStyle },set:{ var v = model.settings; v.vignetteStyle = $0; model.change(v) })) {
           Text("Highlight Priority").tag("highlightPriority"); Text("Color Priority").tag("colorPriority"); Text("Paint Overlay").tag("paintOverlay")
@@ -483,6 +484,30 @@ struct CameraRawSheet: View {
       if group == "Curve" { curves }
     }
   }
+  private var geometryControls: some View {
+    let geometry = model.sensorSettings?.geometry ?? .init()
+    return VStack(alignment: .leading, spacing: 8) {
+      ForEach(RawGeometrySettings.controls) { setting in
+        control(setting.title, Binding(get: { Double(geometry[keyPath: setting.key]) }, set: { value in
+          changeGeometry { $0[keyPath: setting.key] = Float(value) }
+        }), Double(setting.range.lowerBound)...Double(setting.range.upperBound))
+      }
+      Toggle("Constrain Crop", isOn: Binding(get: { geometry.constrainCrop },
+        set: { value in changeGeometry { $0.constrainCrop = value } }))
+        .help("Trim transparent borders after the correction.")
+      Button("Reset Geometry") { changeGeometry { $0 = .init() } }
+        .disabled(model.sensorSettings?.geometry == nil)
+    }
+  }
+
+  private func changeGeometry(_ edit: (inout RawGeometrySettings) -> Void) {
+    guard var settings = model.sensorSettings else { return }
+    var geometry = settings.geometry ?? .init()
+    edit(&geometry)
+    settings.geometry = geometry.isIdentity && !geometry.constrainCrop ? nil : geometry
+    model.changeSensor(settings)
+  }
+
   private func sensorNumber(_ key: WritableKeyPath<RawDevelopment,Float>) -> Binding<Double> {
     Binding(get:{ Double((model.sensorSettings ?? .init())[keyPath:key]) },set:{ n in var v = model.sensorSettings ?? .init(); v[keyPath:key] = Float(n); model.changeSensor(v) })
   }

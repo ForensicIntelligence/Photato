@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 532: reuse tiles after recompositing
-
-A small edit used to write every pixel in the composited patch back into the canvas. Photato can now reuse complete tiles and copy just the affected rows at an edge. On the 24-megapixel Brush test, p95 for installing the patch fell from 0.96 ms to 0.16 ms. The composite and preview hashes matched build 531.
-
-All 99 selected tests pass in Debug, optimized Apple Silicon and translated Intel. The retained Photoshop 2026 files cover 20 owned RGB32 examples. Their represented merged pixels match. The first input driver showed a longer delay before preparation. The independently scheduled test recorded a lower end-to-end p95. Physical display timing and the broader Photoshop workflows still need verification.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-532) · [Measurements](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_532.md).
-
 ## 2026-11-17 — Step 531: find the tiles a stroke changed
 
 An edit to one part of a large canvas used to sort tile keys for the whole image. The damage check now skips tiles that share the same pixel storage as the previous frame. In the 24-megapixel test, p95 for a single-tile damage check fell from 1.58 ms to 0.33 ms. The complete preview, reduced preview and working sample hashes matched build 530.
@@ -251,11 +243,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:821 -->
+<!-- current-status-step:822 -->
 
-Camera Raw restores transparent edges from tiled 8-bit JPEG XL masks in supported panorama DNGs. Image I/O decodes the original grayscale samples. The full mask uses mapped scratch storage.
+Camera Raw can correct Vertical and Horizontal perspective, Rotate, change Aspect and Scale, and move the photo with Offset X and Offset Y. Constrain Crop trims geometry borders within the photo aspect. The native workspace saves the original sensor data and can Undo the corrections.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-821) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_821.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-822) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_822.md).
 
 <!-- current-status:end -->
 
@@ -1283,5 +1275,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 819 | [Stitch full-resolution Camera Raw panoramas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-819) |
 | 2026-11-28 | 820 | [Fill edges on full-resolution Camera Raw panoramas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-820) |
 | 2026-11-28 | 821 | [Retain JPEG XL transparency in Camera Raw DNG imports](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-821) |
+| 2026-11-28 | 822 | [Add manual Camera Raw Geometry](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-822) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

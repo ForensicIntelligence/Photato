@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **821** · The 10 most recent entries, newest first.
+Source build **822** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 822 — Add manual Camera Raw Geometry
+
+Camera Raw can correct Vertical and Horizontal perspective, Rotate, change Aspect and Scale, and move the photo with Offset X and Offset Y. Constrain Crop trims geometry borders within the photo aspect. The native workspace saves the original sensor data and can Undo the corrections.
+
+The native panel imported the seven Adobe XMP values. Editing Offset X to 11.25 and pressing Undo restored 7.5. Reset Geometry restored the neutral values. The Adobe and Photato TIFFs both measured 325 × 318. The mean absolute difference across 310,050 linear RGB components was 0.02608.
+
+Camera Raw 18.1.1 exported eleven controlled transformations of an owned Bayer photo. Its saved crop constrained the photo at its original aspect ratio. [Adobe Camera Raw Geometry controls](https://helpx.adobe.com/in/camera-raw/desktop/edit-and-enhance-images/crop-rotate-and-geometry/automatic-perspective-correction-camera-raw.html).
+
+Xcode built the app. All 62 focused checks and the separate authenticated interchange workflow passed. Both optimized architectures passed all 458 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The manual renderer uses a projective approximation. Adobe geometry and file bytes still differ. The automatic and Guided Upright tools, RAW Crop workspace and physical-platform checks remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-822) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_822.md).
 
 ## 2026-11-28 — Step 821 — Retain JPEG XL transparency in Camera Raw DNG imports
 
@@ -129,17 +143,3 @@ Xcode and forty focused application and imaging tests passed, including the ten 
 The merge kernel reuses Photato’s photographic HDR engine. Automatic settings currently embed a single calculated exposure adjustment. Adobe’s result used JPEG XL and multiple tone adjustments. The tested decoded RGB samples and complete file bytes differ from Adobe’s result. RAW-specific fusion, larger brackets and exact render parity remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-813) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_813.md).
-
-## 2026-11-28 — Step 812 — Hide and reveal photos in Camera Raw sessions
-
-Use the Photo menu or a thumbnail’s contextual menu to hide photos, isolate a selection, or reveal hidden photos. The filmstrip and Grid share visibility. A new Camera Raw session starts with every photo visible.
-
-In the native app, Show Only This Photo isolated one of three test DNGs in both views. Hide Photo emptied Grid, and its empty-state button restored all three. Cancel preserved the source bytes.
-
-Commands follow Adobe’s documented session visibility workflow. [Hide photos in Camera Raw](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/hide-photos-during-a-camera-raw-session.html).
-
-Xcode built the app and all twenty-four focused application tests passed, including returning hidden photos with their filters and saving edits to a hidden DNG. Both optimized architectures passed all 401 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
-
-The current installed Adobe Camera Raw predates these commands. Native controls were tested on owned files, with the Adobe documentation as the reference. Stacks and automatic grouping remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-812) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_812.md).

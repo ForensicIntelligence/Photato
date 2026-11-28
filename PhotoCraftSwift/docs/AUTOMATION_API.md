@@ -1,3 +1,9 @@
+### Manual Camera Raw Geometry (checkpoint 822)
+
+Photato RAW development and synchronization expose the manual settings. Photato RAW import and the Adobe-compatible edit route also apply settings already stored on an input DNG.
+
+[Qualification](SOURCE_PUBLICATION_822.md).
+
 ### JPEG XL DNG transparency import (checkpoint 821)
 
 The Photato RAW import and Adobe-compatible edit use the same native decoder. The Photato capability `rawDevelopment.preservesJPEGXLDNGTransparency` reports decoder availability.
@@ -1671,6 +1677,12 @@ Submit to `POST /v1/documents/{id}/commands`. Omitted top-level settings retain 
 Upload genuine RAW using `POST /v1/documents/import`, media type `image/x-camera-raw` or `image/x-adobe-dng`; optional `X-Photato-Open-Format: raw`. The existing API4MP and 64MiB limits apply. Desktop sensor decoding is bounded to36MP/64MiB. Import defaults to RGB16; redevelopment follows current document depth/profile. State includes `layers[].smartObject.rawDevelopment`; the existing `smart-objects/{layerID}/source` download returns exact original bytes. A source revision now includes its development settings. Native documents containing RAW sources require `X-Photato-Archive-Version: 22`; earlier requested versions reject. Native22 readers also accept1…21. Save native Photato to retain editability; editable PSD RAW descriptors explicitly reject.
 
 The Adobe-compatible `POST /v2/edit` accepts supported RAW/DNG resources in the pinned `EditImageInput` contract, decodes sensors through the same native engine and applies supported LightroomEdits light/color/effects/detail fields. Existing async status/output conventions and PNG/JPEG output remain. DNG output, XMP, Adobe whiteBalance presets, proprietary pixel equality and all-camera support remain open. [Evidence and limitations](RAW_DEVELOPMENT_REFERENCES.json).
+
+## Camera Raw Geometry
+
+Pass `geometry` inside the `settings` object for `raw.develop`. It accepts `vertical`, `horizontal`, `rotation`, `aspect`, `scale`, `offsetX`, `offsetY`, and `constrainCrop`. Missing keys keep their current values. Set `geometry` to null to reset the manual corrections. Geometry also appears in `raw.inspect` and in the supported synchronization groups.
+
+The Camera Raw Geometry panel uses the same render path, retains the original sensor data, and applies the existing crop rectangle after transforming. When Constrain Crop is enabled without an explicit crop, it selects an aspect-preserving rectangle inside the corrected image. Camera Raw XMP reads and writes the corresponding manual Perspective fields. The published Adobe Photoshop v2 edit schema does not expose Camera Raw geometry controls.
 
 ## Camera Raw HDR merge
 

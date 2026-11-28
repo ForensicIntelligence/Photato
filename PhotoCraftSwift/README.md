@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 822.** Add manual Camera Raw Geometry. [Qualification](docs/SOURCE_PUBLICATION_822.md).
+
 **Source checkpoint 821.** Retain JPEG XL transparency in Camera Raw DNG imports. [Qualification](docs/SOURCE_PUBLICATION_821.md).
 
 **Source checkpoint 820.** Fill edges on full-resolution Camera Raw panoramas. [Qualification](docs/SOURCE_PUBLICATION_820.md).
