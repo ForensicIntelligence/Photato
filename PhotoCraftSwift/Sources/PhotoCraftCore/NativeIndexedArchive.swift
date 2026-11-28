@@ -95,7 +95,7 @@ enum NativeIndexedArchive {
     func bytes(_ identifier:String,maximumBytes:Int)throws->Data {
       try blob(identifier, maximumBytes: maximumBytes, fileBacked: false).data
     }
-    func embeddedSourceBytes(_ identifier: String) throws -> EmbeddedSourceBytes {
+    func embeddedSourceBytes(_ identifier: String, pageAbove: Int) throws -> EmbeddedSourceBytes {
       let limit: Int
       switch version {
       case SmartObject.streamingSourceArchiveVersion... where backing != nil:
@@ -105,15 +105,15 @@ enum NativeIndexedArchive {
       default:
         limit = SmartObject.maximumArchive95SourceBytes
       }
-      return try blob(identifier, maximumBytes: limit, fileBacked: true)
+      return try blob(identifier, maximumBytes: limit, fileBacked: true, pageAbove: pageAbove)
     }
-    private func blob(_ identifier: String, maximumBytes: Int, fileBacked: Bool) throws -> EmbeddedSourceBytes {
+    private func blob(_ identifier: String, maximumBytes: Int, fileBacked: Bool, pageAbove: Int = 0) throws -> EmbeddedSourceBytes {
       try Task.checkCancellation()
       guard identifier.first=="b",let ordinal=UInt64(identifier.dropFirst()),identifier==NativeIndexedArchive.identifier(ordinal),maximumBytes>=0 else {throw CraftError.invalid("Invalid native blob ordinal.")}
       let record=try index.record(at:ordinal)
       guard record.length<=UInt64(maximumBytes) else {throw CraftError.invalid("Oversized native blob.")}
       let offset = Int(record.offset), length = Int(record.length)
-      let useScratch = fileBacked && length > SmartObject.maximumArchive95SourceBytes && backing != nil
+      let useScratch = fileBacked && length > pageAbove && backing != nil
       if useScratch, let source = sourceCache[ordinal] { return source }
       let source: EmbeddedSourceBytes
       if useScratch, let backing {

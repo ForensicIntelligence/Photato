@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 800 — Open and retain large Camera Raw originals
+
+Photato now opens larger camera RAW files and keeps their sensor pixels in disk-backed tiles. Local originals above 64 MiB are snapshotted into a mapped private file. Camera Raw keeps a reduced overview for the dialog and the full sensor data for Open, Place Embedded and edits.
+
+Photato opened both the uncompressed and packed versions of the 8,192 × 5,120 synthetic DNG. The uncompressed source retained all 83,886,726 original bytes. The signed app opened the same file in Camera Raw at full sensor dimensions. The synthetic archive test round-tripped the RAW Smart Object and matching edit samples.
+
+Adobe Camera Raw 18.1.1 opened the owned 42-megapixel reference. Adobe documents a 65,000-pixel side limit and a 512-megapixel area limit. [Adobe Camera Raw limits](https://helpx.adobe.com/in/camera-raw/desktop/get-started/overview-and-setup/introduction-camera-raw.html).
+
+Xcode built the app. All four new focused checks and twelve related checks passed. The tests covered mapped storage, large RAW Smart Object persistence, exact pointwise edit samples, bounded DNG XMP writes API discovery and rejection of reduced decoder output. Both optimized architectures passed all 381 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The 65,000-pixel and 512-megapixel admission bounds still depend on the decoder. The signed app was verified at 41,943,040 pixels. At the published boundaries, Apple reported reduced dimensions for the canonical synthetic DNGs. Photato now rejects those reduced outputs. Spatial Camera Raw adjustments still use the 36-megapixel limit. Adobe RAW pixel and file-byte parity remain open.
+
+[Development record](DEVLOG.md#dev-step-800) · [Qualification](SOURCE_PUBLICATION_800.md).
+
 ## 2026-11-28 — Step 799 — Apply ISO-adaptive Camera Raw defaults
 
 Camera Raw can use an XMP preset that varies supported numerical adjustments with the source photo’s ISO. Select it as the master or a camera override. The Sensor panel shows the recorded ISO when available.
@@ -2697,11 +2711,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:799 -->
+<!-- current-status-step:800 -->
 
-Camera Raw can use an XMP preset that varies supported numerical adjustments with the source photo’s ISO. Select it as the master or a camera override. The Sensor panel shows the recorded ISO when available.
+Photato now opens larger camera RAW files and keeps their sensor pixels in disk-backed tiles. Local originals above 64 MiB are snapshotted into a mapped private file. Camera Raw keeps a reduced overview for the dialog and the full sensor data for Open, Place Embedded and edits.
 
-[Development record](DEVLOG.md#dev-step-799) · [Qualification](SOURCE_PUBLICATION_799.md).
+[Development record](DEVLOG.md#dev-step-800) · [Qualification](SOURCE_PUBLICATION_800.md).
 
 <!-- current-status:end -->
 
@@ -3707,6 +3721,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 797 | [Save a developed image directly from Camera Raw](DEVLOG.md#dev-step-797) |
 | 2026-11-28 | 798 | [Set Camera Raw defaults by camera model and body](DEVLOG.md#dev-step-798) |
 | 2026-11-28 | 799 | [Apply ISO-adaptive Camera Raw defaults](DEVLOG.md#dev-step-799) |
+| 2026-11-28 | 800 | [Open and retain large Camera Raw originals](DEVLOG.md#dev-step-800) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

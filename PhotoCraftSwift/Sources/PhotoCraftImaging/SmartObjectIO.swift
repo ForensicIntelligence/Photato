@@ -55,21 +55,31 @@ public enum SmartObjectIO {
     dngStorage: RawDNGSettingsStorage = .embedXMP, rawDefaults: RawDefaults) throws -> CraftDocument {
     let data = sourceBytes.data
     return try withNesting {
-      guard data.count <= SmartObject.maximumEmbeddedBytes(for: sourceBytes) else {
-        throw CraftError.invalid("Encoded Smart Object source exceeds its file format's limit.")
-      }
+      let ordinaryLimit = SmartObject.maximumEmbeddedBytes(for: sourceBytes)
       if data.starts(with: Data("PHOTATO\0".utf8)) || data.starts(with: Data("bplist".utf8)) {
+        guard data.count <= ordinaryLimit else {
+          throw CraftError.invalid("Encoded Smart Object source exceeds its file format's limit.")
+        }
         let document = try NativeArchive.decodePaged(sourceBytes, heapByteLimit: maximumDecodedBytes)
         try check(document); return document
       }
       if PcraftImport.recognizes(data) {
+        guard data.count <= ordinaryLimit else {
+          throw CraftError.invalid("Encoded Smart Object source exceeds its file format's limit.")
+        }
         let document=try PcraftImport.read(data,rasterByteLimit:256*1024*1024)
         try check(document);return document
+      }
+      guard data.count <= SmartObject.maximumCameraRawSourceBytes else {
+        throw CraftError.invalid("Encoded Smart Object source exceeds its file format's limit.")
       }
       if let type = RawSourceIO.type(data) {
         let readsSidecar = type != "com.adobe.raw-image" || dngStorage != .ignoreSidecarXMP
         let settings = try readsSidecar ? sourceURL.flatMap { try RawSourceIO.relatedSettings(for: $0, rawData: data) } : nil
-        return try RawSourceIO.open(data, fileName: fileName, settings: settings, rawDefaults: rawDefaults)
+        return try RawSourceIO.open(sourceBytes, fileName: fileName, settings: settings, rawDefaults: rawDefaults)
+      }
+      guard data.count <= ordinaryLimit else {
+        throw CraftError.invalid("Encoded Smart Object source exceeds its file format's limit.")
       }
       if let name = try photoshopDocumentName(sourceBytes, fileName: fileName) {
         let document = try PSDCodec.readPaged(sourceBytes, name: name, heapByteLimit: maximumDecodedBytes)
@@ -87,7 +97,7 @@ public enum SmartObjectIO {
     }
   }
   public static func sourceDocument(_ object: SmartObject) throws -> CraftDocument {
-    if let settings = object.rawDevelopment { return try RawSourceIO.open(object.data,fileName:object.fileName,settings:settings) }
+    if let settings = object.rawDevelopment { return try RawSourceIO.open(object.sourceBytes, fileName: object.fileName, settings: settings) }
     let document = try decode(object.sourceBytes, fileName: object.fileName)
     guard document.width == object.width, document.height == object.height else {
       throw CraftError.invalid("Embedded source dimensions disagree with its metadata.")

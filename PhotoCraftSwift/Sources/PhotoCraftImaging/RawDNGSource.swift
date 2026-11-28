@@ -163,8 +163,15 @@ public struct RawDNGSource: Sendable {
   static func unchanged(_ location: URL, expected: Data) throws -> PSDFileSource {
     guard try location.resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink == false,
       let source = try? PSDFileSource(location, maximumBytes: expected.count),
-      source.count == expected.count,
-      try source.bytes(at: 0, count: source.count) == expected else { throw SaveError.sourceChanged }
+      source.count == expected.count else { throw SaveError.sourceChanged }
+    let base = expected.startIndex
+    let chunkBytes = PSDFileSource.pageBytes
+    for offset in stride(from: 0, to: expected.count, by: chunkBytes) {
+      try Task.checkCancellation()
+      let count = min(chunkBytes, expected.count - offset)
+      let original = expected[(base + offset)..<(base + offset + count)]
+      guard try source.bytes(at: offset, count: count) == original else { throw SaveError.sourceChanged }
+    }
     try source.validateUnchanged()
     return source
   }

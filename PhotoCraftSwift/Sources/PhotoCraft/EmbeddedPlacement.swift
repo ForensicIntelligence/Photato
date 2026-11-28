@@ -12,8 +12,10 @@ struct PreparedEmbeddedSource: Sendable {
     rawDefaults: RawDefaults = .init()) throws -> Self {
     let access = url.startAccessingSecurityScopedResource()
     defer {if access {url.stopAccessingSecurityScopedResource()}}
-    let original = try RecoverySourceReader.snapshot(url, maximumBytes: SmartObject.maximumLocalEmbeddedBytes(forHeader:),
-      fileBackedAbove: SmartObject.maximumSourceBytes)
+    let cameraRaw = RawSourceIO.recognizes(url)
+    let original = try RecoverySourceReader.snapshot(url, maximumBytes: { header in
+      cameraRaw ? SmartObject.maximumCameraRawSourceBytes : SmartObject.maximumLocalEmbeddedBytes(forHeader: header)
+    }, fileBackedAbove: SmartObject.maximumSourceBytes)
     let model = PDFImport.recognizes(original.data) ? nil
       : try SmartObjectIO.decode(original, fileName: url.lastPathComponent, sourceURL: url,
         dngStorage: dngStorage, rawDefaults: rawDefaults)

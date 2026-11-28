@@ -1,13 +1,5 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
 
-## 2026-11-17 — Step 535: set the ordinary Brush to 10% smoothing
-
-The Brush opens at 10% smoothing. You can still set it to 0%, and your choice follows the workspace across document tabs. Saved Actions and presets use their recorded settings.
-
-All 167 selected tests passed in Debug, optimized Apple Silicon and Intel under Rosetta. For the tested corner stroke, the new default produced the same native pixels from the desktop, HTTP and recorded replay. Exact Photoshop brush pixels and physical display timing still need verification.
-
-[Detailed record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-535) · [Validation](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_535.md).
-
 ## 2026-11-17 — Step 534: start the Brush worker during input
 
 Photato now queues work for the first mark during input. The worker starts a median 0.23 ms after input. Across two rounds of the 24-megapixel test, the median time through the first AppKit draw was 27.52 ms to 20.77 ms.
@@ -275,11 +267,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:799 -->
+<!-- current-status-step:800 -->
 
-Camera Raw can use an XMP preset that varies supported numerical adjustments with the source photo’s ISO. Select it as the master or a camera override. The Sensor panel shows the recorded ISO when available.
+Photato now opens larger camera RAW files and keeps their sensor pixels in disk-backed tiles. Local originals above 64 MiB are snapshotted into a mapped private file. Camera Raw keeps a reduced overview for the dialog and the full sensor data for Open, Place Embedded and edits.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-799) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_799.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-800) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_800.md).
 
 <!-- current-status:end -->
 
@@ -1285,5 +1277,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 797 | [Save a developed image directly from Camera Raw](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-797) |
 | 2026-11-28 | 798 | [Set Camera Raw defaults by camera model and body](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-798) |
 | 2026-11-28 | 799 | [Apply ISO-adaptive Camera Raw defaults](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-799) |
+| 2026-11-28 | 800 | [Open and retain large Camera Raw originals](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-800) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

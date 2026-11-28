@@ -263,7 +263,7 @@ final class HistoryTileDecoder: ComponentBlobDecoding, EmbeddedSourceBlobDecodin
     }
     return try blob.read()
   }
-  func embeddedSourceBytes(_ identifier: String) throws -> EmbeddedSourceBytes {
+  func embeddedSourceBytes(_ identifier: String, pageAbove: Int) throws -> EmbeddedSourceBytes {
     try Task.checkCancellation()
     if let reference = embeddedSources[identifier] { return .file(reference.payload) }
     return .memory(try bytes(identifier, maximumBytes: SmartObject.maximumDocumentSourceBytes))

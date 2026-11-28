@@ -8,6 +8,7 @@ public struct SmartObject: Equatable, Sendable, Codable {
   public static let maximumArchive95SourceBytes = 256 * 1_024 * 1_024
   public static let maximumDocumentSourceBytes = 512 * 1_024 * 1_024
   public static let maximumFileBackedSourceBytes = 2 * 1_024 * 1_024 * 1_024
+  public static let maximumCameraRawSourceBytes = maximumFileBackedSourceBytes
   public static let largeSourceArchiveVersion = 95
   public static let fileBackedArchiveVersion = 96
   public static let streamingSourceArchiveVersion = 97
@@ -34,6 +35,9 @@ public struct SmartObject: Equatable, Sendable, Codable {
   }
   private static func isLayeredDocument(_ mediaType: String) -> Bool {
     ["application/vnd.photato.document", "image/vnd.adobe.photoshop", "application/x-photoshop"].contains(mediaType)
+  }
+  private static func isCameraRaw(_ mediaType: String) -> Bool {
+    mediaType == "image/x-camera-raw" || mediaType == "image/x-adobe-dng"
   }
   public var sourceID: UUID
   public var fileName: String
@@ -115,8 +119,13 @@ public struct SmartObject: Equatable, Sendable, Codable {
       (mediaType == "application/vnd.photato.document" && data.starts(with: "PHOTATO\0".utf8))
         || (mediaType == "image/vnd.adobe.photoshop" && Self.photoshopSourceVersion(data) == 1)
         || (mediaType == "application/x-photoshop" && Self.photoshopSourceVersion(data) == 2))
-    guard (!data.isEmpty || linkedSource != nil),
-      data.count <= (canRetainLargeSource ? Self.maximumEmbeddedBytes(for: original) : Self.maximumSourceBytes),
+    let sourceLimit: Int
+    if Self.isCameraRaw(mediaType), rawDevelopment != nil {
+      sourceLimit = original.isFileBacked ? Self.maximumCameraRawSourceBytes : Self.maximumDocumentSourceBytes
+    } else {
+      sourceLimit = canRetainLargeSource ? Self.maximumEmbeddedBytes(for: original) : Self.maximumSourceBytes
+    }
+    guard (!data.isEmpty || linkedSource != nil), data.count <= sourceLimit,
       !fileName.isEmpty, fileName.utf8.count <= 1024,
       !fileName.contains("/"), !fileName.contains("\\"), !fileName.contains("\0"),
       (["application/vnd.photato.document", "application/vnd.photocraft.project", "image/vnd.adobe.photoshop", "application/x-photoshop",
@@ -155,12 +164,14 @@ public struct SmartObject: Equatable, Sendable, Codable {
         throw CraftError.invalid("Embedded source blobs require their owned archive context.")
       }
       let isLayeredDocument = Self.isLayeredDocument(mediaType)
+      let isCameraRaw = Self.isCameraRaw(mediaType)
       let identifier = try c.decode(String.self, forKey: .sourceBlob)
-      if isLayeredDocument, let paged = context as? any EmbeddedSourceBlobDecoding {
-        original = try paged.embeddedSourceBytes(identifier)
+      if isLayeredDocument || isCameraRaw, let paged = context as? any EmbeddedSourceBlobDecoding {
+        let threshold = isCameraRaw ? Self.maximumSourceBytes : Self.maximumArchive95SourceBytes
+        original = try paged.embeddedSourceBytes(identifier, pageAbove: threshold)
       } else {
         original = .memory(try context.bytes(identifier,
-          maximumBytes: isLayeredDocument ? Self.maximumDocumentSourceBytes : Self.maximumSourceBytes))
+          maximumBytes: (isLayeredDocument || isCameraRaw) ? Self.maximumDocumentSourceBytes : Self.maximumSourceBytes))
       }
     } else { original = .memory(try c.decode(Data.self, forKey: .data)) }
     if !original.isFileBacked {
@@ -180,7 +191,7 @@ public struct SmartObject: Equatable, Sendable, Codable {
     try c.encodeIfPresent(pdfSource,forKey:.pdfSource)
     try c.encodeIfPresent(linkedSource,forKey:.linkedSource)
     if linkedSource != nil {return}
-    if Self.isLayeredDocument(mediaType), case .file(let source) = original,
+    if Self.isLayeredDocument(mediaType) || Self.isCameraRaw(mediaType), case .file(let source) = original,
       let context = encoder.userInfo[.historyTileEncoder] as? any EmbeddedSourceBlobEncoding {
       try c.encode(context.retainEmbeddedSource(source, digest: dataFingerprint), forKey: .sourceBlob)
     } else if let context = encoder.userInfo[.historyTileEncoder] as? any RasterBlobEncoding {

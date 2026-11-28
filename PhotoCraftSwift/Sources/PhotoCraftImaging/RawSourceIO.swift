@@ -220,7 +220,8 @@ package enum RawOpenMode: String, CaseIterable, Sendable {
 }
 
 public enum RawSourceIO {
-  public static let maximumPixels = Surface.maximumDensePixels
+  public static let maximumPixels = 512_000_000
+  public static let maximumDimension = 65_000
   public static let mediaTypes = ["image/x-camera-raw","image/x-adobe-dng"]
   public static let contentType = UTType("public.camera-raw-image")!
   public struct Info: Codable, Equatable, Sendable {
@@ -272,12 +273,13 @@ public enum RawSourceIO {
     if UTType(type)?.conforms(to: contentType) == true { return type }
     // A TIFF classification can identify a RAW's thumbnail instead of the
     // sensor image. Require a DNG marker or a Nikon CFA directory before hinting.
-    guard type == UTType.tiff.identifier, data.count <= SmartObject.maximumSourceBytes,
+    guard type == UTType.tiff.identifier, data.count <= SmartObject.maximumCameraRawSourceBytes,
       TIFFContainer.isClassic(data),
-      let root = try? TIFFContainer(data, metadata: false, additionalTags: [271, 50706]) else { return nil }
+      let root = try? TIFFContainer(data, metadata: false, additionalTags: [271, 50706], maximumBytes: SmartObject.maximumCameraRawSourceBytes) else { return nil }
     if isDNG(root) { return "com.adobe.raw-image" }
     guard isNikonCamera(root),
-      let sensor = try? TIFFContainer(data, metadata: false, additionalTags: [33421, 33422], inspectSubIFDs: true),
+      let sensor = try? TIFFContainer(data, metadata: false, additionalTags: [33421, 33422], inspectSubIFDs: true,
+        maximumBytes: SmartObject.maximumCameraRawSourceBytes),
       hasNikonMosaic(sensor) else { return nil }
     return "com.nikon.raw-image"
   }
@@ -287,7 +289,7 @@ public enum RawSourceIO {
       let type = CGImageSourceGetType(source) as String? else { return false }
     if UTType(type)?.conforms(to: contentType) == true { return true }
     guard type == UTType.tiff.identifier,
-      let source = try? PSDFileSource(url, maximumBytes: SmartObject.maximumSourceBytes),
+      let source = try? PSDFileSource(url, maximumBytes: SmartObject.maximumCameraRawSourceBytes),
       let tiff = try? TIFFContainer(file: source, metadata: false, additionalTags: [271, 50706]),
       !tiff.isBigTIFF else { return false }
     if isDNG(tiff) { return true }
@@ -326,8 +328,8 @@ public enum RawSourceIO {
   }
   static func decoder(_ data: Data,version: String? = nil) throws -> (CIRAWFilter,Info) {
     try Task.checkCancellation()
-    guard !data.isEmpty,data.count <= SmartObject.maximumSourceBytes,let type = type(data),
-      let raw = CIRAWFilter(imageData:data,identifierHint:type) else { throw CraftError.unsupported("This file is not a supported camera RAW image, or exceeds 64 MiB.") }
+    guard !data.isEmpty,data.count <= SmartObject.maximumCameraRawSourceBytes,let type = type(data),
+      let raw = CIRAWFilter(imageData:data,identifierHint:type) else { throw CraftError.unsupported("This file is not a supported camera RAW image, or exceeds the 2 GiB local source limit.") }
     if let version {
       guard raw.supportedDecoderVersions.map(\.rawValue).contains(version) else { throw CraftError.unsupported("The saved RAW decoder version is unavailable on this Mac.") }
       raw.decoderVersion = CIRAWDecoderVersion(rawValue:version)
@@ -335,11 +337,12 @@ public enum RawSourceIO {
     }
     let size = raw.nativeSize
     guard size.width.isFinite,size.height.isFinite,size.width >= 1,size.height >= 1,
-      size.width <= CGFloat(Surface.maxDimension),size.height <= CGFloat(Surface.maxDimension),size.width*size.height <= CGFloat(maximumPixels),
-      size.width.rounded() == size.width,size.height.rounded() == size.height else { throw CraftError.unsupported("The RAW decoder returned invalid sensor dimensions or exceeded 36 megapixels.") }
+      size.width <= CGFloat(maximumDimension),size.height <= CGFloat(maximumDimension),size.width*size.height <= CGFloat(maximumPixels),
+      size.width.rounded() == size.width,size.height.rounded() == size.height else { throw CraftError.unsupported("The RAW decoder returned invalid dimensions or exceeded 65,000 pixels per side or 512 megapixels.") }
     let versions = raw.supportedDecoderVersions.map(\.rawValue)
     guard !raw.decoderVersion.rawValue.isEmpty,versions.contains(raw.decoderVersion.rawValue),raw.neutralTemperature.isFinite,raw.neutralTint.isFinite else { throw CraftError.unsupported("This camera has no available native RAW decoder.") }
     let properties = raw.properties
+    if type == "com.adobe.raw-image" { try validateDNGCanvas(properties, decoded: size) }
     let tiff = properties[kCGImagePropertyTIFFDictionary as String] as? [String:Any]
     let model = (tiff?[kCGImagePropertyTIFFModel as String] as? String) ?? "Camera RAW"
     var highlightSupported = false, highlightEnabled = false
@@ -368,12 +371,20 @@ public enum RawSourceIO {
   package static func prepareLocalSettings(_ url: URL, depth: PixelDepth = .u16,
     dngStorage: RawDNGSettingsStorage = .embedXMP, rawDefaults: RawDefaults) throws
     -> (document: CraftDocument, source: RawSettingsSource?) {
-    let input = try PSDFileSource(url, maximumBytes: SmartObject.maximumSourceBytes)
-    let data = try input.bytes(at: 0, count: input.count)
+    let input = try PSDFileSource(url, maximumBytes: SmartObject.maximumCameraRawSourceBytes)
+    let bytes: EmbeddedSourceBytes
+    if input.count > SmartObject.maximumSourceBytes {
+      bytes = .file(try FileBackedSource.retain(byteCount: input.count, fingerprinting: true) { offset, count in
+        try input.bytes(at: offset, count: count)
+      })
+    } else {
+      bytes = .memory(try input.bytes(at: 0, count: input.count))
+    }
+    let data = bytes.data
     let ignoresSidecar = dngStorage == .ignoreSidecarXMP && type(data) == "com.adobe.raw-image"
     let related = try ignoresSidecar ? nil : relatedXMP(for: url)
     let settings = try related?.settings.map { try compatibleStoredSettings($0, in: data) }
-    let document = try open(data, fileName: url.lastPathComponent, settings: settings, depth: depth, rawDefaults: rawDefaults)
+    let document = try open(bytes, fileName: url.lastPathComponent, settings: settings, depth: depth, rawDefaults: rawDefaults)
     let safeSource = (try? url.resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink) == false
     let mediaType = document.layers.first?.smartObject?.mediaType
     let source: RawSettingsSource?
@@ -396,16 +407,38 @@ public enum RawSourceIO {
 
   package static func open(_ data: Data, fileName: String, settings requested: RawDevelopment? = nil,
     depth: PixelDepth = .u16, rawDefaults: RawDefaults) throws -> CraftDocument {
-    try Task.checkCancellation()
-    guard !data.isEmpty, data.count <= SmartObject.maximumSourceBytes else {
-      throw CraftError.invalid("Camera RAW source must contain 1 byte to 64 MiB.")
+    guard (1...SmartObject.maximumCameraRawSourceBytes).contains(data.count) else {
+      throw CraftError.invalid("Camera RAW source must contain 1 byte to 2 GiB.")
     }
-    let options = type(data).map { [kCGImageSourceTypeIdentifierHint: $0] as CFDictionary }
+    let source: EmbeddedSourceBytes = if data.count > SmartObject.maximumSourceBytes {
+      .file(try FileBackedSource.retain(byteCount: data.count, fingerprinting: true) { offset, count in
+        data.subdata(in: offset..<offset + count)
+      })
+    } else {
+      .memory(data)
+    }
+    return try open(source, fileName: fileName, settings: requested, depth: depth, rawDefaults: rawDefaults)
+  }
+
+  package static func open(_ bytes: EmbeddedSourceBytes, fileName: String, settings requested: RawDevelopment? = nil,
+    depth: PixelDepth = .u16, rawDefaults: RawDefaults = .init()) throws -> CraftDocument {
+    try Task.checkCancellation()
+    let data = bytes.data
+    guard (1...SmartObject.maximumCameraRawSourceBytes).contains(data.count) else {
+      throw CraftError.invalid("Camera RAW source must contain 1 byte to 2 GiB.")
+    }
+    let sourceType = type(data)
+    let options = sourceType.map { [kCGImageSourceTypeIdentifierHint: $0] as CFDictionary }
     let source = CGImageSourceCreateWithData(data as CFData, options)
     let properties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) as? [CFString: Any] }
-    let metadata: [String: Data]?
+    var metadata: [String: Data]?
     if let source, let properties { metadata = try RasterMetadata.capture(source, properties: properties) }
-    else { metadata = nil }
+    if sourceType == "com.adobe.raw-image", metadata?[RasterMetadata.xmpKey] == nil,
+      let packet = try? embeddedDNGXMP(data) {
+      var captured = metadata ?? [:]
+      captured[RasterMetadata.xmpKey] = packet
+      metadata = captured
+    }
     let embedded = (metadata?[RasterMetadata.xmpKey]).flatMap { try? CameraRawXMP.readStored($0) }
     let initial: RawDevelopment
     if let requested { initial = requested }
@@ -423,7 +456,7 @@ public enum RawSourceIO {
     if let dpi = properties?[kCGImagePropertyDPIWidth] as? Double, dpi.isFinite, (1...100_000).contains(dpi) {
       document.resolution = dpi
     }
-    var object = try SmartObject(fileName:name.isEmpty ? "Source.raw" : name,mediaType:info.type == "com.adobe.raw-image" ? "image/x-adobe-dng" : "image/x-camera-raw",data:data,width:pixels.width,height:pixels.height,rawDevelopment:settings)
+    var object = try SmartObject(fileName:name.isEmpty ? "Source.raw" : name,mediaType:info.type == "com.adobe.raw-image" ? "image/x-adobe-dng" : "image/x-camera-raw",source:bytes,width:pixels.width,height:pixels.height,rawDevelopment:settings)
     object.resolution = document.pixelsPerInch
     var layer = Layer(name:document.name,content:.raster(pixels)); layer.smartObject = object
     document.layers = [layer]; document.activeLayerID = layer.id
@@ -479,24 +512,47 @@ public enum RawSourceIO {
     guard let image = raw.outputImage else { throw CraftError.unsupported("RAW sensor decoding failed. No embedded preview was substituted.") }
     let bounds = image.extent
     guard !bounds.isNull,!bounds.isInfinite,bounds.width.isFinite,bounds.height.isFinite,bounds.origin.x.isFinite,bounds.origin.y.isFinite,
-      bounds.width >= 1,bounds.height >= 1,bounds.width <= CGFloat(Surface.maxDimension),bounds.height <= CGFloat(Surface.maxDimension),bounds.width*bounds.height <= CGFloat(maximumPixels),bounds.width.rounded() == bounds.width,bounds.height.rounded() == bounds.height else { throw CraftError.unsupported("RAW sensor output has invalid or oversized dimensions.") }
+      bounds.width >= 1,bounds.height >= 1,bounds.width <= CGFloat(maximumDimension),bounds.height <= CGFloat(maximumDimension),bounds.width*bounds.height <= CGFloat(maximumPixels),bounds.width.rounded() == bounds.width,bounds.height.rounded() == bounds.height else { throw CraftError.unsupported("RAW sensor output has invalid or oversized dimensions.") }
     let w = Int(bounds.width), h = Int(bounds.height)
     let space = CGColorSpace(name:CGColorSpace.extendedLinearSRGB)!
     let context = CIContext(options:[.workingColorSpace:space,.outputColorSpace:space,.cacheIntermediates:false])
-    var pixels = try Surface(width:w,height:h,depth:depth,colorEncoding:depth == .f32 ? .linearRGB:.sRGB)
-    // Bounded rows avoid a second full-sized Float32 image allocation. Core Image
-    // uses bottom-up bounds but writes top-down bitmap rows, after EXIF orientation.
-    let rows = min(64,h); var buffer = [Float](repeating:0,count:w*rows*4)
-    for y in stride(from:0,to:h,by:rows) {
-      try Task.checkCancellation(); let count = min(rows,h-y)
-      let rect = CGRect(x:bounds.minX,y:bounds.minY+CGFloat(h-y-count),width:CGFloat(w),height:CGFloat(count))
-      context.render(image,toBitmap:&buffer,rowBytes:w*16,bounds:rect,format:.RGBAf,colorSpace:space)
-      for row in 0..<count { for x in 0..<w {
-        let offset = (row*w+x)*4
-        let p = Pixel(buffer[offset],buffer[offset+1],buffer[offset+2],buffer[offset+3])
-        guard p.isFinite else { throw CraftError.invalid("The RAW decoder produced nonfinite sensor pixels.") }
-        if depth == .f32 { pixels.setLinearPixel(x:x,y:y+row,p) } else { pixels.setPixel(x:x,y:y+row,SRGBTransfer.encoded(p)) }
+    let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+    let rows = min(Surface.tileSide, h)
+    var buffer = [Float](repeating: 0, count: w * rows * 4)
+    func renderBand(at y: Int, rows: Int) throws {
+      try Task.checkCancellation()
+      // Core Image uses bottom-up bounds and writes top-down rows after orientation.
+      let rect = CGRect(x: bounds.minX, y: bounds.minY + CGFloat(h - y - rows), width: CGFloat(w), height: CGFloat(rows))
+      context.render(image, toBitmap: &buffer, rowBytes: w * 16, bounds: rect, format: .RGBAf, colorSpace: space)
+    }
+    func copyBand(rows: Int, into pixels: inout Surface, top: Int) throws {
+      for row in 0..<rows { for x in 0..<w {
+        let offset = (row * w + x) * 4
+        let pixel = Pixel(buffer[offset], buffer[offset + 1], buffer[offset + 2], buffer[offset + 3])
+        guard pixel.isFinite else { throw CraftError.invalid("The RAW decoder produced nonfinite sensor pixels.") }
+        if depth == .f32 { pixels.setLinearPixel(x: x, y: top + row, pixel) }
+        else { pixels.setPixel(x: x, y: top + row, SRGBTransfer.encoded(pixel)) }
       } }
+    }
+    let pixels: Surface
+    if w * h > Surface.maximumDensePixels {
+      let paged = try Surface.PagedBuilder(width: w, height: h, depth: depth, colorEncoding: encoding)
+      for y in stride(from: 0, to: h, by: rows) {
+        let count = min(rows, h - y)
+        try renderBand(at: y, rows: count)
+        var band = try Surface(width: w, height: count, depth: depth, colorEncoding: encoding)
+        try copyBand(rows: count, into: &band, top: 0)
+        try paged.append(band, atX: 0, atY: y)
+      }
+      pixels = try paged.finish()
+    } else {
+      var dense = try Surface(width: w, height: h, depth: depth, colorEncoding: encoding)
+      for y in stride(from: 0, to: h, by: rows) {
+        let count = min(rows, h - y)
+        try renderBand(at: y, rows: count)
+        try copyBand(rows: count, into: &dense, top: y)
+      }
+      pixels = dense
     }
     try Task.checkCancellation()
     return SensorRaster(key: key, pixels: pixels, info: info)

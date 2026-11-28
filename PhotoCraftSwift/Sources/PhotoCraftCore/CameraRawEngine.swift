@@ -8,6 +8,9 @@ public enum CameraRawEngine {
     try s.validate(); try Task.checkCancellation()
     guard (1...Surface.maxPixels).contains(maximumPixels), source.width <= maximumPixels/source.height else { throw CraftError.unsupported("Camera Raw exceeds its pixel budget.") }
     if s.isIdentity { return source }
+    if source.width * source.height > Surface.maximumDensePixels {
+      return try developPaged(source, settings: s)
+    }
     let adjustsLightGains = s.temperature != 0 || s.tint != 0 || s.exposure != 0
     if adjustsLightGains, source.colorEncoding == .sRGB, source.depth != .f32,
       usesOnlyLightGains(s) {
@@ -59,6 +62,27 @@ public enum CameraRawEngine {
     } }
     return result
   }
+  private static func developPaged(_ source: Surface, settings: CameraRawSettings) throws -> Surface {
+    guard settings.highlights == 0, settings.shadows == 0, settings.texture == 0, settings.clarity == 0,
+      settings.dehaze == 0, settings.sharpenAmount == 0, settings.noiseLuminance == 0, settings.noiseColor == 0,
+      settings.vignetteAmount == 0, settings.grainAmount == 0 else {
+      throw CraftError.unsupported("These Camera Raw spatial adjustments currently support up to 36 megapixels.")
+    }
+    let paged = try Surface.PagedBuilder(width: source.width, height: source.height,
+      depth: source.depth, fill: source.defaultPixel, colorEncoding: source.colorEncoding)
+    let side = Surface.tileSide
+    for y in stride(from: 0, to: source.height, by: side) {
+      try Task.checkCancellation()
+      let window = IntRect(x: 0, y: y, width: source.width, height: min(side, source.height - y))
+      let band = try source.cropped(to: window)
+      // Only operations without neighborhood or position dependence may use
+      // the existing dense recipe independently on a band.
+      let developed = try develop(band, settings: settings, maximumPixels: Surface.maximumDensePixels)
+      try paged.append(developed, atX: 0, atY: y)
+    }
+    return try paged.finish()
+  }
+
   private static func usesOnlyLightGains(_ settings: CameraRawSettings) -> Bool {
     // Even a diagonal curve can apply a lookup and round or clamp its input.
     guard settings.pointCurve.isEmpty, settings.pointCurveRed.isEmpty,

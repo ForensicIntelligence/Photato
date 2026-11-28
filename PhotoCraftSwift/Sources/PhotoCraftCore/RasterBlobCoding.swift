@@ -11,7 +11,7 @@ protocol RasterBlobDecoding: AnyObject {
 }
 
 protocol EmbeddedSourceBlobDecoding: RasterBlobDecoding {
-  func embeddedSourceBytes(_ identifier: String) throws -> EmbeddedSourceBytes
+  func embeddedSourceBytes(_ identifier: String, pageAbove: Int) throws -> EmbeddedSourceBytes
 }
 
 protocol EmbeddedSourceBlobEncoding: RasterBlobEncoding {

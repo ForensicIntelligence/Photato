@@ -1,0 +1,403 @@
+{
+  "build": 800,
+  "base": "064d2a7177aff8d8c7769617bb9b85327acdae53",
+  "inputCount": 9555,
+  "inputDigest": "960e2a7b6887b89ee1c8984c2463347cc276a9e1cda6c4847618686c41c83953",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraft/AutomationRawDevelopment.swift": "2ae67e1689c0314378df85862377564b87707dc0f2ac6f7fe0bbeb072ec9115a",
+    "Sources/PhotoCraft/CameraRawWorkspace.swift": "ce1f37bda3f25498fe178dfe7e82db231eda0e4f7c3c42047c3e89dc629c7eba",
+    "Sources/PhotoCraft/EmbeddedPlacement.swift": "79a28594ba007deaecb3020972ec382ac553bc5856d7c302e90eb93e3f191415",
+    "Sources/PhotoCraftCore/CameraRawEngine.swift": "7a463af02c1ede42ceeef5f0cd451533224f766ff42fc7557060bd9243f10516",
+    "Sources/PhotoCraftCore/HistoryScratch.swift": "d9a57f70a5e92628adcb700145de837c22ab528d8f79a0ce7cd8bbe8cad7e542",
+    "Sources/PhotoCraftCore/NativeIndexedArchive.swift": "2dbfa6861d42f21fbb01fc338c509da30df27b271be9e07910f7b3174ffa6e51",
+    "Sources/PhotoCraftCore/RasterBlobCoding.swift": "3af65d7f1ed7622f1bc59127a867092a58c538799ffc9163028865e246f92cec",
+    "Sources/PhotoCraftCore/SmartObject.swift": "3f925a8fcaf2c220b6c3aea5beffe5f7b960bb5f52b821968ce7dad3f1413567",
+    "Sources/PhotoCraftImaging/RawDNGSettings.swift": "070c499d730a55fc33171bd897a7b20445f0e227a9cfd55704cac0d17028f76c",
+    "Sources/PhotoCraftImaging/RawDNGSource.swift": "c8aa7c03f6c3208108fe54c90bad0025d95c14b3eea1362f1e7e99df3f43b7d6",
+    "Sources/PhotoCraftImaging/RawSourceIO.swift": "f4f20e0d64a55c77697354e9bf29dca5b1e9ce571dee1b1eae544132d306f93b",
+    "Sources/PhotoCraftImaging/SmartObjectIO.swift": "9104dd25c6d7d4f53f9620f04377677bb01bd92743bed18aec7631002dd813fc",
+    "Sources/PhotoCraftImaging/TIFFContainer.swift": "3401d8e4e20b9655f96449edef5083d6665ec86dc254855ab9135f273740f684",
+    "Tests/PhotoCraftAppTests/RawCapacityTests.swift": "2c63790125785c7303dbb4e4c30455fc7d45bb6a7526298f408d86ddc0cb6d92",
+    "scripts/Info.plist": "f1a372f5d1958125b66e9474528371d62535af295d3f45490d6221ce9dd9e349"
+  },
+  "focusedDebug": {
+    "appPass": 16,
+    "newCases": 4
+  },
+  "debugLogSHA256": {
+    "xcode": "e4cac70539ce2747b3ab22bdbdb62806d8800403bc3cd3268c5ff1d14b8eaa69",
+    "app": "6869658a7e844301242985a5e7b232d59a24eaab9c8f8077f6e0b91d042023d6"
+  },
+  "qualification": {
+    "arm64": {
+      "build": 800,
+      "architecture": "arm64",
+      "expected": 381,
+      "passed": 381,
+      "missing": [],
+      "failed": [],
+      "skipped": [],
+      "newCases": [
+        "PhotoCraftAppTests.RawCapacityTests/testAuthenticatedCapabilitiesExposeLocalRAWAndSensorLimits",
+        "PhotoCraftAppTests.RawCapacityTests/testLargeDNGGeometryMustAgreeWithDecoderAndAdmissionBounds",
+        "PhotoCraftAppTests.RawCapacityTests/testLargeDNGSettingsWriterKeepsOriginalSensorBytes",
+        "PhotoCraftAppTests.RawCapacityTests/testRAWOverBothFormerLimitsOpensEditsAndReopensWithOriginalSensor"
+      ],
+      "newCasesPassed": 4,
+      "groupExits": {
+        "PhotoCraftAppTests.AdobeSmartObjectAppearanceTests/testGrayPNG16GrayPSDAndGrayJPEGSupplyNumericMaskSamples": 0,
+        "PhotoCraftAppTests.AutomationEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.AutomationLayerMergeTests": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testGrayscalePNGImportAndDownloadPreserveTheNativePlanes": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testIndexedPNGWithGradedAlphaOpensThroughPhotatoAndAdobeAsRGB": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testLargeComponentTIFFOpensInBothResourcePaths": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testLargerPalettePNGUsesPagedRGBInBothResourcePaths": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB": 0,
+        "PhotoCraftAppTests.AutomationTests/testParameterValidationAndMachineSchemas": 0,
+        "PhotoCraftAppTests.AutomationTests/testRealHTTPAuthenticationOriginHostAndCatalogue": 0,
+        "PhotoCraftAppTests.CameraRawPreferencesTests": 0,
+        "PhotoCraftAppTests.CameraRawWorkflowTests": 0,
+        "PhotoCraftAppTests.CameraRawXMPWorkflowTests": 0,
+        "PhotoCraftAppTests.DocumentEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.RawCapacityTests/testAuthenticatedCapabilitiesExposeLocalRAWAndSensorLimits": 0,
+        "PhotoCraftAppTests.RawCapacityTests/testLargeDNGGeometryMustAgreeWithDecoderAndAdmissionBounds": 0,
+        "PhotoCraftAppTests.RawCapacityTests/testLargeDNGSettingsWriterKeepsOriginalSensorBytes": 0,
+        "PhotoCraftAppTests.RawCapacityTests/testRAWOverBothFormerLimitsOpensEditsAndReopensWithOriginalSensor": 0,
+        "PhotoCraftAppTests.RawDNGSourceWorkflowTests": 0,
+        "PhotoCraftAppTests.RawDNGWorkflowTests": 0,
+        "PhotoCraftAppTests.RawDefaultsTests": 0,
+        "PhotoCraftAppTests.RawDevelopmentWorkflowTests": 0,
+        "PhotoCraftAppTests.RawISOAdaptiveTests": 0,
+        "PhotoCraftAppTests.RawImageSaveTests": 0,
+        "PhotoCraftAppTests.RawOpenModeTests": 0,
+        "PhotoCraftAppTests.RawSensorReuseTests": 0,
+        "PhotoCraftAppTests.RawSidecarSourceWorkflowTests": 0,
+        "PhotoCraftAppTests.RawSidecarWorkflowTests": 0,
+        "PhotoCraftAppTests.RawWorkflowOutputTests": 0,
+        "PhotoCraftAppTests.TIFFBigInputWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFBigOutputWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFFloatWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFJPEGImportWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFJPEGOutputWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLargeOutputWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLargeRGBWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLayerWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFModeWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFPagedSelectionWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFPyramidWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFRichWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFStorageWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFTiledWorkflowTests": 0,
+        "PhotoCraftAppTests.VanishingWorkflowTests": 0,
+        "PhotoCraftCoreTests.CameraRawLightTests": 0,
+        "PhotoCraftCoreTests.LayerMergeTests": 0,
+        "PhotoCraftCoreTests.NativeIndexedArchiveTests/testAllDepthsPreserveBitsHistoryDimensionsAndRecoveryThroughDataAndFile": 0,
+        "PhotoCraftCoreTests.NativeIndexedArchiveTests/testLegacyTableCapRetriesFreshAtomicIndexedTransactionAndRetainsDestinationOnFailure": 0,
+        "PhotoCraftCoreTests.NativePagedArchiveTests/testFileReadRecoveryContextAndMappingLifetimeSurviveSourceRemoval": 0,
+        "PhotoCraftCoreTests.PreparedLayerMergeTests": 0,
+        "PhotoCraftCoreTests.VanishingTests": 0,
+        "PhotoCraftImagingTests.GroupRenderTests": 0,
+        "PhotoCraftImagingTests.LayerLayoutRenderTests": 0,
+        "PhotoCraftImagingTests.PSDAuxiliaryChannelTests": 0,
+        "PhotoCraftImagingTests.ProfileConversionPackingTests": 0,
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests": 0,
+        "PhotoCraftImagingTests.RawCompositeTests": 0,
+        "PhotoCraftImagingTests.RawDNGMetadataTests": 0,
+        "PhotoCraftImagingTests.RawDNGSourceTests": 0,
+        "PhotoCraftImagingTests.RawSidecarSourceTests": 0,
+        "PhotoCraftImagingTests.RestrictedFormatTests": 0,
+        "PhotoCraftImagingTests.RichLayerMergeTests": 0,
+        "PhotoCraftImagingTests.SelectionChannelDocumentIOTests": 0,
+        "PhotoCraftImagingTests.SpotChannelMergeTests": 0,
+        "PhotoCraftImagingTests.TIFFBigInputTests": 0,
+        "PhotoCraftImagingTests.TIFFBigOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFFloatTests": 0,
+        "PhotoCraftImagingTests.TIFFJPEGImportTests": 0,
+        "PhotoCraftImagingTests.TIFFJPEGOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeComponentTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeRGBOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeRGBTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerCompositeBoundaryTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerTests": 0,
+        "PhotoCraftImagingTests.TIFFModeTests": 0,
+        "PhotoCraftImagingTests.TIFFPagedSelectionTests": 0,
+        "PhotoCraftImagingTests.TIFFPyramidTests": 0,
+        "PhotoCraftImagingTests.TIFFRestrictedTests": 0,
+        "PhotoCraftImagingTests.TIFFRichTests": 0,
+        "PhotoCraftImagingTests.TIFFStorageTests": 0,
+        "PhotoCraftImagingTests.TIFFTiledComponentTests": 0
+      },
+      "reusedCompletedGroups": [],
+      "testExecutableSHA256": "5919fb5073d0c9690eb3cbb55a604927299d9e561fb43d644faabee7c63c0cf5"
+    },
+    "x86_64": {
+      "build": 800,
+      "architecture": "x86_64",
+      "expected": 381,
+      "passed": 381,
+      "missing": [],
+      "failed": [],
+      "skipped": [],
+      "newCases": [
+        "PhotoCraftAppTests.RawCapacityTests/testAuthenticatedCapabilitiesExposeLocalRAWAndSensorLimits",
+        "PhotoCraftAppTests.RawCapacityTests/testLargeDNGGeometryMustAgreeWithDecoderAndAdmissionBounds",
+        "PhotoCraftAppTests.RawCapacityTests/testLargeDNGSettingsWriterKeepsOriginalSensorBytes",
+        "PhotoCraftAppTests.RawCapacityTests/testRAWOverBothFormerLimitsOpensEditsAndReopensWithOriginalSensor"
+      ],
+      "newCasesPassed": 4,
+      "groupExits": {
+        "PhotoCraftAppTests.AdobeSmartObjectAppearanceTests/testGrayPNG16GrayPSDAndGrayJPEGSupplyNumericMaskSamples": 0,
+        "PhotoCraftAppTests.AutomationEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.AutomationLayerMergeTests": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testGrayscalePNGImportAndDownloadPreserveTheNativePlanes": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testIndexedPNGWithGradedAlphaOpensThroughPhotatoAndAdobeAsRGB": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testLargeComponentTIFFOpensInBothResourcePaths": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testLargerPalettePNGUsesPagedRGBInBothResourcePaths": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB": 0,
+        "PhotoCraftAppTests.AutomationTests/testParameterValidationAndMachineSchemas": 0,
+        "PhotoCraftAppTests.AutomationTests/testRealHTTPAuthenticationOriginHostAndCatalogue": 0,
+        "PhotoCraftAppTests.CameraRawPreferencesTests": 0,
+        "PhotoCraftAppTests.CameraRawWorkflowTests": 0,
+        "PhotoCraftAppTests.CameraRawXMPWorkflowTests": 0,
+        "PhotoCraftAppTests.DocumentEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.RawCapacityTests/testAuthenticatedCapabilitiesExposeLocalRAWAndSensorLimits": 0,
+        "PhotoCraftAppTests.RawCapacityTests/testLargeDNGGeometryMustAgreeWithDecoderAndAdmissionBounds": 0,
+        "PhotoCraftAppTests.RawCapacityTests/testLargeDNGSettingsWriterKeepsOriginalSensorBytes": 0,
+        "PhotoCraftAppTests.RawCapacityTests/testRAWOverBothFormerLimitsOpensEditsAndReopensWithOriginalSensor": 0,
+        "PhotoCraftAppTests.RawDNGSourceWorkflowTests": 0,
+        "PhotoCraftAppTests.RawDNGWorkflowTests": 0,
+        "PhotoCraftAppTests.RawDefaultsTests": 0,
+        "PhotoCraftAppTests.RawDevelopmentWorkflowTests": 0,
+        "PhotoCraftAppTests.RawISOAdaptiveTests": 0,
+        "PhotoCraftAppTests.RawImageSaveTests": 0,
+        "PhotoCraftAppTests.RawOpenModeTests": 0,
+        "PhotoCraftAppTests.RawSensorReuseTests": 0,
+        "PhotoCraftAppTests.RawSidecarSourceWorkflowTests": 0,
+        "PhotoCraftAppTests.RawSidecarWorkflowTests": 0,
+        "PhotoCraftAppTests.RawWorkflowOutputTests": 0,
+        "PhotoCraftAppTests.TIFFBigInputWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFBigOutputWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFFloatWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFJPEGImportWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFJPEGOutputWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLargeOutputWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLargeRGBWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLayerWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFModeWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFPagedSelectionWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFPyramidWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFRichWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFStorageWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFTiledWorkflowTests": 0,
+        "PhotoCraftAppTests.VanishingWorkflowTests": 0,
+        "PhotoCraftCoreTests.CameraRawLightTests": 0,
+        "PhotoCraftCoreTests.LayerMergeTests": 0,
+        "PhotoCraftCoreTests.NativeIndexedArchiveTests/testAllDepthsPreserveBitsHistoryDimensionsAndRecoveryThroughDataAndFile": 0,
+        "PhotoCraftCoreTests.NativeIndexedArchiveTests/testLegacyTableCapRetriesFreshAtomicIndexedTransactionAndRetainsDestinationOnFailure": 0,
+        "PhotoCraftCoreTests.NativePagedArchiveTests/testFileReadRecoveryContextAndMappingLifetimeSurviveSourceRemoval": 0,
+        "PhotoCraftCoreTests.PreparedLayerMergeTests": 0,
+        "PhotoCraftCoreTests.VanishingTests": 0,
+        "PhotoCraftImagingTests.GroupRenderTests": 0,
+        "PhotoCraftImagingTests.LayerLayoutRenderTests": 0,
+        "PhotoCraftImagingTests.PSDAuxiliaryChannelTests": 0,
+        "PhotoCraftImagingTests.ProfileConversionPackingTests": 0,
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests": 0,
+        "PhotoCraftImagingTests.RawCompositeTests": 0,
+        "PhotoCraftImagingTests.RawDNGMetadataTests": 0,
+        "PhotoCraftImagingTests.RawDNGSourceTests": 0,
+        "PhotoCraftImagingTests.RawSidecarSourceTests": 0,
+        "PhotoCraftImagingTests.RestrictedFormatTests": 0,
+        "PhotoCraftImagingTests.RichLayerMergeTests": 0,
+        "PhotoCraftImagingTests.SelectionChannelDocumentIOTests": 0,
+        "PhotoCraftImagingTests.SpotChannelMergeTests": 0,
+        "PhotoCraftImagingTests.TIFFBigInputTests": 0,
+        "PhotoCraftImagingTests.TIFFBigOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFFloatTests": 0,
+        "PhotoCraftImagingTests.TIFFJPEGImportTests": 0,
+        "PhotoCraftImagingTests.TIFFJPEGOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeComponentTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeRGBOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeRGBTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerCompositeBoundaryTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerTests": 0,
+        "PhotoCraftImagingTests.TIFFModeTests": 0,
+        "PhotoCraftImagingTests.TIFFPagedSelectionTests": 0,
+        "PhotoCraftImagingTests.TIFFPyramidTests": 0,
+        "PhotoCraftImagingTests.TIFFRestrictedTests": 0,
+        "PhotoCraftImagingTests.TIFFRichTests": 0,
+        "PhotoCraftImagingTests.TIFFStorageTests": 0,
+        "PhotoCraftImagingTests.TIFFTiledComponentTests": 0
+      },
+      "reusedCompletedGroups": [],
+      "testExecutableSHA256": "143410ad52648a408668afcf4a1060a9e8d1ab82a24be2a748e68516e9410049"
+    }
+  },
+  "preview": {
+    "build": 800,
+    "archive": "Photato-universal.zip",
+    "archiveSHA256": "5340fd3859743e2852341568ae7ff00994acd1af3de3d0b1c4a5beff27d2d3b7",
+    "archiveBytes": 78871026,
+    "gitPath": "downloads/Photato-universal.zip",
+    "bundleID": "ca.forensicintelligence.photato.preview",
+    "signing": "ad-hoc",
+    "localSymbolsStripped": true,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "96021fcb4d91ec7bd5af0db4cebbbef5333d9aaec163f5d3aca9477b371024d0",
+    "architectureInputsSHA256": {
+      "arm64": "345b0da9208bfbb68f7ee9ed35253a4264bbedcbcdfad3e38cc7ec4a382b6bbc",
+      "x86_64": "2b50f293df4b6191ce5234e35cc71f832317dc945e6a15984987d0ec421bc42b"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    },
+    "verifiedEntitlementArchs": [
+      "arm64",
+      "x86_64"
+    ],
+    "relatedRAWXMPType": "org.photato.camera-raw-xmp"
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "size": [
+        1000,
+        650
+      ],
+      "pngSHA256": "a6cc21417b781e0803af563693f9e11c731ed2b30e0d74c49f3da111fe7b4e2e"
+    },
+    "x86_64": {
+      "size": [
+        1000,
+        650
+      ],
+      "pngSHA256": "d73b7eb945e2b26ad7ee7a85a66077bd859f32c0517e1f75819c66da17f741ff"
+    }
+  },
+  "nativeLargeRaw": {
+    "openedInCameraRaw": true,
+    "sensorWidth": 8192,
+    "sensorHeight": 5120,
+    "openedEditableCopy": true,
+    "copyDepth": 16,
+    "closedWithoutSavingSource": true,
+    "sourceBytesPreserved": true,
+    "noSidecarWritten": true,
+    "rawSHA256": "ebb2e6178efad49d708790214220caec3a3ffc5dad732530e8b2ca9cc3daeb35",
+    "decoderGeometryValidationIncluded": true
+  },
+  "largeRawReference": {
+    "adobeCameraRawVersion": "18.1.1",
+    "adobeAcceptedUncompressedOriginal": true,
+    "sourceFixture": {
+      "format": "Synthetic uncompressed RGGB DNG",
+      "width": 8192,
+      "height": 5120,
+      "pixels": 41943040,
+      "bytes": 83886726,
+      "sha256": "ebb2e6178efad49d708790214220caec3a3ffc5dad732530e8b2ca9cc3daeb35",
+      "source": "Existing project-owned synthetic fixture metadata plus authored sensor data."
+    },
+    "opened": [
+      {
+        "allocatedRasterBytes": 1792,
+        "bytes": 83886726,
+        "file": "Synthetic-42MP.dng",
+        "height": 5120,
+        "mappedSource": true,
+        "mappedTiles": 10240,
+        "sensorSamples": [
+          [
+            0,
+            0.5904020667076111,
+            0.4771496057510376
+          ],
+          [
+            0.8601357936859131,
+            0.9793240427970886,
+            0.9452201128005981
+          ],
+          [
+            0.9844510555267334,
+            0.9951323866844177,
+            0.991531252861023
+          ]
+        ],
+        "sourceRetained": true,
+        "width": 8192
+      },
+      {
+        "allocatedRasterBytes": 1792,
+        "bytes": 62915206,
+        "file": "Synthetic-42MP-packed12.dng",
+        "height": 5120,
+        "mappedSource": false,
+        "mappedTiles": 10240,
+        "sensorSamples": [
+          [
+            0,
+            0.5904020667076111,
+            0.4771496057510376
+          ],
+          [
+            0.8601357936859131,
+            0.9793240427970886,
+            0.9452201128005981
+          ],
+          [
+            0.9844510555267334,
+            0.9951323866844177,
+            0.991531252861023
+          ]
+        ],
+        "sourceRetained": true,
+        "width": 8192
+      }
+    ],
+    "samplesCompared": 9,
+    "publishedAdmissionReference": "https://helpx.adobe.com/in/camera-raw/desktop/get-started/overview-and-setup/introduction-camera-raw.html",
+    "decoderBoundary": {
+      "at512MPRejected": true,
+      "at65000Rejected": true,
+      "over512MPRejected": true,
+      "over65000Rejected": true,
+      "decoderReportedAt512MP": [
+        698,
+        282
+      ],
+      "decoderReportedAt65000": [
+        698,
+        64
+      ],
+      "valid42MPDecodedSize": [
+        8192,
+        5120
+      ],
+      "sourceGeometry": "Unscaled full-image synthetic CFA DNGs."
+    }
+  }
+}

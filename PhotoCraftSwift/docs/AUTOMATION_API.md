@@ -1,3 +1,9 @@
+### Camera Raw capacity (checkpoint 800)
+
+Authenticated `capabilities.rawDevelopment` describes the local source, sensor and spatial adjustment limits. The desktop and native authorized opening path share the new decoder behavior. The separate binary HTTP upload still uses the established 64 MiB transport limit.
+
+[Qualification](SOURCE_PUBLICATION_800.md).
+
 ### Camera Raw ISO-adaptive defaults (checkpoint 799)
 
 Authenticated `/v1/preferences/camera-raw` accepts adaptive preset XMP in its existing revisioned `rawDefaults` object. Use `X-Photato-Raw-Defaults: desktop` for RAW uploads that should apply it. `raw.inspect` reports ISO when recorded. Uploaded explicit XMP and stored image adjustments retain priority. The capability response describes the adaptive preset path.

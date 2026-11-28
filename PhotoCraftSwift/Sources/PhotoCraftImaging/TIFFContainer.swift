@@ -84,8 +84,9 @@ struct TIFFContainer {
     default: nil
     }
   }
-  init(_ input: Data, metadata: Bool, additionalTags: Set<Int> = [], inspectSubIFDs: Bool = false) throws {
-    try self.init(storage: .memory(Data(input)), maximumBytes: Self.byteLimit,
+  init(_ input: Data, metadata: Bool, additionalTags: Set<Int> = [], inspectSubIFDs: Bool = false,
+    maximumBytes: Int = TIFFContainer.byteLimit) throws {
+    try self.init(storage: .memory(Data(input)), maximumBytes: maximumBytes,
       metadata: metadata, additionalTags: additionalTags, inspectSubIFDs: inspectSubIFDs)
   }
   init(file: PSDFileSource, metadata: Bool, additionalTags: Set<Int> = [], inspectSubIFDs: Bool = false) throws {

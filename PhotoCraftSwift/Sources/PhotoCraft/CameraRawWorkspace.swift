@@ -125,11 +125,27 @@ import PhotoCraftImaging
       do {
         try await Task.sleep(for:.milliseconds(80))
         let worker = Task.detached(priority: .userInitiated) {
-          let prepared = try request.preparedCommand(in: document, reusing: cachedSensor)
+          let hasDevelopedOriginal = retainRawOutput && needsOriginal && request.rawDevelopment != nil
+            && document.width * document.height > Surface.maximumDensePixels && document.layers.count == 1
+            && document.layers[0].id == request.id && document.layers[0].smartObject?.rawDevelopment == request.rawDevelopment
           var edited = document
-          try prepared.command.apply(to: &edited)
+          let renderedSensor: RawSourceIO.SensorRaster?
+          if hasDevelopedOriginal {
+            renderedSensor = nil
+          } else {
+            let prepared = try request.preparedCommand(in: document, reusing: cachedSensor)
+            try prepared.command.apply(to: &edited)
+            renderedSensor = prepared.sensor
+          }
           let pixels = try Renderer.composite(edited)
-          let before = needsOriginal ? try ColorManagement.displayImage(Renderer.composite(document),in:document) : nil
+          func display(_ surface: Surface) throws -> CGImage {
+            guard surface.width * surface.height > Surface.maximumDensePixels else {
+              return try ColorManagement.displayImage(surface, in: document)
+            }
+            let preview = try RasterPreviewRequest.overview(width: surface.width, height: surface.height)
+            return try ColorManagement.displayImage(preview.reducing(surface), in: document)
+          }
+          let before = needsOriginal ? try display(hasDevelopedOriginal ? pixels : Renderer.composite(document)) : nil
           var bins = [[Float]](repeating:[Float](repeating:0,count:256),count:3)
           let step = max(1,Int(sqrt(Double(pixels.width*pixels.height)/262144)))
           for y in stride(from:0,to:pixels.height,by:step) { try Task.checkCancellation(); for x in stride(from:0,to:pixels.width,by:step) {
@@ -138,8 +154,8 @@ import PhotoCraftImaging
           } }
           let maximum = max(1,bins.flatMap { $0 }.max() ?? 1)
           bins = bins.map { $0.map { $0/maximum } }
-          return (image: try ColorManagement.displayImage(pixels, in: document),
-            original: before, histogram: bins, sensor: prepared.sensor,
+          return (image: try display(pixels),
+            original: before, histogram: bins, sensor: renderedSensor,
             rawOutput: retainRawOutput && request.rawDevelopment != nil ? edited : nil)
         }
         let result = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
