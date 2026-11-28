@@ -37,8 +37,8 @@ extension CraftDocumentController {
     window.delegate = self
     window.center()
     keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak window, weak workspace] event in
-      guard let window, window.isKeyWindow, event.window === window,
-        workspace?.handleMarkingKey(event) == true else { return event }
+      guard let window, let workspace, window.isKeyWindow, event.window === window,
+        workspace.handlePresentationKey(event) || workspace.handleMarkingKey(event) else { return event }
       return nil
     }
   }
@@ -57,13 +57,24 @@ private struct RawFilmstripView: View {
   @State private var showingSync = false
   @State private var showingFilters = false
   @State private var showingInformation = false
+  @State private var showingWorkflow = false
   @State private var groups = Set(RawSettingsGroup.allCases)
 
   var body: some View {
     VStack(spacing: 0) {
       HStack {
-        Button(visible ? "Hide Photos" : "Show Photos", systemImage: "film") { visible.toggle() }
+        Button(visible ? "Hide Filmstrip" : "Show Filmstrip", systemImage: "film") { visible.toggle() }
+          .labelStyle(.iconOnly)
+          .help(visible ? "Hide Filmstrip" : "Show Filmstrip")
           .keyboardShortcut("/", modifiers: [])
+        Picker("Photo View", selection: Bindable(workspace).presentation) {
+          Label("Loupe", systemImage: "rectangle").tag(RawFilmstripPresentation.loupe)
+          Label("Grid", systemImage: "square.grid.2x2").tag(RawFilmstripPresentation.grid)
+        }
+        .pickerStyle(.segmented)
+        .labelsHidden()
+        .fixedSize()
+        .help("Switch between Loupe and Grid. Press G for Grid.")
         Button("Previous Photo", systemImage: "chevron.left") { workspace.navigate(-1) }.labelStyle(.iconOnly)
         Button("Next Photo", systemImage: "chevron.right") { workspace.navigate(1) }.labelStyle(.iconOnly)
         Menu("Sort") {
@@ -105,17 +116,7 @@ private struct RawFilmstripView: View {
           ScrollView(.horizontal) {
             LazyHStack(spacing: 8) {
               ForEach(workspace.displayedPhotos) { photo in
-                Button {
-                  let flags = NSApp.currentEvent?.modifierFlags ?? []
-                  workspace.select(photo.id, extending: flags.contains(.shift), toggling: flags.contains(.command))
-                } label: {
-                  thumbnail(photo)
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(photo.name)
-                .accessibilityValue(accessibilityMarking(photo))
-                .accessibilityAddTraits(workspace.selection.contains(photo.id) ? .isSelected : [])
-                .contextMenu { markingCommands(for: photo.id) }
+                photoButton(photo, width: 121, imageHeight: 57, details: .all, opensLoupe: false)
                 .id(photo.id)
               }
             }
@@ -129,7 +130,33 @@ private struct RawFilmstripView: View {
         .disabled(workspace.busy)
       }
       Divider()
-      if let editor = workspace.editor {
+      if workspace.presentation == .grid {
+        HStack(spacing: 0) {
+          grid
+          Divider()
+          if let editor = workspace.editor {
+            CameraRawSheet(store: editor.store, filmstrip: workspace, filmstripPhoto: editor.id,
+              gridInspectorOnly: true)
+              .id(editor.id)
+              .disabled(workspace.busy)
+          } else {
+            VStack {
+              if workspace.loadingPreview {
+                ProgressView("Preparing adjustments…")
+              } else if workspace.error != nil {
+                Text("Adjustments unavailable")
+              } else {
+                Text("Select a photo")
+              }
+            }
+            .foregroundStyle(.secondary)
+            .frame(width: 310)
+            .frame(maxHeight: .infinity)
+          }
+        }
+        Divider()
+        gridFooter
+      } else if let editor = workspace.editor {
         CameraRawSheet(store: editor.store, filmstrip: workspace, filmstripPhoto: editor.id)
           .id(editor.id)
           .disabled(workspace.busy)
@@ -162,7 +189,118 @@ private struct RawFilmstripView: View {
     }
   }
 
-  private func thumbnail(_ photo: RawFilmstripWorkspace.Photo) -> some View {
+  private var grid: some View {
+    GeometryReader { geometry in
+      let spacing = 8.0
+      let columns = max(1, Int((geometry.size.width - spacing) / (workspace.gridThumbnailSize + spacing)))
+      let tileWidth = max(1, (geometry.size.width - spacing * Double(columns + 1)) / Double(columns))
+      ScrollViewReader { proxy in
+        ScrollView {
+          if workspace.displayedPhotos.isEmpty {
+            VStack(spacing: 10) {
+              if workspace.busy {
+                ProgressView(workspace.progress ?? "Reading photos…")
+              } else if !workspace.photos.isEmpty {
+                Text("No photos match the filters.")
+                Button("Clear Filters", action: workspace.clearFilters)
+              } else {
+                Text("No photos to display.")
+              }
+            }
+            .frame(maxWidth: .infinity)
+            .padding(24)
+          } else {
+            LazyVGrid(columns: Array(repeating: GridItem(.fixed(tileWidth), spacing: spacing), count: columns),
+              spacing: spacing) {
+              ForEach(workspace.displayedPhotos) { photo in
+                photoButton(photo, width: tileWidth, imageHeight: workspace.gridThumbnailSize * 0.74,
+                  details: workspace.gridDetails, opensLoupe: true)
+                  .id(photo.id)
+              }
+            }
+            .padding(spacing)
+          }
+        }
+        .focusable()
+        .accessibilityLabel("Photo Grid")
+        .onMoveCommand { direction in
+          workspace.moveGridSelection(direction, columns: columns, extending: NSEvent.modifierFlags.contains(.shift))
+        }
+        .onChange(of: workspace.activeID, initial: true) { _, id in
+          if let id { proxy.scrollTo(id) }
+        }
+      }
+    }
+    .background(Color(nsColor: .underPageBackgroundColor))
+    .disabled(workspace.busy)
+  }
+
+  private var gridFooter: some View {
+    HStack(spacing: 8) {
+      Slider(value: Binding(get: { workspace.gridThumbnailSize }, set: workspace.resizeGrid),
+        in: RawFilmstripWorkspace.gridSizeRange) { Text("Thumbnail Size") }
+        .labelsHidden()
+        .frame(maxWidth: 135)
+        .accessibilityLabel("Thumbnail Size")
+        .help("Thumbnail Size. Use Option–Plus or Option–Minus. Double-click to reset.")
+        .simultaneousGesture(TapGesture(count: 2).onEnded {
+          workspace.resizeGrid(RawFilmstripWorkspace.defaultGridSize)
+        })
+      Button("Reset Thumbnail Size", systemImage: "arrow.counterclockwise") {
+        workspace.resizeGrid(RawFilmstripWorkspace.defaultGridSize)
+      }
+      .labelStyle(.iconOnly)
+      Picker("Thumbnail Information", selection: Bindable(workspace).gridDetails) {
+        ForEach(RawGridDetails.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+      }
+      .labelsHidden()
+      .help("Use period and comma to cycle thumbnail information.")
+      Button("Output Settings", systemImage: "slider.horizontal.3") { showingWorkflow = true }
+        .labelStyle(.iconOnly)
+        .help("Output Settings")
+        .disabled(workspace.activeInformation == nil)
+        .popover(isPresented: $showingWorkflow) {
+          if let information = workspace.activeInformation {
+            RawWorkflowControls(output: workspace.workflowOutput, width: information.width, height: information.height,
+              onApply: { workspace.setWorkflow($0); showingWorkflow = false }, onCancel: { showingWorkflow = false })
+          }
+        }
+      Spacer(minLength: 4)
+      RawFilmstripFinishControls(workspace: workspace, openingEnabled: !showingWorkflow)
+    }
+    .controlSize(.small)
+    .padding(10)
+  }
+
+  private func photoButton(_ photo: RawFilmstripWorkspace.Photo, width: Double, imageHeight: Double,
+    details: RawGridDetails, opensLoupe: Bool) -> some View {
+    Button {
+      let event = NSApp.currentEvent
+      let flags = event?.modifierFlags ?? []
+      if opensLoupe, event?.type == .leftMouseUp, (event?.clickCount ?? 0) > 1 {
+        workspace.openInLoupe(photo.id)
+      } else {
+        workspace.select(photo.id, extending: flags.contains(.shift), toggling: flags.contains(.command))
+      }
+    } label: {
+      thumbnail(photo, width: width, imageHeight: imageHeight, details: details)
+    }
+    .buttonStyle(.plain)
+    .accessibilityLabel(photo.name)
+    .accessibilityValue(accessibilityMarking(photo))
+    .accessibilityAddTraits(workspace.selection.contains(photo.id) ? .isSelected : [])
+    .accessibilityAction(named: Text("Open in Loupe")) { workspace.openInLoupe(photo.id) }
+    .contextMenu {
+      if opensLoupe {
+        Button("Open in Loupe") { workspace.openInLoupe(photo.id) }
+        Divider()
+      }
+      markingCommands(for: photo.id)
+    }
+  }
+
+  private func thumbnail(_ photo: RawFilmstripWorkspace.Photo, width: Double, imageHeight: Double,
+    details: RawGridDetails) -> some View {
     let selected = workspace.selection.contains(photo.id)
     let active = workspace.activeID == photo.id
     return VStack(spacing: 3) {
@@ -177,28 +315,32 @@ private struct RawFilmstripView: View {
         }
         if active { Image(systemName: "circle.inset.filled").padding(4).accessibilityHidden(true) }
       }
-      .frame(height: 57)
-      Text(photo.name).font(.caption).lineLimit(1).truncationMode(.middle)
-      HStack(spacing: 4) {
-        if let rating = photo.marking.rating, rating > 0 {
-          Image(systemName: "star.fill")
-          Text(String(rating))
-        } else if photo.marking.rating == -1 {
-          Text("Rejected")
-        }
-        if let label = photo.marking.label, !label.isEmpty {
-          let color = RawFilmstripLabel(marking: photo.marking)
-          Circle().fill(labelColor(color)).frame(width: 8, height: 8)
-          Text(label).lineLimit(1)
-        }
+      .frame(height: imageHeight)
+      if details.showsName {
+        Text(photo.name).font(.caption).lineLimit(1).truncationMode(.middle)
       }
-      .font(.caption2)
-      .foregroundStyle(.secondary)
-      .frame(height: 14)
-      .accessibilityHidden(true)
+      if details.showsMarking {
+        HStack(spacing: 4) {
+          if let rating = photo.marking.rating, rating > 0 {
+            Image(systemName: "star.fill")
+            Text(String(rating))
+          } else if photo.marking.rating == -1 {
+            Text("Rejected")
+          }
+          if let label = photo.marking.label, !label.isEmpty {
+            let color = RawFilmstripLabel(marking: photo.marking)
+            Circle().fill(labelColor(color)).frame(width: 8, height: 8)
+            Text(label).lineLimit(1)
+          }
+        }
+        .font(.caption2)
+        .foregroundStyle(.secondary)
+        .frame(height: 14)
+        .accessibilityHidden(true)
+      }
     }
-    .frame(width: 111)
     .padding(5)
+    .frame(width: width)
     .background(selected ? Color.accentColor.opacity(0.19) : .clear, in: RoundedRectangle(cornerRadius: 5))
     .overlay(RoundedRectangle(cornerRadius: 5).strokeBorder(active ? Color.accentColor : .clear, lineWidth: 2))
   }

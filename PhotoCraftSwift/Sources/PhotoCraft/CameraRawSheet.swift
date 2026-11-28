@@ -9,6 +9,7 @@ struct CameraRawSheet: View {
   private var placement: RawPlacementWorkspace?
   private var filmstrip: RawFilmstripWorkspace?
   private let filmstripPhoto: UUID?
+  private let gridInspectorOnly: Bool
   @State private var model = CameraRawWorkspace()
   @State private var group = "Light"
   @State private var band = 0
@@ -37,11 +38,12 @@ struct CameraRawSheet: View {
   private var defaultOpenAsObject: Bool { filmstrip?.defaultOpenAsObject ?? store.documentController?.cameraRawPreferences.openAsSmartObject ?? false }
   private var groups: [String] { (model.sensorSettings == nil ? [] : ["Sensor"]) + ["Light","Color","Effects","Curve","Color Mixer","Color Grading","Detail"] }
   init(store: EditorStore, workspace: CameraRawWorkspace? = nil, placement: RawPlacementWorkspace? = nil,
-    filmstrip: RawFilmstripWorkspace? = nil, filmstripPhoto: UUID? = nil) {
+    filmstrip: RawFilmstripWorkspace? = nil, filmstripPhoto: UUID? = nil, gridInspectorOnly: Bool = false) {
     self.store = store
     self.placement = placement
     self.filmstrip = filmstrip
     self.filmstripPhoto = filmstripPhoto
+    self.gridInspectorOnly = gridInspectorOnly
     _model = State(initialValue: workspace ?? CameraRawWorkspace())
   }
 
@@ -56,7 +58,7 @@ struct CameraRawSheet: View {
       Slider(value:value,in:range,onEditingChanged:slider).accessibilityLabel(title)
     }.padding(.vertical,3)
   }
-  var body: some View {
+  private var loupe: some View {
     VStack(spacing:0) {
       HStack {
         Text(filmstrip?.activeName ?? (model.sensorSettings == nil ? "Camera Raw Filter" : "Camera Raw — Source")).font(.headline)
@@ -78,20 +80,7 @@ struct CameraRawSheet: View {
             .help("Save a TIFF, JPEG, PNG or Photoshop file using these Camera Raw settings.")
             .disabled(!model.ready || exportingImage || dngTask != nil || showingWorkflow)
         }
-        Button("Load Settings…") { importing = true }
-          .help("Load Camera Raw XMP or Photato JSON settings.")
-          .disabled(exportingImage)
-        Menu("Save Settings") {
-          Button("Camera Raw XMP…") { exportSettings(xmp: true) }
-            .help("Share supported adjustments with Adobe Camera Raw.")
-          Button("Photato JSON…") { exportSettings(xmp: false) }
-            .help("Save all Photato Camera Raw settings.")
-          if model.dngSource != nil {
-            Divider()
-            Button("DNG Copy…", action: exportDNG)
-              .help("Save a copy of the RAW sensor data with embedded Camera Raw settings.")
-          }
-        }.disabled(dngTask != nil || exportingImage)
+        settingsCommands
       }.padding(12)
       Divider()
       HStack(spacing:0) {
@@ -106,11 +95,7 @@ struct CameraRawSheet: View {
           }.background(Color(white:0.12))
         }
         Divider()
-        VStack(spacing:10) {
-          histogram.frame(height:90).background(Color(white:0.1)).clipShape(RoundedRectangle(cornerRadius:5))
-          Picker("Adjustments",selection:$group) { ForEach(groups,id:\.self) { Text($0) } }.labelsHidden()
-          ScrollView { controls.padding(.trailing,5) }
-        }.padding(14).frame(width:310)
+        adjustmentPanel
       }
       Divider()
       if let error = sourceSaveError ?? model.error {
@@ -143,73 +128,100 @@ struct CameraRawSheet: View {
         Spacer()
         Button("Reset") { model.reset() }
         if let filmstrip {
-          Button("Undo", action: filmstrip.undoEdit).keyboardShortcut("z", modifiers: .command).disabled(!filmstrip.canUndo)
-          Button("Redo", action: filmstrip.redoEdit).keyboardShortcut("z", modifiers: [.command, .shift]).disabled(!filmstrip.canRedo)
+          RawFilmstripFinishControls(workspace: filmstrip, openingEnabled: !importing && !exporting && !showingWorkflow,
+            showsSave: false)
         } else {
           Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty)
           Button("Redo") { model.redo() }.disabled(model.redoStates.isEmpty)
-        }
-        Button("Cancel", action: cancel).keyboardShortcut(.cancelAction)
-        if let filmstrip {
-          Button("Done") { filmstrip.finish(nil) }.disabled(!filmstrip.canWrite)
-            .help("Save the selected photos’ Camera Raw settings.")
-          let mode = RawOpenShortcuts.mode(for: openModifiers, defaultAsObject: defaultOpenAsObject)
-          HStack(spacing: 4) {
-            Button(mode.title) { filmstrip.finish(mode) }.keyboardShortcut(.defaultAction)
-              .help("Open the selected photos with their individual settings.")
-            Menu {
-              Button(RawOpenMode.image.title) { filmstrip.finish(.image) }
-              Button(RawOpenMode.object.title) { filmstrip.finish(.object) }
-              Button(RawOpenMode.copy.title) { filmstrip.finish(.copy) }
-            } label: { Image(systemName: "chevron.down") }
-            .menuIndicator(.hidden)
-            .accessibilityLabel("Camera Raw opening options")
-          }
-          .disabled(!filmstrip.canFinish || importing || exporting || showingWorkflow)
-          .background(RawSourceKeyMonitor(onFlags: { openModifiers = $0 }, onOpen: { flags in
-            guard !showingWorkflow, !importing, !exporting else { return }
-            filmstrip.finish(RawOpenShortcuts.mode(for: flags, defaultAsObject: defaultOpenAsObject))
-          }, onSave: filmstrip.chooseExportDestination))
-        } else if let document = store.initialRawDocument {
-          if document.localRawSource != nil {
-            Button("Done") { finishSource(document, mode: nil) }
-              .help("Save these settings to the RAW file or its XMP sidecar and close Camera Raw.")
-              .disabled(!model.ready || dngTask != nil || exportingImage)
-          }
-          let mode = RawOpenShortcuts.mode(for: openModifiers, defaultAsObject: defaultOpenAsObject)
-          HStack(spacing: 4) {
-            Button(mode.title) {
-              let flags = NSApp.currentEvent?.modifierFlags ?? openModifiers
-              finishSource(document, mode: RawOpenShortcuts.mode(for: flags, defaultAsObject: defaultOpenAsObject))
-            }
-              .keyboardShortcut(.defaultAction)
-              .help(mode.openHelp)
-            Menu {
-              Button(RawOpenMode.image.title) { finishSource(document, mode: .image) }
-                .keyboardShortcut("o", modifiers: defaultOpenAsObject ? [.command, .shift] : .command)
-              Button(RawOpenMode.object.title) { finishSource(document, mode: .object) }
-                .keyboardShortcut("o", modifiers: defaultOpenAsObject ? .command : [.command, .shift])
-              Button(RawOpenMode.copy.title) { finishSource(document, mode: .copy) }
-                .keyboardShortcut("o", modifiers: [.command, .option])
-            } label: {
-              Image(systemName: "chevron.down")
-            }
-            .accessibilityLabel("Camera Raw opening options")
-            .help("Choose how to open this RAW image.")
-            .fixedSize()
-          }
-          .disabled(!model.ready || dngTask != nil || exportingImage)
-          .background(RawSourceKeyMonitor(onFlags: { openModifiers = $0 }, onOpen: { flags in
-            let selected = RawOpenShortcuts.mode(for: flags, defaultAsObject: defaultOpenAsObject)
-            finishSource(document, mode: selected)
-          }, onSave: {
-            saveDevelopedImage(from: document)
-          }))
-        } else {
-          Button("OK", action: commit).keyboardShortcut(.defaultAction).disabled(!model.ready)
+          Button("Cancel", action: cancel).keyboardShortcut(.cancelAction)
+          openSourceControls
         }
       }.padding(12)
-    }.disabled(savingSource)
+    }
+  }
+
+  @ViewBuilder private var openSourceControls: some View {
+    if let document = store.initialRawDocument {
+      if document.localRawSource != nil {
+        Button("Done") { finishSource(document, mode: nil) }
+          .help("Save these settings to the RAW file or its XMP sidecar and close Camera Raw.")
+          .disabled(!model.ready || dngTask != nil || exportingImage)
+      }
+      let mode = RawOpenShortcuts.mode(for: openModifiers, defaultAsObject: defaultOpenAsObject)
+      HStack(spacing: 4) {
+        Button(mode.title) {
+          let flags = NSApp.currentEvent?.modifierFlags ?? openModifiers
+          finishSource(document, mode: RawOpenShortcuts.mode(for: flags, defaultAsObject: defaultOpenAsObject))
+        }
+          .keyboardShortcut(.defaultAction)
+          .help(mode.openHelp)
+        Menu {
+          Button(RawOpenMode.image.title) { finishSource(document, mode: .image) }
+            .keyboardShortcut("o", modifiers: defaultOpenAsObject ? [.command, .shift] : .command)
+          Button(RawOpenMode.object.title) { finishSource(document, mode: .object) }
+            .keyboardShortcut("o", modifiers: defaultOpenAsObject ? .command : [.command, .shift])
+          Button(RawOpenMode.copy.title) { finishSource(document, mode: .copy) }
+            .keyboardShortcut("o", modifiers: [.command, .option])
+        } label: {
+          Image(systemName: "chevron.down")
+        }
+        .accessibilityLabel("Camera Raw opening options")
+        .help("Choose how to open this RAW image.")
+        .fixedSize()
+      }
+      .disabled(!model.ready || dngTask != nil || exportingImage)
+      .background(RawSourceKeyMonitor(onFlags: { openModifiers = $0 }, onOpen: { flags in
+        let selected = RawOpenShortcuts.mode(for: flags, defaultAsObject: defaultOpenAsObject)
+        finishSource(document, mode: selected)
+      }, onSave: {
+        saveDevelopedImage(from: document)
+      }))
+    } else {
+      Button("OK", action: commit).keyboardShortcut(.defaultAction).disabled(!model.ready)
+    }
+  }
+
+  private var settingsCommands: some View {
+    HStack {
+      Button("Load Settings…") { importing = true }
+        .help("Load Camera Raw XMP or Photato JSON settings.")
+        .disabled(exportingImage)
+      Menu("Save Settings") {
+        Button("Camera Raw XMP…") { exportSettings(xmp: true) }
+          .help("Share supported adjustments with Adobe Camera Raw.")
+        Button("Photato JSON…") { exportSettings(xmp: false) }
+          .help("Save all Photato Camera Raw settings.")
+        if model.dngSource != nil {
+          Divider()
+          Button("DNG Copy…", action: exportDNG)
+            .help("Save a copy of the RAW sensor data with embedded Camera Raw settings.")
+        }
+      }.disabled(dngTask != nil || exportingImage)
+    }
+  }
+
+  private var adjustmentPanel: some View {
+    VStack(spacing: 10) {
+      if gridInspectorOnly {
+        settingsCommands.controlSize(.small)
+        if let error = sourceSaveError ?? model.error {
+          Text(error).font(.caption).foregroundStyle(.red)
+        }
+      }
+      histogram.frame(height:90).background(Color(white:0.1)).clipShape(RoundedRectangle(cornerRadius:5))
+      Picker("Adjustments",selection:$group) { ForEach(groups,id:\.self) { Text($0) } }.labelsHidden()
+      ScrollView { controls.padding(.trailing,5) }
+    }
+    .padding(14)
+    .frame(width: 310)
+  }
+
+  var body: some View {
+    Group {
+      if gridInspectorOnly { adjustmentPanel }
+      else { loupe }
+    }
+    .disabled(savingSource)
     .interactiveDismissDisabled(savingSource)
     .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
       openModifiers = NSEvent.modifierFlags
@@ -579,6 +591,47 @@ enum RawOpenShortcuts {
   static func mode(for flags: NSEvent.ModifierFlags, defaultAsObject: Bool) -> RawOpenMode {
     if flags.contains(.option) { return .copy }
     return flags.contains(.shift) != defaultAsObject ? .object : .image
+  }
+}
+
+struct RawFilmstripFinishControls: View {
+  let workspace: RawFilmstripWorkspace
+  var openingEnabled = true
+  var showsSave = true
+  @State private var modifiers: NSEvent.ModifierFlags = []
+
+  var body: some View {
+    HStack(spacing: 6) {
+      if showsSave {
+        Button("Save Images…", action: workspace.chooseExportDestination).disabled(!workspace.canFinish)
+      }
+      Button("Undo", action: workspace.undoEdit).keyboardShortcut("z", modifiers: .command).disabled(!workspace.canUndo)
+      Button("Redo", action: workspace.redoEdit).keyboardShortcut("z", modifiers: [.command, .shift]).disabled(!workspace.canRedo)
+      Button("Cancel", action: workspace.close).keyboardShortcut(.cancelAction).disabled(workspace.finishing)
+      Button("Done") { workspace.finish(nil) }.disabled(!workspace.canWrite)
+        .help("Save the selected photos’ Camera Raw settings.")
+      let mode = RawOpenShortcuts.mode(for: modifiers, defaultAsObject: workspace.defaultOpenAsObject)
+      HStack(spacing: 4) {
+        Button(mode.title) { workspace.finish(mode) }.keyboardShortcut(.defaultAction)
+          .help("Open the selected photos with their individual settings.")
+        Menu {
+          Button(RawOpenMode.image.title) { workspace.finish(.image) }
+          Button(RawOpenMode.object.title) { workspace.finish(.object) }
+          Button(RawOpenMode.copy.title) { workspace.finish(.copy) }
+        } label: { Image(systemName: "chevron.down") }
+        .menuIndicator(.hidden)
+        .accessibilityLabel("Camera Raw opening options")
+      }
+      .disabled(!workspace.canFinish || !openingEnabled)
+    }
+    .background(RawSourceKeyMonitor(onFlags: { modifiers = $0 }, onOpen: { flags in
+      guard openingEnabled else { return }
+      workspace.finish(RawOpenShortcuts.mode(for: flags, defaultAsObject: workspace.defaultOpenAsObject))
+    }, onSave: workspace.chooseExportDestination))
+    .onAppear { modifiers = NSEvent.modifierFlags }
+    .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
+      modifiers = NSEvent.modifierFlags
+    }
   }
 }
 

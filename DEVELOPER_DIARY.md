@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **808** · The 10 most recent entries, newest first.
+Source build **809** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 809 — Browse and edit photos in Camera Raw Grid
+
+Press G to switch the Camera Raw preview to Grid. Double-click a thumbnail to return to Loupe. Both views share selection, ratings, labels, filters and sorting. Grid keeps the adjustments and source information available.
+
+In the native macOS window, three owned DNGs populated Grid. Option–Plus increased the thumbnail size and period hid cell information. Shift-click selected two photos. A 0.75 sensor exposure edit was still present on the second photo after opening it in Loupe.
+
+Grid behavior follows the published Adobe Camera Raw browsing workflow. [Adobe Camera Raw Grid](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
+
+Xcode built the app and all twenty focused application tests passed. Both optimized architectures passed all 397 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The live comparison covered Photato’s camera-raw window and the documented Adobe workflow. Developed thumbnails, Stacks, virtual copies, and a live comparison against a Grid-capable Adobe build remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-809) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_809.md).
 
 ## 2026-11-28 — Step 808 — Inspect and sort Camera Raw photo metadata
 
@@ -129,17 +143,3 @@ Xcode built the app. All four new focused checks and twelve related checks passe
 The 65,000-pixel and 512-megapixel admission bounds still depend on the decoder. The signed app was verified at 41,943,040 pixels. At the published boundaries, Apple reported reduced dimensions for the canonical synthetic DNGs. Photato now rejects those reduced outputs. Spatial Camera Raw adjustments still use the 36-megapixel limit. Adobe RAW pixel and file-byte parity remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-800) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_800.md).
-
-## 2026-11-28 — Step 799 — Apply ISO-adaptive Camera Raw defaults
-
-Camera Raw can use an XMP preset that varies supported numerical adjustments with the source photo’s ISO. Select it as the master or a camera override. The Sensor panel shows the recorded ISO when available.
-
-Adobe Camera Raw 18.1.1 generated the reference with Exposure 0 at ISO 400 and +2 at ISO 1600. Photato opened the synthetic ISO 800 DNG with Exposure +1. Adobe’s Load Settings command used the fixed top-level values on the Adobe reference. Photato keeps that fixed behavior in its separate Load Settings command.
-
-Adobe documents a midpoint of 5 for Luminance Noise Reduction at ISO 800 when the endpoints are 0 at ISO 400 and 10 at ISO 1600. [Adobe ISO-adaptive preset documentation](https://helpx.adobe.com/lightroom-classic/desktop/help/iso-adaptive-presets.html).
-
-Xcode built the app. All three new tests and nine related tests passed, covering EXIF ISO, endpoint clamping, the documented midpoint, fixed XMP overrides, validation and matching Photato raster samples. Both optimized architectures passed all 374 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-Creating adaptive presets from a Photato filmstrip, adaptive categorical adjustments, and byte-identical Adobe RAW output remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-799) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_799.md).

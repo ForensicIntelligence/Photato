@@ -42,6 +42,11 @@ import SwiftUI
   private(set) var photos: [Photo] = []
   var order: RawFilmstripOrder = .opening
   var reverseOrder = false
+  static let defaultGridSize = 150.0
+  static let gridSizeRange = 96.0...280.0
+  var presentation = RawFilmstripPresentation.loupe
+  var gridThumbnailSize = defaultGridSize
+  var gridDetails = RawGridDetails.all
   private(set) var ratingFilter = RawFilmstripRatingFilter.all
   private(set) var labelFilters: Set<RawFilmstripLabel> = []
   private(set) var activeID: UUID?
@@ -258,7 +263,7 @@ import SwiftUI
     await previewTask?.value
   }
 
-  private func activate(_ id: UUID) {
+  func activate(_ id: UUID) {
     guard activeID != id, let photo = photos.first(where: { $0.id == id }) else { return }
     previewTask?.cancel()
     activeID = id

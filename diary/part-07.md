@@ -259,11 +259,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:808 -->
+<!-- current-status-step:809 -->
 
-Camera Raw can show a photo’s filename, format, size, camera, lens, capture time, caption and copyright. Sort by capture date, file type, camera or lens without changing the selected photos.
+Press G to switch the Camera Raw preview to Grid. Double-click a thumbnail to return to Loupe. Both views share selection, ratings, labels, filters and sorting. Grid keeps the adjustments and source information available.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-808) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_808.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-809) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_809.md).
 
 <!-- current-status:end -->
 
@@ -1278,5 +1278,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 806 | [Save multiple developed Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-806) |
 | 2026-11-28 | 807 | [Rate and filter Camera Raw photos](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-807) |
 | 2026-11-28 | 808 | [Inspect and sort Camera Raw photo metadata](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-808) |
+| 2026-11-28 | 809 | [Browse and edit photos in Camera Raw Grid](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-809) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

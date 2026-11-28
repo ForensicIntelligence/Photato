@@ -1,3 +1,5 @@
+**Camera Raw development.** Refresh developed thumbnails from the existing RAW preview and qualify photos with no embedded thumbnail. [Development record](DEVLOG.md#dev-step-809) · [Qualification](SOURCE_PUBLICATION_809.md).
+
 **Camera Raw development.** Extend the shared Camera Raw photo selection and inspector to Grid. [Development record](DEVLOG.md#dev-step-808) · [Qualification](SOURCE_PUBLICATION_808.md).
 
 **Camera Raw development.** Add source metadata inspection and sorting by capture details, then extend the shared Camera Raw photo selection to Grid. [Development record](DEVLOG.md#dev-step-807) · [Qualification](SOURCE_PUBLICATION_807.md).

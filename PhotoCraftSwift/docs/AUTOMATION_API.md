@@ -1,3 +1,9 @@
+### Camera Raw Grid (checkpoint 809)
+
+Grid uses the same Camera Raw adjustment and photo-marking code as the authenticated Photato API. Thumbnail presentation is local to the native dialog.
+
+[Qualification](SOURCE_PUBLICATION_809.md).
+
 ### Camera Raw photo information (checkpoint 808)
 
 The authenticated `raw.inspect` response now includes `photoInformation` for an eligible RAW source. Reading it leaves the document revision and Undo history intact.

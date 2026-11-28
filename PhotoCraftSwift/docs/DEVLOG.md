@@ -827,7 +827,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 806 | 2026-11-28 | [Save multiple developed Camera Raw images](#dev-step-806) |
 | 807 | 2026-11-28 | [Rate and filter Camera Raw photos](#dev-step-807) |
 | 808 | 2026-11-28 | [Inspect and sort Camera Raw photo metadata](#dev-step-808) |
+| 809 | 2026-11-28 | [Browse and edit photos in Camera Raw Grid](#dev-step-809) |
 <!-- history-index:end -->
+
+<a id="dev-step-809"></a>
+
+## 2026-11-28 — Step 809 — Browse and edit photos in Camera Raw Grid
+
+Press G to switch the Camera Raw preview to Grid. Double-click a thumbnail to return to Loupe. Both views share selection, ratings, labels, filters and sorting. Grid keeps the adjustments and source information available.
+
+Keep one selection and Undo history for both views. The adjustment panel and finish controls call the same methods from Grid and Loupe.
+
+In the native macOS window, three owned DNGs populated Grid. Option–Plus increased the thumbnail size and period hid cell information. Shift-click selected two photos. A 0.75 sensor exposure edit was still present on the second photo after opening it in Loupe.
+
+Grid behavior follows the published Adobe Camera Raw browsing workflow. [Adobe Camera Raw Grid](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
+
+Grid uses the same Camera Raw adjustment and photo-marking code as the authenticated Photato API. Thumbnail presentation is local to the native dialog.
+
+Xcode built the app and all twenty focused application tests passed. Both optimized architectures passed all 397 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The live comparison covered Photato’s camera-raw window and the documented Adobe workflow. Developed thumbnails, Stacks, virtual copies, and a live comparison against a Grid-capable Adobe build remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 79,617,436 bytes with SHA-256 `e0616dcafb3dc9843b11cb5cd7f38fc19c533df9d5c5d3b68b3771efd9036a51`.
+
+[Qualification](SOURCE_PUBLICATION_809.md).
 
 <a id="dev-step-808"></a>
 

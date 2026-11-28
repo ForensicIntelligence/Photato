@@ -1,5 +1,19 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-28 — Step 809 — Browse and edit photos in Camera Raw Grid
+
+Press G to switch the Camera Raw preview to Grid. Double-click a thumbnail to return to Loupe. Both views share selection, ratings, labels, filters and sorting. Grid keeps the adjustments and source information available.
+
+In the native macOS window, three owned DNGs populated Grid. Option–Plus increased the thumbnail size and period hid cell information. Shift-click selected two photos. A 0.75 sensor exposure edit was still present on the second photo after opening it in Loupe.
+
+Grid behavior follows the published Adobe Camera Raw browsing workflow. [Adobe Camera Raw Grid](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
+
+Xcode built the app and all twenty focused application tests passed. Both optimized architectures passed all 397 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The live comparison covered Photato’s camera-raw window and the documented Adobe workflow. Developed thumbnails, Stacks, virtual copies, and a live comparison against a Grid-capable Adobe build remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-809) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_809.md).
+
 ## 2026-11-28 — Step 808 — Inspect and sort Camera Raw photo metadata
 
 Camera Raw can show a photo’s filename, format, size, camera, lens, capture time, caption and copyright. Sort by capture date, file type, camera or lens without changing the selected photos.
