@@ -1,3 +1,9 @@
+### Camera Raw local tone (checkpoint 803)
+
+The same controls run in the desktop app and authenticated `raw.develop`. Photato capabilities list the four controls in `rawDevelopment.pagedTone`.
+
+[Qualification](SOURCE_PUBLICATION_803.md).
+
 ### Camera Raw Detail (checkpoint 802)
 
 The authenticated Photato capabilities list these controls in `rawDevelopment.pagedDetail` and identify the remaining `limitedLargeAdjustments`. The `raw.develop` command shares the desktop processing path.

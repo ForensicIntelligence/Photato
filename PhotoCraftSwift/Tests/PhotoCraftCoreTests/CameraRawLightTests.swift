@@ -166,3 +166,41 @@ extension CameraRawLightTests {
     }
   }
 }
+
+extension CameraRawLightTests {
+  func testPagedLocalTonePreservesDenseRadiusesAndSamples() throws {
+    for depth in [PixelDepth.u16, .f32] {
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var source = try Surface(width: 131, height: 517, depth: depth, colorEncoding: encoding)
+      for y in 0..<source.height {
+        for x in 0..<source.width {
+          let sample = Pixel(Float((x * 11 + y * 3) % 293) / 180, Float((x * 7 + y * 19) % 239) / 190,
+            Float((x * 23 + y * 17) % 199) / 230, Float((x / 4 + y) % 7) / 6)
+          if depth == .f32 { source.setLinearPixel(x: x, y: y, sample) }
+          else { source.setPixel(x: x, y: y, sample) }
+        }
+      }
+      var settings = CameraRawSettings()
+      settings.temperature = 17
+      settings.exposure = 0.33
+      settings.highlights = -69
+      settings.shadows = 61
+      settings.texture = 42
+      settings.clarity = -28
+      settings.contrast = 35
+      settings.whites = -51
+      settings.blacks = -9
+      settings.vibrance = 39
+      settings.vignetteAmount = -26
+      settings.pixelScale = 2.25
+      for sharpening: Float in [0, 79] {
+        settings.sharpenAmount = sharpening
+        let dense = try CameraRawEngine.develop(source, settings: settings)
+        let paged = try CameraRawEngine.developPaged(source, settings: settings)
+        XCTAssertGreaterThan(paged.mappedTileCount, 0)
+        XCTAssertNotEqual(paged, source)
+        XCTAssertEqual(paged, dense)
+      }
+    }
+  }
+}

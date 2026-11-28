@@ -1,3 +1,5 @@
+**Camera Raw development.** Extend Dehaze to full-resolution paged RAW sources using the same scene-wide transmission estimate. Adobe baseline rendering, maximum sensor admission, output sharpening, and the RAW filmstrip remain open. [Development record](DEVLOG.md#dev-step-803) · [Qualification](SOURCE_PUBLICATION_803.md).
+
 **Camera Raw development.** Reuse the full-frame filter arithmetic for paged Highlights, Shadows, Texture and Clarity. Adobe baseline rendering, maximum sensor admission, output sharpening, and the RAW filmstrip remain open. [Development record](DEVLOG.md#dev-step-802) · [Qualification](SOURCE_PUBLICATION_802.md).
 
 **Camera Raw development.** Extend paged processing to sharpening and luminance and color noise reduction while preserving full-image filter arithmetic. Adobe baseline rendering, maximum sensor admission, output sharpening, and the RAW filmstrip remain open. [Development record](DEVLOG.md#dev-step-801) · [Qualification](SOURCE_PUBLICATION_801.md).

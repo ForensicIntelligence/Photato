@@ -5,20 +5,14 @@ extension CameraRawEngine {
 
   private static func prepareDetailPlanes(_ source: Surface, settings: CameraRawSettings) throws
     -> (luma: DetailPlane, cb: DetailPlane, cr: DetailPlane) {
-    let w = source.width, h = source.height, side = Surface.tileSide
-    let bytes = w * h * MemoryLayout<SIMD4<Float>>.stride
-    let scratch = try FileBackedSource.writing(maximumBytes: bytes) { url in
-      let writer = try AtomicFileWriter(to: url, maximumBytes: bytes)
-      for top in stride(from: 0, to: h, by: side) {
-        try Task.checkCancellation()
-        let band = try source.cropped(to: IntRect(x: 0, y: top, width: w, height: min(side, h - top)))
-        let chroma = try prepareRGB(band, settings: settings).map { pixel in
+    let w = source.width, h = source.height
+    let scratch = try writePagedRGB(source) { append in
+      try preparePagedRGB(source, settings: settings) { _, pixels in
+        try append(pixels.map { pixel in
           let luma = M.luma(pixel)
           return SIMD4(luma, pixel.z - luma, pixel.x - luma, 0)
-        }
-        try writer.append(chroma.withUnsafeBytes { Data($0) })
+        })
       }
-      try writer.commit()
     }
     return try scratch.data.withUnsafeBytes { bytes in
       let samples = bytes.bindMemory(to: SIMD4<Float>.self)

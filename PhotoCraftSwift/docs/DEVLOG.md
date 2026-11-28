@@ -821,7 +821,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 800 | 2026-11-28 | [Open and retain large Camera Raw originals](#dev-step-800) |
 | 801 | 2026-11-28 | [Apply vignette and grain to full-size Camera Raw images](#dev-step-801) |
 | 802 | 2026-11-28 | [Sharpen and reduce noise in full-size Camera Raw images](#dev-step-802) |
+| 803 | 2026-11-28 | [Apply local tone to full-size Camera Raw images](#dev-step-803) |
 <!-- history-index:end -->
+
+<a id="dev-step-803"></a>
+
+## 2026-11-28 — Step 803 — Apply local tone to full-size Camera Raw images
+
+Camera Raw can adjust Highlights, Shadows, Texture and Clarity on supported sensor images above 36 megapixels. The native processor uses the full image dimensions to choose the filter radii.
+
+Keep exposed RGB and unclipped luminance in scratch storage. Reuse the full-image guided filters and weighted Gaussian boxes. Apply the shared tone formula before subsequent color and Detail stages.
+
+The production RAW development command applied all four controls to the owned 8,192 × 5,120 DNG and returned 10,240 mapped tiles. Five inspected RGB samples changed, including adjacent rows across a band boundary. The sampled alpha and all source-file bytes were retained.
+
+The output comparisons use the existing Photato renderer. Adobe tone and RAW output comparisons remain open.
+
+The same controls run in the desktop app and authenticated `raw.develop`. Photato capabilities list the four controls in `rawDevelopment.pagedTone`.
+
+Xcode built the app. All six focused core tests passed. The new test covers RGB16 and linear Float32 with partial alpha, both with and without Detail sharpening. Each stored sample matches the dense Photato renderer. Both optimized architectures passed all 385 selected cases, including authenticated capability discovery. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+Dehaze still has a 36-megapixel limit in this build. The maximum RAW sensor dimensions depend on the Apple decoder.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,959,510 bytes with SHA-256 `b81cdc531964c31a56b0df78306f7fffc85022cfaffb8ad7b3827ef87904fd9c`.
+
+[Qualification](SOURCE_PUBLICATION_803.md).
 
 <a id="dev-step-802"></a>
 

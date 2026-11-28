@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **802** · The 10 most recent entries, newest first.
+Source build **803** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 803 — Apply local tone to full-size Camera Raw images
+
+Camera Raw can adjust Highlights, Shadows, Texture and Clarity on supported sensor images above 36 megapixels. The native processor uses the full image dimensions to choose the filter radii.
+
+The production RAW development command applied all four controls to the owned 8,192 × 5,120 DNG and returned 10,240 mapped tiles. Five inspected RGB samples changed, including adjacent rows across a band boundary. The sampled alpha and all source-file bytes were retained.
+
+The output comparisons use the existing Photato renderer. Adobe tone and RAW output comparisons remain open.
+
+Xcode built the app. All six focused core tests passed. The new test covers RGB16 and linear Float32 with partial alpha, both with and without Detail sharpening. Each stored sample matches the dense Photato renderer. Both optimized architectures passed all 385 selected cases, including authenticated capability discovery. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+Dehaze still has a 36-megapixel limit in this build. The maximum RAW sensor dimensions depend on the Apple decoder.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-803) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_803.md).
 
 ## 2026-11-28 — Step 802 — Sharpen and reduce noise in full-size Camera Raw images
 
@@ -127,15 +141,3 @@ Xcode built the app and all five focused tests passed. Coverage includes exact s
 Photoshop output ICC, dimensions, sharpening, and full pixel/file equivalence remain open. Photato’s current RGB16 compositor applies integer Normal rounding to Background layers, while eligible RAW objects can retain the original decoded values.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-794) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_794.md).
-
-## 2026-11-28 — Step 793 — Reuse the decoded sensor in Camera Raw
-
-Repeated RGB adjustments can reuse the native sensor raster from the current Camera Raw workspace. Open and OK can reuse those samples before applying the same development command and document color conversion.
-
-Three full Nikon D70s arm64 Debug trials measured median command preparation of 2.64 seconds with the same sensor raster and 6.38 seconds with a fresh decode. The processed command output, Float32 composite, and RGBA8 display bytes matched. The signed app made two exposure changes and opened the result as a 3,008 × 2,000 RGB16 document with the original NEF embedded.
-
-Xcode built the app and all three focused app tests passed, including color-managed masked output, exact cache key requirements, cancellation and history. Both optimized architectures passed all 356 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-The benchmark covers command preparation in Debug. The first sensor decode and edits to sensor controls still require Core Image processing. Rendered Adobe equivalence and the 60 fps editing target remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-793) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_793.md).

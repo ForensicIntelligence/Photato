@@ -26,7 +26,7 @@ public enum CameraRawEngine {
     return try finishBand(&pixels, source: source, settings: s, canvasHeight: canvasHeight, top: top)
   }
 
-  static func prepareRGB(_ source: Surface, settings s: CameraRawSettings) throws -> [RGB] {
+  static func exposedRGB(_ source: Surface, settings s: CameraRawSettings) throws -> [RGB] {
     let adjustsLightGains = s.temperature != 0 || s.tint != 0 || s.exposure != 0
     let w = source.width, h = source.height, n = w*h
     var pixels = [RGB](); pixels.reserveCapacity(n)
@@ -42,28 +42,28 @@ public enum CameraRawEngine {
         for c in 0..<3 { pixels[i][c] = adjustedLightSample(pixels[i][c], gain: gains[c]) }
       }
     }
-    if s.dehaze != 0 { pixels = try dehaze(pixels,w,h,s.dehaze/100) }
-    if [s.contrast,s.highlights,s.shadows,s.whites,s.blacks,s.texture,s.clarity].contains(where: { $0 != 0 }) {
-      let l = pixels.map { max(M.luma($0),0) }, lc = l.map { min($0,1) }, long = Float(max(w,h))
-      let base = s.highlights != 0 || s.shadows != 0 ? try M.guided(lc,lc,w,h,max(2,Int(long*0.015)),0.02) : lc
-      let clarity = s.clarity != 0 ? try M.guided(lc,lc,w,h,max(3,Int(long*0.02)),0.005) : lc
-      let texture = s.texture != 0 ? try M.gaussian(lc,w,h,max(long*0.002,1.5*s.pixelScale)) : lc
-      for i in 0..<n {
-        if i%w == 0 { try Task.checkCancellation() }
-        var v = lc[i]
-        let hm = M.smooth(0.45,0.95,base[i]), sm = 1-M.smooth(0.05,0.5,base[i])
-        v *= pow(2,s.highlights/100*1.2*hm+s.shadows/100*1.4*sm)
-        let mid = 2*unit(v)-1
-        v += s.clarity/100*0.8*(lc[i]-clarity[i])*(1-mid*mid)
-        v += s.texture/100*0.9*min(0.1,max(-0.1,lc[i]-texture[i]))
-        v += s.whites/100*0.25*M.smooth(0.4,1,v)
-        v += s.blacks/100*0.15*(1-M.smooth(0,0.45,v))
-        v -= s.contrast/100*0.6*sin(2*Float.pi*unit(v))/(2*Float.pi)
-        v = max(0,v)+(l[i]-lc[i])
-        if l[i] > 1e-5 { pixels[i] *= v/l[i] } else { pixels[i] += RGB(repeating:v-l[i]) }
+    return pixels
+  }
+
+  static func prepareRGB(_ source: Surface, settings s: CameraRawSettings) throws -> [RGB] {
+    let w = source.width, h = source.height
+    var pixels = try exposedRGB(source, settings: s)
+    if s.dehaze != 0 { pixels = try dehaze(pixels, w, h, s.dehaze / 100) }
+    if usesBaseTone(s) {
+      let luma = pixels.map { max(M.luma($0), 0) }, clipped = luma.map { min($0, 1) }
+      let longSide = Float(max(w, h))
+      let base = usesLocalLight(s)
+        ? try M.guided(clipped, clipped, w, h, localLightRadius(longSide), 0.02) : clipped
+      let clarity = s.clarity != 0
+        ? try M.guided(clipped, clipped, w, h, localClarityRadius(longSide), 0.005) : clipped
+      let texture = s.texture != 0 ? try M.gaussian(clipped, w, h, localTextureSigma(longSide, s)) : clipped
+      for i in pixels.indices {
+        if i % w == 0 { try Task.checkCancellation() }
+        pixels[i] = tonedPixel(pixels[i], luma: luma[i], clipped: clipped[i], base: base[i],
+          clarity: clarity[i], texture: texture[i], settings: s)
       }
     }
-    try color(&pixels,s,w)
+    try color(&pixels, s, w)
     return pixels
   }
 
@@ -80,11 +80,11 @@ public enum CameraRawEngine {
     return result
   }
   package static func developPaged(_ source: Surface, settings: CameraRawSettings) throws -> Surface {
-    guard settings.highlights == 0, settings.shadows == 0, settings.texture == 0, settings.clarity == 0,
-      settings.dehaze == 0 else {
-      throw CraftError.unsupported("These Camera Raw spatial adjustments currently support up to 36 megapixels.")
+    guard settings.dehaze == 0 else {
+      throw CraftError.unsupported("Camera Raw Dehaze currently supports up to 36 megapixels.")
     }
     if hasDetailAdjustments(settings) { return try developPagedDetail(source, settings: settings) }
+    if usesLocalTone(settings) { return try developPagedTone(source, settings: settings) }
     let paged = try Surface.PagedBuilder(width: source.width, height: source.height,
       depth: source.depth, fill: source.defaultPixel, colorEncoding: source.colorEncoding)
     let side = Surface.tileSide

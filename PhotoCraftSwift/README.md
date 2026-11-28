@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 803.** Apply local tone to full-size Camera Raw images. [Qualification](docs/SOURCE_PUBLICATION_803.md).
+
 **Source checkpoint 802.** Sharpen and reduce noise in full-size Camera Raw images. [Qualification](docs/SOURCE_PUBLICATION_802.md).
 
 **Source checkpoint 801.** Apply vignette and grain to full-size Camera Raw images. [Qualification](docs/SOURCE_PUBLICATION_801.md).
