@@ -819,7 +819,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 798 | 2026-11-28 | [Set Camera Raw defaults by camera model and body](#dev-step-798) |
 | 799 | 2026-11-28 | [Apply ISO-adaptive Camera Raw defaults](#dev-step-799) |
 | 800 | 2026-11-28 | [Open and retain large Camera Raw originals](#dev-step-800) |
+| 801 | 2026-11-28 | [Apply vignette and grain to full-size Camera Raw images](#dev-step-801) |
 <!-- history-index:end -->
+
+<a id="dev-step-801"></a>
+
+## 2026-11-28 — Step 801 — Apply vignette and grain to full-size Camera Raw images
+
+Camera Raw can apply Post Crop Vignetting and Grain to images above 36 megapixels. The workspace and Photato API use the same adjustment pipeline.
+
+The paged pipeline uses the full sensor image center for vignetting and absolute pixel coordinates for grain, including rows at the boundary between neighboring tiles.
+
+An offscreen run through the RAW development command processed the owned 8,192 × 5,120 DNG into 10,240 mapped tiles. It changed each of five inspected points, including adjacent rows across a band boundary. The inspected alpha and all original sensor file bytes were preserved.
+
+This change compares the two Photato rendering paths. Direct Adobe comparison still needs controlled vignette and grain references.
+
+The authenticated Photato capabilities publish vignette and grain under `rawDevelopment.pagedEffects`. The same controls are used by `raw.develop`.
+
+Xcode built the app. All three focused core tests passed. The new case compares every sample of paged and dense output for all three vignette styles with grain and partial alpha in RGB16 and linear Float32. Both optimized architectures passed all 382 selected cases. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+Sharpening, noise reduction, shadows, highlights, clarity, texture and dehaze still use the 36-megapixel limit in this build. Camera compatibility and full-resolution admission depend on the Apple decoder.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,871,440 bytes with SHA-256 `19772bc63382e0ab31fd8930300e161ee8afac0448857a1a517954e67a5843a2`.
+
+[Qualification](SOURCE_PUBLICATION_801.md).
 
 <a id="dev-step-800"></a>
 

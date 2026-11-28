@@ -31,17 +31,19 @@ extension CameraRawEngine {
       p[i] = RGB(r,g,b)
     }
   }
-  static func effects(_ p: inout [RGB],_ w: Int,_ h: Int,_ s: CameraRawSettings) throws {
+  static func effects(_ p: inout [RGB], _ w: Int, _ h: Int, _ s: CameraRawSettings,
+    canvasHeight: Int, top: Int) throws {
     guard s.vignetteAmount != 0 || s.grainAmount != 0 else { return }
-    let cx = Float(w)/2, cy = Float(h)/2, round = s.vignetteRoundness/100
+    let cx = Float(w)/2, cy = Float(canvasHeight)/2, round = s.vignetteRoundness/100
     let radius = min(cx,cy)+(max(cx,cy)-min(cx,cy))*(1-max(0,round))
     let ax = round >= 0 && cx >= cy ? radius : cx, ay = round >= 0 && cy > cx ? radius : cy
     let power = 2+max(-round,0)*6, inner = 1-s.vignetteMidpoint/100*0.8, feather = s.vignetteFeather/100
     let edge0 = inner-feather*0.5*inner, edge1 = inner+feather*0.5*(1.4-inner)+0.02
     for y in 0..<h { try Task.checkCancellation(); for x in 0..<w {
+      let absoluteY = y + top
       let i = y*w+x; var c = p[i]
       if s.vignetteAmount != 0 {
-        let dx = abs((Float(x)+0.5-cx)/ax), dy = abs((Float(y)+0.5-cy)/ay)
+        let dx = abs((Float(x)+0.5-cx)/ax), dy = abs((Float(absoluteY)+0.5-cy)/ay)
         let r = pow(pow(dx,power)+pow(dy,power),1/power), m = M.smooth(edge0,edge1,r), amount = s.vignetteAmount/100
         if s.vignetteStyle == "paintOverlay" { c += (RGB(repeating:amount < 0 ? 0 : 1)-c)*(m*abs(amount)) }
         else {
@@ -51,7 +53,7 @@ extension CameraRawEngine {
         }
       }
       if s.grainAmount > 0 {
-        let cell = (1+s.grainSize/25)*s.pixelScale, fx = Float(x)/cell, fy = Float(y)/cell, rough = s.grainRoughness/100
+        let cell = (1+s.grainSize/25)*s.pixelScale, fx = Float(x)/cell, fy = Float(absoluteY)/cell, rough = s.grainRoughness/100
         let n = M.noise(fx,fy,s.seed)*(1-rough)+M.noise(fx*2.3,fy*2.3,s.seed &+ 7)*rough, l = unit(M.luma(c))
         c += RGB(repeating:(n-0.5)*2*s.grainAmount/100*0.12*(0.4+2.4*l*(1-l)))
       }

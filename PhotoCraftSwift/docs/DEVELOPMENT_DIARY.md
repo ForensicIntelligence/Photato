@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 801 — Apply vignette and grain to full-size Camera Raw images
+
+Camera Raw can apply Post Crop Vignetting and Grain to images above 36 megapixels. The workspace and Photato API use the same adjustment pipeline.
+
+An offscreen run through the RAW development command processed the owned 8,192 × 5,120 DNG into 10,240 mapped tiles. It changed each of five inspected points, including adjacent rows across a band boundary. The inspected alpha and all original sensor file bytes were preserved.
+
+This change compares the two Photato rendering paths. Direct Adobe comparison still needs controlled vignette and grain references.
+
+Xcode built the app. All three focused core tests passed. The new case compares every sample of paged and dense output for all three vignette styles with grain and partial alpha in RGB16 and linear Float32. Both optimized architectures passed all 382 selected cases. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+Sharpening, noise reduction, shadows, highlights, clarity, texture and dehaze still use the 36-megapixel limit in this build. Camera compatibility and full-resolution admission depend on the Apple decoder.
+
+[Development record](DEVLOG.md#dev-step-801) · [Qualification](SOURCE_PUBLICATION_801.md).
+
 ## 2026-11-28 — Step 800 — Open and retain large Camera Raw originals
 
 Photato now opens larger camera RAW files and keeps their sensor pixels in disk-backed tiles. Local originals above 64 MiB are snapshotted into a mapped private file. Camera Raw keeps a reduced overview for the dialog and the full sensor data for Open, Place Embedded and edits.
@@ -2711,11 +2725,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:800 -->
+<!-- current-status-step:801 -->
 
-Photato now opens larger camera RAW files and keeps their sensor pixels in disk-backed tiles. Local originals above 64 MiB are snapshotted into a mapped private file. Camera Raw keeps a reduced overview for the dialog and the full sensor data for Open, Place Embedded and edits.
+Camera Raw can apply Post Crop Vignetting and Grain to images above 36 megapixels. The workspace and Photato API use the same adjustment pipeline.
 
-[Development record](DEVLOG.md#dev-step-800) · [Qualification](SOURCE_PUBLICATION_800.md).
+[Development record](DEVLOG.md#dev-step-801) · [Qualification](SOURCE_PUBLICATION_801.md).
 
 <!-- current-status:end -->
 
@@ -3722,6 +3736,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 798 | [Set Camera Raw defaults by camera model and body](DEVLOG.md#dev-step-798) |
 | 2026-11-28 | 799 | [Apply ISO-adaptive Camera Raw defaults](DEVLOG.md#dev-step-799) |
 | 2026-11-28 | 800 | [Open and retain large Camera Raw originals](DEVLOG.md#dev-step-800) |
+| 2026-11-28 | 801 | [Apply vignette and grain to full-size Camera Raw images](DEVLOG.md#dev-step-801) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

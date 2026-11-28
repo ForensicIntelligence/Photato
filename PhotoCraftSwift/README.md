@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 801.** Apply vignette and grain to full-size Camera Raw images. [Qualification](docs/SOURCE_PUBLICATION_801.md).
+
 **Source checkpoint 800.** Open and retain large Camera Raw originals. [Qualification](docs/SOURCE_PUBLICATION_800.md).
 
 **Source checkpoint 799.** Apply ISO-adaptive Camera Raw defaults. [Qualification](docs/SOURCE_PUBLICATION_799.md).

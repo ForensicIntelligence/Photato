@@ -1,3 +1,9 @@
+### Camera Raw vignette and grain (checkpoint 801)
+
+The authenticated Photato capabilities publish vignette and grain under `rawDevelopment.pagedEffects`. The same controls are used by `raw.develop`.
+
+[Qualification](SOURCE_PUBLICATION_801.md).
+
 ### Camera Raw capacity (checkpoint 800)
 
 Authenticated `capabilities.rawDevelopment` describes the local source, sensor and spatial adjustment limits. The desktop and native authorized opening path share the new decoder behavior. The separate binary HTTP upload still uses the established 64 MiB transport limit.

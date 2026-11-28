@@ -74,3 +74,40 @@ final class CameraRawLightTests: XCTestCase {
     XCTAssertEqual(try CameraRawEngine.develop(input, settings: settings), reference(input, settings: settings))
   }
 }
+
+extension CameraRawLightTests {
+  func testPagedVignetteAndGrainMatchDenseSensorCoordinatesExactly() throws {
+    for depth in [PixelDepth.u16, .f32] {
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var source = try Surface(width: 131, height: 183, depth: depth, colorEncoding: encoding)
+      for y in 0..<source.height {
+        for x in 0..<source.width {
+          let sample = Pixel(Float(x) / Float(source.width), Float(y) / Float(source.height),
+            Float((x + 19 * y) % 137) / 137, Float((x + y) % 11) / 10)
+          if depth == .f32 { source.setLinearPixel(x: x, y: y, sample) }
+          else { source.setPixel(x: x, y: y, sample) }
+        }
+      }
+      for mode in ["highlightPriority", "colorPriority", "paintOverlay"] {
+        var settings = CameraRawSettings()
+        settings.exposure = 0.6
+        settings.vignetteStyle = mode
+        settings.vignetteAmount = mode == "paintOverlay" ? 73 : -42
+        settings.vignetteMidpoint = 9
+        settings.vignetteRoundness = 22
+        settings.vignetteFeather = 38
+        settings.vignetteHighlights = 35
+        settings.grainAmount = 69
+        settings.grainSize = 73
+        settings.grainRoughness = 22
+        settings.pixelScale = 1.25
+        settings.seed = 47
+        let dense = try CameraRawEngine.develop(source, settings: settings)
+        let paged = try CameraRawEngine.developPaged(source, settings: settings)
+        XCTAssertGreaterThan(paged.mappedTileCount, 0)
+        XCTAssertEqual(paged, dense)
+        XCTAssertNotEqual(paged, source)
+      }
+    }
+  }
+}

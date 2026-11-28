@@ -10856,6 +10856,13 @@
       "link": "DEVLOG.md#dev-step-800",
       "section_sha256": "b67a2e98de49466af22c993a64c44964f272e4362a3c5583300bbd39fb90deb4",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-801",
+      "title": "2026-11-28 \u2014 Step 801 \u2014 Apply vignette and grain to full-size Camera Raw images",
+      "link": "DEVLOG.md#dev-step-801",
+      "section_sha256": "084d45d77a6a858d231e2a038bf7558932ba0672a63341d38ad19a91b4cd84db",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13691,8 +13698,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "5082e1e062516fc8db8b53f25715dfdbe3c212c246581891f019ca2c5c6b95d7",
-      "bytes": 190202,
+      "sha256": "6f3828d0af793606a8df22220fe4e0e2f837b4df2a6e7136d0e88e69755520bb",
+      "bytes": 190336,
       "rolling_current_snapshot": false
     },
     {
@@ -15413,8 +15420,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "7c78012a943f40357575e9a4725992aa3b73788ff7a98cc879f271240b63da9a",
-      "bytes": 759171,
+      "sha256": "9e3be08548b1c125adb6c6b5db36134d24711b556a71c37c9d266dff403b5aa9",
+      "bytes": 759417,
       "rolling_current_snapshot": false
     },
     {
@@ -15983,8 +15990,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "9be536014f66a39cfbdcfad672ebe1a8061e5c52f0cb5ef7237a1a13c95096b3",
-      "bytes": 404541,
+      "sha256": "f0ec1bf502d5212137cc5590ff30a6f8a7f655cb9a31642577f6d580ba4ee3ea",
+      "bytes": 404853,
       "rolling_current_snapshot": false
     },
     {
@@ -16103,8 +16110,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "95c8b94f36d069d0da1bf944c35eb312c72d40436693c2629ee26acab15648a3",
-      "bytes": 231039,
+      "sha256": "e6a9460b23a0dad8b230f4e82743884441fe06e4e3b0ff22bed9a3b632eadcce",
+      "bytes": 231391,
       "rolling_current_snapshot": false
     },
     {
@@ -16181,14 +16188,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "46d5d96c8a72897457e929b9065543ce906bf2280968615c3081c9f2c78708c7",
-      "bytes": 1092931,
+      "sha256": "756381f0e308115ecaa56135b55db9d4954bc9341df61a832e5ac9e8573c4c19",
+      "bytes": 1094195,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "74d69886b185a96c7feac72e1dd827709bde25dd520c3de1031192b9b306397c",
-      "bytes": 5240726,
+      "sha256": "aafe946e37ba187ea679d894d170f944b3d056bdd9c8a201a6b50cf17b016cc6",
+      "bytes": 5242567,
       "rolling_current_snapshot": false
     },
     {
@@ -23998,6 +24005,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_801.json",
+      "sha256": "a81520a0c2a52d7cab8a80b804734e80f173ba019189e9bfe1e9e02893d7b016",
+      "bytes": 17257,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_801.md",
+      "sha256": "5d478cba01613fc1dd3317ad48b86003118e0b59513ce25bf74d1cde864e88a5",
+      "bytes": 1616,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24557,8 +24576,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "8ec86094adc4fdd23891db3c873cc84ce1109a6901685429e6890f66b1a7bb40",
-      "bytes": 519210,
+      "sha256": "b2781a027ec7633d10d868c01fced957409fb238626e99e55b691239e39696c7",
+      "bytes": 519772,
       "rolling_current_snapshot": false
     },
     {
@@ -27071,8 +27090,8 @@
     }
   ],
   "counts": {
-    "milestones": 800,
-    "evidence_files": 2232,
+    "milestones": 801,
+    "evidence_files": 2234,
     "logs": 0,
     "missing_explicit_references": 704
   }

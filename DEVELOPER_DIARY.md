@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **800** · The 10 most recent entries, newest first.
+Source build **801** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 801 — Apply vignette and grain to full-size Camera Raw images
+
+Camera Raw can apply Post Crop Vignetting and Grain to images above 36 megapixels. The workspace and Photato API use the same adjustment pipeline.
+
+An offscreen run through the RAW development command processed the owned 8,192 × 5,120 DNG into 10,240 mapped tiles. It changed each of five inspected points, including adjacent rows across a band boundary. The inspected alpha and all original sensor file bytes were preserved.
+
+This change compares the two Photato rendering paths. Direct Adobe comparison still needs controlled vignette and grain references.
+
+Xcode built the app. All three focused core tests passed. The new case compares every sample of paged and dense output for all three vignette styles with grain and partial alpha in RGB16 and linear Float32. Both optimized architectures passed all 382 selected cases. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+Sharpening, noise reduction, shadows, highlights, clarity, texture and dehaze still use the 36-megapixel limit in this build. Camera compatibility and full-resolution admission depend on the Apple decoder.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-801) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_801.md).
 
 ## 2026-11-28 — Step 800 — Open and retain large Camera Raw originals
 
@@ -123,15 +137,3 @@ Xcode built the app and both focused core tests passed. They cover every RGB8 an
 The timings cover command preparation in Debug. Rendered Adobe equivalence and broad real-time editing remain open. RGB32 and multi-stage settings retain the existing development path.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-792) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_792.md).
-
-## 2026-11-28 — Step 791 — Faster Camera Raw preview compositing
-
-Camera Raw reuses the decoded pixel tiles when an opaque, full-canvas RAW layer has an identity transform and Normal blending. The native compositor preserves the same Float32 sRGB values.
-
-The adjusted 3,008 × 2,000 Nikon preview’s composite stage took 0.54 seconds versus 11.35 seconds with the prior full compositor in one arm64 Debug probe. The comparison covered every Float32 sample and the complete RGBA8 display buffer. Native testing opened the Nikon, changed Exposure, generated a preview and cancelled without altering the original file.
-
-Xcode built the app and both focused imaging tests passed. Both optimized architectures passed all 351 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-The measurement isolates compositing. Native decoding, exposure processing, display conversion and end-to-end interactive latency still need improvement. Exact Adobe output and physical Intel qualification remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-791) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_791.md).

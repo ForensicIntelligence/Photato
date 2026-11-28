@@ -11,6 +11,11 @@ public enum CameraRawEngine {
     if source.width * source.height > Surface.maximumDensePixels {
       return try developPaged(source, settings: s)
     }
+    return try developBand(source, settings: s, canvasHeight: source.height, top: 0)
+  }
+
+  private static func developBand(_ source: Surface, settings s: CameraRawSettings,
+    canvasHeight: Int, top: Int) throws -> Surface {
     let adjustsLightGains = s.temperature != 0 || s.tint != 0 || s.exposure != 0
     if adjustsLightGains, source.colorEncoding == .sRGB, source.depth != .f32,
       usesOnlyLightGains(s) {
@@ -53,7 +58,7 @@ public enum CameraRawEngine {
     }
     try color(&pixels,s,w)
     if s.sharpenAmount != 0 || s.noiseLuminance != 0 || s.noiseColor != 0 { try detail(&pixels,w,h,s) }
-    try effects(&pixels,w,h,s)
+    try effects(&pixels, w, h, s, canvasHeight: canvasHeight, top: top)
     var result = source
     for y in 0..<h { try Task.checkCancellation(); for x in 0..<w {
       let p = pixels[y*w+x], alpha = source.pixel(x:x,y:y).a
@@ -62,10 +67,9 @@ public enum CameraRawEngine {
     } }
     return result
   }
-  private static func developPaged(_ source: Surface, settings: CameraRawSettings) throws -> Surface {
+  package static func developPaged(_ source: Surface, settings: CameraRawSettings) throws -> Surface {
     guard settings.highlights == 0, settings.shadows == 0, settings.texture == 0, settings.clarity == 0,
-      settings.dehaze == 0, settings.sharpenAmount == 0, settings.noiseLuminance == 0, settings.noiseColor == 0,
-      settings.vignetteAmount == 0, settings.grainAmount == 0 else {
+      settings.dehaze == 0, settings.sharpenAmount == 0, settings.noiseLuminance == 0, settings.noiseColor == 0 else {
       throw CraftError.unsupported("These Camera Raw spatial adjustments currently support up to 36 megapixels.")
     }
     let paged = try Surface.PagedBuilder(width: source.width, height: source.height,
@@ -75,9 +79,9 @@ public enum CameraRawEngine {
       try Task.checkCancellation()
       let window = IntRect(x: 0, y: y, width: source.width, height: min(side, source.height - y))
       let band = try source.cropped(to: window)
-      // Only operations without neighborhood or position dependence may use
-      // the existing dense recipe independently on a band.
-      let developed = try develop(band, settings: settings, maximumPixels: Surface.maximumDensePixels)
+      // The pointwise effects use absolute coordinates so their centers and
+      // noise patterns agree across band boundaries.
+      let developed = try developBand(band, settings: settings, canvasHeight: source.height, top: y)
       try paged.append(developed, atX: 0, atY: y)
     }
     return try paged.finish()
