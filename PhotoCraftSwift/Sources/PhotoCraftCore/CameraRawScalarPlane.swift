@@ -2,7 +2,7 @@ import Foundation
 
 /// One immutable Float32 plane held in scratch storage. Each pass writes
 /// bounded chunks and preserves the operation order of the dense filters.
-struct CameraRawScalarPlane {
+package struct CameraRawScalarPlane: Sendable {
   let width: Int
   let height: Int
   private let storage: FileBackedSource
@@ -19,14 +19,29 @@ struct CameraRawScalarPlane {
     }
   }
 
-  init(width: Int, height: Int, values: (Int) -> Float) throws {
+  package init(width: Int, height: Int, storage: FileBackedSource) throws {
+    guard width > 0, height > 0, storage.data.count.isMultiple(of: MemoryLayout<Float>.stride),
+      storage.data.count / MemoryLayout<Float>.stride / width == height,
+      storage.data.count / MemoryLayout<Float>.stride % width == 0 else {
+      throw CraftError.invalid("Invalid Camera Raw scratch plane.")
+    }
+    self.width = width
+    self.height = height
+    self.storage = storage
+  }
+
+  package init(width: Int, height: Int, values: (Int) -> Float) throws {
     try self.init(width: width, height: height, filling: { start, output in
       for i in output.indices { output[i] = values(start + i) }
     })
   }
 
-  func withSamples<T>(_ body: (UnsafeBufferPointer<Float>) throws -> T) rethrows -> T {
+  package func withSamples<T>(_ body: (UnsafeBufferPointer<Float>) throws -> T) rethrows -> T {
     try storage.data.withUnsafeBytes { try body($0.bindMemory(to: Float.self)) }
+  }
+
+  package subscript(index: Int) -> Float {
+    withSamples { $0[index] }
   }
 
   func box(radius: Int) throws -> Self {
@@ -66,7 +81,7 @@ struct CameraRawScalarPlane {
     }
   }
 
-  func gaussian(sigma: Float) throws -> Self {
+  package func gaussian(sigma: Float) throws -> Self {
     try CameraRawMath.gaussianRadii(sigma).reduce(self) { try $0.box(radius: $1) }
   }
 

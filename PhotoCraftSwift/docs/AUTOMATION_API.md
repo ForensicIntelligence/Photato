@@ -1,3 +1,15 @@
+### High-resolution Camera Raw HDR merge (checkpoint 818)
+
+Send `raw.mergeHDR` to `POST /v1/documents/{id}/commands` with the current `revision` and the distinct embedded RAW exposure `layerIDs` in `parameters`. Enable document transfers to receive a linear `image/x-adobe-dng` download. The command does not modify the document or its undo history.
+
+`align` and `autoSettings` default to `true`. `deghost` accepts `off`, `low`, `medium`, and `high` and defaults to `off`. Auto Settings writes editable Exposure, Contrast, Highlights, Shadows, Whites, Blacks, Vibrance, and Saturation to XMP. Turning it off omits that recipe and preserves the same linear RAW samples. The native Camera Raw merge uses the same calculation and writer.
+
+This command accepts up to 96 megapixels per source and 384 megapixels across the bracket. Large source, blend and deghost rasters use scratch storage. The server delivers the completed DNG in bounded chunks with a Content-Length header. Embedded RAW originals that are already mapped locally do not count toward the API's estimated owned-heap quota. Upload, decoder and panorama limits are separate.
+
+The existing `raw.mergeHDR` endpoint advertises the larger merge and download limits in the capabilities response. Mapped embedded RAW originals use the separate local source budget. Undo and the document revision were preserved.
+
+[Qualification](SOURCE_PUBLICATION_818.md).
+
 ### Camera Raw HDR panorama merge (checkpoint 817)
 
 Send `raw.mergeHDRPanorama` to `POST /v1/documents/{id}/commands` with the current `revision` and an ordered `parameters.layerIDs` list of distinct embedded RAW Smart Objects. Supply at least two complete capture positions. Keep the exposures for each position together and in capture order. Each bracket must contain the same number of exposures and repeat the same relative exposure offsets. Shutter time, aperture, and ISO must be present. Positions may use different base exposures.

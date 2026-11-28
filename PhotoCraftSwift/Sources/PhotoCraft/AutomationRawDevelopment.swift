@@ -19,6 +19,8 @@ extension RawDevelopment {
   static var apiCapabilities: [String:Any] {
     ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",RawSynchronizationAPI.name,RawBatchExportAPI.name,RawHDRMergeAPI.name,RawPanoramaAPI.name,RawPanoramaAPI.hdrName,RawMarkingAPI.name,CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
      "maximumSourceBytes":DocumentIO.maximumUploadBytes,"maximumLocalSourceBytes":SmartObject.maximumCameraRawSourceBytes,
+     "hdrMergeLimits":["maximumPixelsPerSource":RawHDRMerge.maximumPixels,"maximumTotalPixels":RawHDRMerge.maximumTotalPixels,
+       "maximumDownloadBytes":SmartObject.maximumCameraRawSourceBytes],
      "maximumSensorPixels":RawSourceIO.maximumPixels,"maximumSensorSide":RawSourceIO.maximumDimension,
      "maximumSpatialAdjustmentPixels":RawSourceIO.maximumPixels,
      "limitedLargeAdjustments":[String](),

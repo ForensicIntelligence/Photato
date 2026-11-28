@@ -1,5 +1,19 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-09.md)
 
+## 2026-11-28 — Step 818 — Merge high-resolution Camera Raw HDR brackets
+
+Camera Raw HDR Merge now uses disk-backed raster bands for large brackets and processes deghost coverage in scratch storage. The authenticated command streams its DNG in bounded chunks. Opening the result in the filmstrip retains editable tone settings.
+
+The native filmstrip merged three 8,192 × 5,120 exposures with alignment and High deghosting. Its 251,753,964-byte DNG matched the authenticated Photato download byte for byte. All three originals kept their hashes. Four small DNG controls matched the previous engine byte for byte across the deghost settings.
+
+Adobe Camera Raw 18.1.1 merged the same three exposures using Align, Auto Settings and High deghosting. Both files retained 8,192 × 5,120 raw sample dimensions. Adobe stored a compressed tiled image and an 8,179 × 5,112 display crop. Adobe Camera Raw reopened Photato’s uncompressed full-size DNG and read its +0.52 Exposure adjustment. [Adobe Camera Raw limits](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/introduction-camera-raw.html).
+
+Xcode built the app. All 58 focused tests and one large native and HTTP workflow check passed. Both optimized architectures passed all 432 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The working limits are 96 MP per exposure and 384 MP across the bracket. The large test covered 41.94 MP per exposure. Larger RAW panoramas, resource limits on other Mac configurations, Adobe alignment and deghost fidelity, and Adobe file equality remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-818) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_818.md).
+
 ## 2026-11-28 — Step 817 — Merge bracketed RAW photos into HDR panoramas
 
 Use Merge to HDR Panorama from the Camera Raw filmstrip. Photato finds complete brackets in capture order, fuses each position onto the same scene-linear exposure scale, then stitches the panorama. The editable DNG retains highlight values, transparency, crop and optional automatic tone settings.

@@ -587,13 +587,14 @@ public enum RawSourceIO {
     return HDRMerge.exposureFactor(in: properties)
   }
 
-  static func renderSceneExposure(_ data: Data, settings: RawDevelopment) throws -> Surface {
+  static func renderSceneExposure(_ data: Data, settings: RawDevelopment, preferPaged: Bool = false) throws -> Surface {
     try settings.validate()
     let key = SensorKey(data: data, depth: .f32, settings: settings)
-    return try readSensor(key, settings: settings, disableToneMap: true).pixels
+    return try readSensor(key, settings: settings, disableToneMap: true, preferPaged: preferPaged).pixels
   }
 
-  private static func readSensor(_ key: SensorKey, settings: RawDevelopment, disableToneMap: Bool = false) throws -> SensorRaster {
+  private static func readSensor(_ key: SensorKey, settings: RawDevelopment, disableToneMap: Bool = false,
+    preferPaged: Bool = false) throws -> SensorRaster {
     let (raw, info) = try decoder(key.data, version: key.decoderVersion)
     let depth = key.depth
     if let temperature = settings.temperature { raw.neutralTemperature = temperature }
@@ -638,7 +639,7 @@ public enum RawSourceIO {
       } }
     }
     let pixels: Surface
-    if w * h > Surface.maximumDensePixels {
+    if preferPaged || w * h > Surface.maximumDensePixels {
       let paged = try Surface.PagedBuilder(width: w, height: h, depth: depth, colorEncoding: encoding)
       for y in stride(from: 0, to: h, by: rows) {
         let count = min(rows, h - y)

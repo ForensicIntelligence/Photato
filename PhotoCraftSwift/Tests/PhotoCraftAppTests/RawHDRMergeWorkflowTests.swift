@@ -109,6 +109,8 @@ final class RawHDRMergeWorkflowTests: XCTestCase {
       let response = try await fixture.request(service, path: route, body: body)
       XCTAssertEqual(response.0.statusCode, 200)
       XCTAssertEqual(response.0.value(forHTTPHeaderField: "Content-Type"), "image/x-adobe-dng")
+      XCTAssertGreaterThan(expected.count, 1_048_576)
+      XCTAssertEqual(response.0.value(forHTTPHeaderField: "Content-Length"), String(expected.count))
       XCTAssertEqual(response.1, expected)
       XCTAssertEqual(document.store.document, sourceDocument)
       XCTAssertTrue(document.store.session.undoStack.isEmpty)

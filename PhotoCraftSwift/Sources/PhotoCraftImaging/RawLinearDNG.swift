@@ -15,7 +15,7 @@ package enum RawLinearDNG {
       document.workingICC == nil, document.profileIsUntagged != true,
       document.width > 0, document.height > 0,
       document.width <= RawSourceIO.maximumDimension, document.height <= RawSourceIO.maximumDimension,
-      document.width <= HDRMerge.maximumPixels / document.height else {
+      document.width <= RawHDRMerge.maximumPixels / document.height else {
       throw CraftError.invalid("Linear DNG requires an HDR merge in linear sRGB or an equivalent opaque RGB32 document.")
     }
     try document.validate()
@@ -41,22 +41,25 @@ package enum RawLinearDNG {
     var hasTransparency = false
     for startRow in stride(from: 0, to: height, by: rowsPerStrip) {
       let endRow = min(startRow + rowsPerStrip, height)
-      var samples = Data()
-      samples.reserveCapacity((endRow - startRow) * bytesPerRow)
-      for y in startRow..<endRow {
-        try Task.checkCancellation()
-        for x in 0..<width {
-          let pixel = surface.linearPixel(x: x, y: y)
-          guard pixel.isFinite, (preserveTransparency && (0...1).contains(pixel.a)) || pixel.a == 1,
-            min(pixel.r, pixel.g, pixel.b) >= 0,
-            max(pixel.r, pixel.g, pixel.b) <= 65_504 else {
-            throw CraftError.unsupported("The panorama or HDR merge has unsupported transparency or samples outside the linear DNG range.")
+      var samples = Data(count: (endRow - startRow) * bytesPerRow)
+      try samples.withUnsafeMutableBytes { (bytes: UnsafeMutableRawBufferPointer) in
+        var offset = 0
+        for y in startRow..<endRow {
+          try Task.checkCancellation()
+          for x in 0..<width {
+            let pixel = surface.linearPixel(x: x, y: y)
+            guard pixel.isFinite, (preserveTransparency && (0...1).contains(pixel.a)) || pixel.a == 1,
+              min(pixel.r, pixel.g, pixel.b) >= 0,
+              max(pixel.r, pixel.g, pixel.b) <= 65_504 else {
+              throw CraftError.unsupported("The panorama or HDR merge has unsupported transparency or samples outside the linear DNG range.")
+            }
+            hasTransparency = hasTransparency || pixel.a < 1
+            peak = max(peak, pixel.r, pixel.g, pixel.b)
+            try bytes.storeBytes(of: OpenEXR.halfBits(pixel.r).littleEndian, toByteOffset: offset, as: UInt16.self)
+            try bytes.storeBytes(of: OpenEXR.halfBits(pixel.g).littleEndian, toByteOffset: offset + 2, as: UInt16.self)
+            try bytes.storeBytes(of: OpenEXR.halfBits(pixel.b).littleEndian, toByteOffset: offset + 4, as: UInt16.self)
+            offset += 6
           }
-          hasTransparency = hasTransparency || pixel.a < 1
-          peak = max(peak, pixel.r, pixel.g, pixel.b)
-          try appendHalf(pixel.r, to: &samples)
-          try appendHalf(pixel.g, to: &samples)
-          try appendHalf(pixel.b, to: &samples)
         }
       }
       stripOffsets.append(file.count)
@@ -200,12 +203,6 @@ package enum RawLinearDNG {
       }
     }
     return data
-  }
-
-  private static func appendHalf(_ value: Float, to samples: inout Data) throws {
-    let bits = try OpenEXR.halfBits(value)
-    samples.append(UInt8(truncatingIfNeeded: bits))
-    samples.append(UInt8(bits >> 8))
   }
 
   private static func setASCII(_ value: String, tag: Int, in directory: TIFFContainer) {

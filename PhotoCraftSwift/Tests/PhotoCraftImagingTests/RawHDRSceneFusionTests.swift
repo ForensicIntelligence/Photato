@@ -78,6 +78,37 @@ final class RawHDRSceneFusionTests: XCTestCase {
     XCTAssertEqual(try XCTUnwrap(high.ghostMask)[0], 0)
   }
 
+  func testPagedDeghostPreservesTheDenseReferenceAcrossTileBoundaries() throws {
+    let size = SIMD2(131, 157)
+    let moving = IntRect(x: 55, y: 60, width: 27, height: 49)
+    let short = try bracket(size: size, exposure: 0.5) { x, y in
+      SIMD3(repeating: moving.contains(x, y) ? 0.46 : 0.29)
+    }
+    let middle = try bracket(size: size, exposure: 1) { _, _ in SIMD3(repeating: 0.29) }
+    let long = try bracket(size: size, exposure: 2) { _, _ in SIMD3(repeating: 0.29) }
+    let brackets = [short, middle, long]
+    var settings = RawHDRMergeSettings()
+    settings.align = false
+    let neutral = try RawHDRSceneFusion.merge(brackets, options: settings)
+    let rawMask: [Float] = (0..<(size.x * size.y)).map { moving.contains($0 % size.x, $0 / size.x) ? 1 : 0 }
+    let reference = try HDRMergeMath.featherGhostMask(rawMask, width: size.x, height: size.y)
+    settings.deghost = .high
+    let paged = try RawHDRSceneFusion.merge(brackets, options: settings, preferPaged: true)
+    let mask = try XCTUnwrap(paged.ghostMask)
+    XCTAssertGreaterThan(paged.pixels.mappedBytes, 0)
+    mask.withSamples { samples in
+      XCTAssertEqual(samples.map(\.bitPattern), reference.map(\.bitPattern))
+      let anchor = Pixel(0.29, 0.29, 0.29, 1)
+      for (i, amount) in reference.enumerated() {
+        let x = i % size.x, y = i / size.x
+        let original = neutral.pixels.linearPixel(x: x, y: y)
+        let color = amount > 0 ? original.rgb * (1 - amount) + anchor.rgb * amount : original.rgb
+        XCTAssertTrue(paged.pixels.linearPixel(x: x, y: y)
+          .hasSameBits(as: Pixel(color.x, color.y, color.z, 1)), "Pixel \(x), \(y)")
+      }
+    }
+  }
+
   func testAutomaticToneRecoversDarkMidtonesAndProtectsTheBrightShoulder() throws {
     var dark = try Surface(width: 128, height: 64, depth: .f32, colorEncoding: .linearRGB)
     var bright = dark

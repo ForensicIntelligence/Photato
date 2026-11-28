@@ -10975,6 +10975,13 @@
       "link": "DEVLOG.md#dev-step-817",
       "section_sha256": "02dd5e5a8e4b4792a1aecef38520141658fcc440f8565e55859e44381b36ec91",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-818",
+      "title": "2026-11-28 \u2014 Step 818 \u2014 Merge high-resolution Camera Raw HDR brackets",
+      "link": "DEVLOG.md#dev-step-818",
+      "section_sha256": "92575aefdb57bf0390988fb38e69cb563401e90dcc546f2b96a8c957cafdf0c3",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13810,8 +13817,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "237163072c8948d16b5951926318f28a20871d3a829e4753fb38756bfbb48b1a",
-      "bytes": 192325,
+      "sha256": "a0f40da9f3ec10ac7d1c93bc763b7ffbdb3be2b4fede713098e98d0d1d4fa066",
+      "bytes": 192449,
       "rolling_current_snapshot": false
     },
     {
@@ -15532,8 +15539,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "5db0d5b50fa5c4298cb8769e4e2f627cff9432895ed09d4fab73500e8b7ad92f",
-      "bytes": 767042,
+      "sha256": "4111e6cb054d79c94b5c741daecd226d25953cb612ec876bb8f32ddf47245f50",
+      "bytes": 768456,
       "rolling_current_snapshot": false
     },
     {
@@ -16102,8 +16109,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "c518860152820c531843bd35939847a712ae24b5f7cb37b33ccd1e0933df468c",
-      "bytes": 407393,
+      "sha256": "a9cec586ddb54695dab3890f515345df370f4c5fa5b468e70dd2136ddbdf1f8c",
+      "bytes": 407520,
       "rolling_current_snapshot": false
     },
     {
@@ -16222,8 +16229,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "48edc96bd433d95126bdf04d1cde474ccd20c462d9fd81084f0f092f7d917792",
-      "bytes": 235407,
+      "sha256": "98bb9886e7cba1ab436a10c36236673ec42d44ca12f8da1b8cc18bda24c65104",
+      "bytes": 235652,
       "rolling_current_snapshot": false
     },
     {
@@ -16300,14 +16307,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "393f7ec9eb5206944d15449fd5df312234432cd003d3773342c5c6dff0c7ca94",
-      "bytes": 1119206,
+      "sha256": "70ebacc91fb13c53ad65120a6bce1370673d410742f32be53e7d892216ab092e",
+      "bytes": 1120954,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "029c74b2516996dee4f23a06325a31c1bb3d27055b55fe6570d1fa200fe92744",
-      "bytes": 5276595,
+      "sha256": "5a8ad42e3c7191cb284371ab18cb50c43e88834206f1eb3978b94fed9e709e01",
+      "bytes": 5279357,
       "rolling_current_snapshot": false
     },
     {
@@ -24321,6 +24328,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_818.json",
+      "sha256": "e744760feb61d916908f6915198674475b821c53a712cb485815696e36704c85",
+      "bytes": 22699,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_818.md",
+      "sha256": "44cc73d2baee9f51bfedd012e0c0c8547dcb6939acfa00324785bd664f11d60e",
+      "bytes": 2114,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24880,8 +24899,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "ccd444d384f2385737d5911d1e018fc27f29228e58be2955e587f6e6cc74a4ff",
-      "bytes": 529064,
+      "sha256": "b70280aca8d7724bd41bbef289ec5abd7f607fc7fefa945225fa39d574967afa",
+      "bytes": 529614,
       "rolling_current_snapshot": false
     },
     {
@@ -27394,8 +27413,8 @@
     }
   ],
   "counts": {
-    "milestones": 817,
-    "evidence_files": 2266,
+    "milestones": 818,
+    "evidence_files": 2268,
     "logs": 0,
     "missing_explicit_references": 704
   }

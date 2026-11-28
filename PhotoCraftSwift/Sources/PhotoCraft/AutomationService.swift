@@ -344,13 +344,14 @@ import UniformTypeIdentifiers
     }
   }
   nonisolated static func checkLimits(_ document: CraftDocument) throws {
-    let linkedCacheBytes = document.layers.reduce(0) { total, layer in
-      guard let source = layer.smartObject, source.linkedSource != nil, source.sourceBytes.isFileBacked else { return total }
+    let mappedSourceBytes = document.layers.reduce(0) { total, layer in
+      guard let source = layer.smartObject, source.sourceBytes.isFileBacked,
+        source.linkedSource != nil || source.rawDevelopment != nil else { return total }
       return total + source.data.count
     }
     guard document.width > 0, document.height > 0,
       document.width <= Surface.maxDimension, document.height <= Surface.maxDimension, document.layers.count <= LayerLimits.maximumLayers,
-      document.estimatedBytes - linkedCacheBytes <= 128 * 1024 * 1024
+      document.estimatedBytes - mappedSourceBytes <= 128 * 1024 * 1024
     else {
       throw AutomationFailure(
         status: 413,

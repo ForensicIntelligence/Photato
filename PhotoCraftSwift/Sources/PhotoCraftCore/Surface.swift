@@ -578,6 +578,27 @@ public struct Surface: Codable, Equatable, Sendable {
     else { samples = try makeReplacement(nil, transform: transform) }
     return (samples.map(RasterTile.init), invalidatesOpacity)
   }
+  /// Build a bounded linear RGB32 patch one tile at a time.
+  package static func linearPatch(width: Int, height: Int, sampling: (Int, Int) throws -> Pixel) throws -> Self {
+    guard width > 0, height > 0, width <= maximumDensePixels / height else {
+      throw CraftError.invalid("Invalid dimensions for a linear raster patch.")
+    }
+    var patch = try Self(width: width, height: height, depth: .f32, colorEncoding: .linearRGB)
+    for top in stride(from: 0, to: height, by: tileSide) {
+      for left in stride(from: 0, to: width, by: tileSide) {
+        try Task.checkCancellation()
+        var samples = [Pixel](repeating: .clear, count: tileSide * tileSide)
+        for y in 0..<min(tileSide, height - top) {
+          for x in 0..<min(tileSide, width - left) {
+            samples[y * tileSide + x] = try linearStoredSample(sampling(left + x, top + y), depth: .f32)
+          }
+        }
+        patch.tiles[top / tileSide * patch.columns + left / tileSide] = RasterTile(samples)
+      }
+    }
+    return patch
+  }
+
   public mutating func setLinearPixel(x: Int, y: Int, _ p: Pixel) {
     guard x >= 0, y >= 0, x < width, y < height else { return }
     guard colorEncoding == .linearRGB else {

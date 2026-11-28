@@ -7,7 +7,7 @@ enum RawHDRSceneFusion {
     let pixels: Surface
     let exposureEV: [Double]
     let offsets: [SIMD2<Int>]
-    let ghostMask: [Float]?
+    let ghostMask: CameraRawScalarPlane?
   }
 
   struct Bracket: Sendable {
@@ -19,12 +19,12 @@ enum RawHDRSceneFusion {
   private static let sensorShoulder: Float = 0.7
 
   static func merge(_ inputs: [Bracket], options: RawHDRMergeSettings,
-    referenceExposure: Double? = nil) throws -> Result {
+    referenceExposure: Double? = nil, preferPaged: Bool = false) throws -> Result {
     guard RawHDRMerge.sourceCount.contains(inputs.count), let first = inputs.first else {
       throw CraftError.invalid("Select two to sixteen RAW exposures to merge.")
     }
     let width = first.pixels.width, height = first.pixels.height
-    guard width <= HDRMerge.maximumPixels / height, width * height <= HDRMerge.maximumTotalPixels / inputs.count,
+    guard width <= RawHDRMerge.maximumPixels / height, width * height <= RawHDRMerge.maximumTotalPixels / inputs.count,
       inputs.allSatisfy({ $0.pixels.width == width && $0.pixels.height == height &&
         $0.pixels.depth == .f32 && $0.pixels.colorEncoding == .linearRGB &&
         $0.exposure.isFinite && $0.exposure > 0 })
@@ -46,67 +46,110 @@ enum RawHDRSceneFusion {
     let sceneGain = Float(globalGain)
     let offsets = options.align ? try align(inputs, reference: reference, normalization: normalization)
       : Array(repeating: .zero, count: inputs.count)
-    var fused = try Surface(width: width, height: height, depth: .f32, colorEncoding: .linearRGB)
-    var ghost = options.deghost == .off ? [] : Array(repeating: Float(0), count: width * height)
+    let trackMotion = options.deghost != .off
     let movementRatio = Float(exp(options.deghost.threshold))
-    for y in 0..<height {
-      try Task.checkCancellation()
-      for x in 0..<width {
-        var sums = SIMD3<Float>.zero
-        var weights = SIMD3<Float>.zero
-        var fallback: SIMD3<Float>?
-        var darkest = Float.infinity
-        var brightest: Float = 0
-        for index in order {
-          guard let raw = sample(inputs[index].pixels, x: x, y: y, offset: offsets[index]) else { continue }
-          let color = SIMD3<Float>(max(0, raw.r), max(0, raw.g), max(0, raw.b))
-          let normalized = color * normalization[index]
-          if fallback == nil { fallback = normalized }
-          for channel in 0..<3 {
-            let weight = max(0, min(color[channel], sensorShoulder - color[channel]))
-            sums[channel] += normalized[channel] * weight
-            weights[channel] += weight
-          }
-          if !ghost.isEmpty, max(color.x, color.y, color.z) < sensorShoulder {
-            let observed = luminance(color)
-            if observed >= 0.015 {
-              let linear = observed * normalization[index]
-              darkest = min(darkest, linear)
-              brightest = max(brightest, linear)
-            }
-          }
-        }
-        guard let fallback else { throw CraftError.unsupported("The aligned RAW brackets leave an uncovered part of the image.") }
+    let paged = preferPaged || width * height > Surface.maximumDensePixels
+    func fusedSample(x: Int, y: Int) throws -> (pixel: Pixel, motion: Bool) {
+      var sums = SIMD3<Float>.zero
+      var weights = SIMD3<Float>.zero
+      var fallback: SIMD3<Float>?
+      var darkest = Float.infinity
+      var brightest: Float = 0
+      for index in order {
+        guard let raw = sample(inputs[index].pixels, x: x, y: y, offset: offsets[index]) else { continue }
+        let color = SIMD3<Float>(max(0, raw.r), max(0, raw.g), max(0, raw.b))
+        let normalized = color * normalization[index]
+        if fallback == nil { fallback = normalized }
         for channel in 0..<3 {
-          sums[channel] = weights[channel] > 0 ? sums[channel] / weights[channel] : fallback[channel]
+          let weight = max(0, min(color[channel], sensorShoulder - color[channel]))
+          sums[channel] += normalized[channel] * weight
+          weights[channel] += weight
         }
-        fused.setLinearPixel(x: x, y: y, Pixel(sums.x * sceneGain, sums.y * sceneGain, sums.z * sceneGain, 1))
-        if !ghost.isEmpty, darkest.isFinite, brightest > darkest * movementRatio {
-          ghost[y * width + x] = 1
-        }
-      }
-    }
-    if !ghost.isEmpty, ghost.contains(1) {
-      ghost = try HDRMergeMath.featherGhostMask(ghost, width: width, height: height)
-      let anchor = inputs[reference].pixels
-      for y in 0..<height {
-        try Task.checkCancellation()
-        for x in 0..<width {
-          let index = y * width + x
-          let amount = ghost[index]
-          guard amount > 0 else { continue }
-          guard let source = sample(anchor, x: x, y: y, offset: .zero) else {
-            ghost[index] = 0
-            continue
+        if trackMotion, max(color.x, color.y, color.z) < sensorShoulder {
+          let observed = luminance(color)
+          if observed >= 0.015 {
+            let linear = observed * normalization[index]
+            darkest = min(darkest, linear)
+            brightest = max(brightest, linear)
           }
+        }
+      }
+      guard let fallback else { throw CraftError.unsupported("The aligned RAW brackets leave an uncovered part of the image.") }
+      for channel in 0..<3 {
+        sums[channel] = weights[channel] > 0 ? sums[channel] / weights[channel] : fallback[channel]
+      }
+      let motion = trackMotion && darkest.isFinite && brightest > darkest * movementRatio
+      return (Pixel(sums.x * sceneGain, sums.y * sceneGain, sums.z * sceneGain, 1), motion)
+    }
+
+    guard trackMotion else {
+      let fused = try render(width: width, height: height, paged: paged) { top, rows in
+        try Surface.linearPatch(width: width, height: rows) { x, y in try fusedSample(x: x, y: top + y).pixel }
+      }
+      return Result(pixels: fused, exposureEV: exposureEV, offsets: offsets, ghostMask: nil)
+    }
+
+    let maskBytes = width * height * MemoryLayout<Float>.stride
+    var firstPass: Surface?
+    var hasMotion = false
+    let storage = try FileBackedSource.writing(maximumBytes: maskBytes) { url in
+      let writer = try AtomicFileWriter(to: url, maximumBytes: maskBytes)
+      defer { writer.discard() }
+      firstPass = try render(width: width, height: height, paged: true) { top, rows in
+        var band = [Float](repeating: 0, count: width * rows)
+        let patch = try Surface.linearPatch(width: width, height: rows) { x, y in
+          let fused = try fusedSample(x: x, y: top + y)
+          if fused.motion {
+            band[y * width + x] = 1
+            hasMotion = true
+          }
+          return fused.pixel
+        }
+        try writer.append(band.withUnsafeBytes { Data($0) })
+        return patch
+      }
+      try writer.commit()
+    }
+    guard let firstPass else { throw CraftError.invalid("The HDR exposure blend was incomplete.") }
+    let mask = try CameraRawScalarPlane(width: width, height: height, storage: storage)
+    guard hasMotion else {
+      return Result(pixels: firstPass, exposureEV: exposureEV, offsets: offsets, ghostMask: mask)
+    }
+
+    let smooth = try mask.gaussian(sigma: max(2, Float(max(width, height)) / 200))
+    let anchor = inputs[reference].pixels
+    let ghost = try smooth.withSamples { values in
+      try CameraRawScalarPlane(width: width, height: height) { index in
+        let strength = min(1, values[index] * 3)
+        if strength > 0, sample(anchor, x: index % width, y: index / width, offset: .zero) == nil { return 0 }
+        return strength
+      }
+    }
+    let fused = try ghost.withSamples { values in
+      try render(width: width, height: height, paged: paged) { top, rows in
+        try Surface.linearPatch(width: width, height: rows) { x, y in
+          let row = top + y
+          let amount = values[row * width + x]
+          let existing = firstPass.linearPixel(x: x, y: row)
+          guard amount > 0, let source = sample(anchor, x: x, y: row, offset: .zero) else { return existing }
           let referenceColor = SIMD3<Float>(max(0, source.r), max(0, source.g), max(0, source.b))
-          let existing = fused.linearPixel(x: x, y: y)
           let blended = existing.rgb * (1 - amount) + referenceColor * (amount * sceneGain)
-          fused.setLinearPixel(x: x, y: y, Pixel(blended.x, blended.y, blended.z, 1))
+          return Pixel(blended.x, blended.y, blended.z, 1)
         }
       }
     }
-    return Result(pixels: fused, exposureEV: exposureEV, offsets: offsets, ghostMask: ghost.isEmpty ? nil : ghost)
+    return Result(pixels: fused, exposureEV: exposureEV, offsets: offsets, ghostMask: ghost)
+  }
+
+  private static func render(width: Int, height: Int, paged: Bool,
+    band: (Int, Int) throws -> Surface) throws -> Surface {
+    guard paged else { return try band(0, height) }
+    let builder = try Surface.PagedBuilder(width: width, height: height, depth: .f32, colorEncoding: .linearRGB)
+    for top in stride(from: 0, to: height, by: Surface.tileSide) {
+      let patch = try band(top, min(Surface.tileSide, height - top))
+      try builder.append(patch, atX: 0, atY: top)
+    }
+    return try builder.finish()
   }
 
   private static func luminance(_ rgb: SIMD3<Float>) -> Float {

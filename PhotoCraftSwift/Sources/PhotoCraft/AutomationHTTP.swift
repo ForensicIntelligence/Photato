@@ -131,15 +131,16 @@ struct AutomationResponse: Sendable {
     }
     return .json(["error": error.message], status: error.status)
   }
-  var wire: Data {
+  var wireHeader: Data {
     let reserved:Set<String>=["content-type","content-length","connection","cache-control","x-content-type-options","x-frame-options","referrer-policy","content-security-policy"]
     let custom=headers.sorted{$0.key.lowercased()<$1.key.lowercased()}.filter {key,value in
       !key.isEmpty && !reserved.contains(key.lowercased()) && key.utf8.allSatisfy{(65...90).contains($0)||(97...122).contains($0)||(48...57).contains($0)||$0==45} && value.utf8.count<=8192 && value.utf8.allSatisfy{(32...126).contains($0)}
     }.map{"\($0.key): \($0.value)\r\n"}.joined()
     let text =
       "HTTP/1.1 \(status) \(status == 200 ? "OK" : status == 201 ? "Created" : status == 202 ? "Accepted" : "Error")\r\nContent-Type: \(contentType)\r\nContent-Length: \(body.count)\r\nConnection: close\r\nCache-Control: no-store\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: DENY\r\nReferrer-Policy: no-referrer\r\nContent-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'\r\n\(custom)\r\n"
-    return Data(text.utf8) + body
+    return Data(text.utf8)
   }
+  var wire: Data { wireHeader + body }
 }
 
 @MainActor final class AutomationHTTPServer {
@@ -281,24 +282,40 @@ struct AutomationResponse: Sendable {
       }
     }
   }
+  private static let responseChunkBytes = 1_048_576
+
   func send(_ response: AutomationResponse) {
     guard !finished else { response.didSend?(false); return }
     pendingDelivery = response.didSend
+    if response.body.count <= Self.responseChunkBytes {
+      sendChunk(response.wire) { client in client.finish(delivered: true) }
+    } else {
+      let body = response.body
+      sendChunk(response.wireHeader) { client in client.sendBody(body, from: body.startIndex) }
+    }
+  }
+
+  private func sendBody(_ body: Data, from start: Data.Index) {
+    let end = min(start + Self.responseChunkBytes, body.endIndex)
+    sendChunk(body.subdata(in: start..<end)) { client in
+      if end == body.endIndex { client.finish(delivered: true) }
+      else { client.sendBody(body, from: end) }
+    }
+  }
+
+  private func sendChunk(_ bytes: Data,
+    then next: @escaping @MainActor @Sendable (AutomationHTTPConnection) -> Void) {
     armTransferTimeout()
-    connection.send(
-      content: response.wire,
-      completion: .contentProcessed { [weak self] error in
-        Task { @MainActor in
-          guard let self, !self.finished else { return }
-          let callback = self.pendingDelivery
-          self.pendingDelivery = nil
-          self.finish()
-          callback?(error == nil)
-        }
-      })
+    connection.send(content: bytes, completion: .contentProcessed { [weak self] error in
+      Task { @MainActor in
+        guard let self, !self.finished else { return }
+        if error == nil { next(self) }
+        else { self.finish() }
+      }
+    })
   }
   var pendingDelivery: (@MainActor @Sendable (Bool) -> Void)?
-  func finish() {
+  func finish(delivered: Bool = false) {
     guard !finished else { return }
     finished = true
     timeout?.cancel()
@@ -306,7 +323,7 @@ struct AutomationResponse: Sendable {
     connection.cancel()
     let callback = pendingDelivery
     pendingDelivery = nil
-    callback?(false)
+    callback?(delivered)
     onFinish()
   }
 }

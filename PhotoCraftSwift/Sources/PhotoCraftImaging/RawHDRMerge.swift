@@ -51,6 +51,8 @@ package enum RawHDRMerge {
   }
 
   package static let sourceCount = 2...16
+  package static let maximumPixels = 96_000_000
+  package static let maximumTotalPixels = 384_000_000
 
   package struct Exposure: Sendable {
     let bracket: RawHDRSceneFusion.Bracket
@@ -102,13 +104,14 @@ package enum RawHDRMerge {
     guard sources.allSatisfy({ $0.info.nativeWidth == width && $0.info.nativeHeight == height }) else {
       throw CraftError.invalid("The selected RAW exposures have different image dimensions.")
     }
-    guard width <= HDRMerge.maximumPixels / height, width * height <= HDRMerge.maximumTotalPixels / sources.count else {
-      throw CraftError.unsupported("HDR merge supports up to 16 megapixels per photo and 32 megapixels combined.")
+    guard width <= maximumPixels / height, width * height <= maximumTotalPixels / sources.count else {
+      throw CraftError.unsupported("Camera Raw HDR merge supports up to 96 megapixels per photo and 384 megapixels combined.")
     }
   }
 
   static func developBracket(_ sources: [MeasuredSource], whiteBalance: WhiteBalance) throws -> [Exposure] {
     try validateBracketDimensions(sources)
+    let preferPaged = sources.reduce(0) { $0 + $1.info.nativeWidth * $1.info.nativeHeight } > Surface.maximumDensePixels
     return try sources.map { measured in
       try Task.checkCancellation()
       let source = measured.source
@@ -121,7 +124,7 @@ package enum RawHDRMerge {
       settings.extendedRange = 0
       settings.highlightRecovery = false
       settings.adjustments = .init()
-      let pixels = try RawSourceIO.renderSceneExposure(source.bytes.data, settings: settings)
+      let pixels = try RawSourceIO.renderSceneExposure(source.bytes.data, settings: settings, preferPaged: preferPaged)
       return Exposure(bracket: .init(pixels: pixels, exposure: measured.exposure))
     }
   }

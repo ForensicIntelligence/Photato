@@ -49,7 +49,7 @@ enum RawHDRMergeAPI {
       let sourcesForMerge = try RawHDRMerge.prepareSources(brackets)
       let name = ImageProcessor.safeBase((brackets[0].fileName as NSString).deletingPathExtension) + "-HDR"
       let result = try RawHDRMerge.prepare(sourcesForMerge, options: settings, name: name, makePreview: false)
-      return try FileBackedSource.writing(maximumBytes: ImageAssetExport.maximumBytes) { url in
+      return try FileBackedSource.writing(maximumBytes: SmartObject.maximumCameraRawSourceBytes) { url in
         try result.write(to: url)
       }.data
     }
