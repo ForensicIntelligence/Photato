@@ -283,11 +283,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:791 -->
+<!-- current-status-step:792 -->
 
-Camera Raw reuses the decoded pixel tiles when an opaque, full-canvas RAW layer has an identity transform and Normal blending. The native compositor preserves the same Float32 sRGB values.
+The Camera Raw engine applies exposure, relative color temperature and tint together in one tile pass for eligible RGB8 and RGB16 images. It reuses exact gain calculations for integer sample codes and evaluates other retained samples with the original arithmetic.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-791) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_791.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-792) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_792.md).
 
 <!-- current-status:end -->
 
@@ -1285,5 +1285,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 789 | [Save camera RAW adjustments in XMP sidecars](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-789) |
 | 2026-11-28 | 790 | [Camera Raw DNG storage preferences](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-790) |
 | 2026-11-28 | 791 | [Faster Camera Raw preview compositing](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-791) |
+| 2026-11-28 | 792 | [Faster Camera Raw exposure and color temperature](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-792) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

@@ -1,3 +1,9 @@
+### Camera Raw light adjustment performance (checkpoint 792)
+
+Camera Raw Filter, the Photato RAW development command, and applicable Adobe-compatible edits use the same native kernel. The optimized path preserves stored samples, alpha, and HTTP contracts.
+
+[Qualification](SOURCE_PUBLICATION_792.md).
+
 ### Camera Raw composition performance (checkpoint 791)
 
 The desktop, Photato API preview and supported Adobe-compatible operations share the optimized compositor. The HTTP contracts, rendered samples and stored RAW settings remain the same.

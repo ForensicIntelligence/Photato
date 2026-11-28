@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **791** · The 10 most recent entries, newest first.
+Source build **792** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 792 — Faster Camera Raw exposure and color temperature
+
+The Camera Raw engine applies exposure, relative color temperature and tint together in one tile pass for eligible RGB8 and RGB16 images. It reuses exact gain calculations for integer sample codes and evaluates other retained samples with the original arithmetic.
+
+The same Nikon exposure test took 6.38 seconds for RAW develop command preparation, compared with 13.93 seconds in build 791’s arm64 Debug probe. The full preview buffers matched byte for byte. The signed app opened the adjusted Nikon as a 3,008 × 2,000 RGB16 document with its embedded RAW intact. Closing without saving preserved the source.
+
+Xcode built the app and both focused core tests passed. They cover every RGB8 and RGB16 sample code, archived raster tiles, alpha, and legacy off-grid values. Both optimized architectures passed all 353 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The timings cover command preparation in Debug. Rendered Adobe equivalence and broad real-time editing remain open. RGB32 and multi-stage settings retain the existing development path.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-792) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_792.md).
 
 ## 2026-11-28 — Step 791 — Faster Camera Raw preview compositing
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 7 focused imaging and 4 focused app and HTTP tes
 The measured path covers aligned Normal RGB16 raster layers without masks. Other blend modes, masks, transformed or grouped layers, and full Photoshop file serialization still require independent comparison.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-783) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_783.md).
-
-## 2026-11-27 — Step 782 — Preserve selected channels in flat TIFF copies
-
-Native TIFF Save and Save a Copy offer separate Alpha Channels and Spot Colors checkboxes. Both start checked when present, and either channel type can survive a flattened TIFF or BigTIFF.
-
-Photato saved an RGB16 spot-only copy and kept its layered source open. Photato and Photoshop 27.2 reopened the copy with only the named spot plate. Photoshop also reopened the flattened Float32 BigTIFF with both named channels and its separate opacity sample. LibTIFF matched all 25,929 measured alpha and spot samples exactly.
-
-Xcode built the native app. All 6 focused imaging and 3 focused app and HTTP tests passed. Both optimized architectures passed all 299 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-In the live RGB16 comparison, 5,474 of 8,643 process-color words differed by one code. Quick Mask and dense multi-gigabyte layered interchange also remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-782) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_782.md).

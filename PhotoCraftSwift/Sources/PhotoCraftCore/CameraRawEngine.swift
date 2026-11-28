@@ -8,6 +8,11 @@ public enum CameraRawEngine {
     try s.validate(); try Task.checkCancellation()
     guard (1...Surface.maxPixels).contains(maximumPixels), source.width <= maximumPixels/source.height else { throw CraftError.unsupported("Camera Raw exceeds its pixel budget.") }
     if s.isIdentity { return source }
+    let adjustsLightGains = s.temperature != 0 || s.tint != 0 || s.exposure != 0
+    if adjustsLightGains, source.colorEncoding == .sRGB, source.depth != .f32,
+      usesOnlyLightGains(s) {
+      return try applyLightGains(source, gains: lightGains(s))
+    }
     let w = source.width, h = source.height, n = w*h
     var pixels = [RGB](); pixels.reserveCapacity(n)
     for y in 0..<h { try Task.checkCancellation(); for x in 0..<w {
@@ -15,12 +20,11 @@ public enum CameraRawEngine {
       guard p.isFinite, max(abs(p.r),abs(p.g),abs(p.b)) <= 1e6 else { throw CraftError.invalid("Camera Raw input exceeds its numeric range.") }
       pixels.append(p.rgb)
     } }
-    if s.temperature != 0 || s.tint != 0 || s.exposure != 0 {
-      var gains = RGB(1+0.35*s.temperature/100,1-0.25*s.tint/100,1-0.35*s.temperature/100)
-      gains *= pow(2,s.exposure)/M.luma(gains)
+    if adjustsLightGains {
+      let gains = lightGains(s)
       for i in 0..<n {
         if i%w == 0 { try Task.checkCancellation() }
-        for c in 0..<3 { pixels[i][c] = SRGBTransfer.encoded(max(0,SRGBTransfer.linear(pixels[i][c])*gains[c])) }
+        for c in 0..<3 { pixels[i][c] = adjustedLightSample(pixels[i][c], gain: gains[c]) }
       }
     }
     if s.dehaze != 0 { pixels = try dehaze(pixels,w,h,s.dehaze/100) }
@@ -55,6 +59,59 @@ public enum CameraRawEngine {
     } }
     return result
   }
+  private static func usesOnlyLightGains(_ settings: CameraRawSettings) -> Bool {
+    // Even a diagonal curve can apply a lookup and round or clamp its input.
+    guard settings.pointCurve.isEmpty, settings.pointCurveRed.isEmpty,
+      settings.pointCurveGreen.isEmpty, settings.pointCurveBlue.isEmpty else { return false }
+    var remaining = settings
+    remaining.temperature = 0
+    remaining.tint = 0
+    remaining.exposure = 0
+    return remaining.isIdentity
+  }
+
+  private static func lightGains(_ settings: CameraRawSettings) -> RGB {
+    var gains = RGB(1 + 0.35 * settings.temperature / 100, 1 - 0.25 * settings.tint / 100,
+      1 - 0.35 * settings.temperature / 100)
+    gains *= pow(2, settings.exposure) / M.luma(gains)
+    return gains
+  }
+
+  private static func adjustedLightSample(_ sample: Float, gain: Float) -> Float {
+    SRGBTransfer.encoded(max(0, SRGBTransfer.linear(sample) * gain))
+  }
+
+  private static func applyLightGains(_ source: Surface, gains: RGB) throws -> Surface {
+    let levels = source.depth == .u8 ? 255 : 65_535
+    let scale = Float(levels)
+    var table: [RGB] = []
+    if source.width * source.height >= 4 * (levels + 1) {
+      table.reserveCapacity(levels + 1)
+      for code in 0...levels {
+        if code % 1024 == 0 { try Task.checkCancellation() }
+        let sample = Float(code) / scale
+        table.append(RGB(adjustedLightSample(sample, gain: gains.x),
+          adjustedLightSample(sample, gain: gains.y), adjustedLightSample(sample, gain: gains.z)))
+      }
+    }
+    func adjust(_ sample: Float, channel: Int) -> Float {
+      if !table.isEmpty, (0...1).contains(sample) {
+        let code = Int((sample * scale).rounded())
+        // An old archive can retain floats outside the nominal integer grid.
+        if (Float(code) / scale).bitPattern == sample.bitPattern { return table[code][channel] }
+      }
+      return adjustedLightSample(sample, gain: gains[channel])
+    }
+    let region = IntRect(x: 0, y: 0, width: source.width, height: source.height)
+    return try source.compositingPixels(in: region) { _, _, pixel in
+      guard pixel.isFinite, max(abs(pixel.r), abs(pixel.g), abs(pixel.b)) <= 1e6 else {
+        throw CraftError.invalid("Camera Raw input exceeds its numeric range.")
+      }
+      return Pixel(adjust(pixel.r, channel: 0), adjust(pixel.g, channel: 1),
+        adjust(pixel.b, channel: 2), pixel.a)
+    }
+  }
+
   static func color(_ p: inout [RGB],_ s: CameraRawSettings,_ w: Int) throws {
     let master = M.curve(s.pointCurve), channels = [M.curve(s.pointCurveRed),M.curve(s.pointCurveGreen),M.curve(s.pointCurveBlue)]
     let splits = [Float(0)] + s.curveSplits.map { $0/100 } + [1]

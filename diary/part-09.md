@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-28 — Step 792 — Faster Camera Raw exposure and color temperature
+
+The Camera Raw engine applies exposure, relative color temperature and tint together in one tile pass for eligible RGB8 and RGB16 images. It reuses exact gain calculations for integer sample codes and evaluates other retained samples with the original arithmetic.
+
+The same Nikon exposure test took 6.38 seconds for RAW develop command preparation, compared with 13.93 seconds in build 791’s arm64 Debug probe. The full preview buffers matched byte for byte. The signed app opened the adjusted Nikon as a 3,008 × 2,000 RGB16 document with its embedded RAW intact. Closing without saving preserved the source.
+
+Xcode built the app and both focused core tests passed. They cover every RGB8 and RGB16 sample code, archived raster tiles, alpha, and legacy off-grid values. Both optimized architectures passed all 353 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The timings cover command preparation in Debug. Rendered Adobe equivalence and broad real-time editing remain open. RGB32 and multi-stage settings retain the existing development path.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-792) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_792.md).
+
 ## 2026-11-28 — Step 791 — Faster Camera Raw preview compositing
 
 Camera Raw reuses the decoded pixel tiles when an opaque, full-canvas RAW layer has an identity transform and Normal blending. The native compositor preserves the same Float32 sRGB values.

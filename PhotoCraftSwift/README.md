@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 792.** Faster Camera Raw exposure and color temperature. [Qualification](docs/SOURCE_PUBLICATION_792.md).
+
 **Source checkpoint 791.** Faster Camera Raw preview compositing. [Qualification](docs/SOURCE_PUBLICATION_791.md).
 
 **Source checkpoint 790.** Camera Raw DNG storage preferences. [Qualification](docs/SOURCE_PUBLICATION_790.md).
