@@ -23,7 +23,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 783.** Match Photoshop RGB16 TIFF white-matte samples. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_783.md).
+**Development alpha — source build 784.** Keep active Quick Mask in layered TIFF. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_784.md).
 
 ## Project layout
 

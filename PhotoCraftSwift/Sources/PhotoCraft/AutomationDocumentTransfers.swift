@@ -121,7 +121,7 @@ extension AutomationService {
         "desktopBigTIFFMaximumInputBytes": PSDCodec.maximumFileBytes,
         "desktopBigTIFFMaximumOutputBytes": PSDCodec.maximumFileBytes,
         "pagedOutput": "Supported component images can write strips to a classic TIFF or BigTIFF file or same-encoder API Data. TIFF layers use the supported Photoshop layer-record codec.",
-        "savedSelectionChannels": "Layered and flattened TIFF and BigTIFF retain named alpha and spot channels at document depth in RGB, Grayscale, CMYK and Lab. Channel identifiers, display colors and spot solidity travel with the samples. Save Transparency controls the separate composite opacity sample.",
+        "savedSelectionChannels": "Layered and flattened TIFF and BigTIFF retain named alpha and spot channels at document depth in RGB, Grayscale, CMYK and Lab. Channel identifiers, display colors and spot solidity travel with the samples. Lossless layered TIFF and BigTIFF also retain the active Quick Mask. Save Transparency controls the separate composite opacity sample.",
         "limits": "The higher classic TIFF limit applies to local file Open and Save. Web transfer, image processing, embedded layers and decoded scratch budgets remain independent. BigTIFF input and output use 64-bit offsets. Output uses strips."
       ],
       "layeredTIFF": [

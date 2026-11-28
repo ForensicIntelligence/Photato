@@ -23,7 +23,7 @@ extension DocumentIO.Format {
         "Saves a single pixel layer at its current 8- or 16-bit depth, using its RGB working profile. Use Save a Copy for a flattened version of a layered document."
     case .tiff:
       return
-        "Keeps supported editable layers, masks and paths at 8-, 16- or 32-bit depth, and named saved selections in 8-bit RGB. Both byte orders retain supported numeric adjustments and vector masks. Fill/path descriptors and opaque records currently require big-endian TIFF."
+        "Lossless layered TIFF keeps supported editable layers, masks, paths, saved alpha and spot channels, and active Quick Mask. Some fill and path data requires Macintosh byte order."
     case .jpeg:
       return
         "Saves a single opaque 8-bit pixel layer using the selected JPEG quality, format and color-profile settings. JPEG compression changes pixels."

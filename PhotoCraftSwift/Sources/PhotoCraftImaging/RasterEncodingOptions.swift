@@ -112,7 +112,9 @@ public struct RasterEncodingOptions: Codable, Hashable, Sendable {
   func tiffSavedChannels(_ document: CraftDocument) -> [AlphaChannel] {
     let preserveAlpha = tiffAlphaChannels ?? (tiffLayers == true)
     let preserveSpots = tiffSpotColors ?? (tiffLayers == true)
-    return (document.alphaChannels ?? []).filter { $0.spot == nil ? preserveAlpha : preserveSpots }
+    var channels = (document.alphaChannels ?? []).filter { $0.spot == nil ? preserveAlpha : preserveSpots }
+    if tiffLayers == true, let quickMask = document.quickMask { channels.append(quickMask) }
+    return channels
   }
   package static func supportsTIFFJPEG(width: Int, height: Int, depth: PixelDepth, mode: DocumentColorMode) -> Bool {
     depth == .u8 && (mode == .rgb || mode == .grayscale)

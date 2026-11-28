@@ -802,7 +802,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 781 | 2026-11-27 | [Keep saved alpha and spot channels in layered TIFF](#dev-step-781) |
 | 782 | 2026-11-27 | [Preserve selected channels in flat TIFF copies](#dev-step-782) |
 | 783 | 2026-11-27 | [Match Photoshop RGB16 TIFF white-matte samples](#dev-step-783) |
+| 784 | 2026-11-27 | [Keep active Quick Mask in layered TIFF](#dev-step-784) |
 <!-- history-index:end -->
+
+<a id="dev-step-784"></a>
+
+## 2026-11-27 — Step 784 — Keep active Quick Mask in layered TIFF
+
+Lossless layered TIFF and BigTIFF now reopen in Quick Mask mode when the mask was active at Save. The temporary mask stays editable. Composite opacity, saved alpha and spots retain their independent controls.
+
+Photoshop excluded TIFF opacity when indexing Quick Mask even when it included the transparency name, display and ID. The saved marker addressed sample 3 with opacity and sample 5 with two prior saved channels and no opacity. The TIFF codec now uses that index and delegates interpretation to the existing shared auxiliary channel code.
+
+All 20,962 independent RGB16 auxiliary samples matched the Adobe references through both classic and BigTIFF saves. In a separate test, both apps opened a 19,000 × 19,000, 4.34 GB layered RGB16 BigTIFF with two editable raster layers, one saved alpha and one spot channel. LibTIFF verified distant strip samples and a first directory beyond 4 GiB.
+
+Native open and save, both TIFF import paths and authenticated Photato download share the codec. The existing `tiffLayers` option selects layered output. Adobe v2 TIFF output fields remain unchanged.
+
+Xcode built the native app. All 8 focused imaging and 5 focused app and HTTP tests passed. Both optimized architectures passed all 303 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The active Quick Mask comparisons cover owned RGB16 references with and without composite opacity. Flattened copies omit the temporary mask. Whole-file equality, other Photoshop color and depth combinations, and a multi-gigabyte editable layer payload still need independent comparison.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,226,757 bytes with SHA-256 `3899ee7836802b8c06c67e809287d7550a6082938f66c835597496d8f83322bc`.
+
+[Qualification](SOURCE_PUBLICATION_784.md).
 
 <a id="dev-step-783"></a>
 

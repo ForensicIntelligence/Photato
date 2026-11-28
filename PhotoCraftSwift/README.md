@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 784.** Keep active Quick Mask in layered TIFF. [Qualification](docs/SOURCE_PUBLICATION_784.md).
+
 **Source checkpoint 783.** Match Photoshop RGB16 TIFF white-matte samples. [Qualification](docs/SOURCE_PUBLICATION_783.md).
 
 **Source checkpoint 782.** Preserve selected channels in flat TIFF copies. [Qualification](docs/SOURCE_PUBLICATION_782.md).

@@ -114,6 +114,9 @@ enum TIFFLayers {
     if savedAlpha != nil, !hasEditableLayers {
       throw CraftError.unsupported("Layered TIFF auxiliary samples require editable layers.")
     }
+    if savedAlpha == nil, blocks.contains(where: { $0.id == 1022 }) {
+      throw CraftError.invalid("TIFF Quick Mask has no auxiliary plane.")
+    }
     let profiles = blocks.filter { $0.id == 1039 }
     guard profiles.count <= 1 else { throw CraftError.invalid("Duplicate TIFF Photoshop profiles.") }
     if let icc = tiff.root.fields[34675], ![1, 7].contains(icc.type) {
@@ -143,7 +146,7 @@ enum TIFFLayers {
       guard let storedAlpha, storedAlpha.count == count else {
         throw CraftError.invalid("TIFF channel samples disagree with the layer metadata.")
       }
-      try TIFFChannelMetadata.restore(storedAlpha, first: components-count, blocks: blocks,
+      try TIFFChannelMetadata.restore(storedAlpha, blocks: blocks,
         document: &result, paging: paging, hasLeadingOpacity: extra.first == 1 || extra.first == 2)
     }
     result.resolution = composite.resolution
@@ -162,9 +165,9 @@ enum TIFFLayers {
     guard document.layers.count + document.layers.filter({ $0.group != nil }).count <= 1024 else {
       throw CraftError.invalid("TIFF exceeds the layer record limit.")
     }
-    guard document.quickMask == nil else { throw CraftError.unsupported("Save Quick Mask in Photato, PSD or PSB.") }
     var layerDocument = document
     layerDocument.alphaChannels = nil
+    layerDocument.quickMask = nil
     let componentCount = try tiff.scalar(277)
     let hasTransparency: Bool
     let colors = document.colorMode.componentCount
@@ -204,8 +207,7 @@ enum TIFFLayers {
     _ = try reader.section()
     var resources = try reader.section().data
     if !savedAlpha.isEmpty {
-      resources.append(try TIFFChannelMetadata.encode(savedAlpha, document: document,
-        first: componentCount - savedAlpha.count, transparency: hasTransparency))
+      resources.append(try TIFFChannelMetadata.encode(savedAlpha, document: document, transparency: hasTransparency))
     }
     var section = try reader.section()
     let directLayers = try section.section()
@@ -268,21 +270,23 @@ enum TIFFChannelMetadata {
     blocks.contains { [1006, 1045].contains($0.id) && !$0.data.isEmpty }
   }
 
-  static func restore(_ samples: [Surface], first: Int, blocks: [PSDImageResources.Block],
+  static func restore(_ samples: [Surface], blocks: [PSDImageResources.Block],
     document: inout CraftDocument, paging: PSDRasterPaging.Context?, hasLeadingOpacity: Bool) throws {
-    guard named(blocks), !blocks.contains(where: { $0.id == 1022 }) else {
-      throw CraftError.unsupported("TIFF saved channels require named channel resources without Quick Mask.")
+    guard named(blocks) else {
+      throw CraftError.unsupported("TIFF saved channels require named channel resources.")
     }
-    // Writers may name the separate leading opacity sample in these resources.
+    // Photoshop addresses Quick Mask after the process channels, without counting TIFF opacity.
+    // The name, display and identifier lists can still name the leading opacity sample.
     let opacityIsNamed = hasLeadingOpacity && (try? PSDAuxiliaryChannels.names(blocks, count: samples.count + 1)) != nil
-    try PSDAuxiliaryChannels.read(samples, first: first, blocks: blocks, document: &document,
-      paging: paging, leadingTransparency: opacityIsNamed)
+    try PSDAuxiliaryChannels.read(samples, first: document.colorMode.componentCount, blocks: blocks,
+      document: &document, paging: paging, leadingTransparency: opacityIsNamed)
   }
 
-  static func encode(_ samples: [AlphaChannel], document: CraftDocument, first: Int, transparency: Bool) throws -> Data {
+  static func encode(_ samples: [AlphaChannel], document: CraftDocument, transparency: Bool) throws -> Data {
     var selected = document
-    selected.alphaChannels = samples
-    selected.quickMask = nil
-    return try PSDAuxiliaryChannels.resources(selected, first: first, leadingTransparency: transparency)
+    selected.quickMask = samples.last?.id == document.quickMask?.id ? document.quickMask : nil
+    selected.alphaChannels = selected.quickMask == nil ? samples : Array(samples.dropLast())
+    return try PSDAuxiliaryChannels.resources(selected, first: document.colorMode.componentCount,
+      leadingTransparency: transparency)
   }
 }

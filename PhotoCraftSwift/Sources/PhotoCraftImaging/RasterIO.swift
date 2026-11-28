@@ -513,7 +513,7 @@ public enum RasterIO {
   }
 
   public static func supportsLayeredTIFFSavedAlpha(_ document: CraftDocument) -> Bool {
-    DocumentColorMode.componentModes.contains(document.colorMode) && document.quickMask == nil
+    DocumentColorMode.componentModes.contains(document.colorMode)
   }
 
   private static func pngComposite(_ document: CraftDocument) throws -> Surface {
@@ -635,7 +635,7 @@ public enum RasterIO {
     guard document.inkMode == nil, document.restrictedMode == nil else { return false }
     return supportsPagedComponentTIFFOutput(document) || options.tiffCompression == .jpeg || options.tiffBigTIFF == true
       || (options.tiffTransparency == false && TIFFRGBRows.supportsWhiteMatte(document))
-      || (options.tiffLayers == true && document.quickMask != nil) || !options.tiffSavedChannels(document).isEmpty
+      || !options.tiffSavedChannels(document).isEmpty
   }
   package static func supportsFileBackedTIFFOutput(_ document: CraftDocument, options: RasterEncodingOptions) -> Bool {
     guard document.inkMode == nil, document.restrictedMode == nil else { return false }

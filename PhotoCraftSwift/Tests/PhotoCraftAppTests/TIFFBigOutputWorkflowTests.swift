@@ -192,4 +192,47 @@ final class TIFFBigOutputWorkflowTests: XCTestCase {
     }
   }
 
+
+  @MainActor func testActiveQuickMaskThroughNativeOpenSaveAndAuthenticatedTIFFDownload() async throws {
+    let fixture = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+      .appendingPathComponent("PhotoCraftImagingTests/Fixtures/tiff-quick-mask/photoshop-quick-mask-with-saved-channels.tiff")
+    let document = try DocumentIO.read(fixture)
+    let original = try XCTUnwrap(document.quickMask)
+    XCTAssertNil(DocumentIO.persistenceIssue(document, format: .tiff))
+    XCTAssertNotNil(DocumentIO.persistenceIssue(document, format: .tiff, options: .init(tiffLayers: false)))
+    let actionInput = try AdobeActionAssets.decode(Data(contentsOf: fixture))
+    XCTAssertEqual(actionInput.quickMask?.psdIdentifier, original.psdIdentifier)
+    let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: false)
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let options = RasterEncodingOptions(tiffCompression: .zip, tiffLayers: true,
+      tiffTransparency: true, tiffBigTIFF: true, tiffAlphaChannels: false, tiffSpotColors: false)
+    let fields = DocumentEncodingOptions.json(options)
+    let header = String(decoding: try JSONSerialization.data(withJSONObject: fields), as: UTF8.self)
+    let helper = AutomationTests()
+    try await helper.withService(pressedMouseButtons: { 0 }) { service, shared in
+      shared.store.session = EditorSession(document: document)
+      service.setDocumentTransfersEnabled(true)
+      service.setDocumentSavesEnabled(true)
+      service.setSaveDirectory(folder)
+      try service.share(shared)
+      let share = try XCTUnwrap(service.shares.first)
+      let response = try await helper.request(service, path: "/v1/documents/\(share.id)/file.tiff",
+        headers: ["X-Photato-Export-Options": header])
+      XCTAssertEqual(response.0.statusCode, 200, String(decoding: response.1, as: UTF8.self))
+      let downloaded = try RasterIO.read(response.1)
+      XCTAssertNil(downloaded.alphaChannels)
+      let quickMask = try XCTUnwrap(downloaded.quickMask)
+      XCTAssertEqual(quickMask.name, original.name)
+      XCTAssertEqual(quickMask.psdQuickMaskInitiallyEmpty, original.psdQuickMaskInitiallyEmpty)
+      XCTAssertEqual(try quickMask.pixels.rgbaData(depth: .u16), try original.pixels.rgbaData(depth: .u16))
+      let saved = try await helper.edit(service, shared, "document.saveAs",
+        ["name": "quick-mask", "format": "tiff", "replace": false, "options": fields])
+      XCTAssertEqual(saved, 200)
+      XCTAssertEqual(try Data(contentsOf: folder.appendingPathComponent("quick-mask.tiff")), response.1)
+      XCTAssertNotNil(shared.store.document.quickMask)
+      XCTAssertEqual(shared.store.document.alphaChannels?.count, 2)
+    }
+  }
+
 }

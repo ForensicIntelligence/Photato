@@ -1,3 +1,5 @@
+**Camera Raw settings interchange.** Implement XMP Load and Save Settings for supported Camera Raw adjustments in the native workspace and Photato API. Camera Raw 18.1.1 successfully loaded the initial native ImageIO probe. [Development record](DEVLOG.md#dev-step-784) · [Qualification](SOURCE_PUBLICATION_784.md).
+
 **TIFF interchange.** Qualify dense multi-gigabyte layered BigTIFF with editable layers and saved alpha and spot samples. [Development record](DEVLOG.md#dev-step-783) · [Qualification](SOURCE_PUBLICATION_783.md).
 
 **TIFF interchange.** Match Photoshop’s RGB16 TIFF white-matte rounding and qualify dense multi-gigabyte editable-layer interchange. [Development record](DEVLOG.md#dev-step-782) · [Qualification](SOURCE_PUBLICATION_782.md).

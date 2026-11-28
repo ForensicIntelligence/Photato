@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **783** · The 10 most recent entries, newest first.
+Source build **784** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 784 — Keep active Quick Mask in layered TIFF
+
+Lossless layered TIFF and BigTIFF now reopen in Quick Mask mode when the mask was active at Save. The temporary mask stays editable. Composite opacity, saved alpha and spots retain their independent controls.
+
+All 20,962 independent RGB16 auxiliary samples matched the Adobe references through both classic and BigTIFF saves. In a separate test, both apps opened a 19,000 × 19,000, 4.34 GB layered RGB16 BigTIFF with two editable raster layers, one saved alpha and one spot channel. LibTIFF verified distant strip samples and a first directory beyond 4 GiB.
+
+Xcode built the native app. All 8 focused imaging and 5 focused app and HTTP tests passed. Both optimized architectures passed all 303 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The active Quick Mask comparisons cover owned RGB16 references with and without composite opacity. Flattened copies omit the temporary mask. Whole-file equality, other Photoshop color and depth combinations, and a multi-gigabyte editable layer payload still need independent comparison.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-784) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_784.md).
 
 ## 2026-11-27 — Step 783 — Match Photoshop RGB16 TIFF white-matte samples
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 2 focused imaging and 1 focused app and HTTP tes
 Direct Photoshop sample comparisons cover opaque RGB8. Wider HDR, profile, alpha and component-mode comparisons, Indexed/Bitmap pyramids and complete file-layout equivalence remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-775) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_775.md).
-
-## 2026-11-27 — Step 774 — Open tiled TIFFs with native components
-
-Photato opens supported tiled classic TIFFs as editable images. The native decoder retains color components, opacity and profiles and trims the physical tile padding at the image edges.
-
-Independently authored rectangular CMYK16 tiles matched all 141,932 color words and retained 225 ppi. Six more RGB8, Gray16 and RGB32 controls matched all 94,900 authored samples across raw, LZW and ZIP. The checks include both byte orders, interleaved and planar layouts, straight opacity and floating-point prediction.
-
-Xcode built the native app. All 15 selected imaging and 8 app and HTTP tests passed. Both optimized architectures passed all 252 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
-
-TIFF output continues to use strips. Further layered or associated-alpha tile combinations, JPEG-compressed component TIFFs, BigTIFF and wider Photoshop byte comparisons remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-774) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_774.md).

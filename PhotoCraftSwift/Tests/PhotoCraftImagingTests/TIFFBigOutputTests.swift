@@ -350,4 +350,49 @@ final class TIFFBigOutputTests: XCTestCase {
     }
   }
 
+
+  func testLayeredTIFFRoundTripsActiveAdobeQuickMaskWithAndWithoutOpacity() throws {
+    let folder = fixtures.appendingPathComponent("tiff-quick-mask")
+    let cases: [(String, Bool, [String], Data)] = [
+      ("with-opacity", true, [], Data([0, 3, 0])),
+      ("with-saved-channels", false, ["Proof ink", "Alpha 2"], Data([0, 5, 1])),
+    ]
+    let destination = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".tif")
+    defer { try? FileManager.default.removeItem(at: destination) }
+    for (name, opacity, savedNames, marker) in cases {
+      let input = folder.appendingPathComponent("photoshop-quick-mask-\(name).tiff")
+      var document = try RasterIO.read(input)
+      XCTAssertGreaterThan(document.layers.count, 1)
+      XCTAssertEqual(document.alphaChannels?.map(\.name) ?? [], savedNames)
+      var quickMask = try XCTUnwrap(document.quickMask)
+      XCTAssertEqual(quickMask.name, "Quick Mask")
+      XCTAssertEqual(quickMask.psdQuickMaskInitiallyEmpty, !opacity)
+      quickMask.pixels.setPixel(x: 2, y: 7, Pixel(0.371, 0.371, 0.371))
+      document.quickMask = quickMask
+      for big in [false, true] {
+        let options = RasterEncodingOptions(tiffCompression: .zip,
+          tiffByteOrder: big ? .littleEndian : .bigEndian, tiffPixelOrder: .perChannel, tiffLayers: true,
+          tiffTransparency: opacity, tiffBigTIFF: big, tiffLayerCompression: .zip)
+        try RasterIO.write(document, to: destination, type: .tiff, options: options)
+        let saved = try Data(contentsOf: destination)
+        XCTAssertEqual(saved, try RasterIO.encoded(document, type: .tiff, options: options))
+        let container = try TIFFContainer(saved, metadata: false, additionalTags: [34377])
+        let blocks = try PSDImageResources.blocks(XCTUnwrap(container.root.fields[34377]?.data))
+        XCTAssertEqual(blocks.filter { $0.id == 1022 }.map(\.data), [marker])
+        let reopened = try RasterIO.read(destination)
+        XCTAssertEqual(reopened.layers.map(\.name), document.layers.map(\.name))
+        XCTAssertEqual(reopened.alphaChannels?.map(\.name) ?? [], savedNames)
+        let recovered = try XCTUnwrap(reopened.quickMask)
+        XCTAssertEqual(recovered.psdQuickMaskInitiallyEmpty, quickMask.psdQuickMaskInitiallyEmpty)
+        XCTAssertEqual(recovered.psdIdentifier, quickMask.psdIdentifier)
+        XCTAssertEqual(try recovered.pixels.rgbaData(depth: .u16), try quickMask.pixels.rgbaData(depth: .u16))
+      }
+      let flat = try RasterIO.encoded(document, type: .tiff,
+        options: .init(tiffLayers: false, tiffTransparency: false, tiffAlphaChannels: true, tiffSpotColors: true))
+      let flatDocument = try RasterIO.read(flat)
+      XCTAssertNil(flatDocument.quickMask)
+      XCTAssertEqual(flatDocument.alphaChannels?.map(\.name) ?? [], savedNames)
+    }
+  }
+
 }

@@ -140,14 +140,11 @@ enum TIFFComponentExport {
     }
     let savedAlpha = options.tiffSavedChannels(document)
     if jpeg, !savedAlpha.isEmpty {
-      throw CraftError.unsupported("JPEG-compressed TIFF cannot store saved alpha or spot channels. Choose lossless TIFF compression to retain them.")
+      throw CraftError.unsupported("JPEG-compressed TIFF cannot store saved alpha, spot channels or Quick Mask. Choose lossless TIFF compression to retain them.")
     }
     let requiresOpaque = jpeg && options.tiffTransparency == nil
     let preserveAlpha = !jpeg && options.tiffTransparency != false
     let imageChannels = colors + (preserveAlpha ? 1 : 0)
-    if options.tiffLayers == true, document.quickMask != nil {
-      throw CraftError.unsupported("Save Quick Mask in Photato, PSD or PSB.")
-    }
     let savedRows = savedAlpha.map(PSDAuxiliaryChannels.storedRows)
     let channels = imageChannels + savedAlpha.count
     let planar = options.tiffPixelOrder == .perChannel
@@ -279,8 +276,7 @@ enum TIFFComponentExport {
       try TIFFLayers.attach(document, savedChannels: savedAlpha, to: container, order: order,
         compression: options.tiffLayerCompression ?? .zip, fileBacked: output.isFileBacked)
     } else if !savedAlpha.isEmpty {
-      let bytes = try TIFFChannelMetadata.encode(savedAlpha, document: document, first: imageChannels,
-        transparency: preserveAlpha)
+      let bytes = try TIFFChannelMetadata.encode(savedAlpha, document: document, transparency: preserveAlpha)
       container.root.fields[34377] = .init(tag: 34377, type: 1, count: bytes.count, data: bytes)
     }
     try finish(container, order: order, output: output)

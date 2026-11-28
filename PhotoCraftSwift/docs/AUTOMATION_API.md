@@ -1,3 +1,9 @@
+### Active Quick Mask in layered TIFF (checkpoint 784)
+
+Native open and save, both TIFF import paths and authenticated Photato download share the codec. The existing `tiffLayers` option selects layered output. Adobe v2 TIFF output fields remain unchanged.
+
+[Qualification](SOURCE_PUBLICATION_784.md).
+
 ### RGB16 TIFF white matte (checkpoint 783)
 
 The native TIFF Save Transparency control and the existing Photato `tiffTransparency: false` option share the calculation. Authenticated downloads match native file bytes. Adobe-compatible resource input uses the existing TIFF reader. Adobe v2 output fields remain unchanged.

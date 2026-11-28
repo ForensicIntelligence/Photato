@@ -134,7 +134,7 @@ enum TIFFModeStorage {
     if let layered = try layers(document, backing, savedAlpha) { return layered }
     if let savedAlpha {
       let paging = try backing.map { try PSDRasterPaging.Context(sharedBacking: $0) }
-      try TIFFChannelMetadata.restore(savedAlpha, first: g.channels - savedAlpha.count, blocks: flatResources,
+      try TIFFChannelMetadata.restore(savedAlpha, blocks: flatResources,
         document: &document, paging: paging, hasLeadingOpacity: g.opacitySample == mode.componentCount)
       try document.validate()
     }
