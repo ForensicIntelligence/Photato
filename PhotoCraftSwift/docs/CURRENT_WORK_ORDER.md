@@ -1,3 +1,5 @@
+**Camera Raw development.** Address the camera RAW source limit and sensor limit. An owned 8,192 × 5,120 DNG opened in Adobe Camera Raw and the Apple decoder. The existing Photato limit rejects it. Adobe color rendering, output sharpening and RAW filmstrip editing remain open. [Development record](DEVLOG.md#dev-step-799) · [Qualification](SOURCE_PUBLICATION_799.md).
+
 **Camera Raw defaults.** Continue with baseline color rendering and output sharpening against the Adobe TIFF references. The Camera Settings comparison leaves the RAW color difference open. ISO-adaptive presets remain open. [Development record](DEVLOG.md#dev-step-798) · [Qualification](SOURCE_PUBLICATION_798.md).
 
 **Camera Raw RAW workflow.** Measure neutral-color input profiles and output sharpening against the independent Adobe exports. [Development record](DEVLOG.md#dev-step-797) · [Qualification](SOURCE_PUBLICATION_797.md).

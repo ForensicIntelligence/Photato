@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **798** · The 10 most recent entries, newest first.
+Source build **799** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 799 — Apply ISO-adaptive Camera Raw defaults
+
+Camera Raw can use an XMP preset that varies supported numerical adjustments with the source photo’s ISO. Select it as the master or a camera override. The Sensor panel shows the recorded ISO when available.
+
+Adobe Camera Raw 18.1.1 generated the reference with Exposure 0 at ISO 400 and +2 at ISO 1600. Photato opened the synthetic ISO 800 DNG with Exposure +1. Adobe’s Load Settings command used the fixed top-level values on the Adobe reference. Photato keeps that fixed behavior in its separate Load Settings command.
+
+Adobe documents a midpoint of 5 for Luminance Noise Reduction at ISO 800 when the endpoints are 0 at ISO 400 and 10 at ISO 1600. [Adobe ISO-adaptive preset documentation](https://helpx.adobe.com/lightroom-classic/desktop/help/iso-adaptive-presets.html).
+
+Xcode built the app. All three new tests and nine related tests passed, covering EXIF ISO, endpoint clamping, the documented midpoint, fixed XMP overrides, validation and matching Photato raster samples. Both optimized architectures passed all 374 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+Creating adaptive presets from a Photato filmstrip, adaptive categorical adjustments, and byte-identical Adobe RAW output remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-799) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_799.md).
 
 ## 2026-11-28 — Step 798 — Set Camera Raw defaults by camera model and body
 
@@ -119,15 +133,3 @@ Xcode built the app. Nine focused imaging cases and two app and HTTP cases passe
 Embedded preview regeneration, camera-specific defaults, Camera Raw database routing, physical Intel testing and exact Adobe render equivalence remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-790) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_790.md).
-
-## 2026-11-28 — Step 789 — Save camera RAW adjustments in XMP sidecars
-
-Camera Raw’s Done button now writes or updates the companion XMP for supported non-DNG originals. Photato keeps the camera file unchanged and retains unrelated XMP metadata. Nikon files with a verified sensor directory decode at full size from both Finder and retained bytes.
-
-Adobe Camera Raw 18.1.1 created a sidecar for the CC0 Nikon D70s reference at Exposure +1.25. Photato read the Nikon at 3,008 × 2,000 pixels, created its own sibling and updated an existing Adobe-authored XMP. Adobe reopened the updated sidecar at Exposure +1.50. The original NEF’s SHA-256 stayed identical and all other top-level Adobe Camera Raw scalar settings stayed the same.
-
-Xcode built the app. Four focused imaging tests and one authenticated HTTP test passed. Both optimized architectures passed all 345 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-Camera Raw database and storage preferences, camera-specific defaults, RAW variants unsupported by Apple’s decoder, physical Intel testing and byte-for-byte Adobe render equivalence remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-789) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_789.md).

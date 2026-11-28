@@ -415,6 +415,9 @@ struct CameraRawSheet: View {
     if let info = model.sensorInfo,let settings = model.sensorSettings {
       Text(info.model).font(.headline)
       Text("\(info.nativeWidth) × \(info.nativeHeight) sensor pixels").font(.caption).foregroundStyle(.secondary)
+      if let iso = info.iso {
+        LabeledContent("ISO", value: iso.formatted()).font(.caption)
+      }
       Picker("Decoder",selection:Binding(get:{ settings.decoderVersion ?? info.decoderVersion },set:{ var v = settings; v.decoderVersion = $0; model.changeSensor(v) })) {
         ForEach(info.supportedDecoders,id:\.self) { Text($0).tag($0) }
       }

@@ -1,5 +1,19 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-28 — Step 799 — Apply ISO-adaptive Camera Raw defaults
+
+Camera Raw can use an XMP preset that varies supported numerical adjustments with the source photo’s ISO. Select it as the master or a camera override. The Sensor panel shows the recorded ISO when available.
+
+Adobe Camera Raw 18.1.1 generated the reference with Exposure 0 at ISO 400 and +2 at ISO 1600. Photato opened the synthetic ISO 800 DNG with Exposure +1. Adobe’s Load Settings command used the fixed top-level values on the Adobe reference. Photato keeps that fixed behavior in its separate Load Settings command.
+
+Adobe documents a midpoint of 5 for Luminance Noise Reduction at ISO 800 when the endpoints are 0 at ISO 400 and 10 at ISO 1600. [Adobe ISO-adaptive preset documentation](https://helpx.adobe.com/lightroom-classic/desktop/help/iso-adaptive-presets.html).
+
+Xcode built the app. All three new tests and nine related tests passed, covering EXIF ISO, endpoint clamping, the documented midpoint, fixed XMP overrides, validation and matching Photato raster samples. Both optimized architectures passed all 374 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+Creating adaptive presets from a Photato filmstrip, adaptive categorical adjustments, and byte-identical Adobe RAW output remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-799) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_799.md).
+
 ## 2026-11-28 — Step 798 — Set Camera Raw defaults by camera model and body
 
 Camera Raw Settings can apply Photato Default, Camera Settings or an XMP preset to new RAWs. Rules can match a model or a specific body serial number. Open and Place use the saved choice. Existing sidecar and embedded adjustments take priority.

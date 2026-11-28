@@ -66,6 +66,22 @@ public enum CameraRawXMP {
     try readRaw(Packet(data), into: base)
   }
 
+  static func validatePreset(_ data: Data) throws {
+    var packet = try Packet(data, readingPreset: true)
+    _ = try readRaw(packet, into: RawDevelopment())
+    let series = try packet.isoSeries()
+    for iso in series.speeds {
+      packet.adaptiveValues = series.values(at: iso)
+      _ = try readRaw(packet, into: RawDevelopment())
+    }
+  }
+
+  static func readPreset(_ data: Data, into base: RawDevelopment, iso: Double?) throws -> RawDevelopment {
+    var packet = try Packet(data, readingPreset: true)
+    if let iso { packet.adaptiveValues = try packet.isoSeries().values(at: iso) }
+    return try readRaw(packet, into: base)
+  }
+
   static func readStored(_ data: Data) throws -> RawDevelopment {
     let packet = try Packet(data)
     var result = try readRaw(packet, into: RawDevelopment())
@@ -288,11 +304,32 @@ public enum CameraRawXMP {
     return data
   }
 
+  private struct ISOSettings {
+    typealias Point = (speed: Double, value: Float)
+    let speeds: [Double]
+    let fields: [String: [Point]]
+
+    func values(at iso: Double) -> [String: Float] {
+      guard iso.isFinite, iso > 0 else { return [:] }
+      return fields.compactMapValues { points in
+        guard let first = points.first, let last = points.last else { return nil }
+        if iso <= first.speed { return first.value }
+        if iso >= last.speed { return last.value }
+        guard let upper = points.firstIndex(where: { $0.speed >= iso }), upper > 0 else { return nil }
+        let low = points[upper - 1], high = points[upper]
+        if iso == high.speed { return high.value }
+        let fraction = log2(iso / low.speed) / log2(high.speed / low.speed)
+        return Float(Double(low.value) + fraction * (Double(high.value) - Double(low.value)))
+      }
+    }
+  }
+
   private struct Packet {
     let fields: [String: CGImageMetadataTag]
     let nativeDevelopment: RawDevelopment?
+    var adaptiveValues: [String: Float] = [:]
 
-    init(_ data: Data) throws {
+    init(_ data: Data, readingPreset: Bool = false) throws {
       guard !data.isEmpty, data.count <= maximumBytes,
         let metadata = CGImageMetadataCreateFromXMPData(data as CFData),
         let tags = CGImageMetadataCopyTags(metadata) as? [CGImageMetadataTag] else {
@@ -303,7 +340,7 @@ public enum CameraRawXMP {
         guard let name = CGImageMetadataTagCopyName(tag) as String? else { continue }
         fields[name] = tag
       }
-      guard !supportedFields.isDisjoint(with: fields.keys) else {
+      guard !supportedFields.isDisjoint(with: fields.keys) || (readingPreset && fields["ISODependent"] != nil) else {
         throw CraftError.invalid("The XMP file has no supported Camera Raw adjustments.")
       }
       self.fields = fields
@@ -323,10 +360,49 @@ public enum CameraRawXMP {
     }
 
     func float(_ name: String) throws -> Float? {
-      guard fields[name] != nil else { return nil }
-      guard let text = string(name), let value = Float(text.trimmingCharacters(in: .whitespacesAndNewlines)),
-        value.isFinite else { throw CraftError.invalid("Invalid Camera Raw XMP field \(name).") }
+      if let value = adaptiveValues[name] { return value }
+      guard let field = fields[name] else { return nil }
+      return try number(field, named: name)
+    }
+
+    private func number(_ tag: CGImageMetadataTag, named name: String) throws -> Float {
+      guard let text = CGImageMetadataTagCopyValue(tag) as? String,
+        let value = Float(text.trimmingCharacters(in: .whitespacesAndNewlines)), value.isFinite else {
+        throw CraftError.invalid("Invalid Camera Raw XMP field \(name).")
+      }
       return value
+    }
+
+    func isoSeries() throws -> ISOSettings {
+      guard let sequence = fields["ISODependent"] else { return .init(speeds: [], fields: [:]) }
+      guard let entries = CGImageMetadataTagCopyValue(sequence) as? [CGImageMetadataTag],
+        (2...128).contains(entries.count) else {
+        throw CraftError.invalid("An ISO-adaptive preset needs 2–128 ISO points.")
+      }
+      // Adobe writes one resource per ISO. Curves and categorical values do
+      // not use the numeric interpolator; their top-level values still apply.
+      let numericFields = supportedFields.subtracting(curves.map(\.0)).subtracting(["WhiteBalance", "PostCropVignetteStyle"])
+      var speeds = Set<Double>()
+      var series: [String: [ISOSettings.Point]] = [:]
+      for entry in entries {
+        let row = (CGImageMetadataTagCopyValue(entry) as? [String: CGImageMetadataTag])?.values
+        let tags = row?.filter { CGImageMetadataTagCopyNamespace($0) as String? == namespace } ?? []
+        guard let isoTag = tags.first(where: { CGImageMetadataTagCopyName($0) as String? == "ISO" }) else {
+          throw CraftError.invalid("Each Camera Raw preset point needs an ISO value.")
+        }
+        let iso = Double(try number(isoTag, named: "ISO"))
+        guard iso > 0, speeds.insert(iso).inserted else {
+          throw CraftError.invalid("Camera Raw ISO values must be positive and unique.")
+        }
+        for tag in tags {
+          guard let name = CGImageMetadataTagCopyName(tag) as String?, numericFields.contains(name) else { continue }
+          series[name, default: []].append((iso, try number(tag, named: name)))
+        }
+      }
+      guard !series.isEmpty || !supportedFields.isDisjoint(with: fields.keys) else {
+        throw CraftError.invalid("The ISO-adaptive preset has no supported Camera Raw adjustments.")
+      }
+      return .init(speeds: speeds.sorted(), fields: series.mapValues { $0.sorted { $0.speed < $1.speed } })
     }
 
     func points(_ name: String) throws -> [[Float]]? {

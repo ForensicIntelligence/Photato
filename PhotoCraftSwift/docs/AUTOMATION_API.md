@@ -1,3 +1,9 @@
+### Camera Raw ISO-adaptive defaults (checkpoint 799)
+
+Authenticated `/v1/preferences/camera-raw` accepts adaptive preset XMP in its existing revisioned `rawDefaults` object. Use `X-Photato-Raw-Defaults: desktop` for RAW uploads that should apply it. `raw.inspect` reports ISO when recorded. Uploaded explicit XMP and stored image adjustments retain priority. The capability response describes the adaptive preset path.
+
+[Qualification](SOURCE_PUBLICATION_799.md).
+
 ### Camera Raw Defaults (checkpoint 798)
 
 Authenticated `GET` and `POST /v1/preferences/camera-raw` include the revisioned `rawDefaults` object. Send `master`, `useOverrides` and `rules` to replace the whole policy. Each choice has a `mode` of `photato`, `camera` or `preset`. A preset includes a `name` and base64 `xmp`. Each rule contains a `camera` with `make`, `model` and optional `serial`, plus its `choice`. Camera RAW uploads opt into desktop defaults with `X-Photato-Raw-Defaults: desktop`. Explicit upload XMP and embedded settings take priority. Desktop defaults are exposed through the Photato API.

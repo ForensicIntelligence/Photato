@@ -82,6 +82,8 @@ extension AutomationService {
       "stateSchema": BrushAPI.object(stateFields, required: stateFields.keys.sorted()),
       "updateSchema": BrushAPI.object(fields, required: ["revision"]).merging(["minProperties": 2]) { _, new in new },
       "nativeMenu": "Photato > Settings… > Camera Raw…",
+      "isoAdaptivePresets": ["appliesTo": "RAW default XMP", "source": "EXIF ISO",
+        "interpolation": "linear in exposure stops with clamped endpoints", "maxPoints": 128],
       "permission": "Allow Photoshop file preference changes in the native API window.",
       "scope": "Sets desktop opening mode, output options, storage policy and defaults for unedited RAW sources. The policy stays attached to each open source. Uploads can opt in to the saved defaults.",
     ]

@@ -55,7 +55,7 @@ package struct RawDefaults: Codable, Equatable, Sendable {
         guard let name, RawDefaults.validLabel(name), let xmp else {
           throw CraftError.invalid("Choose a named Camera Raw XMP preset.")
         }
-        _ = try CameraRawXMP.read(xmp, into: RawDevelopment())
+        try CameraRawXMP.validatePreset(xmp)
       } else if name != nil || xmp != nil {
         throw CraftError.invalid("Only a preset can include Camera Raw XMP.")
       }
@@ -136,7 +136,21 @@ extension RawSourceIO {
     return .init(make: make, model: model, serial: serial)
   }
 
-  static func defaultDevelopment(_ choice: RawDefaults.Choice, from data: Data) throws -> RawDevelopment {
+  static func cameraISO(_ properties: [CFString: Any]?) -> Double? {
+    guard let exif = properties?[kCGImagePropertyExifDictionary] as? [CFString: Any] else { return nil }
+    let ratings = exif[kCGImagePropertyExifISOSpeedRatings] as? [NSNumber]
+    let legacyISO = ratings?.first
+    let values = [exif[kCGImagePropertyExifISOSpeed] as? NSNumber, legacyISO?.doubleValue == 65_535 ? nil : legacyISO,
+      exif[kCGImagePropertyExifRecommendedExposureIndex] as? NSNumber,
+      exif[kCGImagePropertyExifStandardOutputSensitivity] as? NSNumber]
+    for case let value? in values where CFGetTypeID(value) != CFBooleanGetTypeID() {
+      let speed = value.doubleValue
+      if speed.isFinite && speed > 0 { return speed }
+    }
+    return nil
+  }
+
+  static func defaultDevelopment(_ choice: RawDefaults.Choice, from data: Data, iso: Double?) throws -> RawDevelopment {
     guard choice.mode != .photato else { return .init() }
     let (raw, _) = try decoder(data)
     var base = RawDevelopment()
@@ -147,7 +161,7 @@ extension RawSourceIO {
     base.shadowBoost = raw.boostShadowAmount
     base.extendedRange = raw.extendedDynamicRangeAmount
     if (try? base.validate()) == nil { base = .init() }
-    if let xmp = choice.xmp { return try CameraRawXMP.read(xmp, into: base) }
+    if let xmp = choice.xmp { return try CameraRawXMP.readPreset(xmp, into: base, iso: iso) }
     return base
   }
 }

@@ -229,6 +229,7 @@ public enum RawSourceIO {
     public let decoderVersion: String
     public let supportedDecoders: [String]
     public let temperature: Float, tint: Float
+    public let iso: Double?
     public let lensCorrectionSupported: Bool, highlightRecoverySupported: Bool
     public let lensCorrectionEnabled: Bool, highlightRecoveryEnabled: Bool
   }
@@ -343,7 +344,7 @@ public enum RawSourceIO {
     let model = (tiff?[kCGImagePropertyTIFFModel as String] as? String) ?? "Camera RAW"
     var highlightSupported = false, highlightEnabled = false
     if #available(macOS 26,*) { highlightSupported = raw.isHighlightRecoverySupported; highlightEnabled = raw.isHighlightRecoveryEnabled }
-    let info = Info(type:type,model:String(model.prefix(256)),nativeWidth:Int(size.width),nativeHeight:Int(size.height),decoderVersion:raw.decoderVersion.rawValue,supportedDecoders:versions,temperature:raw.neutralTemperature,tint:raw.neutralTint,lensCorrectionSupported:raw.isLensCorrectionSupported,highlightRecoverySupported:highlightSupported,lensCorrectionEnabled:raw.isLensCorrectionEnabled,highlightRecoveryEnabled:highlightEnabled)
+    let info = Info(type:type,model:String(model.prefix(256)),nativeWidth:Int(size.width),nativeHeight:Int(size.height),decoderVersion:raw.decoderVersion.rawValue,supportedDecoders:versions,temperature:raw.neutralTemperature,tint:raw.neutralTint,iso:cameraISO(properties as? [CFString: Any]),lensCorrectionSupported:raw.isLensCorrectionSupported,highlightRecoverySupported:highlightSupported,lensCorrectionEnabled:raw.isLensCorrectionEnabled,highlightRecoveryEnabled:highlightEnabled)
     return (raw,info)
   }
   public static func inspect(_ data: Data,decoderVersion: String? = nil) throws -> Info { try decoder(data,version:decoderVersion).1 }
@@ -409,7 +410,10 @@ public enum RawSourceIO {
     let initial: RawDevelopment
     if let requested { initial = requested }
     else if let embedded { initial = try compatibleStoredSettings(embedded, in: data) }
-    else { initial = try defaultDevelopment(rawDefaults.choice(for: cameraIdentity(properties)), from: data) }
+    else {
+      initial = try defaultDevelopment(rawDefaults.choice(for: cameraIdentity(properties)),
+        from: data, iso: cameraISO(properties))
+    }
     let (workingPixels, settings, info) = try render(data, settings: initial, depth: depth == .u8 ? .u16 : depth)
     let pixels = try workingPixels.converted(to: depth)
     var name = URL(fileURLWithPath:fileName).lastPathComponent
