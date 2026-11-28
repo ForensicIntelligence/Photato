@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-27 — Step 772 — Open larger editable TIFF layer data
+
+Photato can open classic TIFF files with editable Photoshop layer data above the previous 512 MiB limit. It reads the layer samples in bounded ranges and keeps the original layers editable.
+
+Two independently built 12,000 × 12,000 TIFFs each contained 576 MB of editable layer data. Photato restored the authored RGB and opacity samples in both byte orders. On these sparse fixtures, the standalone native decoder peaked at 7.2 MiB for big endian and 7.6 MiB for little endian. Two further controls retained their 300 ppi setting, TIFF description and XMP title.
+
+Xcode built the native app. All 10 focused imaging and 7 app and HTTP tests passed. Both optimized architectures passed all 246 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+This checkpoint removes the input limit for the tested layer container. Larger layer payloads when saving, unsupported Photoshop descriptors, additional TIFF layouts and broader byte comparisons remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-772) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_772.md).
+
 ## 2026-11-27 — Step 771 — Keep named selections in large layered TIFFs
 
 Large layered RGB8 TIFFs now keep named selections alongside editable layers, layer masks and composite opacity. A saved channel can be loaded as a selection after reopening the file.

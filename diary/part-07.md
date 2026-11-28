@@ -307,11 +307,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:771 -->
+<!-- current-status-step:772 -->
 
-Large layered RGB8 TIFFs now keep named selections alongside editable layers, layer masks and composite opacity. A saved channel can be loaded as a selection after reopening the file.
+Photato can open classic TIFF files with editable Photoshop layer data above the previous 512 MiB limit. It reads the layer samples in bounded ranges and keeps the original layers editable.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-771) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_771.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-772) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_772.md).
 
 <!-- current-status:end -->
 
@@ -1289,5 +1289,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 769 | [Save and reopen larger classic TIFF files](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-769) |
 | 2026-11-27 | 770 | [Stream larger RGB TIFF files through Open and Save](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-770) |
 | 2026-11-27 | 771 | [Keep named selections in large layered TIFFs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-771) |
+| 2026-11-27 | 772 | [Open larger editable TIFF layer data](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-772) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

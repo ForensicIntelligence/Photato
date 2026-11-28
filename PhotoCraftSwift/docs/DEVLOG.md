@@ -790,7 +790,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 769 | 2026-11-27 | [Save and reopen larger classic TIFF files](#dev-step-769) |
 | 770 | 2026-11-27 | [Stream larger RGB TIFF files through Open and Save](#dev-step-770) |
 | 771 | 2026-11-27 | [Keep named selections in large layered TIFFs](#dev-step-771) |
+| 772 | 2026-11-27 | [Open larger editable TIFF layer data](#dev-step-772) |
 <!-- history-index:end -->
+
+<a id="dev-step-772"></a>
+
+## 2026-11-27 — Step 772 — Open larger editable TIFF layer data
+
+Photato can open classic TIFF files with editable Photoshop layer data above the previous 512 MiB limit. It reads the layer samples in bounded ranges and keeps the original layers editable.
+
+Build 770 reproduced a TIFF field size error at Open, even though the merged raster metadata was valid. The first bounded layer decoder opened the editable data, but ImageIO still copied the large Photoshop field when fetching metadata. An ImageIO-only probe isolated that memory use. Supplying a metadata-only TIFF eliminated the copy and retained the reported dimensions, resolution and descriptive tags. Little-endian layer headers and RLE row lengths are normalized separately from the pixel bytes. The ordinary directory writing path still materializes small fields when needed for editing.
+
+Two independently built 12,000 × 12,000 TIFFs each contained 576 MB of editable layer data. Photato restored the authored RGB and opacity samples in both byte orders. On these sparse fixtures, the standalone native decoder peaked at 7.2 MiB for big endian and 7.6 MiB for little endian. Two further controls retained their 300 ppi setting, TIFF description and XMP title.
+
+The authenticated Photato upload and Adobe-compatible action resource decoder use the same bounded layer and metadata paths. Both restored the editable layer and XMP from the same 17 MB TIFF. Existing HTTP input limits still apply.
+
+Xcode built the native app. All 10 focused imaging and 7 app and HTTP tests passed. Both optimized architectures passed all 246 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+This checkpoint removes the input limit for the tested layer container. Larger layer payloads when saving, unsupported Photoshop descriptors, additional TIFF layouts and broader byte comparisons remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,101,379 bytes with SHA-256 `f7c4f7c5a4c31fcd0dd53b8c64e345654581f1db3560386de993236cbcd58c05`.
+
+[Qualification](SOURCE_PUBLICATION_772.md).
 
 <a id="dev-step-771"></a>
 

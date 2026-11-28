@@ -14,22 +14,29 @@ enum TIFFModeStorage {
   }
   static func read(_ data: Data, name: String, forcePaged: Bool = false) throws -> CraftDocument? {
     guard TIFFContainer.isClassic(data) else { return nil }
-    let file = try TIFFContainer(data, metadata: false, additionalTags: [332, 34675])
-    return try read(file, name: name, forcePaged: forcePaged,
-      metadataSource: { CGImageSourceCreateWithData(data as CFData, nil) },
-      layers: { try TIFFLayers.read(data, composite: $0, backing: $1, storedAlpha: $2) })
+    let file = try TIFFContainer(data, metadata: false, additionalTags: [332, 34377, 34675, 37724])
+    let largeLayerPayload = hasLargeLayerPayload(file)
+    return try read(file, name: name, forcePaged: forcePaged || largeLayerPayload, metadataSource: {
+      if largeLayerPayload { return try metadataSnapshot(.memory(data)) }
+      return CGImageSourceCreateWithData(data as CFData, nil)
+    }, layers: { try TIFFLayers.read(file, composite: $0, backing: $1, storedAlpha: $2) })
   }
   static func read(_ source: PSDFileSource, url: URL, name: String) throws -> CraftDocument? {
-    let file = try TIFFContainer(file: source, metadata: false, additionalTags: [332, 34675])
-    return try read(file, name: name, forcePaged: true,
-      metadataSource: { CGImageSourceCreateWithURL(url as CFURL, nil) },
-      layers: {
-        let layerFile = try TIFFContainer(file: source, metadata: false, additionalTags: [34377, 34675, 37724])
-        return try TIFFLayers.read(layerFile, composite: $0, backing: $1, storedAlpha: $2)
-      })
+    let file = try TIFFContainer(file: source, metadata: false, additionalTags: [332, 34377, 34675, 37724])
+    return try read(file, name: name, forcePaged: true, metadataSource: {
+      if hasLargeLayerPayload(file) { return try metadataSnapshot(.file(source)) }
+      return CGImageSourceCreateWithURL(url as CFURL, nil)
+    }, layers: { try TIFFLayers.read(file, composite: $0, backing: $1, storedAlpha: $2) })
+  }
+  private static func hasLargeLayerPayload(_ file: TIFFContainer) -> Bool {
+    (file.root.fields[37724]?.fileRange?.count ?? 0) > RasterMetadata.maximumBytes
+  }
+  private static func metadataSnapshot(_ source: PSDByteStorage) throws -> CGImageSource? {
+    let bytes = try TIFFContainer.metadataSnapshot(source)
+    return CGImageSourceCreateWithData(bytes as CFData, nil)
   }
   private static func read(_ file: TIFFContainer, name: String, forcePaged: Bool,
-    metadataSource: () -> CGImageSource?,
+    metadataSource: () throws -> CGImageSource?,
     layers: (CraftDocument, RasterTileStore?, [Surface]?) throws -> CraftDocument?) throws -> CraftDocument? {
     let photo = try file.scalar(262)
     guard let mode = mode(photo) else { return nil }
@@ -85,8 +92,12 @@ enum TIFFModeStorage {
     else { document.modeDescriptor = try .init(mode: mode, depth: depth, profile: profile) }
     document.sourceICC = original
     document.profileIsUntagged = original == nil ? true : nil
-    if let source = metadataSource(),
-      let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any] {
+    if let source = try metadataSource(),
+      var properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any] {
+      if hasLargeLayerPayload(file) {
+        properties[kCGImagePropertyPixelWidth] = g.width
+        properties[kCGImagePropertyPixelHeight] = g.height
+      }
       document.sourceMetadata = try RasterMetadata.capture(source, properties: properties)
       if let dpi = properties[kCGImagePropertyDPIWidth] as? Double, dpi.isFinite, (1...100_000).contains(dpi) { document.resolution = dpi }
     }

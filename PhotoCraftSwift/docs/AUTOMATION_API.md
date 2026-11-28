@@ -1,3 +1,9 @@
+### Bounded editable TIFF input (checkpoint 772)
+
+The authenticated Photato upload and Adobe-compatible action resource decoder use the same bounded layer and metadata paths. Both restored the editable layer and XMP from the same 17 MB TIFF. Existing HTTP input limits still apply.
+
+[Qualification](SOURCE_PUBLICATION_772.md).
+
 ### Saved selections in large layered RGB8 TIFFs (checkpoint 771)
 
 The authenticated Photato TIFF download preserves the saved channels, and the Adobe-compatible action resource decoder restores them from the exported bytes. Both interfaces use the native TIFF codec. HTTP transfer limits still apply.

@@ -33,6 +33,16 @@ struct PSDReader {
     count = file.count
     metadataBudget = PSDMetadataBudget()
   }
+  init(storage: PSDByteStorage, range: Range<Int>) {
+    self.init(storage: storage, start: range.lowerBound, count: range.count,
+      metadataBudget: PSDMetadataBudget())
+  }
+  static func joining(_ views: [PSDReader], validating source: PSDReader) throws -> PSDReader {
+    let sequence = try PSDByteSequence(views.map {
+      PSDByteSequence.Input(storage: $0.storage, start: $0.start + $0.offset, count: $0.remaining)
+    }, original: source.storage)
+    return PSDReader(storage: .assembled(sequence), range: 0..<sequence.count)
+  }
   func validateUnchanged() throws { try storage.validateUnchanged() }
   private init(storage: PSDByteStorage, start: Int, count: Int, metadataBudget: PSDMetadataBudget) {
     self.storage = storage
@@ -325,7 +335,9 @@ public enum PSDCodec {
     guard let format = PSDFileFormat(rawValue: try r.u16()) else {
       throw CraftError.unsupported("Unsupported Photoshop file version; expected PSD or PSB.")
     }
-    guard source.byteCount <= (format == .psd ? maximumPSDFileBytes:maximumFileBytes) else {
+    let maximumContainerBytes = tiffComposite != nil ? TIFFContainer.classicFileMaximumBytes
+      : format == .psd ? maximumPSDFileBytes : maximumFileBytes
+    guard source.byteCount <= maximumContainerBytes else {
       throw CraftError.invalid("Photoshop file exceeds the selected container's file budget.")
     }
     guard try r.bytes(6).allSatisfy({ $0 == 0 }) else {

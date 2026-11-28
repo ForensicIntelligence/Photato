@@ -192,14 +192,100 @@ final class PSDFileSource {
   }
 }
 
+/// A small synthesized header and validated ranges from the original container.
+final class PSDByteSequence {
+  struct Input {
+    let storage: PSDByteStorage
+    let start: Int
+    let count: Int
+  }
+
+  private struct Part {
+    let input: Input
+    let offset: Int
+    var end: Int { offset + input.count }
+  }
+
+  private let parts: [Part]
+  private let original: PSDByteStorage
+  let count: Int
+
+  init(_ inputs: [Input], original: PSDByteStorage) throws {
+    self.original = original
+    var position = 0
+    var result: [Part] = []
+    for input in inputs where input.count > 0 {
+      guard input.start >= 0, input.start <= input.storage.count,
+        input.count <= input.storage.count - input.start,
+        input.count <= Int.max - position else {
+        throw CraftError.invalid("Invalid Photoshop byte extent.")
+      }
+      result.append(Part(input: input, offset: position))
+      position += input.count
+    }
+    self.parts = result
+    self.count = position
+  }
+
+  private func part(containing offset: Int) -> Int {
+    var low = 0, high = parts.count
+    while low < high {
+      let middle = low + (high - low) / 2
+      if offset >= parts[middle].end { low = middle + 1 }
+      else { high = middle }
+    }
+    return low
+  }
+
+  func bytes(at offset: Int, count: Int) throws -> Data {
+    if count == 0 { return Data() }
+    var index = part(containing: offset)
+    let first = parts[index]
+    if count <= first.end - offset {
+      return try first.input.storage.bytes(at: first.input.start + offset - first.offset, count: count)
+    }
+    var position = offset
+    let end = offset + count
+    var result = Data()
+    result.reserveCapacity(count)
+    while position < end {
+      let part = parts[index]
+      let length = min(end, part.end) - position
+      result.append(try part.input.storage.bytes(at: part.input.start + position - part.offset, count: length))
+      position += length
+      index += 1
+    }
+    return result
+  }
+
+  func padding(at offset: Int, count: Int, byte: UInt8) throws -> Bool {
+    var index = part(containing: offset)
+    var position = offset
+    let end = offset + count
+    while position < end {
+      let part = parts[index]
+      let length = min(end, part.end) - position
+      guard try part.input.storage.padding(at: part.input.start + position - part.offset,
+        count: length, byte: byte) else { return false }
+      position += length
+      index += 1
+    }
+    return true
+  }
+
+  func validateUnchanged() throws { try original.validateUnchanged() }
+}
+
 enum PSDByteStorage {
   case memory(Data)
   case file(PSDFileSource)
+  case assembled(PSDByteSequence)
 
   var count: Int {
     switch self {
     case .memory(let data): return data.count
     case .file(let source): return source.count
+    case .assembled(let source): return source.count
     }
   }
   func bytes(at offset: Int, count: Int) throws -> Data {
@@ -207,6 +293,7 @@ enum PSDByteStorage {
     case .memory(let data):
       return data.subdata(in: data.startIndex + offset..<data.startIndex + offset + count)
     case .file(let source): return try source.bytes(at: offset, count: count)
+    case .assembled(let source): return try source.bytes(at: offset, count: count)
     }
   }
   func number(at offset: Int, count: Int) throws -> UInt64 {
@@ -217,8 +304,8 @@ enum PSDByteStorage {
         value = (value << 8) | UInt64(data[index])
       }
       return value
-    case .file(let source):
-      return try source.bytes(at: offset, count: count).reduce(0) { ($0 << 8) | UInt64($1) }
+    case .file, .assembled:
+      return try bytes(at: offset, count: count).reduce(0) { ($0 << 8) | UInt64($1) }
     }
   }
   func padding(at offset: Int, count: Int, byte: UInt8) throws -> Bool {
@@ -227,6 +314,8 @@ enum PSDByteStorage {
       return data.withUnsafeBytes { bytes in
         (offset..<offset + count).allSatisfy { bytes[$0] == byte }
       }
+    case .assembled(let source):
+      return try source.padding(at: offset, count: count, byte: byte)
     case .file(let source):
       var at = offset
       while at < offset + count {
@@ -240,6 +329,10 @@ enum PSDByteStorage {
     }
   }
   func validateUnchanged() throws {
-    if case .file(let source) = self { try source.validateUnchanged() }
+    switch self {
+    case .memory: break
+    case .file(let source): try source.validateUnchanged()
+    case .assembled(let source): try source.validateUnchanged()
+    }
   }
 }

@@ -167,6 +167,82 @@ enum TIFFLayerEndian {
     target: TIFFContainer.Order = .big) throws -> Data {
     if order == target { return data }
     var c = Cursor(data, order: order)
+    let channels = try layerRecords(&c, order: order)
+    for channel in channels {
+      try Task.checkCancellation()
+      let start = c.offset
+      guard channel.length >= 2, channel.length <= c.remaining else {
+        throw CraftError.invalid("Truncated TIFF layer channel.")
+      }
+      let parentLimit = c.limit
+      c.limit = start + channel.length
+      let compression = try c.n(2)
+      guard compression <= 3 else { throw CraftError.unsupported("Unsupported TIFF layer compression.") }
+      if compression == 1 {
+        guard channel.height <= c.remaining / 2 else { throw CraftError.invalid("Truncated TIFF RLE row table.") }
+        for _ in 0..<channel.height { try c.n(2) }
+      }
+      try c.skip(c.remaining)
+      c.limit = parentLimit
+    }
+    try c.padding()
+    return c.output
+  }
+
+
+  /// Convert only framing. The encoded channel rows remain in the original TIFF.
+  static func layerViews(_ view: PSDReader, order: TIFFContainer.Order) throws -> [PSDReader] {
+    if order == .big { return [view] }
+    let budget = PSDMetadataBudget()
+    var source = view, scan = view
+    let count = abs(Int(Int16(bitPattern: UInt16(order.number(try scan.bytes(2), 0, 2)))))
+    guard count <= 1024 else { throw CraftError.invalid("TIFF exceeds the layer record limit.") }
+    for _ in 0..<count {
+      try Task.checkCancellation()
+      _ = try scan.view(16)
+      let channels = order.number(try scan.bytes(2), 0, 2)
+      guard channels <= 6 else { throw CraftError.invalid("Invalid TIFF layer channel count.") }
+      _ = try scan.view(12 + channels * 6)
+      let extras = order.number(try scan.bytes(4), 0, 4)
+      try budget.reserve(34 + channels * 6 + extras)
+      _ = try scan.view(extras)
+    }
+    try budget.reserve(2)
+    var prefix = Cursor(try source.bytes(scan.offset), order: order)
+    let channels = try layerRecords(&prefix, order: order)
+    guard prefix.remaining == 0 else { throw CraftError.invalid("Unexpected TIFF layer record tail.") }
+    var views = [PSDReader(data: prefix.output)]
+    for channel in channels {
+      try Task.checkCancellation()
+      var pixels = try source.view(channel.length)
+      let compression = order.number(try pixels.bytes(2), 0, 2)
+      guard compression <= 3 else { throw CraftError.unsupported("Unsupported TIFF layer compression.") }
+      var header = TIFFContainer.Order.big.bytes(compression, 2)
+      try budget.reserve(2)
+      if compression == 1 {
+        let tableSize = channel.height * 2
+        try budget.reserve(tableSize)
+        var table = try pixels.bytes(tableSize)
+        table.withUnsafeMutableBytes { (words: UnsafeMutableRawBufferPointer) in
+          for index in stride(from: 0, to: words.count, by: 2) {
+            let low = words[index]
+            words[index] = words[index + 1]
+            words[index + 1] = low
+          }
+        }
+        header.append(table)
+      }
+      views.append(PSDReader(data: header))
+      views.append(pixels)
+    }
+    var padding = try source.view(source.remaining)
+    views.append(padding)
+    guard try padding.consumePadding(0) else { throw CraftError.invalid("Invalid TIFF layer padding.") }
+    return views
+  }
+
+  private static func layerRecords(_ c: inout Cursor, order: TIFFContainer.Order) throws
+    -> [(length: Int, height: Int)] {
     let count = abs(try c.i16())
     guard count <= 1024 else { throw CraftError.invalid("TIFF exceeds the layer record limit.") }
     var channels: [(length: Int, height: Int)] = []
@@ -215,24 +291,6 @@ enum TIFFLayerEndian {
         channels.append((channel.length, rows))
       }
     }
-    for channel in channels {
-      try Task.checkCancellation()
-      let start = c.offset
-      guard channel.length >= 2, channel.length <= c.remaining else {
-        throw CraftError.invalid("Truncated TIFF layer channel.")
-      }
-      let parentLimit = c.limit
-      c.limit = start + channel.length
-      let compression = try c.n(2)
-      guard compression <= 3 else { throw CraftError.unsupported("Unsupported TIFF layer compression.") }
-      if compression == 1 {
-        guard channel.height <= c.remaining / 2 else { throw CraftError.invalid("Truncated TIFF RLE row table.") }
-        for _ in 0..<channel.height { try c.n(2) }
-      }
-      try c.skip(c.remaining)
-      c.limit = parentLimit
-    }
-    try c.padding()
-    return c.output
+    return channels
   }
 }

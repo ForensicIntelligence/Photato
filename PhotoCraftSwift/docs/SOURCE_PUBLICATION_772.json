@@ -1,0 +1,323 @@
+{
+  "build": 772,
+  "base": "5e96350cb30b6d3250aa35b45e7e1a21093258de",
+  "inputCount": 9473,
+  "inputDigest": "53ed7f3eed78c59cde7af42136d3b5781c36fd86b003d7e8c58268fd37c2e8d4",
+  "sourceInputsChanged": {
+    "Sources/PhotoCraft/AutomationDocumentTransfers.swift": "2d161b671f4e15eb4e7975a90ffe7bb17556e92a7ef757cdfcd65d95308d8d68",
+    "Sources/PhotoCraftImaging/PSDCodec.swift": "b8e28b05d7426aaba23b1e7ced7816e34b4bb16e0b06e40d5ad0328bf69b473b",
+    "Sources/PhotoCraftImaging/PSDFileSource.swift": "4ac6c0daae81cb9d5af0da163fa9105413e46db1aea6a08c84b00063d65ef53e",
+    "Sources/PhotoCraftImaging/TIFFContainer.swift": "7404c0efe78dc7ba1cbbe20cd16b063472f6f40b7223952b58a13f3a195dcadc",
+    "Sources/PhotoCraftImaging/TIFFLayerEndian.swift": "b831a247751798599a39a79077e8559753bb5c57c4f3464cd0aa955a12e57b75",
+    "Sources/PhotoCraftImaging/TIFFLayers.swift": "09cba3103fed1d91efd947570eb9d76bad367cbeaf5f4faee8e0c109f2aaad7c",
+    "Sources/PhotoCraftImaging/TIFFModeStorage.swift": "aa1fc09a5f2665250d7ae647049ad2682456540cef44c90d59814cac1d2f9548",
+    "Tests/PhotoCraftImagingTests/TIFFLayerTests.swift": "2deb7a240be37232c12e108f38ea17d1fe9b2fd1c4ef3e4e0032db6def995436",
+    "scripts/Info.plist": "189971c6bf2726a759949420a4808b28994428079c32c41175029f9b6d9cbebf"
+  },
+  "focusedDebug": {
+    "imagingPass": 10,
+    "appAndHTTPPass": 7
+  },
+  "debugLogSHA256": {
+    "xcode": "17f574fc5ed5b1664be6cebd461465d700f2cd6fe57693c0e58ee1255d24ca4b",
+    "imaging": "867f73e50bf3fd416f82a1bd00f399d0f104ac239fdd19b41bdc7069a09d4bee",
+    "appAndHTTP": "f7f61d54193682b5c34a1dd11bfeeecf7d0f787a1bfb133ab48abd2a53d9c239",
+    "extendedMetadata": "77a3cbfc38c56262646e6e1dc17a7d8b52bc4e568a04e24c3ed315859c499ca9"
+  },
+  "qualification": {
+    "arm64": {
+      "build": 772,
+      "architecture": "arm64",
+      "expected": 246,
+      "passed": 246,
+      "missing": [],
+      "failed": [],
+      "skipped": [],
+      "newCases": [
+        "PhotoCraftImagingTests.TIFFLayerTests/testLargeEditableTagRetainsTIFFMetadataInFileAndDataReaders"
+      ],
+      "newCasesPassed": 1,
+      "groupExits": {
+        "PhotoCraftAppTests.AdobeSmartObjectAppearanceTests/testGrayPNG16GrayPSDAndGrayJPEGSupplyNumericMaskSamples": 0,
+        "PhotoCraftAppTests.AutomationEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.AutomationLayerMergeTests": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testGrayscalePNGImportAndDownloadPreserveTheNativePlanes": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testIndexedPNGWithGradedAlphaOpensThroughPhotatoAndAdobeAsRGB": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testLargeComponentTIFFOpensInBothResourcePaths": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testLargerPalettePNGUsesPagedRGBInBothResourcePaths": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB": 0,
+        "PhotoCraftAppTests.DocumentEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.TIFFFloatWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLargeOutputWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLargeRGBWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLayerWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFModeWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFPagedSelectionWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFRichWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFStorageWorkflowTests": 0,
+        "PhotoCraftAppTests.VanishingWorkflowTests": 0,
+        "PhotoCraftCoreTests.LayerMergeTests": 0,
+        "PhotoCraftCoreTests.PreparedLayerMergeTests": 0,
+        "PhotoCraftCoreTests.VanishingTests": 0,
+        "PhotoCraftImagingTests.GroupRenderTests": 0,
+        "PhotoCraftImagingTests.LayerLayoutRenderTests": 0,
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests": 0,
+        "PhotoCraftImagingTests.RestrictedFormatTests": 0,
+        "PhotoCraftImagingTests.RichLayerMergeTests": 0,
+        "PhotoCraftImagingTests.TIFFFloatTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeComponentTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeRGBOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeRGBTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerCompositeBoundaryTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerTests": 0,
+        "PhotoCraftImagingTests.TIFFModeTests": 0,
+        "PhotoCraftImagingTests.TIFFPagedSelectionTests": 0,
+        "PhotoCraftImagingTests.TIFFRestrictedTests": 0,
+        "PhotoCraftImagingTests.TIFFRichTests": 0,
+        "PhotoCraftImagingTests.TIFFStorageTests": 0
+      },
+      "reusedCompletedGroups": [],
+      "testExecutableSHA256": "cdd4c66ce03cd26c5e57422e36da6ce092c5de1ba400027fd2e4e55614c9fb71"
+    },
+    "x86_64": {
+      "build": 772,
+      "architecture": "x86_64",
+      "expected": 246,
+      "passed": 246,
+      "missing": [],
+      "failed": [],
+      "skipped": [],
+      "newCases": [
+        "PhotoCraftImagingTests.TIFFLayerTests/testLargeEditableTagRetainsTIFFMetadataInFileAndDataReaders"
+      ],
+      "newCasesPassed": 1,
+      "groupExits": {
+        "PhotoCraftAppTests.AdobeSmartObjectAppearanceTests/testGrayPNG16GrayPSDAndGrayJPEGSupplyNumericMaskSamples": 0,
+        "PhotoCraftAppTests.AutomationEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.AutomationLayerMergeTests": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testGrayscalePNGImportAndDownloadPreserveTheNativePlanes": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testIndexedPNGWithGradedAlphaOpensThroughPhotatoAndAdobeAsRGB": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testLargeComponentTIFFOpensInBothResourcePaths": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testLargerPalettePNGUsesPagedRGBInBothResourcePaths": 0,
+        "PhotoCraftAppTests.AutomationOpeningTests/testPNGImportThroughPhotatoAndAdobeKeepsHiddenRGB": 0,
+        "PhotoCraftAppTests.DocumentEncodingOptionsTests": 0,
+        "PhotoCraftAppTests.TIFFFloatWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLargeOutputWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLargeRGBWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFLayerWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFModeWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFPagedSelectionWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFRichWorkflowTests": 0,
+        "PhotoCraftAppTests.TIFFStorageWorkflowTests": 0,
+        "PhotoCraftAppTests.VanishingWorkflowTests": 0,
+        "PhotoCraftCoreTests.LayerMergeTests": 0,
+        "PhotoCraftCoreTests.PreparedLayerMergeTests": 0,
+        "PhotoCraftCoreTests.VanishingTests": 0,
+        "PhotoCraftImagingTests.GroupRenderTests": 0,
+        "PhotoCraftImagingTests.LayerLayoutRenderTests": 0,
+        "PhotoCraftImagingTests.RasterEncodingOptionsTests": 0,
+        "PhotoCraftImagingTests.RestrictedFormatTests": 0,
+        "PhotoCraftImagingTests.RichLayerMergeTests": 0,
+        "PhotoCraftImagingTests.TIFFFloatTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeComponentTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeRGBOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLargeRGBTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerCompositeBoundaryTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerOutputTests": 0,
+        "PhotoCraftImagingTests.TIFFLayerTests": 0,
+        "PhotoCraftImagingTests.TIFFModeTests": 0,
+        "PhotoCraftImagingTests.TIFFPagedSelectionTests": 0,
+        "PhotoCraftImagingTests.TIFFRestrictedTests": 0,
+        "PhotoCraftImagingTests.TIFFRichTests": 0,
+        "PhotoCraftImagingTests.TIFFStorageTests": 0
+      },
+      "reusedCompletedGroups": [],
+      "testExecutableSHA256": "95d8d4b273bd658f0a0ac1fa81871879a413b5d0cda1dd0d45eb26c2fff9b878"
+    }
+  },
+  "preview": {
+    "build": 772,
+    "archive": "Photato-universal.zip",
+    "archiveSHA256": "f7c4f7c5a4c31fcd0dd53b8c64e345654581f1db3560386de993236cbcd58c05",
+    "archiveBytes": 78101379,
+    "gitPath": "downloads/Photato-universal.zip",
+    "bundleID": "ca.forensicintelligence.photato.preview",
+    "signing": "ad-hoc",
+    "localSymbolsStripped": true,
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "minimumSystemVersion": "14.0",
+    "configuration": "Release",
+    "release": false,
+    "binarySHA256": "8318183071df96c2cf258e30a2ec59dd8412997eac9db35e1160a3954d26d963",
+    "architectureInputsSHA256": {
+      "arm64": "228a09d8503500b9190f3a05d97832c60773f21d5b8cd620c391c84aeddd6a8f",
+      "x86_64": "a654a871faef5c00e89c4f49160918baafdc6fa34c09af1810fdbf7b7e765189"
+    },
+    "extractedSignatureVerified": true,
+    "bundledModelSHA256": {
+      "LocalUpscale": {
+        "metadata.json": "9ccc4468cadcdcdad6034c71511d52c6be724a5fe67b9cc9f4637dbbdb90254f",
+        "model.mil": "0e23b10f4e0cd4ff1776254a978c974cfbe1f916212fa0286ec63b395e38c576",
+        "coremldata.bin": "8a7ca045b236629a9aaed14124f8b909dce02bb0fbaac031ebf0fa725af71b33",
+        "weights/weight.bin": "7a6088b2ee537938f380b9049fae2b85dad57b251d047ab8f5afd256417838ec",
+        "analytics/coremldata.bin": "505068f4bebac2a0637876384103e5367fa57011edacb17801943d40da2c48d6",
+        "LocalUpscale.provenance.json": "d204b4859fe2c0cbe0c20bb1a4b54061a10e04637e2a451ae7ee5fd67d249690"
+      },
+      "PeopleParts": {
+        "metadata.json": "364e57315a21c784e53576717afc834e08e3b8c22dab19a2b9cdd5cdda129202",
+        "model.mil": "32ff0a5d0d8803f678444f8e4b790c2c32718bda969a82008b6d9dc517604d98",
+        "coremldata.bin": "840dbc62cb8bf33fb949579d6e856a33a2019fcdf896afeb5939c2563a2bae5d",
+        "weights/weight.bin": "e0c69dd23a85bb83e43e20068dcc2487f5e30e4fb85eaed9895ca82eac72c133",
+        "analytics/coremldata.bin": "468e072fd5d57d956ce7d56b2f3635a0ec243b38b8b9e68ce44eae1013b41e18",
+        "PeopleParts.provenance.json": "22948c270001a006199c6d74da52fda51c7de472a98c2ab4244ddf77483e4e86"
+      }
+    },
+    "verifiedEntitlementArchs": [
+      "arm64",
+      "x86_64"
+    ]
+  },
+  "previewOffscreen": {
+    "arm64": {
+      "size": [
+        1000,
+        650
+      ],
+      "pngSHA256": "a6cc21417b781e0803af563693f9e11c731ed2b30e0d74c49f3da111fe7b4e2e"
+    },
+    "x86_64": {
+      "size": [
+        1000,
+        650
+      ],
+      "pngSHA256": "d73b7eb945e2b26ad7ee7a85a66077bd859f32c0517e1f75819c66da17f741ff"
+    }
+  },
+  "largeLayeredTIFFInput": {
+    "be": {
+      "nativeRead": {
+        "editableLayer": "Independent editable layer",
+        "file": "layer-payload-576mb.tiff",
+        "fileBytes": 576560326,
+        "height": 12000,
+        "sampleCoverage": [
+          [
+            191,
+            63,
+            11,
+            255
+          ],
+          [
+            127,
+            24,
+            133,
+            191
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "width": 12000
+      },
+      "peakFootprintBytes": 7553816
+    },
+    "le": {
+      "nativeRead": {
+        "editableLayer": "Independent editable layer",
+        "file": "layer-payload-576mb-le.tiff",
+        "fileBytes": 576560326,
+        "height": 12000,
+        "sampleCoverage": [
+          [
+            191,
+            63,
+            11,
+            255
+          ],
+          [
+            127,
+            24,
+            133,
+            191
+          ],
+          [
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "width": 12000
+      },
+      "peakFootprintBytes": 7963392
+    }
+  },
+  "independentTIFFSources": {
+    "be": {
+      "width": 12000,
+      "height": 12000,
+      "fileBytes": 576560326,
+      "editableLayerPayloadBytes": 576000164,
+      "layerChannelBytes": 144000002,
+      "layerCompression": "raw",
+      "layerName": "Independent editable layer",
+      "layerChannelSamples": [
+        {
+          "0": 191,
+          "348077": 127
+        },
+        {
+          "0": 63,
+          "348077": 24
+        },
+        {
+          "0": 11,
+          "348077": 133
+        },
+        {
+          "0": 255,
+          "348077": 191
+        }
+      ],
+      "source": "Synthetic sparse TIFF authored from the public TIFF and Photoshop layer record layouts."
+    },
+    "le": {
+      "width": 12000,
+      "height": 12000,
+      "fileBytes": 576560326,
+      "editableLayerPayloadBytes": 576000164,
+      "layerChannelBytes": 144000002,
+      "byteOrder": "<",
+      "layerCompression": "raw",
+      "layerName": "Independent editable layer",
+      "layerChannelSamples": [
+        {
+          "0": 191,
+          "348077": 127
+        },
+        {
+          "0": 63,
+          "348077": 24
+        },
+        {
+          "0": 11,
+          "348077": 133
+        },
+        {
+          "0": 255,
+          "348077": 191
+        }
+      ],
+      "source": "Synthetic sparse TIFF authored from the public TIFF and Photoshop layer record layouts."
+    }
+  }
+}

@@ -15,7 +15,10 @@ enum TIFFLayers {
   static func read(_ tiff: TIFFContainer, composite: CraftDocument, backing: RasterTileStore?,
     storedAlpha: [Surface]? = nil) throws -> CraftDocument? {
     guard let field = tiff.root.fields[37724] else { return nil }
-    guard [1, 7].contains(field.type), field.data.starts(with: signature) else {
+    let fieldSource = try tiff.reader(for: field)
+    var r = fieldSource
+    guard [1, 7].contains(field.type), r.remaining >= signature.count,
+      try r.bytes(signature.count) == signature else {
       throw CraftError.unsupported("Unrecognized Photoshop TIFF layer container. Import cancelled to preserve its contents.")
     }
     let depth = composite.depth == .u8 ? 8 : composite.depth == .u16 ? 16 : 32
@@ -43,8 +46,8 @@ enum TIFFLayers {
       case .raster(let pixels) = composite.layers.first?.content else {
       throw CraftError.unsupported("Layered TIFF requires an unrotated supported color mode/depth within PSD dimensions.")
     }
-    var r = PSDReader(data: field.data, offset: signature.count)
-    var globals = PSDWriter(), seen = Set<String>(), hasLayers = false, hasEditableLayers = false
+    var globalViews: [PSDReader] = [], globalLength = 0, seen = Set<String>()
+    var hasLayers = false, hasEditableLayers = false
     let expectedLayerTag = depth == 16 ? "Lr16" : depth == 32 ? "Lr32" : "Layr"
     while r.remaining >= 12 {
       try Task.checkCancellation()
@@ -56,7 +59,7 @@ enum TIFFLayers {
       let keyBytes = try r.bytes(4)
       let tag = String(decoding: tiff.order == .big ? keyBytes : Data(keyBytes.reversed()), as: UTF8.self)
       let length = tiff.order.number(try r.bytes(4), 0, 4)
-      var content = try r.bytes(length)
+      var content = try r.view(length)
       let padding = try r.bytes((4 - length % 4) % 4)
       guard seen.insert(tag).inserted, padding.allSatisfy({ $0 == 0 }) else {
         throw CraftError.invalid("Duplicate TIFF Photoshop block or invalid padding.")
@@ -65,23 +68,38 @@ enum TIFFLayers {
       // The TIFF raster/ExtraSamples determine cache alpha here; preserve the
       // marker separately rather than mislabel it as the PSD variant.
       if tag == "MTrn" {
-        guard content.isEmpty, seen.count == 1 else {
+        guard content.remaining == 0, seen.count == 1 else {
           throw CraftError.unsupported("Unrecognized TIFF merged-transparency marker.")
         }
         continue
       }
-      if ["Layr", "Lr16", "Lr32"].contains(tag) {
+      let isLayerBlock = ["Layr", "Lr16", "Lr32"].contains(tag)
+      if isLayerBlock {
         guard tag == expectedLayerTag, !hasLayers else {
           throw CraftError.invalid("TIFF layer depth and composite disagree.")
         }
-        content = try TIFFLayerEndian.layers(content, order: tiff.order)
         hasLayers = true
-        hasEditableLayers = content.count >= 2 && content.prefix(2).contains { $0 != 0 }
-      } else if tiff.order == .little {
-        content = try TIFFLayerEndian.payload(content, tag: tag, global: true)
+        var countView = content
+        hasEditableLayers = countView.remaining >= 2 ? try countView.u16() != 0 : false
       }
-      globals.text("8BIM"); globals.text(tag); globals.section(content)
-      globals.data.append(Data(repeating: 0, count: (4 - content.count % 4) % 4))
+      let normalized: [PSDReader]
+      if isLayerBlock {
+        normalized = try TIFFLayerEndian.layerViews(content, order: tiff.order)
+      } else if tiff.order == .little {
+        let payload = try TIFFLayerEndian.payload(content.retainedBytes(length), tag: tag, global: true)
+        normalized = [PSDReader(data: payload)]
+      } else {
+        normalized = [content]
+      }
+      guard normalized.reduce(0, { $0 + $1.remaining }) == length else {
+        throw CraftError.invalid("TIFF layer normalization changed its payload length.")
+      }
+      var header = PSDWriter()
+      header.text("8BIM"); header.text(tag); header.n(length, 4)
+      globalViews.append(PSDReader(data: header.data))
+      globalViews.append(contentsOf: normalized)
+      globalViews.append(PSDReader(data: Data(repeating: 0, count: padding.count)))
+      globalLength += header.data.count + length + padding.count
     }
     guard r.remaining <= 3, try r.consumePadding(0), hasLayers else {
       throw CraftError.invalid("Missing TIFF Photoshop layers or trailing container data.")
@@ -108,19 +126,19 @@ enum TIFFLayers {
       throw CraftError.unsupported("TIFF composite and Photoshop layer profiles disagree.")
     }
     if profiles.isEmpty, let profile { resources.append(PSDImageResources.block(1039, data: profile)) }
-    var layerSection = PSDWriter()
-    layerSection.section(Data()); layerSection.section(Data()); layerSection.data.append(globals.data)
+    guard globalLength <= Int(UInt32.max) - 8 else {
+      throw CraftError.invalid("TIFF Photoshop layer section exceeds its classic file range.")
+    }
     var adapter = PSDWriter()
     adapter.text("8BPS"); adapter.n(1, 2); adapter.data.append(Data(repeating: 0, count: 6))
     // The external TIFF raster carries its own transparency convention.
     adapter.n(colors, 2); adapter.n(composite.height, 4); adapter.n(composite.width, 4)
     adapter.n(depth, 2); adapter.n(PSDModeStorage.code(composite.colorMode), 2); adapter.section(Data()); adapter.section(resources)
-    adapter.section(layerSection.data)
-    guard adapter.data.count <= PSDCodec.maximumInputBytes else {
-      throw CraftError.invalid("TIFF Photoshop structures exceed the input budget.")
-    }
+    adapter.n(8 + globalLength, 4)
+    adapter.n(0, 4); adapter.n(0, 4)
+    let psd = try PSDReader.joining([PSDReader(data: adapter.data)] + globalViews, validating: fieldSource)
     let paging = try backing.map { try PSDRasterPaging.Context(sharedBacking: $0) }
-    var result = try PSDCodec.read(PSDReader(data: adapter.data), name: composite.name, tiffComposite: pixels,
+    var result = try PSDCodec.read(psd, name: composite.name, tiffComposite: pixels,
       tiffNativeComposite: composite.layers.first?.nativeMode, paging: paging)
     if let savedAlpha {
       let count = savedAlpha.savedAlphaSamples.count

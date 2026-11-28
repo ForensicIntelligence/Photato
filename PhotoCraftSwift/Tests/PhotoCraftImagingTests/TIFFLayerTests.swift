@@ -96,6 +96,56 @@ final class TIFFLayerTests: XCTestCase {
       XCTAssertEqual(actual.layers[1].maskProperties, expected.layers[1].maskProperties)
     }
   }
+  func testLargeEditableTagRetainsTIFFMetadataInFileAndDataReaders() throws {
+    let original = try fixture("8-big-0.tiff")
+    let normal = try RasterIO.read(original)
+    let large = try replacing(original) { tiff in
+      var field = try XCTUnwrap(tiff.root.fields[37724])
+      var source = PSDReader(data: field.data, offset: TIFFLayers.signature.count)
+      var enlarged = false
+      while source.remaining >= 12 {
+        XCTAssertEqual(try source.string(4), "8BIM")
+        let key = try source.string(4), lengthOffset = source.offset
+        let length = try source.u32()
+        _ = try source.view(length)
+        if key == "Layr" {
+          let padding = RasterMetadata.maximumBytes + 4
+          field.data.insert(contentsOf: repeatElement(UInt8(0), count: padding), at: source.offset)
+          field.data.replaceSubrange(lengthOffset..<lengthOffset + 4, with: tiff.order.bytes(length + padding, 4))
+          field.count = field.data.count
+          tiff.root.fields[37724] = field
+          enlarged = true
+          break
+        }
+        _ = try source.view((4 - length % 4) % 4)
+      }
+      XCTAssertTrue(enlarged)
+      let text = Data("Photato metadata control\0".utf8)
+      tiff.root.fields[270] = .init(tag: 270, type: 2, count: text.count, data: text)
+      let resolution = tiff.order.bytes(300, 4) + tiff.order.bytes(1, 4)
+      for tag in [282, 283] {
+        tiff.root.fields[tag] = .init(tag: tag, type: 5, count: 1, data: resolution)
+      }
+      tiff.set(296, [2])
+    }
+    let location = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".tiff")
+    defer { try? FileManager.default.removeItem(at: location) }
+    try large.write(to: location, options: .atomic)
+    let documents = try [RasterIO.read(location), RasterIO.read(large),
+      XCTUnwrap(RasterIO.readPagedComponentTIFF(large, name: normal.name))]
+    for document in documents {
+      XCTAssertEqual(document.layers.map(\.name), normal.layers.map(\.name))
+      XCTAssertEqual(document.layers.map(\.content), normal.layers.map(\.content))
+      XCTAssertEqual(document.layers.map(\.mask), normal.layers.map(\.mask))
+      XCTAssertEqual(document.resolution, 300)
+      let properties = try XCTUnwrap(document.sourceMetadata?[RasterMetadata.propertiesKey])
+      let dictionary = try XCTUnwrap(PropertyListSerialization.propertyList(
+        from: properties, options: [], format: nil) as? [String: Any])
+      let tiff = try XCTUnwrap(dictionary[kCGImagePropertyTIFFDictionary as String] as? [String: Any])
+      XCTAssertEqual(tiff[kCGImagePropertyTIFFImageDescription as String] as? String, "Photato metadata control")
+    }
+  }
+
   func testMalformedLayerContainersRejectDespiteReadableComposite() throws {
     let input = try fixture("8-little-0.tiff")
     let mutations: [(TIFFContainer) throws -> Void] = [

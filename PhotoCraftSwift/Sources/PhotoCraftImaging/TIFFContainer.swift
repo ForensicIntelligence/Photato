@@ -25,6 +25,7 @@ struct TIFFContainer {
     var count: Int
     var data: Data
     var children: [Directory] = []
+    var fileRange: Range<Int>?
   }
   final class Directory {
     var fields: [Int: Field] = [:]
@@ -61,17 +62,18 @@ struct TIFFContainer {
     return try storage.bytes(at: offset, count: count)
   }
   func reader(at offset: Int, count: Int) throws -> PSDReader {
-    var input: PSDReader
-    switch storage {
-    case .memory(let data): input = PSDReader(data: data, offset: offset)
-    case .file(let file):
-      input = PSDReader(file: file)
-      _ = try input.view(offset)
+    guard offset >= 0, count >= 0, offset <= storage.count, count <= storage.count - offset else {
+      throw CraftError.invalid("Invalid TIFF sample block extent.")
     }
-    return try input.view(count)
+    return PSDReader(storage: storage, range: offset..<offset + count)
+  }
+  func reader(for field: Field) throws -> PSDReader {
+    guard let range = field.fileRange else { return PSDReader(data: field.data) }
+    return try reader(at: range.lowerBound, count: range.count)
   }
   private init(storage: PSDByteStorage, maximumBytes: Int,
-    metadata: Bool, additionalTags: Set<Int>) throws {
+    metadata: Bool, additionalTags: Set<Int>, omittedTags: Set<Int> = [],
+    followNextDirectories: Bool = true) throws {
     let fileSize = storage.count
     guard (8...maximumBytes).contains(fileSize) else {
       throw CraftError.invalid("Invalid classic TIFF size.")
@@ -100,21 +102,24 @@ struct TIFFContainer {
       for i in 0..<count {
         let at = i * 12
         let tag = byteOrder.number(table, at, 2)
-        if !metadata && !sampleTags.contains(tag) && !additionalTags.contains(tag) { continue }
+        if omittedTags.contains(tag) || (!metadata && !sampleTags.contains(tag) && !additionalTags.contains(tag)) { continue }
         let type = byteOrder.number(table, at + 2, 2), elements = byteOrder.number(table, at + 4, 4)
-        guard let unit = Self.size(type), elements <= Self.byteLimit / unit,
+        // Keep the Photoshop layer container as a validated source extent.
+        let layerPixels = tag == 37724 && additionalTags.contains(tag)
+        let deferredLayerPixels = layerPixels && !metadata
+        let limit = deferredLayerPixels ? maximumBytes : Self.byteLimit
+        guard let unit = Self.size(type), elements <= limit / unit,
           node.fields[tag] == nil else { throw CraftError.invalid("Invalid TIFF field type or size.") }
         let size = unit * elements
         let start = size <= 4 ? offset + 2 + at + 8 : byteOrder.number(table, at + 8, 4)
-        // Photoshop layer pixels are a container payload, not ordinary metadata.
-        // Their complete file and decoded-tile budgets are enforced separately.
-        let layerPixels = tag == 37724 && additionalTags.contains(tag)
         guard start <= fileSize, size <= fileSize - start,
           layerPixels || size <= 32 * 1024 * 1024 - retained else {
           throw CraftError.invalid("Invalid or excessive TIFF metadata.")
         }
         if !layerPixels { retained += size }
-        var field = Field(tag: tag, type: type, count: elements, data: try storage.bytes(at: start, count: size))
+        var field = Field(tag: tag, type: type, count: elements,
+          data: deferredLayerPixels ? Data() : try storage.bytes(at: start, count: size),
+          fileRange: deferredLayerPixels ? start..<start + size : nil)
         if metadata && [330, 34665, 34853, 40965].contains(tag) {
           guard [4, 13].contains(type), elements <= 64 else {
             throw CraftError.invalid("Invalid TIFF child directory pointer.")
@@ -128,10 +133,30 @@ struct TIFFContainer {
         node.fields[tag] = field
       }
       let next = byteOrder.number(table, count * 12, 4)
-      if metadata && next != 0 { node.next = try directory(next, depth + 1) }
+      if metadata && followNextDirectories && next != 0 { node.next = try directory(next, depth + 1) }
       return node
     }
     root = try directory(order.number(header, 4, 4), 0)
+  }
+  /// Give ImageIO the retained metadata without exposing the original image
+  /// bytes or editable layer payload to its whole-file metadata decoder.
+  static func metadataSnapshot(_ input: PSDByteStorage) throws -> Data {
+    let omitted: Set<Int> = [273, 279, 322, 323, 324, 325, 330, 513, 514, 37724]
+    let file = try TIFFContainer(storage: input, maximumBytes: Self.classicFileMaximumBytes,
+      metadata: true, additionalTags: [], omittedTags: omitted, followNextDirectories: false)
+    let bits = try file.numbers(258)
+    guard (1...56).contains(bits.count), bits.allSatisfy({ [8, 16, 32].contains($0) }) else {
+      throw CraftError.invalid("Invalid TIFF metadata sample shape.")
+    }
+    let sampleBytes = bits.reduce(0, +) / 8
+    let order = file.order
+    var bytes = Data(order == .big ? [77, 77, 0, 42, 0, 0, 0, 0] : [73, 73, 42, 0, 0, 0, 0, 0])
+    bytes.append(Data(repeating: 0, count: sampleBytes))
+    file.set(256, [1], type: 4); file.set(257, [1], type: 4)
+    file.set(259, [1]); file.set(273, [8], type: 4); file.set(278, [1], type: 4)
+    file.set(279, [sampleBytes], type: 4); file.set(284, [1]); file.set(317, [1])
+    try file.appendDirectories(to: &bytes, order: order)
+    return bytes
   }
   func numbers(_ tag: Int, default fallback: [Int]? = nil) throws -> [Int] {
     guard let field = root.fields[tag] else {
