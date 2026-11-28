@@ -67,6 +67,21 @@ import SwiftUI
     switch order {
     case .opening: sorted = matching
     case .name: sorted = matching.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+    case .captureDate: sorted = matching.sorted {
+      ($0.original.photoInformation?.captureOrder ?? .distantFuture) < ($1.original.photoInformation?.captureOrder ?? .distantFuture)
+    }
+    case .fileType, .camera, .lens:
+      let key: KeyPath<RawPhotoInformation, String?>
+      switch order {
+      case .fileType: key = \.formatSortName
+      case .camera: key = \.cameraSortName
+      default: key = \.lens
+      }
+      sorted = matching.sorted {
+        let first = $0.original.photoInformation?[keyPath: key] ?? ""
+        let second = $1.original.photoInformation?[keyPath: key] ?? ""
+        return first.localizedStandardCompare(second) == .orderedAscending
+      }
     case .rating: sorted = matching.sorted { ($0.marking.rating ?? 0) < ($1.marking.rating ?? 0) }
     case .label:
       sorted = matching.sorted {
@@ -80,6 +95,7 @@ import SwiftUI
   var canRedo: Bool { !redo.isEmpty }
   var activeSettings: RawDevelopment? { photos.first { $0.id == activeID }?.settings }
   var activeName: String? { photos.first { $0.id == activeID }?.name }
+  var activeInformation: RawPhotoInformation? { photos.first { $0.id == activeID }?.original.photoInformation }
   var defaultOpenAsObject: Bool { controller?.cameraRawPreferences.openAsSmartObject ?? false }
   var workflowOutput: RawWorkflowOutput { controller?.cameraRawPreferences.workflowOutput ?? .init() }
   var canFinish: Bool { !selection.isEmpty && !busy && !closed }
@@ -523,4 +539,9 @@ import SwiftUI
     onClose = nil
     callback?()
   }
+}
+
+private extension RawPhotoInformation {
+  var formatSortName: String? { formatTitle }
+  var cameraSortName: String? { camera }
 }

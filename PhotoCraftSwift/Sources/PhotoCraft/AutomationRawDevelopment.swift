@@ -145,11 +145,16 @@ extension AutomationService {
     let expected = revision(document.store)
     guard command.revision == expected else { throw AutomationFailure(status:409,message:"Stale document revision.") }
     let (layerID,object) = try command.rawTarget(document.store.document)
-    let worker = Task.detached { try RawSourceIO.inspect(object.data,decoderVersion:object.rawDevelopment?.decoderVersion) }
-    let info = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+    let worker = Task.detached {
+      let sensor = try RawSourceIO.inspect(object.data, decoderVersion: object.rawDevelopment?.decoderVersion)
+      let file = try RawSourceIO.photoInformation(object.data, fileName: object.fileName, sensor: sensor)
+      return (sensor, file)
+    }
+    let (info, file) = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
     guard isRunning,shares.contains(where: { $0.id == shareID && $0.document === document }),revision(document.store) == expected else { throw AutomationFailure(status:409,message:"RAW source changed or sharing ended.") }
     var result = try JSONSerialization.jsonObject(with:JSONEncoder().encode(info)) as! [String:Any]
     result["settings"] = try JSONSerialization.jsonObject(with:JSONEncoder().encode(object.rawDevelopment!))
+    result["photoInformation"] = try JSONSerialization.jsonObject(with: JSONEncoder().encode(file))
     result["revision"] = expected
     if RawMarkingAPI.isSingleOriginal(layerID, in: document.store.document) {
       result["photoMarking"] = try RawPhotoMarking.read(in: document.store.document).apiValue

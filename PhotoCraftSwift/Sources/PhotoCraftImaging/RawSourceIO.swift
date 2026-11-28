@@ -384,6 +384,7 @@ public enum RawSourceIO {
     package let url: URL
     package let settingsSource: RawSettingsSource?
     package let sensorInfo: Info?
+    package let photoInformation: RawPhotoInformation?
     package let marking: RawPhotoMarking
     package var settings: RawDevelopment { description.initial }
 
@@ -440,8 +441,12 @@ public enum RawSourceIO {
     }
     try input.validateUnchanged()
     let marking = RawPhotoMarking.read(description.metadata?[RasterMetadata.xmpKey]).overlay(RawPhotoMarking.read(related?.data))
+    let originalPacket = mediaType == "image/x-adobe-dng" ? try? embeddedDNGXMP(data) : nil
     return LocalOriginal(bytes: bytes, description: description, url: url, settingsSource: source,
-      sensorInfo: info, marking: marking)
+      sensorInfo: info, photoInformation: info.map {
+        RawPhotoInformation(fileName: url.lastPathComponent, byteCount: input.count, sensor: $0,
+          metadata: description.metadata, originalXMP: originalPacket)
+      }, marking: marking)
   }
   public static func open(_ data: Data, fileName: String, settings requested: RawDevelopment? = nil,
     depth: PixelDepth = .u16) throws -> CraftDocument {
@@ -481,8 +486,15 @@ public enum RawSourceIO {
     let initial: RawDevelopment
   }
 
-  private static func describeSource(_ data: Data, requested: RawDevelopment?, rawDefaults: RawDefaults) throws -> SourceDescription {
+  package static func photoInformation(_ data: Data, fileName: String, sensor: Info) throws -> RawPhotoInformation {
     let sourceType = type(data)
+    let originalPacket = sourceType == "com.adobe.raw-image" ? try? embeddedDNGXMP(data) : nil
+    return try RawPhotoInformation(fileName: fileName, byteCount: data.count, sensor: sensor,
+      metadata: sourceMetadata(data, sourceType: sourceType).metadata, originalXMP: originalPacket)
+  }
+
+  private static func sourceMetadata(_ data: Data, sourceType: String?)
+    throws -> (properties: [CFString: Any]?, metadata: [String: Data]?) {
     let options = sourceType.map { [kCGImageSourceTypeIdentifierHint: $0] as CFDictionary }
     let source = CGImageSourceCreateWithData(data as CFData, options)
     let properties = source.flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) as? [CFString: Any] }
@@ -494,6 +506,12 @@ public enum RawSourceIO {
       captured[RasterMetadata.xmpKey] = packet
       metadata = captured
     }
+    return (properties, metadata)
+  }
+
+  private static func describeSource(_ data: Data, requested: RawDevelopment?, rawDefaults: RawDefaults) throws -> SourceDescription {
+    let sourceType = type(data)
+    let (properties, metadata) = try sourceMetadata(data, sourceType: sourceType)
     let embedded = (metadata?[RasterMetadata.xmpKey]).flatMap { try? CameraRawXMP.readStored($0) }
     let initial: RawDevelopment
     if let requested { initial = requested }

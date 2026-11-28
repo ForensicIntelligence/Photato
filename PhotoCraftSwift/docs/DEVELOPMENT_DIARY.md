@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 808 — Inspect and sort Camera Raw photo metadata
+
+Camera Raw can show a photo’s filename, format, size, camera, lens, capture time, caption and copyright. Sort by capture date, file type, camera or lens without changing the selected photos.
+
+The native workspace sorted two owned DNGs by their actual capture instants across different time zones. Their displayed wall times run in the opposite order. Both originals remained byte-identical after inspection and sorting.
+
+The field list follows Adobe’s Photo Info documentation. [Adobe Camera Raw overview](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/introduction-camera-raw.html).
+
+Xcode built the app. All eighteen focused application tests passed. Both optimized architectures passed all 395 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The tests used owned DNGs and the authenticated HTTP endpoint. Photo Info’s layout and sorting were not compared against Adobe’s newer full Grid workspace. Grid, Stacks and Adobe renderer comparisons remain open.
+
+[Development record](DEVLOG.md#dev-step-808) · [Qualification](SOURCE_PUBLICATION_808.md).
+
 ## 2026-11-28 — Step 807 — Rate and filter Camera Raw photos
 
 The Camera Raw filmstrip can rate, label, sort and filter its photos. Number keys assign stars and color labels. A rating or label can use the existing XMP sidecar or an embedded DNG packet. Rating-only saves preserve Camera Raw adjustments.
@@ -2809,11 +2823,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:807 -->
+<!-- current-status-step:808 -->
 
-The Camera Raw filmstrip can rate, label, sort and filter its photos. Number keys assign stars and color labels. A rating or label can use the existing XMP sidecar or an embedded DNG packet. Rating-only saves preserve Camera Raw adjustments.
+Camera Raw can show a photo’s filename, format, size, camera, lens, capture time, caption and copyright. Sort by capture date, file type, camera or lens without changing the selected photos.
 
-[Development record](DEVLOG.md#dev-step-807) · [Qualification](SOURCE_PUBLICATION_807.md).
+[Development record](DEVLOG.md#dev-step-808) · [Qualification](SOURCE_PUBLICATION_808.md).
 
 <!-- current-status:end -->
 
@@ -3827,6 +3841,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 805 | [Open and synchronize multiple Camera Raw photos](DEVLOG.md#dev-step-805) |
 | 2026-11-28 | 806 | [Save multiple developed Camera Raw images](DEVLOG.md#dev-step-806) |
 | 2026-11-28 | 807 | [Rate and filter Camera Raw photos](DEVLOG.md#dev-step-807) |
+| 2026-11-28 | 808 | [Inspect and sort Camera Raw photo metadata](DEVLOG.md#dev-step-808) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

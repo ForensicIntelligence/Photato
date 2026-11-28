@@ -9,15 +9,18 @@ public enum FileInfoMetadata {
   public static func packet(_ document: CraftDocument) throws -> Data? {
     try RasterMetadata.xmpData(document.sourceMetadata)
   }
-  private static func metadata(_ document: CraftDocument) throws -> CGImageMetadata? {
-    guard let data = try packet(document) else { return nil }
+  private static func metadata(_ source: [String: Data]?) throws -> CGImageMetadata? {
+    guard let data = try RasterMetadata.xmpData(source) else { return nil }
     guard data.count <= maximumPacketBytes, let value = CGImageMetadataCreateFromXMPData(data as CFData) else {
       throw CraftError.invalid("The document contains invalid XMP metadata.")
     }
     return value
   }
   public static func read(_ document: CraftDocument) throws -> FileInformation {
-    let metadata = try metadata(document)
+    try readSource(document.sourceMetadata)
+  }
+  static func readSource(_ source: [String: Data]?) throws -> FileInformation {
+    let metadata = try metadata(source)
     func string(_ path: String) -> String {
       guard let metadata else { return "" }
       return CGImageMetadataCopyStringValueWithPath(metadata, nil, path as CFString) as String? ?? ""
@@ -45,7 +48,7 @@ public enum FileInfoMetadata {
     default: break
     }
     // Raster formats may contain IPTC/TIFF descriptions without an XMP packet.
-    if let bytes = document.sourceMetadata?[RasterMetadata.propertiesKey], bytes.count <= maximumPacketBytes,
+    if let bytes = source?[RasterMetadata.propertiesKey], bytes.count <= maximumPacketBytes,
       let properties = try PropertyListSerialization.propertyList(from: bytes, options: [], format: nil) as? [String: Any] {
       let iptc = properties[kCGImagePropertyIPTCDictionary as String] as? [String: Any] ?? [:]
       let tiff = properties[kCGImagePropertyTIFFDictionary as String] as? [String: Any] ?? [:]
@@ -64,7 +67,7 @@ public enum FileInfoMetadata {
     guard fields.isSubset(of: Set(FileInformation.fields)) else { throw CraftError.invalid("Unknown File Info field.") }
     let fields = fields.intersection(info.changedFields(from: try read(document)))
     guard !fields.isEmpty else { return document }
-    let original = try metadata(document)
+    let original = try metadata(document.sourceMetadata)
     let metadata = original.flatMap(CGImageMetadataCreateMutableCopy) ?? CGImageMetadataCreateMutable()
     func remove(_ path: String) { _ = CGImageMetadataRemoveTagWithPath(metadata, nil, path as CFString) }
     func scalar(_ path: String, _ value: String) throws {

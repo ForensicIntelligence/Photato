@@ -19,6 +19,10 @@ enum RawFilmstripLabel: String, CaseIterable {
 enum RawFilmstripOrder: String, CaseIterable {
   case opening = "Opening Order"
   case name = "File Name"
+  case captureDate = "Capture Date"
+  case fileType = "File Type"
+  case camera = "Camera"
+  case lens = "Lens"
   case rating = "Star Rating"
   case label = "Color Label"
 }

@@ -1,5 +1,6 @@
 import AppKit
 import PhotoCraftCore
+import PhotoCraftImaging
 import SwiftUI
 
 extension CraftDocumentController {
@@ -55,6 +56,7 @@ private struct RawFilmstripView: View {
   @State private var visible = true
   @State private var showingSync = false
   @State private var showingFilters = false
+  @State private var showingInformation = false
   @State private var groups = Set(RawSettingsGroup.allCases)
 
   var body: some View {
@@ -77,6 +79,13 @@ private struct RawFilmstripView: View {
           Divider()
           Button("Select Rated") { workspace.selectRated() }
         }
+        Button("Photo Info", systemImage: "info.circle") { showingInformation.toggle() }
+          .labelStyle(.iconOnly)
+          .help("Read the active RAW photo’s file and capture metadata.")
+          .disabled(workspace.activeInformation == nil)
+          .popover(isPresented: $showingInformation) {
+            if let information = workspace.activeInformation { RawPhotoInformationView(information: information) }
+          }
         Spacer()
         Text("\(workspace.selection.count) of \(workspace.displayedPhotos.count) selected").monospacedDigit()
         Button("Select All") { workspace.selectAll() }.keyboardShortcut("a", modifiers: .command)

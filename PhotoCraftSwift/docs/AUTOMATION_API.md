@@ -1,3 +1,9 @@
+### Camera Raw photo information (checkpoint 808)
+
+The authenticated `raw.inspect` response now includes `photoInformation` for an eligible RAW source. Reading it leaves the document revision and Undo history intact.
+
+[Qualification](SOURCE_PUBLICATION_808.md).
+
 ### Camera Raw rating and color labels (checkpoint 807)
 
 Authenticated `raw.markPhoto` edits a single-original shared document’s XMP rating or label through native Undo. `raw.inspect` reports it, and `raw.saveSourceSettings` accepts `photoMarkingOnly` for an authorized metadata-only write.

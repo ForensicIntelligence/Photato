@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 808.** Inspect and sort Camera Raw photo metadata. [Qualification](docs/SOURCE_PUBLICATION_808.md).
+
 **Source checkpoint 807.** Rate and filter Camera Raw photos. [Qualification](docs/SOURCE_PUBLICATION_807.md).
 
 **Source checkpoint 806.** Save multiple developed Camera Raw images. [Qualification](docs/SOURCE_PUBLICATION_806.md).
