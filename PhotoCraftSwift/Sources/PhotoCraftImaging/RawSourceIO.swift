@@ -573,8 +573,9 @@ public enum RawSourceIO {
     let sensor = try (previous?.key == key ? previous : nil) ?? readSensor(key, settings: requested)
     var settings = requested
     settings.decoderVersion = sensor.info.decoderVersion
-    let pixels = try CameraRawEngine.develop(sensor.pixels, settings: settings.adjustments,
+    var pixels = try CameraRawEngine.develop(sensor.pixels, settings: settings.adjustments,
       maximumPixels: maximumPixels)
+    if let crop = settings.crop { pixels = try pixels.cropped(to: crop.rectangle(width: pixels.width, height: pixels.height)) }
     return (pixels, settings, sensor)
   }
 
@@ -613,6 +614,7 @@ public enum RawSourceIO {
     guard !bounds.isNull,!bounds.isInfinite,bounds.width.isFinite,bounds.height.isFinite,bounds.origin.x.isFinite,bounds.origin.y.isFinite,
       bounds.width >= 1,bounds.height >= 1,bounds.width <= CGFloat(maximumDimension),bounds.height <= CGFloat(maximumDimension),bounds.width*bounds.height <= CGFloat(maximumPixels),bounds.width.rounded() == bounds.width,bounds.height.rounded() == bounds.height else { throw CraftError.unsupported("RAW sensor output has invalid or oversized dimensions.") }
     let w = Int(bounds.width), h = Int(bounds.height)
+    let transparency = info.type == "com.adobe.raw-image" ? try RawLinearDNG.transparencyMask(in: key.data, width: w, height: h) : nil
     let space = CGColorSpace(name:CGColorSpace.extendedLinearSRGB)!
     let context = CIContext(options:[.workingColorSpace:space,.outputColorSpace:space,.cacheIntermediates:false])
     let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
@@ -624,10 +626,12 @@ public enum RawSourceIO {
       let rect = CGRect(x: bounds.minX, y: bounds.minY + CGFloat(h - y - rows), width: CGFloat(w), height: CGFloat(rows))
       context.render(image, toBitmap: &buffer, rowBytes: w * 16, bounds: rect, format: .RGBAf, colorSpace: space)
     }
-    func copyBand(rows: Int, into pixels: inout Surface, top: Int) throws {
+    func copyBand(rows: Int, into pixels: inout Surface, top: Int, sourceY: Int) throws {
       for row in 0..<rows { for x in 0..<w {
         let offset = (row * w + x) * 4
-        let pixel = Pixel(buffer[offset], buffer[offset + 1], buffer[offset + 2], buffer[offset + 3])
+        let decodedAlpha = buffer[offset + 3]
+        let mask = transparency.map { Float($0[(sourceY + row) * w + x]) / 255 } ?? 1
+        let pixel = Pixel(buffer[offset], buffer[offset + 1], buffer[offset + 2], min(decodedAlpha, mask))
         guard pixel.isFinite else { throw CraftError.invalid("The RAW decoder produced nonfinite sensor pixels.") }
         if depth == .f32 { pixels.setLinearPixel(x: x, y: top + row, pixel) }
         else { pixels.setPixel(x: x, y: top + row, SRGBTransfer.encoded(pixel)) }
@@ -640,7 +644,7 @@ public enum RawSourceIO {
         let count = min(rows, h - y)
         try renderBand(at: y, rows: count)
         var band = try Surface(width: w, height: count, depth: depth, colorEncoding: encoding)
-        try copyBand(rows: count, into: &band, top: 0)
+        try copyBand(rows: count, into: &band, top: 0, sourceY: y)
         try paged.append(band, atX: 0, atY: y)
       }
       pixels = try paged.finish()
@@ -649,7 +653,7 @@ public enum RawSourceIO {
       for y in stride(from: 0, to: h, by: rows) {
         let count = min(rows, h - y)
         try renderBand(at: y, rows: count)
-        try copyBand(rows: count, into: &dense, top: y)
+        try copyBand(rows: count, into: &dense, top: y, sourceY: y)
       }
       pixels = dense
     }

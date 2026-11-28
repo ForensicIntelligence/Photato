@@ -52,7 +52,8 @@ public enum CameraRawXMP {
     var names = Set(scalars.map(\.0))
     names.formUnion(splits)
     names.formUnion(curves.map(\.0))
-    names.formUnion(["WhiteBalance", "Temperature", "Tint", "PostCropVignetteStyle"])
+    names.formUnion(["WhiteBalance", "Temperature", "Tint", "PostCropVignetteStyle", "HasCrop",
+      "CropLeft", "CropTop", "CropRight", "CropBottom", "CropAngle"])
     for (field, _) in mixer { names.formUnion(colors.map { field + $0 }) }
     for (_, hue, saturation, luminance) in grading { names.formUnion([hue, saturation, luminance]) }
     return names
@@ -111,6 +112,14 @@ public enum CameraRawXMP {
     } else {
       result.temperature = try packet.float("Temperature") ?? result.temperature
       result.tint = try packet.float("Tint") ?? result.tint
+    }
+    let hasCrop = packet.string("HasCrop")?.lowercased()
+    if hasCrop == "false" { result.crop = nil }
+    else if hasCrop == "true", try (packet.float("CropAngle") ?? 0) == 0,
+      let left = try packet.float("CropLeft"), let top = try packet.float("CropTop"),
+      let right = try packet.float("CropRight"), let bottom = try packet.float("CropBottom"),
+      let crop = try? RawCropBounds(left: left, top: top, right: right, bottom: bottom) {
+      result.crop = crop
     }
     try result.validate()
     return result
@@ -267,6 +276,17 @@ public enum CameraRawXMP {
       else if sensor != nil { CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):Temperature" as CFString) }
       if let tint = sensor?.tint { try setNumber("Tint", tint) }
       else if sensor != nil { CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):Tint" as CFString) }
+    }
+    if let crop = sensor?.crop, crop != previous?.crop {
+      try set("HasCrop", "True" as CFString)
+      try setNumber("CropLeft", crop.left)
+      try setNumber("CropTop", crop.top)
+      try setNumber("CropRight", crop.right)
+      try setNumber("CropBottom", crop.bottom)
+      try setNumber("CropAngle", 0)
+    } else if let sensor, sensor.crop == nil {
+      let previousCrop = previous?.crop ?? original.flatMap { try? read($0, into: RawDevelopment()).crop }
+      if previousCrop != nil { try set("HasCrop", "False" as CFString) }
     }
     let previousAdjustments = previous?.adjustments
     for (field, control) in scalars {

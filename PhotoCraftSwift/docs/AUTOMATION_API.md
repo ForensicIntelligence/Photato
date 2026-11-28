@@ -1,3 +1,15 @@
+### Camera Raw panorama merge (checkpoint 816)
+
+Send `raw.mergePanorama` to `POST /v1/documents/{id}/commands` with the current `revision` and `parameters.layerIDs`, an ordered list of two to sixteen distinct embedded RAW Smart Object layer UUIDs. Enable document transfers to download the `image/x-adobe-dng` result. The operation leaves the shared document and its Undo history intact.
+
+`projection` accepts `spherical` (default), `cylindrical`, and `perspective`. `boundaryWarp` accepts 0–100 (default 0). `fillEdges` defaults to `false`; `autoCrop` and `autoSettings` default to `true`. Auto Crop records editable XMP settings and retains the full sensor and transparency data. Camera Raw's Reset Crop and `raw.develop` with `settings.crop: null` restore access to the uncropped scene. To set an axis-aligned crop through `raw.develop`, supply `settings.crop` with normalized `left`, `top`, `right`, and `bottom` coordinates.
+
+Working limits are 16 MP per source, 32 MP combined and 16 MP for the panorama. Fill Edges supports output up to 4 MP. The published Adobe v2 API has no dedicated RAW panorama endpoint.
+
+The authenticated `raw.mergePanorama` download matched the native saved DNG byte for byte in the workflow test. Capability discovery now exposes 301 commands, including panorama options and the `raw.develop` normalized crop setting.
+
+[Qualification](SOURCE_PUBLICATION_816.md).
+
 ### Camera Raw HDR Auto Settings (checkpoint 815)
 
 Send `raw.mergeHDR` to `POST /v1/documents/{id}/commands` with the current `revision` and the distinct embedded RAW exposure `layerIDs` in `parameters`. Enable document transfers to receive a linear `image/x-adobe-dng` download. The command does not modify the document or its undo history.

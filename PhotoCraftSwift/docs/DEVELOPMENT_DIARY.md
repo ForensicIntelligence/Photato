@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 816 — Stitch Camera Raw panoramas with an editable crop
+
+Select overlapping RAW photos and press Command-M to preview a Spherical, Cylindrical or Perspective panorama. Boundary Warp and Fill Edges refine the edges. Auto Crop records an editable setting and retains the full stitched scene and transparency. Command-Shift-M goes to the save step with the remembered options.
+
+Three owned RAW inputs registered with 173 matches. Adobe and Photato produced a 733 × 364 crop in the fixed-order perspective comparison. Both files were developed through the same Apple decoder for the comparison. Their mean absolute linear RGB difference was 0.0368. Photoshop Camera Raw also opened a separate Photato-saved DNG from the live workflow, with its 735 × 364 crop and the editable settings in place.
+
+The native filmstrip opened Command-M, applied Perspective with Command-3, saved a fourth photo from three originals, and verified Reset Crop and Undo. Adobe Camera Raw 18.1.1 reopened the saved DNG. [Adobe Camera Raw panorama workflow](https://helpx.adobe.com/camera-raw/desktop/hdr-and-advanced-output/create-panoramas.html).
+
+Xcode built the app and 51 focused application and imaging checks passed, including four added checks. Both optimized architectures passed all 426 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+HDR Panorama, larger brackets and exact Adobe projection, edge synthesis and rendered samples remain open. Photo registration supports 16 MP per source, 32 MP combined and a 16 MP result. Fill Edges supports up to 4 MP. Photato reads its standard 8-bit uncompressed transparency plane. Adobe’s compressed transparency planes still need qualification.
+
+[Development record](DEVLOG.md#dev-step-816) · [Qualification](SOURCE_PUBLICATION_816.md).
+
 ## 2026-11-28 — Step 815 — Apply editable HDR automatic tone and color
 
 Apply Auto Settings in Camera Raw HDR Merge now writes Exposure, Contrast, Highlights, Shadows, Whites, Blacks, Vibrance and Saturation into the output DNG as editable Camera Raw settings. The dialog preview uses the same settings.
@@ -2921,11 +2935,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:815 -->
+<!-- current-status-step:816 -->
 
-Apply Auto Settings in Camera Raw HDR Merge now writes Exposure, Contrast, Highlights, Shadows, Whites, Blacks, Vibrance and Saturation into the output DNG as editable Camera Raw settings. The dialog preview uses the same settings.
+Select overlapping RAW photos and press Command-M to preview a Spherical, Cylindrical or Perspective panorama. Boundary Warp and Fill Edges refine the edges. Auto Crop records an editable setting and retains the full stitched scene and transparency. Command-Shift-M goes to the save step with the remembered options.
 
-[Development record](DEVLOG.md#dev-step-815) · [Qualification](SOURCE_PUBLICATION_815.md).
+[Development record](DEVLOG.md#dev-step-816) · [Qualification](SOURCE_PUBLICATION_816.md).
 
 <!-- current-status:end -->
 
@@ -3947,6 +3961,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 813 | [Merge Camera Raw exposures into editable HDR DNGs](DEVLOG.md#dev-step-813) |
 | 2026-11-28 | 814 | [Fuse scene-linear HDR exposure brackets](DEVLOG.md#dev-step-814) |
 | 2026-11-28 | 815 | [Apply editable HDR automatic tone and color](DEVLOG.md#dev-step-815) |
+| 2026-11-28 | 816 | [Stitch Camera Raw panoramas with an editable crop](DEVLOG.md#dev-step-816) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

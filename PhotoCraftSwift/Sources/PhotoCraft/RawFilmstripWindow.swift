@@ -38,13 +38,13 @@ extension CraftDocumentController {
     window.center()
     keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak window, weak workspace] event in
       guard let window, let workspace, window.isKeyWindow, event.window === window,
-        workspace.handleHDRMergeKey(event) || workspace.handlePresentationKey(event) || workspace.handleMarkingKey(event) else { return event }
+        workspace.handlePhotoMergeKey(event) || workspace.handlePresentationKey(event) || workspace.handleMarkingKey(event) else { return event }
       return nil
     }
   }
 
   required init?(coder: NSCoder) { nil }
-  func windowShouldClose(_ sender: NSWindow) -> Bool { !workspace.finishing && workspace.hdrMergeRequest == nil }
+  func windowShouldClose(_ sender: NSWindow) -> Bool { !workspace.finishing && workspace.hdrMergeRequest == nil && workspace.panoramaRequest == nil }
   func windowWillClose(_ notification: Notification) {
     if let keyMonitor { NSEvent.removeMonitor(keyMonitor); self.keyMonitor = nil }
     Task { workspace.close() }
@@ -92,7 +92,9 @@ private struct RawFilmstripView: View {
           Divider()
           visibilityCommands()
           Divider()
-          mergeHDRCommand()
+          mergeCommands()
+          Button("Reset Crop") { workspace.resetRawCrop() }
+            .disabled(workspace.activeSettings?.crop == nil || workspace.busy)
         }
         Button("Photo Info", systemImage: "info.circle") { showingInformation.toggle() }
           .labelStyle(.iconOnly)
@@ -197,6 +199,9 @@ private struct RawFilmstripView: View {
     }
     .sheet(item: Bindable(workspace).hdrMergeRequest) { request in
       RawFilmstripHDRMergeView(workspace: workspace, request: request)
+    }
+    .sheet(item: Bindable(workspace).panoramaRequest) { request in
+      RawFilmstripPanoramaView(workspace: workspace, request: request)
     }
   }
 
@@ -309,13 +314,15 @@ private struct RawFilmstripView: View {
       Divider()
       visibilityCommands(for: photo.id)
       Divider()
-      mergeHDRCommand(for: photo.id)
+      mergeCommands(for: photo.id)
     }
   }
 
-  private func mergeHDRCommand(for photo: UUID? = nil) -> some View {
+  @ViewBuilder private func mergeCommands(for photo: UUID? = nil) -> some View {
     Button("Merge to HDR…") { workspace.beginHDRMerge(contextPhoto: photo) }
       .disabled(!workspace.canMergeHDR(contextPhoto: photo))
+    Button("Merge to Panorama…") { workspace.beginPanorama(contextPhoto: photo) }
+      .disabled(!workspace.canMergePanorama(contextPhoto: photo))
   }
 
   @ViewBuilder private var emptyPhotoMessage: some View {

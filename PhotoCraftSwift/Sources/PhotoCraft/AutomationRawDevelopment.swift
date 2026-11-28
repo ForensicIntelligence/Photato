@@ -5,7 +5,11 @@ import PhotoCraftImaging
 extension RawDevelopment {
   static var apiSchema: [String:Any] {
     let nullableNumber: (Double,Double) -> [String:Any] = { a,b in ["anyOf":[["type":"null"],["type":"number","minimum":a,"maximum":b]]] }
+    let coordinate: [String:Any] = ["type":"number","minimum":0,"maximum":1]
+    let bounds: [String:Any] = ["type":"object","additionalProperties":false,"required":["left","top","right","bottom"],
+      "properties":["left":coordinate,"top":coordinate,"right":coordinate,"bottom":coordinate]]
     return ["type":"object","additionalProperties":false,"properties":[
+      "crop":["anyOf":[["type":"null"],bounds]],
       "decoderVersion":["type":["string","null"],"maxLength":64],
       "temperature":nullableNumber(2000,50000),"tint":nullableNumber(-150,150),
       "exposure":["type":"number","minimum":-5,"maximum":5],"boost":["type":"number","minimum":0,"maximum":1],
@@ -13,7 +17,7 @@ extension RawDevelopment {
       "lensCorrection":["type":["boolean","null"]],"highlightRecovery":["type":["boolean","null"]],"adjustments":CameraRawSettings.apiSchema]]
   }
   static var apiCapabilities: [String:Any] {
-    ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",RawSynchronizationAPI.name,RawBatchExportAPI.name,RawHDRMergeAPI.name,RawMarkingAPI.name,CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
+    ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",RawSynchronizationAPI.name,RawBatchExportAPI.name,RawHDRMergeAPI.name,RawPanoramaAPI.name,RawMarkingAPI.name,CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
      "maximumSourceBytes":DocumentIO.maximumUploadBytes,"maximumLocalSourceBytes":SmartObject.maximumCameraRawSourceBytes,
      "maximumSensorPixels":RawSourceIO.maximumPixels,"maximumSensorSide":RawSourceIO.maximumDimension,
      "maximumSpatialAdjustmentPixels":RawSourceIO.maximumPixels,
@@ -26,6 +30,9 @@ extension RawDevelopment {
      "hdrMerge":["maximumExposures":RawHDRMerge.sourceCount.upperBound,"maximumPixelsPerExposure":HDRMerge.maximumPixels,
        "maximumCombinedPixels":HDRMerge.maximumTotalPixels,"contentType":"image/x-adobe-dng",
        "behavior":"Downloads a linear HDR DNG from distinct RAW layers with complete shutter, aperture and ISO metadata."],
+     "panoramaMerge":["maximumPhotos":RawPanorama.sourceCount.upperBound,"maximumPixelsPerPhoto":PhotoAlign.maximumPixels,
+       "maximumCombinedPixels":PhotoAlign.maximumTotalPixels,"maximumFillPixels":PhotoBlend.maximumPixels,
+       "contentType":"image/x-adobe-dng","resetCrop":"Set raw.develop settings.crop to null to restore the full scene."],
      "inspectOptionalFields":["iso":["type":"number","exclusiveMinimum":0,"description":"EXIF ISO when recorded."],
        "photoMarking":["description":"XMP rating and label for a document containing a single original RAW layer."]],
      "import":"POST /v1/documents/import; optional X-Photato-Open-Format: raw. Upload retains existing4MP/64MiB API limits. File Open and Place Embedded accept supported camera RAW types and read their matching XMP sidecar or embedded settings. For HTTP import, X-Photato-Raw-XMP accepts up to 8 KiB of base64-decoded XMP with the sensor bytes. X-Photato-Raw-Open-Mode supports image, object (default), or copy.",

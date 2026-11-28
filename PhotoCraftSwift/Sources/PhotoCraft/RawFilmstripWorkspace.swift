@@ -50,6 +50,7 @@ import SwiftUI
   static let gridSizeRange = 96.0...280.0
   var presentation = RawFilmstripPresentation.loupe
   var hdrMergeRequest: RawFilmstripHDRRequest?
+  var panoramaRequest: RawFilmstripPanoramaRequest?
   var gridThumbnailSize = defaultGridSize
   var gridDetails = RawGridDetails.all
   private(set) var ratingFilter = RawFilmstripRatingFilter.all
@@ -124,7 +125,7 @@ import SwiftUI
   func setWorkflow(_ output: RawWorkflowOutput) { controller?.cameraRawPreferences.workflowOutput = output }
 
   func canMergeHDR(contextPhoto: UUID? = nil) -> Bool {
-    !busy && !closed && hdrMergeRequest == nil
+    !busy && !closed && hdrMergeRequest == nil && panoramaRequest == nil
       && RawHDRMerge.sourceCount.contains(visibilityTargets(contextPhoto: contextPhoto).count)
   }
 
@@ -140,7 +141,12 @@ import SwiftUI
   func dismissHDRMerge() { hdrMergeRequest = nil }
 
   func saveHDRMerge(_ result: RawHDRMerge.Result, to url: URL, requestID: UUID) async throws -> Photo {
-    guard let controller, let request = hdrMergeRequest, request.id == requestID, !closed else { throw CancellationError() }
+    guard hdrMergeRequest?.id == requestID else { throw CancellationError() }
+    return try await saveMergedDNG(to: url) { try result.write(to: $0) }
+  }
+
+  func saveMergedDNG(to url: URL, write: @escaping @Sendable (URL) throws -> Void) async throws -> Photo {
+    guard let controller, !closed else { throw CancellationError() }
     let destination = url.standardizedFileURL.resolvingSymlinksInPath()
     guard destination.pathExtension.lowercased() == "dng", !photos.contains(where: {
       $0.original.url.standardizedFileURL.resolvingSymlinksInPath() == destination
@@ -152,7 +158,7 @@ import SwiftUI
     let worker = Task.detached(priority: .userInitiated) {
       let access = url.startAccessingSecurityScopedResource()
       defer { if access { url.stopAccessingSecurityScopedResource() } }
-      try result.write(to: url)
+      try write(url)
       let source = try RawSourceIO.prepareLocalOriginal(url, dngStorage: storage, rawDefaults: defaults)
       return Photo(id: UUID(), original: source, thumbnail: source.thumbnail(),
         settings: source.settings, marking: source.marking)
@@ -163,6 +169,11 @@ import SwiftUI
   func acceptHDRMerge(_ photo: Photo, requestID: UUID, settings: RawHDRMergeSettings) {
     guard !closed, hdrMergeRequest?.id == requestID else { return }
     controller?.cameraRawPreferences.hdrMerge = settings
+    addMergedPhoto(photo)
+    dismissHDRMerge()
+  }
+
+  func addMergedPhoto(_ photo: Photo) {
     photos.append(photo)
     if displayedPhotos.contains(where: { $0.id == photo.id }) {
       select(photo.id)
@@ -170,7 +181,32 @@ import SwiftUI
     } else {
       exportStatus = "Saved \(photo.name). The current filters hide it."
     }
-    dismissHDRMerge()
+  }
+
+  func canMergePanorama(contextPhoto: UUID? = nil) -> Bool {
+    !busy && !closed && hdrMergeRequest == nil && panoramaRequest == nil
+      && RawPanorama.sourceCount.contains(visibilityTargets(contextPhoto: contextPhoto).count)
+  }
+
+  func beginPanorama(contextPhoto: UUID? = nil, skipPreview: Bool = false) {
+    guard canMergePanorama(contextPhoto: contextPhoto) else { return }
+    let ids = visibilityTargets(contextPhoto: contextPhoto)
+    let inputs = displayedPhotos.filter { ids.contains($0.id) }
+    guard RawPanorama.sourceCount.contains(inputs.count) else { return }
+    panoramaRequest = RawFilmstripPanoramaRequest(photos: inputs, skipPreview: skipPreview,
+      settings: controller?.cameraRawPreferences.panoramaMerge ?? .init())
+  }
+
+  func savePanorama(_ result: RawPanorama.Result, to url: URL, requestID: UUID) async throws -> Photo {
+    guard panoramaRequest?.id == requestID else { throw CancellationError() }
+    return try await saveMergedDNG(to: url) { try result.write(to: $0) }
+  }
+
+  func acceptPanorama(_ photo: Photo, requestID: UUID, settings: RawPanoramaSettings) {
+    guard !closed, panoramaRequest?.id == requestID else { return }
+    controller?.cameraRawPreferences.panoramaMerge = settings
+    addMergedPhoto(photo)
+    panoramaRequest = nil
   }
 
   func thumbnail(for photo: Photo) -> CGImage? {
@@ -428,6 +464,12 @@ import SwiftUI
     if sliderStart == nil { record(snapshot) }
   }
 
+  func resetRawCrop() {
+    guard let activeID, var settings = activeSettings, settings.crop != nil else { return }
+    settings.crop = nil
+    apply(settings, to: activeID)
+  }
+
   func synchronize(_ groups: Set<RawSettingsGroup>) {
     guard !groups.isEmpty, !busy, let source = activeSettings else { return }
     let snapshot = selectedEdit
@@ -643,6 +685,7 @@ import SwiftUI
     guard !closed else { return }
     closed = true
     dismissHDRMerge()
+    panoramaRequest = nil
     previewTask?.cancel()
     operation?.cancel()
     folderPanel?.cancel(nil)

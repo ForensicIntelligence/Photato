@@ -2,13 +2,14 @@
 import Foundation
 import PhotoCraftCore
 
-/// A scene-referred linear DNG for an opaque, linear-sRGB HDR merge.
+/// A scene-referred linear sRGB DNG with optional transparency.
 package enum RawLinearDNG {
   private static let layout = TIFFContainer.Layout(bigTIFF: false)
   private static let order = TIFFContainer.Order.little
   private static let previewMaximumSide = 160
 
-  package static func write(_ document: CraftDocument, to url: URL, settings: CameraRawSettings? = nil) throws {
+  package static func write(_ document: CraftDocument, to url: URL, settings: CameraRawSettings? = nil,
+    preserveTransparency: Bool = false, crop: RawCropBounds? = nil) throws {
     try Task.checkCancellation()
     guard document.colorMode == .rgb, document.depth == .f32, document.modeDescriptor == nil,
       document.workingICC == nil, document.profileIsUntagged != true,
@@ -19,9 +20,10 @@ package enum RawLinearDNG {
     }
     try document.validate()
     let surface = try Renderer.composite(document)
-    let previewRequest = try RasterPreviewRequest.overview(width: surface.width, height: surface.height,
+    let thumbnailSurface = try crop.map { try surface.cropped(to: $0.rectangle(width: surface.width, height: surface.height)) } ?? surface
+    let previewRequest = try RasterPreviewRequest.overview(width: thumbnailSurface.width, height: thumbnailSurface.height,
       maximumSide: previewMaximumSide)
-    let preview = try previewRequest.reducing(surface)
+    let preview = try previewRequest.reducing(thumbnailSurface)
     let file = try AtomicFileWriter(to: url, maximumBytes: SmartObject.maximumCameraRawSourceBytes)
     defer { file.discard() }
     try file.append(layout.header(order: order))
@@ -36,6 +38,7 @@ package enum RawLinearDNG {
     let rowsPerStrip = max(1, AtomicFileWriter.chunkBytes / bytesPerRow)
     var stripOffsets = [Int](), stripLengths = [Int]()
     var peak: Float = 1
+    var hasTransparency = false
     for startRow in stride(from: 0, to: height, by: rowsPerStrip) {
       let endRow = min(startRow + rowsPerStrip, height)
       var samples = Data()
@@ -44,10 +47,12 @@ package enum RawLinearDNG {
         try Task.checkCancellation()
         for x in 0..<width {
           let pixel = surface.linearPixel(x: x, y: y)
-          guard pixel.isFinite, pixel.a == 1, min(pixel.r, pixel.g, pixel.b) >= 0,
+          guard pixel.isFinite, (preserveTransparency && (0...1).contains(pixel.a)) || pixel.a == 1,
+            min(pixel.r, pixel.g, pixel.b) >= 0,
             max(pixel.r, pixel.g, pixel.b) <= 65_504 else {
-            throw CraftError.unsupported("Linear DNG requires opaque, nonnegative HDR samples within the 16-bit floating-point range.")
+            throw CraftError.unsupported("The panorama or HDR merge has unsupported transparency or samples outside the linear DNG range.")
           }
+          hasTransparency = hasTransparency || pixel.a < 1
           peak = max(peak, pixel.r, pixel.g, pixel.b)
           try appendHalf(pixel.r, to: &samples)
           try appendHalf(pixel.g, to: &samples)
@@ -78,7 +83,9 @@ package enum RawLinearDNG {
     imageDirectory(thumbnail, width: preview.width, height: preview.height, bits: 8, photometric: 2,
       offsets: [previewOffset], lengths: [previewBytes.count], rowsPerStrip: preview.height)
     thumbnail.set(254, [1], type: 4)
-    thumbnail.root.fields[330] = .init(tag: 330, type: 4, count: 1, data: Data(), children: [raw.root])
+    var directories = [raw.root]
+    if hasTransparency { directories.append(try transparencyDirectory(surface, writingTo: file)) }
+    thumbnail.root.fields[330] = .init(tag: 330, type: 4, count: directories.count, data: Data(), children: directories)
     setASCII("Photato", tag: 271, in: thumbnail)
     setASCII("Linear HDR", tag: 272, in: thumbnail)
     setASCII("Photato", tag: 305, in: thumbnail)
@@ -93,14 +100,76 @@ package enum RawLinearDNG {
     setRationals([(1, 1), (1, 1), (1, 1)], tag: 50_728, in: thumbnail)
     setRationals([(stops, 1)], tag: 50_730, in: thumbnail, signed: true)
     thumbnail.set(50_778, [21]) // D65.
-    if let settings {
-      let packet = try CameraRawXMP.write(settings)
-      thumbnail.root.fields[700] = .init(tag: 700, type: 1, count: packet.count, data: packet)
+    let packet: Data?
+    if let crop {
+      var development = RawDevelopment()
+      development.crop = crop
+      development.adjustments = settings ?? .init()
+      packet = try CameraRawXMP.write(development)
+    } else {
+      packet = try settings.map { try CameraRawXMP.write($0) }
     }
+    if let packet { thumbnail.root.fields[700] = .init(tag: 700, type: 1, count: packet.count, data: packet) }
     let pointer = try thumbnail.writeDirectories(order: order, maximumOutput: SmartObject.maximumCameraRawSourceBytes,
       extent: { file.count }, emit: file.append, patch: { try file.patch($0, at: $1) })
     try file.patch(pointer, at: layout.headerPointerOffset)
     try file.commit()
+  }
+
+  // Core Image does not expose the alpha of an uncompressed DNG mask IFD.
+  // Recognize the standard single-channel, 8-bit strip layout used by our writer.
+  static func transparencyMask(in data: Data, width: Int, height: Int) throws -> Data? {
+    guard width <= PhotoAlign.maximumPixels / height, TIFFContainer.isClassic(data),
+      let file = try? TIFFContainer(data, metadata: false, additionalTags: [254], inspectSubIFDs: true,
+        maximumBytes: SmartObject.maximumCameraRawSourceBytes) else { return nil }
+    func integers(_ field: TIFFContainer.Field?) -> [Int] {
+      guard let field, field.type == 3 || field.type == 4 else { return [] }
+      let bytes = field.type == 3 ? 2 : 4
+      guard field.count <= field.data.count / bytes else { return [] }
+      return (0..<field.count).map { file.order.number(field.data, $0 * bytes, bytes) }
+    }
+    guard let mask = file.root.fields[330]?.children.first(where: { integers($0.fields[254]) == [4] }),
+      integers(mask.fields[256]) == [width], integers(mask.fields[257]) == [height],
+      integers(mask.fields[258]) == [8], integers(mask.fields[259]) == [1],
+      integers(mask.fields[262]) == [4], integers(mask.fields[277]) == [1],
+      integers(mask.fields[274]) == [1], integers(file.root.fields[274]) == [1],
+      let rows = integers(mask.fields[278]).first, rows > 0 else { return nil }
+    let offsets = integers(mask.fields[273]), lengths = integers(mask.fields[279])
+    let strips = (height - 1) / rows + 1
+    guard offsets.count == strips, lengths.count == strips else { return nil }
+    var alpha = Data(capacity: width * height)
+    for strip in 0..<strips {
+      try Task.checkCancellation()
+      let count = width * min(rows, height - strip * rows)
+      guard lengths[strip] == count, offsets[strip] <= data.count - count else { return nil }
+      alpha.append(try file.bytes(at: offsets[strip], count: count))
+    }
+    return alpha
+  }
+
+  private static func transparencyDirectory(_ surface: Surface, writingTo file: AtomicFileWriter) throws -> TIFFContainer.Directory {
+    let width = surface.width, height = surface.height
+    let rows = max(1, AtomicFileWriter.chunkBytes / width)
+    var offsets = [Int](), lengths = [Int]()
+    for top in stride(from: 0, to: height, by: rows) {
+      var mask = Data()
+      let bottom = min(height, top + rows)
+      mask.reserveCapacity(width * (bottom - top))
+      for y in top..<bottom {
+        try Task.checkCancellation()
+        for x in 0..<width { mask.append(UInt8((255 * unit(surface.linearPixel(x: x, y: y).a)).rounded())) }
+      }
+      offsets.append(file.count)
+      lengths.append(mask.count)
+      try file.append(mask)
+    }
+    let directory = TIFFContainer(order: order)
+    imageDirectory(directory, width: width, height: height, bits: 8, photometric: 4,
+      offsets: offsets, lengths: lengths, rowsPerStrip: rows)
+    directory.set(254, [4], type: 4)
+    directory.set(258, [8])
+    directory.set(277, [1])
+    return directory.root
   }
 
   private static func imageDirectory(_ directory: TIFFContainer, width: Int, height: Int, bits: Int, photometric: Int,

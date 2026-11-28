@@ -89,6 +89,68 @@ final class RawLinearDNGTests: XCTestCase {
     XCTAssertEqual(try sensorPayload(rawData, directory: raw), try sensorPayload(autoData, directory: auto))
   }
 
+  func testPanoramaLinearDNGStoresASeparateUnmattedTransparencyPlane() throws {
+    let (folder, url) = try destination()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    var pixels = try Surface(width: 256, height: 192, depth: .f32, colorEncoding: .linearRGB)
+    for y in 0..<pixels.height {
+      for x in 12..<pixels.width {
+        pixels.setLinearPixel(x: x, y: y, Pixel(0.5, 0.625, 0.75, x == 12 ? 0.5 : 1))
+      }
+    }
+    let document = try image(pixels)
+    XCTAssertThrowsError(try RawLinearDNG.write(document, to: url))
+    try RawLinearDNG.write(document, to: url, preserveTransparency: true)
+    let data = try Data(contentsOf: url)
+    let file = try TIFFContainer(data, metadata: false, additionalTags: [254], inspectSubIFDs: true)
+    let directories = try XCTUnwrap(file.root.fields[330]?.children)
+    XCTAssertEqual(directories.count, 2)
+    let mask = try XCTUnwrap(directories.first { $0.fields[254]?.data == Data([4, 0, 0, 0]) })
+    XCTAssertEqual(mask.fields[262]?.data, Data([4, 0]))
+    let offset = file.order.number(try XCTUnwrap(mask.fields[273]?.data), 0, 4)
+    XCTAssertEqual(Array(data[offset + 11...offset + 13]), [0, 128, 255])
+    let raw = try XCTUnwrap(directories.first { $0 !== mask })
+    let samples = file.order.number(try XCTUnwrap(raw.fields[273]?.data), 0, 4)
+    XCTAssertEqual(file.order.number(data, samples + 12 * 6, 2), 0x3800)
+    let info = try RawSourceIO.inspect(data)
+    XCTAssertEqual(info.nativeWidth, 256)
+    XCTAssertEqual(info.nativeHeight, 192)
+    let decoded = try RawSourceIO.render(data, settings: .init(), depth: .f32).0
+    XCTAssertEqual(decoded.linearPixel(x: 11, y: 0).a, 0)
+    XCTAssertEqual(decoded.linearPixel(x: 12, y: 0).a, 128.0 / 255.0, accuracy: 0.000_01)
+    XCTAssertEqual(decoded.linearPixel(x: 13, y: 0).a, 1)
+  }
+
+  func testAutoCropIsEditableAndRetainsTheEntireSensorAndMask() throws {
+    let (folder, url) = try destination()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    var pixels = try Surface(width: 256, height: 192, depth: .f32, colorEncoding: .linearRGB)
+    for y in 16..<176 {
+      for x in 12..<244 { pixels.setLinearPixel(x: x, y: y, Pixel(0.25, 0.375, 0.5, 1)) }
+    }
+    let image = try image(pixels)
+    let bounds = try RawCropBounds(left: 12.0 / 256.0, top: 16.0 / 192.0,
+      right: 244.0 / 256.0, bottom: 176.0 / 192.0)
+    try RawLinearDNG.write(image, to: url, preserveTransparency: true, crop: bounds)
+    let data = try Data(contentsOf: url)
+    let full = try RawSourceIO.inspect(data)
+    XCTAssertEqual(full.nativeWidth, 256)
+    XCTAssertEqual(full.nativeHeight, 192)
+    let opened = try RawSourceIO.open(data, fileName: url.lastPathComponent, depth: .f32)
+    XCTAssertEqual(opened.width, 232)
+    XCTAssertEqual(opened.height, 160)
+    let object = try XCTUnwrap(opened.layers.first?.smartObject)
+    XCTAssertEqual(object.data, data)
+    XCTAssertEqual(object.rawDevelopment?.crop, bounds)
+    let reset = try RawDevelopment.decodeJSON(Data("{\"crop\":null}".utf8), base: XCTUnwrap(object.rawDevelopment))
+    let uncropped = try RawSourceIO.render(data, settings: reset, depth: .f32).0
+    XCTAssertEqual(uncropped.width, 256)
+    XCTAssertEqual(uncropped.height, 192)
+    XCTAssertEqual(uncropped.linearPixel(x: 0, y: 0).a, 0)
+    XCTAssertEqual(uncropped.linearPixel(x: 12, y: 16).a, 1)
+    XCTAssertThrowsError(try RawDevelopment.decodeJSON(Data("{\"crop\":{\"left\":0,\"top\":0,\"right\":-1,\"bottom\":1}}".utf8)))
+  }
+
   func testInvalidLinearSamplesLeaveExistingDestinationUntouched() throws {
     let (folder, url) = try destination()
     defer { try? FileManager.default.removeItem(at: folder) }
