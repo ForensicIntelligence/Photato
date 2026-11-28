@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 817 — Merge bracketed RAW photos into HDR panoramas
+
+Use Merge to HDR Panorama from the Camera Raw filmstrip. Photato finds complete brackets in capture order, fuses each position onto the same scene-linear exposure scale, then stitches the panorama. The editable DNG retains highlight values, transparency, crop and optional automatic tone settings.
+
+The nine-photo test grouped three exposures per position and preserved 444 pixels above reference white, reaching a peak scene sample of 1.956. In the fixed-order Perspective reference, Photato developed a 733 × 364 crop and Adobe produced 731 × 363. The mean absolute linear RGB difference was 0.0535 over their overlapping opaque crop with the same Apple decoder.
+
+Adobe Camera Raw 18.1.1 accepted three brackets with equal exposure offsets and different base exposures. The live Photato menu merged the same nine originals into a tenth filmstrip photo. Adobe reopened the saved Photato DNG and showed its editable exposure. All nine original files retained their hashes. [Adobe Camera Raw panorama workflow](https://helpx.adobe.com/camera-raw/desktop/hdr-and-advanced-output/create-panoramas.html).
+
+Xcode built the app. All 54 focused application and imaging checks passed, including three added tests. Both optimized architectures passed all 429 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+Larger brackets, real camera and moving-subject comparisons, and exact Adobe pixel and projection fidelity remain open. The working limits are 16 MP per exposure, 32 MP per bracket, 32 MP across the fused positions and 16 MP for the panorama.
+
+[Development record](DEVLOG.md#dev-step-817) · [Qualification](SOURCE_PUBLICATION_817.md).
+
 ## 2026-11-28 — Step 816 — Stitch Camera Raw panoramas with an editable crop
 
 Select overlapping RAW photos and press Command-M to preview a Spherical, Cylindrical or Perspective panorama. Boundary Warp and Fill Edges refine the edges. Auto Crop records an editable setting and retains the full stitched scene and transparency. Command-Shift-M goes to the save step with the remembered options.
@@ -2935,11 +2949,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:816 -->
+<!-- current-status-step:817 -->
 
-Select overlapping RAW photos and press Command-M to preview a Spherical, Cylindrical or Perspective panorama. Boundary Warp and Fill Edges refine the edges. Auto Crop records an editable setting and retains the full stitched scene and transparency. Command-Shift-M goes to the save step with the remembered options.
+Use Merge to HDR Panorama from the Camera Raw filmstrip. Photato finds complete brackets in capture order, fuses each position onto the same scene-linear exposure scale, then stitches the panorama. The editable DNG retains highlight values, transparency, crop and optional automatic tone settings.
 
-[Development record](DEVLOG.md#dev-step-816) · [Qualification](SOURCE_PUBLICATION_816.md).
+[Development record](DEVLOG.md#dev-step-817) · [Qualification](SOURCE_PUBLICATION_817.md).
 
 <!-- current-status:end -->
 
@@ -3962,6 +3976,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 814 | [Fuse scene-linear HDR exposure brackets](DEVLOG.md#dev-step-814) |
 | 2026-11-28 | 815 | [Apply editable HDR automatic tone and color](DEVLOG.md#dev-step-815) |
 | 2026-11-28 | 816 | [Stitch Camera Raw panoramas with an editable crop](DEVLOG.md#dev-step-816) |
+| 2026-11-28 | 817 | [Merge bracketed RAW photos into HDR panoramas](DEVLOG.md#dev-step-817) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

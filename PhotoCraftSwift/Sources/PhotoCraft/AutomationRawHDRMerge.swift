@@ -57,9 +57,9 @@ enum RawHDRMergeAPI {
 }
 
 enum RawPhotoMergeInput {
-  static func layerIDs(_ command: AutomationCommand) throws -> [UUID] {
-    guard case .array(let values) = command.parameters["layerIDs"], RawHDRMerge.sourceCount.contains(values.count) else {
-      throw AutomationFailure(status: 400, message: "Provide two to sixteen RAW layer IDs.")
+  static func layerIDs(_ command: AutomationCommand, count: ClosedRange<Int> = RawHDRMerge.sourceCount) throws -> [UUID] {
+    guard case .array(let values) = command.parameters["layerIDs"], count.contains(values.count) else {
+      throw AutomationFailure(status: 400, message: "Provide \(count.lowerBound) to \(count.upperBound) RAW layer IDs.")
     }
     let ids = try values.map { value in
       guard case .string(let uuid) = value, let id = UUID(uuidString: uuid) else {
@@ -98,8 +98,24 @@ enum RawPanoramaAPI {
   ], description: "Stitch overlapping RAW photos into a linear panorama DNG and download it.",
     optionalParameters: ["projection", "boundaryWarp", "fillEdges", "autoCrop", "autoSettings"])
 
-  static func schema(_ key: String) -> [String: Any] {
+  static let hdrName = "raw.mergeHDRPanorama"
+  static let hdrDefinition = AutomationCommand.Definition(name: hdrName, parameters: [
+    "layerIDs": "RAW Smart Object layer UUIDs in capture order, with each exposure bracket kept together",
+    "bracketSize": "Optional number of exposures per position. Omit to detect the repeating capture pattern",
+    "projection": "Spherical, cylindrical or perspective projection",
+    "boundaryWarp": "Amount from 0 to 100 used to fit the boundary towards the canvas",
+    "fillEdges": "Synthesize missing boundary pixels",
+    "autoCrop": "Crop to the largest rectangle covered by the merged photos",
+    "autoSettings": "Embed editable automatic tone and color settings",
+  ], description: "Fuse each contiguous HDR exposure bracket, stitch the scene-linear results, and download an editable panorama DNG.",
+    optionalParameters: ["bracketSize", "projection", "boundaryWarp", "fillEdges", "autoCrop", "autoSettings"])
+
+  static func schema(_ key: String, hdr: Bool = false) -> [String: Any] {
     switch key {
+    case "bracketSize": ["type": "integer", "minimum": RawHDRMerge.sourceCount.lowerBound, "maximum": RawHDRMerge.sourceCount.upperBound]
+    case "layerIDs" where hdr:
+      ["type": "array", "minItems": RawPanorama.hdrSourceCount.lowerBound, "maxItems": RawPanorama.hdrSourceCount.upperBound,
+        "uniqueItems": true, "items": VariablesAPI.uuid]
     case "projection": ["type": "string", "enum": RawPanoramaSettings.Projection.allCases.map(\.rawValue), "default": "spherical"]
     case "boundaryWarp": ["type": "number", "minimum": 0, "maximum": 100, "default": 0]
     case "autoCrop", "autoSettings": ["type": "boolean", "default": true]
@@ -110,10 +126,19 @@ enum RawPanoramaAPI {
 
   struct Request: Sendable {
     let ids: [UUID]
+    let hdr: Bool
+    var bracketSize: Int?
     var settings = RawPanoramaSettings()
 
     init(_ command: AutomationCommand) throws {
-      ids = try RawPhotoMergeInput.layerIDs(command)
+      hdr = command.name == RawPanoramaAPI.hdrName
+      ids = try RawPhotoMergeInput.layerIDs(command, count: hdr ? RawPanorama.hdrSourceCount : RawPanorama.sourceCount)
+      if hdr, let value = command.parameters["bracketSize"] {
+        guard case .number(let number) = value, let size = Int(exactly: number), RawHDRMerge.sourceCount.contains(size) else {
+          throw AutomationFailure(status: 400, message: "Bracket size must be an integer from 2 to 16.")
+        }
+        bracketSize = size
+      }
       if let value = command.parameters["projection"] {
         guard case .string(let text) = value, let projection = RawPanoramaSettings.Projection(rawValue: text) else {
           throw AutomationFailure(status: 400, message: "Choose spherical, cylindrical or perspective projection.")
@@ -138,8 +163,9 @@ enum RawPanoramaAPI {
 
     func dng(_ document: CraftDocument) throws -> Data {
       let inputs = try RawPhotoMergeInput.sources(ids, in: document)
-      let name = ImageProcessor.safeBase((inputs[0].fileName as NSString).deletingPathExtension) + "-Pano"
-      let sources = try RawPanorama.prepareSources(inputs)
+      let name = ImageProcessor.safeBase((inputs[0].fileName as NSString).deletingPathExtension) + (hdr ? "-HDR-Pano" : "-Pano")
+      let sources = try hdr ? RawPanorama.prepareHDRSources(inputs, bracketSize: bracketSize).photos
+        : RawPanorama.prepareSources(inputs)
       let result = try RawPanorama.prepare(sources, options: settings, name: name, makePreview: false)
       return try FileBackedSource.writing(maximumBytes: ImageAssetExport.maximumBytes) { url in
         try result.write(to: url)
@@ -156,7 +182,8 @@ enum RawPanoramaAPI {
     guard !documentTransferBusy else {
       throw AutomationFailure(status: 429, message: "A document transfer is already in progress.")
     }
-    let panorama = command.name == RawPanoramaAPI.name
+    let hdrPanorama = command.name == RawPanoramaAPI.hdrName
+    let panorama = hdrPanorama || command.name == RawPanoramaAPI.name
     let render: @Sendable (CraftDocument) throws -> Data
     if panorama {
       let request = try RawPanoramaAPI.Request(command)
@@ -181,7 +208,8 @@ enum RawPanoramaAPI {
       document.closeWorkflowID == nil, document.store.document == source, revision(document.store) == command.revision else {
       throw AutomationFailure(status: 409, message: "The Camera Raw download was revoked or the source changed.")
     }
-    let filename = panorama ? "Camera-Raw-Panorama.dng" : "Camera-Raw-HDR.dng"
+    let filename = hdrPanorama ? "Camera-Raw-HDR-Panorama.dng"
+      : (panorama ? "Camera-Raw-Panorama.dng" : "Camera-Raw-HDR.dng")
     return AutomationResponse(status: 200, contentType: "image/x-adobe-dng", body: dng,
       headers: ["Content-Disposition": "attachment; filename=\"\(filename)\""])
   }

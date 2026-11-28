@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 817.** Merge bracketed RAW photos into HDR panoramas. [Qualification](docs/SOURCE_PUBLICATION_817.md).
+
 **Source checkpoint 816.** Stitch Camera Raw panoramas with an editable crop. [Qualification](docs/SOURCE_PUBLICATION_816.md).
 
 **Source checkpoint 815.** Apply editable HDR automatic tone and color. [Qualification](docs/SOURCE_PUBLICATION_815.md).

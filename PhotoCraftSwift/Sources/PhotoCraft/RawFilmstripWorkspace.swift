@@ -183,17 +183,27 @@ import SwiftUI
     }
   }
 
-  func canMergePanorama(contextPhoto: UUID? = nil) -> Bool {
-    !busy && !closed && hdrMergeRequest == nil && panoramaRequest == nil
-      && RawPanorama.sourceCount.contains(visibilityTargets(contextPhoto: contextPhoto).count)
+  func canMergePanorama(contextPhoto: UUID? = nil, hdr: Bool = false) -> Bool {
+    let count = visibilityTargets(contextPhoto: contextPhoto).count
+    let limits = hdr ? RawPanorama.hdrSourceCount : RawPanorama.sourceCount
+    return !busy && !closed && hdrMergeRequest == nil && panoramaRequest == nil && limits.contains(count)
   }
 
-  func beginPanorama(contextPhoto: UUID? = nil, skipPreview: Bool = false) {
-    guard canMergePanorama(contextPhoto: contextPhoto) else { return }
+  func beginPanorama(contextPhoto: UUID? = nil, skipPreview: Bool = false, hdr: Bool = false) {
+    guard canMergePanorama(contextPhoto: contextPhoto, hdr: hdr) else { return }
     let ids = visibilityTargets(contextPhoto: contextPhoto)
-    let inputs = displayedPhotos.filter { ids.contains($0.id) }
-    guard RawPanorama.sourceCount.contains(inputs.count) else { return }
-    panoramaRequest = RawFilmstripPanoramaRequest(photos: inputs, skipPreview: skipPreview,
+    var inputs = displayedPhotos.filter { ids.contains($0.id) }
+    let limits = hdr ? RawPanorama.hdrSourceCount : RawPanorama.sourceCount
+    guard limits.contains(inputs.count) else { return }
+    if hdr {
+      let hasCaptureOrder = inputs.allSatisfy { $0.original.photoInformation?.captureOrder != nil }
+      inputs.sort { lhs, rhs in
+        if hasCaptureOrder, let left = lhs.original.photoInformation?.captureOrder,
+          let right = rhs.original.photoInformation?.captureOrder, left != right { return left < right }
+        return lhs.name.localizedStandardCompare(rhs.name) == .orderedAscending
+      }
+    }
+    panoramaRequest = RawFilmstripPanoramaRequest(photos: inputs, skipPreview: skipPreview, hdr: hdr,
       settings: controller?.cameraRawPreferences.panoramaMerge ?? .init())
   }
 

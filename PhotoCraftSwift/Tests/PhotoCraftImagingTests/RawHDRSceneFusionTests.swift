@@ -134,6 +134,38 @@ final class RawHDRSceneFusionTests: XCTestCase {
     XCTAssertEqual(try RawHDRMerge.automaticTone(strip), ordinary)
   }
 
+  func testHDRPanoramaGroupingRequiresCompleteContiguousMatchingOffsetPatterns() throws {
+    let first = [1.0, 0.5, 2.0], second = [1.2, 0.6, 2.4], third = [0.75, 0.375, 1.5]
+    XCTAssertEqual(try RawPanorama.bracketRanges(exposureFactors: first + second + third), [0..<3, 3..<6, 6..<9])
+    XCTAssertEqual(try RawPanorama.bracketRanges(exposureFactors: [1, 2, 0.8, 1.6]), [0..<2, 2..<4])
+    XCTAssertThrowsError(try RawPanorama.bracketRanges(exposureFactors: first + second, bracketSize: 2))
+    XCTAssertThrowsError(try RawPanorama.bracketRanges(exposureFactors: first + [1.2, 2.4, 0.6]))
+    XCTAssertThrowsError(try RawPanorama.bracketRanges(exposureFactors: [1, 1, 2, 2]))
+    XCTAssertThrowsError(try RawPanorama.bracketRanges(exposureFactors: first + [1.2, 0.6, 1.8]))
+    XCTAssertThrowsError(try RawPanorama.bracketRanges(exposureFactors: first + [1.2, .nan, 2.4]))
+    XCTAssertThrowsError(try RawPanorama.bracketRanges(exposureFactors: first + second + [0.8]))
+  }
+
+  func testHDRPanoramaReferenceGainKeepsHighlightsAndBracketsOnOneScale() throws {
+    let size = SIMD2(64, 32)
+    func radiance(x: Int, y: Int) -> SIMD3<Float> {
+      x < 32 ? SIMD3(0.10, 0.21, 0.30) : SIMD3(1.2, 0.65, 0.36)
+    }
+    var options = RawHDRMergeSettings()
+    options.align = false
+    let groups = try [1.0, 1.2, 0.75].map { base in
+      let set = try [0.5, 1.0, 2.0].map { try bracket(size: size, exposure: base * $0, radiance: radiance) }
+      return try RawHDRSceneFusion.merge(set, options: options, referenceExposure: 1).pixels
+    }
+    for result in groups {
+      let shadow = result.linearPixel(x: 16, y: 12), bright = result.linearPixel(x: 45, y: 12)
+      XCTAssertEqual(shadow.r, 0.10, accuracy: 0.000_002)
+      XCTAssertEqual(shadow.g, 0.21, accuracy: 0.000_002)
+      XCTAssertEqual(bright.r, 1.2, accuracy: 0.000_002)
+      XCTAssertEqual(bright.g, 0.65, accuracy: 0.000_002)
+    }
+  }
+
   private func bracket(size: SIMD2<Int>, exposure: Double, translation: SIMD2<Int> = .zero,
     radiance: (Int, Int) -> SIMD3<Float>) throws -> RawHDRSceneFusion.Bracket {
     var surface = try Surface(width: size.x, height: size.y, depth: .f32, colorEncoding: .linearRGB)

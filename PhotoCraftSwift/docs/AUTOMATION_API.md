@@ -1,3 +1,15 @@
+### Camera Raw HDR panorama merge (checkpoint 817)
+
+Send `raw.mergeHDRPanorama` to `POST /v1/documents/{id}/commands` with the current `revision` and an ordered `parameters.layerIDs` list of distinct embedded RAW Smart Objects. Supply at least two complete capture positions. Keep the exposures for each position together and in capture order. Each bracket must contain the same number of exposures and repeat the same relative exposure offsets. Shutter time, aperture, and ISO must be present. Positions may use different base exposures.
+
+`bracketSize` optionally specifies 2–16 exposures per position. Omit it to detect the smallest complete repeated pattern. Projection, Boundary Warp, Fill Edges, Auto Crop, and Auto Settings use the same parameters and defaults as `raw.mergePanorama`. The result is an `image/x-adobe-dng` download. The original layers and document history remain unchanged. Enable document transfers before requesting the download.
+
+HDR panoramas support up to 16 camera positions, up to 16 exposures per bracket, 16 MP per exposure and 32 MP per bracket. The fused positions have a separate 32 MP combined working limit. The panorama supports up to 16 MP. Fill Edges is available up to 4 MP. Adobe's published Firefly Photoshop API has no dedicated HDR panorama endpoint.
+
+The authenticated `raw.mergeHDRPanorama` download matched the DNG from the native workspace in the workflow test. The API accepts an optional bracket size and reports the command in its 302-entry catalogue.
+
+[Qualification](SOURCE_PUBLICATION_817.md).
+
 ### Camera Raw panorama merge (checkpoint 816)
 
 Send `raw.mergePanorama` to `POST /v1/documents/{id}/commands` with the current `revision` and `parameters.layerIDs`, an ordered list of two to sixteen distinct embedded RAW Smart Object layer UUIDs. Enable document transfers to download the `image/x-adobe-dng` result. The operation leaves the shared document and its Undo history intact.

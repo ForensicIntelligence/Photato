@@ -1,3 +1,5 @@
+**Camera Raw development.** Raise Camera Raw HDR and panorama capacity, including realistic high-resolution brackets. Keep Adobe rendering and deghost qualification open. [Development record](DEVLOG.md#dev-step-817) · [Qualification](SOURCE_PUBLICATION_817.md).
+
 **Camera Raw development.** Continue Camera Raw HDR panoramas and higher-capacity registration. Keep the independent rendering comparison open. [Development record](DEVLOG.md#dev-step-816) · [Qualification](SOURCE_PUBLICATION_816.md).
 
 **Camera Raw development.** Continue Camera Raw panorama and larger exposure brackets. Keep the independent RAW rendering comparison open. [Development record](DEVLOG.md#dev-step-815) · [Qualification](SOURCE_PUBLICATION_815.md).

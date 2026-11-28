@@ -8,11 +8,12 @@ struct RawFilmstripPanoramaRequest: Identifiable, Sendable {
   let id = UUID()
   let photos: [RawFilmstripWorkspace.Photo]
   let skipPreview: Bool
+  let hdr: Bool
   let settings: RawPanoramaSettings
 
   var name: String {
     let source = photos[0].original.url.deletingPathExtension().lastPathComponent
-    return ImageProcessor.safeBase(source) + "-Pano"
+    return ImageProcessor.safeBase(source) + (hdr ? "-HDR-Pano" : "-Pano")
   }
 }
 
@@ -21,6 +22,7 @@ struct RawFilmstripPanoramaView: View {
   let request: RawFilmstripPanoramaRequest
   @State private var settings: RawPanoramaSettings
   @State private var sources: [CraftDocument]?
+  @State private var bracketSize: Int?
   @State private var registration: RawPanorama.Registration?
   @State private var registeredProjection: RawPanoramaSettings.Projection?
   @State private var result: RawPanorama.Result?
@@ -39,7 +41,7 @@ struct RawFilmstripPanoramaView: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
-      Text("Panorama Merge Preview").font(.headline)
+      Text(request.hdr ? "HDR Panorama Merge Preview" : "Panorama Merge Preview").font(.headline)
       HStack(alignment: .top, spacing: 16) {
         ZStack {
           Color(nsColor: .underPageBackgroundColor)
@@ -48,7 +50,8 @@ struct RawFilmstripPanoramaView: View {
               .accessibilityLabel("Stitched panorama preview")
           }
           if preparing {
-            ProgressView(sources == nil ? "Developing RAW photos…" : "Preparing panorama…")
+            ProgressView(sources == nil ? (request.hdr ? "Fusing exposure brackets…" : "Developing RAW photos…")
+              : "Preparing panorama…")
               .padding(12).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
           }
         }
@@ -71,6 +74,10 @@ struct RawFilmstripPanoramaView: View {
           Toggle("Fill Edges", isOn: $settings.fillEdges)
           Toggle("Auto Crop", isOn: $settings.autoCrop).keyboardShortcut("c", modifiers: [])
           Toggle("Apply Auto Settings", isOn: $settings.autoSettings)
+          if let bracketSize, let sources {
+            Text("\(sources.count) brackets · \(bracketSize) exposures each")
+              .font(.caption).foregroundStyle(.secondary)
+          }
           if let result, readySettings == settings {
             Text("\(result.document.width) × \(result.document.height) pixels")
               .font(.caption).foregroundStyle(.secondary)
@@ -107,10 +114,19 @@ struct RawFilmstripPanoramaView: View {
 
   private func loadSources() async {
     let inputs = request.photos.map { $0.original.hdrMergeSource(settings: $0.settings) }
-    let worker = Task.detached(priority: .userInitiated) { try RawPanorama.prepareSources(inputs) }
+    let hdr = request.hdr
+    let worker = Task.detached(priority: .userInitiated) { () throws -> ([CraftDocument], Int?) in
+      if hdr {
+        let prepared = try RawPanorama.prepareHDRSources(inputs)
+        return (prepared.photos, prepared.bracketSize)
+      }
+      return (try RawPanorama.prepareSources(inputs), nil)
+    }
     do {
-      sources = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
+      let (photos, bracketSize) = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
       try Task.checkCancellation()
+      self.bracketSize = bracketSize
+      sources = photos
       await render(settings)
     } catch is CancellationError {
     } catch {

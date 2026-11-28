@@ -17,7 +17,7 @@ extension RawDevelopment {
       "lensCorrection":["type":["boolean","null"]],"highlightRecovery":["type":["boolean","null"]],"adjustments":CameraRawSettings.apiSchema]]
   }
   static var apiCapabilities: [String:Any] {
-    ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",RawSynchronizationAPI.name,RawBatchExportAPI.name,RawHDRMergeAPI.name,RawPanoramaAPI.name,RawMarkingAPI.name,CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
+    ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",RawSynchronizationAPI.name,RawBatchExportAPI.name,RawHDRMergeAPI.name,RawPanoramaAPI.name,RawPanoramaAPI.hdrName,RawMarkingAPI.name,CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
      "maximumSourceBytes":DocumentIO.maximumUploadBytes,"maximumLocalSourceBytes":SmartObject.maximumCameraRawSourceBytes,
      "maximumSensorPixels":RawSourceIO.maximumPixels,"maximumSensorSide":RawSourceIO.maximumDimension,
      "maximumSpatialAdjustmentPixels":RawSourceIO.maximumPixels,
@@ -33,6 +33,9 @@ extension RawDevelopment {
      "panoramaMerge":["maximumPhotos":RawPanorama.sourceCount.upperBound,"maximumPixelsPerPhoto":PhotoAlign.maximumPixels,
        "maximumCombinedPixels":PhotoAlign.maximumTotalPixels,"maximumFillPixels":PhotoBlend.maximumPixels,
        "contentType":"image/x-adobe-dng","resetCrop":"Set raw.develop settings.crop to null to restore the full scene."],
+     "hdrPanoramaMerge":["maximumPhotos":RawPanorama.hdrSourceCount.upperBound,"maximumPositions":RawPanorama.sourceCount.upperBound,
+       "maximumBracketSize":RawHDRMerge.sourceCount.upperBound,"contentType":"image/x-adobe-dng",
+       "order":"Supply the exposure sets contiguously in capture order, repeating the same capture offsets per position."],
      "inspectOptionalFields":["iso":["type":"number","exclusiveMinimum":0,"description":"EXIF ISO when recorded."],
        "photoMarking":["description":"XMP rating and label for a document containing a single original RAW layer."]],
      "import":"POST /v1/documents/import; optional X-Photato-Open-Format: raw. Upload retains existing4MP/64MiB API limits. File Open and Place Embedded accept supported camera RAW types and read their matching XMP sidecar or embedded settings. For HTTP import, X-Photato-Raw-XMP accepts up to 8 KiB of base64-decoded XMP with the sensor bytes. X-Photato-Raw-Open-Mode supports image, object (default), or copy.",

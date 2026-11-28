@@ -835,7 +835,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 814 | 2026-11-28 | [Fuse scene-linear HDR exposure brackets](#dev-step-814) |
 | 815 | 2026-11-28 | [Apply editable HDR automatic tone and color](#dev-step-815) |
 | 816 | 2026-11-28 | [Stitch Camera Raw panoramas with an editable crop](#dev-step-816) |
+| 817 | 2026-11-28 | [Merge bracketed RAW photos into HDR panoramas](#dev-step-817) |
 <!-- history-index:end -->
+
+<a id="dev-step-817"></a>
+
+## 2026-11-28 — Step 817 — Merge bracketed RAW photos into HDR panoramas
+
+Use Merge to HDR Panorama from the Camera Raw filmstrip. Photato finds complete brackets in capture order, fuses each position onto the same scene-linear exposure scale, then stitches the panorama. The editable DNG retains highlight values, transparency, crop and optional automatic tone settings.
+
+Read Adobe’s HDR Panorama controls and verify grouping on known unevenly exposed positions. Validate the repeating ordered metadata pattern before sensor decoding, use a common white balance and exposure reference, and fuse one bracket at a time. The initial Swift build caught an optional metadata access. Correct the access and repeat the build without changing the reference fixtures.
+
+The nine-photo test grouped three exposures per position and preserved 444 pixels above reference white, reaching a peak scene sample of 1.956. In the fixed-order Perspective reference, Photato developed a 733 × 364 crop and Adobe produced 731 × 363. The mean absolute linear RGB difference was 0.0535 over their overlapping opaque crop with the same Apple decoder.
+
+Adobe Camera Raw 18.1.1 accepted three brackets with equal exposure offsets and different base exposures. The live Photato menu merged the same nine originals into a tenth filmstrip photo. Adobe reopened the saved Photato DNG and showed its editable exposure. All nine original files retained their hashes. [Adobe Camera Raw panorama workflow](https://helpx.adobe.com/camera-raw/desktop/hdr-and-advanced-output/create-panoramas.html).
+
+The authenticated `raw.mergeHDRPanorama` download matched the DNG from the native workspace in the workflow test. The API accepts an optional bracket size and reports the command in its 302-entry catalogue.
+
+Xcode built the app. All 54 focused application and imaging checks passed, including three added tests. Both optimized architectures passed all 429 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+Larger brackets, real camera and moving-subject comparisons, and exact Adobe pixel and projection fidelity remain open. The working limits are 16 MP per exposure, 32 MP per bracket, 32 MP across the fused positions and 16 MP for the panorama.
+
+The Universal ZIP targets macOS 14 and later. It contains 80,096,126 bytes with SHA-256 `c9b6374ac1fde1063a30d421c9449cb013534ea545c9195994b80b7d809f6377`.
+
+[Qualification](SOURCE_PUBLICATION_817.md).
 
 <a id="dev-step-816"></a>
 

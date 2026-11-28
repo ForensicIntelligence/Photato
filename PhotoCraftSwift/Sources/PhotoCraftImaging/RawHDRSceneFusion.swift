@@ -18,7 +18,8 @@ enum RawHDRSceneFusion {
   // A shoulder below the decoder's unit output limits the influence of clipped color components.
   private static let sensorShoulder: Float = 0.7
 
-  static func merge(_ inputs: [Bracket], options: RawHDRMergeSettings) throws -> Result {
+  static func merge(_ inputs: [Bracket], options: RawHDRMergeSettings,
+    referenceExposure: Double? = nil) throws -> Result {
     guard RawHDRMerge.sourceCount.contains(inputs.count), let first = inputs.first else {
       throw CraftError.invalid("Select two to sixteen RAW exposures to merge.")
     }
@@ -37,6 +38,12 @@ enum RawHDRSceneFusion {
     }
     let exposureEV = relative.map(log2)
     let normalization = relative.map { Float(relative[reference] / $0) }
+    let globalGain = (referenceExposure ?? inputs[reference].exposure) / inputs[reference].exposure
+    let maximumRatio: Double = 1_099_511_627_776
+    guard globalGain.isFinite, (1 / maximumRatio...maximumRatio).contains(globalGain) else {
+      throw CraftError.invalid("The panorama brackets exceed the supported 40-stop exposure span.")
+    }
+    let sceneGain = Float(globalGain)
     let offsets = options.align ? try align(inputs, reference: reference, normalization: normalization)
       : Array(repeating: .zero, count: inputs.count)
     var fused = try Surface(width: width, height: height, depth: .f32, colorEncoding: .linearRGB)
@@ -73,7 +80,7 @@ enum RawHDRSceneFusion {
         for channel in 0..<3 {
           sums[channel] = weights[channel] > 0 ? sums[channel] / weights[channel] : fallback[channel]
         }
-        fused.setLinearPixel(x: x, y: y, Pixel(sums.x, sums.y, sums.z, 1))
+        fused.setLinearPixel(x: x, y: y, Pixel(sums.x * sceneGain, sums.y * sceneGain, sums.z * sceneGain, 1))
         if !ghost.isEmpty, darkest.isFinite, brightest > darkest * movementRatio {
           ghost[y * width + x] = 1
         }
@@ -94,7 +101,7 @@ enum RawHDRSceneFusion {
           }
           let referenceColor = SIMD3<Float>(max(0, source.r), max(0, source.g), max(0, source.b))
           let existing = fused.linearPixel(x: x, y: y)
-          let blended = existing.rgb * (1 - amount) + referenceColor * amount
+          let blended = existing.rgb * (1 - amount) + referenceColor * (amount * sceneGain)
           fused.setLinearPixel(x: x, y: y, Pixel(blended.x, blended.y, blended.z, 1))
         }
       }

@@ -323,6 +323,8 @@ private struct RawFilmstripView: View {
       .disabled(!workspace.canMergeHDR(contextPhoto: photo))
     Button("Merge to Panorama…") { workspace.beginPanorama(contextPhoto: photo) }
       .disabled(!workspace.canMergePanorama(contextPhoto: photo))
+    Button("Merge to HDR Panorama…") { workspace.beginPanorama(contextPhoto: photo, hdr: true) }
+      .disabled(!workspace.canMergePanorama(contextPhoto: photo, hdr: true))
   }
 
   @ViewBuilder private var emptyPhotoMessage: some View {

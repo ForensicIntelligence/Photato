@@ -1,5 +1,19 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-09.md)
 
+## 2026-11-28 — Step 817 — Merge bracketed RAW photos into HDR panoramas
+
+Use Merge to HDR Panorama from the Camera Raw filmstrip. Photato finds complete brackets in capture order, fuses each position onto the same scene-linear exposure scale, then stitches the panorama. The editable DNG retains highlight values, transparency, crop and optional automatic tone settings.
+
+The nine-photo test grouped three exposures per position and preserved 444 pixels above reference white, reaching a peak scene sample of 1.956. In the fixed-order Perspective reference, Photato developed a 733 × 364 crop and Adobe produced 731 × 363. The mean absolute linear RGB difference was 0.0535 over their overlapping opaque crop with the same Apple decoder.
+
+Adobe Camera Raw 18.1.1 accepted three brackets with equal exposure offsets and different base exposures. The live Photato menu merged the same nine originals into a tenth filmstrip photo. Adobe reopened the saved Photato DNG and showed its editable exposure. All nine original files retained their hashes. [Adobe Camera Raw panorama workflow](https://helpx.adobe.com/camera-raw/desktop/hdr-and-advanced-output/create-panoramas.html).
+
+Xcode built the app. All 54 focused application and imaging checks passed, including three added tests. Both optimized architectures passed all 429 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+Larger brackets, real camera and moving-subject comparisons, and exact Adobe pixel and projection fidelity remain open. The working limits are 16 MP per exposure, 32 MP per bracket, 32 MP across the fused positions and 16 MP for the panorama.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-817) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_817.md).
+
 ## 2026-11-28 — Step 816 — Stitch Camera Raw panoramas with an editable crop
 
 Select overlapping RAW photos and press Command-M to preview a Spherical, Cylindrical or Perspective panorama. Boundary Warp and Fill Edges refine the edges. Auto Crop records an editable setting and retains the full stitched scene and transparency. Command-Shift-M goes to the save step with the remembered options.

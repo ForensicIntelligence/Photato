@@ -251,11 +251,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:816 -->
+<!-- current-status-step:817 -->
 
-Select overlapping RAW photos and press Command-M to preview a Spherical, Cylindrical or Perspective panorama. Boundary Warp and Fill Edges refine the edges. Auto Crop records an editable setting and retains the full stitched scene and transparency. Command-Shift-M goes to the save step with the remembered options.
+Use Merge to HDR Panorama from the Camera Raw filmstrip. Photato finds complete brackets in capture order, fuses each position onto the same scene-linear exposure scale, then stitches the panorama. The editable DNG retains highlight values, transparency, crop and optional automatic tone settings.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-816) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_816.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-817) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_817.md).
 
 <!-- current-status:end -->
 
@@ -1278,5 +1278,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 814 | [Fuse scene-linear HDR exposure brackets](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-814) |
 | 2026-11-28 | 815 | [Apply editable HDR automatic tone and color](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-815) |
 | 2026-11-28 | 816 | [Stitch Camera Raw panoramas with an editable crop](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-816) |
+| 2026-11-28 | 817 | [Merge bracketed RAW photos into HDR panoramas](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-817) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

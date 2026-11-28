@@ -46,6 +46,64 @@ package enum RawPanorama {
   }
 
   package static let sourceCount = 2...PhotoAlign.maximumLayers
+  package static let hdrSourceCount = 4...(PhotoAlign.maximumLayers * RawHDRMerge.sourceCount.upperBound)
+
+  package struct HDRSources: Sendable {
+    package let photos: [CraftDocument]
+    package let bracketSize: Int
+  }
+
+  package static func bracketRanges(exposureFactors: [Double], bracketSize explicit: Int? = nil) throws -> [Range<Int>] {
+    guard hdrSourceCount.contains(exposureFactors.count), exposureFactors.allSatisfy({ $0.isFinite && $0 > 0 }) else {
+      throw CraftError.invalid("HDR Panorama needs at least two complete sets with valid exposure metadata.")
+    }
+    let exposures = exposureFactors.map(log2)
+    // Mechanical shutter rounding can make matching camera increments differ slightly.
+    let offsetTolerance = 0.2
+    let minimumSeparation = 0.08
+    let sizes = explicit.map { [$0] } ?? Array(RawHDRMerge.sourceCount)
+    for size in sizes where RawHDRMerge.sourceCount.contains(size) && exposures.count % size == 0
+      && sourceCount.contains(exposures.count / size) {
+      let ranges = stride(from: 0, to: exposures.count, by: size).map { $0..<(($0 + size)) }
+      let baseline = exposures[ranges[0]].map { $0 - exposures[0] }
+      let matches = ranges.allSatisfy { range in
+        let set = exposures[range], ordered = set.sorted()
+        return zip(ordered, ordered.dropFirst()).allSatisfy { $1 - $0 >= minimumSeparation }
+          && zip(set, baseline).allSatisfy { abs($0 - exposures[range.lowerBound] - $1) <= offsetTolerance }
+      }
+      if matches { return ranges }
+    }
+    throw CraftError.invalid("Could not find matching HDR exposure sets. Select complete brackets in capture order, with the same offset pattern at every position.")
+  }
+
+  package static func prepareHDRSources(_ sources: [RawHDRMerge.Source], bracketSize: Int? = nil) throws -> HDRSources {
+    guard hdrSourceCount.contains(sources.count) else {
+      throw CraftError.invalid("Select at least two exposure brackets in capture order.")
+    }
+    let measured = try sources.map(RawHDRMerge.measure)
+    let ranges = try bracketRanges(exposureFactors: measured.map(\.exposure), bracketSize: bracketSize)
+    var total = 0
+    for range in ranges {
+      let group = Array(measured[range])
+      try RawHDRMerge.validateBracketDimensions(group)
+      let info = group[0].info
+      total += info.nativeWidth * info.nativeHeight
+    }
+    guard total <= PhotoAlign.maximumTotalPixels else {
+      throw CraftError.unsupported("The fused panorama positions exceed the combined 32 megapixel working limit.")
+    }
+    let reference = RawHDRMerge.reference(Array(measured[ranges[0]]))
+    let whiteBalance = RawHDRMerge.whiteBalance(reference)
+    var hdr = RawHDRMergeSettings()
+    hdr.autoSettings = false
+    let photos = try ranges.map { range in
+      let bracket = try RawHDRMerge.developBracket(Array(measured[range]), whiteBalance: whiteBalance)
+      let result = try RawHDRSceneFusion.merge(bracket.map(\.bracket), options: hdr, referenceExposure: reference.exposure)
+      return try rasterDocument(result.pixels, name: measured[range.lowerBound].source.fileName)
+    }
+    return HDRSources(photos: photos, bracketSize: ranges[0].count)
+  }
+
 
   package static func prepareSources(_ sources: [RawHDRMerge.Source]) throws -> [CraftDocument] {
     guard sourceCount.contains(sources.count) else {

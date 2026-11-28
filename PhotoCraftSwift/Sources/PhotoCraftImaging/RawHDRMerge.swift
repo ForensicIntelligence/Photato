@@ -56,39 +56,65 @@ package enum RawHDRMerge {
     let bracket: RawHDRSceneFusion.Bracket
   }
 
+  struct MeasuredSource: Sendable {
+    let source: Source
+    let info: RawSourceIO.Info
+    let exposure: Double
+  }
+
+  struct WhiteBalance: Sendable {
+    let temperature: Float
+    let tint: Float
+  }
+
+  static func measure(_ source: Source) throws -> MeasuredSource {
+    try Task.checkCancellation()
+    let bytes = source.bytes.data
+    let info = try RawSourceIO.inspect(bytes, decoderVersion: source.settings.decoderVersion)
+    guard let exposure = RawSourceIO.hdrExposureFactor(bytes, sourceType: info.type) else {
+      throw CraftError.invalid("The RAW exposure “\(source.fileName)” needs recorded shutter time, aperture and ISO.")
+    }
+    return MeasuredSource(source: source, info: info, exposure: exposure)
+  }
+
+  static func reference(_ measured: [MeasuredSource]) -> MeasuredSource {
+    measured.sorted { $0.exposure < $1.exposure }[measured.count / 2]
+  }
+
+  static func whiteBalance(_ measured: MeasuredSource) -> WhiteBalance {
+    WhiteBalance(temperature: measured.source.settings.temperature ?? measured.info.temperature,
+      tint: measured.source.settings.tint ?? measured.info.tint)
+  }
+
   package static func prepareSources(_ sources: [Source]) throws -> [Exposure] {
     guard sourceCount.contains(sources.count) else {
       throw CraftError.invalid("Select two to sixteen RAW exposures to merge.")
     }
-    let dimensions = try sources.map { source in
-      try Task.checkCancellation()
-      return try RawSourceIO.inspect(source.bytes.data, decoderVersion: source.settings.decoderVersion)
+    let measured = try sources.map(measure)
+    return try developBracket(measured, whiteBalance: whiteBalance(reference(measured)))
+  }
+
+  static func validateBracketDimensions(_ sources: [MeasuredSource]) throws {
+    guard let first = sources.first, sourceCount.contains(sources.count) else {
+      throw CraftError.invalid("Select two to sixteen RAW exposures to merge.")
     }
-    let width = dimensions[0].nativeWidth, height = dimensions[0].nativeHeight
-    guard dimensions.allSatisfy({ $0.nativeWidth == width && $0.nativeHeight == height }) else {
+    let width = first.info.nativeWidth, height = first.info.nativeHeight
+    guard sources.allSatisfy({ $0.info.nativeWidth == width && $0.info.nativeHeight == height }) else {
       throw CraftError.invalid("The selected RAW exposures have different image dimensions.")
     }
     guard width <= HDRMerge.maximumPixels / height, width * height <= HDRMerge.maximumTotalPixels / sources.count else {
       throw CraftError.unsupported("HDR merge supports up to 16 megapixels per photo and 32 megapixels combined.")
     }
-    let factors = try sources.indices.map { index in
-      let source = sources[index]
-      guard let factor = RawSourceIO.hdrExposureFactor(source.bytes.data, sourceType: dimensions[index].type) else {
-        throw CraftError.invalid("The RAW exposure “\(source.fileName)” needs recorded shutter time, aperture and ISO.")
-      }
-      return factor
-    }
-    let order = factors.indices.sorted { factors[$0] < factors[$1] }
-    let reference = order[order.count / 2]
-    let neutral = sources[reference].settings
-    let temperature = neutral.temperature ?? dimensions[reference].temperature
-    let tint = neutral.tint ?? dimensions[reference].tint
-    return try sources.indices.map { index in
+  }
+
+  static func developBracket(_ sources: [MeasuredSource], whiteBalance: WhiteBalance) throws -> [Exposure] {
+    try validateBracketDimensions(sources)
+    return try sources.map { measured in
       try Task.checkCancellation()
-      let source = sources[index]
+      let source = measured.source
       var settings = source.settings
-      settings.temperature = (2_000...50_000).contains(temperature) ? temperature : nil
-      settings.tint = (-150...150).contains(tint) ? tint : nil
+      settings.temperature = (2_000...50_000).contains(whiteBalance.temperature) ? whiteBalance.temperature : nil
+      settings.tint = (-150...150).contains(whiteBalance.tint) ? whiteBalance.tint : nil
       settings.exposure = 0
       settings.boost = 0
       settings.shadowBoost = 0
@@ -96,7 +122,7 @@ package enum RawHDRMerge {
       settings.highlightRecovery = false
       settings.adjustments = .init()
       let pixels = try RawSourceIO.renderSceneExposure(source.bytes.data, settings: settings)
-      return Exposure(bracket: .init(pixels: pixels, exposure: factors[index]))
+      return Exposure(bracket: .init(pixels: pixels, exposure: measured.exposure))
     }
   }
 
