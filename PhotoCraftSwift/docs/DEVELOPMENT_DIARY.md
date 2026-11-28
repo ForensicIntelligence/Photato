@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 812 — Hide and reveal photos in Camera Raw sessions
+
+Use the Photo menu or a thumbnail’s contextual menu to hide photos, isolate a selection, or reveal hidden photos. The filmstrip and Grid share visibility. A new Camera Raw session starts with every photo visible.
+
+In the native app, Show Only This Photo isolated one of three test DNGs in both views. Hide Photo emptied Grid, and its empty-state button restored all three. Cancel preserved the source bytes.
+
+Commands follow Adobe’s documented session visibility workflow. [Hide photos in Camera Raw](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/hide-photos-during-a-camera-raw-session.html).
+
+Xcode built the app and all twenty-four focused application tests passed, including returning hidden photos with their filters and saving edits to a hidden DNG. Both optimized architectures passed all 401 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The current installed Adobe Camera Raw predates these commands. Native controls were tested on owned files, with the Adobe documentation as the reference. Stacks and automatic grouping remain open.
+
+[Development record](DEVLOG.md#dev-step-812) · [Qualification](SOURCE_PUBLICATION_812.md).
+
 ## 2026-11-28 — Step 811 — Save deselected Camera Raw edits when closing with Done
 
 Done saves the changed photos across the Camera Raw session, including photos currently deselected or filtered out. Photato leaves files with unchanged settings and marks untouched.
@@ -2865,11 +2879,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:811 -->
+<!-- current-status-step:812 -->
 
-Done saves the changed photos across the Camera Raw session, including photos currently deselected or filtered out. Photato leaves files with unchanged settings and marks untouched.
+Use the Photo menu or a thumbnail’s contextual menu to hide photos, isolate a selection, or reveal hidden photos. The filmstrip and Grid share visibility. A new Camera Raw session starts with every photo visible.
 
-[Development record](DEVLOG.md#dev-step-811) · [Qualification](SOURCE_PUBLICATION_811.md).
+[Development record](DEVLOG.md#dev-step-812) · [Qualification](SOURCE_PUBLICATION_812.md).
 
 <!-- current-status:end -->
 
@@ -3887,6 +3901,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 809 | [Browse and edit photos in Camera Raw Grid](DEVLOG.md#dev-step-809) |
 | 2026-11-28 | 810 | [Refresh Camera Raw thumbnails from developed photos](DEVLOG.md#dev-step-810) |
 | 2026-11-28 | 811 | [Save deselected Camera Raw edits when closing with Done](DEVLOG.md#dev-step-811) |
+| 2026-11-28 | 812 | [Hide and reveal photos in Camera Raw sessions](DEVLOG.md#dev-step-812) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

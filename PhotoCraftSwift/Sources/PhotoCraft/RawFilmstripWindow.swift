@@ -89,6 +89,8 @@ private struct RawFilmstripView: View {
           markingCommands()
           Divider()
           Button("Select Rated") { workspace.selectRated() }
+          Divider()
+          visibilityCommands()
         }
         Button("Photo Info", systemImage: "info.circle") { showingInformation.toggle() }
           .labelStyle(.iconOnly)
@@ -168,8 +170,7 @@ private struct RawFilmstripView: View {
             if workspace.error != nil {
               Text("The preview could not be opened.")
             } else if workspace.displayedPhotos.isEmpty, !workspace.photos.isEmpty {
-              Text("No photos match the filters.")
-              Button("Clear Filters") { workspace.clearFilters() }
+              emptyPhotoMessage
             } else { Text("Select a photo") }
           }
         }
@@ -206,8 +207,7 @@ private struct RawFilmstripView: View {
               if workspace.busy {
                 ProgressView(workspace.progress ?? "Reading photos…")
               } else if !workspace.photos.isEmpty {
-                Text("No photos match the filters.")
-                Button("Clear Filters", action: workspace.clearFilters)
+                emptyPhotoMessage
               } else {
                 Text("No photos to display.")
               }
@@ -301,7 +301,32 @@ private struct RawFilmstripView: View {
         Divider()
       }
       markingCommands(for: photo.id)
+      Divider()
+      visibilityCommands(for: photo.id)
     }
+  }
+
+  @ViewBuilder private var emptyPhotoMessage: some View {
+    if workspace.hiddenPhotoCount == workspace.photos.count {
+      Text("All photos are hidden.")
+    } else {
+      Text("No visible photos match the filters.")
+      Button("Clear Filters", action: workspace.clearFilters)
+    }
+    if workspace.hiddenPhotoCount > 0 {
+      Button("Show All Hidden Photos", action: workspace.showAllHiddenPhotos)
+    }
+  }
+
+  @ViewBuilder private func visibilityCommands(for photo: UUID? = nil) -> some View {
+    let count = workspace.visibilityTargets(contextPhoto: photo).count
+    Button(count > 1 ? "Hide Selected Photos" : "Hide Photo") { workspace.hidePhotos(contextPhoto: photo) }
+      .disabled(count == 0)
+    Button(count > 1 ? "Show Only Selected Photos" : "Show Only This Photo") {
+      workspace.showOnlyPhotos(contextPhoto: photo)
+    }
+    .disabled(count == 0 || count == workspace.photos.count)
+    Button("Show All Hidden Photos", action: workspace.showAllHiddenPhotos).disabled(workspace.hiddenPhotoCount == 0)
   }
 
   private func thumbnail(_ photo: RawFilmstripWorkspace.Photo, width: Double, imageHeight: Double,

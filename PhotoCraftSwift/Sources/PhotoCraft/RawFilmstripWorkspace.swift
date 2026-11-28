@@ -53,6 +53,7 @@ import SwiftUI
   var gridDetails = RawGridDetails.all
   private(set) var ratingFilter = RawFilmstripRatingFilter.all
   private(set) var labelFilters: Set<RawFilmstripLabel> = []
+  private var hiddenPhotos: Set<UUID> = []
   private(set) var activeID: UUID?
   private(set) var selection: Set<UUID> = []
   private var anchor: UUID?
@@ -67,9 +68,11 @@ import SwiftUI
   var error: String?
   var progress: String?
   private(set) var exportStatus: String?
+  var hiddenPhotoCount: Int { hiddenPhotos.count }
+
   var displayedPhotos: [Photo] {
     let matching = photos.filter { photo in
-      ratingFilter.includes(photo.marking.rating) &&
+      !hiddenPhotos.contains(photo.id) && ratingFilter.includes(photo.marking.rating) &&
         (labelFilters.isEmpty || labelFilters.contains(RawFilmstripLabel(marking: photo.marking)))
     }
     let sorted: [Photo]
@@ -245,6 +248,39 @@ import SwiftUI
     reconcileFilter()
   }
 
+  func visibilityTargets(contextPhoto: UUID?) -> Set<UUID> {
+    if let contextPhoto, !selection.contains(contextPhoto) { return [contextPhoto] }
+    return selection
+  }
+
+  func hidePhotos(contextPhoto: UUID? = nil) {
+    guard !busy, !closed else { return }
+    let displayed = displayedPhotos.map(\.id)
+    let targets = visibilityTargets(contextPhoto: contextPhoto).intersection(displayed)
+    guard !targets.isEmpty else { return }
+    hiddenPhotos.formUnion(targets)
+    let replacement: UUID?
+    if let index = displayed.firstIndex(where: { $0 == activeID }), targets.contains(displayed[index]) {
+      replacement = displayed.dropFirst(index + 1).first { !targets.contains($0) }
+        ?? displayed.prefix(index).reversed().first { !targets.contains($0) }
+    } else { replacement = nil }
+    reconcileFilter(preferredID: replacement)
+  }
+
+  func showOnlyPhotos(contextPhoto: UUID? = nil) {
+    guard !busy, !closed else { return }
+    let targets = visibilityTargets(contextPhoto: contextPhoto).intersection(displayedPhotos.map(\.id))
+    guard !targets.isEmpty else { return }
+    hiddenPhotos = Set(photos.map(\.id)).subtracting(targets)
+    reconcileFilter()
+  }
+
+  func showAllHiddenPhotos() {
+    guard !busy, !closed, !hiddenPhotos.isEmpty else { return }
+    hiddenPhotos.removeAll()
+    reconcileFilter()
+  }
+
   func setRatingFilter(_ filter: RawFilmstripRatingFilter) {
     ratingFilter = filter
     reconcileFilter()
@@ -261,11 +297,13 @@ import SwiftUI
     reconcileFilter()
   }
 
-  private func reconcileFilter(selectFirst: Bool = true) {
+  private func reconcileFilter(selectFirst: Bool = true, preferredID: UUID? = nil) {
     let displayed = displayedPhotos
     selection.formIntersection(displayed.map(\.id))
     if let activeID, selection.contains(activeID) { return }
-    if let next = displayed.first(where: { selection.contains($0.id) }) ?? (selectFirst ? displayed.first : nil) {
+    let selected = displayed.first { selection.contains($0.id) }
+    let preferred = displayed.first { $0.id == preferredID }
+    if let next = selected ?? preferred ?? (selectFirst ? displayed.first : nil) {
       selection.insert(next.id)
       anchor = next.id
       activate(next.id)
@@ -449,6 +487,7 @@ import SwiftUI
       }
       if completed == Set(batch.map(\.id)), failures.isEmpty { close(); return }
       photos.removeAll { completed.contains($0.id) }
+      hiddenPhotos.subtract(completed)
       selection.subtract(completed)
       reconcileFilter()
       if !failures.isEmpty { error = failures.joined(separator: "\n") }
@@ -558,6 +597,7 @@ import SwiftUI
     editor?.store.renderTask?.cancel()
     editor = nil
     photos.removeAll()
+    hiddenPhotos.removeAll()
     developedThumbnails.removeAll()
     thumbnailOrder.removeAll()
     let callback = onClose

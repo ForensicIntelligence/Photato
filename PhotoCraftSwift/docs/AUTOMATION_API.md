@@ -1,3 +1,9 @@
+### Camera Raw photo visibility (checkpoint 812)
+
+Visibility is presentation state in the native Camera Raw session. The authenticated RAW inspection and adjustment commands retain their document scope.
+
+[Qualification](SOURCE_PUBLICATION_812.md).
+
 ### Camera Raw session save (checkpoint 811)
 
 The authenticated source-settings API continues to save the explicitly authorized single RAW source. The change applies to Done in the native multi-photo workspace.

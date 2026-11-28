@@ -3,6 +3,7 @@ import PhotoCraftCore
 import PhotoCraftImaging
 import XCTest
 @testable import PhotoCraft
+@testable import PhotoCraftImaging
 
 final class RawGridWorkflowTests: XCTestCase {
   @MainActor func testGridSharesPhotographsFiltersRatingsAndBatchAdjustmentUndo() async throws {
@@ -129,6 +130,93 @@ final class RawGridWorkflowTests: XCTestCase {
     XCTAssertEqual(restored.settings, firstPhoto.settings)
     XCTAssertFalse(workspace.thumbnail(for: restored) === second)
     XCTAssertEqual(try Data(contentsOf: url), bytes)
+  }
+
+  @MainActor func testFilmstripVisibilityScopesContextAndRecoversAnEmptyGrid() async throws {
+    _ = NSApplication.shared
+    let controller = CraftDocumentController(workspaces: WorkspaceLibrary())
+    let directory = try makeFolder()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let bytes = try fixture()
+    let urls = ["A.dng", "B.dng", "C.dng", "D.dng"].map { directory.appendingPathComponent($0) }
+    for url in urls { try bytes.write(to: url) }
+    let workspace = RawFilmstripWorkspace(controller: controller)
+    defer { workspace.close() }
+    workspace.start(urls)
+    await workspace.waitUntilIdle()
+    let ids = workspace.displayedPhotos.map(\.id)
+    XCTAssertEqual(ids.count, 4)
+    workspace.select(ids[1], extending: true)
+    XCTAssertEqual(workspace.visibilityTargets(contextPhoto: ids[0]), Set(ids[0...1]))
+    XCTAssertEqual(workspace.visibilityTargets(contextPhoto: ids[3]), [ids[3]])
+    workspace.hidePhotos(contextPhoto: ids[3])
+    XCTAssertEqual(workspace.selection, Set(ids[0...1]))
+    XCTAssertEqual(workspace.displayedPhotos.map(\.id), Array(ids.prefix(3)))
+    workspace.hidePhotos(contextPhoto: ids[0])
+    XCTAssertEqual(workspace.activeID, ids[2])
+    XCTAssertEqual(workspace.selection, [ids[2]])
+    workspace.presentation = .grid
+    workspace.hidePhotos()
+    XCTAssertEqual(workspace.hiddenPhotoCount, 4)
+    XCTAssertNil(workspace.activeID)
+    XCTAssertTrue(workspace.selection.isEmpty)
+    XCTAssertTrue(workspace.canWrite)
+    XCTAssertFalse(workspace.canUndo)
+    workspace.showAllHiddenPhotos()
+    XCTAssertEqual(workspace.displayedPhotos.map(\.id), ids)
+    XCTAssertEqual(workspace.activeID, ids[0])
+
+    workspace.showOnlyPhotos(contextPhoto: ids[2])
+    XCTAssertEqual(workspace.displayedPhotos.map(\.id), [ids[2]])
+    workspace.selectAll()
+    XCTAssertEqual(workspace.selection, [ids[2]])
+    workspace.showAllHiddenPhotos()
+    workspace.select(ids[1])
+    workspace.select(ids[2], extending: true)
+    workspace.showOnlyPhotos()
+    XCTAssertEqual(workspace.displayedPhotos.map(\.id), [ids[1], ids[2]])
+    XCTAssertFalse(workspace.canUndo)
+    for url in urls { XCTAssertEqual(try Data(contentsOf: url), bytes) }
+  }
+
+  @MainActor func testSessionVisibilityKeepsFiltersAndHiddenEditsSurviveDoneAndReopen() async throws {
+    _ = NSApplication.shared
+    let preferences = CameraRawPreferences()
+    preferences.dngStorage = .embedXMP
+    let controller = CraftDocumentController(workspaces: WorkspaceLibrary(), cameraRawPreferences: preferences)
+    let directory = try makeFolder()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let bytes = try fixture()
+    let urls = ["Edited.dng", "Unedited.dng"].map { directory.appendingPathComponent($0) }
+    for url in urls { try bytes.write(to: url) }
+    let workspace = RawFilmstripWorkspace(controller: controller)
+    workspace.start(urls)
+    await workspace.waitUntilIdle()
+    workspace.setLabel(.red)
+    workspace.toggleLabelFilter(.red)
+    workspace.hidePhotos()
+    XCTAssertEqual(workspace.hiddenPhotoCount, 1)
+    XCTAssertTrue(workspace.displayedPhotos.isEmpty)
+    workspace.showAllHiddenPhotos()
+    XCTAssertEqual(workspace.labelFilters, [.red])
+    XCTAssertEqual(workspace.displayedPhotos.map(\.name), ["Edited.dng"])
+    workspace.hidePhotos()
+    workspace.clearFilters()
+    XCTAssertEqual(workspace.displayedPhotos.map(\.name), ["Unedited.dng"])
+    XCTAssertTrue(workspace.canUndo)
+    workspace.finish(nil)
+    await workspace.waitUntilIdle()
+    XCTAssertNil(workspace.error)
+    XCTAssertTrue(workspace.closed)
+
+    let reopened = RawFilmstripWorkspace(controller: controller)
+    defer { reopened.close() }
+    reopened.start(urls)
+    await reopened.waitUntilIdle()
+    XCTAssertEqual(reopened.hiddenPhotoCount, 0)
+    XCTAssertEqual(reopened.displayedPhotos.map(\.name), urls.map(\.lastPathComponent))
+    XCTAssertEqual(reopened.photos.first?.marking.label, "Red")
+    XCTAssertEqual(try Data(contentsOf: urls[1]), bytes)
   }
 
   private func makeFolder() throws -> URL {

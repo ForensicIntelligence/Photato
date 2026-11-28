@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 812.** Hide and reveal photos in Camera Raw sessions. [Qualification](docs/SOURCE_PUBLICATION_812.md).
+
 **Source checkpoint 811.** Save deselected Camera Raw edits when closing with Done. [Qualification](docs/SOURCE_PUBLICATION_811.md).
 
 **Source checkpoint 810.** Refresh Camera Raw thumbnails from developed photos. [Qualification](docs/SOURCE_PUBLICATION_810.md).

@@ -10933,6 +10933,13 @@
       "link": "DEVLOG.md#dev-step-811",
       "section_sha256": "f35df0eda391b05f30d2f39dc59c63fb7f0f50fc84048725d73c2357af5ad34e",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-812",
+      "title": "2026-11-28 \u2014 Step 812 \u2014 Hide and reveal photos in Camera Raw sessions",
+      "link": "DEVLOG.md#dev-step-812",
+      "section_sha256": "37ab42de820d0f6c1f0626b260897d5f90a7ee83b22ec500377d1cdc59e5dde2",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13768,8 +13775,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "7ccc5d759594dc9b3de24ec63d2c3a9b9ee930b508ff8819f7da60a1d00c761e",
-      "bytes": 191581,
+      "sha256": "5c70776f78aca821a072c20af5d3411fe187eeecf7b5474d3410b4aae0b30fba",
+      "bytes": 191705,
       "rolling_current_snapshot": false
     },
     {
@@ -15490,8 +15497,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "4c99b69507889da9c392ac53a9dbc47a28eea3108e3a30a2143cccf166af9e00",
-      "bytes": 762263,
+      "sha256": "a78304eb5d1a10c6f66e036368589e3b0b2eef103a45468df6b23777ab45d89b",
+      "bytes": 762512,
       "rolling_current_snapshot": false
     },
     {
@@ -16060,8 +16067,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "2cc2d16b4eaea4d368477dad756e81fd0a25fa182c079941c94b45ae4877bad4",
-      "bytes": 406588,
+      "sha256": "1de39285e0fdcf380701ee4c178fd938db0aa3b0ecbc88c2638d04d66a63ee06",
+      "bytes": 406704,
       "rolling_current_snapshot": false
     },
     {
@@ -16180,8 +16187,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "1a081b8b872152564dce74d43296474fd5180bb59d78b5ccb3c03d437e71fe4c",
-      "bytes": 233990,
+      "sha256": "9e51c79e4da69d0636e51a1e0606bd89fccab68746303ff200e54257c863f282",
+      "bytes": 234214,
       "rolling_current_snapshot": false
     },
     {
@@ -16258,14 +16265,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "27b8c18ce08aa57730a5374db5298570aa997426088f49381d85f2ba552019a1",
-      "bytes": 1108853,
+      "sha256": "065cd8fa40aaf0244433ee14fd6d023b62d2f77f5e50fa3426c21f832cc8b86b",
+      "bytes": 1110267,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "5423e4bb8a5682bf91be45c5608bd74571d7aaea76867a5a7649ad46b90965a5",
-      "bytes": 5262367,
+      "sha256": "ce17fee13d2b8760690e2eeb253beca2ebc0eccbae6ca29f7b4acbcd01917ef7",
+      "bytes": 5264213,
       "rolling_current_snapshot": false
     },
     {
@@ -24207,6 +24214,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_812.json",
+      "sha256": "f5dac731a11b605c810d032dfc30542f8a0e193f7eb9731a88106725e832fdfc",
+      "bytes": 15920,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_812.md",
+      "sha256": "eea25f08fcdf4f4bc5185f21254666e3caec5a4fe703adc17daeb62e86a9773d",
+      "bytes": 1626,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24766,8 +24785,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "f37dddbe2703d5f928b175345eebfc749b0824375ea2d072d386c3d78ddc433a",
-      "bytes": 525597,
+      "sha256": "3675bf3247e3d82782cf0a60c6e94dbbad1695c9fbc41c754cc058017b9a8d4b",
+      "bytes": 526174,
       "rolling_current_snapshot": false
     },
     {
@@ -27280,8 +27299,8 @@
     }
   ],
   "counts": {
-    "milestones": 811,
-    "evidence_files": 2254,
+    "milestones": 812,
+    "evidence_files": 2256,
     "logs": 0,
     "missing_explicit_references": 704
   }

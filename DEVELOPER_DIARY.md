@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **811** · The 10 most recent entries, newest first.
+Source build **812** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 812 — Hide and reveal photos in Camera Raw sessions
+
+Use the Photo menu or a thumbnail’s contextual menu to hide photos, isolate a selection, or reveal hidden photos. The filmstrip and Grid share visibility. A new Camera Raw session starts with every photo visible.
+
+In the native app, Show Only This Photo isolated one of three test DNGs in both views. Hide Photo emptied Grid, and its empty-state button restored all three. Cancel preserved the source bytes.
+
+Commands follow Adobe’s documented session visibility workflow. [Hide photos in Camera Raw](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/hide-photos-during-a-camera-raw-session.html).
+
+Xcode built the app and all twenty-four focused application tests passed, including returning hidden photos with their filters and saving edits to a hidden DNG. Both optimized architectures passed all 401 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+The current installed Adobe Camera Raw predates these commands. Native controls were tested on owned files, with the Adobe documentation as the reference. Stacks and automatic grouping remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-812) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_812.md).
 
 ## 2026-11-28 — Step 811 — Save deselected Camera Raw edits when closing with Done
 
@@ -129,17 +143,3 @@ Xcode built the app. All six focused core tests passed. The new test covers RGB1
 Dehaze still has a 36-megapixel limit in this build. The maximum RAW sensor dimensions depend on the Apple decoder.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-803) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_803.md).
-
-## 2026-11-28 — Step 802 — Sharpen and reduce noise in full-size Camera Raw images
-
-The Camera Raw Detail controls can sharpen and reduce luminance and color noise in eligible images above 36 megapixels. The app filters native Float32 scratch planes on disk, using the same edge handling as the dense renderer.
-
-An offscreen run through the RAW development command processed the owned 8,192 × 5,120 DNG with all three Detail controls into 10,240 mapped tiles. Five inspected RGB samples changed, including adjacent rows across a band boundary. The sampled alpha and all source-file bytes were retained. Apple Silicon Release processed the adjustments in 23.46 seconds and reproduced every inspected Debug sample.
-
-The exact comparisons use Photato’s dense renderer as the reference. Adobe comparison remains open.
-
-Xcode built the app. All five focused core tests passed. The new cases compare filter-stage Float32 words and every stored sample of the RGB16 and linear Float32 result. Both optimized architectures passed all 384 selected cases, including authenticated capability discovery. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
-
-Shadows, highlights, clarity, texture and dehaze still use the 36-megapixel limit. The source must be supported at full size by the Apple decoder. Adobe output sharpening is separate from the Detail Sharpening control.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-802) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_802.md).
