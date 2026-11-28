@@ -1,3 +1,15 @@
+## 2026-11-27 — Step 779 — Save BigTIFF files with 64-bit offsets
+
+Use BigTIFF format is available in the TIFF save dialog. Photato writes 64-bit offsets for image strips and pyramid previews while keeping supported TIFF compression, profiles, layers and saved selections.
+
+Photoshop 27.2 opened the layered BigTIFF with the Masked coating layer selected and re-saved the Gray8 BigTIFF losslessly. All 23,091 samples matched. A separate sparse test wrote and reopened a first image directory and image strip beyond 4 GiB. File and Data output matched on the tested layered images.
+
+Xcode built the native app. All 3 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 272 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+The high-offset test used a sparse file. Dense multi-gigabyte composite and editable-layer output and broader Photoshop container comparisons remain open.
+
+[Development record](DEVLOG.md#dev-step-779) · [Qualification](SOURCE_PUBLICATION_779.md).
+
 ## 2026-11-27 — Step 778 — Open BigTIFF files with 64-bit offsets
 
 Photato opens supported BigTIFFs as editable documents. Its native reader uses 64-bit offsets to find strips, rectangular tiles, metadata and supported Photoshop layer records.
@@ -2435,11 +2447,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:778 -->
+<!-- current-status-step:779 -->
 
-Photato opens supported BigTIFFs as editable documents. Its native reader uses 64-bit offsets to find strips, rectangular tiles, metadata and supported Photoshop layer records.
+Use BigTIFF format is available in the TIFF save dialog. Photato writes 64-bit offsets for image strips and pyramid previews while keeping supported TIFF compression, profiles, layers and saved selections.
 
-[Development record](DEVLOG.md#dev-step-778) · [Qualification](SOURCE_PUBLICATION_778.md).
+[Development record](DEVLOG.md#dev-step-779) · [Qualification](SOURCE_PUBLICATION_779.md).
 
 <!-- current-status:end -->
 
@@ -3424,6 +3436,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 776 | [Open JPEG-compressed TIFFs](DEVLOG.md#dev-step-776) |
 | 2026-11-27 | 777 | [Save JPEG-compressed TIFFs](DEVLOG.md#dev-step-777) |
 | 2026-11-27 | 778 | [Open BigTIFF files with 64-bit offsets](DEVLOG.md#dev-step-778) |
+| 2026-11-27 | 779 | [Save BigTIFF files with 64-bit offsets](DEVLOG.md#dev-step-779) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

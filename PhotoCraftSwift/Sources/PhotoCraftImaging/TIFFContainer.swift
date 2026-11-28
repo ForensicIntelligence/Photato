@@ -1,8 +1,7 @@
 import Foundation
 import PhotoCraftCore
 
-/// Bounded classic TIFF and BigTIFF directory reading. Classic writers use
-/// the same field model for their uncompressed ImageIO intermediate.
+/// Bounded classic TIFF and BigTIFF directory reading and writing.
 struct TIFFContainer {
   static let byteLimit = 512 * 1024 * 1024
   static let classicFileMaximumBytes = Int(UInt32.max)
@@ -22,6 +21,32 @@ struct TIFFContainer {
       let value = number(data, offset, count)
       guard value >= 0 else { throw CraftError.invalid("TIFF integer exceeds the addressable file range.") }
       return value
+    }
+  }
+  struct Layout {
+    let bigTIFF: Bool
+    var pointerBytes: Int { bigTIFF ? 8 : 4 }
+    var countBytes: Int { bigTIFF ? 8 : 2 }
+    var entryBytes: Int { 4 + pointerBytes * 2 }
+    var headerBytes: Int { bigTIFF ? 16 : 8 }
+    var headerPointerOffset: Int { headerBytes - pointerBytes }
+    var offsetFieldType: Int { bigTIFF ? 16 : 4 }
+    var maximumFileBytes: Int { bigTIFF ? PSDCodec.maximumFileBytes : TIFFContainer.classicFileMaximumBytes }
+
+    func header(order: Order) -> Data {
+      var data = Data(repeating: order == .big ? 77 : 73, count: 2)
+      data.append(order.bytes(bigTIFF ? 43 : 42, 2))
+      if bigTIFF {
+        data.append(order.bytes(8, 2))
+        data.append(order.bytes(0, 2))
+      }
+      data.append(Data(repeating: 0, count: pointerBytes))
+      return data
+    }
+
+    func padding(at offset: Int) -> Int {
+      let alignment = bigTIFF ? 8 : 2
+      return (alignment - offset % alignment) % alignment
     }
   }
   struct Field {
@@ -94,16 +119,17 @@ struct TIFFContainer {
     guard Self.recognizes(header) else { throw CraftError.invalid("Invalid TIFF header.") }
     let big = Self.isBigTIFF(header)
     let byteOrder: Order = header[0] == 73 ? .little : .big
-    let headerLength = big ? 16 : 8
+    let layout = Layout(bigTIFF: big)
+    let headerLength = layout.headerBytes
     if big {
       guard header.count >= headerLength, byteOrder.number(header, 4, 2) == 8,
         byteOrder.number(header, 6, 2) == 0 else { throw CraftError.invalid("Invalid BigTIFF offset header.") }
     } else if fileSize > Self.classicFileMaximumBytes {
       throw CraftError.invalid("Classic TIFF exceeds its 32-bit file size limit.")
     }
-    let pointerBytes = big ? 8 : 4
-    let countBytes = big ? 8 : 2
-    let entryBytes = big ? 20 : 12
+    let pointerBytes = layout.pointerBytes
+    let countBytes = layout.countBytes
+    let entryBytes = layout.entryBytes
     let valuePosition = 4 + pointerBytes
     self.storage = storage
     order = byteOrder
@@ -165,7 +191,7 @@ struct TIFFContainer {
       }
       return node
     }
-    root = try directory(byteOrder.fileInteger(header, big ? 8 : 4, pointerBytes), 0)
+    root = try directory(byteOrder.fileInteger(header, layout.headerPointerOffset, pointerBytes), 0)
   }
   /// Give ImageIO the retained metadata without exposing the original image
   /// bytes or editable layer payload to its whole-file metadata decoder.
@@ -281,21 +307,23 @@ struct TIFFContainer {
     return values[0]
   }
   func set(_ tag: Int, _ values: [Int], type: Int = 3) {
-    let size = type == 3 ? 2 : 4
+    let size = type == 3 ? 2 : type == 16 ? 8 : 4
     root.fields[tag] = Field(tag: tag, type: type, count: values.count,
       data: values.reduce(into: Data()) { $0.append(order.bytes($1, size)) })
   }
-  func appendDirectories(to output: inout Data, order target: Order) throws {
-    let directory = try detachedDirectories(start: output.count, order: target, maximumOutput: Self.byteLimit)
+  func appendDirectories(to output: inout Data, order target: Order,
+    layout: Layout = .init(bigTIFF: false)) throws {
+    let directory = try detachedDirectories(start: output.count, order: target,
+      maximumOutput: Self.byteLimit, layout: layout)
     output.append(directory.payload)
-    output.replaceSubrange(4..<8, with: directory.offset)
+    output.replaceSubrange(layout.headerPointerOffset..<layout.headerBytes, with: directory.offset)
   }
 
-  /// Serialize absolute classic-TIFF IFD offsets while accumulating only the directory payload.
+  /// Serialize absolute IFD offsets while accumulating only the directory payload.
   func detachedDirectories(start: Int, order target: Order,
-    maximumOutput: Int) throws -> (offset: Data, payload: Data) {
+    maximumOutput: Int, layout: Layout = .init(bigTIFF: false)) throws -> (offset: Data, payload: Data) {
     var payload = Data()
-    let pointer = try writeDirectories(order: target, maximumOutput: maximumOutput,
+    let pointer = try writeDirectories(order: target, maximumOutput: maximumOutput, layout: layout,
       extent: { start + payload.count }, emit: { payload.append($0) },
       patch: { bytes, offset in
         let position = offset - start
@@ -306,37 +334,44 @@ struct TIFFContainer {
 
   /// Writes IFDs in the same order for memory and file sinks. A staged layer
   /// payload stays streamed at its ordinary field position in the TIFF.
-  func writeDirectories(order target: Order, maximumOutput: Int, extent: () -> Int,
+  func writeDirectories(order target: Order, maximumOutput: Int,
+    layout: Layout = .init(bigTIFF: false), extent: () -> Int,
     emit: (Data) throws -> Void, patch: (Data, Int) throws -> Void) throws -> Data {
-    guard (8...Self.classicFileMaximumBytes).contains(maximumOutput), (8...maximumOutput).contains(extent()) else {
-      throw CraftError.invalid("Invalid classic TIFF directory offset.")
+    guard (layout.headerBytes...layout.maximumFileBytes).contains(maximumOutput),
+      (layout.headerBytes...maximumOutput).contains(extent()) else {
+      throw CraftError.invalid("Invalid TIFF directory offset.")
     }
+    let pointerBytes = layout.pointerBytes, countBytes = layout.countBytes, entryBytes = layout.entryBytes
     func require(_ count: Int) throws {
       guard count <= maximumOutput - extent() else {
         throw CraftError.invalid("TIFF exceeds its output size limit.")
       }
     }
     func align() throws {
-      if extent() % 2 != 0 { try require(1); try emit(Data([0])) }
+      let padding = layout.padding(at: extent())
+      if padding > 0 { try require(padding); try emit(Data(repeating: 0, count: padding)) }
     }
     func append(_ node: Directory) throws -> Int {
       try Task.checkCancellation()
       try align()
       let origin = extent(), fields = node.fields.values.sorted { $0.tag < $1.tag }
-      try require(fields.count * 12 + 6)
-      try emit(target.bytes(fields.count, 2))
-      try emit(Data(repeating: 0, count: fields.count * 12 + 4))
+      let tableBytes = fields.count * entryBytes
+      try require(countBytes + tableBytes + pointerBytes)
+      try emit(target.bytes(fields.count, countBytes))
+      try emit(Data(repeating: 0, count: tableBytes + pointerBytes))
       for (i, field) in fields.enumerated() {
         var payload = field.data
+        var type = field.type
         if !field.children.isEmpty {
+          if layout.bigTIFF { type = 18 }
           payload = Data()
-          for child in field.children { payload.append(target.bytes(try append(child), 4)) }
+          for child in field.children { payload.append(target.bytes(try append(child), pointerBytes)) }
         } else if order != target {
           let unit: Int
           switch field.type {
           case 3, 8: unit = 2
           case 4, 5, 9, 10, 11, 13: unit = 4
-          case 12: unit = 8
+          case 12, 16, 17, 18: unit = 8
           default: unit = 1
           }
           if unit > 1 {
@@ -345,36 +380,36 @@ struct TIFFContainer {
             })
           }
         }
-        let at = origin + 2 + i * 12
-        var entry = target.bytes(field.tag, 2) + target.bytes(field.type, 2) + target.bytes(field.count, 4)
+        let at = origin + countBytes + i * entryBytes
+        var entry = target.bytes(field.tag, 2) + target.bytes(type, 2) + target.bytes(field.count, pointerBytes)
         if var serialized = field.serialized {
-          guard field.type == 7, field.count == serialized.remaining, serialized.remaining > 4 else {
+          guard field.type == 7, field.count == serialized.remaining, serialized.remaining > pointerBytes else {
             throw CraftError.invalid("Invalid TIFF serialized field extent.")
           }
           try align()
           try require(serialized.remaining)
-          entry.append(target.bytes(extent(), 4))
+          entry.append(target.bytes(extent(), pointerBytes))
           while serialized.remaining > 0 {
             try emit(serialized.bytes(min(serialized.remaining, AtomicFileWriter.chunkBytes)))
           }
-        } else if payload.count <= 4 {
+        } else if payload.count <= pointerBytes {
           entry.append(payload)
-          entry.append(Data(repeating: 0, count: 4 - payload.count))
+          entry.append(Data(repeating: 0, count: pointerBytes - payload.count))
         } else {
           try align()
           try require(payload.count)
-          entry.append(target.bytes(extent(), 4))
+          entry.append(target.bytes(extent(), pointerBytes))
           try emit(payload)
         }
         try patch(entry, at)
       }
       if let next = node.next {
         let pointer = try append(next)
-        let position = origin + 2 + fields.count * 12
-        try patch(target.bytes(pointer, 4), position)
+        let position = origin + countBytes + tableBytes
+        try patch(target.bytes(pointer, pointerBytes), position)
       }
       return origin
     }
-    return target.bytes(try append(root), 4)
+    return target.bytes(try append(root), pointerBytes)
   }
 }

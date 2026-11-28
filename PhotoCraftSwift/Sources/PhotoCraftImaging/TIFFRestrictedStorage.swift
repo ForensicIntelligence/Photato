@@ -272,7 +272,8 @@ enum TIFFRestrictedStorage {
     if let metadata = try RasterMetadata.metadata(document.sourceMetadata, width: width, height: height,
       resolution: document.pixelsPerInch, profileName: document.colorMode.title, isSRGB: false, photoshopMode: indexed ? 2 : 0),
       let xmp = CGImageMetadataCreateXMPData(metadata, nil) as Data? { file.root.fields[700] = .init(tag: 700, type: 1, count: xmp.count, data: xmp) }
-    var output = Data(order == .little ? [73,73,42,0,0,0,0,0] : [77,77,0,42,0,0,0,0]), offsets = [Int](), counts = [Int]()
+    let directoryLayout = TIFFContainer.Layout(bigTIFF: options.tiffBigTIFF == true)
+    var output = directoryLayout.header(order: order), offsets = [Int](), counts = [Int]()
     for plane in 0..<(planar ? channels : 1) { for y0 in stride(from: 0, to: height, by: rows) {
       var samples = Data()
       for y in y0..<min(y0 + rows, height) {
@@ -293,10 +294,13 @@ enum TIFFRestrictedStorage {
       case .zip: packed = try RestrictedRasterCompression.deflate(samples)
       case .jpeg: throw CraftError.unsupported("JPEG TIFF compression requires RGB8 or Grayscale8.")
       }
-      if output.count % 2 != 0 { output.append(0) }
+      output.append(Data(repeating: 0, count: directoryLayout.padding(at: output.count)))
       offsets.append(output.count); counts.append(packed.count); output.append(packed)
     } }
-    file.set(273, offsets, type: 4); file.set(279, counts, type: 4)
-    try file.appendDirectories(to: &output, order: order); try Task.checkCancellation(); return output
+    file.set(273, offsets, type: directoryLayout.offsetFieldType)
+    file.set(279, counts, type: directoryLayout.offsetFieldType)
+    try file.appendDirectories(to: &output, order: order, layout: directoryLayout)
+    try Task.checkCancellation()
+    return output
   }
 }

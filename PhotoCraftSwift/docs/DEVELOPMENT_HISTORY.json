@@ -10702,6 +10702,13 @@
       "link": "DEVLOG.md#dev-step-778",
       "section_sha256": "fe17d3e1826a2fe7268ad524d24085d3bf1f277ee8741ea40dd2327187277594",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-779",
+      "title": "2026-11-27 \u2014 Step 779 \u2014 Save BigTIFF files with 64-bit offsets",
+      "link": "DEVLOG.md#dev-step-779",
+      "section_sha256": "7f98f81738ea20c8fe4c4a483abff688d9644135f150db30ec971923df3d8e22",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13537,8 +13544,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "2a081e85384c6aeccd135b214d2dcd7e5177a30fa4f234063e20bf82b4688dcc",
-      "bytes": 187484,
+      "sha256": "974e2aebf6d68c37c8936f14382be892ca41cb798f0d2659d9c369a57bcfb3ed",
+      "bytes": 187601,
       "rolling_current_snapshot": false
     },
     {
@@ -15259,8 +15266,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "5a800b8afc894a33049cd1c9716571cadc442baa8ce38e24448c91dc6a79bc6b",
-      "bytes": 750471,
+      "sha256": "53da3c98babc2e29d2cf141b3ee4e02cd055424cb6ab45f4584f7b5773e7fa24",
+      "bytes": 750774,
       "rolling_current_snapshot": false
     },
     {
@@ -15829,8 +15836,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "98bde01cc4b208a874d39c3fb7f8aaeef9b3bf6b3c0c86bf99ac479b94153f3c",
-      "bytes": 398733,
+      "sha256": "f218c98b87e3bf27287163e775273694d0472ebcbf05a4e9c88dda67dae0c692",
+      "bytes": 399027,
       "rolling_current_snapshot": false
     },
     {
@@ -15949,8 +15956,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "a3f3347c4f47010835afc3ecd5a5beb41bbe7c501353a1e0f98f120010ad70d1",
-      "bytes": 225472,
+      "sha256": "76d5012757c1cd8349308495757bfbe50d21274cdc7681f75e02963e6eb1f2d4",
+      "bytes": 225688,
       "rolling_current_snapshot": false
     },
     {
@@ -16027,14 +16034,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "9527a1f81b77f74744084ae3bf0f9b5267f30bb7c7b60a3dc354f63b5b79faeb",
-      "bytes": 1062797,
+      "sha256": "7d84f1aaff5117a651569fa344e63c00153bb38414ce970eb9a42b4a3bbd7891",
+      "bytes": 1064002,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "81e1cdbd470baf112f5dfe2cb249c304bf7e2e29b6b441a64fb0a3aa8b811c00",
-      "bytes": 5191164,
+      "sha256": "f50afe4486e5f73d04e0f25aea8a648a760d507b072a566392c42b23f1737f93",
+      "bytes": 5193097,
       "rolling_current_snapshot": false
     },
     {
@@ -23580,6 +23587,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_779.json",
+      "sha256": "6dd0ec1ea1b9ea7d71927f2570d7162171c94eccfe2b38626bade6209dcbcdab",
+      "bytes": 13434,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_779.md",
+      "sha256": "2ad4bbc301e132160493484b42a1050264318e0221b06fbf97510557ea8a3c75",
+      "bytes": 1495,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24139,8 +24158,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "d250179faea1946ec627c7b33e61f08f9bde19f0f41927ffead55c7b36194f28",
-      "bytes": 506629,
+      "sha256": "ce9fad40b2c60361f14034a8ae111b870a93aa0bad23983b2a96897172056c81",
+      "bytes": 507161,
       "rolling_current_snapshot": false
     },
     {
@@ -26653,8 +26672,8 @@
     }
   ],
   "counts": {
-    "milestones": 778,
-    "evidence_files": 2188,
+    "milestones": 779,
+    "evidence_files": 2190,
     "logs": 0,
     "missing_explicit_references": 704
   }

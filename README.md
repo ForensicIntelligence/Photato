@@ -23,7 +23,7 @@ Photato is a native Swift image editor for macOS 14 and later. It is an independ
 
 The diary records each source checkpoint, what was tested, and what still needs work. The archive includes a chronological index starting with the original source audit.
 
-**Development alpha — source build 778.** Open BigTIFF files with 64-bit offsets. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_778.md).
+**Development alpha — source build 779.** Save BigTIFF files with 64-bit offsets. [Validation](PhotoCraftSwift/docs/SOURCE_PUBLICATION_779.md).
 
 ## Project layout
 

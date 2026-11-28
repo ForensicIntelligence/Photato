@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **778** · The 10 most recent entries, newest first.
+Source build **779** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 779 — Save BigTIFF files with 64-bit offsets
+
+Use BigTIFF format is available in the TIFF save dialog. Photato writes 64-bit offsets for image strips and pyramid previews while keeping supported TIFF compression, profiles, layers and saved selections.
+
+Photoshop 27.2 opened the layered BigTIFF with the Masked coating layer selected and re-saved the Gray8 BigTIFF losslessly. All 23,091 samples matched. A separate sparse test wrote and reopened a first image directory and image strip beyond 4 GiB. File and Data output matched on the tested layered images.
+
+Xcode built the native app. All 3 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 272 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+The high-offset test used a sparse file. Dense multi-gigabyte composite and editable-layer output and broader Photoshop container comparisons remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-779) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_779.md).
 
 ## 2026-11-27 — Step 778 — Open BigTIFF files with 64-bit offsets
 
@@ -111,15 +123,3 @@ The native Xcode target built and all three new imaging and six selected app/HTT
 The checks cover selected classic RGB strip inputs and output. Large saved auxiliary channels, component tiles, JPEG-in-TIFF, BigTIFF and complete Photoshop sample and storage comparisons remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-770) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_770.md).
-
-## 2026-11-27 — Step 769 — Save and reopen larger classic TIFF files
-
-Supported Grayscale, CMYK and Lab TIFF strips stream through local file Open and Save. Photato keeps the original numerical channels and uses bounded strips for the copy or composite.
-
-A 16,384 × 17,408 Gray16 file opened, saved and reopened through the native file APIs. The source exceeded 512 MiB and libtiff compared all 285,212,672 samples against the rewritten output. The reopened copy retained its embedded color profile. The Xcode tests include a 36-megapixel Gray16 copy, editable CMYK layers and a separate sparse file above 512 MiB.
-
-The Xcode project built and all 47 selected imaging and 14 app and HTTP tests passed. Both optimized architectures passed all 237 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on each slice.
-
-Supported local classic TIFFs use 32-bit offsets. Larger RGB TIFF streams, tiled component TIFF, BigTIFF, some specialized layered blocks and more Photoshop sample comparisons remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-769) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_769.md).

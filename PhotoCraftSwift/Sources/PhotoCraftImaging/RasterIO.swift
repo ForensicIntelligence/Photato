@@ -343,7 +343,7 @@ public enum RasterIO {
     }
     let bytes = try encodedManaged(surface, type: type, resolution: resolution, outputDepth: outputDepth,
       sourceMetadata: sourceMetadata, workingDocument: workingDocument, options: options)
-    if type == .tiff, options.tiffImagePyramid == true {
+    if type == .tiff, options.tiffImagePyramid == true || options.tiffBigTIFF == true {
       return try TIFFComponentExport.encodedComposite(bytes, document: nil, resolution: resolution, options: options)
     }
     return try type != .tiff && workingDocument?.profileIsUntagged == true ? UntaggedOutput.strip(bytes, type: type) : bytes
@@ -588,7 +588,7 @@ public enum RasterIO {
       return try document.profileIsUntagged == true ? UntaggedOutput.strip(data, type: type) : data
     }
     if type == .tiff {
-      if options.tiffCompression == .jpeg || supportsPagedComponentTIFFOutput(document) {
+      if options.tiffCompression == .jpeg || options.tiffBigTIFF == true || supportsPagedComponentTIFFOutput(document) {
         return try TIFFComponentExport.encoded(document, options: options)
       }
       let composite = try renderedTIFF(document, options: options)
@@ -640,13 +640,15 @@ public enum RasterIO {
   }
   package static func supportsFileBackedTIFFOutput(_ document: CraftDocument, options: RasterEncodingOptions) -> Bool {
     supportsPagedComponentTIFFOutput(document)
-      || ((options.tiffLayers == true || options.tiffImagePyramid == true || options.tiffCompression == .jpeg)
+      || ((options.tiffLayers == true || options.tiffImagePyramid == true
+            || options.tiffBigTIFF == true || options.tiffCompression == .jpeg)
           && document.inkMode == nil && document.restrictedMode == nil)
   }
   public static func write(_ document: CraftDocument, to url: URL, type: UTType = .png,
     options: RasterEncodingOptions = .init()) throws {
     if type == .tiff, (supportsPagedComponentTIFFOutput(document)
-      || (options.tiffCompression == .jpeg && document.inkMode == nil && document.restrictedMode == nil)) {
+      || ((options.tiffCompression == .jpeg || options.tiffBigTIFF == true)
+          && document.inkMode == nil && document.restrictedMode == nil)) {
       try TIFFComponentExport.write(document, to: url, options: options)
       return
     }

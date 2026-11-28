@@ -1,3 +1,9 @@
+### Native BigTIFF output (checkpoint 779)
+
+Native Save, Save a Copy and the authenticated Photato save and download paths use the same encoder. Set tiffBigTIFF=true to choose BigTIFF. Omission or false selects classic TIFF. Existing transfer limits apply.
+
+[Qualification](SOURCE_PUBLICATION_779.md).
+
 ### Native BigTIFF input (checkpoint 778)
 
 Native Open, authenticated Photato uploads and Adobe-compatible action inputs share the decoder. The smaller API fixture retained its 225 ppi resolution and its grayscale and opacity samples. The existing HTTP transfer limits apply.

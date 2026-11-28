@@ -119,9 +119,10 @@ extension AutomationService {
         "strategy": "Supported classic TIFF and BigTIFF strips and tiles open into editable file-backed numerical components and an RGB preview. JPEG-compressed opaque RGB8 and Gray8 are decoded with their TIFF color context. Native Open, Photato uploads and action-job resource decoding share storage.",
         "desktopClassicTIFFMaximumBytes": Int(UInt32.max),
         "desktopBigTIFFMaximumInputBytes": PSDCodec.maximumFileBytes,
-        "pagedOutput": "Supported component images can write strips to a classic TIFF file or same-encoder API Data. TIFF layers use the supported Photoshop layer-record codec.",
+        "desktopBigTIFFMaximumOutputBytes": PSDCodec.maximumFileBytes,
+        "pagedOutput": "Supported component images can write strips to a classic TIFF or BigTIFF file or same-encoder API Data. TIFF layers use the supported Photoshop layer-record codec.",
         "savedSelectionChannels": "Layered RGB8 TIFF preserves named saved-selection planes and their display metadata at paged dimensions. Save Transparency controls the composite opacity sample separately.",
-        "limits": "The higher classic TIFF limit applies to local file Open and Save. Web transfer, image processing, embedded layers and decoded scratch budgets remain independent. BigTIFF input uses 64-bit offsets. BigTIFF and tiled output remain pending."
+        "limits": "The higher classic TIFF limit applies to local file Open and Save. Web transfer, image processing, embedded layers and decoded scratch budgets remain independent. BigTIFF input and output use 64-bit offsets. Output uses strips."
       ],
       "layeredTIFF": [
         "grayscaleMatte": "Explicit Save Transparency off writes the measured white-matted grayscale samples for aligned Normal Gray8 and Gray16 raster stacks. Editable TIFF retains the original gray and opacity words in its layers.",

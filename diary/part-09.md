@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-27 — Step 779 — Save BigTIFF files with 64-bit offsets
+
+Use BigTIFF format is available in the TIFF save dialog. Photato writes 64-bit offsets for image strips and pyramid previews while keeping supported TIFF compression, profiles, layers and saved selections.
+
+Photoshop 27.2 opened the layered BigTIFF with the Masked coating layer selected and re-saved the Gray8 BigTIFF losslessly. All 23,091 samples matched. A separate sparse test wrote and reopened a first image directory and image strip beyond 4 GiB. File and Data output matched on the tested layered images.
+
+Xcode built the native app. All 3 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 272 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+The high-offset test used a sparse file. Dense multi-gigabyte composite and editable-layer output and broader Photoshop container comparisons remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-779) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_779.md).
+
 ## 2026-11-27 — Step 778 — Open BigTIFF files with 64-bit offsets
 
 Photato opens supported BigTIFFs as editable documents. Its native reader uses 64-bit offsets to find strips, rectangular tiles, metadata and supported Photoshop layer records.

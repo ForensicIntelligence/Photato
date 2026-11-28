@@ -31,6 +31,8 @@ enum DocumentPersistenceConflict: LocalizedError {
   let tiffPredictor = NSButton(checkboxWithTitle: "Use Predictor", target: nil, action: nil)
   let tiffLayers = NSButton(checkboxWithTitle: "Layers", target: nil, action: nil)
   let tiffImagePyramid = NSButton(checkboxWithTitle: "Save Image Pyramid", target: nil, action: nil)
+  let tiffBigTIFF = NSButton(checkboxWithTitle: "Use BigTIFF format", target: nil, action: nil)
+  private var bigTIFFExplicit = false
   let tiffTransparency = NSButton(checkboxWithTitle: "Save Transparency", target: nil, action: nil)
   let tiffEmbedProfile = NSButton(checkboxWithTitle: "Embed Color Profile", target: nil, action: nil)
   let tiffLayerCompression = NSPopUpButton(frame: .zero, pullsDown: false)
@@ -75,6 +77,7 @@ enum DocumentPersistenceConflict: LocalizedError {
         tiffLayers: mode.isRestricted ? false : (layersExplicit || tiffLayers.state == .on ? tiffLayers.state == .on : nil),
         tiffTransparency: mode == .bitmap || !transparencyExplicit ? nil : tiffTransparency.state == .on,
         tiffImagePyramid: !tiffImagePyramid.isEnabled || !pyramidExplicit ? nil : tiffImagePyramid.state == .on,
+        tiffBigTIFF: bigTIFFExplicit ? tiffBigTIFF.state == .on : nil,
         tiffJPEGQuality: compression == .jpeg && tiffJPEGQuality.indexOfSelectedItem > 0
           ? tiffJPEGQuality.indexOfSelectedItem - 1 : nil,
         tiffEmbedProfile: mode == .bitmap || !embedProfileExplicit ? nil : tiffEmbedProfile.state == .on,
@@ -158,6 +161,10 @@ enum DocumentPersistenceConflict: LocalizedError {
     tiffImagePyramid.state = tiffImagePyramid.isEnabled && tiffOptions.tiffImagePyramid == true ? .on : .off
     tiffImagePyramid.target = self; tiffImagePyramid.action = #selector(changeTIFFImagePyramid)
     tiffImagePyramid.toolTip = "Includes smaller previews that page-layout apps can display without decoding the full image."
+    bigTIFFExplicit = tiffOptions.tiffBigTIFF != nil
+    tiffBigTIFF.state = tiffOptions.tiffBigTIFF == true ? .on : .off
+    tiffBigTIFF.target = self; tiffBigTIFF.action = #selector(changeBigTIFF)
+    tiffBigTIFF.toolTip = "Uses 64-bit offsets for files beyond the classic TIFF size limit."
     transparencyExplicit = tiffOptions.tiffTransparency != nil
     tiffTransparency.state = mode != .bitmap && (tiffOptions.tiffTransparency ?? true) ? .on : .off
     tiffTransparency.isEnabled = mode != .bitmap
@@ -210,6 +217,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     view.addArrangedSubview(tiffByteOrderRow); view.addArrangedSubview(tiffPixelOrderRow)
     view.addArrangedSubview(tiffLayersRow)
     view.addArrangedSubview(tiffImagePyramid)
+    view.addArrangedSubview(tiffBigTIFF)
     view.addArrangedSubview(tiffTransparency)
     view.addArrangedSubview(tiffEmbedProfile)
     view.addArrangedSubview(psdLayerRow); view.addArrangedSubview(psdCompositeRow)
@@ -225,6 +233,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     layersExplicit = true; updateTIFFLayers()
   }
   @objc func changeTIFFImagePyramid() { pyramidExplicit = true }
+  @objc func changeBigTIFF() { bigTIFFExplicit = true }
   @objc func changeTIFFTransparency() { transparencyExplicit = true }
   @objc func changeTIFFEmbedProfile() { embedProfileExplicit = true }
   @objc func updateTIFFCompression() {
@@ -251,6 +260,7 @@ enum DocumentPersistenceConflict: LocalizedError {
     tiffByteOrderRow.isHidden = format != .tiff; tiffPixelOrderRow.isHidden = format != .tiff
     tiffLayersRow.isHidden = format != .tiff
     tiffImagePyramid.isHidden = format != .tiff
+    tiffBigTIFF.isHidden = format != .tiff
     tiffTransparency.isHidden = format != .tiff
     tiffEmbedProfile.isHidden = format != .tiff
     psdLayerRow.isHidden = photoshopFormat == nil || mode.isRestricted || mode == .multichannel; psdCompositeRow.isHidden = photoshopFormat == nil

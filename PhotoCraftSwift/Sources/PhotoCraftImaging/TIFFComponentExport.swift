@@ -4,19 +4,25 @@ import ImageIO
 import PhotoCraftCore
 import zlib
 
-/// Classic TIFF component output. Only a strip and the small IFD tables remain
+/// TIFF and BigTIFF component output. Only strips and IFD tables remain
 /// in memory when writing to a file. The same encoder can target bounded API Data.
 enum TIFFComponentExport {
   fileprivate final class Output {
     private var buffer = Data()
     private let file: AtomicFileWriter?
     let maximumBytes: Int
+    let layout: TIFFContainer.Layout
     var count: Int { file?.count ?? buffer.count }
     var isFileBacked: Bool { file != nil }
     var data: Data { buffer }
-    init(file: AtomicFileWriter?) {
+    init(file: AtomicFileWriter?, layout: TIFFContainer.Layout) {
       self.file = file
-      maximumBytes = file == nil ? TIFFContainer.byteLimit : TIFFContainer.classicFileMaximumBytes
+      self.layout = layout
+      maximumBytes = file == nil ? TIFFContainer.byteLimit : layout.maximumFileBytes
+    }
+    func align() throws {
+      let padding = layout.padding(at: count)
+      if padding > 0 { try append(Data(repeating: 0, count: padding)) }
     }
     func append(_ bytes: Data) throws {
       guard bytes.count <= maximumBytes - count else {
@@ -31,30 +37,32 @@ enum TIFFComponentExport {
   }
 
   static func encoded(_ document: CraftDocument, options: RasterEncodingOptions) throws -> Data {
-    let output = Output(file: nil)
+    let output = Output(file: nil, layout: .init(bigTIFF: options.tiffBigTIFF == true))
     try write(document, options: options, output: output)
     return output.data
   }
 
   static func write(_ document: CraftDocument, to url: URL, options: RasterEncodingOptions) throws {
-    let file = try AtomicFileWriter(to: url, maximumBytes: TIFFContainer.classicFileMaximumBytes)
+    let layout = TIFFContainer.Layout(bigTIFF: options.tiffBigTIFF == true)
+    let file = try AtomicFileWriter(to: url, maximumBytes: layout.maximumFileBytes)
     defer { file.discard() }
-    try write(document, options: options, output: Output(file: file))
+    try write(document, options: options, output: Output(file: file, layout: layout))
     try file.commit()
   }
 
   static func encodedComposite(_ source: Data, document: CraftDocument?, resolution: Double,
     options: RasterEncodingOptions) throws -> Data {
-    let output = Output(file: nil)
+    let output = Output(file: nil, layout: .init(bigTIFF: options.tiffBigTIFF == true))
     try completeComposite(source, document: document, resolution: resolution, options: options, output: output)
     return output.data
   }
 
   static func writeComposite(_ source: Data, document: CraftDocument, to url: URL,
     options: RasterEncodingOptions) throws {
-    let file = try AtomicFileWriter(to: url, maximumBytes: TIFFContainer.classicFileMaximumBytes)
+    let layout = TIFFContainer.Layout(bigTIFF: options.tiffBigTIFF == true)
+    let file = try AtomicFileWriter(to: url, maximumBytes: layout.maximumFileBytes)
     try completeComposite(source, document: document, resolution: document.pixelsPerInch,
-      options: options, output: Output(file: file))
+      options: options, output: Output(file: file, layout: layout))
     try file.commit()
   }
 
@@ -62,7 +70,9 @@ enum TIFFComponentExport {
     options: RasterEncodingOptions, output: Output) throws {
     let container = try TIFFContainer(source, metadata: true)
     let order = container.order
-    try output.append(source)
+    if output.layout.bigTIFF {
+      try output.append(output.layout.header(order: order))
+    } else { try output.append(source) }
     if options.tiffImagePyramid == true {
       let photometric = try container.scalar(262)
       guard let mode = TIFFModeStorage.mode(photometric),
@@ -82,6 +92,19 @@ enum TIFFComponentExport {
       let opacity = geometry.opacitySample == nil ? nil : geometry.associated ? 1 : 2
       try pyramid.attach(to: container, resolution: resolution, opacity: opacity)
     }
+    if output.layout.bigTIFF {
+      let offsets = try container.numbers(273), lengths = try container.numbers(279)
+      guard offsets.count == lengths.count else { throw CraftError.invalid("Invalid TIFF strip table.") }
+      var newOffsets: [Int] = []
+      for (offset, length) in zip(offsets, lengths) {
+        try Task.checkCancellation()
+        try output.align()
+        newOffsets.append(output.count)
+        try output.append(container.bytes(at: offset, count: length))
+      }
+      container.set(273, newOffsets, type: output.layout.offsetFieldType)
+      container.set(279, lengths, type: output.layout.offsetFieldType)
+    }
     if options.tiffLayers == true {
       guard let document else { throw CraftError.invalid("Layered TIFF encoding requires a document.") }
       try TIFFLayers.attach(document, to: container, order: order,
@@ -91,9 +114,9 @@ enum TIFFComponentExport {
   }
 
   private static func finish(_ container: TIFFContainer, order: TIFFContainer.Order, output: Output) throws {
-    let offset = try container.writeDirectories(order: order, maximumOutput: output.maximumBytes,
+    let offset = try container.writeDirectories(order: order, maximumOutput: output.maximumBytes, layout: output.layout,
       extent: { output.count }, emit: output.append, patch: output.patch)
-    try output.patch(offset, at: 4)
+    try output.patch(offset, at: output.layout.headerPointerOffset)
   }
 
   private static func write(_ document: CraftDocument, options: RasterEncodingOptions, output: Output) throws {
@@ -159,7 +182,7 @@ enum TIFFComponentExport {
     let jpegEncoder = jpeg ? TIFFJPEGOutput(components: samplesPerRowPixel, quality: options.tiffJPEGQuality) : nil
     let rowsPerStrip = jpeg ? TIFFJPEGOutput.rowsPerStrip(height: height, rowBytes: rowBytes)
       : min(height, max(1, 65_536 / rowBytes))
-    try output.append(Data(order == .big ? [77, 77, 0, 42, 0, 0, 0, 0] : [73, 73, 42, 0, 0, 0, 0, 0]))
+    try output.append(output.layout.header(order: order))
     var offsets: [Int] = [], counts: [Int] = []
 
     func append(_ word: Int, to row: inout [UInt8]) {
@@ -231,7 +254,7 @@ enum TIFFComponentExport {
           try pyramid?.append(plane: plane, samples: samples)
           strip += predictor ? TIFFStorage.predict(samples, components: samplesPerRowPixel, order: order) : samples
         }
-        if output.count % 2 != 0 { try output.append(Data([0])) }
+        try output.align()
         let start = output.count
         if let jpegEncoder { try output.append(jpegEncoder.encode(strip, width: width)) }
         else { try output.append(encodeStrip(strip, compression: compression)) }
@@ -239,8 +262,8 @@ enum TIFFComponentExport {
         counts.append(output.count - start)
       }
     }
-    container.set(259, [compression.tag]); container.set(273, offsets, type: 4)
-    container.set(278, [rowsPerStrip], type: 4); container.set(279, counts, type: 4)
+    container.set(259, [compression.tag]); container.set(273, offsets, type: output.layout.offsetFieldType)
+    container.set(278, [rowsPerStrip], type: 4); container.set(279, counts, type: output.layout.offsetFieldType)
     container.set(284, [planar ? 2 : 1]); container.set(317, [predictor ? 3 : 1])
     jpegEncoder?.setYCbCrFields(on: container.root, order: container.order)
     try pyramid?.attach(to: container, resolution: document.pixelsPerInch, opacity: transparencyExtras.first)
@@ -451,7 +474,7 @@ private final class TIFFImagePyramid {
 
   private func flush(_ level: Level) throws {
     guard !level.strip.isEmpty else { return }
-    if output.count % 2 != 0 { try output.append(Data([0])) }
+    try output.align()
     let encoded: Data
     if let jpegEncoder = level.jpegEncoder { encoded = try jpegEncoder.encode(level.strip, width: level.width) }
     else { encoded = try TIFFComponentExport.encodeStrip(level.strip, compression: compression) }
@@ -476,8 +499,9 @@ private final class TIFFImagePyramid {
     if let currentPlane { try finishPlane(currentPlane) }
     guard !levels.isEmpty else { return }
     func set(_ tag: Int, _ values: [Int], type: Int = 3, in node: TIFFContainer.Directory) {
+      let count = type == 3 ? 2 : type == 16 ? 8 : 4
       node.fields[tag] = TIFFContainer.Field(tag: tag, type: type, count: values.count,
-        data: values.reduce(into: Data()) { $0.append(container.order.bytes($1, type == 3 ? 2 : 4)) })
+        data: values.reduce(into: Data()) { $0.append(container.order.bytes($1, count)) })
     }
     container.set(254, [0], type: 4)
     var first: TIFFContainer.Directory?, last: TIFFContainer.Directory?
@@ -489,11 +513,11 @@ private final class TIFFImagePyramid {
       set(258, Array(repeating: bits, count: mainChannels), in: node)
       set(259, [compression.tag], in: node)
       set(262, [photometric], in: node)
-      set(273, level.offsets, type: 4, in: node)
+      set(273, level.offsets, type: output.layout.offsetFieldType, in: node)
       set(274, [1], in: node)
       set(277, [mainChannels], in: node)
       set(278, [level.rowsPerStrip], type: 4, in: node)
-      set(279, level.counts, type: 4, in: node)
+      set(279, level.counts, type: output.layout.offsetFieldType, in: node)
       let scale = Double(1 << (index + 1))
       let numerator = Int((resolution * 10_000 / scale).rounded())
       let dpi = container.order.bytes(numerator, 4) + container.order.bytes(10_000, 4)
