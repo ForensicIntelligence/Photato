@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **803** · The 10 most recent entries, newest first.
+Source build **804** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 804 — Apply Dehaze to full-size Camera Raw images
+
+Camera Raw Dehaze now applies to supported sensor images above 36 megapixels. All existing Photato spatial Camera Raw controls have a paged path in this build.
+
+The production RAW development command applied Dehaze to the owned 8,192 × 5,120 DNG with contrast and returned 10,240 mapped tiles. Five inspected RGB samples changed, including adjacent rows across a band boundary. The sampled alpha and all source-file bytes were retained. Using the same native decoder and opening path, a separate build 801 Debug probe retained the full 16,000 × 10,000 sensor and original bytes of a canonical DNG.
+
+The exact comparisons use the existing Photato renderer. Adobe Dehaze and RAW output comparisons remain open.
+
+Xcode built the app. All seven focused core tests passed. The new case verifies every stored sample of positive and negative Dehaze in RGB16 and linear Float32, including a combination with local tone and Detail. Both optimized architectures passed all 386 selected cases, including authenticated capability discovery. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+The camera and RAW layout must be supported at full size by the Apple decoder. The 65,000-pixel side and 512-megapixel area are admission bounds. The installed decoder does not return full-size rasters for the tested canonical DNGs at those two bounds.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-804) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_804.md).
 
 ## 2026-11-28 — Step 803 — Apply local tone to full-size Camera Raw images
 
@@ -129,15 +143,3 @@ Xcode built the app and four new focused Debug tests passed, along with the five
 The recorded checks cover the resulting geometry, profile, depth and PPI. Output sharpening, installed and non-RGB ICC profiles, and byte-identical Adobe output remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-795) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_795.md).
-
-## 2026-11-28 — Step 794 — Open Camera Raw files as images, Smart Objects or copies
-
-Camera Raw offers Open Image, Open Object and Open Copy. Image and Copy create an editable Background. Object retains the embedded sensor data and editable development settings. Image and Object save source settings using the current file policy. Copy leaves the original and its sidecar intact.
-
-Photoshop 2026 with Camera Raw 18.1.1 and the signed Photato test app opened identical Nikon inputs as 3,008 × 2,000 RGB16 documents. Command–O and Shift–Command–O saved +1.00 and +0.75 Exposure to matching sidecars. Option–Command–O opened +1.50 with no sidecar. All original NEF bytes stayed identical.
-
-Xcode built the app and all five focused tests passed. Coverage includes exact stored RGB16 samples, current integer raster rounding, aborting a stale source write, protected original files, and authenticated API behavior. Both optimized architectures passed all 361 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-Photoshop output ICC, dimensions, sharpening, and full pixel/file equivalence remain open. Photato’s current RGB16 compositor applies integer Normal rounding to Background layers, while eligible RAW objects can retain the original decoded values.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-794) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_794.md).

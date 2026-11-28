@@ -114,12 +114,27 @@ extension CameraRawEngine {
       p[i] = c
     } }
   }
-  static func dehaze(_ p: [RGB],_ w: Int,_ h: Int,_ amount: Float) throws -> [RGB] {
+  struct HazeModel {
+    let width: Int
+    let height: Int
+    let scale: Float
+    let airlight: RGB
+    let transmission: [Float]
+
+    func corrected(_ pixel: RGB, x: Int, y: Int, amount: Float) -> RGB {
+      let t = min(1, max(0.1, M.sample(transmission, width, height,
+        (Float(x) + 0.5) / scale - 0.5, (Float(y) + 0.5) / scale - 0.5)))
+      if amount > 0 { return pixel + ((pixel - airlight) / t + airlight - pixel) * amount }
+      return pixel + (airlight - pixel) * (-amount) * 0.5 * (1 - t * 0.5)
+    }
+  }
+
+  static func estimateHaze(width w: Int, height h: Int, pixel: (Int) -> RGB) throws -> HazeModel {
     let scale = max(1,(max(w,h)+767)/768), sw = (w+scale-1)/scale, sh = (h+scale-1)/scale
     var small = [RGB](repeating:.zero,count:sw*sh)
     for y in 0..<sh { try Task.checkCancellation(); for x in 0..<sw {
       var c = RGB.zero; var count: Float = 0
-      for py in y*scale..<min(h,(y+1)*scale) { for px in x*scale..<min(w,(x+1)*scale) { let v = p[py*w+px]; c += RGB(unit(v.x),unit(v.y),unit(v.z)); count += 1 } }
+      for py in y*scale..<min(h,(y+1)*scale) { for px in x*scale..<min(w,(x+1)*scale) { let v = pixel(py*w+px); c += RGB(unit(v.x),unit(v.y),unit(v.z)); count += 1 } }
       small[y*sw+x] = c/count
     } }
     let r = max(max(sw,sh)/60,2)
@@ -142,13 +157,19 @@ extension CameraRawEngine {
     for c in 0..<3 { air[c] = max(0.2,air[c]) }
     let normalized = try minimum(small.map { let c = $0/air; return min(c.x,c.y,c.z) })
     let trans = try M.guided(small.map(M.luma),normalized.map { 1-0.95*$0 },sw,sh,r*2,0.001)
-    var out = p
-    for y in 0..<h { try Task.checkCancellation(); for x in 0..<w {
-      let t = min(1,max(0.1,M.sample(trans,sw,sh,(Float(x)+0.5)/Float(scale)-0.5,(Float(y)+0.5)/Float(scale)-0.5)))
-      let i = y*w+x, c = p[i]
-      if amount > 0 { out[i] = c+((c-air)/t+air-c)*amount }
-      else { out[i] = c+(air-c)*(-amount)*0.5*(1-t*0.5) }
-    } }
-    return out
+    return HazeModel(width: sw, height: sh, scale: Float(scale), airlight: air, transmission: trans)
+  }
+
+  static func dehaze(_ pixels: [RGB], _ w: Int, _ h: Int, _ amount: Float) throws -> [RGB] {
+    let model = try estimateHaze(width: w, height: h, pixel: { pixels[$0] })
+    var corrected = pixels
+    for y in 0..<h {
+      try Task.checkCancellation()
+      for x in 0..<w {
+        let i = y * w + x
+        corrected[i] = model.corrected(pixels[i], x: x, y: y, amount: amount)
+      }
+    }
+    return corrected
   }
 }

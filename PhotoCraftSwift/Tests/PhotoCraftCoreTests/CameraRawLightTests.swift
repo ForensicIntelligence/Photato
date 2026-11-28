@@ -204,3 +204,37 @@ extension CameraRawLightTests {
     }
   }
 }
+
+extension CameraRawLightTests {
+  func testPagedDehazeUsesTheSameFullImageTransmissionAsDense() throws {
+    for depth in [PixelDepth.u16, .f32] {
+      let encoding: SurfaceColorEncoding = depth == .f32 ? .linearRGB : .sRGB
+      var source = try Surface(width: 61, height: 807, depth: depth, colorEncoding: encoding)
+      for y in 0..<source.height {
+        for x in 0..<source.width {
+          let p = Pixel(Float((x * 11 + y * 3) % 293) / 180, Float((x * 7 + y * 19) % 239) / 190,
+            Float((x * 23 + y * 17) % 199) / 230, Float((x / 4 + y) % 7) / 6)
+          if depth == .f32 { source.setLinearPixel(x: x, y: y, p) }
+          else { source.setPixel(x: x, y: y, p) }
+        }
+      }
+      for amount: Float in [47, -38] {
+        var settings = CameraRawSettings()
+        settings.dehaze = amount
+        settings.contrast = 35
+        settings.blacks = -9
+        settings.exposure = 0.46
+        settings.grainAmount = 20
+        if amount > 0 {
+          settings.clarity = -28
+          settings.sharpenAmount = 62
+        }
+        let dense = try CameraRawEngine.develop(source, settings: settings)
+        let paged = try CameraRawEngine.developPaged(source, settings: settings)
+        XCTAssertGreaterThan(paged.mappedTileCount, 0)
+        XCTAssertNotEqual(paged, source)
+        XCTAssertEqual(paged, dense)
+      }
+    }
+  }
+}

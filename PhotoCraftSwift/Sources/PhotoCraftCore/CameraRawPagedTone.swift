@@ -7,6 +7,9 @@ extension CameraRawEngine {
   static func usesLocalTone(_ s: CameraRawSettings) -> Bool {
     usesLocalLight(s) || s.clarity != 0 || s.texture != 0
   }
+  static func usesSpatialPreparation(_ s: CameraRawSettings) -> Bool {
+    usesLocalTone(s) || s.dehaze != 0
+  }
   static func usesBaseTone(_ s: CameraRawSettings) -> Bool {
     usesLocalTone(s) || s.contrast != 0 || s.whites != 0 || s.blacks != 0
   }
@@ -44,7 +47,7 @@ extension CameraRawEngine {
   static func preparePagedRGB(_ source: Surface, settings s: CameraRawSettings,
     consume: (Int, [RGB]) throws -> Void) throws {
     let w = source.width, h = source.height, side = Surface.tileSide
-    guard usesLocalTone(s) else {
+    guard usesSpatialPreparation(s) else {
       for top in stride(from: 0, to: h, by: side) {
         let band = try source.cropped(to: IntRect(x: 0, y: top, width: w, height: min(side, h - top)))
         try consume(top, prepareRGB(band, settings: s))
@@ -62,8 +65,31 @@ extension CameraRawEngine {
       }
     }
 
+    let input: FileBackedSource
+    if s.dehaze != 0 {
+      input = try dehazedRGB(exposed, source: source, amount: s.dehaze / 100)
+    } else {
+      input = exposed
+    }
+    guard usesLocalTone(s) else {
+      try input.data.withUnsafeBytes { raw in
+        let pixels = raw.bindMemory(to: SIMD4<Float>.self)
+        for top in stride(from: 0, to: h, by: side) {
+          try Task.checkCancellation()
+          let rows = min(side, h - top)
+          var band = (top * w..<(top + rows) * w).map { i in
+            let p = pixels[i]
+            return RGB(p.x, p.y, p.z)
+          }
+          try applyToneAndColor(&band, width: w, height: rows, settings: s)
+          try consume(top, band)
+        }
+      }
+      return
+    }
+
     let longSide = Float(max(w, h))
-    try exposed.data.withUnsafeBytes { raw in
+    try input.data.withUnsafeBytes { raw in
       let pixels = raw.bindMemory(to: SIMD4<Float>.self)
       let clipped = try Plane(width: w, height: h, values: { min(pixels[$0].w, 1) })
       let base = usesLocalLight(s) ? try clipped.guidedSelf(radius: localLightRadius(longSide), epsilon: 0.02) : clipped
@@ -84,6 +110,29 @@ extension CameraRawEngine {
               try consume(top, band)
             }
           }
+        }
+      }
+    }
+  }
+
+  private static func dehazedRGB(_ exposed: FileBackedSource, source: Surface, amount: Float) throws -> FileBackedSource {
+    let w = source.width, h = source.height, side = Surface.tileSide
+    return try exposed.data.withUnsafeBytes { raw in
+      let pixels = raw.bindMemory(to: SIMD4<Float>.self)
+      let model = try estimateHaze(width: w, height: h, pixel: { i in
+        let p = pixels[i]
+        return RGB(p.x, p.y, p.z)
+      })
+      return try writePagedRGB(source) { append in
+        for top in stride(from: 0, to: h, by: side) {
+          try Task.checkCancellation()
+          let rows = min(side, h - top)
+          let corrected = (top * w..<(top + rows) * w).map { i in
+            let p = pixels[i]
+            let rgb = model.corrected(RGB(p.x, p.y, p.z), x: i % w, y: i / w, amount: amount)
+            return SIMD4(rgb.x, rgb.y, rgb.z, max(M.luma(rgb), 0))
+          }
+          try append(corrected)
         }
       }
     }

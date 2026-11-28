@@ -1,3 +1,9 @@
+### Camera Raw Dehaze (checkpoint 804)
+
+Photato capabilities include Dehaze in `rawDevelopment.pagedTone`, with the same nominal sensor and spatial-adjustment limit. The desktop app and authenticated `raw.develop` share the processing path.
+
+[Qualification](SOURCE_PUBLICATION_804.md).
+
 ### Camera Raw local tone (checkpoint 803)
 
 The same controls run in the desktop app and authenticated `raw.develop`. Photato capabilities list the four controls in `rawDevelopment.pagedTone`.

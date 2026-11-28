@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 804 — Apply Dehaze to full-size Camera Raw images
+
+Camera Raw Dehaze now applies to supported sensor images above 36 megapixels. All existing Photato spatial Camera Raw controls have a paged path in this build.
+
+The production RAW development command applied Dehaze to the owned 8,192 × 5,120 DNG with contrast and returned 10,240 mapped tiles. Five inspected RGB samples changed, including adjacent rows across a band boundary. The sampled alpha and all source-file bytes were retained. Using the same native decoder and opening path, a separate build 801 Debug probe retained the full 16,000 × 10,000 sensor and original bytes of a canonical DNG.
+
+The exact comparisons use the existing Photato renderer. Adobe Dehaze and RAW output comparisons remain open.
+
+Xcode built the app. All seven focused core tests passed. The new case verifies every stored sample of positive and negative Dehaze in RGB16 and linear Float32, including a combination with local tone and Detail. Both optimized architectures passed all 386 selected cases, including authenticated capability discovery. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+The camera and RAW layout must be supported at full size by the Apple decoder. The 65,000-pixel side and 512-megapixel area are admission bounds. The installed decoder does not return full-size rasters for the tested canonical DNGs at those two bounds.
+
+[Development record](DEVLOG.md#dev-step-804) · [Qualification](SOURCE_PUBLICATION_804.md).
+
 ## 2026-11-28 — Step 803 — Apply local tone to full-size Camera Raw images
 
 Camera Raw can adjust Highlights, Shadows, Texture and Clarity on supported sensor images above 36 megapixels. The native processor uses the full image dimensions to choose the filter radii.
@@ -2753,11 +2767,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:803 -->
+<!-- current-status-step:804 -->
 
-Camera Raw can adjust Highlights, Shadows, Texture and Clarity on supported sensor images above 36 megapixels. The native processor uses the full image dimensions to choose the filter radii.
+Camera Raw Dehaze now applies to supported sensor images above 36 megapixels. All existing Photato spatial Camera Raw controls have a paged path in this build.
 
-[Development record](DEVLOG.md#dev-step-803) · [Qualification](SOURCE_PUBLICATION_803.md).
+[Development record](DEVLOG.md#dev-step-804) · [Qualification](SOURCE_PUBLICATION_804.md).
 
 <!-- current-status:end -->
 
@@ -3767,6 +3781,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 801 | [Apply vignette and grain to full-size Camera Raw images](DEVLOG.md#dev-step-801) |
 | 2026-11-28 | 802 | [Sharpen and reduce noise in full-size Camera Raw images](DEVLOG.md#dev-step-802) |
 | 2026-11-28 | 803 | [Apply local tone to full-size Camera Raw images](DEVLOG.md#dev-step-803) |
+| 2026-11-28 | 804 | [Apply Dehaze to full-size Camera Raw images](DEVLOG.md#dev-step-804) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

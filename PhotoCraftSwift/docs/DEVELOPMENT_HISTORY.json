@@ -10877,6 +10877,13 @@
       "link": "DEVLOG.md#dev-step-803",
       "section_sha256": "37d097e80009390ee933d70e575038b586d46f90b41d8ab7d0d30f378ff11e9d",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-804",
+      "title": "2026-11-28 \u2014 Step 804 \u2014 Apply Dehaze to full-size Camera Raw images",
+      "link": "DEVLOG.md#dev-step-804",
+      "section_sha256": "819e426be10c4ae54359d78a87703cb9f40aebf4beff721b23834272af70aced",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13712,8 +13719,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "fa670b70edc5aefb790f0f8969d0b85acbc329248ef4710f13b8d268ce115d88",
-      "bytes": 190596,
+      "sha256": "7ffb8687021c1f526b23f88b09e38f716ea5f0904d451f724df2d62e09f8beaf",
+      "bytes": 190718,
       "rolling_current_snapshot": false
     },
     {
@@ -15434,8 +15441,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "617c47c2f3e7bb8ea75815c6f8d4ac5d6d8d28e379dd64f2fa2c0ae635d82c61",
-      "bytes": 759949,
+      "sha256": "bfd6d0cc602fb752e33e6c52a492b00d53f306629adc4f8b4941fd9922221cdb",
+      "bytes": 760236,
       "rolling_current_snapshot": false
     },
     {
@@ -16004,8 +16011,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "9573e69638ea8baddb40e922a346a0a24c474d5804ce615789d45e582808471b",
-      "bytes": 405463,
+      "sha256": "cdbe8b9003e4d80bd16222f3b620b726e402a78322aa42e33a7af1cd17b80d3b",
+      "bytes": 405699,
       "rolling_current_snapshot": false
     },
     {
@@ -16124,8 +16131,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "64fb1be827e65cf0034848d2b906929380c8ac2847287c2adcea647b0bb3f456",
-      "bytes": 232036,
+      "sha256": "7809e83568004e93c34d8609cf0f29531594bbced4ba44af8cb625d55a7fc6fc",
+      "bytes": 232312,
       "rolling_current_snapshot": false
     },
     {
@@ -16202,14 +16209,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "85897c6b31db67ce23eb5e53184a92c809ecea2b8899f3b30a97804f27a58148",
-      "bytes": 1097192,
+      "sha256": "25910c51fc52c53e192e17a9f5a4de2576abcea4c1510d36fcfaa4cebf1e9cc8",
+      "bytes": 1098783,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "987f9663fccdf66e9495c2d5582189412f0f82bc39a382bff0e78240dce4d06b",
-      "bytes": 5246533,
+      "sha256": "7037fb5f638e3d345d02db43e7ed9f7048d75e402d39c3aa9e51d8b92f01362d",
+      "bytes": 5248706,
       "rolling_current_snapshot": false
     },
     {
@@ -24055,6 +24062,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_804.json",
+      "sha256": "6184657a31097c85e0f5c189cc421c2c606380453d4fd519f9818f9d4d4292e7",
+      "bytes": 18176,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_804.md",
+      "sha256": "b823c0227f9e2fcacd617e528059552ad6aeffa7ed62da9c3aaaae399561072a",
+      "bytes": 1919,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24614,8 +24633,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "8e7ea2c6000743e74510ca60297927da7d5321df26a5d94a11d52d7616ac7ce6",
-      "bytes": 521085,
+      "sha256": "adf79142435484a651d6da2ad251bdd291e15c8fca90facdd05123396b5f6d9d",
+      "bytes": 521712,
       "rolling_current_snapshot": false
     },
     {
@@ -27128,8 +27147,8 @@
     }
   ],
   "counts": {
-    "milestones": 803,
-    "evidence_files": 2238,
+    "milestones": 804,
+    "evidence_files": 2240,
     "logs": 0,
     "missing_explicit_references": 704
   }

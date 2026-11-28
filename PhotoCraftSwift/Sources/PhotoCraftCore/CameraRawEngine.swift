@@ -49,6 +49,11 @@ public enum CameraRawEngine {
     let w = source.width, h = source.height
     var pixels = try exposedRGB(source, settings: s)
     if s.dehaze != 0 { pixels = try dehaze(pixels, w, h, s.dehaze / 100) }
+    try applyToneAndColor(&pixels, width: w, height: h, settings: s)
+    return pixels
+  }
+
+  static func applyToneAndColor(_ pixels: inout [RGB], width w: Int, height h: Int, settings s: CameraRawSettings) throws {
     if usesBaseTone(s) {
       let luma = pixels.map { max(M.luma($0), 0) }, clipped = luma.map { min($0, 1) }
       let longSide = Float(max(w, h))
@@ -64,7 +69,6 @@ public enum CameraRawEngine {
       }
     }
     try color(&pixels, s, w)
-    return pixels
   }
 
   static func finishBand(_ pixels: inout [RGB], source: Surface, settings: CameraRawSettings,
@@ -80,11 +84,8 @@ public enum CameraRawEngine {
     return result
   }
   package static func developPaged(_ source: Surface, settings: CameraRawSettings) throws -> Surface {
-    guard settings.dehaze == 0 else {
-      throw CraftError.unsupported("Camera Raw Dehaze currently supports up to 36 megapixels.")
-    }
     if hasDetailAdjustments(settings) { return try developPagedDetail(source, settings: settings) }
-    if usesLocalTone(settings) { return try developPagedTone(source, settings: settings) }
+    if usesSpatialPreparation(settings) { return try developPagedTone(source, settings: settings) }
     let paged = try Surface.PagedBuilder(width: source.width, height: source.height,
       depth: source.depth, fill: source.defaultPixel, colorEncoding: source.colorEncoding)
     let side = Surface.tileSide

@@ -267,11 +267,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:803 -->
+<!-- current-status-step:804 -->
 
-Camera Raw can adjust Highlights, Shadows, Texture and Clarity on supported sensor images above 36 megapixels. The native processor uses the full image dimensions to choose the filter radii.
+Camera Raw Dehaze now applies to supported sensor images above 36 megapixels. All existing Photato spatial Camera Raw controls have a paged path in this build.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-803) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_803.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-804) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_804.md).
 
 <!-- current-status:end -->
 
@@ -1281,5 +1281,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 801 | [Apply vignette and grain to full-size Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-801) |
 | 2026-11-28 | 802 | [Sharpen and reduce noise in full-size Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-802) |
 | 2026-11-28 | 803 | [Apply local tone to full-size Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-803) |
+| 2026-11-28 | 804 | [Apply Dehaze to full-size Camera Raw images](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-804) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)
