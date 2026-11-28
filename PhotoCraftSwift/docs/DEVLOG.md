@@ -807,7 +807,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 786 | 2026-11-27 | [Open Camera Raw sidecar and embedded XMP settings](#dev-step-786) |
 | 787 | 2026-11-27 | [Save editable Camera Raw settings in DNG copies](#dev-step-787) |
 | 788 | 2026-11-27 | [Save Camera Raw settings in the original DNG](#dev-step-788) |
+| 789 | 2026-11-28 | [Save camera RAW adjustments in XMP sidecars](#dev-step-789) |
 <!-- history-index:end -->
+
+<a id="dev-step-789"></a>
+
+## 2026-11-28 — Step 789 — Save camera RAW adjustments in XMP sidecars
+
+Camera Raw’s Done button now writes or updates the companion XMP for supported non-DNG originals. Photato keeps the camera file unchanged and retains unrelated XMP metadata. Nikon files with a verified sensor directory decode at full size from both Finder and retained bytes.
+
+The Nikon sample’s byte-backed ImageIO type described its 160 × 120 TIFF thumbnail. A bounded read of the camera make and CFA SubIFD now confirms the RAW type before native decoding. The first two debug write runs failed on the macOS /var alias. The writer now resolves the parent through realpath and retains the existing protection against following the sidecar filename as a symlink. A field comparison caught the first implementation rewriting unedited Adobe values. Existing vendor sidecars now preserve their untouched values. A repeat-save regression caught a stale cached file identifier after atomic replacement. Casing conflicts are now checked against live file identities. The writes preserve the source and reject an externally changed destination. [Nikon fixture and license](https://raw.pixls.us/) · [Adobe Camera Raw settings](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/camera-raw-settings.html).
+
+Adobe Camera Raw 18.1.1 created a sidecar for the CC0 Nikon D70s reference at Exposure +1.25. Photato read the Nikon at 3,008 × 2,000 pixels, created its own sibling and updated an existing Adobe-authored XMP. Adobe reopened the updated sidecar at Exposure +1.50. The original NEF’s SHA-256 stayed identical and all other top-level Adobe Camera Raw scalar settings stayed the same.
+
+The authenticated `raw.saveSourceSettings` command now selects the XMP destination automatically for the original layer of a locally opened non-DNG RAW. It shares the native coordinated writer and requires local document saving and the current revision. The editor history and original source bytes remain intact.
+
+Xcode built the app. Four focused imaging tests and one authenticated HTTP test passed. Both optimized architectures passed all 345 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+Camera Raw database and storage preferences, camera-specific defaults, RAW variants unsupported by Apple’s decoder, physical Intel testing and byte-for-byte Adobe render equivalence remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,475,580 bytes with SHA-256 `5dfcc4db75dbf1f38d897aad988f8b49d4c5aca0831a8cc73ab51cf75c4cda81`.
+
+[Qualification](SOURCE_PUBLICATION_789.md).
 
 <a id="dev-step-788"></a>
 

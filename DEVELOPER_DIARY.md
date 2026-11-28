@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **788** · The 10 most recent entries, newest first.
+Source build **789** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 789 — Save camera RAW adjustments in XMP sidecars
+
+Camera Raw’s Done button now writes or updates the companion XMP for supported non-DNG originals. Photato keeps the camera file unchanged and retains unrelated XMP metadata. Nikon files with a verified sensor directory decode at full size from both Finder and retained bytes.
+
+Adobe Camera Raw 18.1.1 created a sidecar for the CC0 Nikon D70s reference at Exposure +1.25. Photato read the Nikon at 3,008 × 2,000 pixels, created its own sibling and updated an existing Adobe-authored XMP. Adobe reopened the updated sidecar at Exposure +1.50. The original NEF’s SHA-256 stayed identical and all other top-level Adobe Camera Raw scalar settings stayed the same.
+
+Xcode built the app. Four focused imaging tests and one authenticated HTTP test passed. Both optimized architectures passed all 345 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+Camera Raw database and storage preferences, camera-specific defaults, RAW variants unsupported by Apple’s decoder, physical Intel testing and byte-for-byte Adobe render equivalence remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-789) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_789.md).
 
 ## 2026-11-27 — Step 788 — Save Camera Raw settings in the original DNG
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 5 focused imaging and 2 focused app and HTTP tes
 The dense test covers a flattened, untagged, interleaved RGB16 image without transparency. Dense layered files, other color modes and profiles, and full-format byte equality remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-780) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_780.md).
-
-## 2026-11-27 — Step 779 — Save BigTIFF files with 64-bit offsets
-
-Use BigTIFF format is available in the TIFF save dialog. Photato writes 64-bit offsets for image strips and pyramid previews while keeping supported TIFF compression, profiles, layers and saved selections.
-
-Photoshop 27.2 opened the layered BigTIFF with the Masked coating layer selected and re-saved the Gray8 BigTIFF losslessly. All 23,091 samples matched. A separate sparse test wrote and reopened a first image directory and image strip beyond 4 GiB. File and Data output matched on the tested layered images.
-
-Xcode built the native app. All 3 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 272 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
-
-The high-offset test used a sparse file. Dense multi-gigabyte composite and editable-layer output and broader Photoshop container comparisons remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-779) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_779.md).

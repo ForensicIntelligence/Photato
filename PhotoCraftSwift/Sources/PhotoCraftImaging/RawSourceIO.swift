@@ -22,11 +22,16 @@ public enum RawSourceIO {
     guard let source = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary),
       let type = CGImageSourceGetType(source) as String? else { return nil }
     if UTType(type)?.conforms(to: contentType) == true { return type }
-    // ImageIO can report TIFF for byte-backed DNG files with a distant first IFD.
-    // Adobe's required DNGVersion tag admits the input to the real RAW decoder.
-    guard type == UTType.tiff.identifier, data.count <= SmartObject.maximumSourceBytes, TIFFContainer.isClassic(data),
-      let tiff = try? TIFFContainer(data, metadata: false, additionalTags: [50706]), isDNG(tiff) else { return nil }
-    return "com.adobe.raw-image"
+    // A TIFF classification can identify a RAW's thumbnail instead of the
+    // sensor image. Require a DNG marker or a Nikon CFA directory before hinting.
+    guard type == UTType.tiff.identifier, data.count <= SmartObject.maximumSourceBytes,
+      TIFFContainer.isClassic(data),
+      let root = try? TIFFContainer(data, metadata: false, additionalTags: [271, 50706]) else { return nil }
+    if isDNG(root) { return "com.adobe.raw-image" }
+    guard isNikonCamera(root),
+      let sensor = try? TIFFContainer(data, metadata: false, additionalTags: [33421, 33422], inspectSubIFDs: true),
+      hasNikonMosaic(sensor) else { return nil }
+    return "com.nikon.raw-image"
   }
   public static func recognizes(_ data: Data) -> Bool { type(data) != nil }
   public static func recognizes(_ url: URL) -> Bool {
@@ -35,12 +40,41 @@ public enum RawSourceIO {
     if UTType(type)?.conforms(to: contentType) == true { return true }
     guard type == UTType.tiff.identifier,
       let source = try? PSDFileSource(url, maximumBytes: SmartObject.maximumSourceBytes),
-      let tiff = try? TIFFContainer(file: source, metadata: false, additionalTags: [50706]), !tiff.isBigTIFF else { return false }
-    return isDNG(tiff)
+      let tiff = try? TIFFContainer(file: source, metadata: false, additionalTags: [271, 50706]),
+      !tiff.isBigTIFF else { return false }
+    if isDNG(tiff) { return true }
+    guard isNikonCamera(tiff),
+      let sensor = try? TIFFContainer(file: source, metadata: false, additionalTags: [33421, 33422], inspectSubIFDs: true)
+    else { return false }
+    return hasNikonMosaic(sensor)
   }
+
   private static func isDNG(_ tiff: TIFFContainer) -> Bool {
     guard let version = tiff.root.fields[50706] else { return false }
     return version.type == 1 && version.count == 4 && version.data.first == 1
+  }
+
+  private static func isNikonCamera(_ tiff: TIFFContainer) -> Bool {
+    guard let make = tiff.root.fields[271], make.type == 2, (5...128).contains(make.count),
+      let brand = String(bytes: make.data.prefix { $0 != 0 }, encoding: .ascii) else { return false }
+    return brand == "NIKON" || brand == "NIKON CORPORATION"
+  }
+
+  private static func hasNikonMosaic(_ tiff: TIFFContainer) -> Bool {
+    func containsMosaic(_ directory: TIFFContainer.Directory) -> Bool {
+      if let interpretation = directory.fields[262], interpretation.type == 3, interpretation.count == 1,
+        tiff.order.number(interpretation.data, 0, 2) == 32_803,
+        let repeatSize = directory.fields[33421], repeatSize.type == 3, repeatSize.count == 2,
+        let pattern = directory.fields[33422], pattern.type == 1,
+        (directory.fields[273] != nil && directory.fields[279] != nil)
+          || (directory.fields[324] != nil && directory.fields[325] != nil) {
+        let rows = tiff.order.number(repeatSize.data, 0, 2)
+        let columns = tiff.order.number(repeatSize.data, 2, 2)
+        if (1...16).contains(rows), (1...16).contains(columns), pattern.count == rows * columns { return true }
+      }
+      return directory.fields[330]?.children.contains(where: containsMosaic) == true
+    }
+    return containsMosaic(tiff.root)
   }
   static func decoder(_ data: Data,version: String? = nil) throws -> (CIRAWFilter,Info) {
     try Task.checkCancellation()
@@ -72,15 +106,30 @@ public enum RawSourceIO {
 
   public static func prepareLocal(_ url: URL, depth: PixelDepth = .u16) throws
     -> (document: CraftDocument, dngSource: RawDNGSource?) {
-    let source = try PSDFileSource(url, maximumBytes: SmartObject.maximumSourceBytes)
-    let data = try source.bytes(at: 0, count: source.count)
+    let prepared = try prepareLocalSettings(url, depth: depth)
+    if case .embeddedDNG(let dng) = prepared.source { return (prepared.document, dng) }
+    return (prepared.document, nil)
+  }
+
+  public static func prepareLocalSettings(_ url: URL, depth: PixelDepth = .u16) throws
+    -> (document: CraftDocument, source: RawSettingsSource?) {
+    let input = try PSDFileSource(url, maximumBytes: SmartObject.maximumSourceBytes)
+    let data = try input.bytes(at: 0, count: input.count)
     let related = try relatedXMP(for: url)
-    let document = try open(data, fileName: url.lastPathComponent, settings: related?.settings, depth: depth)
-    try source.validateUnchanged()
-    let canSave = document.layers.first?.smartObject?.mediaType == "image/x-adobe-dng"
-      && TIFFContainer.isClassic(data) && (try? url.resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink) == false
-    let local = canSave ? RawDNGSource(url: url, original: data, sidecar: related) : nil
-    return (document, local)
+    let settings = try related?.settings.map { try compatibleStoredSettings($0, in: data) }
+    let document = try open(data, fileName: url.lastPathComponent, settings: settings, depth: depth)
+    let safeSource = (try? url.resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink) == false
+    let source: RawSettingsSource?
+    if safeSource, document.layers.first?.smartObject?.mediaType == "image/x-adobe-dng", TIFFContainer.isClassic(data) {
+      source = .embeddedDNG(RawDNGSource(url: url, original: data, sidecar: related))
+    } else if safeSource, document.layers.first?.smartObject?.mediaType == "image/x-camera-raw" {
+      let existing = try related ?? relatedXMP(for: url, requireAdjustments: false)
+      source = .sidecar(RawSidecarSource(url: url, original: data, existing: existing))
+    } else {
+      source = nil
+    }
+    try input.validateUnchanged()
+    return (document, source)
   }
   public static func open(_ data: Data, fileName: String, settings requested: RawDevelopment? = nil,
     depth: PixelDepth = .u16) throws -> CraftDocument {
@@ -94,15 +143,8 @@ public enum RawSourceIO {
     let metadata: [String: Data]?
     if let source, let properties { metadata = try RasterMetadata.capture(source, properties: properties) }
     else { metadata = nil }
-    var initial = requested
-      ?? (metadata?[RasterMetadata.xmpKey]).flatMap { try? CameraRawXMP.readEmbeddedDNG($0) }
-      ?? .init()
-    if requested == nil, initial.decoderVersion != nil || initial.highlightRecovery == true || initial.lensCorrection == true {
-      let available = try inspect(data)
-      if let version = initial.decoderVersion, !available.supportedDecoders.contains(version) { initial.decoderVersion = nil }
-      if !available.highlightRecoverySupported { initial.highlightRecovery = nil }
-      if !available.lensCorrectionSupported { initial.lensCorrection = nil }
-    }
+    let embedded = (metadata?[RasterMetadata.xmpKey]).flatMap { try? CameraRawXMP.readStored($0) }
+    let initial = try requested ?? compatibleStoredSettings(embedded ?? .init(), in: data)
     let (pixels, settings, info) = try render(data, settings: initial, depth: depth)
     var name = URL(fileURLWithPath:fileName).lastPathComponent
     if (name as NSString).pathExtension.isEmpty { name += "." + (UTType(info.type)?.preferredFilenameExtension ?? "raw") }
@@ -117,6 +159,20 @@ public enum RawSourceIO {
     document.layers = [layer]; document.activeLayerID = layer.id
     try document.validate(); return document
   }
+  static func compatibleStoredSettings(_ settings: RawDevelopment, in data: Data) throws -> RawDevelopment {
+    guard settings.decoderVersion != nil || settings.highlightRecovery == true || settings.lensCorrection == true else {
+      return settings
+    }
+    var availableSettings = settings
+    let available = try inspect(data)
+    if let version = settings.decoderVersion, !available.supportedDecoders.contains(version) {
+      availableSettings.decoderVersion = nil
+    }
+    if !available.highlightRecoverySupported { availableSettings.highlightRecovery = nil }
+    if !available.lensCorrectionSupported { availableSettings.lensCorrection = nil }
+    return availableSettings
+  }
+
   public static func render(_ data: Data,settings requested: RawDevelopment,depth: PixelDepth) throws -> (Surface,RawDevelopment,Info) {
     try requested.validate()
     let (raw,info) = try decoder(data,version:requested.decoderVersion)

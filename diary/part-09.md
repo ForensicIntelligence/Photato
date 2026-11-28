@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-28 — Step 789 — Save camera RAW adjustments in XMP sidecars
+
+Camera Raw’s Done button now writes or updates the companion XMP for supported non-DNG originals. Photato keeps the camera file unchanged and retains unrelated XMP metadata. Nikon files with a verified sensor directory decode at full size from both Finder and retained bytes.
+
+Adobe Camera Raw 18.1.1 created a sidecar for the CC0 Nikon D70s reference at Exposure +1.25. Photato read the Nikon at 3,008 × 2,000 pixels, created its own sibling and updated an existing Adobe-authored XMP. Adobe reopened the updated sidecar at Exposure +1.50. The original NEF’s SHA-256 stayed identical and all other top-level Adobe Camera Raw scalar settings stayed the same.
+
+Xcode built the app. Four focused imaging tests and one authenticated HTTP test passed. Both optimized architectures passed all 345 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+Camera Raw database and storage preferences, camera-specific defaults, RAW variants unsupported by Apple’s decoder, physical Intel testing and byte-for-byte Adobe render equivalence remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-789) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_789.md).
+
 ## 2026-11-27 — Step 788 — Save Camera Raw settings in the original DNG
 
 Camera Raw’s Done button now saves changes into a locally opened DNG and closes the editor. If the image opened with an XMP sidecar, Photato embeds its metadata and backs up the sidecar before removing it when required by the sandbox. The source sensor bytes stay intact.

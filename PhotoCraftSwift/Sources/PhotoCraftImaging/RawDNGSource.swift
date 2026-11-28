@@ -27,11 +27,11 @@ public struct RawDNGSource: Sendable {
     public var errorDescription: String? {
       switch self {
       case .sourceChanged:
-        "The DNG or its sidecar has changed. Reopen the source before saving its settings."
+        "The RAW file or its sidecar has changed. Reopen the source before saving its settings."
       case .multipleSidecars:
-        "The DNG has two sidecars with different filename casing. Keep the intended sidecar and reopen the source."
+        "The RAW file has two sidecars with different filename casing. Keep the intended sidecar and reopen the source."
       case .sidecarAccessNeeded:
-        "Allow access to the source folder to finish saving the DNG and its matching XMP sidecar."
+        "Allow access to the source folder to finish saving the Camera Raw settings."
       case .rollbackFailed:
         "The DNG was written, but its sidecar could not be retired and the DNG could not be restored. Review the DNG and sidecar before trying again."
       }
@@ -39,12 +39,7 @@ public struct RawDNGSource: Sendable {
   }
 
   public func save(settings: RawDevelopment, authorizedFolder: URL? = nil) throws -> RawDNGSource {
-    if let authorizedFolder,
-      authorizedFolder.standardizedFileURL.resolvingSymlinksInPath()
-        != url.deletingLastPathComponent().standardizedFileURL.resolvingSymlinksInPath() {
-      throw SaveError.sidecarAccessNeeded
-    }
-    let access = authorizedFolder?.startAccessingSecurityScopedResource() == true
+    let access = try Self.accessSourceFolder(authorizedFolder, source: url)
     defer { if access { authorizedFolder?.stopAccessingSecurityScopedResource() } }
     return try save(settings: settings) { url in
       let files = FileManager.default
@@ -54,14 +49,14 @@ public struct RawDNGSource: Sendable {
         // A user-selected file grant can permit deleting the sibling while
         // the Trash itself remains outside the application's sandbox.
         guard let sidecar else { throw error }
-        _ = try unchanged(url, expected: sidecar.data)
+        _ = try Self.unchanged(url, expected: sidecar.data)
         let folder = Self.sidecarBackupDirectory
         try files.createDirectory(at: folder, withIntermediateDirectories: true)
         let stem = String(decoding: url.deletingPathExtension().lastPathComponent.utf8.prefix(80), as: UTF8.self)
         let hash = SHA256.hash(data: sidecar.data).map { String(format: "%02x", $0) }.joined()
         let backup = folder.appendingPathComponent("\(stem)-\(hash).xmp")
         try sidecar.data.write(to: backup, options: .atomic)
-        _ = try unchanged(url, expected: sidecar.data)
+        _ = try Self.unchanged(url, expected: sidecar.data)
         do {
           try files.removeItem(at: url)
         } catch let failure as CocoaError where failure.code == .fileWriteNoPermission {
@@ -89,15 +84,9 @@ public struct RawDNGSource: Sendable {
           operation = Result {
             guard raw.standardizedFileURL == url.standardizedFileURL,
               packet.standardizedFileURL == sidecar.url.standardizedFileURL else { throw SaveError.sourceChanged }
-            let rawFile = try unchanged(raw, expected: original)
-            let xmpFile = try unchanged(packet, expected: sidecar.data)
-            let oppositeExtension = packet.pathExtension == "xmp" ? "XMP" : "xmp"
-            let alternate = packet.deletingPathExtension().appendingPathExtension(oppositeExtension)
-            if let other = try? alternate.resourceValues(forKeys: [.fileResourceIdentifierKey]).fileResourceIdentifier,
-              let selected = try packet.resourceValues(forKeys: [.fileResourceIdentifierKey]).fileResourceIdentifier,
-              !other.isEqual(selected) {
-              throw SaveError.multipleSidecars
-            }
+            let rawFile = try Self.unchanged(raw, expected: original)
+            let xmpFile = try Self.unchanged(packet, expected: sidecar.data)
+            try Self.validateSidecarCasing(packet)
             try rawFile.validateUnchanged()
             try xmpFile.validateUnchanged()
             if updated != original { try updated.write(to: raw, options: .atomic) }
@@ -130,7 +119,7 @@ public struct RawDNGSource: Sendable {
         options: .forReplacing, error: &coordinationError) { raw in
         operation = Result {
           guard raw.standardizedFileURL == url.standardizedFileURL else { throw SaveError.sourceChanged }
-          let source = try unchanged(raw, expected: original)
+          let source = try Self.unchanged(raw, expected: original)
           try source.validateUnchanged()
           if updated != original { try updated.write(to: raw, options: .atomic) }
         }
@@ -144,7 +133,26 @@ public struct RawDNGSource: Sendable {
     return RawDNGSource(url: url, original: updated, sidecar: nil)
   }
 
-  private func unchanged(_ location: URL, expected: Data) throws -> PSDFileSource {
+  static func accessSourceFolder(_ folder: URL?, source: URL) throws -> Bool {
+    guard let folder else { return false }
+    guard folder.standardizedFileURL.resolvingSymlinksInPath()
+      == source.deletingLastPathComponent().standardizedFileURL.resolvingSymlinksInPath() else {
+      throw SaveError.sidecarAccessNeeded
+    }
+    return folder.startAccessingSecurityScopedResource()
+  }
+
+  static func validateSidecarCasing(_ packet: URL) throws {
+    let oppositeExtension = packet.pathExtension == "xmp" ? "XMP" : "xmp"
+    let alternate = packet.deletingPathExtension().appendingPathExtension(oppositeExtension)
+    if let other = try? alternate.resourceValues(forKeys: [.fileResourceIdentifierKey]).fileResourceIdentifier,
+      let selected = try packet.resourceValues(forKeys: [.fileResourceIdentifierKey]).fileResourceIdentifier,
+      !other.isEqual(selected) {
+      throw SaveError.multipleSidecars
+    }
+  }
+
+  static func unchanged(_ location: URL, expected: Data) throws -> PSDFileSource {
     guard try location.resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink == false,
       let source = try? PSDFileSource(location, maximumBytes: expected.count),
       source.count == expected.count,

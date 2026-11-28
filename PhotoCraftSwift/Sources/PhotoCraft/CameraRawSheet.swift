@@ -88,9 +88,9 @@ struct CameraRawSheet: View {
         Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty)
         Button("Redo") { model.redo() }.disabled(model.redoStates.isEmpty)
         Button("Cancel", action: cancel).keyboardShortcut(.cancelAction)
-        if let document = store.initialRawDocument, document.localDNGSource != nil {
+        if let document = store.initialRawDocument, document.localRawSource != nil {
           Button("Done") { saveSource(document) }
-            .help("Save these settings to the source DNG and close Camera Raw.")
+            .help("Save these settings to the RAW file or its XMP sidecar and close Camera Raw.")
             .disabled(!model.ready || dngTask != nil)
         }
         Button(store.initialRawDocument == nil ? "OK" : "Open", action: commit)
@@ -160,8 +160,8 @@ struct CameraRawSheet: View {
         document.close()
       } catch RawDNGSource.SaveError.sidecarAccessNeeded where authorizedFolder == nil {
         sourceSaveError = RawDNGSource.SaveError.sidecarAccessNeeded.localizedDescription
-        if let sidecar = document.localDNGSource?.original.matchingSidecarURL {
-          requestSourceFolderAccess(sidecar, document: document)
+        if let source = document.localRawSource?.original {
+          requestSourceFolderAccess(source, document: document)
         }
       } catch is CancellationError {
       } catch {
@@ -170,11 +170,15 @@ struct CameraRawSheet: View {
     }
   }
 
-  private func requestSourceFolderAccess(_ sidecar: URL, document: CraftNSDocument) {
+  private func requestSourceFolderAccess(_ source: RawSettingsSource, document: CraftNSDocument) {
     let panel = NSOpenPanel()
-    let folder = sidecar.deletingLastPathComponent()
+    let folder = source.url.deletingLastPathComponent()
     panel.title = "Allow Access to the Source Folder"
-    panel.message = "Select \(folder.lastPathComponent) so Photato can retire \(sidecar.lastPathComponent) after embedding its settings in the DNG."
+    if source.savesInsideDNG, let sidecar = source.sidecarURL {
+      panel.message = "Select \(folder.lastPathComponent) so Photato can retire \(sidecar.lastPathComponent) after embedding its settings in the DNG."
+    } else {
+      panel.message = "Select \(folder.lastPathComponent) so Photato can save the XMP sidecar beside \(source.url.lastPathComponent)."
+    }
     panel.prompt = "Allow Access"
     panel.directoryURL = folder
     panel.canChooseFiles = false

@@ -101,10 +101,10 @@ extension AutomationService {
     }
     let (layerID, object) = try command.rawTarget(document.store.document)
     guard document.canSaveRawSourceSettings(layerID: layerID), let settings = object.rawDevelopment else {
-      throw AutomationFailure(status: 422, message: "Select the original layer of a locally opened DNG.")
+      throw AutomationFailure(status: 422, message: "Select the original layer of a locally opened Camera Raw document.")
     }
     guard rawSourceSaveTasks[shareID] == nil else {
-      throw AutomationFailure(status: 409, message: "A DNG source save is already running.")
+      throw AutomationFailure(status: 409, message: "A RAW settings save is already running.")
     }
     try Task.checkCancellation()
     let task = Task { try await document.saveRawSourceSettings(layerID: layerID, settings: settings) }
@@ -113,16 +113,16 @@ extension AutomationService {
     do {
       try await withTaskCancellationHandler { try await task.value } onCancel: { task.cancel() }
     } catch RawDNGSource.SaveError.sidecarAccessNeeded {
-      throw AutomationFailure(status: 403, message: "Authorize the DNG’s folder in Photato before retiring its XMP sidecar.")
+      throw AutomationFailure(status: 403, message: "Authorize the RAW file’s folder in Photato before saving its settings.")
     } catch RawDNGSource.SaveError.sourceChanged {
-      throw AutomationFailure(status: 409, message: "The DNG or its sidecar changed. Reopen it before saving.")
+      throw AutomationFailure(status: 409, message: "The RAW file or its sidecar changed. Reopen it before saving.")
     } catch is CancellationError {
-      throw AutomationFailure(status: 409, message: "The DNG source save was cancelled or revoked.")
+      throw AutomationFailure(status: 409, message: "The RAW settings save was cancelled or revoked.")
     } catch {
       throw AutomationFailure(status: 422, message: error.localizedDescription)
     }
     guard isRunning, shares.contains(where: { $0.id == shareID && $0.document === document }) else {
-      throw AutomationFailure(status: 409, message: "Sharing ended during the DNG source save.")
+      throw AutomationFailure(status: 409, message: "Sharing ended during the RAW settings save.")
     }
   }
 
@@ -137,6 +137,9 @@ extension AutomationService {
     result["settings"] = try JSONSerialization.jsonObject(with:JSONEncoder().encode(object.rawDevelopment!))
     result["revision"] = expected
     result["canSaveSourceSettings"] = documentSavesEnabled && document.canSaveRawSourceSettings(layerID: layerID)
+    if document.canSaveRawSourceSettings(layerID: layerID), let source = document.localRawSource?.original {
+      result["sourceSettingsStorage"] = source.savesInsideDNG ? "embeddedDNG" : "sidecar"
+    }
     return result
   }
 }

@@ -1,3 +1,9 @@
+### Camera RAW source files and XMP sidecars (checkpoint 789)
+
+The authenticated `raw.saveSourceSettings` command now selects the XMP destination automatically for the original layer of a locally opened non-DNG RAW. It shares the native coordinated writer and requires local document saving and the current revision. The editor history and original source bytes remain intact.
+
+[Qualification](SOURCE_PUBLICATION_789.md).
+
 ### Local DNG source settings (checkpoint 788)
 
 The authenticated `raw.saveSourceSettings` command requires the original DNG layer, a current revision and the native Allow local document saving option. It uses the same coordinated write, checks for external changes and retains editor history and source layer bytes. A sandbox denial returns an error and rolls back the DNG if the output still matches the staged version.

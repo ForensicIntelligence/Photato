@@ -61,7 +61,7 @@ public enum SmartObjectIO {
         try check(document);return document
       }
       if RawSourceIO.recognizes(data) {
-        let settings = try sourceURL.flatMap(RawSourceIO.relatedSettings(for:))
+        let settings = try sourceURL.flatMap { try RawSourceIO.relatedSettings(for: $0, rawData: data) }
         return try RawSourceIO.open(data, fileName: fileName, settings: settings)
       }
       if let name = try photoshopDocumentName(sourceBytes, fileName: fileName) {

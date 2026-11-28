@@ -26,7 +26,7 @@ extension RawSourceIO {
         throw CraftError.invalid("The DNG’s existing XMP tag cannot be updated safely.")
       }
     }
-    let packet = try CameraRawXMP.writeEmbeddedDNG(settings, replacing: existing?.data, including: sidecar)
+    let packet = try CameraRawXMP.writeStored(settings, replacing: existing?.data, including: sidecar)
     if packet == existing?.data { return data }
 
     let order = container.order

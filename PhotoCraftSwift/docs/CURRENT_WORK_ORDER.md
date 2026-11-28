@@ -1,3 +1,5 @@
+**Camera Raw RAW workflow.** Implement the Camera Raw storage preference and a content-addressed local settings database, then compare Camera Raw defaults and Open modes. [Development record](DEVLOG.md#dev-step-789) · [Qualification](SOURCE_PUBLICATION_789.md).
+
 **Camera Raw RAW workflow.** Continue other camera RAW sidecar writes and camera-specific defaults. Test the native Camera Raw storage preferences and the documented Open modes. [Development record](DEVLOG.md#dev-step-788) · [Qualification](SOURCE_PUBLICATION_788.md).
 
 **Camera Raw RAW workflow.** Qualify in-place Done, including sidecar handling and user-selected App Sandbox writes. Use the verified DNG writer and captured Camera Raw 18.1.1 settings. [Development record](DEVLOG.md#dev-step-787) · [Qualification](SOURCE_PUBLICATION_787.md).

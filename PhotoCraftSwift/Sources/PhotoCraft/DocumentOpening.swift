@@ -9,7 +9,7 @@ struct PreparedLocalDocument: Sendable {
   let fingerprint: RecoverySourceFingerprint?
   let modificationDate: Date?
   var colorPolicyChanged = false
-  var rawDNGSource: RawDNGSource?
+  var rawSettingsSource: RawSettingsSource?
   static func read(_ url: URL, format selection: DocumentOpenFormat) throws -> Self {
     if (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true {
       try Task.checkCancellation()
@@ -25,20 +25,20 @@ struct PreparedLocalDocument: Sendable {
       let date = try url.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate
       let actual = DocumentOpenFormat.detect(url)
       try selection.validate(actual)
-      let raw = try actual == .raw ? RawSourceIO.prepareLocal(url) : nil
+      let raw = try actual == .raw ? RawSourceIO.prepareLocalSettings(url) : nil
       var model = try raw?.document ?? DocumentIO.read(url)
       if [.psd, .psb].contains(actual), model.sourceICC == nil { model.profileIsUntagged = true }
       let fingerprint = try reader.finish()
       return .init(model: model, format: actual?.persistenceFormat,
-        fingerprint: fingerprint, modificationDate: date, rawDNGSource: raw?.dngSource)
+        fingerprint: fingerprint, modificationDate: date, rawSettingsSource: raw?.source)
     }
   }
   @MainActor func makeDocument(url: URL, actions: ActionLibrary? = nil) -> CraftNSDocument {
     let doc = CraftNSDocument(model: model, actions: actions)
     doc.scriptEventOrigin = .openDocument
     doc.openRawDevelopmentOnDisplay = format == nil && model.layers.first?.smartObject?.rawDevelopment != nil
-    if let rawDNGSource, let layer = model.layers.first, let bytes = layer.smartObject?.data {
-      doc.localDNGSource = (layer.id, rawDNGSource, bytes)
+    if let rawSettingsSource, let layer = model.layers.first, let bytes = layer.smartObject?.data {
+      doc.localRawSource = (layer.id, rawSettingsSource, bytes)
     }
     doc.fileType = (format ?? .native).typeIdentifier
     if let format {
@@ -175,7 +175,7 @@ struct PreparedLocalDocument: Sendable {
               let model = try ColorPolicyInput.opening(snapshot.model, settings: colorSettings, choice: choice)
               return PreparedLocalDocument(model: model, format: snapshot.format, fingerprint: snapshot.fingerprint,
                 modificationDate: snapshot.modificationDate, colorPolicyChanged: model != snapshot.model,
-                rawDNGSource: snapshot.rawDNGSource)
+                rawSettingsSource: snapshot.rawSettingsSource)
             }
             worker = conversion
             prepared = try await withTaskCancellationHandler { try await conversion.value } onCancel: { conversion.cancel() }

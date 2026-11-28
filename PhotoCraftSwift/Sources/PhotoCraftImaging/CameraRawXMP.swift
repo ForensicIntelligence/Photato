@@ -66,7 +66,7 @@ public enum CameraRawXMP {
     try readRaw(Packet(data), into: base)
   }
 
-  static func readEmbeddedDNG(_ data: Data) throws -> RawDevelopment {
+  static func readStored(_ data: Data) throws -> RawDevelopment {
     let packet = try Packet(data)
     var result = try readRaw(packet, into: RawDevelopment())
     guard let native = packet.nativeDevelopment else { return result }
@@ -143,10 +143,16 @@ public enum CameraRawXMP {
     return try write(settings.adjustments, sensor: settings, replacing: original)
   }
 
-  static func writeEmbeddedDNG(_ settings: RawDevelopment, replacing original: Data?, including sidecar: Data?) throws -> Data {
+  static func writeStored(_ settings: RawDevelopment, replacing original: Data?, including sidecar: Data?) throws -> Data {
     try settings.validate()
     return try write(settings.adjustments, sensor: settings, replacing: original,
       including: sidecar, includeNativeDevelopment: true)
+  }
+
+  static func writeStoredSidecar(_ settings: RawDevelopment, replacing previous: RawSourceIO.RelatedXMP?) throws -> Data {
+    try settings.validate()
+    return try write(settings.adjustments, sensor: settings, replacing: previous?.data,
+      includeNativeDevelopment: true, preserving: previous?.settings)
   }
 
   private static func tags(in metadata: CGImageMetadata) -> [CGImageMetadataTag] {
@@ -178,7 +184,7 @@ public enum CameraRawXMP {
 
   private static func write(_ settings: CameraRawSettings, sensor: RawDevelopment?,
     replacing original: Data? = nil, including sidecar: Data? = nil,
-    includeNativeDevelopment: Bool = false) throws -> Data {
+    includeNativeDevelopment: Bool = false, preserving previous: RawDevelopment? = nil) throws -> Data {
     try settings.validate()
     let metadata: CGMutableImageMetadata
     if let original {
@@ -208,38 +214,59 @@ public enum CameraRawXMP {
       let text = String(value)
       return text.hasSuffix(".0") ? String(text.dropLast(2)) : text
     }
-    func setNumber(_ name: String, _ value: Float) throws { try set(name, number(value) as CFString) }
-    try set("ProcessVersion", "15.4" as CFString)
+    func setNumber(_ name: String, _ value: Float, previous: Float? = nil) throws {
+      guard value != previous else { return }
+      try set(name, number(value) as CFString)
+    }
+    if previous == nil { try set("ProcessVersion", "15.4" as CFString) }
     try set("HasSettings", "True" as CFString)
-    let whiteBalance = if let sensor { sensor.temperature != nil || sensor.tint != nil }
-      else { settings.temperature != 0 || settings.tint != 0 }
-    try set("WhiteBalance", (whiteBalance ? "Custom" : "As Shot") as CFString)
-    if let temperature = sensor?.temperature { try setNumber("Temperature", temperature) }
-    else if sensor != nil { CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):Temperature" as CFString) }
-    if let tint = sensor?.tint { try setNumber("Tint", tint) }
-    else if sensor != nil { CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):Tint" as CFString) }
+    if previous == nil || sensor?.temperature != previous?.temperature || sensor?.tint != previous?.tint {
+      let whiteBalance = if let sensor { sensor.temperature != nil || sensor.tint != nil }
+        else { settings.temperature != 0 || settings.tint != 0 }
+      try set("WhiteBalance", (whiteBalance ? "Custom" : "As Shot") as CFString)
+      if let temperature = sensor?.temperature { try setNumber("Temperature", temperature) }
+      else if sensor != nil { CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):Temperature" as CFString) }
+      if let tint = sensor?.tint { try setNumber("Tint", tint) }
+      else if sensor != nil { CGImageMetadataRemoveTagWithPath(metadata, nil, "\(prefix):Tint" as CFString) }
+    }
+    let previousAdjustments = previous?.adjustments
     for (field, control) in scalars {
       if sensor != nil && (control == "temperature" || control == "tint") { continue }
-      try setNumber(field, settings[control])
+      try setNumber(field, settings[control], previous: previousAdjustments?[control])
     }
-    for (index, field) in splits.enumerated() { try setNumber(field, settings.curveSplits[index]) }
+    for (index, field) in splits.enumerated() {
+      try setNumber(field, settings.curveSplits[index], previous: previousAdjustments?.curveSplits[index])
+    }
     for (field, values) in mixer {
-      for (index, color) in colors.enumerated() { try setNumber(field + color, settings[keyPath: values][index]) }
+      for (index, color) in colors.enumerated() {
+        try setNumber(field + color, settings[keyPath: values][index],
+          previous: previousAdjustments?[keyPath: values][index])
+      }
     }
     for (wheel, hue, saturation, luminance) in grading {
       let values = settings[keyPath: wheel]
-      try setNumber(hue, values.hue)
-      try setNumber(saturation, values.sat)
-      try setNumber(luminance, values.lum)
+      let old = previousAdjustments?[keyPath: wheel]
+      try setNumber(hue, values.hue, previous: old?.hue)
+      try setNumber(saturation, values.sat, previous: old?.sat)
+      try setNumber(luminance, values.lum, previous: old?.lum)
     }
-    let usesCustomCurve = curves.contains { !settings[keyPath: $0.1].isEmpty && settings[keyPath: $0.1] != identityCurve }
-    try set("ToneCurveName2012", (usesCustomCurve ? "Custom" : "Linear") as CFString)
+    func curvePoints(_ points: [[Float]]) -> [[Float]] {
+      points.isEmpty ? identityCurve : points
+    }
+    var changedCurve = false
     for (field, curve) in curves {
-      let points = settings[keyPath: curve].isEmpty ? identityCurve : settings[keyPath: curve]
+      let points = curvePoints(settings[keyPath: curve])
+      if let previousAdjustments, points == curvePoints(previousAdjustments[keyPath: curve]) { continue }
+      changedCurve = true
       let values = points.map { "\(number($0[0])), \(number($0[1]))" }
       try set(field, values as CFArray, type: .arrayOrdered)
     }
-    if let index = vignetteStyles.firstIndex(of: settings.vignetteStyle) {
+    if changedCurve {
+      let usesCustomCurve = curves.contains { curvePoints(settings[keyPath: $0.1]) != identityCurve }
+      try set("ToneCurveName2012", (usesCustomCurve ? "Custom" : "Linear") as CFString)
+    }
+    if settings.vignetteStyle != previousAdjustments?.vignetteStyle,
+      let index = vignetteStyles.firstIndex(of: settings.vignetteStyle) {
       try setNumber("PostCropVignetteStyle", Float(index + 1))
     }
     if includeNativeDevelopment, let sensor {
@@ -252,7 +279,7 @@ public enum CameraRawXMP {
       let alias = tag.flatMap { CGImageMetadataTagCopyPrefix($0) as String? } ?? nativePrefix
       guard CGImageMetadataRegisterNamespaceForPrefix(metadata, nativeNamespace as CFString, alias as CFString, nil),
         CGImageMetadataSetValueWithPath(metadata, nil, "\(alias):\(nativeField)" as CFString, value as CFString) else {
-        throw CraftError.invalid("Could not retain Photato’s native RAW settings in the DNG.")
+        throw CraftError.invalid("Could not retain Photato’s native RAW settings in the XMP packet.")
       }
     }
     guard let data = CGImageMetadataCreateXMPData(metadata, nil) as Data?, data.count <= maximumBytes else {

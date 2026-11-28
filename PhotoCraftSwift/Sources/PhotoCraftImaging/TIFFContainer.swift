@@ -84,13 +84,13 @@ struct TIFFContainer {
     default: nil
     }
   }
-  init(_ input: Data, metadata: Bool, additionalTags: Set<Int> = []) throws {
+  init(_ input: Data, metadata: Bool, additionalTags: Set<Int> = [], inspectSubIFDs: Bool = false) throws {
     try self.init(storage: .memory(Data(input)), maximumBytes: Self.byteLimit,
-      metadata: metadata, additionalTags: additionalTags)
+      metadata: metadata, additionalTags: additionalTags, inspectSubIFDs: inspectSubIFDs)
   }
-  init(file: PSDFileSource, metadata: Bool, additionalTags: Set<Int> = []) throws {
+  init(file: PSDFileSource, metadata: Bool, additionalTags: Set<Int> = [], inspectSubIFDs: Bool = false) throws {
     try self.init(storage: .file(file), maximumBytes: PSDCodec.maximumFileBytes,
-      metadata: metadata, additionalTags: additionalTags)
+      metadata: metadata, additionalTags: additionalTags, inspectSubIFDs: inspectSubIFDs)
   }
   func bytes(at offset: Int, count: Int) throws -> Data {
     guard offset >= 0, count >= 0, offset <= storage.count, count <= storage.count - offset else {
@@ -110,7 +110,7 @@ struct TIFFContainer {
   }
   private init(storage: PSDByteStorage, maximumBytes: Int,
     metadata: Bool, additionalTags: Set<Int>, omittedTags: Set<Int> = [],
-    followNextDirectories: Bool = true) throws {
+    followNextDirectories: Bool = true, inspectSubIFDs: Bool = false) throws {
     let fileSize = storage.count
     guard (8...maximumBytes).contains(fileSize) else {
       throw CraftError.invalid("Invalid TIFF file size.")
@@ -153,7 +153,9 @@ struct TIFFContainer {
       for i in 0..<count {
         let at = i * entryBytes
         let tag = byteOrder.number(table, at, 2)
-        if omittedTags.contains(tag) || (!metadata && !sampleTags.contains(tag) && !additionalTags.contains(tag)) { continue }
+        let isInspectedSubIFD = inspectSubIFDs && tag == 330
+        if omittedTags.contains(tag)
+          || (!metadata && !sampleTags.contains(tag) && !additionalTags.contains(tag) && !isInspectedSubIFD) { continue }
         let type = byteOrder.number(table, at + 2, 2)
         let elements = try byteOrder.fileInteger(table, at + 4, pointerBytes)
         // Keep the Photoshop layer container as a validated source extent.
@@ -173,7 +175,7 @@ struct TIFFContainer {
         var field = Field(tag: tag, type: type, count: elements,
           data: deferredLayerPixels ? Data() : try storage.bytes(at: start, count: size),
           fileRange: deferredLayerPixels ? start..<start + size : nil)
-        if metadata && [330, 34665, 34853, 40965].contains(tag) {
+        if isInspectedSubIFD || (metadata && [330, 34665, 34853, 40965].contains(tag)) {
           guard [4, 13, 16, 18].contains(type), elements <= 64 else {
             throw CraftError.invalid("Invalid TIFF child directory pointer.")
           }
