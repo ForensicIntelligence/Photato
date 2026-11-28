@@ -28,10 +28,22 @@ enum TIFFRestrictedStorage {
     guard result.count == expected else { throw CraftError.invalid("Truncated TIFF PackBits strip.") }
     return result
   }
+  private static let inputTags: Set<Int> = [266, 282, 283, 296, 301, 318, 319, 320, 34377, 34675, 37724]
+
   static func read(_ data: Data, name: String) throws -> CraftDocument? {
-    guard TIFFContainer.isClassic(data) else { return nil }
-    let file = try TIFFContainer(data, metadata: false,
-      additionalTags: [266, 282, 283, 296, 301, 318, 319, 320, 34377, 34675, 37724])
+    guard TIFFContainer.recognizes(data) else { return nil }
+    let file = try TIFFContainer(data, metadata: false, additionalTags: inputTags)
+    return try read(file, name: name) {
+      let metadata = try file.isBigTIFF ? file.metadataSnapshot() : data
+      return CGImageSourceCreateWithData(metadata as CFData, nil)
+    }
+  }
+  static func readBigTIFF(_ source: PSDFileSource, name: String) throws -> CraftDocument? {
+    let file = try TIFFContainer(file: source, metadata: false, additionalTags: inputTags)
+    return try read(file, name: name) { CGImageSourceCreateWithData(try file.metadataSnapshot() as CFData, nil) }
+  }
+  private static func read(_ file: TIFFContainer, name: String,
+    metadataSource: () throws -> CGImageSource?) throws -> CraftDocument? {
     let photo = try file.scalar(262), depths = try file.numbers(258, default: [1])
     let indexed = photo == 3
     guard indexed || ([0, 1].contains(photo) && depths == [1]) else { return nil }
@@ -80,7 +92,7 @@ enum TIFFRestrictedStorage {
       let rows = tiled ? segmentHeight : min(segmentHeight, height - y0)
       let rowBytes = (segmentWidth * components * bits + 7) / 8, expected = rowBytes * rows
       let i = plane * across * down + segment, offset = offsets[i], count = counts[i]
-      guard expected <= TIFFContainer.byteLimit, offset >= 8, offset <= file.byteCount,
+      guard expected <= TIFFContainer.byteLimit, offset >= file.headerBytes, offset <= file.byteCount,
         count > 0, count <= file.byteCount - offset else { throw CraftError.invalid("Invalid TIFF segment extent.") }
       let packed = try file.bytes(at: offset, count: count)
       var samples: Data
@@ -179,7 +191,12 @@ enum TIFFRestrictedStorage {
     }
     document.sourceICC = profile
     if indexed, profile == nil { document.profileIsUntagged = true }
-    if let source = CGImageSourceCreateWithData(data as CFData, nil), let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any] {
+    if let source = try metadataSource(),
+      var properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any] {
+      if file.isBigTIFF {
+        properties[kCGImagePropertyPixelWidth] = width
+        properties[kCGImagePropertyPixelHeight] = height
+      }
       document.sourceMetadata = try RasterMetadata.capture(source, properties: properties)
     }
     if !resources.isEmpty { document.sourceMetadata = (document.sourceMetadata ?? [:]).merging(["psdResources": resources]) { _, new in new } }

@@ -1,3 +1,9 @@
+### Native BigTIFF input (checkpoint 778)
+
+Native Open, authenticated Photato uploads and Adobe-compatible action inputs share the decoder. The smaller API fixture retained its 225 ppi resolution and its grayscale and opacity samples. The existing HTTP transfer limits apply.
+
+[Qualification](SOURCE_PUBLICATION_778.md).
+
 ### JPEG-compressed TIFF output (checkpoint 777)
 
 Photato commands and downloads share the native TIFF writer. Set tiffCompression=jpeg and optionally tiffJPEGQuality=0…12. Authenticated download and document.saveAs use the same compression path as the native editor. The Adobe wire schema retains its published fields.

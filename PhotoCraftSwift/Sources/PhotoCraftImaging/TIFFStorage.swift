@@ -77,7 +77,7 @@ enum TIFFStorage {
         throw CraftError.invalid("Invalid TIFF sample block table.")
       }
       for (offset, count) in zip(offsets, counts) {
-        guard offset >= 8, offset <= file.byteCount, count <= file.byteCount - offset else {
+        guard offset >= file.headerBytes, offset <= file.byteCount, count <= file.byteCount - offset else {
           throw CraftError.invalid("Invalid TIFF sample block extent.")
         }
       }

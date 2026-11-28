@@ -1,0 +1,26 @@
+{
+  "files": {
+    "gray8-stripped-le.tif": {
+      "origin": "libtiff 4.7.2 tiffcp -8 -c none from project-owned gray-777.tif. The lossless Photoshop 27.2 copy and libtiff grayscale samples match.",
+      "sha256": "98a4a2cd9f5d3748d95f64baf41e38b1d159a3bf0c017a0ee86577f47fd190d8"
+    },
+    "cmyk16-tiled-be.tif": {
+      "origin": "Direct independent libtiff 4.7.2 TIFFWriteTile authoring, w8b, LZW/horizontal predictor, planar big endian, 64\u00d748 rectangles. Each ink word is x*(37+18c)+y*(109+12c)+13013c modulo 65536. Independent TIFFReadTile found zero differences across all 141,932 ink words.",
+      "sha256": "15dcadc3f21e6b61bfb839fef7a74939a518d7545b3cb00126e7eb7634d523b7"
+    },
+    "bitmap-le.tif": {
+      "origin": "libtiff tiffcp -8 -L -p contig -c none from the owned bitmap-le-raw-False.tiff fixture.",
+      "sha256": "4ed0255f75dfce4273457e6b6b02197a9112ddf0aa3cc1fa52ea558d53f33d38"
+    },
+    "indexed-be.tif": {
+      "origin": "libtiff tiffcp -8 -B -p contig -c none from the owned palette-be-raw-False.tiff fixture.",
+      "sha256": "a779abe5e2dced91009be01737d0e5159c68c9a29b748969066599a685b43fa3"
+    },
+    "layered-rgb8-be.tif": {
+      "origin": "libtiff tiffcp -8 -B -p contig -c none from the owned 8-big-0.tiff fixture. An independent Python IFD writer restored its original Photoshop 34377/37724 payloads unchanged.",
+      "sha256": "c028560aef8601f2df6079505f7bbc718ae78910aaed68e624377e45516a47ab"
+    }
+  },
+  "grayscaleJPEGDecodedSHA256": "3eed76b7fda2b7ac4c4c1358a0e50471238bf6105a8a0ef8d24e0f0febba2934",
+  "largeFileTest": "The test relocates the original Gray8 strip to 4,295,032,832 while keeping the file sparse."
+}

@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 778.** Open BigTIFF files with 64-bit offsets. [Qualification](docs/SOURCE_PUBLICATION_778.md).
+
 **Source checkpoint 777.** Save JPEG-compressed TIFFs. [Qualification](docs/SOURCE_PUBLICATION_777.md).
 
 **Source checkpoint 776.** Open JPEG-compressed TIFFs. [Qualification](docs/SOURCE_PUBLICATION_776.md).

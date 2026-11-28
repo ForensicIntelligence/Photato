@@ -96,6 +96,14 @@ public enum RasterIO {
       if header == Data("8BPS".utf8) {
         return try PSDCodec.read(PSDReader(file: source), name: name, paging: PSDRasterPaging.Context())
       }
+      if TIFFContainer.isBigTIFF(header) {
+        let restricted = try TIFFRestrictedStorage.readBigTIFF(source, name: name)
+        guard let result = try restricted ?? TIFFModeStorage.read(source, url: url, name: name) else {
+          throw CraftError.unsupported("This BigTIFF sample layout is not supported.")
+        }
+        try source.validateUnchanged()
+        return result
+      }
       if source.count > TIFFContainer.byteLimit, TIFFContainer.isClassic(header) {
         guard let result = try TIFFModeStorage.read(source, url: url, name: name) else {
           throw CraftError.unsupported("Large classic TIFF files currently require supported RGB, Grayscale, CMYK or Lab strips.")
@@ -125,6 +133,7 @@ public enum RasterIO {
     if let native = try PNGRestrictedStorage.read(data, name: name) { return native }
     if let native = try TIFFRestrictedStorage.read(data, name: name) { return native }
     if let native = try TIFFModeStorage.read(data, name: name) { return native }
+    if TIFFContainer.isBigTIFF(data) { throw CraftError.unsupported("This BigTIFF sample layout is not supported.") }
     let jpegXL = JPEGXLInput.recognizes(data)
     if jpegXL {
       guard JPEGXLInput.isAvailable else {
@@ -192,6 +201,12 @@ public enum RasterIO {
     d.layers = [l]
     d.activeLayerID = l.id
     return try TIFFLayers.read(data, composite: d) ?? d
+  }
+
+  package static func tiffInputDimensions(_ data: Data) throws -> (width: Int, height: Int)? {
+    guard TIFFContainer.recognizes(data) else { return nil }
+    let file = try TIFFContainer(data, metadata: false)
+    return try (file.scalar(256), file.scalar(257))
   }
 
   /// The resource server admits numerical TIFF samples using the same paged

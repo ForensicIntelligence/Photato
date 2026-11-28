@@ -8,7 +8,7 @@ enum TIFFLayers {
 
   static func read(_ data: Data, composite: CraftDocument, backing: RasterTileStore? = nil,
     storedAlpha: [Surface]? = nil) throws -> CraftDocument? {
-    guard TIFFContainer.isClassic(data) else { return nil }
+    guard TIFFContainer.recognizes(data) else { return nil }
     let tiff = try TIFFContainer(data, metadata: false, additionalTags: [34377, 34675, 37724])
     return try read(tiff, composite: composite, backing: backing, storedAlpha: storedAlpha)
   }

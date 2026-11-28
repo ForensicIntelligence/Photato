@@ -1,5 +1,17 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-27 — Step 778 — Open BigTIFF files with 64-bit offsets
+
+Photato opens supported BigTIFFs as editable documents. Its native reader uses 64-bit offsets to find strips, rectangular tiles, metadata and supported Photoshop layer records.
+
+Photato and Photoshop 27.2 decoded all 23,091 grayscale samples from a test strip stored at byte 4,295,032,832, beyond the classic TIFF offset limit. The standalone native reader peaked at 19.7 MiB of memory on that sparse file. A separate big-endian BigTIFF matched 141,932 individually authored CMYK16 samples. The tests also compared indexed, bitmap and editable layer records with their classic TIFF references.
+
+Xcode built the native app. All 4 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 268 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+The >4 GiB test used a sparse file with a small image at a high offset. Dense multi-gigabyte pixel and Photoshop-layer payloads, BigTIFF output and broader format comparisons remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-778) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_778.md).
+
 ## 2026-11-27 — Step 777 — Save JPEG-compressed TIFFs
 
 TIFF Save and Save a Copy can use JPEG compression for opaque RGB8 and Gray8 images. Choose JPEG Quality from 0 through 12. Supported editable layers, profiles, storage orders and optional reduced-resolution previews are preserved.

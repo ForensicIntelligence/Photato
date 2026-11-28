@@ -65,7 +65,8 @@ enum AdobeActionAssets {
     }
     let width: Int
     let height: Int
-    let isTIFF = data.starts(with: [73, 73, 42, 0]) || data.starts(with: [77, 77, 0, 42])
+    let tiffDimensions = try RasterIO.tiffInputDimensions(data)
+    let isTIFF = tiffDimensions != nil
     let isPhotoshop = data.starts(with: Data("8BPS".utf8))
     if isPhotoshop {
       guard data.count >= 26 else { throw AdobeAPIError.invalid("Truncated PSD header.") }
@@ -83,8 +84,10 @@ enum AdobeActionAssets {
       }
       width = number(18, 4)
       height = number(14, 4)
+    } else if let tiffDimensions {
+      (width, height) = tiffDimensions
     } else {
-      guard isTIFF || data.starts(with: Data([137, 80, 78, 71, 13, 10, 26, 10])),
+      guard data.starts(with: Data([137, 80, 78, 71, 13, 10, 26, 10])),
         let source = CGImageSourceCreateWithData(data as CFData, nil),
         let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
         let w = properties[kCGImagePropertyPixelWidth] as? Int,

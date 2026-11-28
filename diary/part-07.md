@@ -299,11 +299,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:777 -->
+<!-- current-status-step:778 -->
 
-TIFF Save and Save a Copy can use JPEG compression for opaque RGB8 and Gray8 images. Choose JPEG Quality from 0 through 12. Supported editable layers, profiles, storage orders and optional reduced-resolution previews are preserved.
+Photato opens supported BigTIFFs as editable documents. Its native reader uses 64-bit offsets to find strips, rectangular tiles, metadata and supported Photoshop layer records.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-777) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_777.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-778) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_778.md).
 
 <!-- current-status:end -->
 
@@ -1287,5 +1287,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-27 | 775 | [Save TIFF image pyramids](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-775) |
 | 2026-11-27 | 776 | [Open JPEG-compressed TIFFs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-776) |
 | 2026-11-27 | 777 | [Save JPEG-compressed TIFFs](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-777) |
+| 2026-11-27 | 778 | [Open BigTIFF files with 64-bit offsets](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-778) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

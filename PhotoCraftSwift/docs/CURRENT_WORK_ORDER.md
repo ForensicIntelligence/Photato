@@ -1,3 +1,5 @@
+**TIFF interchange.** Write BigTIFF with 64-bit offsets and qualify large-file Save, editable layers and pyramid output. [Development record](DEVLOG.md#dev-step-778) · [Qualification](SOURCE_PUBLICATION_778.md).
+
 **TIFF interchange.** Qualify Photoshop JPEG quantization, chroma and defaults. Continue native TIFF interchange and its professional workflow test. [Development record](DEVLOG.md#dev-step-777) · [Qualification](SOURCE_PUBLICATION_777.md).
 
 **TIFF interchange.** Add JPEG compression to TIFF Save and qualify Photoshop’s grayscale rounding and subsampled chroma. [Development record](DEVLOG.md#dev-step-776) · [Qualification](SOURCE_PUBLICATION_776.md).

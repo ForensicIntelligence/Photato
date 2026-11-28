@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **777** · The 10 most recent entries, newest first.
+Source build **778** · The 10 most recent entries, newest first.
+
+## 2026-11-27 — Step 778 — Open BigTIFF files with 64-bit offsets
+
+Photato opens supported BigTIFFs as editable documents. Its native reader uses 64-bit offsets to find strips, rectangular tiles, metadata and supported Photoshop layer records.
+
+Photato and Photoshop 27.2 decoded all 23,091 grayscale samples from a test strip stored at byte 4,295,032,832, beyond the classic TIFF offset limit. The standalone native reader peaked at 19.7 MiB of memory on that sparse file. A separate big-endian BigTIFF matched 141,932 individually authored CMYK16 samples. The tests also compared indexed, bitmap and editable layer records with their classic TIFF references.
+
+Xcode built the native app. All 4 focused imaging and 1 focused app and HTTP tests passed. Both optimized architectures passed all 268 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on both slices.
+
+The >4 GiB test used a sparse file with a small image at a high offset. Dense multi-gigabyte pixel and Photoshop-layer payloads, BigTIFF output and broader format comparisons remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-778) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_778.md).
 
 ## 2026-11-27 — Step 777 — Save JPEG-compressed TIFFs
 
@@ -111,15 +123,3 @@ The Xcode project built and all 47 selected imaging and 14 app and HTTP tests pa
 Supported local classic TIFFs use 32-bit offsets. Larger RGB TIFF streams, tiled component TIFF, BigTIFF, some specialized layered blocks and more Photoshop sample comparisons remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-769) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_769.md).
-
-## 2026-11-27 — Step 768 — Open larger grayscale, CMYK and Lab TIFFs
-
-Photato decodes supported classic TIFF strips into editable, file-backed color planes. Gray, CMYK and Lab data retain their original component values and supported precision as well as an RGB display preview.
-
-Independent libtiff comparisons matched 258,014,000 native 16-bit channel words across ZIP, predicted LZW and raw TIFF inputs, including a 6,000 × 6,000 grayscale image and a planar CMYK control. The measured opacity plane was fully opaque in those four comparisons. A rotated Gray8 fixture separately verified associated alpha. An edited 36-megapixel grayscale copy reopened from a Photato archive with its complete edited component data intact.
-
-The Xcode project built and all 44 selected imaging and 13 app and HTTP tests passed. Both optimized architectures passed all 233 selected tests, with Intel running under Rosetta. The extracted Universal preview rendered offscreen on each slice.
-
-This checkpoint changes supported classic strip input. The 512 MiB encoded desktop limit, large TIFF output, tiled component TIFF, BigTIFF, layered capacity and independent Photoshop transparency comparisons remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-768) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_768.md).

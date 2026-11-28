@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 /// Used only for the app's validated, freshly encoded output.
 enum UntaggedOutput {
   static func hasProfile(_ data: Data) throws -> Bool? {
-    if TIFFContainer.isClassic(data) { return try TIFFContainer(data, metadata: false, additionalTags: [34675]).root.fields[34675] != nil }
+    if TIFFContainer.recognizes(data) { return try TIFFContainer(data, metadata: false, additionalTags: [34675]).root.fields[34675] != nil }
     if data.starts(with: [255, 216]) {
       let bytes = [UInt8](data)
       return try JPEGContainer.segments(bytes).contains { $0.marker == 226 && bytes[$0.payload].starts(with: Array("ICC_PROFILE\0".utf8)) }
