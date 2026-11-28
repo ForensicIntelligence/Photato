@@ -1,5 +1,7 @@
 **[Developer Diary](../DEVELOPER_DIARY.md)** · [Full diary archive](../diary/README.md)
 
+**Source checkpoint 796.** Speed up exact Camera Raw profile conversion. [Qualification](docs/SOURCE_PUBLICATION_796.md).
+
 **Source checkpoint 795.** Set Camera Raw output profile, bit depth, resolution and size. [Qualification](docs/SOURCE_PUBLICATION_795.md).
 
 **Source checkpoint 794.** Open Camera Raw files as images, Smart Objects or copies. [Qualification](docs/SOURCE_PUBLICATION_794.md).

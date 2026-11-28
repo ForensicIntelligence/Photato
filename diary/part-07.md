@@ -275,11 +275,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:795 -->
+<!-- current-status-step:796 -->
 
-The native Camera Raw panel applies five RGB color profiles, 8- or 16-bit output, independent PPI, and six aspect-ratio-preserving resize modes. The defaults preserve the source interpretation. The selected settings are saved for later opens.
+Photato packs the same opaque RGB input for ColorSync without copying the source raster tile by tile. Hidden RGB and source alpha survive conversion. Opaque output avoids a second pass to restore alpha.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-795) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_795.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-796) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_796.md).
 
 <!-- current-status:end -->
 
@@ -1281,5 +1281,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 793 | [Reuse the decoded sensor in Camera Raw](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-793) |
 | 2026-11-28 | 794 | [Open Camera Raw files as images, Smart Objects or copies](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-794) |
 | 2026-11-28 | 795 | [Set Camera Raw output profile, bit depth, resolution and size](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-795) |
+| 2026-11-28 | 796 | [Speed up exact Camera Raw profile conversion](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-796) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

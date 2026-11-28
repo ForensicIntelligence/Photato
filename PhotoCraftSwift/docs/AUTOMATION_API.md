@@ -1,3 +1,9 @@
+### Camera Raw profile conversion (checkpoint 796)
+
+The same conversion code serves the desktop and existing Photato and Adobe-compatible output paths. The change retains their existing profile, alpha and encoding settings.
+
+[Qualification](SOURCE_PUBLICATION_796.md).
+
 ### Camera Raw output options (checkpoint 795)
 
 The locally authenticated RAW import route accepts `X-Photato-Raw-Workflow` containing base64-encoded JSON. It can select an output profile, `"8 bit"` or `"16 bit"`, `pixelsPerInch`, and resize. The revisioned Camera Raw preference endpoint includes a separate `workflow` object for desktop defaults. Uploads without the header keep their existing defaults.

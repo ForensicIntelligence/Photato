@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **795** · The 10 most recent entries, newest first.
+Source build **796** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 796 — Speed up exact Camera Raw profile conversion
+
+Photato packs the same opaque RGB input for ColorSync without copying the source raster tile by tile. Hidden RGB and source alpha survive conversion. Opaque output avoids a second pass to restore alpha.
+
+The full Nikon RGB8 Display P3 conversion took 5.71 seconds, down from 11.91 seconds in three alternating arm64 Debug trials. The stored samples and RGBA8 bytes matched the prior Photato path.
+
+Twelve lossless Adobe Camera Raw TIFFs captured the nine synthetic sharpening variants, their baseline, and a separate Nikon pair. An independent TIFF reader found 16,562,956 changed RGB samples in Adobe’s Nikon Screen Standard export. The unsharpened Photato and Adobe Nikon exports differed at 18,044,936 of 18,048,000 RGB samples with the same visible sRGB16, 300 ppi and sizing choices.
+
+Xcode built the app and two focused imaging tests passed, covering historical samples, signed float values, and hidden color. Four workflow and five opening regressions also passed. Both optimized architectures passed all 367 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The timing covers profile conversion in Debug. The Adobe comparison leaves sensor development, sharpening and file-byte equivalence open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-796) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_796.md).
 
 ## 2026-11-28 — Step 795 — Set Camera Raw output profile, bit depth, resolution and size
 
@@ -111,15 +125,3 @@ Xcode built the app. Three focused imaging tests and one real authenticated HTTP
 In-place Done, importing sidecar-only metadata into edited DNGs, general RAW-to-DNG conversion, preview regeneration, Apple-only sensor controls in XMP and exact Photoshop pixel rendering remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-787) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_787.md).
-
-## 2026-11-27 — Step 786 — Open Camera Raw sidecar and embedded XMP settings
-
-File Open and Place Embedded now read a same-name RAW XMP sidecar. If there is no usable sibling, Photato uses supported settings embedded in the source. The resulting RAW Smart Object retains the original sensor bytes and the chosen settings.
-
-Photoshop Camera Raw 18.1.1 loaded the embedded DNG at Exposure +0.75 and Contrast +21. With a partial sibling it loaded Exposure +1.25 and left Contrast at the default 0. The sandboxed Photato app opened the same RAW file, selected by itself in the file picker, and reproduced that settings precedence.
-
-Xcode built the native app. All 3 focused workflow and authenticated HTTP tests passed. Both optimized architectures passed all 332 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-This compares opening settings and retained RAW source bytes. Pixel-level Camera Raw equivalence, writing settings back to DNG, automatic sidecar writes, and broader sensor models remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-786) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_786.md).

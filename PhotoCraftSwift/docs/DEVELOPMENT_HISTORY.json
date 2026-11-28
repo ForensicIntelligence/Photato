@@ -10821,6 +10821,13 @@
       "link": "DEVLOG.md#dev-step-795",
       "section_sha256": "af4ec757262e606125f06d8765fa63ca97e3ffb4ea064b542b4a1da3ad6cf235",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-796",
+      "title": "2026-11-28 \u2014 Step 796 \u2014 Speed up exact Camera Raw profile conversion",
+      "link": "DEVLOG.md#dev-step-796",
+      "section_sha256": "e132b8bf872793131bc1aaead76b45c43d7a6a7c5f048702f3f4d0704ac6f8af",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13656,8 +13663,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "9acb9a482d416bd72e0062a5b179150d6b1920ae88a52470daeb57e503f3d415",
-      "bytes": 189588,
+      "sha256": "a5d655c1d6850a17bf7e03fb2ac5403ba20842186a81c99c073de41413f32142",
+      "bytes": 189711,
       "rolling_current_snapshot": false
     },
     {
@@ -15378,8 +15385,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "60a0922a8f2ef5f5c3463e1b27a04f404e517be4259e89b773b94aaf08487b38",
-      "bytes": 757022,
+      "sha256": "191fad6391cc2dbc36fe18e3b2a5d07cd0795d827ffa5682cb53f5df4d3192b4",
+      "bytes": 757292,
       "rolling_current_snapshot": false
     },
     {
@@ -15948,8 +15955,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "ef4fd5f175433ea6626ad11969af171ab15f94688cda96891a690e40c582f5ae",
-      "bytes": 402751,
+      "sha256": "9d609d098af869f7e925315683c90b17bd860f17e9d99e2be58338643192f53c",
+      "bytes": 403027,
       "rolling_current_snapshot": false
     },
     {
@@ -16068,8 +16075,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "7bbba5238a3cde21d8f0b754cc5764e40757dcb03e7d32c4da4c26442ecae77e",
-      "bytes": 229564,
+      "sha256": "0f96cef3b93948b23243b9152c99fc966a094ad573153c57106ea8a8bb4b9789",
+      "bytes": 229804,
       "rolling_current_snapshot": false
     },
     {
@@ -16146,14 +16153,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "25d0628a1e6f4a6383d9cb28aee7cc5aa5cdb278d9681225a2a84751d1612a28",
-      "bytes": 1084874,
+      "sha256": "bfc82aaa5c996c5aa1c6f7ccb6109d98e7cd2728bcfca3e6572e671e40b529df",
+      "bytes": 1086347,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "9151278ba3e5e191cbc2e75fd51a59a294f06d5eeee52c55d217700fd96495f1",
-      "bytes": 5228759,
+      "sha256": "4374b21770bb54f30852b19733c6d66a7886afdbe06b61e5d231aad4ca499cab",
+      "bytes": 5230845,
       "rolling_current_snapshot": false
     },
     {
@@ -23903,6 +23910,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_796.json",
+      "sha256": "d33ff7179e26e8b20e4454523e7a10f7da880e7fcddbb2e4a5079c279a0613de",
+      "bytes": 32552,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_796.md",
+      "sha256": "8e7f39c06d0396695f2f81074cc416fd2d544d58881fa10f4a659f2d9e67798c",
+      "bytes": 1779,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24462,8 +24481,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "5ec250b91fd4cd6fe0b0e23d7d31420919ec0c7563def53b716ec5dff7553e87",
-      "bytes": 516026,
+      "sha256": "137eead94f9815fd6f2810fe019930c698503b768c1f9cea9f7a8c54503e7595",
+      "bytes": 516620,
       "rolling_current_snapshot": false
     },
     {
@@ -26976,8 +26995,8 @@
     }
   ],
   "counts": {
-    "milestones": 795,
-    "evidence_files": 2222,
+    "milestones": 796,
+    "evidence_files": 2224,
     "logs": 0,
     "missing_explicit_references": 704
   }

@@ -814,7 +814,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 793 | 2026-11-28 | [Reuse the decoded sensor in Camera Raw](#dev-step-793) |
 | 794 | 2026-11-28 | [Open Camera Raw files as images, Smart Objects or copies](#dev-step-794) |
 | 795 | 2026-11-28 | [Set Camera Raw output profile, bit depth, resolution and size](#dev-step-795) |
+| 796 | 2026-11-28 | [Speed up exact Camera Raw profile conversion](#dev-step-796) |
 <!-- history-index:end -->
+
+<a id="dev-step-796"></a>
+
+## 2026-11-28 — Step 796 — Speed up exact Camera Raw profile conversion
+
+Photato packs the same opaque RGB input for ColorSync without copying the source raster tile by tile. Hidden RGB and source alpha survive conversion. Opaque output avoids a second pass to restore alpha.
+
+The new encoder applies the same source-depth rounding as the old setters before invoking the unchanged ColorSync conversion. Transparent surfaces still use the previous alpha restoration. Separate tests compare the actual Float32 input bytes and complete output samples.
+
+The full Nikon RGB8 Display P3 conversion took 5.71 seconds, down from 11.91 seconds in three alternating arm64 Debug trials. The stored samples and RGBA8 bytes matched the prior Photato path.
+
+Twelve lossless Adobe Camera Raw TIFFs captured the nine synthetic sharpening variants, their baseline, and a separate Nikon pair. An independent TIFF reader found 16,562,956 changed RGB samples in Adobe’s Nikon Screen Standard export. The unsharpened Photato and Adobe Nikon exports differed at 18,044,936 of 18,048,000 RGB samples with the same visible sRGB16, 300 ppi and sizing choices.
+
+The same conversion code serves the desktop and existing Photato and Adobe-compatible output paths. The change retains their existing profile, alpha and encoding settings.
+
+Xcode built the app and two focused imaging tests passed, covering historical samples, signed float values, and hidden color. Four workflow and five opening regressions also passed. Both optimized architectures passed all 367 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The timing covers profile conversion in Debug. The Adobe comparison leaves sensor development, sharpening and file-byte equivalence open.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,684,484 bytes with SHA-256 `dee650ce0ad2ad751096df519929c2fadad209141e0d43069117aa275292a487`.
+
+[Qualification](SOURCE_PUBLICATION_796.md).
 
 <a id="dev-step-795"></a>
 

@@ -17,10 +17,21 @@ public enum RasterIO {
     intent: CGColorRenderingIntent = .relativeColorimetric
   ) throws -> CGImage {
     let data = try surface.rgbaData(depth: .f32, colorEncoding: colorEncoding)
+    return try floatImage(data, extent: surface, space: space ?? colorSpace(), intent: intent)
+  }
+
+  static func profileConversionImage(_ surface: Surface, space: CGColorSpace,
+    colorEncoding: SurfaceColorEncoding) throws -> CGImage {
+    try floatImage(surface.profileConversionRGBA(colorEncoding: colorEncoding), extent: surface,
+      space: space, intent: .relativeColorimetric)
+  }
+
+  private static func floatImage(_ data: Data, extent surface: Surface, space: CGColorSpace,
+    intent: CGColorRenderingIntent) throws -> CGImage {
     guard let provider = CGDataProvider(data: data as CFData),
       let image = CGImage(
         width: surface.width, height: surface.height, bitsPerComponent: 32, bitsPerPixel: 128,
-        bytesPerRow: surface.width * 16, space: try space ?? colorSpace(),
+        bytesPerRow: surface.width * 16, space: space,
         bitmapInfo: [
           .floatComponents, .byteOrder32Little,
           CGBitmapInfo(rawValue: CGImageAlphaInfo.last.rawValue),

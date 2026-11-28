@@ -71,23 +71,12 @@ public enum ColorManagement {
     if surface.width * surface.height > Surface.maximumDensePixels {
       return try convertedPaged(surface, from: source, to: target)
     }
-    // Convert opaque RGB so transparent pixels keep hidden colour. Alpha is never colour-managed.
+    // Pack opaque RGB directly so hidden color reaches ColorSync without a
+    // full temporary Surface or a per-pixel mutation of the source tiles.
     let inputEncoding: SurfaceColorEncoding = source.depth == .f32 ? .linearRGB : .sRGB
-    var opaque = try surface.interpretingSamples(as: surface.colorEncoding)
-    if opaque.colorEncoding == .linearRGB {
-      for y in 0..<opaque.height {
-        try Task.checkCancellation()
-        for x in 0..<opaque.width {
-          let p = opaque.linearPixel(x: x, y: y)
-          opaque.setLinearPixel(x: x, y: y, Pixel(p.r, p.g, p.b))
-        }
-      }
-    } else {
-      opaque.mapPixels { _, _, p in Pixel(p.r, p.g, p.b) }
-    }
-    var result = try RasterIO.surface(
-      RasterIO.cgImage(opaque, space: fromSpace, colorEncoding: inputEncoding),
-      depth: target.depth, space: toSpace, colorEncoding: encoding)
+    let image = try RasterIO.profileConversionImage(surface, space: fromSpace, colorEncoding: inputEncoding)
+    var result = try RasterIO.surface(image, depth: target.depth, space: toSpace, colorEncoding: encoding)
+    if try surface.isOpaque(), try result.isOpaque() { return result }
     for y in 0..<result.height {
       try Task.checkCancellation()
       for x in 0..<result.width {

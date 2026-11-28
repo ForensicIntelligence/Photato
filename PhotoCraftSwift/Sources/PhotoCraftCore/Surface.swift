@@ -943,6 +943,17 @@ public struct Surface: Codable, Equatable, Sendable {
   public func rgbaData(
     depth outputDepth: PixelDepth, colorEncoding outputEncoding: SurfaceColorEncoding = .sRGB
   ) throws -> Data {
+    try packedRGBA(depth: outputDepth, colorEncoding: outputEncoding, canonicalOpaqueInput: false)
+  }
+
+  /// ColorSync must see opaque RGB even where the document has hidden color.
+  /// Match the source-depth quantization of the old setter before conversion.
+  package func profileConversionRGBA(colorEncoding: SurfaceColorEncoding) throws -> Data {
+    try packedRGBA(depth: .f32, colorEncoding: colorEncoding, canonicalOpaqueInput: true)
+  }
+
+  private func packedRGBA(depth outputDepth: PixelDepth, colorEncoding outputEncoding: SurfaceColorEncoding,
+    canonicalOpaqueInput: Bool) throws -> Data {
     try validated()
     guard width <= Self.maximumDensePixels / height else {
       throw CraftError.unsupported("This operation requires a contiguous raster. Use a bounded preview or region for large documents; streamed full-size output is not yet available.")
@@ -951,11 +962,12 @@ public struct Surface: Codable, Equatable, Sendable {
     var output = Data(count: width * height * stride)
     try output.withUnsafeMutableBytes { bytes in
       @inline(__always) func write(_ stored: Pixel, at offset: Int) {
+        let sample = canonicalOpaqueInput ? Pixel(stored.r, stored.g, stored.b).quantized(depth) : stored
         let value =
           colorEncoding == outputEncoding
-          ? stored
+          ? sample
           : outputEncoding == .linearRGB
-            ? SRGBTransfer.linear(stored) : SRGBTransfer.encoded(stored)
+            ? SRGBTransfer.linear(sample) : SRGBTransfer.encoded(sample)
         switch outputDepth {
         case .u8:
           bytes.storeBytes(of: Self.rgba8Word(value), toByteOffset: offset, as: UInt32.self)
