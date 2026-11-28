@@ -1,3 +1,5 @@
+**Camera Raw RAW workflow.** Compare controlled Adobe exports, then finish output sharpening and installed ICC profile support. [Development record](DEVLOG.md#dev-step-795) · [Qualification](SOURCE_PUBLICATION_795.md).
+
 **Camera Raw RAW workflow.** Add output color space, resolution and dimensions, and compare the file pixels produced by the same reference setting. [Development record](DEVLOG.md#dev-step-794) · [Qualification](SOURCE_PUBLICATION_794.md).
 
 **Camera Raw RAW workflow.** Verify Camera Raw defaults, Camera Raw Open routing and support for opening a batch of originals. [Development record](DEVLOG.md#dev-step-793) · [Qualification](SOURCE_PUBLICATION_793.md).

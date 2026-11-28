@@ -275,11 +275,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:794 -->
+<!-- current-status-step:795 -->
 
-Camera Raw offers Open Image, Open Object and Open Copy. Image and Copy create an editable Background. Object retains the embedded sensor data and editable development settings. Image and Object save source settings using the current file policy. Copy leaves the original and its sidecar intact.
+The native Camera Raw panel applies five RGB color profiles, 8- or 16-bit output, independent PPI, and six aspect-ratio-preserving resize modes. The defaults preserve the source interpretation. The selected settings are saved for later opens.
 
-[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-794) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_794.md).
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-795) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_795.md).
 
 <!-- current-status:end -->
 
@@ -1280,5 +1280,6 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 792 | [Faster Camera Raw exposure and color temperature](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-792) |
 | 2026-11-28 | 793 | [Reuse the decoded sensor in Camera Raw](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-793) |
 | 2026-11-28 | 794 | [Open Camera Raw files as images, Smart Objects or copies](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-794) |
+| 2026-11-28 | 795 | [Set Camera Raw output profile, bit depth, resolution and size](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-795) |
 
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Previous page](part-08.md) · [Next page](part-06.md)

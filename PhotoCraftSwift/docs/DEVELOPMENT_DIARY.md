@@ -1,3 +1,15 @@
+## 2026-11-28 — Step 795 — Set Camera Raw output profile, bit depth, resolution and size
+
+The native Camera Raw panel applies five RGB color profiles, 8- or 16-bit output, independent PPI, and six aspect-ratio-preserving resize modes. The defaults preserve the source interpretation. The selected settings are saved for later opens.
+
+Adobe Camera Raw 18.1.1 exposed those resize modes and separate resolution, color space and depth controls. The signed Photato app took the same 3,008 × 2,000 Nikon source to 1,504 × 1,000, RGB8 Display P3 and 300 ppi. Image Size confirmed 300 ppi in the opened copy. The original NEF and directory contents stayed intact.
+
+Xcode built the app and four new focused Debug tests passed, along with the five earlier opening tests. Both optimized architectures passed all 365 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The recorded checks cover the resulting geometry, profile, depth and PPI. Output sharpening, installed and non-RGB ICC profiles, and byte-identical Adobe output remain open.
+
+[Development record](DEVLOG.md#dev-step-795) · [Qualification](SOURCE_PUBLICATION_795.md).
+
 ## 2026-11-28 — Step 794 — Open Camera Raw files as images, Smart Objects or copies
 
 Camera Raw offers Open Image, Open Object and Open Copy. Image and Copy create an editable Background. Object retains the embedded sensor data and editable development settings. Image and Object save source settings using the current file policy. Copy leaves the original and its sidecar intact.
@@ -2627,11 +2639,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:794 -->
+<!-- current-status-step:795 -->
 
-Camera Raw offers Open Image, Open Object and Open Copy. Image and Copy create an editable Background. Object retains the embedded sensor data and editable development settings. Image and Object save source settings using the current file policy. Copy leaves the original and its sidecar intact.
+The native Camera Raw panel applies five RGB color profiles, 8- or 16-bit output, independent PPI, and six aspect-ratio-preserving resize modes. The defaults preserve the source interpretation. The selected settings are saved for later opens.
 
-[Development record](DEVLOG.md#dev-step-794) · [Qualification](SOURCE_PUBLICATION_794.md).
+[Development record](DEVLOG.md#dev-step-795) · [Qualification](SOURCE_PUBLICATION_795.md).
 
 <!-- current-status:end -->
 
@@ -3632,6 +3644,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 792 | [Faster Camera Raw exposure and color temperature](DEVLOG.md#dev-step-792) |
 | 2026-11-28 | 793 | [Reuse the decoded sensor in Camera Raw](DEVLOG.md#dev-step-793) |
 | 2026-11-28 | 794 | [Open Camera Raw files as images, Smart Objects or copies](DEVLOG.md#dev-step-794) |
+| 2026-11-28 | 795 | [Set Camera Raw output profile, bit depth, resolution and size](DEVLOG.md#dev-step-795) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

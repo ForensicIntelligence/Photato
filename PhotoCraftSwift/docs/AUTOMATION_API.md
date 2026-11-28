@@ -1,3 +1,9 @@
+### Camera Raw output options (checkpoint 795)
+
+The locally authenticated RAW import route accepts `X-Photato-Raw-Workflow` containing base64-encoded JSON. It can select an output profile, `"8 bit"` or `"16 bit"`, `pixelsPerInch`, and resize. The revisioned Camera Raw preference endpoint includes a separate `workflow` object for desktop defaults. Uploads without the header keep their existing defaults.
+
+[Qualification](SOURCE_PUBLICATION_795.md).
+
 ### Camera Raw opening modes (checkpoint 794)
 
 Send `X-Photato-Raw-Open-Mode: image|object|copy` to `POST /v1/documents/import`. Image and Copy create a Background. Object remains the upload default so existing clients retain embedded source data. All upload modes keep their inputs in memory. `GET /v1/preferences/camera-raw` exposes `openAsSmartObject`, and authorized revisioned POST can update it on its own or with `dngStorage`.

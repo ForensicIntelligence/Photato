@@ -10814,6 +10814,13 @@
       "link": "DEVLOG.md#dev-step-794",
       "section_sha256": "1686e2ce6d6135dc52a35b0bd3af46153737db4509b5587d9fafa4da52c2ec5e",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-795",
+      "title": "2026-11-28 \u2014 Step 795 \u2014 Set Camera Raw output profile, bit depth, resolution and size",
+      "link": "DEVLOG.md#dev-step-795",
+      "section_sha256": "af4ec757262e606125f06d8765fa63ca97e3ffb4ea064b542b4a1da3ad6cf235",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13649,8 +13656,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "e35c6426b320cc3b788b3a62690483bdddae4ecec6ceb5e5c7435b982ab273ff",
-      "bytes": 189448,
+      "sha256": "9acb9a482d416bd72e0062a5b179150d6b1920ae88a52470daeb57e503f3d415",
+      "bytes": 189588,
       "rolling_current_snapshot": false
     },
     {
@@ -15371,8 +15378,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "5f8f2101737acb4113d48394c67979dd0a098a30de0c1d72c01333d437453815",
-      "bytes": 756570,
+      "sha256": "60a0922a8f2ef5f5c3463e1b27a04f404e517be4259e89b773b94aaf08487b38",
+      "bytes": 757022,
       "rolling_current_snapshot": false
     },
     {
@@ -15941,8 +15948,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "d1ccf10afda47be3894f5b524594d33e91daea4d922030b5611eb9350f7729db",
-      "bytes": 402441,
+      "sha256": "ef4fd5f175433ea6626ad11969af171ab15f94688cda96891a690e40c582f5ae",
+      "bytes": 402751,
       "rolling_current_snapshot": false
     },
     {
@@ -16061,8 +16068,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "7a73467a7babb839fd7a3df3e753460c3947fcb3806850e1ee9f7991beefb9c9",
-      "bytes": 229343,
+      "sha256": "7bbba5238a3cde21d8f0b754cc5764e40757dcb03e7d32c4da4c26442ecae77e",
+      "bytes": 229564,
       "rolling_current_snapshot": false
     },
     {
@@ -16139,14 +16146,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "b561ab9b8dd823d63f9fd66f09cde5d2abba8d77315fce860907a38f49baee60",
-      "bytes": 1083644,
+      "sha256": "25d0628a1e6f4a6383d9cb28aee7cc5aa5cdb278d9681225a2a84751d1612a28",
+      "bytes": 1084874,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "29fefb6a643f2c40fc353700b0426f3a8bb6124ec696e82326d9dd33a510d21d",
-      "bytes": 5226670,
+      "sha256": "9151278ba3e5e191cbc2e75fd51a59a294f06d5eeee52c55d217700fd96495f1",
+      "bytes": 5228759,
       "rolling_current_snapshot": false
     },
     {
@@ -23884,6 +23891,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_795.json",
+      "sha256": "d83b611b65cb21d8ff50f431479ba4456bd313d8bb9af69239f95984ea6f56f0",
+      "bytes": 15877,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_795.md",
+      "sha256": "b5a4e9921e1a63368c14fb7430068a1b38246be0ed64bf92d85a01f1e775b623",
+      "bytes": 1701,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24443,8 +24462,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "e61e39bb625ff1e5fde7a4164919c41faac99ee59ec079278bdfe33b81eab48c",
-      "bytes": 515470,
+      "sha256": "5ec250b91fd4cd6fe0b0e23d7d31420919ec0c7563def53b716ec5dff7553e87",
+      "bytes": 516026,
       "rolling_current_snapshot": false
     },
     {
@@ -26957,8 +26976,8 @@
     }
   ],
   "counts": {
-    "milestones": 794,
-    "evidence_files": 2220,
+    "milestones": 795,
+    "evidence_files": 2222,
     "logs": 0,
     "missing_explicit_references": 704
   }

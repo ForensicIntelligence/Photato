@@ -76,6 +76,10 @@ extension AutomationService {
         "rawOpenModeHeader": ["name": "X-Photato-Raw-Open-Mode", "required": false,
           "schema": ["type": "string", "enum": RawOpenMode.allCases.map(\.rawValue), "default": RawOpenMode.object.rawValue],
           "scope": "For Camera RAW uploads. Image and copy create a Background. Object retains the original sensor data. Uploads never write local settings."],
+        "rawWorkflowHeader": ["name": "X-Photato-Raw-Workflow", "required": false,
+          "encoding": "base64 JSON", "maximumValueBytes": RawWorkflowOutput.maximumHeaderBytes,
+          "scope": "Specific to Camera RAW uploads.",
+          "schema": RawWorkflowOutput.apiSchema],
         "bodySchema": [
           "type": "string", "format": "binary", "minLength": 1,
           "maxLength": DocumentIO.maximumUploadBytes,
@@ -421,6 +425,18 @@ extension AutomationService {
       } else {
         rawOpenMode = nil
       }
+      let rawWorkflow: RawWorkflowOutput?
+      if let header = request.headers[RawWorkflowOutput.header] {
+        guard rawUpload else {
+          throw AutomationFailure(status: 415, message: "X-Photato-Raw-Workflow requires a Camera RAW upload.")
+        }
+        guard RawSourceIO.recognizes(request.body) else {
+          throw AutomationFailure(status: 422, message: "Expected supported camera RAW sensor data.")
+        }
+        rawWorkflow = try RawWorkflowOutput.headerValue(header)
+      } else {
+        rawWorkflow = nil
+      }
       var rawXMP: Data?
       if let header = request.headers[DocumentIO.rawSidecarHeader] {
         guard rawUpload else {
@@ -461,7 +477,16 @@ extension AutomationService {
           return decoded
         }
         if [.psd, .psb].contains(DocumentOpenFormat.detect(request.body)), decoded.sourceICC == nil { decoded.profileIsUntagged = true }
-        let adjusted = try ColorPolicyInput.opening(decoded, settings: colorSettings, choice: colorChoice)
+        let adjusted: CraftDocument
+        if rawWorkflow?.profile != nil {
+          guard colorChoice == nil else {
+            throw AutomationFailure(status: 400, message: "Choose one output profile selection method.")
+          }
+          adjusted = decoded
+        } else {
+          adjusted = try ColorPolicyInput.opening(decoded, settings: colorSettings, choice: colorChoice)
+        }
+        if let rawWorkflow { return try (rawOpenMode ?? .object).output(from: adjusted, workflow: rawWorkflow) }
         if let rawOpenMode { return try rawOpenMode.output(from: adjusted) }
         return adjusted
       }

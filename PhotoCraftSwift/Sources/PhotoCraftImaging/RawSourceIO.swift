@@ -12,6 +12,170 @@ public enum RawDNGSettingsStorage: String, CaseIterable, Codable, Sendable {
 }
 
 /// Native Apple sensor decoder. Never substitutes CGImageSource previews for RAW output.
+/// Settings for the developed document. Camera Raw's source XMP contains the
+/// development settings only. Output dimensions and PPI describe the new file.
+package struct RawWorkflowOutput: Codable, Equatable, Sendable {
+  package enum Profile: String, CaseIterable, Codable, Sendable {
+    case sRGB, displayP3, adobeRGB, proPhotoRGB, rec2020
+
+    package var title: String {
+      switch self {
+      case .sRGB: "sRGB IEC61966-2.1"
+      case .displayP3: "Display P3"
+      case .adobeRGB: "Adobe RGB (1998)"
+      case .proPhotoRGB: "ProPhoto RGB"
+      case .rec2020: "Rec. 2020"
+      }
+    }
+
+    package func icc() throws -> Data {
+      let name: CFString
+      switch self {
+      case .sRGB: name = CGColorSpace.sRGB
+      case .displayP3: name = CGColorSpace.displayP3
+      case .adobeRGB: name = CGColorSpace.adobeRGB1998
+      case .proPhotoRGB: name = CGColorSpace.rommrgb
+      case .rec2020: name = CGColorSpace.itur_2020
+      }
+      guard let profile = CGColorSpace(name: name)?.copyICCData() as Data? else {
+        throw CraftError.unsupported("The selected Camera Raw output profile is unavailable.")
+      }
+      return profile
+    }
+  }
+
+  package struct Resize: Codable, Equatable, Sendable {
+    package enum Mode: String, CaseIterable, Codable, Sendable {
+      case widthHeight, dimensions, longSide, shortSide, megapixels, percentage
+
+      package var title: String {
+        switch self {
+        case .widthHeight: "Width & Height"
+        case .dimensions: "Dimensions"
+        case .longSide: "Long Side"
+        case .shortSide: "Short Side"
+        case .megapixels: "Megapixels"
+        case .percentage: "Percentage"
+        }
+      }
+
+      package var usesSecondValue: Bool { self == .widthHeight || self == .dimensions }
+    }
+
+    package var mode: Mode
+    package var value: Double
+    package var secondValue: Double?
+    package var dontEnlarge: Bool
+
+    package init(mode: Mode, value: Double, secondValue: Double? = nil, dontEnlarge: Bool = false) {
+      self.mode = mode
+      self.value = value
+      self.secondValue = secondValue
+      self.dontEnlarge = dontEnlarge
+    }
+
+    package func validate() throws {
+      guard value.isFinite, value > 0, mode.usesSecondValue == (secondValue != nil) else {
+        throw CraftError.invalid("Choose valid Camera Raw output dimensions.")
+      }
+      switch mode {
+      case .widthHeight, .dimensions, .longSide, .shortSide:
+        for side in [value, secondValue].compactMap({ $0 }) {
+          guard side.isFinite, side == side.rounded(), (1...Double(Surface.maxDimension)).contains(side) else {
+            throw CraftError.invalid("Enter whole pixel dimensions from 1 to 300,000.")
+          }
+        }
+      case .megapixels, .percentage:
+        break
+      }
+    }
+
+    package func dimensions(width: Int, height: Int) throws -> (width: Int, height: Int) {
+      try validate()
+      guard (1...Surface.maxDimension).contains(width), (1...Surface.maxDimension).contains(height) else {
+        throw CraftError.invalid("Invalid Camera Raw input dimensions.")
+      }
+      if let secondValue {
+        let first = Int(value), second = Int(secondValue)
+        let horizontal: Int, vertical: Int
+        if mode == .widthHeight {
+          (horizontal, vertical) = (first, second)
+        } else {
+          let long = max(first, second), short = min(first, second)
+          (horizontal, vertical) = width >= height ? (long, short) : (short, long)
+        }
+        return try FitImageOptions(width: horizontal, height: vertical, dontEnlarge: dontEnlarge)
+          .dimensions(sourceWidth: width, sourceHeight: height)
+      }
+      let factor: Double
+      switch mode {
+      case .longSide: factor = value / Double(max(width, height))
+      case .shortSide: factor = value / Double(min(width, height))
+      case .megapixels: factor = (value / (Double(width * height) / 1_000_000)).squareRoot()
+      case .percentage: factor = value / 100
+      case .widthHeight, .dimensions:
+        throw CraftError.invalid("Enter both Camera Raw bounds.")
+      }
+      let scale = dontEnlarge ? min(1, factor) : factor
+      let w = max(1, (Double(width) * scale).rounded())
+      let h = max(1, (Double(height) * scale).rounded())
+      guard w.isFinite, h.isFinite, w <= Double(Surface.maxDimension), h <= Double(Surface.maxDimension) else {
+        throw CraftError.invalid("The Camera Raw result exceeds 300,000 pixels per side.")
+      }
+      return (Int(w), Int(h))
+    }
+  }
+
+  package var profile: Profile?
+  package var depth: PixelDepth?
+  package var pixelsPerInch: Double?
+  package var resize: Resize?
+
+  package init(profile: Profile? = nil, depth: PixelDepth? = nil, pixelsPerInch: Double? = nil, resize: Resize? = nil) {
+    self.profile = profile
+    self.depth = depth
+    self.pixelsPerInch = pixelsPerInch
+    self.resize = resize
+  }
+
+  package func validate() throws {
+    if let depth, depth != .u8 && depth != .u16 {
+      throw CraftError.invalid("Choose 8 or 16 bits per channel for Camera Raw output.")
+    }
+    if let pixelsPerInch, !pixelsPerInch.isFinite || !(1...100_000).contains(pixelsPerInch) {
+      throw CraftError.invalid("Enter a resolution from 1 to 100,000 pixels per inch.")
+    }
+    try resize?.validate()
+  }
+
+  /// Convert the one developed RAW cache before deciding how it will be opened.
+  /// The source bytes, XMP settings and source-space dimensions stay attached.
+  package func prepare(in source: CraftDocument) throws -> CraftDocument {
+    try validate()
+    guard profile != nil || depth != nil || pixelsPerInch != nil else { return source }
+    guard source.colorMode == .rgb, source.modeDescriptor == nil, source.layers.count == 1,
+      source.layers[0].smartObject?.rawDevelopment != nil,
+      case .raster(let rgb) = source.layers[0].content else {
+      throw CraftError.invalid("Camera Raw output settings require one developed RGB source.")
+    }
+    var result = source
+    result.depth = depth ?? source.depth
+    result.resolution = pixelsPerInch ?? source.resolution
+    if let profile {
+      result.workingICC = try ColorManagement.importedProfile(profile.icc(), depth: result.depth)
+      result.profileIsUntagged = nil
+    } else if result.depth != source.depth {
+      result.workingICC = try ColorManagement.importedProfile(source.workingICC, depth: result.depth)
+    }
+    if let pixelsPerInch { result.layers[0].smartObject?.resolution = pixelsPerInch }
+    if result.depth != source.depth || result.workingICC != source.workingICC {
+      result.layers[0].content = .raster(try ColorManagement.converted(rgb, from: source, to: result))
+    }
+    try result.validate()
+    return result
+  }
+}
+
 package enum RawOpenMode: String, CaseIterable, Sendable {
   case image, object, copy
 
@@ -19,7 +183,19 @@ package enum RawOpenMode: String, CaseIterable, Sendable {
 
   /// The initial RAW import is a single, full-canvas rendered source. Retain
   /// the document's color coordinates and metadata when making a pixel layer.
-  package func output(from developed: CraftDocument) throws -> CraftDocument {
+  package func output(from preview: CraftDocument, workflow: RawWorkflowOutput = .init()) throws -> CraftDocument {
+    let developed = try workflow.prepare(in: preview)
+    let size = try workflow.resize?.dimensions(width: developed.width, height: developed.height)
+    var output = try layerOutput(from: developed)
+    if let size, size.width != output.width || size.height != output.height {
+      let resolution = output.resolution
+      try Command.imageSize(size.width, size.height, output.pixelsPerInch, .bicubic).apply(to: &output)
+      output.resolution = resolution
+    }
+    return output
+  }
+
+  private func layerOutput(from developed: CraftDocument) throws -> CraftDocument {
     guard developed.colorMode == .rgb, developed.layers.count == 1, let layer = developed.layers.first,
       layer.smartObject?.rawDevelopment != nil, case .raster(let raster) = layer.content,
       layer.visible, layer.opacity == 1, layer.blendMode == .normal,
@@ -220,7 +396,8 @@ public enum RawSourceIO {
     else { metadata = nil }
     let embedded = (metadata?[RasterMetadata.xmpKey]).flatMap { try? CameraRawXMP.readStored($0) }
     let initial = try requested ?? compatibleStoredSettings(embedded ?? .init(), in: data)
-    let (pixels, settings, info) = try render(data, settings: initial, depth: depth)
+    let (workingPixels, settings, info) = try render(data, settings: initial, depth: depth == .u8 ? .u16 : depth)
+    let pixels = try workingPixels.converted(to: depth)
     var name = URL(fileURLWithPath:fileName).lastPathComponent
     if (name as NSString).pathExtension.isEmpty { name += "." + (UTType(info.type)?.preferredFilenameExtension ?? "raw") }
     var document = try CraftDocument(width:pixels.width,height:pixels.height,depth:depth,name:(name as NSString).deletingPathExtension)
@@ -317,8 +494,8 @@ public enum RawSourceIO {
     guard let layer = document.layers.first(where: { $0.id == layerID }),var object = layer.smartObject,object.rawDevelopment != nil,
       !document.isImageLocked(layerID) else { throw CraftError.invalid("Select an unlocked RAW Smart Object.") }
     let (decoded, resolved, sensor) = try develop(object.data, settings: settings,
-      depth: document.depth, reusing: previous)
-    var source = try CraftDocument(width:decoded.width,height:decoded.height,depth:document.depth)
+      depth: document.depth == .u8 ? .u16 : document.depth, reusing: previous)
+    var source = try CraftDocument(width:decoded.width,height:decoded.height,depth:decoded.depth)
     source.layers[0].content = .raster(decoded)
     let pixels = try ColorManagement.converted(decoded,from:source,to:document)
     if !allInstances { object.sourceID = UUID() }

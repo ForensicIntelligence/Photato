@@ -2,7 +2,19 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **794** · The 10 most recent entries, newest first.
+Source build **795** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 795 — Set Camera Raw output profile, bit depth, resolution and size
+
+The native Camera Raw panel applies five RGB color profiles, 8- or 16-bit output, independent PPI, and six aspect-ratio-preserving resize modes. The defaults preserve the source interpretation. The selected settings are saved for later opens.
+
+Adobe Camera Raw 18.1.1 exposed those resize modes and separate resolution, color space and depth controls. The signed Photato app took the same 3,008 × 2,000 Nikon source to 1,504 × 1,000, RGB8 Display P3 and 300 ppi. Image Size confirmed 300 ppi in the opened copy. The original NEF and directory contents stayed intact.
+
+Xcode built the app and four new focused Debug tests passed, along with the five earlier opening tests. Both optimized architectures passed all 365 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The recorded checks cover the resulting geometry, profile, depth and PPI. Output sharpening, installed and non-RGB ICC profiles, and byte-identical Adobe output remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-795) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_795.md).
 
 ## 2026-11-28 — Step 794 — Open Camera Raw files as images, Smart Objects or copies
 
@@ -111,15 +123,3 @@ Xcode built the native app. All 3 focused workflow and authenticated HTTP tests 
 This compares opening settings and retained RAW source bytes. Pixel-level Camera Raw equivalence, writing settings back to DNG, automatic sidecar writes, and broader sensor models remain open.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-786) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_786.md).
-
-## 2026-11-27 — Step 785 — Read and write Camera Raw XMP settings
-
-Camera Raw Load Settings accepts XMP presets for sensor RAW and rendered RGB. Save Settings includes Camera Raw XMP and Photato JSON. XMP applies supported fields to the current draft, with preview and Undo. The sensor source remains editable and its original bytes are preserved.
-
-Adobe Camera Raw 18.1.1 loaded both Photato presets. On the DNG the sensor white balance was 6800 K with tint −4 and Exposure +1.25. The rendered example retained Exposure −0.35 and relative temperature +31 and tint −24. Adobe re-exported 75 matching fields, including a custom curve point and vignette style. It omitted eight inactive subcontrols.
-
-Xcode built the native app. All 5 focused workspace and authenticated HTTP tests passed. Both optimized architectures passed all 329 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
-
-The comparison covers settings values. Adobe and Photato rendering, automatic same-name sidecars, DNG-embedded settings, color profiles and local masks need separate testing and support.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-785) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_785.md).

@@ -84,6 +84,7 @@ import SwiftUI
   }
   var openRawDevelopmentOnDisplay = false
   var completedRawOpenMode: RawOpenMode?
+  var completedRawWorkflow = RawWorkflowOutput()
   var rawOpenDNGStorage = RawDNGSettingsStorage.embedXMP
   var localRawSource: (layerID: UUID, original: RawSettingsSource, retainedBytes: Data)?
   var rawSettingsSaveTask: Task<RawSettingsSource, Error>?

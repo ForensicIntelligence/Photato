@@ -19,6 +19,7 @@ struct CameraRawSheet: View {
   @State private var exportName = "Camera Raw.xmp"
   @State private var dngTask: Task<Void, Never>?
   @State private var sourceTask: Task<Void, Never>?
+  @State private var showingWorkflow = false
   @State private var openModifiers: NSEvent.ModifierFlags = []
   private var savingSource: Bool { sourceTask != nil }
   @State private var sourceSaveError: String?
@@ -86,6 +87,17 @@ struct CameraRawSheet: View {
         Toggle("Preview",isOn:$model.preview)
         Button("−") { model.zoom = max(0.25,model.zoom/1.25) }; Text("\(Int(model.zoom*100))% fit").monospacedDigit()
         Button("+") { model.zoom = min(8,model.zoom*1.25) }; Button("Fit") { model.zoom = 1 }
+        if store.initialRawDocument != nil, let preferences = store.documentController?.cameraRawPreferences {
+          Button("Output Settings…") { showingWorkflow = true }
+            .help("Choose the color profile, bit depth, resolution and dimensions of the opened document.")
+            .popover(isPresented: $showingWorkflow, arrowEdge: .bottom) {
+              RawWorkflowControls(output: preferences.workflowOutput, width: store.document.width,
+                height: store.document.height, onApply: {
+                  preferences.workflowOutput = $0
+                  showingWorkflow = false
+                }, onCancel: { showingWorkflow = false })
+            }
+        }
         Spacer()
         Button("Reset") { model.reset() }
         Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty)
@@ -190,16 +202,17 @@ struct CameraRawSheet: View {
   }
 
   private func finishSource(_ document: CraftNSDocument, mode: RawOpenMode?, authorizedFolder: URL? = nil) {
-    guard !savingSource, sidecarAccessPanel == nil, dngTask == nil,
+    guard !savingSource, !showingWorkflow, sidecarAccessPanel == nil, dngTask == nil,
       store.initialRawDocument === document, let layerID = store.filterDraft?.id,
       let settings = model.sensorSettings, model.canOpen(in: store.document),
       let output = model.developedRawPreview else { return }
     sourceSaveError = nil
+    let workflow = store.documentController?.cameraRawPreferences.workflowOutput ?? .init()
     sourceTask = Task {
       defer { sourceTask = nil }
       do {
         if let mode {
-          try await document.finishRawOpen(mode, from: output, layerID: layerID,
+          try await document.finishRawOpen(mode, from: output, layerID: layerID, workflow: workflow,
             authorizedFolder: authorizedFolder)
         } else {
           try await document.saveRawSourceSettings(layerID: layerID, settings: settings,

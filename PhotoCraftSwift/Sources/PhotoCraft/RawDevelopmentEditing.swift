@@ -15,7 +15,7 @@ extension CraftNSDocument {
   /// Finish the initial import as a new editor baseline. The seeded sensor
   /// layer was a preview source and must never become an Undo state.
   func finishRawOpen(_ mode: RawOpenMode, from preview: CraftDocument, layerID: UUID,
-    authorizedFolder: URL? = nil) async throws {
+    workflow: RawWorkflowOutput = .init(), authorizedFolder: URL? = nil) async throws {
     guard store.initialRawDocument === self, store.filterDraft?.id == layerID,
       preview.id == store.document.id, preview.layers.first?.id == layerID,
       fileURL == nil, !fileOperationBusy, !store.geometryBusy,
@@ -24,7 +24,9 @@ extension CraftNSDocument {
     }
     let generation = store.sessionGeneration
     let panelGeneration = store.layerPanelGeneration
-    let worker = Task.detached(priority: .userInitiated) { try mode.output(from: preview) }
+    let worker = Task.detached(priority: .userInitiated) {
+      try mode.output(from: preview, workflow: workflow)
+    }
     let output = try await withTaskCancellationHandler { try await worker.value } onCancel: { worker.cancel() }
     try validateRawOpening(layerID, generation: generation, panelGeneration: panelGeneration)
     if mode.savesSourceSettings, localRawSource != nil,
@@ -33,6 +35,7 @@ extension CraftNSDocument {
     }
     try validateRawOpening(layerID, generation: generation, panelGeneration: panelGeneration)
     completedRawOpenMode = mode
+    completedRawWorkflow = workflow
     store.initialRawDocument = nil
     store.filterDraft = nil
     if mode != .object { localRawSource = nil }

@@ -813,7 +813,28 @@ For a readable account of the project from the beginning, see [Photato developme
 | 792 | 2026-11-28 | [Faster Camera Raw exposure and color temperature](#dev-step-792) |
 | 793 | 2026-11-28 | [Reuse the decoded sensor in Camera Raw](#dev-step-793) |
 | 794 | 2026-11-28 | [Open Camera Raw files as images, Smart Objects or copies](#dev-step-794) |
+| 795 | 2026-11-28 | [Set Camera Raw output profile, bit depth, resolution and size](#dev-step-795) |
 <!-- history-index:end -->
+
+<a id="dev-step-795"></a>
+
+## 2026-11-28 — Step 795 — Set Camera Raw output profile, bit depth, resolution and size
+
+The native Camera Raw panel applies five RGB color profiles, 8- or 16-bit output, independent PPI, and six aspect-ratio-preserving resize modes. The defaults preserve the source interpretation. The selected settings are saved for later opens.
+
+The workflow is applied after sensor development and before opening the document. ColorSync converts and tags the output. The stored RAW and XMP stay independent of the document workflow. Changing PPI alone leaves the raster intact. A resized Smart Object keeps the original cache dimensions and remains redevelopable.
+
+Adobe Camera Raw 18.1.1 exposed those resize modes and separate resolution, color space and depth controls. The signed Photato app took the same 3,008 × 2,000 Nikon source to 1,504 × 1,000, RGB8 Display P3 and 300 ppi. Image Size confirmed 300 ppi in the opened copy. The original NEF and directory contents stayed intact.
+
+The locally authenticated RAW import route accepts `X-Photato-Raw-Workflow` containing base64-encoded JSON. It can select an output profile, `"8 bit"` or `"16 bit"`, `pixelsPerInch`, and resize. The revisioned Camera Raw preference endpoint includes a separate `workflow` object for desktop defaults. Uploads without the header keep their existing defaults.
+
+Xcode built the app and four new focused Debug tests passed, along with the five earlier opening tests. Both optimized architectures passed all 365 selected tests. Intel ran under Rosetta. Both Universal preview slices rendered offscreen.
+
+The recorded checks cover the resulting geometry, profile, depth and PPI. Output sharpening, installed and non-RGB ICC profiles, and byte-identical Adobe output remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 78,679,198 bytes with SHA-256 `a83e81a326ad33f23e0e88e95c61626e4af751b3f4626f19c2b32db91f003452`.
+
+[Qualification](SOURCE_PUBLICATION_795.md).
 
 <a id="dev-step-794"></a>
 

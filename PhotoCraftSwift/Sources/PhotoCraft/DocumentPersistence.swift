@@ -408,13 +408,14 @@ enum DocumentPersistenceConflict: LocalizedError {
     defer { fileOperationBusy = false }
     let rawMode = fileURL == nil ? completedRawOpenMode : nil
     let storage = rawOpenDNGStorage
+    let rawWorkflow = completedRawWorkflow
     let worker = Task.detached(priority: .userInitiated) {
       try RecoverySourceReader.withStableMetadata {
         let identity = try? RecoverySourceReader(source)
         let saved: CraftDocument
         if let rawMode {
           let decoded = try PreparedLocalDocument.read(source, format: .raw, dngStorage: storage).model
-          saved = try rawMode.output(from: decoded)
+          saved = try rawMode.output(from: decoded, workflow: rawWorkflow)
         } else {
           saved = try reader(source)
         }
