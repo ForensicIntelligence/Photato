@@ -1,3 +1,9 @@
+### Camera Raw synchronization (checkpoint 805)
+
+Authenticated `raw.synchronize` takes a source layer or explicit settings, a list of RAW target layers in the shared document, and settings groups. The entire edit uses one Undo step. Unsupported sensor options and decoder identity stay with each target.
+
+[Qualification](SOURCE_PUBLICATION_805.md).
+
 ### Camera Raw Dehaze (checkpoint 804)
 
 Photato capabilities include Dehaze in `rawDevelopment.pagedTone`, with the same nominal sensor and spatial-adjustment limit. The desktop app and authenticated `raw.develop` share the processing path.

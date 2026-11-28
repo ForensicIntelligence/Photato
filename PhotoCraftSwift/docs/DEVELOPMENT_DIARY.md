@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 805 — Open and synchronize multiple Camera Raw photos
+
+Select several Camera RAW files in File → Open to edit them together. The filmstrip keeps an independent settings draft for each source, applies changed controls to the selection, and copies chosen settings groups from the active photo.
+
+Command-A selected the three owned DNGs. Option-S opened Synchronize Settings, and Command-Option-O opened three editable RGB16 Background tabs. The RAWs and existing sidecar kept their original hashes. The focused tests also check selected-copy pixels, Undo and Redo, and atomic API validation.
+
+The selected and active controls follow the documented Adobe multi-image editing workflow. [Adobe Camera Raw filmstrip](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
+
+Xcode built the app. All eleven focused application tests passed. Both optimized architectures passed all 388 selected cases, including the filmstrip and authenticated API checks. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+The filmstrip opens when every selected file is Camera RAW. Batch developed-image export, rating and stacking controls, and the direct Adobe pixel comparison remain open.
+
+[Development record](DEVLOG.md#dev-step-805) · [Qualification](SOURCE_PUBLICATION_805.md).
+
 ## 2026-11-28 — Step 804 — Apply Dehaze to full-size Camera Raw images
 
 Camera Raw Dehaze now applies to supported sensor images above 36 megapixels. All existing Photato spatial Camera Raw controls have a paged path in this build.
@@ -2767,11 +2781,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:804 -->
+<!-- current-status-step:805 -->
 
-Camera Raw Dehaze now applies to supported sensor images above 36 megapixels. All existing Photato spatial Camera Raw controls have a paged path in this build.
+Select several Camera RAW files in File → Open to edit them together. The filmstrip keeps an independent settings draft for each source, applies changed controls to the selection, and copies chosen settings groups from the active photo.
 
-[Development record](DEVLOG.md#dev-step-804) · [Qualification](SOURCE_PUBLICATION_804.md).
+[Development record](DEVLOG.md#dev-step-805) · [Qualification](SOURCE_PUBLICATION_805.md).
 
 <!-- current-status:end -->
 
@@ -3782,6 +3796,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 802 | [Sharpen and reduce noise in full-size Camera Raw images](DEVLOG.md#dev-step-802) |
 | 2026-11-28 | 803 | [Apply local tone to full-size Camera Raw images](DEVLOG.md#dev-step-803) |
 | 2026-11-28 | 804 | [Apply Dehaze to full-size Camera Raw images](DEVLOG.md#dev-step-804) |
+| 2026-11-28 | 805 | [Open and synchronize multiple Camera Raw photos](DEVLOG.md#dev-step-805) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

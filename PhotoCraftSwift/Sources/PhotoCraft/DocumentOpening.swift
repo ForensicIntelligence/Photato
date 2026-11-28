@@ -104,7 +104,8 @@ struct PreparedLocalDocument: Sendable {
   init(controller: CraftDocumentController) { self.controller = controller }
   var canStart: Bool {
     guard let controller else { return false }
-    return !isActive && !hasPendingRequests && controller.documentOpenPanel == nil && !controller.documentClosing.isActive
+    return !isActive && !hasPendingRequests && controller.documentOpenPanel == nil && controller.rawFilmstripWindow == nil
+      && !controller.documentClosing.isActive
       && !controller.recoveryIndex.isBusy && controller.initialRecoveryTask == nil
       && NSApp?.modalWindow == nil && controller.documentWindows.canChangeDocument
   }

@@ -13,7 +13,7 @@ extension RawDevelopment {
       "lensCorrection":["type":["boolean","null"]],"highlightRecovery":["type":["boolean","null"]],"adjustments":CameraRawSettings.apiSchema]]
   }
   static var apiCapabilities: [String:Any] {
-    ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
+    ["commands":["raw.inspect","raw.develop","raw.saveSourceSettings",RawSynchronizationAPI.name,CameraRawXMPAPI.name],"schema":apiSchema,"sourceMediaTypes":RawSourceIO.mediaTypes,
      "maximumSourceBytes":DocumentIO.maximumUploadBytes,"maximumLocalSourceBytes":SmartObject.maximumCameraRawSourceBytes,
      "maximumSensorPixels":RawSourceIO.maximumPixels,"maximumSensorSide":RawSourceIO.maximumDimension,
      "maximumSpatialAdjustmentPixels":RawSourceIO.maximumPixels,

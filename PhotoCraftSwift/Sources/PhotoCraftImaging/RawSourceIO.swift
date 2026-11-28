@@ -372,8 +372,45 @@ public enum RawSourceIO {
     dngStorage: RawDNGSettingsStorage = .embedXMP, rawDefaults: RawDefaults) throws
     -> (document: CraftDocument, source: RawSettingsSource?) {
     let input = try PSDFileSource(url, maximumBytes: SmartObject.maximumCameraRawSourceBytes)
+    let original = try prepareLocalOriginal(url, input: input, dngStorage: dngStorage, rawDefaults: rawDefaults, mapped: false)
+    let document = try original.document(depth: depth)
+    try input.validateUnchanged()
+    return (document, original.settingsSource)
+  }
+
+  package struct LocalOriginal: Sendable {
+    fileprivate let bytes: EmbeddedSourceBytes
+    fileprivate let description: SourceDescription
+    package let url: URL
+    package let settingsSource: RawSettingsSource?
+    package let sensorInfo: Info?
+    package var settings: RawDevelopment { description.initial }
+
+    package func document(settings: RawDevelopment? = nil, depth: PixelDepth = .u16) throws -> CraftDocument {
+      try RawSourceIO.makeDocument(bytes, fileName: url.lastPathComponent, description: description,
+        settings: settings ?? description.initial, depth: depth)
+    }
+
+    package func thumbnail() -> CGImage? {
+      guard let source = CGImageSourceCreateWithData(bytes.data as CFData, nil) else { return nil }
+      return CGImageSourceCreateThumbnailAtIndex(source, 0, [
+        kCGImageSourceCreateThumbnailWithTransform: true,
+        kCGImageSourceThumbnailMaxPixelSize: 144,
+        kCGImageSourceShouldCacheImmediately: true,
+      ] as CFDictionary)
+    }
+  }
+
+  package static func prepareLocalOriginal(_ url: URL, dngStorage: RawDNGSettingsStorage,
+    rawDefaults: RawDefaults) throws -> LocalOriginal {
+    let input = try PSDFileSource(url, maximumBytes: SmartObject.maximumCameraRawSourceBytes)
+    return try prepareLocalOriginal(url, input: input, dngStorage: dngStorage, rawDefaults: rawDefaults, mapped: true)
+  }
+
+  private static func prepareLocalOriginal(_ url: URL, input: PSDFileSource, dngStorage: RawDNGSettingsStorage,
+    rawDefaults: RawDefaults, mapped: Bool) throws -> LocalOriginal {
     let bytes: EmbeddedSourceBytes
-    if input.count > SmartObject.maximumSourceBytes {
+    if mapped || input.count > SmartObject.maximumSourceBytes {
       bytes = .file(try FileBackedSource.retain(byteCount: input.count, fingerprinting: true) { offset, count in
         try input.bytes(at: offset, count: count)
       })
@@ -384,9 +421,10 @@ public enum RawSourceIO {
     let ignoresSidecar = dngStorage == .ignoreSidecarXMP && type(data) == "com.adobe.raw-image"
     let related = try ignoresSidecar ? nil : relatedXMP(for: url)
     let settings = try related?.settings.map { try compatibleStoredSettings($0, in: data) }
-    let document = try open(bytes, fileName: url.lastPathComponent, settings: settings, depth: depth, rawDefaults: rawDefaults)
+    let description = try describeSource(data, requested: settings, rawDefaults: rawDefaults)
+    let info = mapped ? try inspect(data, decoderVersion: description.initial.decoderVersion) : nil
     let safeSource = (try? url.resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink) == false
-    let mediaType = document.layers.first?.smartObject?.mediaType
+    let mediaType = description.sourceType == "com.adobe.raw-image" ? "image/x-adobe-dng" : "image/x-camera-raw"
     let source: RawSettingsSource?
     if safeSource, mediaType == "image/x-adobe-dng", dngStorage != .sidecarXMP, TIFFContainer.isClassic(data) {
       source = .embeddedDNG(RawDNGSource(url: url, original: data, sidecar: related, ignoresSidecar: ignoresSidecar))
@@ -398,7 +436,7 @@ public enum RawSourceIO {
       source = nil
     }
     try input.validateUnchanged()
-    return (document, source)
+    return LocalOriginal(bytes: bytes, description: description, url: url, settingsSource: source, sensorInfo: info)
   }
   public static func open(_ data: Data, fileName: String, settings requested: RawDevelopment? = nil,
     depth: PixelDepth = .u16) throws -> CraftDocument {
@@ -427,6 +465,18 @@ public enum RawSourceIO {
     guard (1...SmartObject.maximumCameraRawSourceBytes).contains(data.count) else {
       throw CraftError.invalid("Camera RAW source must contain 1 byte to 2 GiB.")
     }
+    let description = try describeSource(data, requested: requested, rawDefaults: rawDefaults)
+    return try makeDocument(bytes, fileName: fileName, description: description, settings: description.initial, depth: depth)
+  }
+
+  fileprivate struct SourceDescription: Sendable {
+    let sourceType: String?
+    let metadata: [String: Data]?
+    let resolution: Double?
+    let initial: RawDevelopment
+  }
+
+  private static func describeSource(_ data: Data, requested: RawDevelopment?, rawDefaults: RawDefaults) throws -> SourceDescription {
     let sourceType = type(data)
     let options = sourceType.map { [kCGImageSourceTypeIdentifierHint: $0] as CFDictionary }
     let source = CGImageSourceCreateWithData(data as CFData, options)
@@ -447,13 +497,20 @@ public enum RawSourceIO {
       initial = try defaultDevelopment(rawDefaults.choice(for: cameraIdentity(properties)),
         from: data, iso: cameraISO(properties))
     }
+    return SourceDescription(sourceType: sourceType, metadata: metadata,
+      resolution: properties?[kCGImagePropertyDPIWidth] as? Double, initial: initial)
+  }
+
+  private static func makeDocument(_ bytes: EmbeddedSourceBytes, fileName: String,
+    description: SourceDescription, settings initial: RawDevelopment, depth: PixelDepth) throws -> CraftDocument {
+    let data = bytes.data
     let (workingPixels, settings, info) = try render(data, settings: initial, depth: depth == .u8 ? .u16 : depth)
     let pixels = try workingPixels.converted(to: depth)
     var name = URL(fileURLWithPath:fileName).lastPathComponent
     if (name as NSString).pathExtension.isEmpty { name += "." + (UTType(info.type)?.preferredFilenameExtension ?? "raw") }
     var document = try CraftDocument(width:pixels.width,height:pixels.height,depth:depth,name:(name as NSString).deletingPathExtension)
-    document.sourceMetadata = metadata
-    if let dpi = properties?[kCGImagePropertyDPIWidth] as? Double, dpi.isFinite, (1...100_000).contains(dpi) {
+    document.sourceMetadata = description.metadata
+    if let dpi = description.resolution, dpi.isFinite, (1...100_000).contains(dpi) {
       document.resolution = dpi
     }
     var object = try SmartObject(fileName:name.isEmpty ? "Source.raw" : name,mediaType:info.type == "com.adobe.raw-image" ? "image/x-adobe-dng" : "image/x-camera-raw",source:bytes,width:pixels.width,height:pixels.height,rawDevelopment:settings)

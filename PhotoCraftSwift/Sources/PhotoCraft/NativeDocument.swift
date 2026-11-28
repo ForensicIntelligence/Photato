@@ -620,6 +620,7 @@ import SwiftUI
   var recoveryMaintenanceWindow: RecoveryMaintenanceWindowController?
   var recoverySalvageWindow: RecoverySalvageWindowController?
   var documentOpenPanel: NSOpenPanel?
+  var rawFilmstripWindow: RawFilmstripWindow?
   var documentOpenAccessory: DocumentOpenAccessory?
   private(set) var workspaces = WorkspaceLibrary()
   private(set) var recoveryPreferences = RecoveryPreferencesStore()
@@ -798,6 +799,7 @@ import SwiftUI
       self.documentOpenPanel = nil; self.documentOpenAccessory = nil
       guard result == .OK else { return }
       Task { @MainActor in
+      if self.presentRawFilmstrip(panel.urls, format: accessory.format) { return }
       var lastError: Error?
       do {
         try self.documentOpening.begin(panel.urls, format: accessory.format, display: true,

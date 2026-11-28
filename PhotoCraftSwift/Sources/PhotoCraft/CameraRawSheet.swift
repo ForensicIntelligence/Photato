@@ -7,6 +7,8 @@ import UniformTypeIdentifiers
 struct CameraRawSheet: View {
   @Bindable var store: EditorStore
   private var placement: RawPlacementWorkspace?
+  private var filmstrip: RawFilmstripWorkspace?
+  private let filmstripPhoto: UUID?
   @State private var model = CameraRawWorkspace()
   @State private var group = "Light"
   @State private var band = 0
@@ -32,20 +34,32 @@ struct CameraRawSheet: View {
   @State private var sidecarAccessPanel: NSOpenPanel?
   private static let xmpType = UTType(filenameExtension: "xmp", conformingTo: .data) ?? .xml
   private static let dngType = UTType("com.adobe.raw-image") ?? .data
-  private var defaultOpenAsObject: Bool { store.documentController?.cameraRawPreferences.openAsSmartObject ?? false }
+  private var defaultOpenAsObject: Bool { filmstrip?.defaultOpenAsObject ?? store.documentController?.cameraRawPreferences.openAsSmartObject ?? false }
   private var groups: [String] { (model.sensorSettings == nil ? [] : ["Sensor"]) + ["Light","Color","Effects","Curve","Color Mixer","Color Grading","Detail"] }
-  init(store: EditorStore,workspace: CameraRawWorkspace? = nil,placement: RawPlacementWorkspace? = nil) { self.store = store; self.placement = placement; _model = State(initialValue:workspace ?? CameraRawWorkspace()) }
+  init(store: EditorStore, workspace: CameraRawWorkspace? = nil, placement: RawPlacementWorkspace? = nil,
+    filmstrip: RawFilmstripWorkspace? = nil, filmstripPhoto: UUID? = nil) {
+    self.store = store
+    self.placement = placement
+    self.filmstrip = filmstrip
+    self.filmstripPhoto = filmstripPhoto
+    _model = State(initialValue: workspace ?? CameraRawWorkspace())
+  }
+
+  private func slider(_ editing: Bool) {
+    filmstrip?.slider(editing)
+    model.slider(editing)
+  }
   private func binding(_ key: String) -> Binding<Double> { Binding(get:{ Double(model.settings[key]) },set:{ var value = model.settings; value[key] = Float($0); model.change(value) }) }
   private func control(_ title: String,_ value: Binding<Double>,_ range: ClosedRange<Double>) -> some View {
     VStack(alignment:.leading,spacing:3) {
       HStack { Text(title); Spacer(); TextField(title,value:value,format:.number.precision(.fractionLength(0...2))).frame(width:64).textFieldStyle(.roundedBorder) }
-      Slider(value:value,in:range,onEditingChanged:model.slider).accessibilityLabel(title)
+      Slider(value:value,in:range,onEditingChanged:slider).accessibilityLabel(title)
     }.padding(.vertical,3)
   }
   var body: some View {
     VStack(spacing:0) {
       HStack {
-        Text(model.sensorSettings == nil ? "Camera Raw Filter" : "Camera Raw — Source").font(.headline)
+        Text(filmstrip?.activeName ?? (model.sensorSettings == nil ? "Camera Raw Filter" : "Camera Raw — Source")).font(.headline)
         Spacer()
         if savingSource {
           ProgressView().controlSize(.small).accessibilityLabel("Finishing Camera Raw")
@@ -104,7 +118,14 @@ struct CameraRawSheet: View {
         Toggle("Preview",isOn:$model.preview)
         Button("−") { model.zoom = max(0.25,model.zoom/1.25) }; Text("\(Int(model.zoom*100))% fit").monospacedDigit()
         Button("+") { model.zoom = min(8,model.zoom*1.25) }; Button("Fit") { model.zoom = 1 }
-        if store.initialRawDocument != nil, let preferences = store.documentController?.cameraRawPreferences {
+        if let filmstrip {
+          Button("Output Settings…") { showingWorkflow = true }
+            .popover(isPresented: $showingWorkflow, arrowEdge: .bottom) {
+              RawWorkflowControls(output: filmstrip.workflowOutput, width: store.document.width,
+                height: store.document.height, onApply: { filmstrip.setWorkflow($0); showingWorkflow = false },
+                onCancel: { showingWorkflow = false })
+            }
+        } else if store.initialRawDocument != nil, let preferences = store.documentController?.cameraRawPreferences {
           Button("Output Settings…") { showingWorkflow = true }
             .help("Choose the color profile, bit depth, resolution and dimensions of the opened document.")
             .popover(isPresented: $showingWorkflow, arrowEdge: .bottom) {
@@ -117,10 +138,34 @@ struct CameraRawSheet: View {
         }
         Spacer()
         Button("Reset") { model.reset() }
-        Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty)
-        Button("Redo") { model.redo() }.disabled(model.redoStates.isEmpty)
+        if let filmstrip {
+          Button("Undo", action: filmstrip.undoEdit).keyboardShortcut("z", modifiers: .command).disabled(!filmstrip.canUndo)
+          Button("Redo", action: filmstrip.redoEdit).keyboardShortcut("z", modifiers: [.command, .shift]).disabled(!filmstrip.canRedo)
+        } else {
+          Button("Undo") { model.undo() }.disabled(model.undoStates.isEmpty)
+          Button("Redo") { model.redo() }.disabled(model.redoStates.isEmpty)
+        }
         Button("Cancel", action: cancel).keyboardShortcut(.cancelAction)
-        if let document = store.initialRawDocument {
+        if let filmstrip {
+          Button("Done") { filmstrip.finish(nil) }.disabled(!filmstrip.canWrite)
+            .help("Save the selected photos’ Camera Raw settings.")
+          let mode = RawOpenShortcuts.mode(for: openModifiers, defaultAsObject: defaultOpenAsObject)
+          HStack(spacing: 4) {
+            Button(mode.title) { filmstrip.finish(mode) }.keyboardShortcut(.defaultAction)
+              .help("Open the selected photos with their individual settings.")
+            Menu {
+              Button(RawOpenMode.image.title) { filmstrip.finish(.image) }
+              Button(RawOpenMode.object.title) { filmstrip.finish(.object) }
+              Button(RawOpenMode.copy.title) { filmstrip.finish(.copy) }
+            } label: { Image(systemName: "chevron.down") }
+            .accessibilityLabel("Camera Raw opening options")
+          }
+          .disabled(!filmstrip.canFinish || importing || exporting || showingWorkflow)
+          .background(RawSourceKeyMonitor(onFlags: { openModifiers = $0 }, onOpen: { flags in
+            guard !showingWorkflow, !importing, !exporting else { return }
+            filmstrip.finish(RawOpenShortcuts.mode(for: flags, defaultAsObject: defaultOpenAsObject))
+          }, onSave: {}))
+        } else if let document = store.initialRawDocument {
           if document.localRawSource != nil {
             Button("Done") { finishSource(document, mode: nil) }
               .help("Save these settings to the RAW file or its XMP sidecar and close Camera Raw.")
@@ -164,14 +209,21 @@ struct CameraRawSheet: View {
     .onReceive(NotificationCenter.default.publisher(for: NSWindow.didBecomeKeyNotification)) { _ in
       openModifiers = NSEvent.modifierFlags
     }
-    .frame(width:min(1180,(NSScreen.main?.visibleFrame.width ?? 1280)-80),height:min(780,(NSScreen.main?.visibleFrame.height ?? 900)-100))
+    .frame(width: filmstrip == nil ? min(1180, (NSScreen.main?.visibleFrame.width ?? 1280) - 80) : nil,
+      height: filmstrip == nil ? min(780, (NSScreen.main?.visibleFrame.height ?? 900) - 100) : nil)
     .task {
       guard let draft = store.filterDraft else { return }
       model.onChange = { store.filterDraft?.filter.cameraRaw = $0 }
-      model.onSensorChange = { store.filterDraft?.rawDevelopment = $0 }
+      model.onSensorChange = { value in
+        store.filterDraft?.rawDevelopment = value
+        if let filmstripPhoto { filmstrip?.apply(value, to: filmstripPhoto) }
+      }
       if draft.rawDevelopment != nil { group = "Sensor" }
       await model.prepare(document: store.document, draft: draft,
-        retainRawOutput: store.initialRawDocument != nil)
+        retainRawOutput: store.initialRawDocument != nil || filmstrip != nil)
+    }
+    .onChange(of: filmstrip?.activeSettings) { _, current in
+      if filmstrip?.activeID == filmstripPhoto, let current { model.changeSensor(current, remember: false) }
     }
     .onDisappear {
       imageExportTask?.cancel()
@@ -205,6 +257,7 @@ struct CameraRawSheet: View {
     }
   }
   private func cancel() {
+    if let filmstrip { filmstrip.close(); return }
     if let placement { placement.cancel(); return }
     let sourceDocument = store.initialRawDocument
     store.initialRawDocument = nil
@@ -462,7 +515,7 @@ struct CameraRawSheet: View {
       CameraRawCurve(points:Binding(get:{ [model.settings.pointCurve,model.settings.pointCurveRed,model.settings.pointCurveGreen,model.settings.pointCurveBlue][curveChannel] },set:{ points in
         var v = model.settings
         switch curveChannel { case 0: v.pointCurve = points; case 1: v.pointCurveRed = points; case 2: v.pointCurveGreen = points; default: v.pointCurveBlue = points }; model.change(v)
-      }),editing:model.slider).frame(height:220)
+      }),editing:slider).frame(height:220)
       Text("Drag a point, or click the curve area to add one.").font(.caption).foregroundStyle(.secondary)
       Button("Reset point curve") { var v = model.settings; switch curveChannel { case 0: v.pointCurve = []; case 1: v.pointCurveRed = []; case 2: v.pointCurveGreen = []; default: v.pointCurveBlue = [] }; model.change(v) }
     }

@@ -1475,6 +1475,13 @@ import UniformTypeIdentifiers
       if command.name == "document.imageStack" { return try await executeImageStack(command,anchorID:id) }
       if command.name == "document.hdrMerge" { return try await executeHDRMerge(command,anchorID:id) }
       if command.name == "raw.inspect" { return .json(try await inspectRaw(command,document:document,shareID:id)) }
+      if command.name == RawSynchronizationAPI.name {
+        let request = try RawSynchronizationAPI.Request(command)
+        try await executePreparedOperation(document: document, shareID: id, revision: command.revision) {
+          try request.prepare(in: $0)
+        }
+        return .json(state(share, document: document))
+      }
       if command.name == "raw.saveSourceSettings" {
         try await saveRawSourceThroughAPI(command, document: document, shareID: id)
         return .json(state(share, document: document))

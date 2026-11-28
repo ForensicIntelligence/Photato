@@ -1,5 +1,19 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-08.md)
 
+## 2026-11-28 — Step 805 — Open and synchronize multiple Camera Raw photos
+
+Select several Camera RAW files in File → Open to edit them together. The filmstrip keeps an independent settings draft for each source, applies changed controls to the selection, and copies chosen settings groups from the active photo.
+
+Command-A selected the three owned DNGs. Option-S opened Synchronize Settings, and Command-Option-O opened three editable RGB16 Background tabs. The RAWs and existing sidecar kept their original hashes. The focused tests also check selected-copy pixels, Undo and Redo, and atomic API validation.
+
+The selected and active controls follow the documented Adobe multi-image editing workflow. [Adobe Camera Raw filmstrip](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
+
+Xcode built the app. All eleven focused application tests passed. Both optimized architectures passed all 388 selected cases, including the filmstrip and authenticated API checks. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
+
+The filmstrip opens when every selected file is Camera RAW. Batch developed-image export, rating and stacking controls, and the direct Adobe pixel comparison remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-805) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_805.md).
+
 ## 2026-11-28 — Step 804 — Apply Dehaze to full-size Camera Raw images
 
 Camera Raw Dehaze now applies to supported sensor images above 36 megapixels. All existing Photato spatial Camera Raw controls have a paged path in this build.

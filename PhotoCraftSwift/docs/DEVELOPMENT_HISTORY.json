@@ -10884,6 +10884,13 @@
       "link": "DEVLOG.md#dev-step-804",
       "section_sha256": "819e426be10c4ae54359d78a87703cb9f40aebf4beff721b23834272af70aced",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-805",
+      "title": "2026-11-28 \u2014 Step 805 \u2014 Open and synchronize multiple Camera Raw photos",
+      "link": "DEVLOG.md#dev-step-805",
+      "section_sha256": "65ca00a2cf99294acf1bc32facf0533feefc261de9604aed9010d2c5349a6d36",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13719,8 +13726,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "7ffb8687021c1f526b23f88b09e38f716ea5f0904d451f724df2d62e09f8beaf",
-      "bytes": 190718,
+      "sha256": "2a80e8ee484c6147cb4fe1526e3e4c9030208d64a86418007a6c60d9eef40351",
+      "bytes": 190844,
       "rolling_current_snapshot": false
     },
     {
@@ -15441,8 +15448,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "bfd6d0cc602fb752e33e6c52a492b00d53f306629adc4f8b4941fd9922221cdb",
-      "bytes": 760236,
+      "sha256": "59c11400b7d7408a3ce6e89ea2cdc771163062a0be0a77b390ac115650e3e550",
+      "bytes": 760586,
       "rolling_current_snapshot": false
     },
     {
@@ -16011,8 +16018,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "cdbe8b9003e4d80bd16222f3b620b726e402a78322aa42e33a7af1cd17b80d3b",
-      "bytes": 405699,
+      "sha256": "f5a05714a80b9375d00a98064064ead6afa347931e4f4bc1f53ef26e3bb2f260",
+      "bytes": 405819,
       "rolling_current_snapshot": false
     },
     {
@@ -16131,8 +16138,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "7809e83568004e93c34d8609cf0f29531594bbced4ba44af8cb625d55a7fc6fc",
-      "bytes": 232312,
+      "sha256": "92ffebfb2c374e47efbec651a5457c685926c042979000d868813d0137417fda",
+      "bytes": 232608,
       "rolling_current_snapshot": false
     },
     {
@@ -16209,14 +16216,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "25910c51fc52c53e192e17a9f5a4de2576abcea4c1510d36fcfaa4cebf1e9cc8",
-      "bytes": 1098783,
+      "sha256": "f33b7dc5daa70e57646ef281bcfc04f9fa5246e38cbdab1e0e2f05dd794dc1c6",
+      "bytes": 1100331,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "7037fb5f638e3d345d02db43e7ed9f7048d75e402d39c3aa9e51d8b92f01362d",
-      "bytes": 5248706,
+      "sha256": "677d041b1a711e1f1bb277edcabdf8568afc9f8584e8a79e2c6102fa2c863d45",
+      "bytes": 5250815,
       "rolling_current_snapshot": false
     },
     {
@@ -24074,6 +24081,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_805.json",
+      "sha256": "ff27fc0d3e4e140210bdb14da3e928a78b7f94908a7d3ef856a856d0117394bf",
+      "bytes": 16899,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_805.md",
+      "sha256": "f652d2f122d956badbc2a94e196d327958068d64aa96b5c5bcaceaca7bc7b389",
+      "bytes": 1812,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24633,8 +24652,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "adf79142435484a651d6da2ad251bdd291e15c8fca90facdd05123396b5f6d9d",
-      "bytes": 521712,
+      "sha256": "50440923bfd9f338ca2ddd2661fd1dd17d2258dd1d205de0d9f733a8bf8a51c6",
+      "bytes": 522279,
       "rolling_current_snapshot": false
     },
     {
@@ -27147,8 +27166,8 @@
     }
   ],
   "counts": {
-    "milestones": 804,
-    "evidence_files": 2240,
+    "milestones": 805,
+    "evidence_files": 2242,
     "logs": 0,
     "missing_explicit_references": 704
   }
