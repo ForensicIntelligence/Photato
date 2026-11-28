@@ -1,5 +1,19 @@
 [Latest entries](../DEVELOPER_DIARY.md) · [Archive index](README.md) · [Next page](part-09.md)
 
+## 2026-11-28 — Step 815 — Apply editable HDR automatic tone and color
+
+Apply Auto Settings in Camera Raw HDR Merge now writes Exposure, Contrast, Highlights, Shadows, Whites, Blacks, Vibrance and Saturation into the output DNG as editable Camera Raw settings. The dialog preview uses the same settings.
+
+Across six owned scenes, mean Exposure error against Adobe fell from 0.73 to 0.26 stops. The other seven sliders averaged 10.5 points from Adobe, down from 31.5. The DNG sensor payload was byte-identical with Auto on and off in all six Photato scenes. Adobe also retained its compressed sensor payload with Auto on and off in the textured scene.
+
+Adobe Camera Raw 18.1.1 wrote recipes for six owned 512 × 384 DNG brackets, including a terrace scene withheld while designing the adjustments. The independently read XMP and encoded sensor hashes are linked below. [Adobe Camera Raw HDR shortcuts](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/default-keyboard-shortcuts.html).
+
+Xcode built the app and all 47 focused application and imaging checks passed, including four added checks. Both optimized architectures passed all 422 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+On the withheld terrace scene, the seven slider values improved on average, and Exposure diverged by 0.77 stops where the previous Exposure was 0.06 stops off. These results measure XMP settings and sensor payload preservation. Adobe-rendered pixels, real-world scenes, larger brackets and deghosting remain open.
+
+[Development record](../PhotoCraftSwift/docs/DEVLOG.md#dev-step-815) · [Qualification](../PhotoCraftSwift/docs/SOURCE_PUBLICATION_815.md).
+
 ## 2026-11-28 — Step 814 — Fuse scene-linear HDR exposure brackets
 
 Camera Raw merges linear sensor samples using shutter time, aperture and ISO. The middle exposure supplies the reference frame and white balance. Reliable samples recover highlight detail while the deghost mask can restore the reference where subjects move.

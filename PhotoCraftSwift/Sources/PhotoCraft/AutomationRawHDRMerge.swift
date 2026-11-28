@@ -7,7 +7,7 @@ enum RawHDRMergeAPI {
   static let definition = AutomationCommand.Definition(name: name, parameters: [
     "layerIDs": "RAW Smart Object layer UUIDs in bracket order",
     "align": "Align bracketed exposures",
-    "autoSettings": "Embed an automatic exposure adjustment",
+    "autoSettings": "Embed editable automatic tone and color settings without changing the merged RAW samples",
     "deghost": "Deghost amount",
   ], description: "Merge selected RAW exposure brackets and directly download an editable linear HDR DNG.",
     optionalParameters: ["align", "autoSettings", "deghost"])

@@ -10954,6 +10954,13 @@
       "link": "DEVLOG.md#dev-step-814",
       "section_sha256": "a4c547d5728fed280ac9d8b80952c8838e5f019914218e68b971e91b754bc5a1",
       "references_explicitly_named_in_entry": []
+    },
+    {
+      "id": "dev-step-815",
+      "title": "2026-11-28 \u2014 Step 815 \u2014 Apply editable HDR automatic tone and color",
+      "link": "DEVLOG.md#dev-step-815",
+      "section_sha256": "4f6f800f0d72ee83270982933028c24d89c49d8b3a6bf5533b51cb0724b9076e",
+      "references_explicitly_named_in_entry": []
     }
   ],
   "missing_explicit_references": [
@@ -13789,8 +13796,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "7113bea17a56c1f610c35626d76d80d47b2c7cef4c89e8e03ab8f2152e84baa0",
-      "bytes": 191951,
+      "sha256": "75eff9a92989083970c69c64cb0a3e5e5c173d96cb30489c21dc1aef6411926d",
+      "bytes": 192073,
       "rolling_current_snapshot": false
     },
     {
@@ -15511,8 +15518,8 @@
     },
     {
       "path": "docs/AUTOMATION_API.md",
-      "sha256": "1bac373ee48f647ab3a17b5a43e92b2a8a5546f49422a639250120b46c70c611",
-      "bytes": 763110,
+      "sha256": "a0f9b01d45d89b47737368cd9c886fc8a40cc57f8783d82dc82b4d3feda4ea57",
+      "bytes": 764091,
       "rolling_current_snapshot": false
     },
     {
@@ -16081,8 +16088,8 @@
     },
     {
       "path": "docs/COMMAND_PARITY.csv",
-      "sha256": "96a0597cd33dead1c1773f389db8735f5fe20cf230522baa99141bed9c3e49fe",
-      "bytes": 406973,
+      "sha256": "aa9da77b7a305b28ac445527e17d4dda2dc10684a2a40ddfea3cadf3a9309181",
+      "bytes": 407123,
       "rolling_current_snapshot": false
     },
     {
@@ -16201,8 +16208,8 @@
     },
     {
       "path": "docs/CURRENT_WORK_ORDER.md",
-      "sha256": "61ea574fb1abac86bda45c4eca5ea0c57906646c3a30d68ea4d14449c504ef7e",
-      "bytes": 234674,
+      "sha256": "3399b93c44a11905171da6472a9a172819bac403e25529b69ad5ea014fce42c3",
+      "bytes": 234906,
       "rolling_current_snapshot": false
     },
     {
@@ -16279,14 +16286,14 @@
     },
     {
       "path": "docs/DEVELOPMENT_DIARY.md",
-      "sha256": "4c02339aa7d8d3099b4c52390efb06620b9172134d2e75a43a39be004e61bd80",
-      "bytes": 1113645,
+      "sha256": "fb25cdc8349efb6e0a4ebe35652cbec4478f28d074f0f2c68acaeb3a98339e1e",
+      "bytes": 1115369,
       "rolling_current_snapshot": false
     },
     {
       "path": "docs/DEVLOG.md",
-      "sha256": "7df080bf4e64148f8617d98c690d137faedb1834ddfa5675c291ce8aa9c38bb9",
-      "bytes": 5268775,
+      "sha256": "01a7d466584dfcdabd830f8a880fcf13ba48ae09e8dee9e6f59a16a8748d98d6",
+      "bytes": 5271288,
       "rolling_current_snapshot": false
     },
     {
@@ -24264,6 +24271,18 @@
       "rolling_current_snapshot": false
     },
     {
+      "path": "docs/SOURCE_PUBLICATION_815.json",
+      "sha256": "266a6febe8851fa74244de04c942d62983299d0c485e0397602409344e5f313c",
+      "bytes": 35364,
+      "rolling_current_snapshot": false
+    },
+    {
+      "path": "docs/SOURCE_PUBLICATION_815.md",
+      "sha256": "d3312f92545622af9eba0fb218ecc1cac99b9a38f9b6c9b1ade7b060ee74e4f8",
+      "bytes": 2053,
+      "rolling_current_snapshot": false
+    },
+    {
       "path": "docs/SOURCE_SAVE_REFERENCES.json",
       "sha256": "cd88fd22f7f4a135bb1d5c3eea5abeecf51f412d5a88a4e76ca6ab0487cd42ac",
       "bytes": 18197,
@@ -24823,8 +24842,8 @@
     },
     {
       "path": "docs/STATUS.md",
-      "sha256": "e87733e2b4744811285629d779ffa34afdd4319046ee5ce2c22e22a6a2bb6b6c",
-      "bytes": 527300,
+      "sha256": "3df588538f9b56b608a750aa52b876cda1c5c2e8648a22c40072c9c2e8cc6396",
+      "bytes": 527840,
       "rolling_current_snapshot": false
     },
     {
@@ -27337,8 +27356,8 @@
     }
   ],
   "counts": {
-    "milestones": 814,
-    "evidence_files": 2260,
+    "milestones": 815,
+    "evidence_files": 2262,
     "logs": 0,
     "missing_explicit_references": 704
   }

@@ -833,7 +833,30 @@ For a readable account of the project from the beginning, see [Photato developme
 | 812 | 2026-11-28 | [Hide and reveal photos in Camera Raw sessions](#dev-step-812) |
 | 813 | 2026-11-28 | [Merge Camera Raw exposures into editable HDR DNGs](#dev-step-813) |
 | 814 | 2026-11-28 | [Fuse scene-linear HDR exposure brackets](#dev-step-814) |
+| 815 | 2026-11-28 | [Apply editable HDR automatic tone and color](#dev-step-815) |
 <!-- history-index:end -->
+
+<a id="dev-step-815"></a>
+
+## 2026-11-28 — Step 815 — Apply editable HDR automatic tone and color
+
+Apply Auto Settings in Camera Raw HDR Merge now writes Exposure, Contrast, Highlights, Shadows, Whites, Blacks, Vibrance and Saturation into the output DNG as editable Camera Raw settings. The dialog preview uses the same settings.
+
+Analyze a bounded grid of scene-linear samples. Start with median exposure and protect both a broad bright area and a sparse highlight shoulder. A first pass improved four references and over-brightened the mixed-light room. Add wide-region highlight weighting, then check an untouched terrace reference. Preserve the initial comparison and the test compilation attempt that exposed an incorrectly ordered DNG writer argument.
+
+Across six owned scenes, mean Exposure error against Adobe fell from 0.73 to 0.26 stops. The other seven sliders averaged 10.5 points from Adobe, down from 31.5. The DNG sensor payload was byte-identical with Auto on and off in all six Photato scenes. Adobe also retained its compressed sensor payload with Auto on and off in the textured scene.
+
+Adobe Camera Raw 18.1.1 wrote recipes for six owned 512 × 384 DNG brackets, including a terrace scene withheld while designing the adjustments. The independently read XMP and encoded sensor hashes are linked below. [Adobe Camera Raw HDR shortcuts](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/default-keyboard-shortcuts.html).
+
+`raw.mergeHDR` with `autoSettings: true` uses the same tone and color calculation as the Camera Raw filmstrip. The authenticated download matched the native DNG byte for byte on the tested exposure bracket.
+
+Xcode built the app and all 47 focused application and imaging checks passed, including four added checks. Both optimized architectures passed all 422 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+On the withheld terrace scene, the seven slider values improved on average, and Exposure diverged by 0.77 stops where the previous Exposure was 0.06 stops off. These results measure XMP settings and sensor payload preservation. Adobe-rendered pixels, real-world scenes, larger brackets and deghosting remain open.
+
+The Universal ZIP targets macOS 14 and later. It contains 79,849,115 bytes with SHA-256 `f77ebef5d14fcb5c9f2e7c161cc0972cda6c9581dde47ba03f6c1318003a4e9a`.
+
+[Qualification](SOURCE_PUBLICATION_815.md).
 
 <a id="dev-step-814"></a>
 

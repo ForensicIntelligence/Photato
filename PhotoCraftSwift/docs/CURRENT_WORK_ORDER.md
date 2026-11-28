@@ -1,3 +1,5 @@
+**Camera Raw development.** Continue Camera Raw panorama and larger exposure brackets. Keep the independent RAW rendering comparison open. [Development record](DEVLOG.md#dev-step-815) · [Qualification](SOURCE_PUBLICATION_815.md).
+
 **Camera Raw development.** Compare automatic tone settings on independently composed HDR scenes and qualify larger exposure brackets. [Development record](DEVLOG.md#dev-step-814) · [Qualification](SOURCE_PUBLICATION_814.md).
 
 **Camera Raw development.** Compare RAW-specific exposure fusion and automatic tone settings with the controlled Adobe HDR DNG references. [Development record](DEVLOG.md#dev-step-813) · [Qualification](SOURCE_PUBLICATION_813.md).

@@ -1,3 +1,13 @@
+### Camera Raw HDR Auto Settings (checkpoint 815)
+
+Send `raw.mergeHDR` to `POST /v1/documents/{id}/commands` with the current `revision` and the distinct embedded RAW exposure `layerIDs` in `parameters`. Enable document transfers to receive a linear `image/x-adobe-dng` download. The command does not modify the document or its undo history.
+
+`align` and `autoSettings` default to `true`. `deghost` accepts `off`, `low`, `medium`, and `high` and defaults to `off`. Auto Settings writes editable Exposure, Contrast, Highlights, Shadows, Whites, Blacks, Vibrance, and Saturation to XMP. Turning it off omits that recipe and preserves the same linear RAW samples. The native Camera Raw merge uses the same calculation and writer.
+
+`raw.mergeHDR` with `autoSettings: true` uses the same tone and color calculation as the Camera Raw filmstrip. The authenticated download matched the native DNG byte for byte on the tested exposure bracket.
+
+[Qualification](SOURCE_PUBLICATION_815.md).
+
 ### Scene-linear Camera Raw HDR merge (checkpoint 814)
 
 The native workflow and authenticated `raw.mergeHDR` call the same scene-linear merge and DNG writer. The regression test reproduced the DNG bytes across both entry points using the same inputs.

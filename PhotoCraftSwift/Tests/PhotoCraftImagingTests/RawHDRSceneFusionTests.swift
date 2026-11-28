@@ -78,6 +78,62 @@ final class RawHDRSceneFusionTests: XCTestCase {
     XCTAssertEqual(try XCTUnwrap(high.ghostMask)[0], 0)
   }
 
+  func testAutomaticToneRecoversDarkMidtonesAndProtectsTheBrightShoulder() throws {
+    var dark = try Surface(width: 128, height: 64, depth: .f32, colorEncoding: .linearRGB)
+    var bright = dark
+    for y in 0..<dark.height {
+      let gradient = Float(y) / Float(dark.height)
+      for x in 0..<dark.width {
+        let level: Float = x < 5 ? 1.021 + 0.3 * gradient : 0.022 + 0.055 * gradient
+        dark.setLinearPixel(x: x, y: y, Pixel(level * 1.04, level, level * 0.9, 1))
+        let high = 0.42 + 0.53 * gradient
+        bright.setLinearPixel(x: x, y: y, Pixel(high, high, high, 1))
+      }
+    }
+    let lowKey = try RawHDRMerge.automaticTone(dark)
+    let highKey = try RawHDRMerge.automaticTone(bright)
+    XCTAssertGreaterThan(lowKey.exposure, 0.2)
+    XCTAssertLessThan(lowKey.exposure, 1.0)
+    XCTAssertLessThan(highKey.exposure, -0.5)
+    XCTAssertLessThan(lowKey.highlights, -30)
+    XCTAssertLessThan(highKey.highlights, -30)
+    XCTAssertGreaterThan(lowKey.shadows, 20)
+    XCTAssertLessThan(lowKey.blacks, -10)
+    XCTAssertGreaterThan(lowKey.vibrance, 0)
+    XCTAssertEqual(highKey.vibrance, 0)
+    XCTAssertEqual(highKey.saturation, 0)
+    try lowKey.validate()
+    try highKey.validate()
+  }
+
+  func testAutomaticToneProtectsASubstantialBrightRegionBesideShadows() throws {
+    let width = 160, height = 64
+    var pixels = try Surface(width: width, height: height, depth: .f32, colorEncoding: .linearRGB)
+    for y in 0..<height {
+      for x in 0..<width {
+        let base: Float = x < 36 ? 0.96 : 0.22
+        let light = base + 0.06 * Float(y) / Float(height)
+        pixels.setLinearPixel(x: x, y: y, Pixel(light * 1.04, light, light * 0.91, 1))
+      }
+    }
+    let settings = try RawHDRMerge.automaticTone(pixels)
+    XCTAssertLessThan(settings.exposure, -0.3)
+    XCTAssertGreaterThan(settings.shadows, 0)
+    XCTAssertGreaterThan(settings.whites, 10)
+  }
+
+  func testAutomaticToneIgnoresSparseHotPixelsAndLeavesBlackUnchanged() throws {
+    var strip = try Surface(width: 9_000, height: 1, depth: .f32, fill: Pixel(0, 0, 0, 1),
+      colorEncoding: .linearRGB)
+    XCTAssertTrue(try RawHDRMerge.automaticTone(strip).isIdentity)
+    for x in 0..<strip.width {
+      strip.setLinearPixel(x: x, y: 0, Pixel(0.12, 0.1, 0.08, 1))
+    }
+    let ordinary = try RawHDRMerge.automaticTone(strip)
+    strip.setLinearPixel(x: 4_500, y: 0, Pixel(60, 60, 60, 1))
+    XCTAssertEqual(try RawHDRMerge.automaticTone(strip), ordinary)
+  }
+
   private func bracket(size: SIMD2<Int>, exposure: Double, translation: SIMD2<Int> = .zero,
     radiance: (Int, Int) -> SIMD3<Float>) throws -> RawHDRSceneFusion.Bracket {
     var surface = try Surface(width: size.x, height: size.y, depth: .f32, colorEncoding: .linearRGB)

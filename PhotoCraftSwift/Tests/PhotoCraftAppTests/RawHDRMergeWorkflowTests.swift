@@ -43,7 +43,8 @@ final class RawHDRMergeWorkflowTests: XCTestCase {
     XCTAssertEqual(preview.exposureEV, [0, 1, 2])
     XCTAssertNotNil(preview.preview)
     XCTAssertNotNil(preview.overlayPreview)
-    let expectedExposure = try XCTUnwrap(preview.settings?.exposure)
+    let expectedSettings = try XCTUnwrap(preview.settings)
+    XCTAssertNotEqual(expectedSettings.contrast, 0)
     do {
       _ = try await workspace.saveHDRMerge(preview, to: urls[0], requestID: request.id)
       XCTFail("The merge must protect source exposures.")
@@ -58,7 +59,7 @@ final class RawHDRMergeWorkflowTests: XCTestCase {
     XCTAssertEqual(workspace.activeID, output.id)
     XCTAssertEqual(workspace.activeInformation?.width, 512)
     XCTAssertEqual(workspace.activeInformation?.height, 384)
-    XCTAssertEqual(try XCTUnwrap(workspace.activeSettings?.adjustments.exposure), expectedExposure, accuracy: 0.00001)
+    XCTAssertEqual(workspace.activeSettings?.adjustments, expectedSettings)
     XCTAssertTrue(controller.documents.isEmpty)
     XCTAssertFalse(workspace.canUndo)
     XCTAssertEqual(CameraRawPreferences(defaults: defaults).hdrMerge, options)
@@ -68,7 +69,7 @@ final class RawHDRMergeWorkflowTests: XCTestCase {
   @MainActor func testAuthenticatedHDRDownloadMatchesNativeDNGAndDoesNotEditDocument() async throws {
     let (folder, urls, bytes) = try makeBrackets()
     defer { try? FileManager.default.removeItem(at: folder) }
-    let options: [String: Any] = ["align": false, "autoSettings": false, "deghost": "off"]
+    let options: [String: Any] = ["align": false, "autoSettings": true, "deghost": "off"]
     let originals = try zip(urls, bytes).map {
       try RawSourceIO.open($0.1, fileName: $0.0.lastPathComponent)
     }
@@ -78,7 +79,6 @@ final class RawHDRMergeWorkflowTests: XCTestCase {
     file.activeLayerID = sourceLayers[0].id
     var settings = RawHDRMergeSettings()
     settings.align = false
-    settings.autoSettings = false
     let brackets = try sourceLayers.map { layer -> RawHDRMerge.Source in
       let object = try XCTUnwrap(layer.smartObject)
       return .init(bytes: object.sourceBytes, fileName: object.fileName, settings: try XCTUnwrap(object.rawDevelopment))

@@ -53,6 +53,42 @@ final class RawLinearDNGTests: XCTestCase {
     XCTAssertEqual(reopened.layers.first?.smartObject?.data, data)
   }
 
+  func testAutomaticSettingsChangeTheXMPAndRetainEveryLinearRAWWord() throws {
+    let (folder, rawURL) = try destination()
+    defer { try? FileManager.default.removeItem(at: folder) }
+    let autoURL = folder.appendingPathComponent("Owned-HDR-Auto.dng")
+    var pixels = try Surface(width: 512, height: 384, depth: .f32, colorEncoding: .linearRGB)
+    for y in 0..<pixels.height {
+      for x in 0..<pixels.width {
+        let shade = Float(y) / Float(pixels.height) * 0.09
+        pixels.setLinearPixel(x: x, y: y, Pixel(x < 24 ? 1.10 : shade + 0.065, shade + 0.047, shade + 0.038, 1))
+      }
+    }
+    let original = try image(pixels)
+    let settings = try RawHDRMerge.automaticTone(pixels)
+    XCTAssertNotEqual(settings.exposure, 0)
+    XCTAssertNotEqual(settings.shadows, 0)
+    try RawLinearDNG.write(original, to: rawURL)
+    try RawLinearDNG.write(original, to: autoURL, settings: settings)
+
+    func sensorPayload(_ data: Data, directory: TIFFContainer) throws -> [Data] {
+      let sensor = try XCTUnwrap(directory.root.fields[330]?.children.first)
+      let offsets = try XCTUnwrap(sensor.fields[273]), lengths = try XCTUnwrap(sensor.fields[279])
+      XCTAssertEqual(offsets.count, lengths.count)
+      return (0..<offsets.count).map { index in
+        let start = directory.order.number(offsets.data, index * 4, 4)
+        let count = directory.order.number(lengths.data, index * 4, 4)
+        return data.subdata(in: start..<(start + count))
+      }
+    }
+    let rawData = try Data(contentsOf: rawURL), autoData = try Data(contentsOf: autoURL)
+    let raw = try TIFFContainer(rawData, metadata: false, additionalTags: [700], inspectSubIFDs: true)
+    let auto = try TIFFContainer(autoData, metadata: false, additionalTags: [700], inspectSubIFDs: true)
+    XCTAssertNil(raw.root.fields[700])
+    XCTAssertEqual(try CameraRawXMP.read(XCTUnwrap(auto.root.fields[700]?.data)), settings)
+    XCTAssertEqual(try sensorPayload(rawData, directory: raw), try sensorPayload(autoData, directory: auto))
+  }
+
   func testInvalidLinearSamplesLeaveExistingDestinationUntouched() throws {
     let (folder, url) = try destination()
     defer { try? FileManager.default.removeItem(at: folder) }

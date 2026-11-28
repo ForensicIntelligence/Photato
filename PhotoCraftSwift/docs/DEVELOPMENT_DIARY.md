@@ -1,3 +1,17 @@
+## 2026-11-28 — Step 815 — Apply editable HDR automatic tone and color
+
+Apply Auto Settings in Camera Raw HDR Merge now writes Exposure, Contrast, Highlights, Shadows, Whites, Blacks, Vibrance and Saturation into the output DNG as editable Camera Raw settings. The dialog preview uses the same settings.
+
+Across six owned scenes, mean Exposure error against Adobe fell from 0.73 to 0.26 stops. The other seven sliders averaged 10.5 points from Adobe, down from 31.5. The DNG sensor payload was byte-identical with Auto on and off in all six Photato scenes. Adobe also retained its compressed sensor payload with Auto on and off in the textured scene.
+
+Adobe Camera Raw 18.1.1 wrote recipes for six owned 512 × 384 DNG brackets, including a terrace scene withheld while designing the adjustments. The independently read XMP and encoded sensor hashes are linked below. [Adobe Camera Raw HDR shortcuts](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/default-keyboard-shortcuts.html).
+
+Xcode built the app and all 47 focused application and imaging checks passed, including four added checks. Both optimized architectures passed all 422 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+On the withheld terrace scene, the seven slider values improved on average, and Exposure diverged by 0.77 stops where the previous Exposure was 0.06 stops off. These results measure XMP settings and sensor payload preservation. Adobe-rendered pixels, real-world scenes, larger brackets and deghosting remain open.
+
+[Development record](DEVLOG.md#dev-step-815) · [Qualification](SOURCE_PUBLICATION_815.md).
+
 ## 2026-11-28 — Step 814 — Fuse scene-linear HDR exposure brackets
 
 Camera Raw merges linear sensor samples using shutter time, aperture and ISO. The middle exposure supplies the reference frame and white balance. Reliable samples recover highlight detail while the deghost mask can restore the reference where subjects move.
@@ -2907,11 +2921,11 @@ This is independent implementation with black-box compatibility research. Resear
 **Release policy — updated 6 November 2026:** Photato will be a free and open-source release under MIT OR Apache-2.0, without tips, donations, in-app purchases, subscriptions or paid feature unlocks. The repository is now public at the maintainer’s request; application releases remain manually approved. Earlier entries describe the former purchase experiment as history; step237 records its removal.
 
 <!-- current-status:start -->
-<!-- current-status-step:814 -->
+<!-- current-status-step:815 -->
 
-Camera Raw merges linear sensor samples using shutter time, aperture and ISO. The middle exposure supplies the reference frame and white balance. Reliable samples recover highlight detail while the deghost mask can restore the reference where subjects move.
+Apply Auto Settings in Camera Raw HDR Merge now writes Exposure, Contrast, Highlights, Shadows, Whites, Blacks, Vibrance and Saturation into the output DNG as editable Camera Raw settings. The dialog preview uses the same settings.
 
-[Development record](DEVLOG.md#dev-step-814) · [Qualification](SOURCE_PUBLICATION_814.md).
+[Development record](DEVLOG.md#dev-step-815) · [Qualification](SOURCE_PUBLICATION_815.md).
 
 <!-- current-status:end -->
 
@@ -3932,6 +3946,7 @@ Every numbered milestone in the source diary at this reconstruction appears belo
 | 2026-11-28 | 812 | [Hide and reveal photos in Camera Raw sessions](DEVLOG.md#dev-step-812) |
 | 2026-11-28 | 813 | [Merge Camera Raw exposures into editable HDR DNGs](DEVLOG.md#dev-step-813) |
 | 2026-11-28 | 814 | [Fuse scene-linear HDR exposure brackets](DEVLOG.md#dev-step-814) |
+| 2026-11-28 | 815 | [Apply editable HDR automatic tone and color](DEVLOG.md#dev-step-815) |
 
 
 ## 2026-10-26 — Step158: editable layer effects

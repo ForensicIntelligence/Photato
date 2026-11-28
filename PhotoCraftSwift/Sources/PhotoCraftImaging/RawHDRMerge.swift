@@ -108,7 +108,7 @@ package enum RawHDRMerge {
     let layer = Layer(name: "HDR Merge", content: .raster(pixels))
     document.layers = [layer]
     document.activeLayerID = layer.id
-    let adjustments = options.autoSettings ? automaticExposure(pixels) : nil
+    let adjustments = options.autoSettings ? try automaticTone(pixels) : nil
     guard makePreview else {
       return Result(document: document, exposureEV: result.exposureEV, offsets: result.offsets, settings: adjustments,
         preview: nil, overlayPreview: nil)
@@ -138,20 +138,86 @@ package enum RawHDRMerge {
       preview: preview, overlayPreview: overlay)
   }
 
-  private static func automaticExposure(_ surface: Surface) -> CameraRawSettings {
-    let step = max(1, Int(sqrt(Double(surface.width * surface.height) / 8_192)))
-    var luminance: [Float] = []
-    for y in stride(from: 0, to: surface.height, by: step) {
-      for x in stride(from: 0, to: surface.width, by: step) {
+  // Sample evenly spaced cell centers so a narrow photo or an isolated hot pixel
+  // cannot dominate the exposure. Keep the analysis bounded independently of merge size.
+  package static func automaticTone(_ surface: Surface) throws -> CameraRawSettings {
+    let budget = 8_192
+    let width = surface.width, height = surface.height
+    let columns = min(width, budget, max(1, Int(sqrt(Double(budget * width) / Double(height)))))
+    let rows = min(height, budget / columns)
+    var luminance = [Float](), peaks = [Float](), chroma = [Float]()
+    luminance.reserveCapacity(columns * rows)
+    peaks.reserveCapacity(columns * rows)
+    chroma.reserveCapacity(columns * rows)
+    for row in 0..<rows {
+      try Task.checkCancellation()
+      let y = (2 * row + 1) * height / (2 * rows)
+      for column in 0..<columns {
+        let x = (2 * column + 1) * width / (2 * columns)
         let p = surface.linearPixel(x: x, y: y)
-        luminance.append(0.2126 * p.r + 0.7152 * p.g + 0.0722 * p.b)
+        guard p.isFinite, p.a > 0 else { continue }
+        let low = max(0, min(p.r, p.g, p.b)), high = max(p.r, p.g, p.b, 0)
+        let light = max(0, 0.2126 * p.r + 0.7152 * p.g + 0.0722 * p.b)
+        luminance.append(light)
+        peaks.append(high)
+        // Near-black read noise and specular whites are poor color samples.
+        if (0.025...0.8).contains(light), high > 0 { chroma.append((high - low) / high) }
       }
     }
     luminance.sort()
-    let midpoint = max(0.0001, luminance[luminance.count / 2])
-    let high = max(0.0001, luminance[luminance.count * 95 / 100])
+    peaks.sort()
+    chroma.sort()
+    func percentile(_ sorted: [Float], _ fraction: Float) -> Float {
+      guard !sorted.isEmpty else { return 0 }
+      let position = Float(sorted.count - 1) * fraction
+      let lower = Int(position), upper = min(lower + 1, sorted.count - 1)
+      return sorted[lower] + (sorted[upper] - sorted[lower]) * (position - Float(lower))
+    }
+    func smooth(_ lower: Float, _ upper: Float, _ value: Float) -> Float {
+      let t = min(1, max(0, (value - lower) / (upper - lower)))
+      return t * t * (3 - 2 * t)
+    }
+
     var settings = CameraRawSettings()
-    settings.exposure = min(3, max(-3, min(log2(0.18 / midpoint), log2(0.95 / high))))
+    let shoulder = percentile(luminance, 0.985)
+    guard shoulder > 0.0001 else { return settings }
+    let median = percentile(luminance, 0.50)
+    let highKey = smooth(0.25, 0.7, median)
+    let target = 0.34 - 0.065 * highKey
+    let midtoneGain = min(target / max(0.0001, median), 1.75 / shoulder)
+    let upperPercentile = percentile(luminance, 0.90)
+    // Dark foregrounds can coexist with a large, bright part of the scene.
+    // Protect that part more strongly than scattered specular highlights.
+    let brightArea = smooth(0.55, 0.85, upperPercentile)
+    let highlightSeparation = smooth(0.10, 0.50, upperPercentile - percentile(luminance, 0.75))
+    let broadHighlightGain = (0.80 - 0.35 * highlightSeparation) / max(0.0001, upperPercentile)
+    let gain = midtoneGain + brightArea * (min(midtoneGain, broadHighlightGain) - midtoneGain)
+    settings.exposure = (100 * min(3, max(-3, log2(gain)))).rounded() / 100
+    let appliedGain = pow(2, settings.exposure)
+    let lowerTone = percentile(luminance, 0.10) * appliedGain
+    let upperTone = upperPercentile * appliedGain
+    let midtoneSpread = SRGBTransfer.encoded(percentile(luminance, 0.75) * appliedGain)
+      - SRGBTransfer.encoded(percentile(luminance, 0.25) * appliedGain)
+    settings.contrast = max(0, 10 - 20 * midtoneSpread).rounded()
+
+    // Keep a bright shoulder and a visible toe without baking display clipping
+    // into the DNG. Match black anchoring to the amount of shadow recovery.
+    let shoulderPressure = max(smooth(0.72, 1.55, shoulder * appliedGain),
+      smooth(0.48, 0.85, percentile(luminance, 0.85)))
+    settings.highlights = (-95 * shoulderPressure).rounded()
+    let shadowCompensation = 60 * (1 - smooth(0.025, 0.25, lowerTone)) + 48 * max(0, -settings.exposure)
+    let shadowLift = shadowCompensation * (1 - 0.55 * brightArea * highlightSeparation)
+    settings.shadows = (min(85, shadowLift) * smooth(0.005, 0.075, median * appliedGain)).rounded()
+    settings.blacks = (-settings.shadows * (0.23 + 0.43 * (1 - smooth(0.06, 0.28, lowerTone)))).rounded()
+
+    let colorAmount = percentile(chroma, 0.50)
+    let chromaticWhite = smooth(0.9, 1.85, percentile(peaks, 0.95) * appliedGain)
+    let narrowShoulder = smooth(1.4, 3, shoulder * appliedGain / max(0.001, upperTone))
+    settings.whites = (0.53 * -settings.highlights
+      - chromaticWhite * (18 + 42 * colorAmount) - 26 * narrowShoulder).rounded()
+    let hasColor = smooth(0.01, 0.1, colorAmount)
+    settings.vibrance = (20 * hasColor * (1 - 0.18 * colorAmount)).rounded()
+    settings.saturation = (hasColor * (8 - 14 * smooth(0.22, 0.82, colorAmount))).rounded()
     return settings
   }
 }

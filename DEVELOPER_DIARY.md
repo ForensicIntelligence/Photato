@@ -2,7 +2,21 @@
 
 **[Full diary archive on GitHub](diary/README.md)** · [Website edition](https://www.forensicintelligence.ca/photato/diary.html#entries)
 
-Source build **814** · The 10 most recent entries, newest first.
+Source build **815** · The 10 most recent entries, newest first.
+
+## 2026-11-28 — Step 815 — Apply editable HDR automatic tone and color
+
+Apply Auto Settings in Camera Raw HDR Merge now writes Exposure, Contrast, Highlights, Shadows, Whites, Blacks, Vibrance and Saturation into the output DNG as editable Camera Raw settings. The dialog preview uses the same settings.
+
+Across six owned scenes, mean Exposure error against Adobe fell from 0.73 to 0.26 stops. The other seven sliders averaged 10.5 points from Adobe, down from 31.5. The DNG sensor payload was byte-identical with Auto on and off in all six Photato scenes. Adobe also retained its compressed sensor payload with Auto on and off in the textured scene.
+
+Adobe Camera Raw 18.1.1 wrote recipes for six owned 512 × 384 DNG brackets, including a terrace scene withheld while designing the adjustments. The independently read XMP and encoded sensor hashes are linked below. [Adobe Camera Raw HDR shortcuts](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/default-keyboard-shortcuts.html).
+
+Xcode built the app and all 47 focused application and imaging checks passed, including four added checks. Both optimized architectures passed all 422 selected tests. Intel ran under Rosetta. Both Universal slices rendered offscreen.
+
+On the withheld terrace scene, the seven slider values improved on average, and Exposure diverged by 0.77 stops where the previous Exposure was 0.06 stops off. These results measure XMP settings and sensor payload preservation. Adobe-rendered pixels, real-world scenes, larger brackets and deghosting remain open.
+
+[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-815) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_815.md).
 
 ## 2026-11-28 — Step 814 — Fuse scene-linear HDR exposure brackets
 
@@ -129,17 +143,3 @@ Xcode built the app. Thirteen focused application checks passed. The new cases v
 RAW filmstrip ratings, Grid, Stacks and Adobe output comparisons remain open. The authenticated ZIP uses the advertised transfer budget. Desktop export stages each file on disk.
 
 [Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-806) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_806.md).
-
-## 2026-11-28 — Step 805 — Open and synchronize multiple Camera Raw photos
-
-Select several Camera RAW files in File → Open to edit them together. The filmstrip keeps an independent settings draft for each source, applies changed controls to the selection, and copies chosen settings groups from the active photo.
-
-Command-A selected the three owned DNGs. Option-S opened Synchronize Settings, and Command-Option-O opened three editable RGB16 Background tabs. The RAWs and existing sidecar kept their original hashes. The focused tests also check selected-copy pixels, Undo and Redo, and atomic API validation.
-
-The selected and active controls follow the documented Adobe multi-image editing workflow. [Adobe Camera Raw filmstrip](https://helpx.adobe.com/camera-raw/desktop/get-started/overview-and-setup/navigate-open-save-images-camera.html).
-
-Xcode built the app. All eleven focused application tests passed. Both optimized architectures passed all 388 selected cases, including the filmstrip and authenticated API checks. Intel ran under Rosetta. Both signed Universal slices rendered offscreen.
-
-The filmstrip opens when every selected file is Camera RAW. Batch developed-image export, rating and stacking controls, and the direct Adobe pixel comparison remain open.
-
-[Development record](PhotoCraftSwift/docs/DEVLOG.md#dev-step-805) · [Qualification](PhotoCraftSwift/docs/SOURCE_PUBLICATION_805.md).
